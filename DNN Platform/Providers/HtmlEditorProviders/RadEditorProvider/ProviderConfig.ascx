@@ -6,21 +6,11 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <asp:Panel class="dnnProviderConfig dnnClear" id="dnnProviderConfig" runat="server">
 	<div class="dnnTreeArea">
-		<asp:Panel id="pnlSelectProvider" runat="server" class="dnnProviderSelect">
-			<h3><asp:Label ID="lblSelectedProvider" runat="server" resourcekey="lblSelectedProvider" /></h3>
-			<asp:Label ID="editorState" runat="server" />
-			<%--<asp:DropDownList ID="editorList" runat="server" />--%>
-		    <dnn:DnnComboBox ID="editorList" runat="server" />
-			<asp:LinkButton ID="btnEnable" runat="server" CssClass="dnnPrimaryAction" resourcekey="btnEnable" />
-		</asp:Panel>
 		<div class="dnnTreePages">
 			<Telerik:RadTreeView Runat="server" Id="treeTools" AllowNodeEditing="true" MultipleSelect="false" SingleExpandPath="true" /> 
 		</div>  
 	</div>     
 	<asp:Panel ID="pnlTabContent" runat="server" class="dnnpcTabs">
-	    <asp:Panel ID="MessagePanel" class="dnnFormMessage dnnFormValidationSummary" runat="server">
-	        <%=LocalizeString("NotCurrentProvider") %>
-	    </asp:Panel>                                                                                       
 		<asp:Panel ID="pnlEditor" runat="server" CssClass="dnnForm">                   
 			<ul class="dnnAdminTabNav dnnClear">
 				<li><a href="#dnnEditorConfig"><%=LocalizeString("EditConfigTab")%></a></li>
@@ -71,7 +61,7 @@
 	        $('#<%=pnlEditor.ClientID%>').dnnTabs().dnnPanels();
 	        $('#dnnEditorConfig .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#dnnEditorConfig' });
 	        $('.dnnDeleteTab').dnnConfirm({
-	            text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem"))%>',
+	            text: '<%=LocalizeSafeJsString("DeleteItem")%>',
 	            yesText: '<%=Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile)%>',
 	            noText: '<%=Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile)%>',
 	            title: '<%=Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile)%>'

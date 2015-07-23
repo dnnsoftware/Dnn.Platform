@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.RibbonBar" CodeFile="RibbonBar.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.RibbonBar" Codebehind="RibbonBar.ascx.cs" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="AddModule" Src="~/admin/ControlPanel/AddModule.ascx" %>
@@ -24,7 +24,7 @@
                 </Items>
             </dnn:DnnComboBox>
         </div>
-        <asp:HyperLink ID="hypMessage" runat="server" Target="_new" CssClass="dnnCPHMessage" />
+        <asp:HyperLink ID="hypMessage" runat="server" Target="_blank" CssClass="dnnCPHMessage" />
     </div>
     <div id="BodyPanel" runat="server" class="dnnCPContent" style="display: none">
         <asp:Panel ID="CommonTasksPanel" runat="server" CssClass="cpcbCommonTasks dnnClear">
@@ -88,9 +88,9 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			if (!$(".dnnControlPanel").data("loaded")) {
-				var yesText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>';
-				var noText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>';
-				var titleText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>';
+				var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
+				var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
+				var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
 				// Client IDs for the following three have _CPCommandBtn appended as a rule
 				$('#<%= DeletePage.ClientID %>_CPCommandBtn').dnnConfirm({

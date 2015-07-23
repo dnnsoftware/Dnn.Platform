@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Tabs.ManageTabs" CodeFile="ManageTabs.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Tabs.ManageTabs" Codebehind="ManageTabs.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
@@ -50,6 +50,7 @@
 					<dnn:Label ID="plTags" runat="server" ControlName="termsSelector" />
 					<dnn:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>    
+               <dnnext:UserControlExtensionControl  runat="server" ID="PageDetailsExtensionControl" Module="ManageTabs" Group="PageSettingsPageDetails"/>
 				<div class="dnnFormItem">
 					<dnn:Label ID="plParentTab" runat="server" ResourceKey="ParentTab" ControlName="cboParentTab" />
                     <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" IncludeAllTabTypes="True" IncludeDisabledTabs="True" IncludeActiveTab="true"/>
@@ -232,7 +233,8 @@
 				<div class="dnnFormItem">
 					<dnn:Label ID="plPageHeadText" runat="server" ResourceKey="PageHeadText" Suffix=":" HelpKey="PageHeadText.Help" ControlName="txtPageHeadText" />
 					<asp:TextBox ID="txtPageHeadText" runat="server" TextMode="MultiLine" Rows="4" Columns="50" />
-				</div>       
+				</div>   
+                
 			</fieldset>
 			<h2 id="dnnPanel-TabsCacheSettings"  class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("CacheSettings")%></a></h2>
 			<fieldset>
@@ -355,7 +357,7 @@
             skinSelector: '<%= pageSkinCombo.ClientID %>',
             containerSelector: '<%= pageContainerCombo.ClientID %>',
             baseUrl: '<%= DotNetNuke.Common.Globals.NavigateURL(this.TabId) %>',
-            noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+            noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
             alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
             alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
@@ -384,6 +386,8 @@
 	    if ($("ul.dnnAdminTabNav > li.ui-tabs-active").attr("id").indexOf("propertiesTab") > -1) {
 	    	$("ul.dnnMainActions, div.dnnModuleAuditControl").hide();
 	    }
+
+        $('#<%=urlTextBox.ClientID%>').prefixInput({ prefix: "/" });
     }
 
     $(document).ready(function () {

@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             if (!Page.IsPostBack)
             {
                 PortalSecurity ps = new PortalSecurity();
-                Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(ModuleContext.PortalId);
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(ModuleContext.PortalId);
                 if (settings.ContainsKey("Store_Username"))
                 { txtUsername.Text = ps.DecryptString(settings["Store_Username"], Config.GetDecryptionkey()); }
 

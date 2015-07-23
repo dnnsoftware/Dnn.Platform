@@ -175,6 +175,7 @@
     function coreMessagingViewModel() {
         var self = this;
 
+	    self.disablePrivateMessage = ko.observable(settings.disablePrivateMessage);
         self.messages = ko.observableArray([]);
         self.notifications = ko.observableArray([]);
 
@@ -637,6 +638,8 @@
         };
 
         self.loadNotificationsTabHandler = function () {
+            self.loadingData(true);
+            
             $.ajax({
                 type: "GET",
                 url: notificationspath,
@@ -739,6 +742,35 @@
             } else {
                 self.apiCallRequest(action);
             }
+        };
+
+        self.dismissAllNotifications = function () {
+            var opts = {
+                callbackTrue: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: baseServicepath + 'DismissAllNotifications',
+                        beforeSend: serviceFramework.setModuleHeaders
+                    }).done(function (data) {
+                        if (data.Result === "success") {
+                            displayMessage("#dnnCoreNotification", settings.actionPerformedText, "dnnFormSuccess");
+                            location.href = window.location.href;
+                        } else {
+                            displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                        }
+                    }).fail(function (xhr, status) {
+                        displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+                    });
+                },
+                text: String.format(settings.dismissAllConfirmText, self.TotalNotifications()),
+                yesText: settings.yesText,
+                noText: settings.noText,
+                title: settings.title,
+                buttonYesClass: 'dnnSecondaryAction',
+                buttonNoClass: 'dnnPrimaryAction',
+            };
+
+            $.dnnConfirm(opts);
         };
 
         self.apiCallRequest = function (action) {
@@ -933,7 +965,7 @@
             });
         };
 
-        self.getTotals = function () {
+        self.getTotals = function (refresh) {
             $.ajax({
                 type: "GET",
                 beforeSend: serviceFramework.setModuleHeaders,
@@ -942,12 +974,25 @@
                 cache: false
             }).done(function (totalsViewModel) {
                 if (typeof totalsViewModel !== "undefined" && totalsViewModel != null) {
+                    var state = window.History.getState();
                     if (typeof totalsViewModel.TotalUnreadMessages !== "undefined" && $.type(totalsViewModel.TotalUnreadMessages) === "number") {
+                        var oldTotalNewThreads = self.TotalNewThreads();
                         self.TotalNewThreads(totalsViewModel.TotalUnreadMessages);
+                        if (refresh && oldTotalNewThreads !== totalsViewModel.TotalUnreadMessages) {
+                            if (state.data == null || !state.data.view || (state.data.view == "messages" && state.data.action == "inbox")) {
+                                self.loadBox(inboxpath);
+                            }
+                        }
                     }
 
                     if (typeof totalsViewModel.TotalNotifications !== "undefined" && $.type(totalsViewModel.TotalNotifications) === "number") {
+                        var oldNotifications = self.TotalNotifications();
                         self.TotalNotifications(totalsViewModel.TotalNotifications);
+                        if (refresh && oldNotifications !== totalsViewModel.TotalNotifications) {
+                            if (state.data == null || !state.data.view || (state.data.view == "notifications" && state.data.action == "notifications")) {
+                                self.loadNotificationsTabHandler();
+                            }
+                        }
                     }
                 }
             });
@@ -980,11 +1025,8 @@
         }
 
         setInterval(function () {
-            var state = History.getState(); // Note: We are using History.getState() instead of event.state
-
-            if (state.data == null || !state.data.view || (state.data.view == "messages" && state.data.action == "inbox")) {
-                viewModel.loadBox(inboxpath);
-            }
+            //for issue DNN-5753
+            viewModel.getTotals(true);
         }, refreshInterval);
 
         viewModel.getTotals();

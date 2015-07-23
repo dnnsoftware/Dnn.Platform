@@ -932,4 +932,10 @@ img.badgeImage {
 span.badgeName {
     font-weight: bold;
 }
-	/* End Subscriptions Style*/
+/* End Subscriptions Style*/
+
+/* ISSUE DNN-5754 */
+ul.messages dd.message img {
+    max-width: 100% !important;
+    height: auto !important;
+}

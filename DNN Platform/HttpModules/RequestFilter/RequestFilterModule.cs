@@ -63,19 +63,14 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 return;
             }
             var request = app.Context.Request;
-            if (RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath))
+
+            if (!Initialize.ProcessHttpModule(request, true, true))
             {
                 return;
             }
-			
+
             //Carry out first time initialization tasks
             Initialize.Init(app);
-            if (request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                    || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                    || request.Url.LocalPath.ToLower().Contains("installwizard.aspx"))
-            {
-                return;
-            }
 			
             //only do this if we havn't already attempted an install.  This prevents PreSendRequestHeaders from
             //trying to add this item way to late.  We only want the first run through to do anything.

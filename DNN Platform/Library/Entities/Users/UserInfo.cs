@@ -21,11 +21,10 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -33,7 +32,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.SystemDateTime;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.WebControls;
 
@@ -64,8 +62,7 @@ namespace DotNetNuke.Entities.Users
         private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
-        //private IDictionary<int, UserSocial> _social;
-        private readonly SharedDictionary<int, UserSocial> _social = new SharedDictionary<int, UserSocial>();
+        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
 
         #endregion
 
@@ -131,6 +128,17 @@ namespace DotNetNuke.Entities.Users
             get { return Profile.FirstName; }
             set { Profile.FirstName = value; }
         }
+
+        /// <summary>
+        /// Gets and sets the HMAC AppId
+        /// </summary>
+        public string HmacAppId { get; set; }
+
+        /// <summary>
+        /// Gets and sets the HMAC AppSecret
+        /// </summary>
+        public string HmacAppSecret { get; set; }
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -259,6 +267,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
+                var socialRoles = Social.Roles;
+                if (socialRoles.Count == 0)
+                    return new string[0];
+
                 return (from r in Social.Roles
                         where
                             r.Status == RoleStatus.Approved &&
@@ -280,23 +292,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                UserSocial userSocial;
-                var exists = false;
-                using (_social.GetReadLock())
-                {
-                    exists = _social.TryGetValue(PortalID, out userSocial);
-                }
-
-                if (!exists)
-                {
-                    using (_social.GetWriteLock())
-                    {
-                        userSocial = new UserSocial(this);
-                        _social.Add(PortalID, userSocial);
-                    }
-                }
-
-                return userSocial;
+                return _social.GetOrAdd(PortalID, i => new UserSocial(this));
             }
         }
 
@@ -503,7 +499,13 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
-            if (IsSuperUser || role == Globals.glbRoleAllUsersName)
+            //super users should always be verified.
+            if (IsSuperUser)
+            {
+                return role != "Unverified Users";
+            }
+
+            if (role == Globals.glbRoleAllUsersName)
             {
                 return true;
             }
@@ -515,9 +517,11 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
-            if (Roles != null)
+
+            var roles = Roles;
+            if (roles != null)
             {
-                return Roles.Any(s => s == role);
+                return roles.Any(s => s == role);
             }
             return false;
         }

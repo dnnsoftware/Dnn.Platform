@@ -1,1 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeFile="JavaScriptLibraryInclude.ascx.cs" Inherits="DotNetNuke.UI.Skins.Controls.JavaScriptLibraryInclude" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.JavaScriptLibraryInclude" Codebehind="JavaScriptLibraryInclude.ascx.cs" %>
+<!--CDF(JS-LIBRARY|<%:this.Name %>,<%:this.Version %>,<%:this.SpecificVersion %>)-->

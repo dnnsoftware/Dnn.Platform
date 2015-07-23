@@ -10,11 +10,11 @@
         <div class="content">
             <div class="deviceMsg">
                 <% if (!this.IsPremium) { %>
-                    <p class="bold"><dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
+                    <p class="bold"><dnn:label runat="server" resourcekey="DeviceDetectionEnabled" ControlName="cbDetectionEnabled" />
                         <asp:CheckBox runat="server" ID="cbDetectionEnabled" AutoPostBack="True" /></p>
-                    <p class="bold"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
+                    <p class="bold"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" ControlName="cbAutoUpdatesEnabled" />
                         <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabled" AutoPostBack="True" /></p>
-                    <p class="bold"><dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                    <p class="bold"><dnn:label runat="server" resourcekey="ShareUsageEnabled" ControlName="cbShareUsageEnabled" />
                         <asp:CheckBox runat="server" ID="cbShareUsageEnabled" AutoPostBack="True" /></p>
                     <h2><%= LocalizeString("Lite.Header")%></h2>
                     <fieldset class="upgradePremium">
@@ -39,15 +39,15 @@
                     </fieldset>
                 <% } else { %>
                     <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
+                        <dnn:label runat="server" resourcekey="DeviceDetectionEnabled" ControlName="cbDetectionEnabledPremium" />
                         <asp:CheckBox runat="server" ID="cbDetectionEnabledPremium" AutoPostBack="True" />
                     </div>
                     <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
+                        <dnn:label runat="server" resourcekey="AutoUpdatesEnabled" ControlName="cbAutoUpdatesEnabledPremium" />
                         <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabledPremium" AutoPostBack="True" />
                     </div>
                     <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                        <dnn:label runat="server" resourcekey="ShareUsageEnabled" ControlName="cbShareUsageEnabledPremium" />
                         <asp:CheckBox runat="server" ID="cbShareUsageEnabledPremium" AutoPostBack="True" />
                     </div>
 

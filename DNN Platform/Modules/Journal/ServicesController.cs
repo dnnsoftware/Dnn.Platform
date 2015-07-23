@@ -74,6 +74,12 @@ namespace DotNetNuke.Modules.Journal
 
         private static bool IsImageFile(string relativePath)
         {
+	        if (relativePath.Contains("?"))
+	        {
+		        relativePath = relativePath.Substring(0,
+			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+	        }
+
             var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff","bmp" };
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
             StringComparison.Ordinal) + 1).ToLower();

@@ -21,6 +21,7 @@
 #region Usings
 
 using System.Globalization;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -54,20 +55,20 @@ namespace DotNetNuke.Common.Utilities
             char[] TrimChars = {',', ' '};
             //Get culture array of month names and convert to string for
             //passing to the popup calendar
-            string MonthNameString = "";
+            var monthBuilder = new StringBuilder();
             foreach (string Month in DateTimeFormatInfo.CurrentInfo.MonthNames)
             {
-                MonthNameString += Month + ",";
+                monthBuilder.AppendFormat("{0},", Month);
             }
-            MonthNameString = MonthNameString.TrimEnd(TrimChars);
+            var MonthNameString = monthBuilder.ToString().TrimEnd(TrimChars);
             //Get culture array of day names and convert to string for
             //passing to the popup calendar
-            string DayNameString = "";
+            var dayBuilder = new StringBuilder();
             foreach (string Day in DateTimeFormatInfo.CurrentInfo.AbbreviatedDayNames)
             {
-                DayNameString += Day + ",";
+                dayBuilder.AppendFormat("{0},", Day);
             }
-            DayNameString = DayNameString.TrimEnd(TrimChars);
+            var DayNameString = dayBuilder.ToString().TrimEnd(TrimChars);
             //Get the short date pattern for the culture
             string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
             if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))
@@ -77,8 +78,10 @@ namespace DotNetNuke.Common.Utilities
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
-            return "javascript:popupCal('Cal','" + Field.ClientID + "','" + FormatString + "','" + MonthNameString + "','" + DayNameString + "','" + strToday + "','" + strClose + "','" + strCalendar +
-                   "'," + (int) DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek + ");";
+            //TODO: Consider changing to StringBuilder with constant for the separator
+            return string.Concat("javascript:popupCal('Cal','", Field.ClientID, "','", FormatString, "','",
+                MonthNameString, "','", DayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",
+                (int) DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek, ");");
         }
     }
 }

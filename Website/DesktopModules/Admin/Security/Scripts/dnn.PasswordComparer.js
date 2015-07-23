@@ -137,7 +137,7 @@
 
             this._$confirmElement = this._$container.find(this.options.secondElementSelector);
 
-            this._$confirmElement.tooltip({
+            this._$confirmElement.dnntooltip({
                 getTooltipMarkup: $.proxy(this._getTooltipMarkup, this),
                 cssClass: "confirm-password-tooltip",
                 left: 214,
@@ -179,7 +179,7 @@
             else {
                 this._$confirmElement.addClass(this.options.unmatchedCssClass);
             }
-            this._$confirmElement.tooltip("disabled", (!val1 && !val2));
+            this._$confirmElement.dnntooltip("disabled", (!val1 && !val2));
 
             this._updateTooltipState(this._isMatched);
         }

@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.Collections;
+using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -200,7 +202,18 @@ namespace DotNetNuke.Modules.Admin.Vendors
             }
         }
 
-        void cmdDeleteUnAuthorized_Click(object sender, EventArgs e)
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			if (grdVendors.DataSource != null && grdVendors.DataSource is ArrayList)
+			{
+				var vendors = ((ArrayList) grdVendors.DataSource).Cast<VendorInfo>();
+				cmdDeleteUnAuthorized.Visible = vendors.Any() && vendors.Any(v => !v.Authorized);
+			}
+		}
+
+		void cmdDeleteUnAuthorized_Click(object sender, EventArgs e)
         {
             try
             {

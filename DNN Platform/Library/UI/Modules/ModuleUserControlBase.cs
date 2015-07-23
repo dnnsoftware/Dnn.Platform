@@ -53,6 +53,11 @@ namespace DotNetNuke.UI.Modules
             return Localization.GetString(key, LocalResourceFile);
         }
 
+		protected string LocalizeSafeJsString(string key)
+		{
+			return Localization.GetSafeJSString(key, LocalResourceFile);
+		}
+
         #region IModuleControl Members
 
         /// -----------------------------------------------------------------------------

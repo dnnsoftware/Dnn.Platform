@@ -18,10 +18,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.Linq;
 
 using DotNetNuke.Common.Utilities;
@@ -32,10 +32,10 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-
 using Moq;
-
 using NUnit.Framework;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Data;
 
 namespace DotNetNuke.Tests.Content
 {
@@ -45,15 +45,26 @@ namespace DotNetNuke.Tests.Content
     [TestFixture]
     public class ContentControllerTests
     {
-        private Mock<CachingProvider> mockCache;
+        private const int ModuleSearchTypeId = 1;
+
+        private Mock<CachingProvider> _mockCache;
+        private Mock<DataProvider> _mockDataProvider;
+        private Mock<Services.Search.Internals.ISearchHelper> _mockSearchHelper;
 
         #region Test Initialize
 
         [SetUp]
         public void SetUp()
         {
-            //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            _mockDataProvider = MockComponentProvider.CreateDataProvider();
+            _mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
+
+            Services.Search.Internals.SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
+
+            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
+                (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
+
         }
 
         [TearDown]

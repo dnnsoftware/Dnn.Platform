@@ -22,7 +22,7 @@
 
 using System;
 using System.Web;
-
+using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -81,22 +81,21 @@ namespace DotNetNuke.HttpModules.Exceptions
 					return;
 				}
 
-                HttpContext Context = HttpContext.Current;
-                HttpServerUtility Server = Context.Server;
-                HttpRequest Request = Context.Request;
-				
-                //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-                if (Request.Url.LocalPath.ToLower().EndsWith(".aspx") == false && Request.Url.LocalPath.ToLower().EndsWith(".asmx") == false &&
-                    Request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
+                HttpContext contxt = HttpContext.Current;
+                HttpServerUtility srver = contxt.Server;
+                HttpRequest request = contxt.Request;
+
+                if (!Initialize.ProcessHttpModule(request, false, false))
                 {
                     return;
                 }
-                Exception lastException = Server.GetLastError();
+
+                Exception lastException = srver.GetLastError();
 
                 //HttpExceptions are logged elsewhere
                 if (!(lastException is HttpException))
                 {
-                    var lex = new Exception("Unhandled Error: ", Server.GetLastError());
+                    var lex = new Exception("Unhandled Error: ", srver.GetLastError());
                     var objExceptionLog = new ExceptionLogController();
                     try
                     {

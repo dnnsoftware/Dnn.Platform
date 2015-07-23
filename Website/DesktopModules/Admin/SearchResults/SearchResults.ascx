@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" CodeFile="SearchResults.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" Codebehind="SearchResults.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
@@ -76,7 +76,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
-        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" />
+        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" <%= CheckedExactSearch %> />
     </div>
     <ul class="dnnActions dnnClear">
         <li>

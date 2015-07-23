@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var webControl = container as WebControl;
             if (webControl != null)
             {
-                DnnFormEditor.SetUpItems(Items, webControl, LocalResourceFile);
+                DnnFormEditor.SetUpItems(Items, webControl, LocalResourceFile, false);
             }
         }
 

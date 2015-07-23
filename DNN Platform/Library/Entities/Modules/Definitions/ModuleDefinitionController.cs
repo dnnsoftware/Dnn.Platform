@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Search.Entities;
 
 #endregion
 
@@ -105,6 +106,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
             dataProvider.DeleteModuleDefinition(moduleDefinitionId);
             DataCache.ClearHostCache(true);
+
+            // queue remove module definition from search index
+            var document = new SearchDocumentToDelete
+            {
+                ModuleDefId = moduleDefinitionId
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         /// -----------------------------------------------------------------------------

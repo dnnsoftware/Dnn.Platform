@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         {
             base.OnLoad(e);
 
-            jQuery.RequestRegistration();
+            Framework.jQuery.RequestRegistration();
             AJAX.RegisterScriptManager();
 
             cboSearchEngine.SelectedIndexChanged += OnSearchEngineIndexChanged;

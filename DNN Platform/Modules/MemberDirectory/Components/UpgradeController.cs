@@ -69,10 +69,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
                 foreach (ModuleInfo module in ModuleController.Instance.GetModulesByDefinition(portal.PortalID, "Member Directory"))
 	            {
 					foreach (ModuleInfo tabModule in ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID))
-		            {
-			            if (tabModule.TabModuleSettings.ContainsKey("DisplaySearch"))
+					{
+					    bool oldValue;
+                        if (tabModule.TabModuleSettings.ContainsKey("DisplaySearch") && bool.TryParse(tabModule.TabModuleSettings["DisplaySearch"].ToString(), out oldValue))
 			            {
-				            var oldValue = bool.Parse(tabModule.TabModuleSettings["DisplaySearch"].ToString());
                             ModuleController.Instance.UpdateTabModuleSetting(tabModule.TabModuleID, "DisplaySearch", oldValue ? "Both" : "None");
 			            }
 		            }

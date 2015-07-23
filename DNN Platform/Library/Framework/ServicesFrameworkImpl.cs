@@ -16,6 +16,7 @@
 // // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Globalization;
 using System.Web.Helpers;
 using System.Web.UI;
@@ -65,19 +66,12 @@ namespace DotNetNuke.Framework
 
         public void RegisterAjaxScript(Page page)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null) return;
-            var path = portalSettings.PortalAlias.HTTPAlias;
-            int index = path.IndexOf('/');
-            if (index > 0)
+            var path = ServicesFramework.GetServiceFrameworkRoot();
+            if (String.IsNullOrEmpty(path))
             {
-                path = path.Substring(index);
+                return;
             }
-            else
-            {
-                path = "/";
-            }
-            path = path.EndsWith("/") ? path : path + "/";
+
             JavaScript.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
             ClientAPI.RegisterClientVariable(page, "sf_siteRoot", path, /*overwrite*/ true);
             ClientAPI.RegisterClientVariable(page, "sf_tabId", PortalSettings.Current.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture), /*overwrite*/ true);

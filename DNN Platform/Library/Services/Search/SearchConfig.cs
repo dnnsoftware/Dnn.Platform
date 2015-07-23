@@ -56,7 +56,8 @@ namespace DotNetNuke.Services.Search
 
 		#region "Constructor(s)"
 
-        public SearchConfig(int portalID) : this(PortalController.GetPortalSettingsDictionary(portalID))
+        public SearchConfig(int portalID)
+            : this(PortalController.Instance.GetPortalSettings(portalID))
         {
         }
 

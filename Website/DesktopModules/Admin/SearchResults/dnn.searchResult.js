@@ -491,11 +491,7 @@
 
         });
 
-        if ($('#advancedTagsCtrl').val()) {
-            setTimeout(function() { $('#dnnSearchResultAdvancedSearch').trigger("click", [true])}, 0);
-        } else {
-            dnn.searchResult.doSearch();
-        }
+        setTimeout(function() { $('#dnnSearchResultAdvancedSearch').trigger("click", [true]); }, 0);
     };
 
 })(jQuery, dnn);

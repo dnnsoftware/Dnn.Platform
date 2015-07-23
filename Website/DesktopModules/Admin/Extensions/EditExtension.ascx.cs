@@ -246,7 +246,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
         }
 
         /// -----------------------------------------------------------------------------

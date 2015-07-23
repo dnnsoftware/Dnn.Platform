@@ -32,20 +32,12 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.WebControls.Internal;
-using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
-using Logger = log4net.Repository.Hierarchy.Logger;
 
 #endregion
 
@@ -60,7 +52,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected const string PermissionTypeNull = "Null";
 
         #endregion
-
+        
         #region Private Members
 
         private ArrayList _permissions;
@@ -69,8 +61,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         private DropDownList cboSelectRole;
         private LinkButton cmdUser;
         private LinkButton cmdRole;
-        private DataGrid rolePermissionsGrid;
-        private DataGrid userPermissionsGrid;
         private Label lblGroups;
         private Label lblSelectRole;
         private Label lblErrorMessage;
@@ -78,7 +68,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         private TextBox txtUser;
         private HiddenField hiddenUserIds;
         private HiddenField roleField;
+        #endregion
 
+        #region Protected Members
+        protected DataGrid rolePermissionsGrid;
+        protected DataGrid userPermissionsGrid;
+        #endregion
+
+        #region Constructor
         public PermissionsGrid()
         {
             dtUserPermissions = new DataTable();
@@ -492,7 +489,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }            
             if (checkedRoles.Contains(AllUsersRoleId))
             {
-                Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });                    
+                Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName=Globals.glbRoleAllUsersName });                    
             }
 
             //Administrators Role always has implicit permissions, then it should be always in
@@ -500,7 +497,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             
             //Show also default roles
             EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
-            EnsureRole(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
+            EnsureRole(new RoleInfo { RoleID = AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
             
             Roles.Reverse();
             Roles.Sort(new RoleComparer());

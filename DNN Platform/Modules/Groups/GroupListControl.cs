@@ -2,25 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users;
-using System.Collections;
-
 using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Entities.Groups;
-using DotNetNuke.Common;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
+
 namespace DotNetNuke.Modules.Groups.Controls
 {
     [DefaultProperty("Text")]
@@ -90,17 +82,9 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         }
 
-        private static bool TestPredicateGroup(List<Func<RoleInfo, bool>> predicates, RoleInfo ri)
+        private static bool TestPredicateGroup(IEnumerable<Func<RoleInfo, bool>> predicates, RoleInfo ri)
         {
-            foreach (var p in predicates)
-            {
-                if (!p(ri))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return predicates.All(p => p(ri));
         }
 
         private static object GetOrderByProperty(object obj, string property)
@@ -111,13 +95,15 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         protected override void Render(HtmlTextWriter output)
         {
-            var whereCls = new List<Func<RoleInfo, bool>>();
-            whereCls.Add(grp => grp.SecurityMode != SecurityMode.SecurityRole);
-	        if (RoleGroupId >= -1)
+            var whereCls = new List<Func<RoleInfo, bool>>
+            {
+                grp => grp.SecurityMode != SecurityMode.SecurityRole && grp.Status == RoleStatus.Approved
+            };
+
+            if (RoleGroupId >= -1)
 	        {
 		        whereCls.Add(grp => grp.RoleGroupID == RoleGroupId);
 	        }
-	        whereCls.Add(grp => grp.Status == RoleStatus.Approved);
 
             if (DisplayCurrentUserGroups)
                 whereCls.Add(grp => currentUser.IsInRole(grp.RoleName));

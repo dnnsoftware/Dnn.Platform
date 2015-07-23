@@ -20,7 +20,7 @@
 
 #endregion
 
-using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -34,6 +34,7 @@ using DotNetNuke.Web.Api.Internal;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
+    [DnnExceptionFilter]
     public class ModuleServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleServiceController));
@@ -43,6 +44,13 @@ namespace DotNetNuke.Web.InternalServices
             public int ModuleOrder { get; set; }
             public string Pane { get; set; }
             public int TabId { get; set; }
+        }
+
+        public class DeleteModuleDto
+        {
+            public int ModuleId { get; set; }
+            public int TabId { get; set; }
+            public bool SoftDelete { get; set; }
         }
 
         [HttpGet]
@@ -85,8 +93,38 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage MoveModule(MoveModuleDTO postData)
         {
-            ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, postData.ModuleOrder, postData.Pane);
+	        var moduleOrder = postData.ModuleOrder;
+	        if (moduleOrder > 0)
+	        {
+				//DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
+				//index count of deleted modules and will cause order issue.
+		        var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
+		        foreach (var module in deletedModules)
+		        {
+			        if (module.ModuleOrder < moduleOrder)
+			        {
+				        moduleOrder += 2;
+			        }
+		        }
+	        }
+			ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Web method that deletes a tab module.
+        /// </summary>
+        /// <remarks>This has been introduced for integration testing purpuses.</remarks>
+        /// <param name="deleteModuleDto">delete module dto</param>
+        /// <returns>Http response message</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
+        public HttpResponseMessage DeleteModule(DeleteModuleDto deleteModuleDto)
+        {
+            ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }

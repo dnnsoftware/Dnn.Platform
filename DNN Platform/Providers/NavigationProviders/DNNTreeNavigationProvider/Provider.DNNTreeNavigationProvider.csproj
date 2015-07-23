@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>DotNetNuke.DNNTreeNavigationProvider</AssemblyName>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke.DNNTreeNavigationProvider</RootNamespace>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -55,10 +55,9 @@
       <HintPath>..\..\..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.1.2.7, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

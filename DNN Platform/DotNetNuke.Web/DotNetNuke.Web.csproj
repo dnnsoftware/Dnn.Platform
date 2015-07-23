@@ -11,7 +11,7 @@
     <AssemblyName>DotNetNuke.Web</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WebControl</MyType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Nonshipping>true</Nonshipping>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
@@ -37,6 +37,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Evoq.Content\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,12 +70,28 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.HttpModules">
+      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client">
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -81,11 +99,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http">
-      <HintPath>..\Components\WebAPI\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
@@ -95,17 +112,35 @@
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Http">
-      <HintPath>..\Components\WebAPI\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\Components\WebAPI\System.Web.Http.WebHost.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.1.1\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.Web.UI">
@@ -113,7 +148,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="WebFormsMvp">
-      <HintPath>..\..\packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
+      <HintPath>..\..\Packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +162,7 @@
     <Compile Include="Api\DnnExceptionAttribute.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\HMACAuthenticationAttribute.cs" />
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
@@ -160,10 +196,12 @@
     <Compile Include="Components\LocalizationHelper.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
+    <Compile Include="InternalServices\CountryRegionController.cs" />
     <Compile Include="InternalServices\EventLogServiceController.cs" />
     <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
+    <Compile Include="InternalServices\NotificationDTO.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
     <Compile Include="InternalServices\SearchServiceController.cs" />
@@ -174,6 +212,7 @@
     <Compile Include="InternalServices\RelationshipServiceController.cs" />
     <Compile Include="InternalServices\MessagingServiceController.cs" />
     <Compile Include="InternalServices\ServiceRouteMapper.cs" />
+    <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
     <Compile Include="InternalServices\UserFileController.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
@@ -436,26 +475,6 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Management" />
-    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
-      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
-      <Name>ClientDependency.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
-      <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>
-      <Name>DotNetNuke.Web.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
-      <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
-      <Name>DotNetNuke.HttpModules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mvp\ModulePresenter.cs" />
@@ -520,12 +539,29 @@
     <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library.build" />
-    <None Include="packages.config" />
+    <None Include="Library.build">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
+  </ItemGroup>
   <Import Project="Library.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

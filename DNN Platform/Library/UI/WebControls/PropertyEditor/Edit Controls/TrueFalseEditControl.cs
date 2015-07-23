@@ -208,19 +208,6 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(Localization.GetString("False", Localization.SharedResourceFile));
             writer.RenderEndTag();
         }
-
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            var postedValue = postCollection[postDataKey];
-            var boolValue = !string.IsNullOrEmpty(postedValue);
-            if (!BooleanValue.Equals(boolValue))
-            {
-                Value = boolValue;
-                return true;
-            }
-            return false;
-        }
-
 		
 		#endregion
     }

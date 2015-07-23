@@ -1,7 +1,6 @@
-<%@ Control language="C#" CodeFile="ViewProfile.ascx.cs" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Admin.Users.ViewProfile" %>
+<%@ Control language="C#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Admin.ViewProfile.ViewProfile" Codebehind="ViewProfile.ascx.cs" %>
 <%@ Import Namespace="System.Globalization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
-<dnn:DnnJsInclude ID="DnnJsInclude" runat="server" FilePath="~/Resources/Shared/scripts/knockout.js" />
 
 <div id="profileOutput" runat="server" style="display:none" data-bind="visible: Visible" ViewStateMode="Disabled"></div>
 <asp:Label id="noPropertiesLabel" runat="server" resourcekey="NoProperties" Visible="false" />

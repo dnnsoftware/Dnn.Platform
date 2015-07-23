@@ -38,6 +38,9 @@
               <xs:element name="controlpanelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="controlpanelsecurity" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="controlpanelvisibility" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="injectmodulehyperlink" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="addcompatiblehttpheader" type="xs:string" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>
@@ -227,6 +230,7 @@
                     <xs:element name="keywords" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="visible" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                     <xs:element name="issecure" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="issystem" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                     <xs:element name="disabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                     <xs:element name="iconfile" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="iconfilelarge" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -273,6 +277,22 @@
                                 <xs:element name="settingname" type="xs:string" minOccurs="1" maxOccurs="1" />
                                 <xs:element name="settingvalue" type="xs:string" minOccurs="1" maxOccurs="1" />
                               </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="tabUrls" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="tabUrl" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="SeqNum" type="xs:string"/>
+                              <xs:attribute name="Url" type="xs:string"/>
+                              <xs:attribute name="QueryString" type="xs:string"/>
+                              <xs:attribute name="HttpStatus" type="xs:string"/>
+                              <xs:attribute name="CultureCode" type="xs:string"/>
+                              <xs:attribute name="IsSystem" type="xs:string"/>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
@@ -406,6 +426,24 @@
                                   </xs:complexType>
                                 </xs:element>
                               </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="layouts" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="layout" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType> 
+                              <xs:all>
+                                <xs:element name="control" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                              <xs:attribute name="id" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="paneName" form="unqualified" type="xs:string" />
+                              <xs:attribute name="position" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="columnSizes" form="unqualified" type="xs:string" />
+                              <xs:attribute name="enabled" form="unqualified" type="xs:string" />
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>

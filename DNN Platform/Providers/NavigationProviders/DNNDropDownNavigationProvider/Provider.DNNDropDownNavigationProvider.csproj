@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>DotNetNuke.DNNDropDownNavigationProvider</AssemblyName>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke.DNNDropDownNavigationProvider</RootNamespace>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -68,9 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DNNDropDownNavigationProvider.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DNNDropDownNavigationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">

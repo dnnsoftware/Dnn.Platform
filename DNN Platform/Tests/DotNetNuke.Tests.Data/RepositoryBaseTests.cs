@@ -342,7 +342,7 @@ namespace DotNetNuke.Tests.Data
             var list = mockRepository.Object.Get();
 
             //Assert
-            mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
+            mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_CatsKey)), Times.Never());
         }
 
         [Test]
@@ -868,6 +868,9 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<IEnumerable<CacheableCat>>("GetByScopeInternal", ItExpr.IsAny<object>())
                                     .Returns(new List<CacheableCat>());
+
+            var mockData = MockComponentProvider.CreateDataProvider();
+            mockData.Setup(d => d.GetProviderPath()).Returns(String.Empty);
 
             //Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);

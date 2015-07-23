@@ -139,7 +139,7 @@
     <value>This set of containers cannot be deleted because it is being used</value>
   </data>
   <data name="CannotDeleteSkin.ErrorMessage" xml:space="preserve">
-    <value>This set of skins cannot be deleted because it is being used</value>
+    <value>This set of themes cannot be deleted because it is being used</value>
   </data>
   <data name="CannotDeleteProvider.ErrorMessage" xml:space="preserve">
     <value>This provider cannot be deleted because it is being used</value>

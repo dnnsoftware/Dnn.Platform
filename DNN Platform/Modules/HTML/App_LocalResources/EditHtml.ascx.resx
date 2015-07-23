@@ -150,9 +150,6 @@
   <data name="State.Header" xml:space="preserve">
     <value>State</value>
   </data>
-  <data name="dshVersions.Text" xml:space="preserve">
-    <value>Version History</value>
-  </data>
   <data name="Version.Header" xml:space="preserve">
     <value>Version</value>
   </data>
@@ -161,9 +158,6 @@
   </data>
   <data name="Edit.Text" xml:space="preserve">
     <value>Rollback Content To This Version</value>
-  </data>
-  <data name="dshPreview.Text" xml:space="preserve">
-    <value>Preview</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;P&gt;The Text/HTML Module renders plain text, rich text or HTML. Five different editing views are available: &lt;/P&gt;
@@ -281,5 +275,20 @@
   </data>
   <data name="NoVersions.Text" xml:space="preserve">
     <value>There is no version history for this content.</value>
+  </data>
+  <data name="cmdHistory.Text" xml:space="preserve">
+    <value>Version History</value>
+  </data>
+  <data name="cmdHideMasterContent.Text" xml:space="preserve">
+    <value>Hide Default Language</value>
+  </data>
+  <data name="cmdShowMasterContent.Text" xml:space="preserve">
+    <value>Show Default Language</value>
+  </data>
+  <data name="liBasicText.Text" xml:space="preserve">
+    <value>Basic Text Box</value>
+  </data>
+  <data name="liRichText.Text" xml:space="preserve">
+    <value>Rich Text Editor</value>
   </data>
 </root>

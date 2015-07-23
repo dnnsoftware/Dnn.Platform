@@ -41,6 +41,8 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.Admin.Sales
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class PayPalIPN : PageBase
     {
         private void InitializeComponent()
@@ -128,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 				//postback to verify the source
 				if (blnValid)
                 {
-                    Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(PortalSettings.PortalId);
+                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(PortalSettings.PortalId);
                     string strPayPalURL;
 
                     // Sandbox mode

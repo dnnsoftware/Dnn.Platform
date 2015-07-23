@@ -56,8 +56,6 @@ namespace DotNetNuke.Entities.Portals
             return () => new PortalAliasController();
         }
 
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
-
         #region Private Methods
 
         private static void ClearCache(bool refreshServiceRoutes)
@@ -173,13 +171,14 @@ namespace DotNetNuke.Entities.Portals
         public int AddPortalAlias(PortalAliasInfo portalAlias)
         {
             //Add Alias
-            int Id = _dataProvider.AddPortalAlias(portalAlias.PortalID,
-                                            portalAlias.HTTPAlias.ToLower().Trim('/'),
-                                            portalAlias.CultureCode,
-                                            portalAlias.Skin,
-                                            portalAlias.BrowserType.ToString(),
-                                            portalAlias.IsPrimary,
-                                            UserController.Instance.GetCurrentUserInfo().UserID);
+            var dataProvider = DataProvider.Instance();
+            int Id = dataProvider.AddPortalAlias(portalAlias.PortalID,
+                                                 portalAlias.HTTPAlias.ToLower().Trim('/'),
+                                                 portalAlias.CultureCode,
+                                                 portalAlias.Skin,
+                                                 portalAlias.BrowserType.ToString(),
+                                                 portalAlias.IsPrimary,
+                                                 UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_CREATED);

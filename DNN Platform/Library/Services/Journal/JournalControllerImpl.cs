@@ -32,12 +32,15 @@ using System.Web;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Services.Journal
 {
@@ -129,6 +132,21 @@ namespace DotNetNuke.Services.Journal
             {
                 UpdateGroupStats(portalId, groupId);
             }
+
+            // queue remove journal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+                AuthorUserId = currentUserId,
+                UniqueKey = ji.ContentItemId.ToString("D"),
+                //QueryString = "journalid=" + journalId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            };
+
+            if (groupId > 0)
+                document.RoleId = groupId;
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
         
         private Stream GetJournalImageContent(Stream fileContent)
@@ -194,6 +212,86 @@ namespace DotNetNuke.Services.Journal
             }
             return defaultValue;
         }
+
+        // none of the parameters should be null; checked before calling this method
+        private void PrepareSecuritySet(JournalItem journalItem, UserInfo currentUser)
+        {
+            var originalSecuritySet =
+                journalItem.SecuritySet = (journalItem.SecuritySet ??string.Empty).ToUpperInvariant();
+
+            if (String.IsNullOrEmpty(journalItem.SecuritySet))
+            {
+                journalItem.SecuritySet = "E,";
+            }
+            else if (!journalItem.SecuritySet.EndsWith(","))
+            {
+                journalItem.SecuritySet += ",";
+                originalSecuritySet = journalItem.SecuritySet;
+            }
+
+            if (journalItem.SecuritySet == "F,")
+            {
+                journalItem.SecuritySet = "F" + journalItem.UserId + ",";
+                if (journalItem.ProfileId > 0)
+                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
+            }
+            else if (journalItem.SecuritySet == "U,")
+            {
+                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+            }
+            else if (journalItem.SecuritySet == "R,")
+            {
+                if (journalItem.SocialGroupId > 0)
+                    journalItem.SecuritySet += "R" + journalItem.SocialGroupId + ",";
+            }
+
+            if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)
+            {
+                if (!journalItem.SecuritySet.Contains("P" + journalItem.ProfileId + ","))
+                {
+                    journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
+                }
+
+                if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
+                {
+                    journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+                }
+            }
+
+            if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId + ","))
+            {
+                journalItem.SecuritySet += "U" + journalItem.UserId + ",";
+            }
+
+            //if the post is marked as private, we shouldn't make it visible to the group.
+            if (journalItem.SocialGroupId > 0 && originalSecuritySet.Contains("U,"))
+            {
+                var item = journalItem;
+                var role = RoleController.Instance.GetRole(journalItem.PortalId,
+                    r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+
+                if (role != null && !role.IsPublic)
+                {
+                    journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", String.Empty).Replace("C,", String.Empty);
+                }
+            }
+
+            // clean up and remove duplicates
+            var parts = journalItem.SecuritySet
+                .Replace(" ", "")
+                .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                .Distinct()
+                .Except(InvalidSecuritySetsWithoutId)
+                .Where(p => p.IndexOfAny(ValidSecurityDescriptors) >= 0);
+
+            //TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
+
+            journalItem.SecuritySet = string.Join(",", parts);
+        }
+
+        private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
+        private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
+
         #endregion
 
         #region Public Methods
@@ -268,57 +366,8 @@ namespace DotNetNuke.Services.Journal
                 journalData = null;
             }
 
-            var originalSecuritySet = journalItem.SecuritySet;
-            if (String.IsNullOrEmpty(journalItem.SecuritySet))
-            {
-                journalItem.SecuritySet = "E,";
-            }
-            else if (!journalItem.SecuritySet.EndsWith(","))
-            {
-                journalItem.SecuritySet += ",";
-            }
-            if (journalItem.SecuritySet == "F,")
-            {
-                journalItem.SecuritySet = "F" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-                journalItem.SecuritySet += "P" + journalItem.ProfileId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (journalItem.SecuritySet == "U,")
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)
-            {
-                if (!journalItem.SecuritySet.Contains("P" + journalItem.ProfileId.ToString(CultureInfo.InvariantCulture)))
-                {
-                    journalItem.SecuritySet += "P" + journalItem.ProfileId.ToString(CultureInfo.InvariantCulture) + ",";
-                }
-                if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture)))
-                {
-                    journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-                }
-            }
-            if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture)))
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
+            PrepareSecuritySet(journalItem, currentUser);
 
-            //if the post mark as private, shouldn't let it visible to the group.
-            if (journalItem.SocialGroupId > 0 && originalSecuritySet != "U")
-            {
-                JournalItem item = journalItem;
-                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
-                if (role != null)
-                {
-                    if (currentUser.IsInRole(role.RoleName))
-                    {
-                        journalItem.SecuritySet += "R" + journalItem.SocialGroupId.ToString(CultureInfo.InvariantCulture) + ",";
-                        if (!role.IsPublic)
-                        {
-                            journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", String.Empty);
-                        }
-                    }
-                }
-            }
             journalItem.JournalId = _dataService.Journal_Save(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
@@ -335,6 +384,7 @@ namespace DotNetNuke.Services.Journal
                                                      journalItem.SecuritySet,
                                                      journalItem.CommentsDisabled,
                                                      journalItem.CommentsHidden);
+
             var updatedJournalItem = GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
             journalItem.DateCreated = updatedJournalItem.DateCreated;
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
@@ -414,7 +464,8 @@ namespace DotNetNuke.Services.Journal
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
-                    journalItem.ItemData.Description = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
+                    journalItem.ItemData.Description =
+                        HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
@@ -430,48 +481,9 @@ namespace DotNetNuke.Services.Journal
             {
                 journalData = null;
             }
-            if (String.IsNullOrEmpty(journalItem.SecuritySet))
-            {
-                journalItem.SecuritySet = "E,";
-            }
-            else if (!journalItem.SecuritySet.EndsWith(","))
-            {
-                journalItem.SecuritySet += ",";
-            }
-            if (journalItem.SecuritySet == "F,")
-            {
-                journalItem.SecuritySet = "F" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-                journalItem.SecuritySet += "P" + journalItem.ProfileId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (journalItem.SecuritySet == "U,")
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)
-            {
-                journalItem.SecuritySet += "P" + journalItem.ProfileId.ToString(CultureInfo.InvariantCulture) + ",";
-                journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (!journalItem.SecuritySet.Contains("U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture)))
-            {
-                journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
-            }
-            if (journalItem.SocialGroupId > 0)
-            {
-                JournalItem item = journalItem;
-                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
-                if (role != null)
-                {
-                    if (currentUser.IsInRole(role.RoleName))
-                    {
-                        journalItem.SecuritySet += "R" + journalItem.SocialGroupId.ToString(CultureInfo.InvariantCulture) + ",";
-                        if (!role.IsPublic)
-                        {
-                            journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", String.Empty);
-                        }
-                    }
-                }
-            }
+
+            PrepareSecuritySet(journalItem, currentUser);
+
             journalItem.JournalId = _dataService.Journal_Update(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
@@ -713,6 +725,7 @@ namespace DotNetNuke.Services.Journal
         public void DeleteComment(int journalId, int commentId)
         {
             _dataService.Journal_Comment_Delete(journalId, commentId);
+            //UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
         public void LikeComment(int journalId, int commentId, int userId, string displayName)

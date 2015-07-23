@@ -25,6 +25,7 @@
 
 using System;
 using System.Reflection;
+using System.Threading;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using PetaPoco;
 
@@ -35,6 +36,7 @@ namespace DotNetNuke.Data.PetaPoco
     public class PetaPocoMapper : IMapper
     {
         private readonly string _tablePrefix;
+        private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         public PetaPocoMapper(string tablePrefix)
         {
@@ -109,10 +111,20 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static void SetMapper<T>(IMapper mapper)
         {
-            if(Mappers.GetMapper(typeof(T)) is StandardMapper)
+            _lock.EnterWriteLock();
+            try
             {
-                Mappers.Register(typeof(T), mapper);
-            }        
+                if (Mappers.GetMapper(typeof (T)) is StandardMapper)
+                {
+                    Mappers.Register(typeof (T), mapper);
+                }
+
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+
         }
     }
 }

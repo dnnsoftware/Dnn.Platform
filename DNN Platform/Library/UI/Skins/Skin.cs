@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,9 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -139,7 +143,9 @@ namespace DotNetNuke.UI.Skins
                 return _communicator;
             }
         }
+        #endregion
 
+        #region Public Properties
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Dictionary of Panes.
@@ -150,17 +156,13 @@ namespace DotNetNuke.UI.Skins
         /// 	[cnurse]	12/04/2007  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        internal Dictionary<string, Pane> Panes
+        public Dictionary<string, Pane> Panes
         {
             get
             {
                 return _panes ?? (_panes = new Dictionary<string, Pane>());
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -245,13 +247,13 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private static Control FindControlRecursive(Control rootControl, string controlID)
+        private static Control FindControlRecursive(Control rootControl, string controlId)
         {
-            if (rootControl.ID == controlID) return rootControl;
+            if (rootControl.ID == controlId) return rootControl;
 
             foreach (Control controlToSearch in rootControl.Controls)
             {
-                Control controlToReturn = FindControlRecursive(controlToSearch, controlID);
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlId);
                 if (controlToReturn != null) return controlToReturn;
             }
             return null;
@@ -431,9 +433,12 @@ namespace DotNetNuke.UI.Skins
 
         private bool ProcessModule(ModuleInfo module)
         {
-            bool success = true;
+            var success = true;
             if (ModuleInjectionManager.CanInjectModule(module, PortalSettings))
             {
+                //We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
+                EnsureContentItemForModule(module);
+
                 Pane pane = GetPane(module);
 
                 if (pane != null)
@@ -455,18 +460,39 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                //We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
+                EnsureContentItemForTab(PortalSettings.ActiveTab);
+
+                // Versioning checks.
+                if (!TabController.CurrentPage.HasAVisibleVersion)
+                {
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                }
+
+                int urlVersion;
+                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+                {
+                    if (!TabVersionUtils.CanSeeVersionedPages())
+                    {
+                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
+                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        return true;
+                    }
+
+                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
+                    {
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    }
+                }
+
                 //check portal expiry date
                 if (!CheckExpired())
                 {
                     if ((PortalSettings.ActiveTab.StartDate < DateAndTime.Now && PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
                     {
-                        //dynamically populate the panes with modules
-                        if (PortalSettings.ActiveTab.Modules.Count > 0)
+                        foreach (var objModule in PortalSettingsController.Instance().GetTabModules(PortalSettings))
                         {
-                            foreach (ModuleInfo objModule in PortalSettings.ActiveTab.Modules)
-                            {
-                                success = ProcessModule(objModule);
-                            }
+                            success = ProcessModule(objModule);
                         }
                     }
                     else
@@ -478,15 +504,44 @@ namespace DotNetNuke.UI.Skins
                 {
                     AddPageMessage(this,
                                    "",
-                                   string.Format(Localization.GetString("ContractExpired.Error"), PortalSettings.PortalName, Globals.GetMediumDate(PortalSettings.ExpiryDate.ToString()), PortalSettings.Email),
+                                   string.Format(Localization.GetString("ContractExpired.Error"), PortalSettings.PortalName, Globals.GetMediumDate(PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), PortalSettings.Email),
                                    ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error")), true);
+				//If request localized page which haven't complete translate yet, redirect to default language version.
+	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
+				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.PortalId);
+	            if (PortalSettings.ContentLocalizationEnabled &&
+	                TabController.CurrentPage.CultureCode != defaultLocale.Code)
+	            {
+		            redirectUrl = new LanguageTokenReplace {Language = defaultLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+	            }
+
+				Response.Redirect(redirectUrl, true);
             }
             return success;
+        }
+
+        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            //If tab exists but ContentItem not, then we create it
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);    
+            }
+        }
+
+        private void EnsureContentItemForModule(ModuleInfo module)
+        {
+            //If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
         }
 
         private void ProcessPanes()
@@ -644,8 +699,8 @@ namespace DotNetNuke.UI.Skins
             base.OnPreRender(e);
 
             InvokeSkinEvents(SkinEventType.OnSkinPreRender);
-
-            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !UrlUtils.InPopUp())
+            var isSpecialPageMode = UrlUtils.InPopUp() || Request.QueryString["dnnprintmode"] == "true";
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
             {
                 //Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -975,7 +1030,10 @@ namespace DotNetNuke.UI.Skins
             //load assigned skin
             if (skin == null)
             {
-                skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                //DNN-6170 ensure skin value is culture specific
+                //skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
+                    Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!String.IsNullOrEmpty(skinSource))
                 {
                     skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);

@@ -23,10 +23,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Web;
 
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -36,7 +34,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -58,6 +55,17 @@ namespace DotNetNuke.Entities.Profile
     public class ProfileController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ProfileController));
+
+        private static event EventHandler<ProfileEventArgs> ProfileUpdated;
+
+        static ProfileController()
+        {
+            foreach (var handlers in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
+            {
+                ProfileUpdated += handlers.Value.ProfileUpdated;
+            }
+        }
+
         #region Private Members
 
         private static readonly DataProvider _dataProvider = DataProvider.Instance();
@@ -503,19 +511,28 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void UpdateUserProfile(UserInfo user)
         {
-            int portalId = GetEffectivePortalId(user.PortalID);
-            user.PortalID = portalId;
-           
-            //Update the User Profile
-            if (user.Profile.IsDirty)
+            if (!user.Profile.IsDirty)
             {
-                _profileProvider.UpdateUserProfile(user);
+                return;
             }
+
+            var portalId = GetEffectivePortalId(user.PortalID);
+            user.PortalID = portalId;
+
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID};
+            _profileProvider.GetUserProfile(ref oldUser);
+            
+            _profileProvider.UpdateUserProfile(user);
 
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
-        }
 
+            if (ProfileUpdated != null)
+            {
+                ProfileUpdated(null, new ProfileEventArgs { User = user, OldProfile = oldUser.Profile});
+            }
+        }
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates a User's Profile
@@ -628,7 +645,35 @@ namespace DotNetNuke.Entities.Profile
             return isValid;
         }
 
-        #endregion
+        /// <summary>
+        /// Searches the profile property values for a string (doesn't need to be the beginning).
+        /// </summary>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="searchString">The search string.</param>
+        /// <returns>List of matching values</returns>
+        public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+        {
+            var res = new List<string> {};
+            var autoCompleteType = new ListController().GetListEntryInfo("DataType", "AutoComplete");
+            var def = GetPropertyDefinitionByName(portalId, propertyName);
+            if (def.DataType != autoCompleteType.EntryID)
+            {
+                return res;
+            }
+            using (
+                IDataReader ir = Data.DataProvider.Instance()
+                    .SearchProfilePropertyValues(portalId, propertyName, searchString))
+            {
+                while (ir.Read())
+                {
+                    res.Add(Convert.ToString(ir[0]));
+                }
+            }
+            return res;
+        }
+
+            #endregion
 
         #region Obsolete Methods
 

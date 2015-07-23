@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -43,6 +43,26 @@ namespace DotNetNuke.Entities.Urls
             {
                 sendToUrlLessQString = sendToUrl.Substring(0, sendToUrl.IndexOf("?", StringComparison.Ordinal));
                 queryString = sendToUrl.Substring(sendToUrl.IndexOf("?", StringComparison.Ordinal) + 1);
+                
+                //Encode querystring values to support unicode characters by M.Kermani
+                queryString = HttpUtility.UrlDecode(queryString);
+                System.Collections.Generic.List<string> listParameters = new System.Collections.Generic.List<string>();
+                string text = "";
+                string[] parameters = queryString.Split('&');
+                for (int counter = 0; counter < parameters.Length; counter++)
+                {
+                    if (parameters[counter].Contains("="))
+                    {
+                        string[] arrparameter = parameters[counter].Split('=');
+                        listParameters.Add(arrparameter[0] + "=" + HttpUtility.UrlEncode(arrparameter[1]));
+                    }
+                    else
+                    {
+                        text = "&" + parameters[counter];
+                    }
+                }
+                queryString = String.Join("&", listParameters.ToArray()) + text;
+                
             }
 			
             //rewrite the path..

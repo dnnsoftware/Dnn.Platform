@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI;
 using System.Xml;
 
 using DotNetNuke.Common;
@@ -273,23 +274,6 @@ namespace DotNetNuke.Modules.Html
             ModuleController.SynchronizeModule(ModuleID);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   FormatHtmlText formats HtmlText content for display in the browser
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-		/// <param name="moduleId">The ModuleID</param>
-		/// <param name = "content">The HtmlText Content</param>
-		/// <param name = "settings">A Hashtable of Module Settings</param>
-		/// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
-		public static string FormatHtmlText(int moduleId, string content, Hashtable settings)
-		{
-			return FormatHtmlText(moduleId, content, settings, PortalController.Instance.GetCurrentPortalSettings());
-		}
-
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		///   FormatHtmlText formats HtmlText content for display in the browser
@@ -303,7 +287,7 @@ namespace DotNetNuke.Modules.Html
 		/// <history>
 		/// </history>
 		/// -----------------------------------------------------------------------------
-		public static string FormatHtmlText(int moduleId, string content, Hashtable settings, PortalSettings portalSettings)
+		public static string FormatHtmlText(int moduleId, string content, Hashtable settings, PortalSettings portalSettings, Page page)
 		{
 			// token replace
 			bool blnReplaceTokens = false;
@@ -313,12 +297,14 @@ namespace DotNetNuke.Modules.Html
 			}
 			if (blnReplaceTokens)
 			{
-				var tr = new TokenReplace();
-				tr.AccessingUser = UserController.Instance.GetCurrentUserInfo();
-				tr.DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View;
-				tr.ModuleId = moduleId;
-				tr.PortalSettings = portalSettings;
-				content = tr.ReplaceEnvironmentTokens(content);
+			    var tr = new HtmlTokenReplace(page)
+			    {
+			        AccessingUser = UserController.Instance.GetCurrentUserInfo(),
+			        DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
+			        ModuleId = moduleId,
+			        PortalSettings = portalSettings
+			    };
+			    content = tr.ReplaceEnvironmentTokens(content);
 			}
 
 			// Html decode content
@@ -502,6 +488,12 @@ namespace DotNetNuke.Modules.Html
                     else
                     {
                         strURL = strHTML.Substring(S).ToLower();
+                    }
+
+                    if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                        continue;
                     }
 
                     // if we are linking internally
@@ -801,13 +793,15 @@ namespace DotNetNuke.Modules.Html
 
         #region ModuleSearchBase
 
-        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDate)
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var workflowId = GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
             var searchDocuments = new List<SearchDocument>();
             var htmlTextInfo = GetTopHtmlText(modInfo.ModuleID, true, workflowId);
 
-            if (htmlTextInfo != null && (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDate.ToUniversalTime() && htmlTextInfo.LastModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
+            if (htmlTextInfo != null &&
+                (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&
+                 htmlTextInfo.LastModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
             {
                 var strContent = HtmlUtils.Clean(htmlTextInfo.Content, false);
 

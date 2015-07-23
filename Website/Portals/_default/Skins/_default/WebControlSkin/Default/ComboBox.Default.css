@@ -79,6 +79,10 @@ div.RadComboBox_Default .rcbArrowCell a {
     -webkit-border-top-right-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
 }
+.RadComboBox_Default .rcbFocused td.rcbInputCellLeft, .RadComboBox_Default .rcbFocused td.rcbInputCellRight, .RadComboBox_Default .rcbFocused td.rcbArrowCellRight {
+	border-color:#65a9fd;
+    box-shadow:0 0 2px #65a9fd;
+}
 .RadComboBox_Default td.rcbInputCellLeft input[readonly], .RadComboBox_Default td.rcbInputCellRight input[readonly] {
 	cursor: auto;
 }

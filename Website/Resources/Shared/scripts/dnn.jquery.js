@@ -101,7 +101,6 @@
                         open: function () {
                             $('.ui-dialog-buttonpane').find('button:contains("' + opts.noText + '")').addClass('dnnConfirmCancel');
                         },
-                        position: 'center',
                         draggable: false,
                         buttons: [
                         {
@@ -441,7 +440,16 @@
                     hoverOnPd = true;
                     var tooltipHeight = helpSelector.height();
                     var top = -(tooltipHeight + 30);
-                    helpSelector.parent().css({ top: top + 'px' });
+                    if ((tooltipHeight + 30) <= $this.parent().offset().top) {
+                        helpSelector.parent().css({ top: top + 'px' });
+                        $this.find("div.dnnFormHelpContent span").addClass("bottomArrow");
+                        $this.find("div.dnnFormHelpContent span").removeClass("topArrow");
+
+                    } else {
+                        helpSelector.parent().css({ top: 30 + 'px' });                  
+                        $this.find("div.dnnFormHelpContent span").addClass("topArrow");
+                        $this.find("div.dnnFormHelpContent span").removeClass("bottomArrow");
+                    }
                     helpSelector.css('visibility', 'visible');
                 },
                 out: function () {
@@ -1757,29 +1765,21 @@
     };
 
     $.fn.dnnResetAutosize = function (options) {
-        var minWidth = $(this).data('minwidth') || options.minInputWidth || $(this).width(),
-            maxWidth = $(this).data('maxwidth') || options.maxInputWidth || ($(this).closest('.dnnTagsInput').width() - options.inputPadding),
-            input = $(this),
-            testSubject = $('<tester/>').css({
-                position: 'absolute',
-                top: -9999,
-                left: -9999,
-                width: 'auto',
-                fontSize: input.css('fontSize'),
-                fontFamily: input.css('fontFamily'),
-                fontWeight: input.css('fontWeight'),
-                letterSpacing: input.css('letterSpacing'),
-                whiteSpace: 'nowrap'
-            }),
-            testerId = $(this).attr('id') + '_autosize_tester';
-        if (!$('#' + testerId).length > 0) {
-            testSubject.attr('id', testerId);
-            testSubject.appendTo('body');
-        }
-        input.data('minwidth', minWidth);
-        input.data('maxwidth', maxWidth);
-        input.data('tester_id', testerId);
-        input.css('width', minWidth);
+	    var minWidth = $(this).data('minwidth') || options.minInputWidth || $(this).width(),
+	        maxWidth = $(this).data('maxwidth') || options.maxInputWidth || ($(this).closest('.dnnTagsInput').width() - options.inputPadding),
+	        $input = $(this);
+
+		var left = 0;
+		var $lastSpan = $(this).closest('.dnnTagsInput').find('> span').last();
+		if ($lastSpan.length > 0) {
+			left = $lastSpan.offset().left - $lastSpan.parent().offset().left + $lastSpan.outerWidth();
+		}
+		var availableWidth = maxWidth - left;
+	    if (availableWidth < parseInt(minWidth)) {
+		    availableWidth = maxWidth;
+	    }
+
+        $input.css('width', availableWidth);
     };
 
     $.fn.dnnAddTag = function (value, options) {
@@ -4143,7 +4143,7 @@
             var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
             var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
             if (script != null) {
-                var confirmContent = script[2];
+                var confirmContent = script[2].split("\\" + script[1]).join(script[1]);
                 instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
                     text: confirmContent,
                     isButton: isButton

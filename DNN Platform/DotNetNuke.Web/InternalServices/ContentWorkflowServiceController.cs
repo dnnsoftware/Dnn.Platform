@@ -27,11 +27,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
+using DotNetNuke.Entities.Content.Workflow.Dto;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Social.Messaging.Internal;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
@@ -40,13 +38,92 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ContentWorkflowServiceController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentWorkflowServiceController));
-        
-        public class NotificationDTO
+        #region Members
+        private readonly IWorkflowEngine _workflowEngine;
+        #endregion
+
+        #region Constructor
+        public ContentWorkflowServiceController()
         {
-            public int NotificationId { get; set; }
+            _workflowEngine = WorkflowEngine.Instance;
+        }
+        #endregion
+
+        #region Web Methods
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Reject(NotificationDTO postData)
+        {
+            try
+            {
+                var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
+                if (notification != null)
+                {
+                    if (string.IsNullOrEmpty(notification.Context))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    }
+
+                    string[] parameters = notification.Context.Split(':');
+
+                    var stateTransiction = new StateTransaction
+                                           {
+                                               ContentItemId = int.Parse(parameters[0]),
+                                               CurrentStateId = int.Parse(parameters[2]),
+                                               Message = new StateTransactionMessage (),
+                                               UserId = UserInfo.UserID
+                                           };
+                    _workflowEngine.DiscardState(stateTransiction);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Approve(NotificationDTO postData)
+        {
+            try
+            {
+                var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
+                if (notification != null)
+                {
+                    if (string.IsNullOrEmpty(notification.Context))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    }
+
+                    string[] parameters = notification.Context.Split(':');
+
+                    var stateTransiction = new StateTransaction
+                                            {
+                                                ContentItemId = int.Parse(parameters[0]),
+                                                CurrentStateId = int.Parse(parameters[2]),
+                                                Message = new StateTransactionMessage(),
+                                                UserId = UserInfo.UserID
+                                            };
+                    _workflowEngine.CompleteState(stateTransiction);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+
+        }
+
+        [Obsolete("Obsolted in Platform 7.4.0")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Review(NotificationDTO postData)
@@ -57,9 +134,6 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (notification != null)
                 {
-                    //Dismiss the notification
-                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
-
                     if (string.IsNullOrEmpty(notification.Context))
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
@@ -92,11 +166,12 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Exceptions.LogException(exc);
             }
 
             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
 
         }
+        #endregion
     }
 }

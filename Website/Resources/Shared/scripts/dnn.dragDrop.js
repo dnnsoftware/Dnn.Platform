@@ -56,7 +56,7 @@
             return index;
         };
 
-        var updateServer = function (moduleId, $pane) {
+        var updateServer = function (moduleId, $pane, callback) {
             var order;
             var paneName = $pane.attr("id").substring(4);
             var index = getModuleIndex(moduleId, $pane);
@@ -90,7 +90,11 @@
                 data: dataVar,
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                	window.location.reload();
+                    if (typeof callback === "function") {
+                        callback.call($pane);
+                    } else {
+                        window.location.reload();
+                    }
                 },
                 error: function () {
                 }
@@ -229,7 +233,7 @@
                 $dropTarget.empty().append("<p>" + settings.dropTargetText + "(" + $(this).attr("id").substring(4) + ")" + "</p>");
             },
 
-            stop: function (event, ui) {
+            stop: function (event, ui, callback) {
                 var dropItem = ui.item;
                 if (dnn.controlBar && dropItem.hasClass('ControlBar_ModuleDiv')) {
                     // add module
@@ -258,7 +262,7 @@
                 } else {
                     // move module
                     mid = getModuleId(dropItem);
-                    updateServer(mid, dropItem.parent());
+                    updateServer(mid, dropItem.parent(), callback);
                     $(settings.actionMenu).show();
 
                     //remove the empty pane holder class for current pane
@@ -267,14 +271,16 @@
                     if (originalPane && $('div', originalPane).length === 0)
                         originalPane.addClass('dnnDropEmptyPanes');
 
-                    // show animation
-                    dropItem.css('background-color', '#fffacd');
-                    setTimeout(function () {
-                        dropItem.css('background', '#fffff0');
-                        setTimeout(function () {
-                            dropItem.css('background', 'transparent');
-                        }, 300);
-                    }, 2500);
+                    if (!callback) {
+                        // show animation
+                        dropItem.css('background-color', '#fffacd');
+                        setTimeout(function() {
+                            dropItem.css('background', '#fffff0');
+                            setTimeout(function() {
+                                dropItem.css('background', 'transparent');
+                            }, 300);
+                        }, 2500);
+                    }
 
                     $("div[data-tipholder=\"" + "ModuleDragToolTip-" + mid + "\"] .dnnHelpText").text(settings.dragHintText);
                    

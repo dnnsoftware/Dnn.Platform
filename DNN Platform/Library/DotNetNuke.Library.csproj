@@ -12,7 +12,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke</RootNamespace>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -30,6 +30,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -70,16 +72,35 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CountryListBox, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Services.Syndication">
+      <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -94,9 +115,13 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
@@ -126,11 +151,15 @@
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -141,12 +170,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+      <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Obsolete\Arg.cs" />
+    <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
+    <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
+    <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />
+    <Compile Include="Entities\Portals\IPortalSettingsController.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsController.cs" />
+    <Compile Include="Entities\Tabs\Actions\ITabSyncEventHandler.cs" />
+    <Compile Include="Entities\Tabs\Actions\TabSyncEventArgs.cs" />
+    <Compile Include="Entities\Tabs\Actions\ITabEventHandler.cs" />
+    <Compile Include="Entities\Tabs\Actions\TabEventArgs.cs" />
+    <Compile Include="Entities\Tabs\Dto\ChangeControlState.cs" />
+    <Compile Include="Entities\Users\RelationshipEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\Users\IFollowerEventHandlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\Users\IFriendshipEventHandlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Obsolete\PortalSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />
     <Compile Include="Collections\IPagedList.cs" />
@@ -168,7 +221,8 @@
     <Compile Include="Common\Internal\IGlobals.cs" />
     <Compile Include="Common\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\Internal\TestableGlobals.cs" />
-    <Compile Include="Common\Lists\EntryInfo.cs" />
+    <Compile Include="Common\Lists\CachedCountryList.cs" />
+    <Compile Include="Common\Lists\ListEntryInfo.cs" />
     <Compile Include="Common\Lists\ListController.cs" />
     <Compile Include="Common\Lists\ListEntryCollection.cs" />
     <Compile Include="Common\Lists\ListInfo.cs" />
@@ -224,6 +278,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\Utilities\UrlUtils.cs" />
+    <Compile Include="Common\Utilities\XmlExtensions.cs" />
     <Compile Include="Common\Utilities\XmlUtils.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -259,21 +314,97 @@
     <Compile Include="Entities\Content\Common\NameValueEqualityComparer.cs" />
     <Compile Include="Entities\Content\IAttachmentController.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermUsage.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowController.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowLogType.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowSource.cs" />
-    <Compile Include="Entities\Content\Workflow\IContentWorkflowAction.cs" />
-    <Compile Include="Entities\Content\Workflow\IContentWorkflowController.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflow.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowLog.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowState.cs" />
-    <Compile Include="Entities\Content\Workflow\ContentWorkflowStatePermission.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\IWorkflowAction.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\WorkflowActionManager.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\IWorkflowActionManager.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\WorkflowAction.cs" />
+    <Compile Include="Entities\Content\Workflow\Actions\WorkflowActionTypes.cs" />
+    <Compile Include="Entities\Content\Workflow\Dto\StateTransaction.cs" />
+    <Compile Include="Entities\Content\Workflow\Dto\StateTransactionMessage.cs" />
+    <Compile Include="Entities\Content\Workflow\Dto\ActionMessage.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\Workflow.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\WorkflowLog.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\WorkflowLogType.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\WorkflowState.cs" />
+    <Compile Include="Entities\Content\Workflow\Entities\WorkflowStatePermission.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowInvalidOperationException.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowConcurrencyException.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflow.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowController.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowSource.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowDoesNotExistException.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowSecurityException.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowNameAlreadyExistsException.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowStateNameAlreadyExistsException.cs" />
+    <Compile Include="Entities\Content\Workflow\Exceptions\WorkflowException.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowState.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\IContentWorkflowAction.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\IContentWorkflowController.cs" />
+    <Compile Include="Entities\Content\Workflow\ISystemWorkflowManager.cs" />
+    <Compile Include="Entities\Content\Workflow\IWorkflowEngine.cs" />
+    <Compile Include="Entities\Content\Workflow\IWorkflowLogger.cs" />
+    <Compile Include="Entities\Content\Workflow\IWorkflowStateManager.cs" />
+    <Compile Include="Entities\Content\Workflow\IWorkflowManager.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLogType.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLog.cs" />
+    <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowStatePermission.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\WorkflowActionRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowActionRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowLogRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowStatePermissionsRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\IWorkflowStateRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\WorkflowLogRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\WorkflowRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\WorkflowStatePermissionsRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\Repositories\WorkflowStateRepository.cs" />
+    <Compile Include="Entities\Content\Workflow\SystemWorkflowManager.cs" />
+    <Compile Include="Entities\Content\Workflow\WorkflowEngine.cs" />
+    <Compile Include="Entities\Content\Workflow\WorkflowLogger.cs" />
+    <Compile Include="Entities\Content\Workflow\WorkflowStateManager.cs" />
+    <Compile Include="Entities\Content\Workflow\WorkflowManager.cs" />
+    <Compile Include="Entities\Content\Workflow\WorkflowSecurity.cs" />
+    <Compile Include="Entities\Content\Workflow\IWorkflowSecurity.cs" />
     <Compile Include="Entities\DataStructures\NTree.cs" />
     <Compile Include="Entities\Host\IServerWebRequestAdapter.cs" />
     <Compile Include="Entities\Host\ServerWebRequestAdapter.cs" />
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Entities\Modules\IVersionable.cs" />
+    <Compile Include="Entities\Modules\IVersionableControl.cs" />
+    <Compile Include="Entities\Portals\PortalCreatedEventArgs.cs" />
+    <Compile Include="Entities\Portals\IPortalEventHandlers.cs" />
+    <Compile Include="Entities\Profile\IProfileEventHandlers.cs" />
+    <Compile Include="Entities\Profile\ProfileEventArgs.cs" />
+    <Compile Include="Entities\Tabs\ITabChangeSettings.cs" />
+    <Compile Include="Entities\Tabs\ITabModulesController.cs" />
+    <Compile Include="Entities\Tabs\ITabWorkflowSettings.cs" />
+    <Compile Include="Entities\Tabs\TabChangeSettings.cs" />
+    <Compile Include="Entities\Tabs\TabChangeTracker.cs" />
+    <Compile Include="Entities\Tabs\TabModulesController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\Exceptions\DnnTabVersionException.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\ITabVersionController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\ITabVersionDetailController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\ITabVersionBuilder.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\ITabVersionSettings.cs" />
+    <Compile Include="Entities\Tabs\ITabChangeTracker.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersion.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionDetail.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionDetailAction.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionDetailController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionBuilder.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionSettings.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionTracker.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionUtils.cs" />
+    <Compile Include="Entities\Tabs\TabWorkflowSettings.cs" />
+    <Compile Include="Entities\Tabs\TabWorkflowTracker.cs" />
+    <Compile Include="Entities\Users\IUserEventHandlers.cs" />
+    <Compile Include="Common\Internal\IEventHandlersContainer.cs" />
+    <Compile Include="Common\Internal\EventHandlersContainer.cs" />
+    <Compile Include="Entities\Users\UserEventArgs.cs" />
+    <Compile Include="Entities\Users\UserEventHandlers.cs" />
     <Compile Include="Obsolete\IPortalSettings.cs" />
     <Compile Include="Obsolete\IUserController.cs" />
     <Compile Include="Obsolete\IModuleController.cs" />
@@ -488,12 +619,20 @@
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
     <Compile Include="Security\Permissions\IFolderPermissionController.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
+    <Compile Include="Security\RegistrationSettings.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
     <Compile Include="Obsolete\TestableRoleController.cs" />
     <Compile Include="Security\Roles\IRoleController.cs" />
+    <Compile Include="Security\Roles\IRoleEventHandlers.cs" />
+    <Compile Include="Security\Roles\RoleEventArgs.cs" />
     <Compile Include="Security\Roles\SecurityMode.cs" />
     <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
+    <Compile Include="Services\Assets\AssetManagerException.cs" />
+    <Compile Include="Services\Assets\FolderPathComparer.cs" />
+    <Compile Include="Services\Assets\ContentPage.cs" />
+    <Compile Include="Services\Assets\SortProperties.cs" />
+    <Compile Include="Services\Assets\SubfolderFilter.cs" />
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthorisationResult.cs" />
@@ -515,7 +654,9 @@
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
+    <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
+    <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
@@ -530,7 +671,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
-    <Compile Include="Services\FileSystem\FileEventHandlersContainer.cs" />
+    <Compile Include="Services\FileSystem\FileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileSizeFormatProvider.cs" />
     <Compile Include="Services\FileSystem\FileUrlHelper.cs" />
@@ -540,8 +681,9 @@
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
+    <Compile Include="Services\Assets\IAssetManager.cs" />
+    <Compile Include="Services\FileSystem\IFileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
-    <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
     <Compile Include="Services\FileSystem\Internal\FileDeletionController.cs" />
@@ -557,12 +699,16 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Localization\LocalizationExtensions.cs" />
+    <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
+    <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
     <Compile Include="Services\Search\Controllers\UserResultController.cs" />
+    <Compile Include="Services\Search\Entities\SearchDocumentToDelete.cs" />
     <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />
@@ -589,6 +735,7 @@
     <Compile Include="Services\Search\Internals\InternalSearchController.cs" />
     <Compile Include="Services\Search\Internals\InternalSearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchResult.cs" />
+    <Compile Include="Services\Search\ModuleIndexInfo.cs" />
     <Compile Include="Services\Search\TabIndexer.cs" />
     <Compile Include="Services\Search\Entities\SearchType.cs" />
     <Compile Include="Services\Search\Internals\ILuceneController.cs" />
@@ -614,6 +761,13 @@
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
+    <Compile Include="Services\Tokens\CacheLevel.cs" />
+    <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />
@@ -1176,18 +1330,6 @@
     <Compile Include="Services\Log\EventLog\SendLogNotifications.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\SiteLog\BufferedSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\PurgeSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Mail\Mail.cs" />
     <Compile Include="Services\Mail\MailFormat.cs" />
     <Compile Include="Services\Mail\MailPriority.cs" />
@@ -1350,6 +1492,16 @@
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
+    <Compile Include="UI\Modules\Html5\Html5HostControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
@@ -1363,6 +1515,7 @@
     <Compile Include="UI\Modules\ModuleUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Modules\ReflectedModuleControlFactory.cs" />
     <Compile Include="UI\Modules\StandardModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\WebFormsModuleControlFactory.cs" />
     <Compile Include="UI\Navigation.cs">
@@ -1495,9 +1648,11 @@
     <Compile Include="UI\WebControls\PropertyEditor\Adapters\SettingsEditorInfoAdapter.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Adapters\StandardEditorInfoAdapter.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\CollectionEditorControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\AutoCompleteControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\CheckEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNCountryAutocompleteControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNCountryEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNListEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNLocaleEditControl.cs" />
@@ -1554,6 +1709,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -1662,9 +1818,7 @@
   <ItemGroup>
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">
       <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>
@@ -1674,14 +1828,25 @@
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
+      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
+      <Name>DotNetNuke.Log4Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>
       <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{86af9531-d270-4c18-a8b9-c67a8782af69}</Project>
-      <Name>DotNetNuke.Syndication</Name>
+    <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="Module.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

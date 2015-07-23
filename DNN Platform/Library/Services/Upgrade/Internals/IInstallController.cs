@@ -55,6 +55,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         string TestDatabaseConnection(ConnectionConfig connectionConfig);
 
-        CultureInfo GetCultureFromCookie();        
+        CultureInfo GetCultureFromCookie();
+
+        string InstallerLogName { get; }
     }
 }

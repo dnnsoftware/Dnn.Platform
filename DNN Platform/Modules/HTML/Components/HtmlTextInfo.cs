@@ -18,8 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using DotNetNuke.Entities;
 
+using System;
+using DotNetNuke.Entities;
 
 namespace DotNetNuke.Modules.Html
 {
@@ -36,6 +37,7 @@ namespace DotNetNuke.Modules.Html
     /// <history>
     /// </history>
     /// -----------------------------------------------------------------------------
+    [Serializable]
     public class HtmlTextInfo : BaseEntityInfo
     {
         // local property declarations

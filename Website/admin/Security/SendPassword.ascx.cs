@@ -30,6 +30,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -42,6 +43,8 @@ using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.Admin.Security
 {
+
+    using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>
     /// The SendPassword UserModuleBase is used to allow a user to retrieve their password
@@ -141,6 +144,22 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
+	    protected bool UsernameDisabled
+	    {
+		    get
+		    {
+				return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+		    }
+	    }
+
+	    private bool ShowEmailField
+	    {
+		    get
+		    {
+			    return MembershipProviderConfig.RequiresUniqueEmail || UsernameDisabled;
+		    }
+	    }
+
         #endregion
 
         #region Private Methods
@@ -148,7 +167,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-            if (MembershipProviderConfig.RequiresUniqueEmail && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && String.IsNullOrEmpty(txtUsername.Text.Trim()))
+			if (MembershipProviderConfig.RequiresUniqueEmail && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
             {
                 arrUsers = UserController.GetUsersByEmail(PortalSettings.PortalId, txtEmail.Text, 0, Int32.MaxValue, ref _userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
@@ -192,8 +211,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 divPassword.Visible = false;
             }
 
-			
-            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled)
+            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
             {
                 lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
             }
@@ -202,6 +220,8 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", LocalResourceFile);
             }
+
+
         }
 
         /// <summary>
@@ -223,7 +243,10 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 _ipAddress = Request.UserHostAddress;
             }
-            divEmail.Visible = MembershipProviderConfig.RequiresUniqueEmail;
+
+
+			divEmail.Visible = ShowEmailField;
+			divUsername.Visible = !UsernameDisabled;
             divCaptcha.Visible = UseCaptcha;
 
             if (UseCaptcha)
@@ -264,7 +287,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (String.IsNullOrEmpty(txtUsername.Text.Trim()))
                 {
                     //No UserName provided
-                    if (MembershipProviderConfig.RequiresUniqueEmail)
+                    if (ShowEmailField)
                     {
                         if (String.IsNullOrEmpty(txtEmail.Text.Trim()))
                         {
@@ -304,8 +327,13 @@ namespace DotNetNuke.Modules.Admin.Security
                         {
                             canSend = false;
                         }
-                        else
+                        else 
                         {
+                            if (_user.Membership.Approved == false)
+                            {
+                                Mail.SendMail(_user, MessageType.PasswordReminderUserIsNotApproved, PortalSettings);
+                                canSend = false;
+                            }
                             //if (MembershipProviderConfig.PasswordRetrievalEnabled)
                             //{
                             //    try
@@ -359,6 +387,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
+						cancelButton.Attributes["resourcekey"] = "cmdClose";
                     }
                     else
                     {
@@ -368,8 +397,18 @@ namespace DotNetNuke.Modules.Admin.Security
 					//always hide panel so as to not reveal if username exists.
                     pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
+                    liSend.Visible = false;
+                    liCancel.Visible = true;
 
-                    liLogin.Visible = true;
+                    // don't hide panel when e-mail only in use and error occured. We must provide negative feedback to the user, in case he doesn't rember what e-mail address he has used
+                    if (!canSend && _user == null && MembershipProviderConfig.RequiresUniqueEmail && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+                    {
+                        message = Localization.GetString("EmailNotFound", LocalResourceFile);
+                        pnlRecover.Visible = true;
+                        UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
+                        liSend.Visible = true;
+                        liCancel.Visible = true;
+                    }
                 }
                 else
                 {
@@ -415,8 +454,7 @@ namespace DotNetNuke.Modules.Admin.Security
             LogController.Instance.AddLog(log);
 
         }
-		
-		
+			
         private void cancelButton_Click(object sender, EventArgs e)
         {
             Response.Redirect(RedirectURL, true);

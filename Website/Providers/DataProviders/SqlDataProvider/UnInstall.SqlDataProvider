@@ -1142,6 +1142,14 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWord]
 GO
 DROP TABLE {databaseOwner}[{objectQualifier}SearchItemWord]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Add]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_DeleteProcessed]
+GO
+DROP TABLE {databaseOwner}[{objectQualifier}SearchDeletedItems]
+GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalAliasOnInstall]
 GO
 DROP TABLE {databaseOwner}[{objectQualifier}PortalAlias]
@@ -1190,6 +1198,7 @@ GO
 DELETE	dbo.aspnet_Applications
 WHERE   (ApplicationName LIKE N'{objectQualifier}%')
 GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

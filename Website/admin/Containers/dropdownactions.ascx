@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Containers.DropDownActions" CodeFile="DropDownActions.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Containers.DropDownActions" Codebehind="DropDownActions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <script>
 	function cmdGo_OnClick(o)

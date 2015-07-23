@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Compilation;
@@ -8,6 +9,7 @@ using System.Web.UI;
 using System.Xml;
 using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -96,7 +98,10 @@ namespace DotNetNuke.Web.DDRMenu
 
 		internal void Render(HtmlTextWriter htmlWriter)
 		{
-			htmlWriter.Write("<!-- DDRmenu v02.00.01 - {0} template -->", menuSettings.MenuStyle);
+		    if (Host.DebugMode)
+		    {
+                htmlWriter.Write("<!-- DDRmenu v07.04.01 - {0} template -->", menuSettings.MenuStyle);
+		    }
 
 			UserInfo user = null;
 			if (menuSettings.IncludeContext)
@@ -141,6 +146,8 @@ namespace DotNetNuke.Web.DDRMenu
 		{
 			var nodeTextStrings = SplitAndTrim(nodeString);
 			var filteredNodes = new List<MenuNode>();
+            var tc = new TabController();
+		    var flattenedNodes = new MenuNode();
 
 			foreach (var nodeText in nodeTextStrings)
 			{
@@ -162,7 +169,26 @@ namespace DotNetNuke.Web.DDRMenu
 								}
 								return false;
 							}));
-				}
+				} 
+                else if (nodeText.StartsWith("#"))
+			    {
+                    var tagName = nodeText.Substring(1, nodeText.Length - 1);
+			        if (!string.IsNullOrEmpty(tagName))
+			        {
+                        //flatten nodes first. tagged pages should be flattened and not heirarchical
+                        if (flattenedNodes != new MenuNode())
+			                flattenedNodes.Children = RootNode.FlattenChildren(RootNode);
+
+                        filteredNodes.AddRange(
+                            flattenedNodes.Children.FindAll(
+                                n =>
+                                {
+                                    var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
+                                    return (tab.Terms.Any(x => x.Name.ToLower() == tagName));
+                                }));
+			        }
+
+			    }
 				else
 				{
 					var nodeText2 = nodeText;
@@ -177,6 +203,9 @@ namespace DotNetNuke.Web.DDRMenu
 				}
 			}
 
+            // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
+		    if (flattenedNodes.HasChildren())
+		        RootNode = flattenedNodes;
 			RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
 		}
 

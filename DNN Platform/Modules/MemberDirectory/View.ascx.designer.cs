@@ -13,15 +13,6 @@ namespace DotNetNuke.Modules.MemberDirectory {
     public partial class View {
         
         /// <summary>
-        /// DnnJsInclude control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnJsInclude DnnJsInclude;
-        
-        /// <summary>
         /// DnnJsInclude1 control.
         /// </summary>
         /// <remarks>

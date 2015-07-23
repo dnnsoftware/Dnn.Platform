@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;
                 }
-                Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(PortalSettings.PortalId);
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(PortalSettings.PortalId);
                 string strPayPalURL;
                 if (intUserID != -1 && intRoleId != -1 && !String.IsNullOrEmpty(strProcessorUserId))
                 {

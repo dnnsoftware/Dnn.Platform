@@ -138,7 +138,14 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <remarks>It does not delete NotificationRecipient.</remarks>
         /// <param name="notificationId">The notification identifier.</param>
         void DeleteNotification(int notificationId);
-        
+
+        /// <summary>
+        /// Deletes all user notifications in a specific portal.
+        /// </summary>
+        /// <param name="user">The user to delete notifications for.</param>
+        /// <returns>Number of deleted notifications</returns>
+        int DeleteUserNotifications(UserInfo user);
+
         /// <summary>
         /// Deletes an individual notification recipient.
         /// </summary>

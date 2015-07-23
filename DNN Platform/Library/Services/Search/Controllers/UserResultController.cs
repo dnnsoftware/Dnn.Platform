@@ -69,7 +69,10 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchResult.UniqueKey.Contains("adminonly"))
             {
-                return UserController.Instance.GetCurrentUserInfo().IsSuperUser || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators");
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                return currentUser.IsSuperUser 
+                        || currentUser.IsInRole("Administrators")
+                        || currentUser.UserID == userId;
             }
             
             if (searchResult.UniqueKey.Contains("friendsandgroups"))

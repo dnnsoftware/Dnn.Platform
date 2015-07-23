@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return CultureInfo.CreateSpecificCulture(Code);
+                return CultureInfo.GetCultureInfo(Code);
             }
         }
 

@@ -472,9 +472,9 @@
     <value>Are you sure you want to unlink the Folder?</value>
   </data>
   <data name="DeleteConfirmWithMappedSubfolder.Text" xml:space="preserve">
-    <value>Note: Selected folders include [COUNT] Remote Folder. This will be unliked from this site and the folder and files will remain at the remote location</value>
+    <value>Note: Selected folders include [COUNT] Remote Folder. This will be unlinked from this site and the folder and files will remain at the remote location</value>
   </data>
   <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
-    <value>Note: Selected folders include [COUNT] Remote Folders. These will be unliked from this site and folders and files will remain at the remote location</value>
+    <value>Note: Selected folders include [COUNT] Remote Folders. These will be unlinked from this site and folders and files will remain at the remote location</value>
   </data>
 </root>

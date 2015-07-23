@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Urls.Config
     public class RewriterConfiguration
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RewriterConfiguration));
+		private static readonly object _threadLocker = new object();
         private RewriterRuleCollection _rules;
 
         public RewriterRuleCollection Rules
@@ -61,24 +62,35 @@ namespace DotNetNuke.Entities.Urls.Config
             try
             {
                 config = (RewriterConfiguration) DataCache.GetCache("RewriterConfig");
-                if ((config == null))
+                if (config == null)
                 {
-                    filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
+	                lock (_threadLocker)
+	                {
+						config = (RewriterConfiguration) DataCache.GetCache("RewriterConfig");
+		                if (config == null)
+		                {
+			                filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
 
-                    //Create a FileStream for the Config file
-                    fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var doc = new XPathDocument(fileReader);
-                    config = new RewriterConfiguration {Rules = new RewriterRuleCollection()};
-                    foreach (XPathNavigator nav in doc.CreateNavigator().Select("RewriterConfig/Rules/RewriterRule"))
-                    {
-                        var rule = new RewriterRule {LookFor = nav.SelectSingleNode("LookFor").Value, SendTo = nav.SelectSingleNode("SendTo").Value};
-                        config.Rules.Add(rule);
-                    }
-                    if (File.Exists(filePath))
-                    {
-						//Set back into Cache
-                        DataCache.SetCache("RewriterConfig", config, new DNNCacheDependency(filePath));
-                    }
+			                //Create a FileStream for the Config file
+			                fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			                var doc = new XPathDocument(fileReader);
+			                config = new RewriterConfiguration {Rules = new RewriterRuleCollection()};
+			                foreach (XPathNavigator nav in doc.CreateNavigator().Select("RewriterConfig/Rules/RewriterRule"))
+			                {
+				                var rule = new RewriterRule
+				                           {
+					                           LookFor = nav.SelectSingleNode("LookFor").Value,
+					                           SendTo = nav.SelectSingleNode("SendTo").Value
+				                           };
+				                config.Rules.Add(rule);
+			                }
+			                if (File.Exists(filePath))
+			                {
+				                //Set back into Cache
+				                DataCache.SetCache("RewriterConfig", config, new DNNCacheDependency(filePath));
+			                }
+		                }
+	                }
                 }
             }
             catch (Exception ex)

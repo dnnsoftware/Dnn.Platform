@@ -32,7 +32,7 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -45,13 +45,14 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
-
 using Telerik.Web.UI;
 
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Portals
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class Signup : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Signup));
@@ -79,7 +80,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 ModuleConfiguration.ModuleTitle = Localization.GetString("AddPortal", LocalResourceFile);
             }
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
         }
 
         /// <summary>
@@ -388,7 +389,16 @@ namespace DotNetNuke.Modules.Admin.Portals
                     //Validate Portal Alias
                     if (!string.IsNullOrEmpty(strPortalAlias))
                     {
-                        PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(strPortalAlias.ToLower());
+                        PortalAliasInfo portalAlias = null;
+                        foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values)
+                        {
+                            if (String.Equals(alias.HTTPAlias, strPortalAlias, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                portalAlias = alias;
+                                break;
+                            }
+                        }
+
                         if (portalAlias != null)
                         {
                             message = Localization.GetString("DuplicatePortalAlias", LocalResourceFile);
@@ -456,6 +466,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                         }
                         catch (Exception ex)
                         {
+                            Logger.Error(ex);
+
                             intPortalId = Null.NullInteger;
                             message = ex.Message;
                         }
@@ -481,9 +493,12 @@ namespace DotNetNuke.Modules.Admin.Portals
                             {
                                 if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                                 {
-                                    message = Mail.SendMail(PortalSettings.Email,
+                                    message = (String.IsNullOrEmpty(PortalSettings.Email) &&
+                                        String.IsNullOrEmpty(Host.HostEmail)) ?
+                                        string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr):
+                                        Mail.SendMail(PortalSettings.Email,
                                                                txtEmail.Text,
-                                                               PortalSettings.Email + ";" + Host.HostEmail,
+                                                               string.IsNullOrEmpty(PortalSettings.Email)? Host.HostEmail : string.IsNullOrEmpty(Host.HostEmail)? PortalSettings.Email : PortalSettings.Email  + ";" + Host.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
                                                                "",
@@ -492,10 +507,13 @@ namespace DotNetNuke.Modules.Admin.Portals
                                                                "",
                                                                "",
                                                                "");
+                                    
                                 }
                                 else
                                 {
-                                    message = Mail.SendMail(Host.HostEmail,
+                                    message = String.IsNullOrEmpty(Host.HostEmail)?
+                                        string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr) :
+                                        Mail.SendMail(Host.HostEmail,
                                                                txtEmail.Text,
                                                                Host.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
@@ -552,7 +570,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-				txtPortalAlias.Text = optType.SelectedValue == "C" ? Globals.GetDomainName(Request) + @"/" : "";
+                txtPortalAlias.Text = optType.SelectedValue == "C" ? Globals.GetDomainName(Request) + @"/" : "";
             }
             catch (Exception exc) //Module failed to load
             {

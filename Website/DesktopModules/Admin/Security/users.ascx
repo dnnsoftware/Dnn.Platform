@@ -1,4 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Users.UserAccounts" Language="C#" AutoEventWireup="false" CodeFile="Users.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Users.UserAccounts" Language="C#" AutoEventWireup="false" Codebehind="Users.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnUsers dnnClear" id="dnnUsers">
@@ -57,13 +57,13 @@
                     </dnn:DnnGridTemplateColumn>
                     <dnn:DnnGridTemplateColumn HeaderText="CreatedDate">
                         <ItemTemplate>
-                            <asp:Label ID="lblLastLogin" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.CreatedDate) %>'>
+                            <asp:Label ID="lblCreateDate" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.CreatedDate) %>'>
                             </asp:Label>
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
                     <dnn:DnnGridTemplateColumn HeaderText="LastLogin">
                         <ItemTemplate>
-                            <asp:Label ID="Label7" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.LastLoginDate) %>'>
+                            <asp:Label ID="lblLastLogin" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.LastLoginDate) %>'>
                             </asp:Label>
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
@@ -103,67 +103,26 @@
                 noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
             });
-            $('.dnnSecurityRolesGrid td input[type="image"]').click(function (e, isTrigger) {
-                if (isTrigger) {
-                    return true;
-                }
+	        $('.dnnSecurityRolesGrid td input[type="image"]').each(function(index, item) {
+		        var $this = $(this);
+		        var name = $this.attr('name');
+		        var text = '<%= Localization.GetSafeJSString("RemoveItems.Confirm", Localization.SharedResourceFile) %>';
+		        if (name.indexOf('Delete') > 0) {
+			        text = '<%= Localization.GetSafeJSString("Delete.Confirm", LocalResourceFile) %>';
+		        } else if (name.indexOf('Restore') > 0) {
+			        text = '<%= Localization.GetSafeJSString("Restore.Confirm", LocalResourceFile) %>';
+		        } else if (name.indexOf('Remove') > 0) {
+			        text = '<%= Localization.GetSafeJSString("Remove.Confirm", LocalResourceFile) %>';
+		        }
 
-                var $this = $(this);
-                var name = $this.attr('name');
-                var text = '<%= Localization.GetSafeJSString("RemoveItems.Confirm", Localization.SharedResourceFile) %>';
-                if (name.indexOf('Delete') > 0) {
-                    text = '<%= Localization.GetSafeJSString("Delete.Confirm", LocalResourceFile) %>';
-                }
-                else if (name.indexOf('Restore') > 0) {
-                    text = '<%= Localization.GetSafeJSString("Restore.Confirm", LocalResourceFile) %>';
-                }
-                else if (name.indexOf('Remove') > 0) {
-                    text = '<%= Localization.GetSafeJSString("Remove.Confirm", LocalResourceFile) %>';
-                }
-
-                var opts = {
-                    text: text,
-                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                    title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-                    autoOpen: false,
-                    resizable: false,
-                    modal: true,
-                    dialogClass: 'dnnFormPopup dnnClear',
-                    isButton: false
-                };
-                var $dnnDialog = $("<div class='dnnDialog'></div>").html(opts.text).dialog(opts);
-                if ($dnnDialog.is(':visible')) {
-                    $dnnDialog.dialog("close");
-                    return false;
-                }
-
-                $dnnDialog.dialog({
-                    open: function () {
-                        $('.ui-dialog-buttonpane').find('button:contains("' + opts.noText + '")').addClass('dnnConfirmCancel');
-                    },
-                    position: 'center',
-                    buttons: [
-                        {
-                            text: opts.yesText,
-                            click: function () {
-                                $dnnDialog.dialog("close");
-                                $this.trigger("click", [true]);
-                            },
-                            'class': 'dnnPrimaryAction'
-            },
-                        {
-                            text: opts.noText,
-                            click: function () {
-                                $(this).dialog("close");
-                            },
-                            'class': 'dnnSecondaryAction'
-        }
-                    ]
-                });
-                $dnnDialog.dialog('open');
-                return false;
-            });
+				$this.dnnConfirm({
+					text: text,
+					yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+					noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+					title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+					isButton: true
+				});
+	        });
         }
 
         $(document).ready(function () {

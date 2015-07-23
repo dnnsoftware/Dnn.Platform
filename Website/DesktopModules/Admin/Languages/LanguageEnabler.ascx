@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Languages.LanguageEnabler" AutoEventWireup="false" Explicit="True" CodeFile="LanguageEnabler.ascx.cs" %>
+<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Languages.LanguageEnabler" AutoEventWireup="false" Explicit="True" Codebehind="LanguageEnabler.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Src="~/DesktopModules/Admin/Languages/CLControl.ascx" TagName="CLControl" %>
@@ -285,11 +285,11 @@
                     <asp:CheckBox ID="chkUrl" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="detectBrowserLable" runat="server" />
+                    <dnn:Label ID="detectBrowserLable" ControlName="chkBrowser" runat="server" />
                     <asp:CheckBox ID="chkBrowser" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="allowUserCulture" runat="server" />
+                    <dnn:Label ID="allowUserCulture" ControlName="chkUserCulture" runat="server" />
                     <asp:CheckBox ID="chkUserCulture" runat="server" />
                 </div>
                 <ul class="dnnActions dnnClear">

@@ -302,7 +302,7 @@ Fax: (555) 555-4564</value>
     <value>Extensions</value>
   </data>
   <data name="Tab.Extensions.Description.Text" xml:space="preserve">
-    <value>Install, add, modify and delete extensions, such as modules, skins and language packs.</value>
+    <value>Install, add, modify and delete extensions, such as modules, themes and language packs.</value>
   </data>
   <data name="Tab.Extensions.Name.Text" xml:space="preserve">
     <value>Extensions</value>
@@ -922,21 +922,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Sharepoint.Name.Text" xml:space="preserve">
     <value>SharePoint Connector</value>
   </data>
-  <data name="Tab.SiteLog.Content.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Description.Text" xml:space="preserve">
-    <value>View statistical reports on site activity for the portal.</value>
-  </data>
-  <data name="Tab.SiteLog.Name.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
   <data name="Tab.SiteMapSettings.Content.Text" xml:space="preserve">
     <value>Site Map Settings</value>
   </data>
@@ -1083,5 +1068,14 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
+  </data>
+  <data name="Tab.DCCManager.Description.Text" xml:space="preserve">
+    <value>Manage the Dynamic Content Types for your Site</value>
+  </data>
+  <data name="Tab.DCCmanager.Name.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
+  </data>
+  <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
   </data>
 </root>

@@ -52,7 +52,27 @@ namespace DotNetNuke.Entities.Portals
                 HttpResponse response = HttpContext.Current.Response;
                 browserType = FriendlyUrlController.GetBrowserType(request, response, settings);
             }
+            return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
+        }
 
+        public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, string requestedAlias, string cultureCode, FriendlyUrlSettings settings)
+        {
+            var browserType = BrowserTypes.Normal;
+            UrlAction result = null;
+            //if required, and possible, detect browser type
+            if (HttpContext.Current != null && settings != null)
+            {
+                HttpRequest request = HttpContext.Current.Request;
+                HttpResponse response = HttpContext.Current.Response;
+                browserType = FriendlyUrlController.GetBrowserType(request, response, settings);
+
+                result = new UrlAction(HttpContext.Current.Request)
+                {
+                    IsSecureConnection = request.IsSecureConnection,
+                    RawUrl = request.RawUrl,
+                    HttpAlias = requestedAlias,
+                };
+            }
             return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
         }
 
@@ -79,34 +99,58 @@ namespace DotNetNuke.Entities.Portals
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
 
+            //First check if our current alias is already a perfect match.
+            PortalAliasInfo foundAlias = null;
+            if (result != null && !string.IsNullOrEmpty(result.HttpAlias))
+            {
+                //try to find exact match
+                foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
+                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                             StringComparison.OrdinalIgnoreCase) == 0)
+                                                         && a.IsPrimary
+                                                         && a.PortalID == portalId
+                                                         && a.HTTPAlias == result.HttpAlias);
+                if (foundAlias == null) //let us try again using Startswith() to find matching Hosts
+                {
+                    foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
+                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                             StringComparison.OrdinalIgnoreCase) == 0)
+                                                         && a.IsPrimary
+                                                         && a.PortalID == portalId
+                                                         && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
+                }
+            }
             //27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
-            var foundAlias = aliasList.Where(a => a.BrowserType == browserType
+            if (foundAlias == null)
+            {
+                foundAlias = aliasList.Where(a => a.BrowserType == browserType
                                             && (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
                                             && a.PortalID == portalId)
-                        .OrderByDescending(a => a.IsPrimary)
-                        .ThenByDescending(a => a.CultureCode)
-                        .FirstOrDefault();
+                    .OrderByDescending(a => a.IsPrimary)
+                    .ThenByDescending(a => a.CultureCode)
+                    .FirstOrDefault();
+            }
 
-			//JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
-			// START DNN-4882
+            //JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
+            // START DNN-4882
             if (foundAlias == null)
             {
                 foundAlias = aliasList.Where(a => (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
                                            && a.PortalID == portalId)
-					   .OrderByDescending(a => a.IsPrimary)
-					   .ThenByDescending(a => a.CultureCode)
-					   .FirstOrDefault();
+                       .OrderByDescending(a => a.IsPrimary)
+                       .ThenByDescending(a => a.CultureCode)
+                       .FirstOrDefault();
             }
             // END DNN-4882
-		
+
             if (foundAlias != null)
             {
-                if(result !=null && result.PortalAlias != null)
+                if (result != null && result.PortalAlias != null)
                 {
                     if (foundAlias.BrowserType != result.PortalAlias.BrowserType)
                     {
-                        result.Reason = foundAlias.CultureCode != result.PortalAlias.CultureCode 
-                            ? RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser 
+                        result.Reason = foundAlias.CultureCode != result.PortalAlias.CultureCode
+                            ? RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser
                             : RedirectReason.Wrong_Portal_Alias_For_Browser_Type;
                     }
                     else
@@ -139,8 +183,8 @@ namespace DotNetNuke.Entities.Portals
 
         public static string GetCultureByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias)
         {
-            return (from cpa in aliases 
-                    where cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0 
+            return (from cpa in aliases
+                    where cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0
                     select cpa.CultureCode)
                     .FirstOrDefault();
         }

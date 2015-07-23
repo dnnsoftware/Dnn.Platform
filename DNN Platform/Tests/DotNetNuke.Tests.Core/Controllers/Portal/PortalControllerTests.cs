@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 using System.IO;
-
+using System.Threading;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Internal;
 
@@ -61,13 +61,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     };
 
         private const string StaticName = "Static";
+        readonly static string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
         private static readonly string StaticPath = MakePath(StaticName);
         const string StaticDescription = "An description from a template file";
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>
                                                                                     {
                                                                                         {"Name", StaticName},
                                                                                         {"TemplateFilePath", StaticPath},
-                                                                                        {"Description", StaticDescription}
+                                                                                        {"Description", StaticDescription},
+                                                                                        {"CultureCode", CultureCode}
                                                                                     };
 
         private const string AlternateName = "Alternate";
@@ -89,7 +91,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     {
                                                                                         {"Name", ResourceName},
                                                                                         {"TemplateFilePath", ResourcePath},
-                                                                                        {"ResourceFilePath", ResourceFilePath}
+                                                                                        {"ResourceFilePath", ResourceFilePath},
+                                                                                        {"CultureCode", CultureCode}
                                                                                     };
 
         [SetUp]
@@ -262,7 +265,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             _mockPortalTemplateIO.Setup(x => x.OpenTextReader(StaticPath)).Returns(CreateTemplateFileReader(StaticDescription));
 
             //Act
-            var template = PortalController.Instance.GetPortalTemplate(StaticPath, null);
+            var template = PortalController.Instance.GetPortalTemplate(StaticPath, CultureCode);
 
             //Assert
             AssertTemplateInfo(StaticExpectations, template);

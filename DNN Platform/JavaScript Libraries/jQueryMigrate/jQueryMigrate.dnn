@@ -21,7 +21,7 @@
           <javaScriptLibrary>
             <libraryName>jQuery-Migrate</libraryName>
             <fileName>jquery-migrate.js</fileName>
-            <CDNPath>http://code.jquery.com/jquery-migrate-1.2.1.min.js</CDNPath>
+            <CDNPath>//code.jquery.com/jquery-migrate-1.2.1.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

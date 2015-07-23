@@ -202,6 +202,7 @@
         self.Members = ko.observableArray(initialMembers);
         self.CanLoadMore = ko.observable(initialMembers.length == pageSize);
         self.SearchTerm = ko.observable('');
+		self.disablePrivateMessage = ko.observable(settings.disablePrivateMessage);
 
         self.ResetEnabled = ko.observable(false);
 
@@ -461,16 +462,18 @@
                 });
 
             	//Compose Message
-	            var options = $.extend({}, {
-		            openTriggerSelector: containerElement + " .ComposeMessage",
-		            onPrePopulate: function(target) {
-			            var context = ko.contextFor(target);
-			            var prePopulatedRecipients = [{ id: "user-" + context.$data.UserId(), name: context.$data.DisplayName() }];
-			            return prePopulatedRecipients;
-		            },
-		            servicesFramework: serviceFramework
-	            }, composeMessageSettings);
-                $.fn.dnnComposeMessage(options);
+	            if (!settings.disablePrivateMessage) {
+		            var options = $.extend({}, {
+			            openTriggerSelector: containerElement + " .ComposeMessage",
+			            onPrePopulate: function(target) {
+				            var context = ko.contextFor(target);
+				            var prePopulatedRecipients = [{ id: "user-" + context.$data.UserId(), name: context.$data.DisplayName() }];
+				            return prePopulatedRecipients;
+			            },
+			            servicesFramework: serviceFramework
+		            }, composeMessageSettings);
+		            $.fn.dnnComposeMessage(options);
+	            }
             } else {
                 displayMessage(settings.serverErrorText, "dnnFormWarning");
             }

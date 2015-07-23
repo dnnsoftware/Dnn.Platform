@@ -123,6 +123,11 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(Localization.Localization.GetString("MsgRolesOrUsersRequiredError", Localization.Localization.ExceptionsResourceFile));
             }
 
+			if (InternalMessagingController.Instance.DisablePrivateMessage(sender.PortalID) && !IsAdminOrHost(sender))
+			{
+				throw new ArgumentException(Localization.Localization.GetString("PrivateMessageDisabledError", Localization.Localization.ExceptionsResourceFile));
+			}
+
             if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > ConstMaxSubject)
             {
                 throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgSubjectTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxSubject, message.Subject.Length));
@@ -130,7 +135,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (roles != null && roles.Count > 0 && !IsAdminOrHost(sender))
             {
-                if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID)))
+                if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID && userRoleInfo.IsOwner)))
                 {
                     throw new ArgumentException(Localization.Localization.GetString("MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError", Localization.Localization.ExceptionsResourceFile));
                 }

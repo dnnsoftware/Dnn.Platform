@@ -125,6 +125,11 @@ namespace DotNetNuke.Web.UI.WebControls
                         FilesComboBox.SelectedFile = file;
                     }
                 }
+                else
+                {
+                    FoldersComboBox.SelectedFolder = null;
+                    FilesComboBox.SelectedFile = null;
+                }
             }
         }
         
@@ -306,7 +311,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 else
                 {
                     fileName = FilePath;
-                    folderPath = string.Empty;
+                    folderPath = FolderPath;
                 }
 
                 FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(PortalId, folderPath);

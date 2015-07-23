@@ -29,7 +29,6 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.DataStructures;
 using DotNetNuke.Entities.Portals;
@@ -37,7 +36,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
@@ -434,12 +432,12 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, includeHiddenTabs, false, false, true, false)
+                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, false, true, false)
                                  .Where(tab => searchFunc(tab) 
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
                                             && (includeAllTypes || tab.TabType == TabType.Normal)
+                                            && !tab.IsSystem
                                        )
                                  .OrderBy(tab => tab.TabOrder)
                                  .ToList();
@@ -447,7 +445,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
                     tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList()
-                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink)
+                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink && !tab.IsSystem)
                         .OrderBy(tab => tab.TabOrder)
                         .ToList());
                 }
@@ -458,7 +456,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
 
                     tabs = TabController.Instance.GetTabsByPortal(-1).AsList()
-                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink)
+                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink && !tab.IsSystem)
                         .OrderBy(tab => tab.TabOrder)
                         .ToList();
                 }
@@ -512,21 +510,20 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
 
                 tabs = TabController.Instance.GetTabsByPortal(portalId).Where(tab =>
                                         (includeActive || tab.Value.TabID != PortalSettings.ActiveTab.TabID)
-                                        && (includeHiddenTabs || tab.Value.IsVisible)
                                         && (includeDisabled || !tab.Value.DisableLink) 
                                         && (includeAllTypes || tab.Value.TabType == TabType.Normal) 
-                                        && searchFunc(tab.Value))
+                                        && searchFunc(tab.Value)
+                                        && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList();
 
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
-                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value))
+                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value) && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList());
@@ -536,7 +533,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    tabs = TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value))
+                    tabs = TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value) && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList();
@@ -580,21 +577,20 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-				tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, includeHiddenTabs, false, includeAllTypes, true, false)
-					.Where(t => !t.DisableLink || includeDisabled)
+      		tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+					.Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
-                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList());
+                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList());
                 }
             }
             else
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList();
+                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList();
                 }
             }
 
@@ -623,7 +619,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false,
             bool includeHostPages = false, string roles = "")
         {
-            var tree = Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
+            var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
             return SortPagesInternal(portalId, tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
@@ -665,7 +661,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeActive = false, bool includeHostPages = false, string roles = "")
         {
             var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var openedNode = Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
+            var openedNode = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
             if (openedNode == null)
             {
                 return treeNode;
@@ -700,7 +696,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false,
             bool includeHostPages = false, string roles = "")
         {
-            var tree = Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
+            var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
 			return SortPagesInPortalGroupInternal(tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
@@ -969,7 +965,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private NTree<ItemDto> SortFoldersInternal(int portalId, string treeAsJson, int sortOrder, string permissions)
         {
-            var tree = Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
+            var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
             return SortFoldersInternal(portalId, tree, sortOrder, permissions);
         }
 

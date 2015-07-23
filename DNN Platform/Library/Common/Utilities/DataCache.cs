@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalAliasCachePriority = CacheItemPriority.NotRemovable;
         public const int PortalAliasCacheTimeOut = 200;
 
-        public const string PortalSettingsCacheKey = "PortalSettings{0}";
+        public const string PortalSettingsCacheKey = "PortalSettings{0}{1}";
         public const CacheItemPriority PortalSettingsCachePriority = CacheItemPriority.NotRemovable;
         public const int PortalSettingsCacheTimeOut = 20;
 
@@ -118,7 +118,13 @@ namespace DotNetNuke.Common.Utilities
         public const string TabUrlCacheKey = "Tab_TabUrls{0}";
         public const CacheItemPriority TabUrlCachePriority = CacheItemPriority.High;
         public const int TabUrlCacheTimeOut = 20;
-
+        public const string TabVersionsCacheKey = "Tab_TabVersions{0}";
+        public const CacheItemPriority TabVersionsCachePriority = CacheItemPriority.High;
+        public const int TabVersionsCacheTimeOut = 20;
+        public const string TabVersionDetailsCacheKey = "Tab_TabVersionDetails{0}";
+        public const CacheItemPriority TabVersionDetailsCachePriority = CacheItemPriority.High;
+        public const int TabVersionDetailsCacheTimeOut = 20;
+        
         public const string AuthenticationServicesCacheKey = "AuthenticationServices";
         public const CacheItemPriority AuthenticationServicesCachePriority = CacheItemPriority.NotRemovable;
         public const int AuthenticationServicesCacheTimeOut = 20;
@@ -147,6 +153,10 @@ namespace DotNetNuke.Common.Utilities
         public const string TabModuleSettingsCacheKey = "TabModuleSettings{0}";
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
+
+        public const string PublishedTabModuleCacheKey = "PublishedTabModules{0}";
+        public const CacheItemPriority PublishedTabModuleCachePriority = CacheItemPriority.AboveNormal;
+        public const int PublishedTabModuleCacheTimeOut = 20;
 
         public const string ModulePermissionCacheKey = "ModulePermissions{0}";
         public const CacheItemPriority ModulePermissionCachePriority = CacheItemPriority.AboveNormal;
@@ -275,6 +285,10 @@ namespace DotNetNuke.Common.Utilities
         public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
+
+        public const string HmacCacheKey = "HMAC_{0}";
+        public const CacheItemPriority HmacCachePriority = CacheItemPriority.NotRemovable;
+        public const int HmacCacheTimeout =5;
 
         private static string _CachePersistenceEnabled = "";
 

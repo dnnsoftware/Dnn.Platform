@@ -195,7 +195,7 @@
             // clear textbox button
             realInput.on('keyup', function (e) {
                 var k = e.keyCode || e.witch;
-                if (self._ignoreKeyCodes.indexOf(k) > -1) return;
+                if ($.inArray(k, self._ignoreKeyCodes) > -1) return;
 
                 var val = realInput.val();
                 var right = parseInt(realInput.css('right').replace('px', '')) - 15;

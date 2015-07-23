@@ -161,9 +161,12 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         //avoid issues caused by multiple clicks of login link
                         var oneclick = "this.disabled=true;";
-                        loginLink.Attributes.Add("onclick", oneclick);
-                        enhancedLoginLink.Attributes.Add("onclick", oneclick);
-
+			            if (Request.UserAgent != null && Request.UserAgent.Contains("MSIE 8.0")==false)
+			            {
+                            loginLink.Attributes.Add("onclick", oneclick);
+                            enhancedLoginLink.Attributes.Add("onclick", oneclick);
+			            }
+                        
 				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !HasSocialAuthenticationEnabled())
 				        {
 					        //To avoid duplicated encodes of URL

@@ -136,7 +136,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                     progress.TimeEstimated = (total - stepNo) * 100;
 
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
-
+                    
+                    if ((i % 10) == 0)
+                    {
+                        KeepConnectionAlive();
+                    }
                 }
                 PortalController.Instance.MapLocalizedSpecialPages(PortalId, locale.Code);
 
@@ -147,6 +151,17 @@ namespace DotNetNuke.Modules.Admin.Languages
             }
         }
 
+        /// <summary>
+        /// This Write/Flush is needed periodically to avoid issue in Azure.
+        /// Azure Load Balancer silently dropping idle connections after 4 minutes.
+        /// Sending some data from time to time to the client from server side, 
+        /// the Azure Load balancer doesn't kill the TCP connection
+        /// </summary>
+        private void KeepConnectionAlive()
+        {
+            Response.Write(' ');
+            Response.Flush();
+        }
         #endregion
 
         #region "Event Handlers"
@@ -158,14 +173,14 @@ namespace DotNetNuke.Modules.Admin.Languages
             updateButton.Click += updateButton_Click;
 
             LocalResourceFile = Localization.GetResourceFile(this, "LocalizePages.ascx");
-
-            //Set AJAX timeout to 1 hr for large sites
-            AJAX.GetScriptManager(Page).AsyncPostBackTimeout = timeout;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            //Set AJAX timeout to 1 hr for large sites
+            AJAX.GetScriptManager(Page).AsyncPostBackTimeout = timeout;
 
             _PortalDefault = PortalSettings.DefaultLanguage;
             defaultLanguageLabel.Language = PortalSettings.DefaultLanguage;
@@ -225,6 +240,10 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void updateButton_Click(object sender, EventArgs e)
         {
+            // Set RedirectLocation header before make any Write/Flush to keep connection alive
+            // This prevents "Cannot redirect after HTTP headers have been sent" error
+            Response.RedirectLocation = Globals.NavigateURL();
+
             var locale = LocaleController.Instance.GetLocale(Locale);
             List<TabInfo> pageList = GetTabsToLocalize(PortalId, Locale);
 
@@ -246,7 +265,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             //Restore Script Timeout
             Server.ScriptTimeout = scriptTimeOut;
             //'Redirect to refresh page (and skinobjects)
-            Response.Redirect(Globals.NavigateURL(), true);
+            Response.End();
         }
 
         #endregion

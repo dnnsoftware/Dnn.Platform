@@ -236,7 +236,7 @@ namespace DotNetNuke.UI.Containers
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
-            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo\">{0}</div>", message)));
+            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -454,14 +454,23 @@ namespace DotNetNuke.UI.Containers
                 string controlSrc = ModuleConfiguration.ModuleControl.ControlSrc;
                 string folderName = ModuleConfiguration.DesktopModule.FolderName;
 
+                string stylesheet = "";
                 if (String.IsNullOrEmpty(folderName)==false)
                 {
-                    ClientResourceManager.RegisterStyleSheet(Page, Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css", FileOrder.Css.ModuleCss);
+                    if (controlSrc.EndsWith(".mvc"))
+                    {
+                        stylesheet = Globals.ApplicationPath + "/DesktopModules/MVC/" + folderName.Replace("\\", "/") + "/module.css";
+                    }
+                    else
+                    {
+                        stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
+                    }
+                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
-
                 if (controlSrc.LastIndexOf("/") > 0)
                 {
-                    ClientResourceManager.RegisterStyleSheet(Page, Globals.ApplicationPath + "/" + controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + "module.css", FileOrder.Css.ModuleCss);
+                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + "module.css";
+                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
             }
         }

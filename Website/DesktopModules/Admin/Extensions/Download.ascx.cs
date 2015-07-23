@@ -44,6 +44,8 @@ using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.Admin.Extensions
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class Download : ModuleUserControlBase
     {
         public static int BufferSize = 1024;
@@ -227,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             string fileCheck = downloadURL;
             string postData = "";
-            Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(ModuleContext.PortalId);
+            Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(ModuleContext.PortalId);
             PortalSecurity ps = new PortalSecurity();
             string username = ps.DecryptString(settings["Store_Username"], Config.GetDecryptionkey());
             string password = ps.DecryptString(settings["Store_Password"], Config.GetDecryptionkey());

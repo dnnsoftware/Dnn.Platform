@@ -181,7 +181,7 @@
     <value>TimeZone Editor</value>
   </data>
   <data name="ManageSkins.Action" xml:space="preserve">
-    <value>Manage Skins</value>
+    <value>Manage Themes</value>
   </data>
   <data name="cmdCreateLanguage.Text" xml:space="preserve">
     <value>Add New Language</value>
@@ -190,7 +190,7 @@
     <value>Add New Module</value>
   </data>
   <data name="cmdCreateSkin.Text" xml:space="preserve">
-    <value>Add New Skin</value>
+    <value>Add New Theme</value>
   </data>
   <data name="cmdUpdateLanguage.Text" xml:space="preserve">
     <value>Update Language</value>
@@ -199,7 +199,7 @@
     <value>Update Module</value>
   </data>
   <data name="cmdUpdateSkin.Text" xml:space="preserve">
-    <value>Update Skin</value>
+    <value>Update Theme</value>
   </data>
   <data name="EditLanguageHelp.Text" xml:space="preserve">
     <value>In this section you can configure the package information for this Language Pack.</value>
@@ -208,7 +208,7 @@
     <value>In this section you can configure the package information for this Module.</value>
   </data>
   <data name="EditSkinHelp.Text" xml:space="preserve">
-    <value>In this section you can configure the package information for this Skin.</value>
+    <value>In this section you can configure the package information for this Theme.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
     <value>Packages must have a unique name</value>

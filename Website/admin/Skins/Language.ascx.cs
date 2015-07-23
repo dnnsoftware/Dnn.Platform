@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
@@ -332,19 +332,27 @@ namespace DotNetNuke.UI.Skins.Controls
 
             try
             {
-                if (ShowLinks)
+                var locales = new Dictionary<string, Locale>();
+                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, CurrentCulture, "", false);
+                foreach (Locale loc in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
                 {
-                    var locales = new Dictionary<string, Locale>();
-                    foreach (Locale loc in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
+                    string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), PortalSettings.PortalId, "Administrators");
+                    if (!PortalSettings.ContentLocalizationEnabled ||
+                        (LocaleIsAvailable(loc) &&
+                            (PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleName) || loc.IsPublished || PortalSecurity.IsInRoles(defaultRoles))))
                     {
-                        string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), PortalSettings.PortalId, "Administrators");
-                        if (!PortalSettings.ContentLocalizationEnabled ||
-							(LocaleIsAvailable(loc) &&
-								(PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleName) || loc.IsPublished || PortalSecurity.IsInRoles(defaultRoles))))
+                        locales.Add(loc.Code, loc);
+                        foreach (var cultureItem in cultureListItems)
                         {
-                            locales.Add(loc.Code, loc);
+                            if (cultureItem.Value == loc.Code)
+                            {
+                                selectCulture.Items.Add(cultureItem);
+                            }
                         }
                     }
+                }
+                if (ShowLinks)
+                {
                     if (locales.Count > 1)
                     {
                         rptLanguages.DataSource = locales.Values;
@@ -355,15 +363,25 @@ namespace DotNetNuke.UI.Skins.Controls
                         rptLanguages.Visible = false;
                     }
                 }
-                
                 if (ShowMenu)
                 {
                     if (!String.IsNullOrEmpty(CssClass))
                     {
                         selectCulture.CssClass = CssClass;
                     }
-                    Localization.LoadCultureDropDownList(selectCulture, CultureDropDownTypes.NativeName, CurrentCulture);
-
+                    if (!IsPostBack)
+                    {
+                        //select the default item
+                        if (CurrentCulture != null)
+                        {
+                            ListItem item = selectCulture.Items.FindByValue(CurrentCulture);
+                            if (item != null)
+                            {
+                                selectCulture.SelectedIndex = -1;
+                                item.Selected = true;
+                            }
+                        }
+                    }
                     //only show language selector if more than one language
                     if (selectCulture.Items.Count <= 1)
                     {
@@ -386,6 +404,8 @@ namespace DotNetNuke.UI.Skins.Controls
         {
 			//Redirect to same page to update all controls for newly selected culture
             LocalTokenReplace.Language = selectCulture.SelectedItem.Value;
+            //DNN-6170 ensure skin value is culture specific in case of  static localization
+            DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, PortalSettings.PortalId, Null.NullString));
             Response.Redirect(LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
         }
 

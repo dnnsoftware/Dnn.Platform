@@ -61,6 +61,10 @@ namespace DotNetNuke.UI.Skins
     public class SkinController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
+		private const string GlobalSkinPrefix = "[G]";
+		private const string PortalSystemSkinPrefix = "[S]";
+		private const string PortalSkinPrefix = "[L]";
+
 		#region Public Shared Properties
 		
         public static string RootSkin
@@ -83,16 +87,15 @@ namespace DotNetNuke.UI.Skins
 
 		#region Public Shared Methods
 
-        private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, bool isPortal)
+        private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, string skinPrefix)
         {
-            var isSystemFolder = skinFolder.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) >= 0;
             foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
             {
                 string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
 
-                string key = ((isPortal) ? "Site: " : "Host: ") + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string prefix = (isPortal) ? ((isSystemFolder) ? "[S]" : "[L]") : "[G]"; //to be compliant with all versions
-                string value = prefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
+				string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ") 
+								+ FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
+				string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
                 skins.Add(new KeyValuePair<string, string>(key, value)); 
             }
         }
@@ -108,7 +111,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
                     {
-                        AddSkinFiles(skins, skinRoot, skinFolder, false);
+                        AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
                     }
                 }
             }
@@ -121,19 +124,19 @@ namespace DotNetNuke.UI.Skins
 
             if (portalInfo != null)
             {                
-                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot);
-                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot); //to be compliant with all versions
+                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
+                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); //to be compliant with all versions
             }
             return skins;
         }
 
-        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot)
+        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot, string skinPrefix)
         {            
             if (Directory.Exists(skinsFolder))
             {
                 foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
                 {
-                    AddSkinFiles(skins, skinRoot, skinFolder, true);
+					AddSkinFiles(skins, skinRoot, skinFolder, skinPrefix);
                 }
             }
         }
@@ -366,8 +369,10 @@ namespace DotNetNuke.UI.Skins
             return skinSrc.Contains(Globals.HostPath);
         }
 
+      
         public static void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {
+            var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(portalId).Code;
             switch (skinRoot)
             {
                 case "Skins":
@@ -379,7 +384,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, selectedCultureCode);
                         }
                     }
                     else
@@ -390,7 +395,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, selectedCultureCode);
                         }
                     }
                     break;
@@ -403,7 +408,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, selectedCultureCode);
                         }
                     }
                     else
@@ -414,7 +419,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, selectedCultureCode);
                         }
                     }
                     break;

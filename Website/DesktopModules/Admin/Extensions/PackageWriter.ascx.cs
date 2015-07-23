@@ -256,7 +256,12 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 //Display regular files
                 foreach (InstallFile file in _Writer.Files.Values)
                 {
-                    txtFiles.Text += file.FullName + Environment.NewLine;
+                    if (file.Path.StartsWith(".git"))
+                        continue;
+                    if (!file.Name.StartsWith(".git"))
+                    {
+                        txtFiles.Text += file.FullName + Environment.NewLine;
+                    }
                 }
             }
         }

@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Modules.UrlManagement</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.UrlManagement</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -42,12 +42,13 @@
     <DocumentationFile>bin\DotNetNuke.Modules.UrlManagement.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Web.Client, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Library\bin\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>..\..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web.ApplicationServices" />

@@ -14,7 +14,7 @@
     // as this (slightly) quickens the resolution process and can be more efficiently
     // minified (especially when both are regularly referenced in your plugin).
 
-    var pluginName = 'tooltip';
+    var pluginName = 'dnntooltip';
 
     // The actual plugin constructor
     var Tooltip = this.Tooltip = function (element, options) {

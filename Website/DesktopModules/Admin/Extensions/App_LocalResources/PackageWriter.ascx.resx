@@ -170,7 +170,7 @@
   </data>
   <data name="FinalStep.Help" xml:space="preserve">
     <value>The final step is to create the package.  To create a copy of the Manifest file check the "Create Manifest File" check box - the file will be created in the Package's folder.  Regardless of the setting you use here the manifest will be saved in the database and it will be added to the package.&lt;br/&gt;&lt;br/&gt;  
-To create a package check the "Create Package" check box.  The package will be created in the relevant Install folder (eg Install/Modules for modules, Install/Skins for skins etc).</value>
+To create a package check the "Create Package" check box.  The package will be created in the relevant Install folder (eg Install/Modules for modules, Install/Themes for Themes etc).</value>
   </data>
   <data name="FinalStep.Title" xml:space="preserve">
     <value>Create Package</value>

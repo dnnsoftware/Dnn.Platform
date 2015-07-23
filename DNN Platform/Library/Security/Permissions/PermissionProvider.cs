@@ -24,7 +24,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Globalization;
+using System.Web.Services.Description;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -32,6 +33,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -353,6 +355,94 @@ namespace DotNetNuke.Security.Permissions
             }
             return isDenied;
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule.
+        /// </summary>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
+        {
+            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
+                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call</param>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return FillDesktopModulePermissionDictionary(DataProvider.Instance().GetDesktopModulePermissions());
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
+        /// dataReader
+        /// </summary>
+        /// <param name="dr">The IDataReader</param>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
+        {
+            var dic = new Dictionary<int, DesktopModulePermissionCollection>();
+            try
+            {
+                while (dr.Read())
+                {
+                    //fill business object
+                    var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
+
+                    //add DesktopModule Permission to dictionary
+                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
+                    {
+                        //Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
+                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
+                    }
+                    else
+                    {
+                        //Create new DesktopModulePermission Collection for DesktopModulePermissionID
+                        var collection = new DesktopModulePermissionCollection { desktopModulePermissionInfo };
+
+                        //Add Collection to Dictionary
+                        dic.Add(desktopModulePermissionInfo.PortalDesktopModuleID, collection);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                //close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+            return dic;
+        }
+
+        private IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
+        {
+            return new List<RoleInfo>
+            {
+                RoleController.Instance.GetRoleById(portalId,
+                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId)
+            };
+        } 
 
         #endregion
 
@@ -858,6 +948,26 @@ namespace DotNetNuke.Security.Permissions
         #region TabPermission Methods
 
         /// <summary>
+        /// Returns a list with all roles with implicit permissions on Tabs
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public virtual IEnumerable<RoleInfo> ImplicitRolesForPages(int portalId)
+        {
+            return DefaultImplicitRoles(portalId);
+        }
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Folders
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the permissions are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public virtual IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
+        {
+            return DefaultImplicitRoles(portalId);
+        } 
+
+        /// <summary>
         /// Returns a flag indicating whether the current user can add content to a page
         /// </summary>
         /// <param name="tab">The page</param>
@@ -1050,6 +1160,64 @@ namespace DotNetNuke.Security.Permissions
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region DesktopModule Permissions Methods
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
+        /// </summary>
+        /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission</param>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public virtual DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionId)
+        {
+            return CBO.FillObject<DesktopModulePermissionInfo>(DataProvider.Instance().GetDesktopModulePermission(desktopModulePermissionId));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
+        /// </summary>
+        /// <param name="portalDesktopModuleId">The ID of the DesktopModule</param>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
+        {
+            //Get the Tab DesktopModulePermission Dictionary
+            Dictionary<int, DesktopModulePermissionCollection> dicDesktopModulePermissions = GetDesktopModulePermissions();
+
+            //Get the Collection from the Dictionary
+            DesktopModulePermissionCollection desktopModulePermissions;
+            bool bFound = dicDesktopModulePermissions.TryGetValue(portalDesktopModuleId, out desktopModulePermissions);
+            if (!bFound)
+            {
+                //Return empty collection
+                desktopModulePermissions = new DesktopModulePermissionCollection();
+            }
+            return desktopModulePermissions;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// HasDesktopModulePermission checks whether the current user has a specific DesktopModule Permission
+        /// </summary>
+        /// <param name="desktopModulePermissions">The Permissions for the DesktopModule</param>
+        /// <param name="permissionKey">The Permission to check</param>
+        /// <history>
+        /// 	[cnurse]	01/15/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
+        {
+            return PortalSecurity.IsInRoles(desktopModulePermissions.ToString(permissionKey));
         }
 
         #endregion

@@ -367,6 +367,21 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DismissAllNotifications()
+        {
+            try
+            {
+                var deletedCount = NotificationsController.Instance.DeleteUserNotifications(UserInfo);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", count = deletedCount });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
         #endregion
 
         #region DTO

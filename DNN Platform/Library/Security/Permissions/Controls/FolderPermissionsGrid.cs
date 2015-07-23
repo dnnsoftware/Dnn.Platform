@@ -23,11 +23,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
@@ -147,11 +150,35 @@ namespace DotNetNuke.Security.Permissions.Controls
             objFolderPermission.FolderPath = FolderPath;
             return objFolderPermission;
         }
+        
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
 
         #endregion
 
         #region Protected Methods
 
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+            rolePermissionsGrid.ItemDataBound += rolePermissionsGrid_ItemDataBound;
+        }
+        
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new FolderPermissionInfo(permission)
@@ -236,7 +263,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
-            return role.RoleID != AdministratorRoleId;
+            return !IsImplicitRole(role.PortalID, role.RoleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -282,6 +309,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
         {
             return _systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+        }
+
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
 
         /// -----------------------------------------------------------------------------

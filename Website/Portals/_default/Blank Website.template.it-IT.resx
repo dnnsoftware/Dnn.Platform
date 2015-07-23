@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LocalizedTemplateName.Text">
+    <value xml:space="preserve">Sito Web Vuoto</value>
+  </data>
+  <data name="Setting.DefaultLanguage.Text">
+    <value xml:space="preserve">it-IT</value>
+  </data>
+  <data name="Setting.FooterText.Text">
+    <value xml:space="preserve">Copyright [year] by DNN Corp</value>
+  </data>
+  <data name="PortalDescription.Text">
+    <value xml:space="preserve">Template Vuoto</value>
+  </data>
+  <data name="Tab.Home.Description.Text">
+    <value />
+  </data>
+  <data name="Tab.Home.Keywords.Text">
+    <value />
+  </data>
+  <data name="Tab.Home.Name.Text">
+    <value xml:space="preserve">Home</value>
+  </data>
+  <data name="Tab.Home.PageHeadText.Text">
+    <value />
+  </data>
+  <data name="Tab.Home.Title.Text">
+    <value />
+  </data>
+  <data name="RoleGroup.Description.Text">
+    <value xml:space="preserve">Un Gruppo fittizio che rappresenta i ruoli globali</value>
+  </data>
+  <data name="Tab.GettingStarted.Actions.Module.Content.0.Text">
+    <value xml:space="preserve">Guarda il Video Introduttivo</value>
+  </data>
+  <data name="Tab.GettingStarted.Actions.Module.Content.1.Text">
+    <value xml:space="preserve">Inizia ad Usarlo</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.0.Text">
+    <value xml:space="preserve">Il video qui sotto vi &lt;strong&gt; aiuterà ad iniziare &lt;/strong&gt; a costruire il nuovo sito in DotNetNuke. Usare DotNetNuke è facile e veloce e si può avere il nuovo sito attivo e funzionante con il contenuto reale in pochi minuti.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.1.Text">
+    <value xml:space="preserve">Guarda il Video di Introduzione</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Title.0.Text">
+    <value xml:space="preserve">Novità su DNN 7.0</value>
+  </data>
+  <data name="Tab.GettingStarted.Name.Text">
+    <value xml:space="preserve">Per Iniziare</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.0.Text">
+    <value xml:space="preserve">Sei già un esperto?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.1.Text">
+    <value xml:space="preserve">Imposta la tua e-mail, installare altre lingue, e altre impostazioni di configurazione avanzata</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.2.Text">
+    <value xml:space="preserve">Definire Impostazioni di Configurazione Avanzata</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.3.Text">
+    <value xml:space="preserve">Alla ricerca di risposte?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.4.Text">
+    <value xml:space="preserve">Avete delle domande, idee per migliorare o semplicemente vorreste incontrare altri membri DotNetNuke?</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.5.Text">
+    <value xml:space="preserve">Trova una risposta</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.6.Text">
+    <value xml:space="preserve">Potete sottoporci le vostre Idee</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.7.Text">
+    <value xml:space="preserve">Apprezziamo sempre il vostro feedback</value>
+  </data>
+  <data name="Tab.GettingStarted.RightPane.Module.Content.8.Text">
+    <value xml:space="preserve">Ci piacerebbe sapere cosa pensi del nostro operato.</value>
+  </data>
+  <data name="Tab.GettingStarted.Title.Text">
+    <value xml:space="preserve">Benvenuto nella tua installazione di DotNetNuke</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Title.1.Text">
+    <value xml:space="preserve">Imparare le basi per lavorare con DNN</value>
+  </data>
+  <data name="Tab.GettingStarted.Header.Module.Title.Text">
+    <value xml:space="preserve">&lt;strong&gt;Fatto!&lt;/strong&gt; Hai appena completato la nuova Installazione del Prodotto; &lt;strong&gt;cosa ti piacerebbe fare ora?&lt;/strong&gt;</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.2.Text">
+    <value xml:space="preserve">Scopri quali cambiamenti e migliorie abbiamo effettuato con DotNetNuke 7.0</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.3.Text">
+    <value xml:space="preserve">Guarda il Video</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.10.Text">
+    <value xml:space="preserve">Aggiungi Nuove Funzionalità</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.11.Text">
+    <value xml:space="preserve">Arricchisci il tuo sito con funzionalità e-commerce.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.12.Text">
+    <value xml:space="preserve">Visita DotNetNuke Store</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.13.Text">
+    <value xml:space="preserve">Sponsors</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.4.Text">
+    <value xml:space="preserve">Personalizza il tuo DotNetNuke</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.5.Text">
+    <value xml:space="preserve">Sei pronto a fare tuo DotNetNuke?</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.6.Text">
+    <value xml:space="preserve">Abbiamo le risorse e gli strumenti per fare tutto quello che si possa immaginare.</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.7.Text">
+    <value xml:space="preserve">Voglio...</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.8.Text">
+    <value xml:space="preserve">Cambia il look del tuo sito</value>
+  </data>
+  <data name="Tab.GettingStarted.LeftPane.Module.Content.9.Text">
+    <value xml:space="preserve">Find new themes for your website on the DNN Store.</value>
+  </data>
+  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text">
+    <value xml:space="preserve">Impostazioni Configurazione Avanzata</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Description.Text">
+    <value xml:space="preserve">Impostazioni Configurazione Avanzata</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Name.Text">
+    <value xml:space="preserve">Impostazioni Configurazione Avanzata</value>
+  </data>
+  <data name="Tab.AdvancedSettings.Title.Text">
+    <value xml:space="preserve">Impostazioni Configurazione Avanzata</value>
+  </data>
+  <data name="Tab.About.RightPane.OtherModule.Content.8.Text">
+    <value xml:space="preserve">Condividi i tuoi feedback</value>
+  </data>
+  <data name="Tab.SearchAdmin.ContentPane.Module.Title.Text">
+    <value xml:space="preserve">Ricerca Admin</value>
+  </data>
+  <data name="Tab.SearchAdmin.Description.Text">
+    <value xml:space="preserve">Ricerca Admin</value>
+  </data>
+  <data name="Tab.404ErrorPage..Module.Content.Text">
+    <value xml:space="preserve">Sorry, the page you are looking for cannot be found and might have been removed, had its name changed, or is temporarily unavailable. It is recommended that you start again from the homepage. Feel free to contact us if the problem persists or if you definitely cannot find what you’re looking for.</value>
+  </data>
+  <data name="Tab.404ErrorPage..Module.Title.Text">
+    <value xml:space="preserve">Page cannot be found</value>
+  </data>
+  <data name="Tab.404ErrorPage.Content.Text">
+    <value xml:space="preserve">404 Error Page</value>
+  </data>
+  <data name="Tab.404ErrorPage.Title.Text">
+    <value xml:space="preserve">404 Error Page</value>
+  </data>
+</root>

@@ -92,9 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
-
-                if (Convert.ToInt32(setting) == Null.NullInteger)
+				if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -121,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -513,8 +511,8 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlMembership.MembershipUnLocked += MembershipUnLocked;
             ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
             ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
-            
-            jQuery.RequestDnnPluginsRegistration();
+
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";
@@ -692,7 +690,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     UserInfo user = User;
                     User.Membership.Password = UserController.GetPassword(ref user, "");
                 }
-                Mail.SendMail(User, MessageType.UserRegistrationPublic, PortalSettings);
+
                 BindMembership();
             }
             catch (Exception exc) //Module failed to load
@@ -1037,7 +1035,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void UserUpdateCompleted(object sender, EventArgs e)
         {
-            Response.Redirect(Request.RawUrl, true);
+            Response.Redirect(Request.RawUrl, false);
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
         /// -----------------------------------------------------------------------------

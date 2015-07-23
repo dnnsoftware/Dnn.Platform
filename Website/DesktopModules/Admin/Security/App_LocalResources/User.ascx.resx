@@ -207,4 +207,7 @@
   <data name="HideSiteList.Text" xml:space="preserve">
     <value>Hide list of sites</value>
   </data>
+  <data name="DisplayNameNotUnique.Text" xml:space="preserve">
+    <value>The Display Name you have entered is already in use, please choose a different one.</value>
+  </data>
 </root>

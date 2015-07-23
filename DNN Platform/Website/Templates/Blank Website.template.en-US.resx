@@ -235,7 +235,7 @@
     <value>Change the look of my site</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.9.Text" xml:space="preserve">
-    <value>Find new skin designs for your website on the DotNetNuke Store.</value>
+    <value>Find new themes for your website on the DNN Store.</value>
   </data>
   <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
     <value>Advanced Configuration Settings</value>

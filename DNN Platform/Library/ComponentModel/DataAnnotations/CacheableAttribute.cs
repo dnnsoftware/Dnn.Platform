@@ -37,6 +37,8 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// </summary>
         public CacheableAttribute()
         {
+            CachePriority = CacheItemPriority.Default;
+            CacheTimeOut = 20;
         }
 
         /// <summary>

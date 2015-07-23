@@ -47,6 +47,7 @@ namespace DotNetNuke.Entities.Host
     /// <summary>
 	/// Contains most of the host settings.
 	/// </summary>
+    [Serializable]
     public class Host : BaseEntityInfo
     {
         #region Public Shared Properties
@@ -1076,6 +1077,8 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        private static Globals.PerformanceSettings? _performanceSetting;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the PerformanceSettings
@@ -1091,14 +1094,20 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                Globals.PerformanceSettings setting = Globals.PerformanceSettings.ModerateCaching;
-                string s = HostController.Instance.GetString("PerformanceSetting");
-                if (!string.IsNullOrEmpty(s))
+                if (!_performanceSetting.HasValue)
                 {
-                    setting = (Globals.PerformanceSettings) Enum.Parse(typeof (Globals.PerformanceSettings), s);
+                    var s = HostController.Instance.GetString("PerformanceSetting");
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        return Globals.PerformanceSettings.ModerateCaching;
+                    }
+
+                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
                 }
-                return setting;
+
+                return _performanceSetting.Value;
             }
+            set { _performanceSetting = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -1372,11 +1381,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	01/29/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogBuffer
         {
             get
             {
-                return HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                return 1;
             }
         }
 
@@ -1391,11 +1401,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	01/29/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogHistory
         {
             get
             {
-                return HostController.Instance.GetInteger("SiteLogHistory");
+                return 0;
             }
         }
 
@@ -1410,16 +1421,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	03/05/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static string SiteLogStorage
         {
             get
             {
-                string setting = HostController.Instance.GetString("SiteLogStorage");
-                if (string.IsNullOrEmpty(setting))
-                {
-                    setting = "D";
-                }
-                return setting;
+                return "D";
             }
         }
 
@@ -1872,13 +1879,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-        /// <summary>
-        /// Get the IgnoreWhiteList value, used during portal template import.
-        /// </summary>
-        static bool IgnoreWhiteList
-        {
-            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
-        }
 
         #endregion
 

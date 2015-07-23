@@ -75,14 +75,11 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string _content = string.Empty;
                 Request.InputStream.Position = 0;
                 using (var Reader = new StreamReader(Request.InputStream))
                 {
-                    _content = Reader.ReadToEnd();
+                    return Reader.ReadToEnd();
                 }
-
-                return _content;
             }
         }
 

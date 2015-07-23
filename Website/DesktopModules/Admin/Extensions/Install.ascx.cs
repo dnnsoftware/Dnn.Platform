@@ -23,7 +23,6 @@
 using System;
 using System.Data;
 using System.IO;
-using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 
@@ -851,32 +850,43 @@ namespace DotNetNuke.Modules.Admin.Extensions
             switch (e.CurrentStepIndex)
             {
                 case 0:
-                    HttpPostedFile postedFile = cmdBrowse.PostedFile;
-                    string strMessage = "";
+                    var postedFile = cmdBrowse.PostedFile;
+                    var strMessage = string.Empty;
                     FileName = Path.GetFileName(postedFile.FileName);
-                    string strExtension = Path.GetExtension(FileName);
+                    var strExtension = Path.GetExtension(FileName);
                     if (string.IsNullOrEmpty(postedFile.FileName))
                     {
                         strMessage = Localization.GetString("NoFile", LocalResourceFile);
                     }
                     else if (strExtension.ToLower() != ".zip")
                     {
-                        strMessage += string.Format(Localization.GetString("InvalidExt", LocalResourceFile), FileName);
-                    }
-                    if (string.IsNullOrEmpty(strMessage))
+                        strMessage = string.Format(Localization.GetString("InvalidExt", LocalResourceFile), FileName);
+                    } 
+                    else 
                     {
-                        _Installer = new Installer(postedFile.InputStream, Request.MapPath("."), true, false);
+                        try
+                        {
+                            _Installer = new Installer(postedFile.InputStream, Request.MapPath("."), true, false);
+                        }
+                        catch (ICSharpCode.SharpZipLib.ZipException)
+                        {
+                            strMessage = Localization.GetString("ZipCriticalError.Text", LocalResourceFile);  
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(strMessage))
+                    {
+                        lblLoadMessage.Text = strMessage;
+                        lblLoadMessage.Visible = true;
+                        e.Cancel = true;
+                    }
+                    else
+                    {
                         TempInstallFolder = Installer.TempInstallFolder;
                         if (Installer.InstallerInfo.ManifestFile != null)
                         {
                             ManifestFile = Path.GetFileName(Installer.InstallerInfo.ManifestFile.TempFileName);
                         }
-                    }
-                    else
-                    {
-                        lblLoadMessage.Text = strMessage;
-                        lblLoadMessage.Visible = true;
-                        e.Cancel = true;
                     }
                     break;
                 case 1: //Warning Page

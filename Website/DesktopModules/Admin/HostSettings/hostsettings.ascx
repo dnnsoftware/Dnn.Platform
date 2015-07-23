@@ -1,5 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false"
-    CodeFile="HostSettings.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false" Codebehind="HostSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -43,7 +42,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plAvailable" controlname="hypUpgrade" runat="server" />
-                    <asp:HyperLink ID="hypUpgrade" Target="_new" runat="server" />
+                    <asp:HyperLink ID="hypUpgrade" Target="_blank" runat="server" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plDataProvider" controlname="lblDataProvider" runat="server" />
@@ -142,12 +141,12 @@
                     <asp:CheckBox ID="chkUseCustomModuleCssClass" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plUpgradeForceSSL" controlname="chkUseCustomModuleCssClass"
+                    <dnn:label id="plUpgradeForceSSL" controlname="chkUpgradeForceSSL"
                         runat="server" />
                     <asp:CheckBox ID="chkUpgradeForceSSL" runat="server" />
                 </div>
                 <div id="sslDomainRow" class="dnnFormItem">
-                    <dnn:label id="plSSLDomain" controlname="chkUseCustomModuleCssClass"
+                    <dnn:label id="plSSLDomain" controlname="txtSSLDomain"
                         runat="server" />
                     <asp:TextBox ID="txtSSLDomain" runat="server" MaxLength="256" />
                 </div>
@@ -271,13 +270,13 @@
                     <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plConnectionLimit" controlname="ConnectionLimit" runat="server" />
+                    <dnn:label id="plConnectionLimit" controlname="txtConnectionLimit" runat="server" />
                     <asp:TextBox ID="txtConnectionLimit" runat="server" MaxLength="256" Width="225" />
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" validationexpression="^\d*" ControlToValidate="txtConnectionLimit"/>
                     <asp:RangeValidator runat="server" id="rexNumber1" Type="Integer" controltovalidate="txtConnectionLimit" validationexpression="^\d*" MinimumValue="1" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="ConnectionLimitValidation"  />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plMaxIdleTime" controlname="MaxIdleTime" runat="server" />
+                    <dnn:label id="plMaxIdleTime" controlname="txtMaxIdleTime" runat="server" />
                     <asp:TextBox ID="txtMaxIdleTime" runat="server" MaxLength="256" Width="225" />
                     <asp:RegularExpressionValidator runat="server" validationexpression="^\d*" ControlToValidate="txtMaxIdleTime"/>
                     <asp:RangeValidator runat="server" id="rexNumber2" Type="Integer" controltovalidate="txtMaxIdleTime" MinimumValue="0" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="MaxIdleTimeValidation" />
@@ -497,6 +496,10 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+				<div class="dnnFormItem" runat="server" ID="allowLeadingWildcardSettingRow" ControlName="chkAllowLeadingWildcard">
+					<dnn:Label runat="server" ID="lblAllowLeadingWildcard" />
+					<asp:CheckBox runat="server" ID="chkAllowLeadingWildcard" />
+				</div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
@@ -558,24 +561,6 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plControlPanel" controlname="cboControlPanel" runat="server" />
                     <dnn:dnncombobox id="cboControlPanel" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogStorage" controlname="optSiteLogStorage" runat="server" />
-                    <asp:RadioButtonList ID="optSiteLogStorage" CssClass="dnnHSRadioButtons" runat="server"
-                        RepeatLayout="Flow">
-                        <asp:ListItem Value="D" resourcekey="Database" />
-                        <asp:ListItem Value="F" resourcekey="FileSystem" />
-                    </asp:RadioButtonList>
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
-                    <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
-                    <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
-                    <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                    <asp:Label ID="lblSiteLogHistory" runat="server" resourcekey="Days" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plUsersOnline" controlname="chkUsersOnline" runat="server" />
@@ -705,7 +690,7 @@
                 skinSelector: '<%= hostSkinCombo.ClientID %>',
                 containerSelector: '<%= hostContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -714,7 +699,7 @@
                 skinSelector: '<%= editSkinCombo.ClientID %>',
                 containerSelector: '<%= editContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -748,24 +733,24 @@
                 titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
             $('#<%= IncrementCrmVersionButton.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("IncrementCrmVersionConfirm")) %>',
+                text: '<%= LocalizeSafeJsString("IncrementCrmVersionConfirm") %>',
                 yesText: yesText,
                 noText: noText,
                 title: titleText
             });
 
             $('#<%= btnCompactSearchIndex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("CompactIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("CompactIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("CompactIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("CompactIndexConfirmationTitle") %>'
             });
 
             $('#<%= btnHostSearchReindex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("ReIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("ReIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("ReIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("ReIndexConfirmationTitle") %>'
             });
 
             // extensions

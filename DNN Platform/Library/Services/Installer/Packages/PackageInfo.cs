@@ -70,6 +70,7 @@ namespace DotNetNuke.Services.Installer.Packages
             InstalledVersion = new Version(0, 0, 0);
         }
 
+        /// <summary>Gets the direct dependencies of this package.</summary>
         [XmlIgnore]
         public IList<PackageDependencyInfo> Dependencies 
         { 

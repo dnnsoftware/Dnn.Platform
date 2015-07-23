@@ -330,7 +330,7 @@ namespace DotNetNuke.Entities.Urls
 			DoNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting, @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview");
             DoNotRedirectSecureRegex = GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, String.Empty);
 
-            DoNotRewriteRegex = GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx");
+            DoNotRewriteRegex = GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/__browserLink/");
 
             RedirectDefaultPage = GetBooleanSetting(RedirectDefaultPageSetting, false);
             PageExtension = GetStringSetting(PageExtensionSetting, ".aspx");

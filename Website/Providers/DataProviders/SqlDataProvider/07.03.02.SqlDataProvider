@@ -1207,7 +1207,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
 		SELECT j.journalid, jt.datecreated from (
 			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
 				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
-				INNER JOIN {databaseOwner}[{objectQualifier}ournal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
 				WHERE j.PortalId = @PortalId
 			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
 			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId

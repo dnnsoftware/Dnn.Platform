@@ -45,7 +45,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI;
-
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 using DotNetNuke.UI.Utilities;
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                     }
 
                     //lookup user roles specific config file
-                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, false))
+                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, true))
                     {
                         var rolePart = ".RoleId." + role.RoleID;
                         rolepath = path.Replace(".xml", rolePart + ".xml");
@@ -941,24 +941,19 @@ namespace DotNetNuke.Providers.RadEditorProvider
             string strSaveTemplateDialogPath = _panel.Page.ResolveUrl(moduleFolderPath + "Dialogs/SaveTemplate.aspx?Path=" + PortalPath + "&TabId=" + PortalSettings.ActiveTab.TabID + "&ModuleId=" + moduleId);
 
 			AJAX.AddScriptManager(_panel.Page);
-        	var scriptManager = AJAX.GetScriptManager(_panel.Page);
+        	ClientResourceManager.EnableAsyncPostBackHandler();
+            ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/ClientScripts.js");
+            ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/RegisterDialogs.js");
 
-            string strRegisterClientScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/ClientScripts.js");
-            ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "ClientScripts", strRegisterClientScriptPath);
-
-            string strRegisterDialogScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/RegisterDialogs.js");
-            ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "RegisterDialogs", strRegisterDialogScriptPath);
-
-            _editor.ContentAreaCssFile = "~/DesktopModules/Admin/RadEditorProvider/Css/EditorContentAreaOverride.css";
+			_editor.ContentAreaCssFile = "~/DesktopModules/Admin/RadEditorProvider/Css/EditorContentAreaOverride.css?cdv=" + Host.CrmVersion;
 
             if (_editor.ToolbarMode == EditorToolbarMode.Default && string.Equals(_editor.Skin, "Default", StringComparison.OrdinalIgnoreCase))
             {
-                var editorOverrideCSSPath = _panel.Page.ResolveUrl("~/DesktopModules/Admin/RadEditorProvider/Css/EditorOverride.css");
+				var editorOverrideCSSPath = _panel.Page.ResolveUrl("~/DesktopModules/Admin/RadEditorProvider/Css/EditorOverride.css?cdv=" + Host.CrmVersion);
                 var setEditorOverrideCSSPath = "<script type=\"text/javascript\">var __editorOverrideCSSPath = \"" + editorOverrideCSSPath + "\";</script>";
                 _panel.Page.ClientScript.RegisterClientScriptBlock(GetType(), "EditorOverrideCSSPath", setEditorOverrideCSSPath);
 
-                string styleOverrideScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/overrideCSS.js");
-                ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "OverrideCSS", styleOverrideScriptPath);
+				ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js?cdv=" + Host.CrmVersion);
                 //_editor.Skin = "Black";
 	            _editor.PreventDefaultStylesheet = true;
             }
@@ -998,6 +993,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
             //add editor control to panel
             _panel.Controls.Add(_editor);
+			_panel.Controls.Add(new RenderTemplateUrl());
         }
 
         protected void Panel_Load(object sender, EventArgs e)
@@ -1033,7 +1029,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorModuleId", moduleid.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorTabId", tabId.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorPortalId", portalId.ToString(), true);
-                ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "sslEnabled", PortalSettings.SSLEnabled.ToString().ToLowerInvariant(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorHomeDirectory", PortalSettings.HomeDirectory, true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorPortalGuid", PortalSettings.GUID.ToString(), true);
                 ClientAPI.RegisterClientVariable(HtmlEditorControl.Page, "editorEnableUrlLanguage", PortalSettings.EnableUrlLanguage.ToString(), true);

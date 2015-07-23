@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -39,14 +38,10 @@ namespace DotNetNuke.Web.InternalServices
     public class NotificationsServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (NotificationsServiceController));
-        public class DismissDTO
-        {
-            public int NotificationId { get; set; }
-        }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage Dismiss(DismissDTO postData)
+        public HttpResponseMessage Dismiss(NotificationDTO postData)
         {
             try
             {

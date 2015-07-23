@@ -49,13 +49,13 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public class CDefault : PageBase
     {
-        public string Author = "";
-        public string Comment = "";
-        public string Copyright = "";
-        public string Description = "";
-        public string Generator = "";
-        public string KeyWords = "";
-        public new string Title = "";
+        public string Author = string.Empty;
+        public string Comment = string.Empty;
+        public string Copyright = string.Empty;
+        public string Description = string.Empty;
+        public string Generator = string.Empty;
+        public string KeyWords = string.Empty;
+        public new string Title = string.Empty;
 
         protected override void RegisterAjaxScript()
         {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Framework
                 if (modules.Count > 0)
                 {
                     var pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, "mid=" + modules.ElementAt(0).ModuleID, "popUp=true", "ReturnUrl=" + Server.UrlEncode(TestableGlobals.Instance.NavigateURL()));
+                    result = pmb.EditUrl(tab.TabID, "", false, string.Concat("mid=", modules.ElementAt(0).ModuleID), "popUp=true", string.Concat("ReturnUrl=", Server.UrlEncode(TestableGlobals.Instance.NavigateURL())));
                 }
                 else
                 {

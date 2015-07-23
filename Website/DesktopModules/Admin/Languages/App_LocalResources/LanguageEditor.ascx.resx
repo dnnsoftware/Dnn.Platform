@@ -256,10 +256,10 @@
     <value>Exceptions</value>
   </data>
   <data name="HostSkins.Text" xml:space="preserve">
-    <value>Host Skins</value>
+    <value>Host Themes</value>
   </data>
   <data name="PortalSkins.Text" xml:space="preserve">
-    <value>Site Skins</value>
+    <value>Site Themes</value>
   </data>
   <data name="Template.Text" xml:space="preserve">
     <value>Template</value>

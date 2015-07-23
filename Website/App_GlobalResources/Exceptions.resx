@@ -237,6 +237,9 @@
   <data name="MsgSenderRequiredError.Text" xml:space="preserve">
     <value>Either Sender is null or Sender.UserID is negative.</value>
   </data>
+  <data name="PrivateMessageDisabledError.Text" xml:space="preserve">
+    <value>Users doesn't allow send message to other user/group in current message settings.</value>
+  </data>
   <data name="MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError.Text" xml:space="preserve">
     <value>Only SuperUsers, Site Administrators or Users in the Group can send message to Role.</value>
   </data>
@@ -332,5 +335,143 @@
   </data>
   <data name="PublishPagePermissionsNotMet" xml:space="preserve">
     <value>Permissions are not met. The page has not been published.</value>
+  </data>
+  <data name="TabHasNotAnUnpublishedVersion.Text" xml:space="preserve">
+    <value>Tha tab {0} has not an unpublished version</value>
+  </data>
+  <data name="TabVersionAlreadyPublished.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} is already published</value>
+  </data>
+  <data name="TabVersionCannotBeDeleted_UnpublishedVersion.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be deleted because it is an unpublished version</value>
+  </data>
+  <data name="TabVersionCannotBeDiscarded_OnlyOneVersion.Text" xml:space="preserve">
+    <value>The tab {0} has only one version created. It cannot be discarded</value>
+  </data>
+  <data name="TabVersionCannotBeRolledBack_UnpublishedVersionExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be rolled back because an unpublished version exists</value>
+  </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists. Maybe another user has taken action on the page and its state has been changed. Please, refresh the page to see the current state.</value>
+  </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists.</value>
+  </data>
+  <data name="TabVersioningNotEnabled.Text" xml:space="preserve">
+    <value>Tab Versioning is not enabled</value>
+  </data>
+  <data name="WorkflowInUsageException.Text" xml:space="preserve">
+    <value>You cannot delete a workflow in use</value>
+  </data>
+  <data name="WorkflowNameAlreadyExistsException.Text" xml:space="preserve">
+    <value>A workflow with this name already exists</value>
+  </data>
+  <data name="SystemWorkflowDeletionException.Text" xml:space="preserve">
+    <value>System workflow cannot be deleted</value>
+  </data>
+  <data name="WorkflowDoesNotExistException.Text" xml:space="preserve">
+    <value>Workflow does not exist</value>
+  </data>
+  <data name="WorkflowStateNameAlreadyExistsException.Text" xml:space="preserve">
+    <value>A workflow state with this name already exists</value>
+  </data>
+  <data name="WorkflowConcurrencyException.Text" xml:space="preserve">
+    <value>The current state of the workflow is not the same of the current state specified in the input parameter</value>
+  </data>
+  <data name="UserCannotReviewWorkflowState.Text" xml:space="preserve">
+    <value>User cannot review the workflow state</value>
+  </data>
+  <data name="WorkflowAlreadyStarted.Text" xml:space="preserve">
+    <value>Workflow cannot get started for this Content Item. It already has a started workflow.</value>
+  </data>
+  <data name="WorkflowAuthorNotFound.Text" xml:space="preserve">
+    <value>Author cannot be found. Notification won't be sent</value>
+  </data>
+  <data name="WorkflowCannotDiscard.Text" xml:space="preserve">
+    <value>Cannot discard on last workflow state</value>
+  </data>
+  <data name="WorkflowStateInUsageException.Text" xml:space="preserve">
+    <value>You cannot delete a state in use</value>
+  </data>
+  <data name="WorkflowNewStateCannotBeAddedToSystemWorkflows.Text" xml:space="preserve">
+    <value>New states cannot be added to system workflows</value>
+  </data>
+  <data name="WorkflowStateCannotBeMoved.Text" xml:space="preserve">
+    <value>Workflow state cannot be moved</value>
+  </data>
+  <data name="WorkflowSystemWorkflowStateCannotBeDeleted.Text" xml:space="preserve">
+    <value>System workflow state cannot be deleted</value>
+  </data>
+  <data name="WorkflowSystemWorkflowStateCannotComplete.Text" xml:space="preserve">
+    <value>System workflow state cannot be completed.</value>
+  </data>
+  <data name="ModuleDoesNotBelongToPage.Text" xml:space="preserve">
+    <value>This module does not belong to the page. Please, move to its master page to change the module</value>
+  </data>
+  <data name="TabVersionCannotBeRolledBack_LastVersion.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be rolled back as is the last version</value>
+  </data>
+  <data name="FolderFileNameHasInvalidcharacters.Text" xml:space="preserve">
+    <value>The name contains invalid character(s). Please specify a name without {0}</value>
+  </data>
+  <data name="FolderFileNameIsReserved.Text" xml:space="preserve">
+    <value>The name is reserved. Try a different name</value>
+  </data>
+  <data name="UserHasNoPermissionToEditFile.Text" xml:space="preserve">
+    <value>The user has no permission to edit this file</value>
+  </data>
+  <data name="FolderAlreadyExists.Text" xml:space="preserve">
+    <value>Cannot create folder ({0}), folder already exists in this location</value>
+  </data>
+  <data name="UserHasNoPermissionToEditFolder.Text" xml:space="preserve">
+    <value>The user has no permission to edit this folder</value>
+  </data>
+  <data name="UserHasNoPermissionToAdd.Text" xml:space="preserve">
+    <value>The user has no permission to add folders on this location</value>
+  </data>
+  <data name="InvalidMappedPath.Text" xml:space="preserve">
+    <value>The Mapped Path is invalid</value>
+  </data>
+  <data name="FileNameInvalid.Text" xml:space="preserve">
+    <value>The specified name ({0}) is not valid</value>
+  </data>
+  <data name="FolderDoesNotExists.Text" xml:space="preserve">
+    <value>The folder does not exist</value>
+  </data>
+  <data name="UserHasNoPermissionToBrowseFolder.Text" xml:space="preserve">
+    <value>The user has no permission to browse this folder</value>
+  </data>
+  <data name="SitemapProviderError.Text" xml:space="preserve">
+    <value>URL sitemap provider '{0}' failed with error: {1}</value>
+  </data>
+  <data name="SitemapUrlGenerationError.Text" xml:space="preserve">
+    <value>URL sitemap generation for page '{0} - {1}' caused an exception: {2}</value>
+  </data>
+  <data name="DataTypeInUse.Text" xml:space="preserve">
+    <value>The Data Type with Id {0} is in use, so it cannot be deleted.</value>
+  </data>
+  <data name="PropertyCannotBeEmpty.Text" xml:space="preserve">
+    <value>The property '{1}' in object '{0}' cannot be empty (count = 0).</value>
+  </data>
+  <data name="ErrorMessageCannotBeNullOrEmpty.Text" xml:space="preserve">
+    <value>Both the ErorrKey and the ErrorMessage cannot be null or empty.</value>
+  </data>
+  <data name="JsonContentTypeInvalid.Text" xml:space="preserve">
+    <value>The contentTypeId specified in the json document - {0} - does not exist.</value>
+  </data>
+  <data name="JsonInvalidField.Text" xml:space="preserve">
+    <value>The content type does not specify the field - {0}.</value>
+  </data>
+  <data name="JsonMissingContent.Text" xml:space="preserve">
+    <value>There is no content node in the json document.</value>
+  </data>
+  <data name="CreateValidatorException.Text" xml:space="preserve">
+    <value>Could not instantiate Validator - {0}.</value>
+  </data>
+  <data name="InvalidValidatorException.Text" xml:space="preserve">
+    <value>Could not create ValidatorType - - {0}.</value>
+  </data>
+  <data name="UpdateUserMembershipFailed.Text" xml:space="preserve">
+    <value>Asp.net membership update user failed. Possible Reason(s): you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Users.EditProfileDefinition" Language="C#" AutoEventWireup="false" CodeFile="EditProfileDefinition.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Users.EditProfileDefinition" Language="C#" AutoEventWireup="false" Codebehind="EditProfileDefinition.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>

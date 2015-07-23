@@ -280,7 +280,7 @@
     <value>Sitemap Priority</value>
   </data>
   <data name="lblSkin.Text" xml:space="preserve">
-    <value>Page Skin</value>
+    <value>Page Theme</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Page Title</value>
@@ -292,19 +292,19 @@
     <value>Page Tags</value>
   </data>
   <data name="cmdCopySkin.Text" xml:space="preserve">
-    <value>Copy selected Skin to Childpages</value>
+    <value>Copy selected Theme to Childpages</value>
   </data>
   <data name="DefaultContainer.Text" xml:space="preserve">
     <value>[Default Container]</value>
   </data>
   <data name="DefaultSkin.Text" xml:space="preserve">
-    <value>[Default Skin]</value>
+    <value>[Default Theme]</value>
   </data>
   <data name="DesignCopied.Text" xml:space="preserve">
-    <value>Skin applied to all child pages</value>
+    <value>Theme applied to all child pages</value>
   </data>
   <data name="DesignCopyError.Text" xml:space="preserve">
-    <value>An error occured while applying the the selected skin to all childpages</value>
+    <value>An error occured while applying the the selected theme to all childpages</value>
   </data>
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
@@ -397,7 +397,7 @@
     <value>Enter the desired priority (between 0 and 1.0).  This helps determine how this page is ranked in Google with respect to other pages on your site (0.5 is the default).</value>
   </data>
   <data name="lblSkin.Help" xml:space="preserve">
-    <value>The selected skin will be applied to this page.</value>
+    <value>The selected theme will be applied to this page.</value>
   </data>
   <data name="lblTags.Help" xml:space="preserve">
     <value>Select items from the drop-down to tag this Page.</value>
@@ -446,5 +446,8 @@
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Page Management</value>
+  </data>
+  <data name="ConfirmSave.Text" xml:space="preserve">
+    <value>You have unsaved changes on this page, would you like to save these changes?</value>
   </data>
 </root>

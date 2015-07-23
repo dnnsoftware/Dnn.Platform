@@ -111,6 +111,15 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 CreateAuthSystemPackage(authSystem, false);
             }
+            foreach (PackageInfo library in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Library" || p.PackageType == "EvoqConnector"))
+            {
+                //only generate if a folder name is known for the library
+                if (library.FolderName != null)
+                {
+                    CreateLibraryPackage(library, false);
+                }
+            }
+        
             string fileName = Path.Combine(BasePath, "ResourcePack." + Package.Name);
             fileName = fileName + "." + Package.Version.ToString(3) + "." + language.Code + ".zip";
 
@@ -122,6 +131,20 @@ namespace DotNetNuke.Modules.Admin.Languages
                 packageWriter.Files.Add(kvp.Key, kvp.Value);
             }
             packageWriter.CreatePackage(fileName, Package.Name + " " + language.Text + ".dnn", _Manifest, true);
+        }
+
+       private void CreateLibraryPackage(PackageInfo library, bool createZip)
+        {
+            var Package = new PackageInfo();
+            Package.Name = library.Name;
+            Package.FriendlyName = library.Name;
+            Package.Version = library.Version;
+            Package.License = Util.PACKAGE_NoLicense;
+
+            string fileName = Path.Combine(BasePath, "ResourcePack" + Package.Name);
+
+           
+            CreatePackage(Package, library.PackageID, library.FolderName, fileName, createZip);
         }
 
         private void CreateModulePackage(DesktopModuleInfo desktopModule, bool createZip)

@@ -143,7 +143,6 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             provider.UpdatePackage(package.PackageID,
                                    package.PortalID,
-                                   package.Name,
                                    package.FriendlyName,
                                    package.Description,
                                    package.PackageType,

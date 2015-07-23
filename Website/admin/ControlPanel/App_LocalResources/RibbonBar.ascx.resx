@@ -268,7 +268,7 @@
     <value>Copy Actions</value>
   </data>
   <data name="Tool.CopyDesignToChildren.Confirm" xml:space="preserve">
-    <value>Skin and container will be replaced for all children of this page.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+    <value>Theme and container will be replaced for all children of this page.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
   </data>
   <data name="Tool.CopyDesignToChildren.Text" xml:space="preserve">
     <value>Copy Design to Children</value>
@@ -280,13 +280,13 @@
     <value>Copy Permissions to Children</value>
   </data>
   <data name="Tool.CopyDesignToChildrenPageEditor.Confirm" xml:space="preserve">
-    <value>Skin and container will be replaced for children of this page that you have permissions to edit.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
+    <value>Theme and container will be replaced for children of this page that you have permissions to edit.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
   </data>
   <data name="Tool.DeletePage.Special.ToolTip" xml:space="preserve">
     <value>Cannot delete this page because it is a system page or the page is in use. See Site Settings &gt;Advanced Settings &gt; Page Management or contact your system administrator.</value>
   </data>
   <data name="Tool.CopyDesignToChildren.ToolTip" xml:space="preserve">
-    <value>Copy Skin and Container Settings to Children</value>
+    <value>Copy Theme and Container Settings to Children</value>
   </data>
   <data name="CurrentTabActions.Text" xml:space="preserve">
     <value>Actions</value>
@@ -400,7 +400,7 @@
     <value>Site</value>
   </data>
   <data name="Skin.Text" xml:space="preserve">
-    <value>Skin</value>
+    <value>Theme</value>
   </data>
   <data name="SwitchButton.Text" xml:space="preserve">
     <value>Switch Site</value>

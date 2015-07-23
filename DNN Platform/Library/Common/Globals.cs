@@ -61,11 +61,11 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
@@ -626,6 +626,12 @@ namespace DotNetNuke.Common
                             //Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
+                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
+                        {
+                            //Upgrade Required (Build Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
                     }
 
                     _status = tempStatus;
@@ -636,6 +642,30 @@ namespace DotNetNuke.Common
                 return _status;
             }
 
+        }
+
+        public static bool IncrementalVersionExists(Version version)
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+            //If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
+                    if (
+                        incrementalcount == 1)
+                    {
+                        return false;}
+                    if (incrementalcount > Globals.GetLastAppliedIteration(version))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
 
@@ -1148,6 +1178,32 @@ namespace DotNetNuke.Common
             DataProvider.Instance().UpdateDatabaseVersion(version.Major, version.Minor, version.Build, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
+
+        /// <summary>
+        /// Updates the database version.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <param name="increment">The increment.</param>
+       public static void UpdateDataBaseVersionIncrement(Version version,int increment)
+        {
+            //update the version and increment
+           DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+            _dataBaseVersion = version;
+        }
+
+       public static int GetLastAppliedIteration(Version version)
+       {
+           try
+           {
+               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);           
+           }
+           catch (Exception)
+           {
+
+               return 0;
+           }
+           
+       }
 
         /// <summary>
         /// Adds the port.
@@ -1869,7 +1925,8 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit);
+            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
+                TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -2232,37 +2289,21 @@ namespace DotNetNuke.Common
         /// <param name="strRoot">The root.</param>
         public static void DeleteFolderRecursive(string strRoot)
         {
-            if (!String.IsNullOrEmpty(strRoot))
+            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
             {
-                if (Directory.Exists(strRoot))
-                {
-                    foreach (string strFolder in Directory.GetDirectories(strRoot))
-                    {
-                        DeleteFolderRecursive(strFolder);
-                    }
-                    foreach (string strFile in Directory.GetFiles(strRoot))
-                    {
-                        try
-                        {
-                            FileSystemUtils.DeleteFile(strFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                        }
-                    }
-                    try
-                    {
-                        Directory.Delete(strRoot);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                }
+                return;
             }
+            foreach (var strFolder in Directory.GetDirectories(strRoot))
+            {
+                DeleteFolderRecursive(strFolder);
+            }
+            foreach (var strFile in Directory.GetFiles(strRoot))
+            {
+                DeleteFile(strFile);
+            }
+            DeleteFolder(strRoot);
         }
-
+        
         /// <summary>
         /// Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.
         /// </summary>
@@ -2270,30 +2311,58 @@ namespace DotNetNuke.Common
         /// <param name="filter">The filter.</param>
         public static void DeleteFilesRecursive(string strRoot, string filter)
         {
-            if (!String.IsNullOrEmpty(strRoot))
+            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
             {
-                if (Directory.Exists(strRoot))
+                return;
+            }
+            foreach (var strFolder in Directory.GetDirectories(strRoot))
+            {
+                var directory = new DirectoryInfo(strFolder);
+                if ((directory.Attributes & FileAttributes.Hidden) == 0 && (directory.Attributes & FileAttributes.System) == 0)
                 {
-                    foreach (string strFolder in Directory.GetDirectories(strRoot))
-                    {
-                        var directory = new DirectoryInfo(strFolder);
-                        if ((directory.Attributes & FileAttributes.Hidden) == 0 && (directory.Attributes & FileAttributes.System) == 0)
-                        {
-                            DeleteFilesRecursive(strFolder, filter);
-                        }
-                    }
-                    foreach (string strFile in Directory.GetFiles(strRoot, "*" + filter))
-                    {
-                        try
-                        {
-                            FileSystemUtils.DeleteFile(strFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                        }
-                    }
+                    DeleteFilesRecursive(strFolder, filter);
                 }
+            }
+            foreach (var strFile in Directory.GetFiles(strRoot, "*" + filter))
+            {
+                DeleteFile(strFile);
+            }
+        }
+
+        private static void DeleteFile(string filePath)
+        {
+            try
+            {
+                FileSystemUtils.DeleteFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+        
+        private static void DeleteFolder(string strRoot)
+        {
+            try
+            {
+                Directory.Delete(strRoot);
+            }
+            catch (IOException)
+            {
+                //Force Deletion. Directory should be empty
+                try
+                {
+                    Thread.Sleep(50);
+                    Directory.Delete(strRoot, true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
             }
         }
 
@@ -2569,14 +2638,11 @@ namespace DotNetNuke.Common
         public static string ApplicationURL()
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (_portalSettings != null)
+            if (_portalSettings != null && _portalSettings.ActiveTab.HasAVisibleVersion)
             {
                 return (ApplicationURL(_portalSettings.ActiveTab.TabID));
             }
-            else
-            {
-                return (ApplicationURL(-1));
-            }
+            return (ApplicationURL(-1));            
         }
 
         /// -----------------------------------------------------------------------------
@@ -3447,9 +3513,9 @@ namespace DotNetNuke.Common
             switch (Convert.ToString(RoleID))
             {
                 case glbRoleAllUsers:
-                    return "All Users";
+                    return glbRoleAllUsersName;
                 case glbRoleUnauthUser:
-                    return "Unauthenticated Users";
+                    return glbRoleUnauthUserName;
             }
             Hashtable htRoles = null;
             if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
@@ -3825,10 +3891,35 @@ namespace DotNetNuke.Common
         /// </remarks>
         public static string UserProfilePicRelativeUrl()
         {
+            return UserProfilePicRelativeUrl(true);
+        }
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
+        /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl(bool includeCdv)
+        {
+            const string query = "/profilepic.ashx?userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
-            var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
-            var cdv = DateTime.Now.Ticks;
-            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}&cdv="+cdv;
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+
+            var cdv = "";
+            if (includeCdv)
+            {
+                cdv = "&cdv=" + DateTime.Now.Ticks;
+            }
+
+            if (childPortalAlias.StartsWith(Globals.ApplicationPath))
+                return childPortalAlias + query + cdv;
+
+            return Globals.ApplicationPath + childPortalAlias + query + cdv;
 
         }
 

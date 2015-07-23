@@ -98,7 +98,13 @@ namespace DotNetNuke.Modules.Groups
                 roleInfo.Status = RoleStatus.Approved;
                 userRoleStatus = RoleStatus.Approved;
             }
-            roleInfo.RoleGroupID = DefaultRoleGroupId;
+
+	        var roleGroupId = DefaultRoleGroupId;
+	        if (roleGroupId < Null.NullInteger)
+	        {
+		        roleGroupId = Null.NullInteger;
+	        }
+			roleInfo.RoleGroupID = roleGroupId;
 
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);

@@ -1,4 +1,4 @@
-<%@ Control Inherits="DesktopModules.Admin.Security.Roles" Language="C#" AutoEventWireup="false" CodeFile="Roles.ascx.cs" %>
+<%@ Control Inherits="DesktopModules.Admin.Security.Roles" Language="C#" AutoEventWireup="false" Codebehind="Roles.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnSecurityRoles">
@@ -77,7 +77,7 @@
 (function ($, Sys) {
     function setupDnnRoles() {
         $('#<%= cmdDelete.ClientID %>').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
         	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',

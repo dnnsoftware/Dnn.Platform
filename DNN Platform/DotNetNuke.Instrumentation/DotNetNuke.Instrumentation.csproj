@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Instrumentation</RootNamespace>
     <AssemblyName>DotNetNuke.Instrumentation</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -37,9 +37,9 @@
     <NoWarn>1591, 0649</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,7 +62,7 @@
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="bin\DotNetNuke.Log4Net.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.dll" DestinationFolder="..\..\Website\bin" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.pdb" DestinationFolder="..\..\Website\bin" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.xml" DestinationFolder="..\..\Website\bin" />

@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Modules
         /// Return a list of Modified Search Documents based on date. The documents will be stored in Search Index.
         /// </summary>
         /// <param name="moduleInfo">Module Info</param>
-        /// <param name="beginDate">Provide modified content from this time in Utc</param>
+        /// <param name="beginDateUtc">Provide modified content from this time in Utc</param>
         /// <returns>Collection of SearchDocument</returns>
         /// <remarks>Module must return New, Updated and Deleted Search Documents. 
         /// It is important to include all the relevant Properties for Updated content (sames as supplied for New document), as partial SearchDocument cannot be Updated in Search Index. 
@@ -50,6 +50,6 @@ namespace DotNetNuke.Entities.Modules
         /// Call is performed for every Module Definition defined by the Module. If a module has more than one Module Defition, module must return data for the main Module Defition, 
         /// or else duplicate content may get stored.
         /// Module must include ModuleDefition Id in the SearchDocument. In addition ModuleId and / or TabId can also be specified if module has TabId / ModuleId specific content.</remarks>
-        public abstract IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDate);
+        public abstract IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc);
     }
 }

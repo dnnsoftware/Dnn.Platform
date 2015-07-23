@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Admin.LogViewer.LogViewer" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" CodeFile="LogViewer.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Admin.LogViewer.LogViewer" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" Codebehind="LogViewer.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -14,7 +14,7 @@
 		});
 		$('#dnnLogViewer').dnnPanels();
 		$('#<%= btnClear.ClientID %>').dnnConfirm({
-		    text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ClearLog.Text")) %>',
+		    text: '<%= LocalizeSafeJsString("ClearLog.Text") %>',
 			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
 			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
 			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'

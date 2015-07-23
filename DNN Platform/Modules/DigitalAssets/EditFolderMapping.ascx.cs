@@ -195,7 +195,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                     return;
                 }
 
-                Response.Redirect(Globals.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
+                if (!Response.IsRequestBeingRedirected) 
+                    Response.Redirect(Globals.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {

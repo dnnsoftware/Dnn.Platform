@@ -23,12 +23,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
@@ -136,6 +139,16 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Check if a role is implicit for Module Permissions
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return ModulePermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the ModulePermissions from the Data Store
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -169,9 +182,35 @@ namespace DotNetNuke.Security.Permissions.Controls
             return objModulePermission;
         }
 
+
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         #region Protected Methods
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+            rolePermissionsGrid.ItemDataBound += rolePermissionsGrid_ItemDataBound;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -276,7 +315,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                enabled = role.RoleID != AdministratorRoleId;
+                enabled = !IsImplicitRole(role.PortalID, role.RoleID);
             }
             return enabled;
         }

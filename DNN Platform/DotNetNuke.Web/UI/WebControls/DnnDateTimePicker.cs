@@ -23,7 +23,7 @@
 
 using System;
 using System.Data.SqlTypes;
-
+using System.Globalization;
 using Telerik.Web.UI;
 
 #endregion
@@ -34,6 +34,11 @@ namespace DotNetNuke.Web.UI.WebControls
     {
 		protected override void OnInit(EventArgs e)
 		{
+			if (CultureInfo.CurrentCulture.Name == "ar-SA")
+			{
+				Culture.DateTimeFormat.Calendar = new GregorianCalendar();
+			}
+
 			base.OnInit(e);
 			base.EnableEmbeddedBaseStylesheet = true;
 			Utilities.ApplySkin(this, string.Empty, "DatePicker");

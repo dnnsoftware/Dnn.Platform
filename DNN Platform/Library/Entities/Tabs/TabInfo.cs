@@ -41,6 +41,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -70,13 +71,13 @@ namespace DotNetNuke.Entities.Tabs
         private readonly SharedDictionary<string, string> _localizedTabNameDictionary = new SharedDictionary<string, string>();
         private readonly SharedDictionary<string, string> _fullUrlDictionary = new SharedDictionary<string, string>();
         private string _iconFile;
-        private string _iconFileRaw;
         private string _iconFileLarge;
-        private string _iconFileLargeRaw;
 
         private List<TabAliasSkinInfo> _aliasSkins;
         private Dictionary<string, string> _customAliases;
         private List<TabUrlInfo> _tabUrls;
+        private ArrayList _modules;
+
 
         #endregion
 
@@ -123,7 +124,12 @@ namespace DotNetNuke.Entities.Tabs
             DefaultLanguageGuid = Null.NullGuid;
 
             IsVisible = true;
+            HasBeenPublished = true;
             DisableLink = false;
+
+            Panes = new ArrayList();
+
+            IsSystem = false;
         }
 
         #endregion
@@ -157,6 +163,12 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("haschildren")]
         public bool HasChildren { get; set; }
 
+        [XmlIgnore]
+        public string IconFileRaw { get; private set; }
+
+        [XmlIgnore]
+        public string IconFileLargeRaw { get; private set; }
+
         [XmlElement("isdeleted")]
         public bool IsDeleted { get; set; }
 
@@ -165,6 +177,20 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlElement("visible")]
         public bool IsVisible { get; set; }
+
+        [XmlElement("issystem")]
+        public bool IsSystem { get; set; }
+
+        [XmlIgnore]
+        public bool HasBeenPublished { get; set; }
+
+        [XmlIgnore]
+        public bool HasAVisibleVersion {
+            get
+            {
+			    return HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+            }
+        }
 
         [XmlElement("keywords")]
         public string KeyWords { get; set; }
@@ -176,13 +202,23 @@ namespace DotNetNuke.Entities.Tabs
         public Guid LocalizedVersionGuid { get; set; }
 
         [XmlIgnore]
-        public ArrayList Modules { get; set; }
+        public ArrayList Modules 
+        {
+            get
+            {
+                return _modules ?? (_modules = TabModulesController.Instance.GetTabModules(this));
+            }
+            set
+            {
+                _modules = value;
+            } 
+        }
 
         [XmlElement("pageheadtext")]
         public string PageHeadText { get; set; }
 
         [XmlIgnore]
-        public ArrayList Panes { get; set; }
+        public ArrayList Panes { get; private set; }
 
         [XmlElement("parentid")]
         public int ParentId { get; set; }
@@ -275,13 +311,13 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                IconFileGetter(ref _iconFile, _iconFileRaw);
+                IconFileGetter(ref _iconFile, IconFileRaw);
                 return _iconFile;
             }
 
             set
             {
-                _iconFileRaw = value;
+                IconFileRaw = value;
                 _iconFile = null;
             }
         }
@@ -291,32 +327,14 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                IconFileGetter(ref _iconFileLarge, _iconFileLargeRaw);
+                IconFileGetter(ref _iconFileLarge, IconFileLargeRaw);
                 return _iconFileLarge;
             }
 
             set
             {
-                _iconFileLargeRaw = value;
+                IconFileLargeRaw = value;
                 _iconFileLarge = null;
-            }
-        }
-
-        [XmlIgnore]
-        public string IconFileRaw
-        {
-            get
-            {
-                return _iconFileRaw;
-            }
-        }
-
-        [XmlIgnore]
-        public string IconFileLargeRaw
-        {
-            get
-            {
-                return _iconFileLargeRaw;
             }
         }
 
@@ -771,6 +789,9 @@ namespace DotNetNuke.Entities.Tabs
 
         #region Private Methods
 
+        static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
@@ -782,36 +803,55 @@ namespace DotNetNuke.Entities.Tabs
         /// </history>
         private string CheckIfDoctypeConfigExists()
         {
-            string doctypeConfig = string.Empty;
-            if (!string.IsNullOrEmpty(SkinSrc))
-            {
-                string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
-                string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
-                if (File.Exists(packageFileName) || File.Exists(skinFileName))
-                {
-                    try
-                    {
-                        var xmlSkinDocType = new XmlDocument();
-                        if (File.Exists(skinFileName))
-                        {
-                            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-                            xmlSkinDocType.Load(skinFileName);
-                        }
-                        else
-                        {
-                            // use the skin.doctype.xml file
-                            xmlSkinDocType.Load(packageFileName);
-                        }
-                        string strDocType = xmlSkinDocType.FirstChild.InnerText;
-                        doctypeConfig = strDocType;
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                    }
+            if (string.IsNullOrEmpty(SkinSrc))
+                return string.Empty;
+
+            // loading an XML document from disk for each page request is expensive
+            // let's implement some local caching
+            if (!_docTypeCache.ContainsKey(SkinSrc)) {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _docTypeCacheLock.EnterWriteLock();
+                try {
+
+                    var docType = LoadDocType();
+                    _docTypeCache[SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
+
+                } catch (Exception ex) {
+                    Exceptions.LogException(ex);
+                } finally {
+                    _docTypeCacheLock.ExitWriteLock();
                 }
             }
-            return doctypeConfig;
+
+            // return if file exists from cache
+            _docTypeCacheLock.EnterReadLock();
+            try {
+                return _docTypeCache[SkinSrc];
+            } finally {
+                _docTypeCacheLock.ExitReadLock();
+            }
+        }
+
+        XmlDocument LoadDocType()
+        {
+            var xmlSkinDocType = new XmlDocument();
+
+            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
+            string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
+            if (File.Exists(skinFileName)) {
+                xmlSkinDocType.Load(skinFileName);
+                return xmlSkinDocType;
+            }
+
+            // use the skin.doctype.xml file
+            string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
+            if (File.Exists(packageFileName)) {
+                xmlSkinDocType.Load(packageFileName);
+                return xmlSkinDocType;
+            }
+
+            // no doctype
+            return null;
         }
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
@@ -864,10 +904,11 @@ namespace DotNetNuke.Entities.Tabs
                 PortalID = PortalID,
                 TabName = TabName,
                 IsVisible = IsVisible,
+                HasBeenPublished = HasBeenPublished,
                 ParentId = ParentId,
                 Level = Level,
-                IconFile = _iconFileRaw,
-                IconFileLarge = _iconFileLargeRaw,
+                IconFile = IconFileRaw,
+                IconFileLarge = IconFileLargeRaw,
                 DisableLink = DisableLink,
                 Title = Title,
                 Description = Description,
@@ -886,7 +927,8 @@ namespace DotNetNuke.Entities.Tabs
                 RefreshInterval = RefreshInterval,
                 PageHeadText = PageHeadText,
                 IsSecure = IsSecure,
-                PermanentRedirect = PermanentRedirect
+                PermanentRedirect = PermanentRedirect,
+                IsSystem = IsSystem
             };
 
             if (BreadCrumbs != null)
@@ -908,7 +950,7 @@ namespace DotNetNuke.Entities.Tabs
             clonedTab.CultureCode = CultureCode;
 
             clonedTab.Panes = new ArrayList();
-            clonedTab.Modules = new ArrayList();
+            clonedTab.Modules = _modules;
 
             return clonedTab;
         }
@@ -936,6 +978,7 @@ namespace DotNetNuke.Entities.Tabs
             PortalID = Null.SetNullInteger(dr["PortalID"]);
             TabName = Null.SetNullString(dr["TabName"]);
             IsVisible = Null.SetNullBoolean(dr["IsVisible"]);
+            HasBeenPublished = Null.SetNullBoolean(dr["HasBeenPublished"]);
             ParentId = Null.SetNullInteger(dr["ParentId"]);
             Level = Null.SetNullInteger(dr["Level"]);
             IconFile = Null.SetNullString(dr["IconFile"]);
@@ -958,8 +1001,8 @@ namespace DotNetNuke.Entities.Tabs
             PermanentRedirect = Null.SetNullBoolean(dr["PermanentRedirect"]);
             SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);
             BreadCrumbs = null;
-            Panes = null;
             Modules = null;
+            IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
         }
 
         public string GetCurrentUrl(string cultureCode)

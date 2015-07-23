@@ -525,6 +525,7 @@ ul.buttonList .windowslive a span
 
 .dnnRegistrationForm .password-strength-container, 
 .dnnFormPassword .password-strength-container, 
+.dnnPasswordReset .password-strength-container, 
 .dnnPassword .password-strength-container {
     display: inline-block;
     position: relative;

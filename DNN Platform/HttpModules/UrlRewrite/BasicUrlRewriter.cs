@@ -68,12 +68,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             //'Carry out first time initialization tasks
             Initialize.Init(app);
-            if (request.Url.LocalPath.ToLower().EndsWith("/install/install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/installwizard.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            if (!Initialize.ProcessHttpModule(request, false, false))
             {
                 return;
             }
@@ -273,21 +268,24 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                app.Context.Items.Add("PortalSettingsDictionary", PortalController.GetPortalSettingsDictionary(portalId));
+                app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
-                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect &&
-                    portalAliasInfo != null && !portalAliasInfo.IsPrimary)
+
+                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect 
+                    && portalAliasInfo != null && !portalAliasInfo.IsPrimary
+                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias) // don't redirect if no primary alias is defined
+                ) 
                 {
                     //Permanently Redirect
                     response.StatusCode = 301;
 
-                    string redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
-                    string checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
-                    string redirectUrl = redirectAlias + request.RawUrl;
+                    var redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
+                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
+                    var redirectUrl = string.Concat(redirectAlias, request.RawUrl);
                     if (redirectUrl.StartsWith(checkAlias, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        redirectUrl = redirectAlias + redirectUrl.Substring(checkAlias.Length);
+                        redirectUrl = string.Concat(redirectAlias, redirectUrl.Substring(checkAlias.Length));
                     }
 
                     response.AppendHeader("Location", redirectUrl);

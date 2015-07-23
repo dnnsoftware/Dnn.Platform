@@ -103,7 +103,9 @@ namespace DotNetNuke.Web.Api
                 //prefixCounts are required for each route that is mapped but they only change
                 //when a new portal is added so cache them until that time
 
-                ArrayList portals = PortalController.Instance.GetPortals();
+                
+                var portals = PortalController.Instance.GetPortals();
+               
 
                 var segmentCounts1 = new List<int>();
 

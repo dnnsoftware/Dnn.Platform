@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.Razor
                     var writer = new StringWriter();
                     razorEngine.Render(writer);
 
-                    Controls.Add(new LiteralControl(Server.HtmlDecode(writer.ToString())));
+                    Controls.Add(new LiteralControl(writer.ToString()));
                 }
             }
             catch (Exception ex)

@@ -33,3 +33,8 @@ Quick Links
 * [Community Blogs](http://www.dnnsoftware.com/community-blog)
 * [Extensions Forge](http://www.dnnsoftware.com/Community/Download/DNN-Forge)
 * [DNN Store](http://store.dnnsoftware.com/)
+
+How to Contribute
+-----------------
+We encourage everyone to contribute.
+All the details on contributing with Git and on our working methods can be found on [our Git wiki page] (http://www.dnnsoftware.com/wiki/page/github)

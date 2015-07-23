@@ -42,7 +42,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        #endregion
+	    public override string EditControlClientId
+	    {
+		    get
+		    {
+			    EnsureChildControls();
+			    return TimeZones.ClientID;
+		    }
+	    }
+
+	    #endregion
 
         protected override void CreateChildControls()
         {

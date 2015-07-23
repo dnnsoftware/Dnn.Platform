@@ -244,12 +244,18 @@ namespace DotNetNuke.Services.Social.Notifications
                                                                                       notificationType.Description,
                                                                                       (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
                                                                                       notificationType.DesktopModuleId,
-                                                                                      GetCurrentUserId());
+                                                                                      GetCurrentUserId(), 
+                                                                                      notificationType.IsTask);
         }
 
         public virtual void DeleteNotification(int notificationId)
         {
             _dataService.DeleteNotification(notificationId);
+        }
+
+        public int DeleteUserNotifications(UserInfo user)
+        {
+            return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
         }
 
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
@@ -309,7 +315,9 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
-            return CBO.FillCollection<Notification>(_dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
+            return userId <= 0
+                ? new List<Notification>(0)
+                : CBO.FillCollection<Notification>(_dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
         }
 
         public virtual NotificationType GetNotificationType(int notificationTypeId)

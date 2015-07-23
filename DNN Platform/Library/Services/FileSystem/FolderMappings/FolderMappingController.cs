@@ -52,11 +52,12 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Public Methods
 
-        public FolderMappingInfo GetDefaultFolderMapping(int portalID)
+        public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
-            return Config.GetSection("folder") != null ?
-                GetFolderMappings(portalID).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
-                GetFolderMapping(portalID, "Standard");
+            var defaultFolderMapping = Config.GetSection("dotnetnuke/folder") != null ?
+                GetFolderMappings(portalId).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
+                GetFolderMapping(portalId, "Standard");
+            return defaultFolderMapping ?? GetFolderMapping(portalId, "Standard");
         }
 
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)

@@ -194,10 +194,13 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                imgSize = new Size(original.Width, original.Height);
                 imgHeight = original.Height;
                 imgWidth = original.Width;
             }
+
+            if (imgWidth < 1) imgWidth = 1;
+            if (imgHeight < 1) imgHeight = 1;
+            imgSize = new Size(imgWidth, imgHeight);
 
             var newImg = new Bitmap(imgWidth, imgHeight, format);
             newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);

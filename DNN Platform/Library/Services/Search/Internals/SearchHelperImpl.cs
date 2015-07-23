@@ -18,22 +18,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Entities.Controllers;
 using System.IO;
@@ -51,14 +52,18 @@ namespace DotNetNuke.Services.Search.Internals
         private const string LastIndexKeyFormat = "{0}_{1}";
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/DesktopModules/Admin/SearchAdmin/App_LocalResources/SearchAdmin.ascx";
-        private readonly IList<string> EmptySynonums = new List<string>(0);
+        private readonly IList<string> _emptySynonums = new List<string>(0);
 
         #region SearchType APIs
 
         public IEnumerable<SearchType> GetSearchTypes()
         {
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SearchType>>(cachArg, GetSearchTypesCallBack);
+            return CBO.GetCachedObject<IList<SearchType>>(cachArg,
+                delegate
+                {
+                    return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
+                });
         }
 
         public SearchType GetSearchTypeByName(string searchTypeName)
@@ -83,7 +88,7 @@ namespace DotNetNuke.Services.Search.Internals
             IList<string> synonyms;
             if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLower(), out synonyms))
             {
-                synonyms = EmptySynonums;
+                synonyms = _emptySynonums;
             }
             return synonyms;
         }
@@ -224,22 +229,14 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime GetSearchReindexRequestTime(int portalId)
         {
             var requestedOn = SqlDateTime.MinValue.Value;
-            string reindexRequest;
 
-            if (portalId < 0)
-            {
-                // host level setting
-                reindexRequest = HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString);
-            }
-            else
-            {
-                // portal level setting
-                reindexRequest = PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString);
-            }
+            var reindexRequest = portalId < 0
+                ? HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString) // host level setting
+                : PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString); // portal level setting
 
             if (reindexRequest != Null.NullString)
             {
-                DateTime.TryParseExact(reindexRequest, Constants.ReinsdexDateTimeFormat, null, DateTimeStyles.None, out requestedOn);
+                DateTime.TryParseExact(reindexRequest, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out requestedOn);
             }
 
             return requestedOn;
@@ -248,7 +245,7 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime SetSearchReindexRequestTime(int portalId)
         {
             var now = DateTime.Now;
-            var text = now.ToString(Constants.ReinsdexDateTimeFormat);
+            var text = now.ToString(Constants.ReindexDateTimeFormat);
 
             if (portalId < 0)
             {
@@ -258,7 +255,7 @@ namespace DotNetNuke.Services.Search.Internals
             else
             {
                 // portal level setting
-                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true, string.Empty);
+                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true);
             }
 
             return now;
@@ -303,23 +300,42 @@ namespace DotNetNuke.Services.Search.Internals
             return portals2Reindex.ToArray();
         }
 
+        /// <summary>
+        /// Returns the last time search indexing was completed successfully.
+        /// The returned value in local server time (not UTC).
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
-            var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
-            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value;
-            var lastValue = HostController.Instance.GetString(name, Null.NullString);
-            if (lastValue != Null.NullString)
+            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            var lastValue = settings[Constants.SearchLastSuccessIndexName] as string;
+
+            if (string.IsNullOrEmpty(lastValue))
             {
-                DateTime.TryParseExact(lastValue, Constants.ReinsdexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
+                // try to fallback to old location where this was stored
+                var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
+                lastValue = HostController.Instance.GetString(name, Null.NullString);
+            }
+
+            if (!string.IsNullOrEmpty(lastValue))
+            {
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
+
+                if (lastSuccessfulDateTime <= SqlDateTime.MinValue.Value)
+                    lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
+                else if (lastSuccessfulDateTime >= SqlDateTime.MaxValue.Value)
+                    lastSuccessfulDateTime = SqlDateTime.MaxValue.Value.AddDays(-1);
             }
 
             return lastSuccessfulDateTime;
         }
 
-        public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDate)
+        public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
-            var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
-            HostController.Instance.Update(name, startDate.ToString(Constants.ReinsdexDateTimeFormat));
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
+                Constants.SearchLastSuccessIndexName, startDateLocal.ToString(Constants.ReindexDateTimeFormat));
         }
 
         #endregion
@@ -353,10 +369,10 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
+		/// <param name="allowLeadingWildcard"></param>
         /// <returns>cleaned and pre-processed search phrase</returns>
-        public string RephraseSearchText(string searchPhrase, bool useWildCard)
+		public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
-
             searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
@@ -379,7 +395,7 @@ namespace DotNetNuke.Services.Search.Internals
                         insideQuote = !insideQuote;
                         if (!insideQuote)
                         {
-                            newPhraseBulder.Append(currentWord.ToString() + " ");
+                            newPhraseBulder.Append(currentWord + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -387,7 +403,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (!insideQuote && useWildCard)
                         {
                             // end of a word; we need to append a wild card to search when needed
-                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()) + " ");
+                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -398,25 +414,35 @@ namespace DotNetNuke.Services.Search.Internals
             if (insideQuote)
             {
                 currentWord.Append('"');
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
             else if (useWildCard)
             {
-                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()));
+                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
             }
             else
             {
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
 
             return newPhraseBulder.ToString().Trim().Replace("  ", " ");
+        }
+
+        public string StripTagsNoAttributes(string html, bool retainSpace)
+        {
+            var strippedString = !String.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;
+
+            // Encode and Strip again
+            strippedString = !String.IsNullOrEmpty(strippedString) ? HtmlUtils.StripTags(html, retainSpace) : html;
+
+            return strippedString;
         }
 
         #endregion
 
         #region private methods
 
-        private string FixLastWord(string lastWord)
+		private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
                 return string.Empty;
@@ -451,8 +477,8 @@ namespace DotNetNuke.Services.Search.Internals
                 if (lastWord.Length > 0 && lastWord != "AND" && lastWord != "OR")
                 {
                     lastWord = (beginIsGroup && endIsGroup)
-                        ? string.Format("{0} OR {0}*", lastWord)
-                        : string.Format("({0} OR {0}*)", lastWord);
+						? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
+						: string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
                 if (beginIsGroup) lastWord = c1 + lastWord;
@@ -550,11 +576,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return allTerms;
-        }
-
-        private object GetSearchTypesCallBack(CacheItemArgs cacheItem)
-        {
-            return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
         }
 
         private object GetSearchStopWordsCallBack(CacheItemArgs cacheItem)

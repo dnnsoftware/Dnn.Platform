@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Services.FileSystem;
 
 using System.Xml.Serialization;
+using DotNetNuke.Common.Lists;
 
 #endregion
 
@@ -47,9 +48,9 @@ namespace DotNetNuke.Entities.Users
     /// The UserProfile class provides a Business Layer entity for the Users Profile
     /// </summary>
     [Serializable]
-    public class UserProfile: IIndexable
+    public class UserProfile : IIndexable
     {
-		#region Public Constants
+        #region Public Constants
 
         //Name properties
         public const string USERPROFILE_FirstName = "FirstName";
@@ -80,9 +81,9 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_PreferredTimeZone = "PreferredTimeZone";
         public const string USERPROFILE_Biography = "Biography";
 
-		#endregion
+        #endregion
 
-		#region Private Members
+        #region Private Members
 
         private bool _IsDirty;
 
@@ -91,7 +92,7 @@ namespace DotNetNuke.Entities.Users
         //collection to store all profile properties.
         private ProfilePropertyDefinitionCollection _profileProperties;
 
-		#endregion
+        #endregion
 
         public UserProfile()
         {
@@ -101,9 +102,9 @@ namespace DotNetNuke.Entities.Users
         {
             _user = user;
         }
-		
-		#region Public Properties
-		
+
+        #region Public Properties
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Cell/Mobile Phone
@@ -302,24 +303,7 @@ namespace DotNetNuke.Entities.Users
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    bool isVisible = (user.UserID == _user.UserID);
-                    if (!isVisible)
-                    {
-                        switch (photoProperty.ProfileVisibility.VisibilityMode)
-                        {
-                            case UserVisibilityMode.AllUsers:
-                                isVisible = true;
-                                break;
-                            case UserVisibilityMode.MembersOnly:
-                                isVisible = user.UserID > 0;
-                                break;
-                            case UserVisibilityMode.AdminOnly:
-                                isVisible = user.IsInRole(settings.AdministratorRoleName);
-                                break;
-                            case UserVisibilityMode.FriendsAndGroups:
-                                break;
-                        }
-                    }
+	                bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, _user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
@@ -371,18 +355,18 @@ namespace DotNetNuke.Entities.Users
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
                         if ((fileInfo != null))
                         {
-                            string rootFolder="";
+                            string rootFolder = "";
                             if (fileInfo.PortalId == Null.NullInteger)
-                                {
-                                    //Host
-                                    rootFolder = Globals.HostPath;
-                                }
-                                else
-                                {
-                                    rootFolder = settings.HomeDirectory;
-                                }
-                                photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
-                        }                     
+                            {
+                                //Host
+                                rootFolder = Globals.HostPath;
+                            }
+                            else
+                            {
+                                rootFolder = settings.HomeDirectory;
+                            }
+                            photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
+                        }
                     }
                 }
                 return photoURLFile;
@@ -594,10 +578,10 @@ namespace DotNetNuke.Entities.Users
                 SetProfileProperty(USERPROFILE_Website, value);
             }
         }
-		
+
         #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -648,8 +632,33 @@ namespace DotNetNuke.Entities.Users
             if (profileProp != null)
             {
                 propValue = profileProp.PropertyValue;
+
+                if (profileProp.DataType > -1)
+                {
+                    var controller = new ListController();
+                    var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
+                    if (dataType.Value == "Country" || dataType.Value == "Region")
+                    {
+                        propValue = GetListValue(dataType.Value, propValue);
+                    }
+                }
             }
             return propValue;
+        }
+
+        private string GetListValue(string listName, string value)
+        {
+            ListController lc = new ListController();
+            int entryId;
+            if (int.TryParse(value, out entryId))
+            {
+                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
+                if (item != null)
+                {
+                    return item.Text;
+                }
+            }
+            return value;
         }
 
         /// -----------------------------------------------------------------------------
@@ -702,12 +711,12 @@ namespace DotNetNuke.Entities.Users
         /// 	[cnurse]	02/10/2006	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-		public void SetProfileProperty(string propName, string propValue)
+        public void SetProfileProperty(string propName, string propValue)
         {
             ProfilePropertyDefinition profileProp = GetProperty(propName);
             if (profileProp != null)
             {
-				profileProp.PropertyValue = propValue;
+                profileProp.PropertyValue = propValue;
 
                 //Set the IsDirty flag
                 if (profileProp.IsDirty)
@@ -716,13 +725,13 @@ namespace DotNetNuke.Entities.Users
                 }
             }
         }
-		
-		#endregion
+
+        #endregion
 
         #region Obsolete
 
         [Obsolete("Deprecated in DNN 6.0. Replaced by PreferredTimeZone.")]
-        [Browsable(false)]    
+        [Browsable(false)]
         public int TimeZone
         {
             get
@@ -771,6 +780,11 @@ namespace DotNetNuke.Entities.Users
                     var dateValue = (DateTime)value;
                     stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
                 }
+				else if (value is TimeZoneInfo)
+				{
+					var timezoneValue = (TimeZoneInfo)value;
+					stringValue = timezoneValue.Id;
+				}
                 else
                 {
                     stringValue = Convert.ToString(value);

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Dashboard.Dashboard" CodeFile="Dashboard.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Dashboard.Dashboard" Codebehind="Dashboard.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
@@ -10,9 +10,10 @@
     }
 
     $(document).ready(function () {
-        setUpDashboardTabs();
+        // We are waiting modules tab is ready for runs dnnTabs() method
+        setTimeout(setUpDashboardTabs, 500);
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-            setUpDashboardTabs();
+            setTimeout(setUpDashboardTabs, 500);
         });
     });
 } (jQuery, window.Sys));

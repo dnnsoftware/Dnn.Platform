@@ -96,7 +96,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 ViewState["ScheduleID"] = Request.QueryString["ScheduleID"];
                 ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
                 txtFriendlyName.Text = scheduleItem.FriendlyName;
-                txtType.Enabled = false;
                 txtType.Text = scheduleItem.TypeFullName;
                 chkEnabled.Checked = scheduleItem.Enabled;
                 if (!Null.IsNull(scheduleItem.ScheduleStartDate))
@@ -146,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         private ScheduleItem CreateScheduleItem()
         {
             var scheduleItem = new ScheduleItem();
-            scheduleItem.TypeFullName = txtType.Text;
+            scheduleItem.TypeFullName = txtType.Text.Replace(" ", "");
             scheduleItem.FriendlyName = txtFriendlyName.Text;
             //DNN-4964 - values for time lapse and retry frequency can't be set to 0, -1 or left empty (client side validation has been added)
             scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
@@ -160,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             scheduleItem.ObjectDependencies = txtObjectDependencies.Text;
             scheduleItem.ScheduleStartDate = startScheduleDatePicker.SelectedDate != null
                                                  ? startScheduleDatePicker.SelectedDate.Value
-                                                 : Null.NullDate; 
+                                                 : Null.NullDate;
 
             //if servers are specified, the concatenated string needs to be prefixed and suffixed by commas ( ie. ",SERVER1,SERVER2," )
             var servers = Null.NullString;
@@ -168,14 +167,14 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (!String.IsNullOrEmpty(txtServers.Text))
             {
                 servers = txtServers.Text;
-                
+
             }
-            
+
             if (!string.IsNullOrEmpty(servers))
             {
                 if (!servers.StartsWith(","))
                 {
-                    servers = "," +servers; 
+                    servers = "," + servers;
                 }
                 if (!servers.EndsWith(","))
                 {
@@ -202,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;
@@ -215,17 +214,29 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+
                 if (chkEnabled.Checked)
                 {
                     //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
-                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate!=null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate)<DateTime.Now;
+                    if ((startScheduleDatePicker.SelectedDate ?? Null.NullDate) >= DateTime.Now)
+                    {
+                        cmdRun.Visible = false;
+                    }
+                    else
+                    {
+                        // Hide "Run now" if scheduler should not run on this server
+                        if (!SchedulingController.CanRunOnThisServer(txtServers.Text))
+                        {
+                            cmdRun.Visible = false;
+                        }
+                    }
                 }
                 else
                 {
-                    cmdRun.Enabled = chkEnabled.Checked;
-                    cmdRun.Visible = chkEnabled.Checked;   
+                    cmdRun.Enabled = false;
+                    cmdRun.Visible = false;
                 }
-                
+
 
             }
             catch (Exception exc) //Module failed to load
@@ -244,7 +255,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </history>
         protected void OnDeleteClick(Object sender, EventArgs e)
         {
-            var objScheduleItem = new ScheduleItem {ScheduleID = Convert.ToInt32(ViewState["ScheduleID"])};
+            var objScheduleItem = new ScheduleItem { ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]) };
             SchedulingProvider.Instance().DeleteSchedule(objScheduleItem);
             var strMessage = Localization.GetString("DeleteSuccess", LocalResourceFile);
             UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.GreenSuccess);
@@ -268,6 +279,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             }
         }
 
+
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked
         /// </summary>
@@ -286,7 +298,21 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (ViewState["ScheduleID"] != null)
             {
                 objScheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
-                SchedulingProvider.Instance().UpdateSchedule(objScheduleItem);
+                var scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
+                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || (chkEnabled.Checked) ||
+                    (txtTimeLapse.Text != Convert.ToString(scheduleItem.TimeLapse)) ||
+                    (txtRetryTimeLapse.Text != Convert.ToString(scheduleItem.RetryTimeLapse)) ||
+                    (ddlRetryTimeLapseMeasurement.SelectedValue != scheduleItem.RetryTimeLapseMeasurement) ||
+                    (ddlTimeLapseMeasurement.SelectedValue != scheduleItem.TimeLapseMeasurement))
+                {
+                    SchedulingProvider.Instance().UpdateSchedule(objScheduleItem);     
+                }
+                else
+                {
+                    SchedulingProvider.Instance().UpdateScheduleWithoutExecution(objScheduleItem);
+                                 
+                }
+
             }
             else
             {

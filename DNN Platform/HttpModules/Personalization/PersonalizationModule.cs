@@ -22,7 +22,7 @@
 
 using System;
 using System.Web;
-
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Personalization;
@@ -56,22 +56,22 @@ namespace DotNetNuke.HttpModules.Personalization
 
         public void OnEndRequest(object s, EventArgs e)
         {
-            HttpContext Context = ((HttpApplication) s).Context;
-            HttpRequest Request = Context.Request;
-            //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-            if (Request.Url.LocalPath.ToLower().EndsWith(".aspx") == false && Request.Url.LocalPath.ToLower().EndsWith(".asmx") == false && Request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
+            HttpContext context = ((HttpApplication) s).Context;
+            HttpRequest request = context.Request;
+
+            if (!Initialize.ProcessHttpModule(request, false, false))
             {
                 return;
             }
 			
             //Obtain PortalSettings from Current Context
-            var _portalSettings = (PortalSettings) Context.Items["PortalSettings"];
+            var _portalSettings = (PortalSettings)context.Items["PortalSettings"];
             if (_portalSettings != null)
             {
                 //load the user info object
                 UserInfo UserInfo = UserController.Instance.GetCurrentUserInfo();
                 var personalization = new PersonalizationController();
-                personalization.SaveProfile(Context, UserInfo.UserID, _portalSettings.PortalId);
+                personalization.SaveProfile(context, UserInfo.UserID, _portalSettings.PortalId);
             }
         }
     }

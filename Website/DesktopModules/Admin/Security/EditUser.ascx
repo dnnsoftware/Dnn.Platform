@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Users.EditUser" CodeFile="EditUser.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Users.EditUser" Codebehind="EditUser.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Membership" Src="~/DesktopModules/Admin/Security/Membership.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Password" Src="~/DesktopModules/Admin/Security/Password.ascx" %>
@@ -106,8 +106,6 @@
     } (jQuery, window.Sys));
 </script>
 
-<dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" PathNameAlias="SharedScripts" FilePath="knockout.js" />
-
 <div class="dnnForm dnnEditUser dnnClear" id="dnnEditUser" runat="server" ClientIDMode="Static">
     <ul class="dnnAdminTabNav dnnClear" id="adminTabNav" runat="server">
         <li><a href="#dnnUserDetails"><%=LocalizeString("cmdUser")%></a></li>
@@ -126,6 +124,15 @@
                         <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField="Email" Required="true" />
                    </Items>
                 </dnn:DnnFormEditor>
+                <asp:Panel class="dnnFormItem" ID="HMACRow" runat="server" Visible="True" ViewStateMode="Disabled">
+                   <dnn:Label ID="HMACAppIdLabel" runat="server" />
+                   <asp:Label runat="server" ID="HMACAppId"/><br/>
+			        <dnn:Label ID="HMACAppSecretLabel" runat="server" />
+                    <asp:Label runat="server" ID="HMACAppSecret" />
+                    <ul id="Ul1" runat="server" class="dnnActions dnnClear">
+                        <li><asp:LinkButton id="cmdHMACGenerate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdHMACGenerate" /></li>
+                    </ul>
+                </asp:Panel>
                 <asp:Panel class="dnnFormItem" ID="VanityUrlRow" runat="server" Visible="False" ViewStateMode="Disabled">
                     <dnn:Label ID="VanityUrlLabel" runat="server" />
                     <asp:Label runat="server" ID="VanityUrl" />

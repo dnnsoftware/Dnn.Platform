@@ -23,7 +23,7 @@
                     <asp:TemplateColumn HeaderText="Enabled" HeaderStyle-Width="50px" ItemStyle-HorizontalAlign="Center">
                         <ItemTemplate>
                             <asp:CheckBox ID="isActve" runat="server"
-                                Checked='<%#Eval("IsActive") %>' 
+                                Checked='<%#Eval("IsActive") %>' AutoPostBack="True" OnCheckedChanged="OnChangeProviderStatus"
                                 />
                             <asp:HiddenField ID="urlProviderId" runat="server"
                                 Value='<%#Eval("ExtensionUrlProviderId") %>'/>

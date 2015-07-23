@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Modules.ModuleSettingsPage" CodeFile="Modulesettings.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Modules.ModuleSettingsPage" Codebehind="Modulesettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
@@ -309,7 +309,7 @@
             $('.dnnContainerPreview').dnnPreview({
                 containerSelector: '<%=  moduleContainerCombo.ClientID %>',
                 baseUrl: '<%= DotNetNuke.Common.Globals.NavigateURL(this.TabId) %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= Localization.GetSafeJSString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true

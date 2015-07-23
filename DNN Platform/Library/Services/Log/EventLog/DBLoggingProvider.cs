@@ -31,10 +31,8 @@ using System.Web;
 using System.Xml;
 
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
-using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Scheduling;
 
@@ -111,30 +109,35 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"]);
                 obj.LogGUID = Convert.ToString(dr["LogGUID"]);
-                if (dr["LogPortalID"] != DBNull.Value)
-                {
-                    obj.LogPortalID = Convert.ToInt32(dr["LogPortalID"]);
-                }
-                if (dr["LogPortalName"] != DBNull.Value)
-                {
-                    obj.LogPortalName = Convert.ToString(dr["LogPortalName"]);
-                }
-                if (dr["LogServerName"] != DBNull.Value)
-                {
-                    obj.LogServerName = Convert.ToString(dr["LogServerName"]);
-                }
-                if (dr["LogUserID"] != DBNull.Value)
-                {
-                    obj.LogUserID = Convert.ToInt32(dr["LogUserID"]);
-                }
-                if (dr["LogEventID"] != DBNull.Value)
-                {
-                    obj.LogEventID = Convert.ToInt32(dr["LogEventID"]);
-                }
+                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID));
+                obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName));
+                obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName));
+                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID));
+                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID));
                 obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
                 obj.LogUserName = Convert.ToString(dr["LogUserName"]);
                 obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
                 obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"]));
+                obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion));
+                obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId));
+                obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId));
+                obj.Exception.TabId = Convert.ToInt32(Null.SetNull(dr["TabId"], obj.Exception.TabId));
+                obj.Exception.RawUrl = Convert.ToString(Null.SetNull(dr["RawUrl"], obj.Exception.RawUrl));
+                obj.Exception.Referrer = Convert.ToString(Null.SetNull(dr["Referrer"], obj.Exception.Referrer));
+                obj.Exception.UserAgent = Convert.ToString(Null.SetNull(dr["UserAgent"], obj.Exception.UserAgent));
+                obj.Exception.ExceptionHash = Convert.ToString(Null.SetNull(dr["ExceptionHash"], obj.Exception.ExceptionHash));
+                obj.Exception.Message = Convert.ToString(Null.SetNull(dr["Message"], obj.Exception.Message));
+                obj.Exception.StackTrace = Convert.ToString(Null.SetNull(dr["StackTrace"], obj.Exception.StackTrace));
+                obj.Exception.InnerMessage = Convert.ToString(Null.SetNull(dr["InnerMessage"], obj.Exception.InnerMessage));
+                obj.Exception.InnerStackTrace = Convert.ToString(Null.SetNull(dr["InnerStackTrace"], obj.Exception.InnerStackTrace));
+                obj.Exception.Source = Convert.ToString(Null.SetNull(dr["Source"], obj.Exception.Source));
+                /* DNN-6218 + DNN-6242: DB logging provider throws errors
+                // the view "vw_EventLog" doesn't have these fields or any table in the database
+                obj.Exception.FileName = Convert.ToString(Null.SetNull(dr["FileName"], obj.Exception.FileName));
+                obj.Exception.FileLineNumber = Convert.ToInt32(Null.SetNull(dr["FileLineNumber"], obj.Exception.FileLineNumber));
+                obj.Exception.FileColumnNumber = Convert.ToInt32(Null.SetNull(dr["FileColumnNumber"], obj.Exception.FileColumnNumber));
+                obj.Exception.Method = Convert.ToString(Null.SetNull(dr["Method"], obj.Exception.Method));
+                 */
             }
             catch (Exception exc)
             {
@@ -208,7 +211,8 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    objLogInfo.LogCreateDate,
                                                    objLogInfo.LogServerName,
                                                    logProperties,
-                                                   Convert.ToInt32(objLogInfo.LogConfigID));
+                                                   Convert.ToInt32(objLogInfo.LogConfigID),
+												   objLogInfo.Exception);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
                         LockNotif.AcquireWriterLock(ReaderLockTimeout);

@@ -86,6 +86,7 @@
             if (this._treeView) {
                 this._treeView.selectedId(item ? item.key : null);
             }
+            this.$element.trigger("selectedItemChanged", item);
             
             return item;
         },

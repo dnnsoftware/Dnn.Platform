@@ -310,7 +310,11 @@ div.dnnProductVersion + a.dnnSecondaryAction{
 tr.dnnGridItem td, tr.dnnGridAltItem td{
     border-right: none;
 }
-
+#dnnExtensions table.dnnGrid, #dnnExtensions table.dnnGrid * {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
 
 
 

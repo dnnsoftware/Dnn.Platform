@@ -59,7 +59,7 @@
 	    var trackClicksCheckbox = $get("TrackLink");
 	    var trackUserCheckbox = $get("TrackUser");
 
-		if (linkClickURL != "http:///" && linkClickURL != "https://") {
+		if (linkClickURL != "http:///" && linkClickURL != "http://") {
 			
 			$.ajax({
 				type: 'POST',
@@ -188,7 +188,7 @@
 	            return;
 	        }
 
-	        var href = (_sslEnabled == "true") ? "https://" : "http://"; //"link"
+	        var href = "http://"; //"link"
 
 	        if (currentLink.href) {
 	            href = GetLinkClickURL(currentHref);
@@ -605,7 +605,6 @@
 	var _homeDirectory = parent.dnn.getVar('editorHomeDirectory');
 	var _portalGuid = parent.dnn.getVar('editorPortalGuid');
 	var _enableUrlLanguage = parent.dnn.getVar('editorEnableUrlLanguage');
-	var _sslEnabled = parent.dnn.getVar('sslEnabled');
 </script>
 
 <table cellpadding="0" cellspacing="0" class="reDialog LinkManager NoMarginDialog" style="width: 392px;">

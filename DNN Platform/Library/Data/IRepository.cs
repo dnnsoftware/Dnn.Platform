@@ -47,8 +47,9 @@ namespace DotNetNuke.Data
         /// </summary>
         /// <remarks>Find supports both full SQL statements such as "SELECT * FROM table WHERE ..." 
         /// as well as a SQL condition like "WHERE ..."</remarks>
-        /// <param name="sqlCondition">The sql condition e.g. "WHERE ArticleId = {0}"</param>
+        /// <param name="sqlCondition">The sql condition e.g. "WHERE ArticleId = @0"</param>
         /// <param name="args">A collection of arguments to be mapped to the tokens in the sqlCondition</param>
+        /// <example>Find("where ArticleId = @0 and UserId = @1", articleId, userId)</example>
         /// <returns>A list of items</returns>
         IEnumerable<T> Find(string sqlCondition, params object[] args);
 
@@ -59,7 +60,7 @@ namespace DotNetNuke.Data
         /// as well as a SQL condition like "WHERE ..."</remarks>
         /// <param name="pageIndex">The page Index to fetch</param>
         /// <param name="pageSize">The size of the page to fetch</param>
-        /// <param name="sqlCondition">The sql condition e.g. "WHERE ArticleId = {0}"</param>
+        /// <param name="sqlCondition">The sql condition e.g. "WHERE ArticleId = @0"</param>
         /// <param name="args">A collection of arguments to be mapped to the tokens in the sqlCondition</param>
         /// <returns>A list of items</returns>
         IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args);
@@ -144,8 +145,9 @@ namespace DotNetNuke.Data
         /// <summary>
         /// Update items in the repository based on a sql Condition
         /// </summary>
-        /// <param name="sqlCondition">The sql condition e.g. "SET ArticelName = {0} WHERE ArticleId = {0}"</param>
+        /// <param name="sqlCondition">The sql condition e.g. "SET ArticelName = @1 WHERE ArticleId = @0"</param>
         /// <param name="args">A collection of arguments to be mapped to the tokens in the sqlCondition</param>
+        /// <example>Update("SET Age=@1, Name=@2 WHERE ID=@0", 1, 21, "scooby");</example>
         void Update(string sqlCondition, params object[] args);
     }
 }

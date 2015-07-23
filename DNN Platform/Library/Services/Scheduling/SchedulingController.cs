@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
 using Microsoft.VisualBasic;
+using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -170,15 +171,12 @@ namespace DotNetNuke.Services.Scheduling
         public static Hashtable GetScheduleItemSettings(int ScheduleID)
         {
             var h = new Hashtable();
-            IDataReader r = DataProvider.Instance().GetScheduleItemSettings(ScheduleID);
-            while (r.Read())
+            using(var r = DataProvider.Instance().GetScheduleItemSettings(ScheduleID))
             {
-                h.Add(r["SettingName"], r["SettingValue"]);
-            }
-			//close datareader
-            if (r != null)
-            {
-                r.Close();
+                while (r.Read())
+                {
+                    h.Add(r["SettingName"], r["SettingValue"]);
+                }
             }
             return h;
         }
@@ -257,5 +255,21 @@ namespace DotNetNuke.Services.Scheduling
                                                           objScheduleHistoryItem.LogNotes,
                                                           objScheduleHistoryItem.NextStart);
         }
+
+        public static bool CanRunOnThisServer(string servers)
+        {
+            string lwrServers = "";
+            if (servers != null)
+            {
+                lwrServers = servers.ToLower();
+            }
+            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

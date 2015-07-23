@@ -13,12 +13,10 @@
 using System;
 using System.Collections.Generic;
 //using System.Xml;
-using System.Data.SqlTypes;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -26,7 +24,6 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Search;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 
@@ -47,9 +44,9 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// <summary>
         /// ExportModule implements the IPortable ExportModule Interface
         /// </summary>
-        /// <param name="ModuleID">The Id of the module to be exported</param>
+        /// <param name="moduleID">The Id of the module to be exported</param>
         /// -----------------------------------------------------------------------------
-        public string ExportModule(int ModuleID) {
+        public string ExportModule(int moduleID) {
             //string strXML = "";
 
             //List<JournalInfo> colJournals = GetJournals(ModuleID);
@@ -68,19 +65,19 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             //return strXML;
 
-            throw new System.NotImplementedException("The method or operation is not implemented.");
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ImportModule implements the IPortable ImportModule Interface
         /// </summary>
-        /// <param name="ModuleID">The Id of the module to be imported</param>
-        /// <param name="Content">The content to be imported</param>
-        /// <param name="Version">The version of the module to be imported</param>
-        /// <param name="UserId">The Id of the user performing the import</param>
+        /// <param name="moduleID">The Id of the module to be imported</param>
+        /// <param name="content">The content to be imported</param>
+        /// <param name="version">The version of the module to be imported</param>
+        /// <param name="userId">The Id of the user performing the import</param>
         /// -----------------------------------------------------------------------------
-        public void ImportModule(int ModuleID, string Content, string Version, int UserId) {
+        public void ImportModule(int moduleID, string content, string version, int userId) {
             //XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
             //foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
             //{
@@ -91,107 +88,94 @@ namespace DotNetNuke.Modules.Journal.Components {
             //    AddJournal(objJournal);
             //}
 
-            throw new System.NotImplementedException("The method or operation is not implemented.");
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpgradeModule implements the IUpgradeable Interface
         /// </summary>
-        /// <param name="Version">The current version of the module</param>
+        /// <param name="version">The current version of the module</param>
         /// -----------------------------------------------------------------------------
-        public string UpgradeModule(string Version) {
-            throw new System.NotImplementedException("The method or operation is not implemented.");
+        public string UpgradeModule(string version) {
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         #endregion
 
         #region Implement ModuleSearchBase
 
-        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDate)
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
-            int lastJournalId = Null.NullInteger;
-            if (beginDate == DateTime.MinValue)
-            {
-                beginDate = SqlDateTime.MinValue.Value;
-            }
-
-            if (beginDate > SqlDateTime.MinValue.Value)
-            {
-                beginDate = beginDate.ToUniversalTime();
-            }
+            var lastJournalId = Null.NullInteger;
             try
             {
                 while (true)
                 {
-                    var reader = DataProvider.Instance()
-                                             .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                            moduleInfo.TabModuleID, beginDate, lastJournalId,
-                                                            Constants.SearchBatchSize);
-                    var journalIds = new Dictionary<int, int>();
-
-                    while (reader.Read())
+                    using (var reader = DataProvider.Instance()
+                                                    .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
+                                                        moduleInfo.TabModuleID, beginDateUtc, lastJournalId, Constants.SearchBatchSize))
                     {
-                        var journalId = Convert.ToInt32(reader["JournalId"]);
-                        var journalTypeId = reader["JournalTypeId"].ToString();
-                        var userId = Convert.ToInt32(reader["UserId"]);
-                        var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
-                        var profileId = reader["ProfileId"].ToString();
-                        var groupId = reader["GroupId"].ToString();
-                        var title = reader["Title"].ToString();
-                        var summary = reader["Summary"].ToString();
-                        var securityKey = reader["SecurityKey"].ToString();
-                        var tabId = reader["TabId"].ToString();
-                        var tabModuleId = reader["ModuleId"].ToString();
+                        var journalIds = new Dictionary<int, int>();
 
-                        var key = string.Format("JI_{0}", journalId);
-                        if (searchDocuments.ContainsKey(key))
+                        while (reader.Read())
                         {
-                            searchDocuments[key].UniqueKey +=
-                                string.Format(",{0}", securityKey);
+                            var journalId = Convert.ToInt32(reader["JournalId"]);
+                            //var journalTypeId = reader["JournalTypeId"].ToString();
+                            var userId = Convert.ToInt32(reader["UserId"]);
+                            var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
+                            var profileId = reader["ProfileId"].ToString();
+                            var groupId = reader["GroupId"].ToString();
+                            var title = reader["Title"].ToString();
+                            var summary = reader["Summary"].ToString();
+                            var securityKey = reader["SecurityKey"].ToString();
+                            var tabId = reader["TabId"].ToString();
+                            var tabModuleId = reader["ModuleId"].ToString();
+
+                            var key = string.Format("JI_{0}", journalId);
+                            if (searchDocuments.ContainsKey(key))
+                            {
+                                searchDocuments[key].UniqueKey +=
+                                    string.Format(",{0}", securityKey);
+                            }
+                            else
+                            {
+                                var searchDocument = new SearchDocument
+                                {
+                                    UniqueKey = string.Format("JI_{0}_{1}", journalId, securityKey),
+                                    Body = summary,
+                                    ModifiedTimeUtc = dateUpdated,
+                                    Title = title,
+                                    AuthorUserId = userId,
+                                    Keywords = new Dictionary<string, string>
+                                    {
+                                        {"TabId", tabId},
+                                        {"TabModuleId", tabModuleId},
+                                        {"ProfileId", profileId},
+                                        {"GroupId", groupId}
+                                    }
+                                };
+
+                                searchDocuments.Add(key, searchDocument);
+                            }
+
+                            if (journalId > lastJournalId)
+                            {
+                                lastJournalId = journalId;
+                            }
+
+                            if (!journalIds.ContainsKey(journalId))
+                            {
+                                journalIds.Add(journalId, userId);
+                            }
                         }
-                        else
+
+                        if (journalIds.Count == 0)
                         {
-                            var searchDocument = new SearchDocument()
-                                                     {
-                                                         UniqueKey = string.Format("JI_{0}_{1}", journalId, securityKey),
-                                                         Body = summary,
-                                                         ModifiedTimeUtc = dateUpdated,
-                                                         Title = title,
-                                                         AuthorUserId = userId,
-                                                         Keywords = new Dictionary<string, string>()
-                                                                        {
-                                                                            {"TabId", tabId},
-                                                                            {"TabModuleId", tabModuleId},
-                                                                            {"ProfileId", profileId},
-                                                                            {"GroupId", groupId}
-                                                                        }
-                                                     };
-
-                            searchDocuments.Add(key, searchDocument);
+                            break;
                         }
 
-                        if (journalId > lastJournalId)
-                        {
-                            lastJournalId = journalId;
-                        }
-                        
-                        if (!journalIds.ContainsKey(journalId))
-                        {
-                            journalIds.Add(journalId, userId);
-                        }
-                    }
-
-                    //close the reader
-                    reader.Close();
-
-                    if (journalIds.Count == 0)
-                    {
-                        break;
-                    }
-                    else
-                    {
                         //index comments for this journal
                         AddCommentItems(journalIds, searchDocuments);
                     }
@@ -249,18 +233,17 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public string GetDocUrl(SearchResult searchResult)
         {
-            var url = string.Empty;
+            string url;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
-            var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+            //var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)
             {
-                url = Globals.NavigateURL(tabId, string.Empty, "GroupId=" + groupId,
-                                          "jid=" + journalId);
+                url = Globals.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
             }
             else if (tabId == portalSettings.UserTabId)
             {

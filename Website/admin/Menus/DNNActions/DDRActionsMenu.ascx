@@ -10,7 +10,7 @@
 	(function($) {
 		$(document).ready(function() {
 		    //Regular Confirm
-			var confirmString = "confirm('<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm"))%>')";
+			var confirmString = "confirm('<%= Localization.GetSafeJSString("DeleteModule.Confirm")%>')";
 			$("a[href*=\"" + confirmString +"\"]").attr("href", function () {
 				return $(this).attr("href").replace( /if\(.+?\)\{(.+?)\}/ , "$1");//remove its original confirm function
 			}).dnnConfirm({
@@ -21,7 +21,7 @@
 			});
 
 		    //Module Sharing Confirm
-			confirmString = "confirm('<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("DeleteSharedModule.Confirm"))%>')";
+			confirmString = "confirm('<%= Localization.GetSafeJSString("DeleteSharedModule.Confirm")%>')";
 			$("a[href*=\"" + confirmString +"\"]").attr("href", function () {
 				return $(this).attr("href").replace( /if\(.+?\)\{(.+?)\}/ , "$1");//remove its original confirm function
 			}).dnnConfirm({

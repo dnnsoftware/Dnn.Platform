@@ -56,15 +56,18 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string QueryStringTag = "querystring";
         internal const string NumericKeyPrefixTag = "nk-";
         internal const string KeywordsPrefixTag = "kw-";
+        internal const string SubjectTag = "subject";
+        internal const string CategoryTag = "category";
+        internal const string StatusTag = "status";
         internal const string RoleIdTag = "role";
 
-        internal const string FolderIdTag = "folderid";
-        internal const string FileIdTag = "fileid";
-        internal const string FolderNameTag = "foldername";
-        internal const string FileNameTag = "filename";
+        //internal const string FolderIdTag = "folderid";
+        //internal const string FileIdTag = "fileid";
+        //internal const string FolderNameTag = "foldername";
+        //internal const string FileNameTag = "filename";
 
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
-        internal const string ReinsdexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
         internal static Version LuceneVersion = Version.LUCENE_30;
 
@@ -86,7 +89,17 @@ namespace DotNetNuke.Services.Search.Internals
         //If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
-        internal static string[] KeyWordSearchFields =  new[] {TitleTag, Tag, DescriptionTag, BodyTag, ContentTag };
+        internal readonly static string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
+
+        internal readonly static string[] KeyWordSearchFields = { TitleTag, 
+                                                                Tag, 
+                                                                DescriptionTag, 
+                                                                BodyTag, 
+                                                                ContentTag, 
+                                                                KeywordsPrefixTag + TitleTag,
+                                                                KeywordsPrefixTag + SubjectTag,
+                                                                KeywordsPrefixTag + CommentsTag,
+                                                                KeywordsPrefixTag + AuthorNameTag};
         
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;

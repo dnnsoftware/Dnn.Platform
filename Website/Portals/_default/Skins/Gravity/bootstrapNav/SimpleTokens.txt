@@ -4,7 +4,7 @@
 [>NODE]
 	<li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
 	[?ENABLED]
-		<a href="[=URL]" target="[=TARGET]" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
+		<a href="[=URL]" [?TARGET]target="[=TARGET]"[/?] [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
 	[?ELSE]
 		<a href="#" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
 	[/?]

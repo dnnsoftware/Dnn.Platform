@@ -1,6 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.Language" CodeFile="Language.ascx.cs" ViewStateMode="Disabled" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.Language" ViewStateMode="Disabled" Codebehind="Language.ascx.cs" %>
 <asp:Literal ID="litCommonHeaderTemplate" runat="server" />
-<asp:DropDownList ID="selectCulture" runat="server" AutoPostBack="true" CssClass="NormalTextBox"/>
+<asp:DropDownList ID="selectCulture" runat="server" AutoPostBack="true" CssClass="NormalTextBox" ViewStateMode="Enabled"/>
 <asp:Repeater ID="rptLanguages" runat="server">
     <ItemTemplate><asp:Literal ID="litItemTemplate" runat="server" /></ItemTemplate>
     <AlternatingItemTemplate><asp:Literal ID="litItemTemplate" runat="server" /></AlternatingItemTemplate>

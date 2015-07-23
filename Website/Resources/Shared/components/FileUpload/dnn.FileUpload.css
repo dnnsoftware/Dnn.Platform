@@ -1,7 +1,6 @@
 ﻿.fu-container {
     width: 100%;
     background: #fff;
-    width: 780px;
     margin: 20px 0 0;
 }
 
@@ -40,25 +39,47 @@
     border-left: none;
 }
 
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child > a {
+    border-radius: 3px 0 0 3px;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:last-child > a {
+    border-radius: 0 3px 3px 0;    
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file {
+    background-image: url('../../../../images/icon-upload-file.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file:hover {
+    background-image: url('../../../../images/icon-upload-file_hover.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url {
+    background-image: url('../../../../images/icon-from-url.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url:hover {
+    background-image: url('../../../../images/icon-from-url_hover.png');
+}
+
 .fu-container .fu-dialog-content-header ul.dnnButtonGroup {
     float: left;
 }
 
 .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li a.active {
-    border-color: #999;
-    background: #c6c6c6; /* Old browsers */
-    background: -moz-linear-gradient(top, #c6c6c6 0%, #f3f3f3 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c6c6c6), color-stop(100%,#f3f3f3)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* IE10+ */
-    background: linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* W3C */
-    -webkit-box-shadow: inset 0 1px 5px 0 rgba(0, 0, 0, 0.4);
-    box-shadow: inset 0 1px 5px 0 rgba(0, 0, 0, 0.4);
+    background-color: #f3f3f3;
 }
 
 .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a {
-    padding: 7px 12px 6px 12px;
+    padding: 7px 16px 6px 44px;
+    background-repeat: no-repeat;
+    background-position: 12px 7px;    
+}
+
+.fu-container .dnnDropDownList .selected-item {
+    background: none repeat scroll 0 0 #fff;
+    box-shadow: none;
 }
 
 .fu-container .fu-dialog-content-header > .dnnLeft > span {
@@ -135,7 +156,9 @@
 .fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message span.dnnInputFileWrapper {
     float: none !important;
     text-transform: uppercase;
-	margin: 39px 0 0 0;
+    margin: 0;
+    padding-top: 39px;
+    padding-bottom: 10px;
 }
 
 .fu-container .fu-dialog-content-fileupload-web {
@@ -165,7 +188,7 @@
 }
 
 .fu-container .fu-dialog-content-fileupload-web .fu-dialog-url-upload-area div input {
-    width: 96%;
+    width: 95%;
     margin: 0;
     border-radius: 4px;
 }
@@ -416,3 +439,56 @@ a.fu-fileupload-thumbnail-inactive:hover {
     margin-top: 15px;
     padding-top: 15px;
 }
+
+.fu-container a.dnnSecondaryAction {
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    padding: 8px 20px;
+    background-color: #fff;
+    color: #555;
+    text-decoration: none;
+}
+
+.fu-container ul.dnnButtonGroup {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    cursor: pointer;
+    list-style: none;
+    box-shadow: none;
+}
+
+    .fu-container ul.dnnButtonGroup > li {
+        display: block;
+        float: left;
+        border-left: 1px solid #c9c9c9;
+        margin: 0;
+    }
+
+        .fu-container ul.dnnButtonGroup > li:hover {
+            background-color: #e8f1fa;
+        }
+
+        .fu-container ul.dnnButtonGroup > li.dnnButtonGroup-first {
+            display: none;
+        }
+
+            .fu-container ul.dnnButtonGroup > li.dnnButtonGroup-first + li {
+                border-left: none;
+            }
+
+        .fu-container ul.dnnButtonGroup > li > a {
+            display: inline-block;
+            padding: 7px 7px 6px 7px;
+            text-decoration: none;
+            color: #555 !important;
+            font-size: 12px !important;
+        }
+
+    .fu-container ul.dnnButtonGroup span {
+        color: #333;
+    }

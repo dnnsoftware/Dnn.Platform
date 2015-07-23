@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Xml;
+using DotNetNuke.Services.Exceptions;
 
 #endregion
 
@@ -44,6 +45,7 @@ namespace DotNetNuke.Services.Log.EventLog
             LogUserID = -1;
             LogEventID = -1;
             LogUserName = "";
+			Exception = new ExceptionInfo();
         }
 
         public LogInfo(string content) : this()
@@ -82,6 +84,8 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogServerName { get; set; }
 
         public string LogConfigID { get; set; }
+
+		public ExceptionInfo Exception { get; set; }
 
         #endregion
 
@@ -170,10 +174,10 @@ namespace DotNetNuke.Services.Log.EventLog
                         case "LogServerName":
                             LogServerName = reader.ReadContentAsString();
                             break;
-                        case "LogConfigID":
-                            LogConfigID = reader.ReadContentAsString();
-                            break;
-                    }
+						case "LogConfigID":
+							LogConfigID = reader.ReadContentAsString();
+							break;
+					}
                 }
             }
 			
@@ -186,7 +190,12 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     LogProperties.ReadXml(reader);
                 }
-            }
+			}
+			//Check for Exception child node
+			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
+	        {
+				Exception.ReadXml(reader);
+	        }
         }
 
         public static bool IsSystemType(string PropName)
@@ -234,6 +243,10 @@ namespace DotNetNuke.Services.Log.EventLog
             str.Append("<p><strong>CreateDate:</strong>" + LogCreateDate + "</p>");
             str.Append("<p><strong>ServerName:</strong>" + LogServerName + "</p>");
             str.Append(LogProperties.ToString());
+	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
+	        {
+				str.Append(Exception.ToString());
+			}
             return str.ToString();
         }
 
@@ -252,8 +265,12 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogCreateDateNum", LogCreateDateNum.ToString());
             writer.WriteAttributeString("BypassBuffering", BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", LogServerName);
-            writer.WriteAttributeString("LogConfigID", LogConfigID);
+			writer.WriteAttributeString("LogConfigID", LogConfigID);
             LogProperties.WriteXml(writer);
+	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
+	        {
+		        Exception.WriteXml(writer);
+	        }
             writer.WriteEndElement();
         }
 		

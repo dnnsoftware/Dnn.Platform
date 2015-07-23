@@ -22,16 +22,42 @@
 #endregion
 
 using System;
-using System.Linq;
+using System.Data;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
+using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Data
 {
     internal static class DataUtil
     {
-        #region Internal Methods
+        internal static string GenerateExecuteStoredProcedureSql(string procedureName, params object[] args)
+        {
+            var sb = new StringBuilder(";Exec ");
+            sb.Append(procedureName);
+            for (int i = 0; i < args.Length; i++)
+            {
+                var parameterFormat = " @{0}";
+                string parameterName = null;
+                var param = args[i] as IDataParameter;
+                if (param != null)
+                {
+                    // intentionally adding an extra @ before parameter name, so PetaPoco won't try to match it to a passed-in arg
+                    parameterFormat = " @{1}=@{0}";
+                    parameterName = param.ParameterName;
+                }
+
+                sb.AppendFormat(CultureInfo.InvariantCulture, parameterFormat, i, parameterName);
+                if (i < args.Length - 1)
+                {
+                    sb.Append(",");
+                }
+            }
+
+            return sb.ToString();
+        }
 
         internal static TAttribute GetAttribute<TAttribute>(Type type)
         {
@@ -83,6 +109,16 @@ namespace DotNetNuke.Data
             return (GetAttribute<CacheableAttribute>(type) != null);
         }
 
+        internal static TProperty GetPrimaryKey<TEntity, TProperty>(TEntity item)
+        {
+            Type modelType = typeof(TEntity);
+
+            //Get the primary key
+            var primaryKeyName = GetPrimaryKeyProperty(modelType, String.Empty);
+
+            return GetPropertyValue<TEntity, TProperty>(item, primaryKeyName);
+        }
+
         internal static string GetPrimaryKeyColumn(Type type, string defaultName)
         {
             var primaryKeyName = defaultName;
@@ -109,19 +145,12 @@ namespace DotNetNuke.Data
             return primaryKeyName;
         }
 
-        internal static string GenerateExecuteStoredProcedureSql(string procedureName, params object[] args)
+        internal static TProperty GetPropertyValue<TEntity, TProperty>(TEntity item, string propertyName)
         {
-            var sb = new StringBuilder(";Exec ");
-            sb.Append(procedureName);
-            for (int i = 0; i < args.Count(); i++)
-            {
-                sb.Append(String.Format(" @{0}", i));
-                if (i < args.Count() - 1)
-                {
-                    sb.Append(",");
-                }
-            }
-            return sb.ToString();
+            var modelType = typeof(TEntity);
+            var property = modelType.GetProperty(propertyName);
+
+            return (TProperty)property.GetValue(item, null);
         }
 
         internal static string GetTableName(Type type)
@@ -144,11 +173,9 @@ namespace DotNetNuke.Data
 
         internal static string ReplaceTokens(string sql)
         {
-            return sql.Replace("{databaseOwner}", DataProvider.Instance().DatabaseOwner)
+            var isSqlCe = DataProvider.Instance().Settings.GetValueOrDefault("isSqlCe", false);
+            return sql.Replace("{databaseOwner}", (isSqlCe) ? String.Empty : DataProvider.Instance().DatabaseOwner)
                         .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
         }
-
-        #endregion
-
     }
 }

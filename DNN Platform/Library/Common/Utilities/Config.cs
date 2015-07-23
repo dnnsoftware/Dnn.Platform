@@ -23,12 +23,10 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Web.Configuration;
-using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.XPath;
-
-using DotNetNuke.Application;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -88,11 +86,11 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
-            XmlElement xmlElement;
             //retrieve the appSettings node 
             XmlNode xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
             if (xmlAppSettings != null)
             {
+                XmlElement xmlElement;
                 //get the node based on key
                 XmlNode xmlNode = xmlAppSettings.SelectSingleNode(("//add[@key='" + key + "']"));
                 if (update && xmlNode != null)
@@ -168,7 +166,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void BackupConfig()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+            string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             //save the current config files
             try
             {
@@ -609,10 +607,11 @@ namespace DotNetNuke.Common.Utilities
 
         public static string Save(XmlDocument xmlDoc, string filename)
         {
+            var retMsg = string.Empty;
             try
             {
-                string strFilePath = Globals.ApplicationMapPath + "\\" + filename;
-                FileAttributes objFileAttributes = FileAttributes.Normal;
+                var strFilePath = Globals.ApplicationMapPath + "\\" + filename;
+                var objFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
                     //save current file attributes
@@ -620,23 +619,49 @@ namespace DotNetNuke.Common.Utilities
                     //change to normal ( in case it is flagged as read-only )
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
-                //save the config file
-                var settings = new XmlWriterSettings {CloseOutput = true, Indent = true};
-                //var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
-                var writer = XmlWriter.Create(strFilePath, settings);        
-                xmlDoc.WriteTo(writer);
-                writer.Flush();
-                writer.Close();
+
+                // Attempt a few times in case the file was locked; occurs during modules' installation due
+                // to application restarts where IIS can overlap old application shutdown and new one start.
+                const int maxRetires = 4;
+                const double miltiplier = 2.5;
+                for (var retry = maxRetires; retry >= 0; retry--)
+                {
+                    try
+                    {
+                        //save the config file
+                        var settings = new XmlWriterSettings { CloseOutput = true, Indent = true };
+                        using (var writer = XmlWriter.Create(strFilePath, settings))
+                        {
+                            xmlDoc.WriteTo(writer);
+                            writer.Flush();
+                            writer.Close();
+                        }
+                        break;
+                    }
+                    catch (IOException exc)
+                    {
+                        if (retry == 0)
+                        {
+                            Logger.Error(exc);
+                            retMsg = exc.Message;
+                        }
+
+                        // try incremental delay; maybe the file lock is released by then
+                        Thread.Sleep(((int)(miltiplier * (maxRetires - retry + 1)) * 1000));
+                    }
+                }
+
                 //reset file attributes
                 File.SetAttributes(strFilePath, objFileAttributes);
-                return "";
             }
             catch (Exception exc)
             {
-                //the file permissions may not be set properly
+                // the file permissions may not be set properly
                 Logger.Error(exc);
-                return exc.Message;
+                retMsg = exc.Message;
             }
+
+            return retMsg;
         }
 
         public static bool Touch()
@@ -703,7 +728,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string UpdateMachineKey()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument();
             string strError = "";
 
@@ -750,7 +775,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string UpdateValidationKey()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument();
             string strError = "";
 
@@ -854,7 +879,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // we need to add the InstallVersion
 
-                string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+				string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument();
                 //save the current config files
                 BackupConfig();
@@ -900,7 +925,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string AddFCNMode(FcnMode fcnMode)
         {
-            string strError = "";
+            const string strError = "";
             var xmlConfig = new XmlDocument();
             try
             {

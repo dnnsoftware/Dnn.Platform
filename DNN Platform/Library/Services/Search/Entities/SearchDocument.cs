@@ -23,8 +23,6 @@
 using System;
 using System.Collections.Generic;
 
-using DotNetNuke.Common.Utilities;
-
 #endregion
 
 namespace DotNetNuke.Services.Search.Entities
@@ -34,13 +32,8 @@ namespace DotNetNuke.Services.Search.Entities
     /// </summary>
     /// <remarks>Each document is one discrete unit of content to be indexed and is independent from other Documents</remarks>
     [Serializable]
-    public class SearchDocument
+    public class SearchDocument : SearchDocumentToDelete
     {
-        /// <summary>
-        /// A key to uniquely identify a document in the Index
-        /// </summary>
-        public string UniqueKey { get; set; }
-
         /// <summary>
         /// Content's Title      
         /// </summary>
@@ -59,12 +52,6 @@ namespace DotNetNuke.Services.Search.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// RoleId (GroupId) for additional filtering [Optional]
-        /// </summary>
-        /// <remarks> This property can be used while under Social Groups.</remarks>
-        public int RoleId { get; set; }
-
-        /// <summary>
         ///Content's Body
         /// </summary>
         /// <remarks>
@@ -79,40 +66,6 @@ namespace DotNetNuke.Services.Search.Entities
         public string Url { get; set; }
 
         /// <summary>
-        /// Portal Id
-        /// </summary>
-        public int PortalId { get; set; }
-
-        /// <summary>
-        /// Tab Id of the Content [Optional]
-        /// </summary>
-        public int TabId { get; set; }
-
-        /// <summary>
-        /// Module Definition Id of the Content.
-        /// </summary>
-        /// <remarks>This is needed when SearchTypeId is for a Module</remarks>
-        public int ModuleDefId { get; set; }
-
-        /// <summary>
-        /// Module Id of the Content
-        /// </summary>
-        /// <remarks>This is needed when SearchTypeId is for a Module</remarks>
-        public int ModuleId { get; set; }
-
-        /// <summary>
-        /// User Id of the Author
-        /// </summary>
-        /// <remarks>Author's display name is automatically found and stored. AuthorName can be found in SearchResult. 
-        /// However, this may get out of date if Display Name is changed after Index.</remarks>
-        public int AuthorUserId { get; set; }
-
-        /// <summary>
-        /// Search Type Id, e.g. module, file or url
-        /// </summary>
-        public int SearchTypeId { get; set; }
-
-        /// <summary>
         /// Time when Content was last modified (in Utc)
         /// </summary>
         public DateTime ModifiedTimeUtc { get; set; }
@@ -121,12 +74,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// Flag to indicate if Content is Active or Not. Content will be deleted from Index when IsActive = false. Default is True.
         /// </summary>
         public bool IsActive { get; set; }
-
-        /// <summary>
-        /// QueryString that may be associated with a Search Document. 
-        /// </summary>
-        /// <remarks>This information will be used to creare Url for the document</remarks>
-        public string QueryString { get; set; }
 
         /// <summary>
         /// A string representation of roles and users who have view (or denied view) permissions
@@ -140,52 +87,34 @@ namespace DotNetNuke.Services.Search.Entities
         public string Permissions { get; set; }
 
         /// <summary>
-        /// Additional keywords can be specified for Indexing
-        /// </summary>
-        /// <remarks>This is key-value pair, e.g. "AliasName","something"</remarks>
-        public IDictionary<string, string> Keywords { get; set; }
-
-        /// <summary>
-        /// Additional numeric fields can be specified for Indexing
-        /// </summary>
-        /// <remarks>This is key-value pair, e.g. "ItemId","888"</remarks>
-        public IDictionary<string, int> NumericKeys { get; set; }
-
-        /// <summary>
         /// Tags can be specified as additional information
         /// </summary>
         public IEnumerable<string> Tags { get; set; }
 
-        /// <summary>
-        /// Culture Code associated with the content. 
-        /// </summary>
-        public string CultureCode { get; set; }
-
         #region constructor
+
         public SearchDocument()
         {
-            Keywords = new Dictionary<string, string>();
-            NumericKeys = new Dictionary<string, int>();
             Tags = new string[0];
             IsActive = true;
-            CultureCode = string.Empty;
         }
-        #endregion 
+
+        #endregion
 
         public override string ToString()
         {
-            var data = new string[]
-                {
-                    "Portal ID: " + PortalId.ToString(),
-                    "Tab ID: " + TabId.ToString(),
-                    "Module ID: " + ModuleId.ToString(),
-                    "Mod. Def.ID: " + ModuleDefId.ToString(),
-                    "Url: " + Url,
-                    "Unique Key: " + UniqueKey,
-                    "Last Modified: " + ModifiedTimeUtc.ToString("o"),
-                    "Culture: " + CultureCode,
-                };
-            return string.Join(", ", data);
+            return string.Join(", ", new[]
+            {
+                "Portal ID: " + PortalId,
+                "Tab ID: " + TabId,
+                "Module ID: " + ModuleId,
+                "Mod. Def.ID: " + ModuleDefId,
+                "Url: " + Url,
+                "Unique Key: " + UniqueKey,
+                "Last Modified: " + ModifiedTimeUtc.ToString("O"),
+                "Culture: " + CultureCode,
+                "Search Type: " + SearchTypeId
+            });
         }
     }
 }

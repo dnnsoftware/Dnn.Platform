@@ -19,12 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI.HtmlControls;
-
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.Web.Components.Controllers;
-using DotNetNuke.Web.Components.Controllers.Models;
-
 #region Usings
 
 using System;
@@ -33,8 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
@@ -46,15 +40,15 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
-
+using DotNetNuke.Services.Personalization;
+using DotNetNuke.Web.Components.Controllers;
+using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -141,13 +135,13 @@ namespace DotNetNuke.UI.ControlPanels
                 helpLink.Text = string.Format(@"<li><a href=""{0}"" target=""_blank"">{1}</a></li>", Host.HelpURL, GetString("Tool.Help.ToolTip"));
             }
 
-            LoginUrl = ResolveClientUrl("~/Login.aspx");
+            LoginUrl = ResolveClientUrl(@"~/Login.aspx");
 
             if (ControlPanel.Visible && IncludeInControlHierarchy)
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/ControlPanel/ControlBar.css");
-                jQuery.RegisterDnnJQueryPlugins(this.Page);
-                ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.controlBar.js");
+                ClientResourceManager.RegisterStyleSheet(Page, "~/admin/ControlPanel/ControlBar.css");
+                jQuery.RegisterDnnJQueryPlugins(Page);
+                ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.controlBar.js");
 
                 // Is there more than one site in this group?
                 var multipleSites = GetCurrentPortalsGroup().Count() > 1;
@@ -232,10 +226,8 @@ namespace DotNetNuke.UI.ControlPanels
 			{
 				return UrlUtils.PopUpUrl(previewUrl, this, PortalSettings, true, false, 660, 800);
 			}
-			else
-			{
-				return string.Format("location.href = \"{0}\"", previewUrl);
-			}
+
+            return string.Format("location.href = \"{0}\"", previewUrl);
 		}
 
         protected IEnumerable<string[]> LoadPaneList()
@@ -531,8 +523,8 @@ namespace DotNetNuke.UI.ControlPanels
                                             ClientAPI.GetSafeJSString(tab.TabName),
 											linkClass);
                 }
-                else
-					return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
+
+                return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
                                         tab.FullUrl,
                                         name,
                                         ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")),
@@ -598,12 +590,8 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetBookmarkItems(string title)
         {
-            List<string> bookmarkItems;
-            bool isHostTool = title == "host";
-            if (isHostTool) 
-                bookmarkItems = HostBookmarkItems;
-            else
-                bookmarkItems = AdminBookmarkItems;
+            var isHostTool = title == "host";
+            var bookmarkItems = isHostTool ? HostBookmarkItems : AdminBookmarkItems;
             
             if(bookmarkItems != null && bookmarkItems.Any())
             {
@@ -632,16 +620,17 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var portals = PortalController.Instance.GetPortals();
 
-            List<string[]> result = new List<string[]>();
+            var result = new List<string[]>();
             foreach (var portal in portals)
             {
-                PortalInfo pi = portal as PortalInfo;
+                var pi = portal as PortalInfo;
 
                 if (pi != null)
                 {
-                    string[] p = new string[]{
+                    string[] p =
+                    {
                         pi.PortalName,
-                        pi.PortalID.ToString()
+                        pi.PortalID.ToString("D")
                     };
 
                     result.Add(p);
@@ -659,7 +648,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if(CurrentUICulture  == null)
                 {
-                    object oCulture = DotNetNuke.Services.Personalization.Personalization.GetProfile("Usability", "UICulture");
+                    object oCulture = Personalization.GetProfile("Usability", "UICulture");
                     
                     if (oCulture != null)
                     {
@@ -697,7 +686,7 @@ namespace DotNetNuke.UI.ControlPanels
              {
                  if (CurrentUICulture == null)
                  {
-                     object oCulture = DotNetNuke.Services.Personalization.Personalization.GetProfile("Usability", "UICulture");
+                     object oCulture = Personalization.GetProfile("Usability", "UICulture");
 
                      if (oCulture != null)
                      {
@@ -771,7 +760,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         #region Private Methods
 
-        private string LocalResourceFile
+        private new string LocalResourceFile
         {
             get
             {
@@ -867,7 +856,7 @@ namespace DotNetNuke.UI.ControlPanels
 			if (lastPageId != pageId && !isShowAsCustomError)
             {
                 // navigate between pages
-                if (PortalSettings.Current.UserMode != Entities.Portals.PortalSettings.Mode.View)
+                if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
                 {
                     SetUserMode("VIEW");
                     SetLastPageHistory(pageId);
@@ -883,8 +872,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void SetLastPageHistory(string pageId)
         {
-            HttpCookie newCookie = new HttpCookie("LastPageId", pageId);
-            Response.Cookies.Add(newCookie);
+            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
         }
 
         private string GetLastPageHistory()
@@ -900,7 +888,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             if (update)
             {
-                DotNetNuke.Services.Personalization.Personalization.SetProfile("Usability", "UICulture", currentCulture);
+                Personalization.SetProfile("Usability", "UICulture", currentCulture);
             }
         }
 
@@ -946,7 +934,7 @@ namespace DotNetNuke.UI.ControlPanels
                     var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + PortalSettings.PortalId);
 
                     _adminBookmarkItems = bookmarkItems != null 
-                                                ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                                ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() 
                                                 : new List<string>();
                 }
 
@@ -964,7 +952,7 @@ namespace DotNetNuke.UI.ControlPanels
                     var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + PortalSettings.PortalId);
 
                     _hostBookmarkItems = bookmarkItems != null 
-                                            ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                            ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() 
                                             : new List<string>();
                 }
 

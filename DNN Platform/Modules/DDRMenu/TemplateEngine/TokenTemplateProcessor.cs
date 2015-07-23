@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 					if (nodeName != "else")
 					{
 						elt = xml.CreateElement("when", xmlNs);
-						var test = String.Format("{0} or (@{0}=1)", nodeName);
+                        var test = String.Format("{0} or (@{0}=1) or (@{0}!=0 and @{0}!=1 and @{0}!='')", nodeName);
 						if (directive == "?!")
 						{
 							test = String.Format("not({0})", test);

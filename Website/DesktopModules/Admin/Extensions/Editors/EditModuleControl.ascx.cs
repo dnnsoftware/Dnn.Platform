@@ -21,11 +21,10 @@
 #region Usings
 
 using System;
-using System.Activities.Expressions;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -142,6 +141,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                 AddFiles(root, "*.ascx");
                 AddFiles(root, "*.cshtml");
                 AddFiles(root, "*.vbhtml");
+                AddFiles(root, "*.html");
             }
         }
 
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 
             foreach (var folder in controlfolders)
             {
-                  var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly).Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml")|| s.EndsWith(".vbhtml"));
+                var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly).Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml") || s.EndsWith(".vbhtml") || s.EndsWith(".html") || s.EndsWith(".htm"));
                     if (moduleControls > 0)
                     {
                         var shortFolder =folder.Substring(Request.MapPath(Globals.ApplicationPath).Length + 1).Replace('\\', '/');

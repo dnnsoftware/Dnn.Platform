@@ -29,29 +29,54 @@ else if (Sys.Browser.agent === Sys.Browser.InternetExplorer && Sys.Browser.versi
 //this code can be safe removed after jQuery UI library upgrade to 1.11.
 if ($ && $.ui && $.ui.dialog) {
     $.extend($.ui.dialog.prototype.options, {
-        open: function(event, ui) {
+        open: function () {
             var htmlElement = $(document).find('html');
             htmlElement.css('overflow', 'hidden');
-            var cacheScrollTop = htmlElement.scrollTop();
+            var cacheScrollTop = htmlElement.find('body').scrollTop();
             if (cacheScrollTop > 0) {
                 htmlElement.scrollTop(0);
                 var target = $(this);
                 target.data('cacheScrollTop', cacheScrollTop);
-                //move the dialog up
-                var position = target.closest('.ui-dialog').offset();
-                if (position.top + target.closest('.ui-dialog').height() > htmlElement[0].clientHeight) {
-                    target.dialog('option', 'position', 'center');
+            }
+
+            var uiDialog = $(this).closest('.ui-dialog');
+            if (!$('html').hasClass('mobileView')) {
+                var maxHeight = $(window).height();
+                var dialogHeight = uiDialog.outerHeight();
+                if (maxHeight - 20 >= dialogHeight) {
+                    uiDialog.css({
+                        position: 'fixed',
+                        left: '50%',
+                        top: '50%',
+                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
+                        marginTop: '-' + (uiDialog.outerHeight() / 2) + 'px',
+                        maxHeight: 'inherit',
+                        overflow: 'initial'
+                    });
+                } else {
+                    uiDialog.css({
+                        position: 'fixed',
+                        left: '50%',
+                        top: '0',
+                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
+                        marginTop: '0',
+                        maxHeight: (maxHeight - 20) + 'px',
+                        overflow: 'auto'
+                    });
                 }
             }
         },
-        beforeClose: function(event, ui) {
+
+        beforeClose: function () {
             var htmlElement = $(document).find('html');
             htmlElement.css('overflow', '');
             var cacheScrollTop = $(this).data('cacheScrollTop');
             if (cacheScrollTop) {
-                htmlElement.scrollTop(cacheScrollTop);
+                htmlElement.find('body').scrollTop(cacheScrollTop);
                 $(this).data('cacheScrollTop', null);
             }
+			var uiDialog = $(this).closest('.ui-dialog');
+            uiDialog.css({ overflow: 'initial' });
         }
     });
 }
@@ -96,7 +121,7 @@ dnn.extend(dnn, {
 
             if (ctl != null) {
                 if (ctl.value.indexOf('`') == 0)
-                    ctl.value = ctl.value.substring(1).replace( /`/g , '"');
+                    ctl.value = ctl.value.substring(1).replace(/`/g, '"');
 
                 if (ctl.value.indexOf('__scdoff') != -1) //back compat
                 {
@@ -338,8 +363,8 @@ dnn.extend(dnn, {
         if (dnn._delayedSet)
             dnn.setVar(dnn._delayedSet.key, dnn._delayedSet.val);
     },
-    
-    addIframeMask: function(ele) { //add an iframe behind the element, so that element will not mask by some special objects.
+
+    addIframeMask: function (ele) { //add an iframe behind the element, so that element will not mask by some special objects.
         if (dnn.dom.browser.isType('ie') && (ele.previousSibling == null || ele.previousSibling.nodeName.toLowerCase() != "iframe")) {
             var mask = document.createElement("iframe"); //"$("<iframe src=\"about:blank\" frameborder=\"0\"></iframe>");
             ele.parentNode.insertBefore(mask, ele);
@@ -358,7 +383,7 @@ dnn.extend(dnn, {
 
         return null;
     },
-    removeIframeMask: function(ele) {
+    removeIframeMask: function (ele) {
         if (dnn.dom.browser.isType('ie') && (ele.previousSibling != null && ele.previousSibling.nodeName.toLowerCase() == "iframe")) {
             ele.parentNode.removeChild(ele.previousSibling);
         }
@@ -611,7 +636,7 @@ dnn.extend(dnn.dom, {
                             i++;
                         }
                     }
-                    // Handle text areas.
+                        // Handle text areas.
                     else if (tagName == "textarea") {
                         var i = ctl.value.length + 1;
                         var oCaret = document.selection.createRange().duplicate();
@@ -1005,8 +1030,13 @@ dnn.extend(dnn.dom, {
 
     getScriptPath: function () {
         var oThisScript = dnn.dom.getScript('dnn.js');
-        if (oThisScript)
-            return oThisScript.src.replace('dnn.js', '');
+        if (oThisScript) {
+            var path = oThisScript.src;
+            if (path.indexOf('?') > -1) {
+                path = path.substr(0, path.indexOf('?'));
+            }
+            return path.replace('dnn.js', '');
+        }
         var sSP = dnn.getVar('__sp');   //try and get from var
         if (sSP)
             return sSP;
@@ -1109,7 +1139,7 @@ dnn.extend(dnn.dom, {
             sExpires = new Date();
             sExpires.setTime(sExpires.getTime() + (days * 24 * 60 * 60 * 1000));
         }
-        
+
         if (milliseconds) {
             sExpires = new Date();
             sExpires.setTime(sExpires.getTime() + (milliseconds));

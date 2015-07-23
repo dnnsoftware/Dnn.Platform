@@ -30,13 +30,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -46,7 +42,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Log.EventLog;
@@ -813,7 +808,7 @@ namespace DotNetNuke.Services.Localization
             string name;
 
             // Create a CultureInfo class based on culture
-            CultureInfo info = CultureInfo.CreateSpecificCulture(code);
+            CultureInfo info = CultureInfo.GetCultureInfo(code);
 
             // Based on the display type desired by the user, select the correct property
             switch (displayType)
@@ -1269,7 +1264,13 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            return !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
+            var safeString = !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
+			if (!string.IsNullOrEmpty(safeString))
+	        {
+				safeString = safeString.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+	        }
+
+			return safeString;
         }
 
         /// <summary>
@@ -1985,7 +1986,7 @@ namespace DotNetNuke.Services.Localization
         {
             try
             {
-                HttpResponse response = HttpContext.Current.Response;
+                var response = HttpContext.Current == null ? null : HttpContext.Current.Response;
                 if (response == null)
                 {
                     return;
@@ -1997,7 +1998,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("language", value);
+                        cookie = new HttpCookie("language", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
                         response.Cookies.Add(cookie);
                     }
                 }
@@ -2035,6 +2036,9 @@ namespace DotNetNuke.Services.Localization
             {
                 throw new ArgumentNullException("cultureInfo");
             }
+
+            if (cultureInfo.Name == "fa-IR")
+                cultureInfo = Persian.PersianController.GetPersianCultureInfo();
 
             Thread.CurrentThread.CurrentCulture = cultureInfo;
 

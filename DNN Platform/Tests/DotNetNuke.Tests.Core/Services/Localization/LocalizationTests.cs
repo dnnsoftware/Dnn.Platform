@@ -21,6 +21,7 @@
 
 using System;
 using System.Web;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Tests.Utilities;
 using Moq;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
     {
         private Mock<HttpContextBase> _mockHttpContext;
         private HttpContextBase _httpContext;
-        private readonly string[] _standardCultureCodes = new [] {"en-US", "de-DE", "fr-CA"};
+        private readonly string[] _standardCultureCodes = new[] { "en-US", "de-DE", "fr-CA", "Lt-sr-SP", "kok-IN"};
 
         [SetUp]
         public void Setup()
@@ -131,6 +132,31 @@ namespace DotNetNuke.Tests.Core.Services.Localization
 
             //Assert
             Assert.AreEqual(ret, "fr-FR");
+        }
+
+
+        [Test]
+        [TestCase("My/Path/To/File with.locale-extension")]
+        [TestCase("My\\Path\\To\\File with.locale-extension")]
+        public void ParseLocaleFromResxFileName(string fileName)
+        {
+            foreach (var standardCultureCode in _standardCultureCodes)
+            {
+                var f = fileName + "." + standardCultureCode + ".resx";
+                Assert.AreEqual(f.GetLocaleCodeFromFileName(), standardCultureCode);               
+            }
+        }
+
+        [Test]
+        [TestCase("My/Path/To/File with.locale-extension")]
+        [TestCase("My\\Path\\To\\File with.locale-extension")]
+        public void ParseFileNameFromResxFile(string fileName)
+        {
+            foreach (var standardCultureCode in _standardCultureCodes)
+            {
+                var f = fileName + "." + standardCultureCode + ".resx";
+                Assert.AreEqual(f.GetFileNameFromLocalizedResxFile(), fileName);
+            }
         }
     }
 }

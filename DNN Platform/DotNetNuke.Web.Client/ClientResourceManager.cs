@@ -1,4 +1,4 @@
-#region Copyright
+﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -41,6 +41,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.IO;
 	using System.Web.UI;
 	using ClientDependency.Core;
+    using System.Collections.Generic;
+    using System.Threading;
 
     /// <summary>
     /// Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.
@@ -51,6 +53,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
         internal const string DefaultJsProvider = "DnnBodyProvider";
 
+        static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
+        static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
+
         #region Private Methods
 
         private static bool FileExists(Page page, string filePath)
@@ -58,7 +63,24 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
             filePath = RemoveQueryString(filePath);
 
-            return IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+            // cache css file paths
+            if (!_fileExistsCache.ContainsKey(filePath)) {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _lockFileExistsCache.EnterWriteLock();
+                try {
+                    _fileExistsCache[filePath] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                } finally {
+                    _lockFileExistsCache.ExitWriteLock();
+                }
+            }
+
+            // return if file exists from cache
+            _lockFileExistsCache.EnterReadLock();
+            try {
+                return _fileExistsCache[filePath];
+            } finally {
+                _lockFileExistsCache.ExitReadLock();
+            }
         }
 
         private static bool IsAbsoluteUrl(string url)
@@ -170,10 +192,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                                             </fileRegistration>
                                             <compositeFiles defaultFileProcessingProvider=""DnnCompositeFileProcessor"" compositeFileHandlerPath=""~/DependencyHandler.axd"">
                                               <fileProcessingProviders>
-                                                <add name=""CompositeFileProcessor"" type=""ClientDependency.Core.CompositeFiles.Providers.CompositeFileProcessingProvider, ClientDependency.Core"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""MappedId"" />
-                                                <!-- For webfarms remove the above CompositeFileProcessor and uncomment this section
-                                                <add name=""CompositeFileProcessor"" type=""ClientDependency.Core.CompositeFiles.Providers.CompositeFileProcessingProvider, ClientDependency.Core"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""Base64QueryStrings"" />
-                                                -->
+                                                <!-- For webfarms update the urlType attribute to Base64QueryStrings, default setting is MappedId -->
                                                 <add name=""DnnCompositeFileProcessor"" type=""DotNetNuke.Web.Client.Providers.DnnCompositeFileProcessingProvider, DotNetNuke.Web.Client"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""MappedId"" />
                                               </fileProcessingProviders>
                                             </compositeFiles>
@@ -286,7 +305,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false };
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath};
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -348,10 +367,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     filePath = filePathSansQueryString;
                 }
             }
+			else if (filePath.Contains("WebResource.axd"))
+			{
+				fileExists = true;
+			}
 
             if (fileExists || FileExists(page, filePath))
             {
-                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false};
+                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath,};
                 var loader = page.FindControl("ClientResourceIncludes");
 
                 if (loader != null)

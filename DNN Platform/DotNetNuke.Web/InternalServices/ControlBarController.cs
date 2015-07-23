@@ -23,12 +23,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -103,9 +101,11 @@ namespace DotNetNuke.Web.InternalServices
             public string Language { get; set; }
         }
 
+
+
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm)
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "", bool sortBookmarks = false, string topModule = "")
         {
             if (string.IsNullOrEmpty(category))
             {
@@ -117,6 +117,22 @@ namespace DotNetNuke.Web.InternalServices
 
             var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct() 
                                             : Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
+
+            if (!string.IsNullOrEmpty(excludeCategories))
+            {
+                var excludeList = excludeCategories.ToLowerInvariant().Split(',');
+                filteredList =
+                    filteredList.Where(kvp => 
+                        !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
+            }
+            if(sortBookmarks)
+            {
+                //sort bookmarked modules
+                filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
+                //move Html on top
+                filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
+                                Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
+            }
 
             filteredList = filteredList
                 .Skip(loadingStartIndex)
@@ -203,9 +219,9 @@ namespace DotNetNuke.Web.InternalServices
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
             var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
-            var pageModules = isRemote 
-                                ? tabModules.Values.Where(m => ModuleSupportsSharing(m)).ToList() 
-                                : tabModules.Values.Where(m => ModulePermissionController.CanAdminModule(m) && m.IsDeleted == false).ToList();
+            var pageModules = isRemote
+								? tabModules.Values.Where(m => ModuleSupportsSharing(m) && !m.IsDeleted).ToList() 
+                                : tabModules.Values.Where(m => ModulePermissionController.CanAdminModule(m) && !m.IsDeleted).ToList();
 
             return pageModules;
 
@@ -220,7 +236,7 @@ namespace DotNetNuke.Web.InternalServices
                 && ActiveTabHasChildren() && !PortalSettings.ActiveTab.IsSuperTab)
             {
                 TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success= true});
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -318,8 +334,9 @@ namespace DotNetNuke.Web.InternalServices
 
                     return Request.CreateResponse(HttpStatusCode.OK, new { TabModuleID = tabModuleId});
                 }
-                catch
+                catch(Exception ex)
                 {
+                    Logger.Error(ex);
                 }                
             }
 
@@ -335,7 +352,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 DataCache.ClearCache();
 				ClientResourceManager.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -352,7 +369,7 @@ namespace DotNetNuke.Web.InternalServices
                 log.AddProperty("Message", "UserRestart");
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -406,7 +423,7 @@ namespace DotNetNuke.Web.InternalServices
                         personalization.Profile["Usability:UICulture"] = dto.Language;
                         personalization.IsModified = true;
                         personalizationController.SaveProfile(personalization);
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
                 catch (System.Threading.ThreadAbortException)
@@ -431,7 +448,7 @@ namespace DotNetNuke.Web.InternalServices
                 userMode = new UserModeDTO { UserMode = "VIEW" };
 
             ToggleUserMode(userMode.UserMode);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
         public class BookmarkDTO
@@ -448,8 +465,8 @@ namespace DotNetNuke.Web.InternalServices
             if (string.IsNullOrEmpty(bookmark.Bookmark)) bookmark.Bookmark = string.Empty;
             
             Controller.SaveBookMark(PortalSettings.PortalId, UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
-            
-            return Request.CreateResponse(HttpStatusCode.OK);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
         private void ToggleUserMode(string mode)
@@ -587,6 +604,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
 
+                newModule.PortalID = PortalSettings.Current.PortalId;
                 newModule.TabID = PortalSettings.Current.ActiveTab.TabID;
                 newModule.ModuleOrder = position;
                 newModule.PaneName = paneName;

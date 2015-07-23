@@ -151,6 +151,6 @@
     <value>Enable Device Detection</value>
   </data>
   <data name="lblPreviewInfo.Text" xml:space="preserve">
-    <value>The preview functionality allows you to visualize the size of your content in relation to the device resolution. Mobile skins must adjust to fit the screen and line returns will be added to the content as needed.&lt;br/&gt;If you see a horizontal scrollbar, it means the content in the page is bigger than the resolution of the device and your content will scale if the browser supports it.</value>
+    <value>The preview functionality allows you to visualize the size of your content in relation to the device resolution. Mobile themes must adjust to fit the screen and line returns will be added to the content as needed.&lt;br/&gt;If you see a horizontal scrollbar, it means the content in the page is bigger than the resolution of the device and your content will scale if the browser supports it.</value>
   </data>
 </root>

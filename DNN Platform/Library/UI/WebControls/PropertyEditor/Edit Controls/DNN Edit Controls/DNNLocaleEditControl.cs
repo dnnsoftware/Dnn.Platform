@@ -202,6 +202,7 @@ namespace DotNetNuke.UI.WebControls
 
 			//Render the Select Tag
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
 			writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
 			//Render None selected option
@@ -234,7 +235,7 @@ namespace DotNetNuke.UI.WebControls
 					Dictionary<string, Locale> cultures1 = LocaleController.Instance.GetLocales(Null.NullInteger);
 					foreach (Locale language in cultures1.Values)
 					{
-						RenderOption(writer, CultureInfo.CreateSpecificCulture(language.Code));
+                        RenderOption(writer, CultureInfo.GetCultureInfo(language.Code));
 					}
 					languageCount = cultures1.Count;
 					break;
@@ -242,7 +243,7 @@ namespace DotNetNuke.UI.WebControls
 					Dictionary<string, Locale> cultures2 = LocaleController.Instance.GetLocales(PortalSettings.PortalId);
 					foreach (Locale language in cultures2.Values)
 					{
-						RenderOption(writer, CultureInfo.CreateSpecificCulture(language.Code));
+                        RenderOption(writer, CultureInfo.GetCultureInfo(language.Code));
 					}
 					languageCount = cultures2.Count;
 					break;

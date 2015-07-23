@@ -26,7 +26,9 @@ using System.Globalization;
 using System.Linq;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -37,6 +39,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
+using DotNetNuke.Services.Search.Entities;
 
 namespace DotNetNuke.Security.Roles
 {
@@ -50,6 +53,11 @@ namespace DotNetNuke.Security.Roles
         private static readonly string[] UserRoleActionsCaption = { "ASSIGNMENT", "UPDATE", "UNASSIGNMENT" };
         private static readonly RoleProvider provider = RoleProvider.Instance();
 
+        private static event EventHandler<RoleEventArgs> RoleCreated;
+        private static event EventHandler<RoleEventArgs> RoleDeleted;
+        private static event EventHandler<RoleEventArgs> RoleJoined;
+        private static event EventHandler<RoleEventArgs> RoleLeft;
+
         private enum UserRoleActions
         {
             add = 0,
@@ -60,6 +68,17 @@ namespace DotNetNuke.Security.Roles
         protected override Func<IRoleController> GetFactory()
         {
             return () => new RoleController();
+        }
+
+        static RoleController()
+        {
+            foreach (var handlers in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
+            {
+                RoleCreated += handlers.Value.RoleCreated;
+                RoleDeleted += handlers.Value.RoleDeleted;
+                RoleJoined += handlers.Value.RoleJoined;
+                RoleLeft += handlers.Value.RoleLeft;
+            }
         }
 
         #region Private Methods
@@ -111,6 +130,12 @@ namespace DotNetNuke.Security.Roles
                     //Remove the UserInfo from the Cache, as it has been modified
                     DataCache.ClearUserCache(portalId, user.Username);
                     Instance.ClearRoleCache(portalId);
+
+                    if (RoleLeft != null)
+                    {
+                        var role = Instance.GetRoleById(portalId, roleId);
+                        RoleLeft(null, new RoleEventArgs() { Role = role, User = user });
+                    }
                 }
                 else
                 {
@@ -190,6 +215,11 @@ namespace DotNetNuke.Security.Roles
                 roleId = role.RoleID;
 
                 ClearRoleCache(role.PortalID);
+
+                if (RoleCreated != null)
+                {
+                    RoleCreated(null, new RoleEventArgs() {Role = role});
+                }
             }
 
             return roleId;
@@ -223,6 +253,12 @@ namespace DotNetNuke.Security.Roles
                 userRole.ExpiryDate = expiryDate;
                 provider.UpdateUserRole(userRole);
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
+            }
+
+            if (RoleJoined != null)
+            {
+                var role = GetRoleById(portalId, roleId);
+                RoleJoined(null, new RoleEventArgs() { Role = role, User = user});
             }
 
             //Remove the UserInfo and Roles from the Cache, as they have been modified
@@ -262,9 +298,32 @@ namespace DotNetNuke.Security.Roles
                 JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
             }
 
+            //Get users before deleting role
+            var users = role.UserCount > 0 ? GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
+
             provider.DeleteRole(role);
 
+            if (RoleDeleted != null)
+            {
+                RoleDeleted(null, new RoleEventArgs() { Role = role });
+            }
+
+            //Remove the UserInfo objects of users that have been members of the group from the cache, as they have been modified
+            foreach (var user in users)
+            {
+                DataCache.ClearUserCache(role.PortalID, user.Username);
+            }
+
             ClearRoleCache(role.PortalID);
+
+            // queue remove role/group from search index
+            var document = new SearchDocumentToDelete
+            {
+                //PortalId = role.PortalID,
+                RoleId = role.RoleID, // this is unique and sufficient
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         public RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate)
@@ -279,7 +338,7 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
+            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName && r.PortalID == portalId);
         }
 
         public IList<RoleInfo> GetRoles(int portalId)

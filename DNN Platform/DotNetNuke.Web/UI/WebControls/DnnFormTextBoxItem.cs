@@ -54,6 +54,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public TextBoxMode TextMode { get; set; }
 
+		/// <summary>
+		/// do not output field's value after post back when text mode set to password mode.
+		/// </summary>
+	    public bool ClearContentInPasswordMode { get; set; }
+
         private void TextChanged(object sender, EventArgs e)
         {
             UpdateDataSource(Value, _textBox.Text, DataField);
@@ -86,7 +91,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (TextMode == TextBoxMode.Password)
+            if (TextMode == TextBoxMode.Password && !ClearContentInPasswordMode)
             {
                 _textBox.Attributes.Add("value", Convert.ToString(Value));
             }

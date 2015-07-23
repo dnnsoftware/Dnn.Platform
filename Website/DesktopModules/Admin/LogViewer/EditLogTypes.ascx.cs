@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             cmdDelete.Click += OnDeleteClick;
             cmdCancel.Click += OnCancelClick;

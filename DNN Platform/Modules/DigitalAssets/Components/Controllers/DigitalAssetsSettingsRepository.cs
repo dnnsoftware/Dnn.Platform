@@ -24,6 +24,7 @@ using System.Globalization;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Assets;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
@@ -154,12 +155,5 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     {
         NotSet,
         FilterByFolder
-    }
-
-    public enum SubfolderFilter
-    {
-        ExcludeSubfolders,
-        IncludeSubfoldersFilesOnly,
-        IncludeSubfoldersFolderStructure
     }
 }

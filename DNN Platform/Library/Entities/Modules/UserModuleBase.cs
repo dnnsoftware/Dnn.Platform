@@ -23,10 +23,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Web.Caching;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -36,7 +38,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Vendors;
@@ -190,7 +191,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return Request.IsAuthenticated && (User.UserID == UserInfo.UserID);
+                return Request.IsAuthenticated && (UserId == UserInfo.UserID);
             }
         }
 
@@ -236,7 +237,9 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (Request.QueryString["userid"] != null)
                     {
-                        _UserId = Int32.Parse(Request.QueryString["userid"]);
+                        int userId;
+                        // Use Int32.MaxValue as invalid UserId
+                        _UserId = Int32.TryParse(Request.QueryString["userid"], out userId) ? userId : Int32.MaxValue;
                         ViewState["UserId"] = _UserId;
                     }
                 }
@@ -323,6 +326,13 @@ namespace DotNetNuke.Entities.Modules
             country = LookupCountry();
             if (!String.IsNullOrEmpty(country))
             {
+                ListController listController = new ListController();
+                var listitem = listController.GetListEntryInfo("Country", country);
+                if (listitem != null)
+                {
+                    country = listitem.EntryID.ToString();
+                }
+
                 newUser.Profile.Country = country;
             }
             //Set AffiliateId
@@ -424,20 +434,20 @@ namespace DotNetNuke.Entities.Modules
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
         {
-            string strMessage = "";
-            ModuleMessage.ModuleMessageType message = ModuleMessage.ModuleMessageType.RedError;
+            var strMessage = "";
+            var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
 				//send notification to portal administrator of new user registration
 				//check the receive notification setting first, but if register type is Private, we will always send the notification email.
 				//because the user need administrators to do the approve action so that he can continue use the website.
 				if (PortalSettings.EnableRegisterNotification || PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-	            {
-		            strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
-	                SendAdminNotification(newUser, "NewUserRegistration", PortalSettings);
-	            }
+				{
+				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
+				    SendAdminNotification(newUser, PortalSettings);
+				}
 
-	            var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
                 //complete registration
                 switch (PortalSettings.UserRegistration)
@@ -448,7 +458,7 @@ namespace DotNetNuke.Entities.Modules
                         //show a message that a portal administrator has to verify the user credentials
                         if (string.IsNullOrEmpty(strMessage))
                         {
-                            strMessage += string.Format(Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), newUser.Email);
+                            strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
                             message = ModuleMessage.ModuleMessageType.GreenSuccess;
                         }
                         break;
@@ -520,32 +530,28 @@ namespace DotNetNuke.Entities.Modules
         }
 
         #region Private methods
-        private void SendAdminNotification(UserInfo newUser, string notificationType, PortalSettings portalSettings)
+
+        private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
             var notification = new Notification
             {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,                
-                IncludeDismissAction = true,
-                SenderUserID = portalSettings.AdministratorId
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = GetNotificationSubject(locale, newUser, portalSettings),
+                Body = GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
             };
-            notification.Subject = GetNotificationSubject(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
-            notification.Body = GetNotificationBody(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
             var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
-            var roles = new List<RoleInfo>();
-            roles.Add(adminrole);
+            var roles = new List<RoleInfo> { adminrole };
             NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
-
         }
 
-        private string GetNotificationBody(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
@@ -555,17 +561,12 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
         }
 
-        private string GetNotificationSubject(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
+
         #endregion
     }
 }

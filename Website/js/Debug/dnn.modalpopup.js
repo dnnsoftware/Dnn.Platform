@@ -92,7 +92,7 @@
                 $modal.remove();
             }
 
-            $modal = $("<iframe id=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
+            $modal = $("<iframe id=\"iPopUp\" name=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
             $(document.body).append($modal);
             $(document).find('html').css('overflow', 'hidden'); 
 			
@@ -120,7 +120,8 @@
             var hideLoading = function() {
                 $modal.prev(".dnnLoading").remove();
             };			
-			var dialogOpened = function(){				
+            var dialogOpened = function () {
+                
 				$modal.bind("load", function() {
 					hideLoading();
 					var iframe = document.getElementById("iPopUp");
@@ -143,7 +144,7 @@
 								iframeBody.className += 'mobileView dnnFormPopup dnnFormPopupMobileView';	
 								var iframeHeight = Math.max(iframeBody.scrollHeight, iframeBody.offsetHeight, iframeHtml.clientHeight, iframeHtml.scrollHeight, iframeHtml.offsetHeight);
 								$modal.css('height', iframeHeight + 100)
-									  .dialog('option', 'position', 'top');
+									  .dialog('option', 'position', { my: "top", at: "top" });
 							}
 							
 							iframe.contentWindow.dnnModal.show = function (sUrl, sShowReturn, sHeight, sWidth, sRefresh, sClosingUrl) {
@@ -168,15 +169,17 @@
 				});
 				
 				$modal[0].src = url;
-				
-			};
+
+                if (typeof $.ui.dialog.prototype.options.open === 'function')
+                    $.ui.dialog.prototype.options.open();
+            };
 			
             if (!isMobile) {
                 $modal.dialog({
                     modal: true,
                     autoOpen: true,
                     dialogClass: "dnnFormPopup",
-                    position: "center",
+                    position: { my: "center", at: "center" },
                     minWidth: width,
                     minHeight: height,
                     maxWidth: 1920,
@@ -220,7 +223,7 @@
                         }
 
                         $modal.dialog({ height: newHeight, width: newWidth });
-                        $modal.dialog({ position: 'center' });
+                        $modal.dialog({ position: { my: "center", at: "center" } });
                     });
                 }
             } else {
@@ -235,7 +238,7 @@
                     refresh: refresh,
                     showReturn: showReturn,
                     closingUrl: closingUrl,
-                    position: "top",
+                    position: { my: "top", at: "top" },
                     draggable: false,
 					open: function() { 
 							$('#Form').hide();
@@ -274,7 +277,6 @@
                 if (typeof url === "undefined" || url == "") {
                     url = windowTop.location.href;
                 }
-                
                 windowTop.location.href = url;
                 popup.hide();
             } else {

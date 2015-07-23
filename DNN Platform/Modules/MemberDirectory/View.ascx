@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client"%>
-<dnn:DnnJsInclude ID="DnnJsInclude" runat="server" FilePath="~/Resources/Shared/scripts/knockout.js" AddTag="false"/>
+
 <dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.js" Priority="101" AddTag="false" />
 <dnn:DnnCssInclude ID="DnnCssInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.css" AddTag="false" />
 <dnn:DnnJsInclude ID="DnnJsInclude2" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="102" AddTag="false" />
@@ -79,41 +79,42 @@
             profileUrl: "<% = ViewProfileUrl %>",
             profileUrlUserToken: "<% = ProfileUrlUserToken %>",
             profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
-            addFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AddFriend")) %>',
-            acceptFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AcceptFriend")) %>',
-            friendPendingText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("FriendPending")) %>',
-            removeFriendText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("RemoveFriend")) %>',
-            followText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Follow")) %>',
-            unFollowText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("UnFollow")) %>',
-            sendMessageText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("SendMessage")) %>',
-            userNameText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("UserName")) %>',
-            emailText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Email")) %>',
-            cityText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("City")) %>',
-            searchErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("SearchError"))%>',
-            serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
-            serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
-            servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>)
+            addFriendText: '<%=LocalizeSafeJsString("AddFriend") %>',
+            acceptFriendText: '<%=LocalizeSafeJsString("AcceptFriend") %>',
+            friendPendingText:'<%=LocalizeSafeJsString("FriendPending") %>',
+            removeFriendText:'<%=LocalizeSafeJsString("RemoveFriend") %>',
+            followText:'<%=LocalizeSafeJsString("Follow") %>',
+            unFollowText:'<%=LocalizeSafeJsString("UnFollow") %>',
+            sendMessageText:'<%=LocalizeSafeJsString("SendMessage") %>',
+            userNameText: '<%=LocalizeSafeJsString("UserName") %>',
+            emailText: '<%=LocalizeSafeJsString("Email") %>',
+            cityText: '<%=LocalizeSafeJsString("City") %>',
+            searchErrorText: '<%=LocalizeSafeJsString("SearchError")%>',
+            serverErrorText: '<%=LocalizeSafeJsString("ServerError")%>',
+            serverErrorWithDescriptionText: '<%=LocalizeSafeJsString("ServerErrorWithDescription")%>',
+        	servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>),
+			disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>
         }, {
-	        title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Title")) %>',
-            toText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("To")) %>',
-            subjectText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Subject")) %>',
-            messageText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Message")) %>',
-            sendText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Send")) %>',
-            cancelText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
-            attachmentsText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Attachments")) %>',
-            browseText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Browse")) %>',
-            uploadText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Upload")) %>',
+	        title: '<%= LocalizeSafeJsString("Title") %>',
+            toText: '<%= LocalizeSafeJsString("To") %>',
+            subjectText: '<%= LocalizeSafeJsString("Subject") %>',
+            messageText: '<%= LocalizeSafeJsString("Message") %>',
+            sendText: '<%= LocalizeSafeJsString("Send") %>',
+            cancelText: '<%= LocalizeSafeJsString("Cancel") %>',
+            attachmentsText: '<%= LocalizeSafeJsString("Attachments") %>',
+            browseText: '<%= LocalizeSafeJsString("Browse") %>',
+            uploadText: '<%= LocalizeSafeJsString("Upload") %>',
             maxFileSize: <%=Config.GetMaxUploadSize()%>,
-            removeText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Remove")) %>',
-            messageSentTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSentTitle")) %>',
-            messageSentText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
-            dismissThisText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DismissThis")) %>',
-            throttlingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Throttling")) %>',
-            noResultsText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoResults")) %>',
-            searchingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Searching")) %>',
-            createMessageErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CreateMessageError"))%>',
-            createMessageErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CreateMessageErrorWithDescription"))%>',
-            autoSuggestErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AutoSuggestError"))%>'
+            removeText: '<%= LocalizeSafeJsString("Remove") %>',
+            messageSentTitle: '<%= LocalizeSafeJsString("MessageSentTitle") %>',
+            messageSentText: '<%= LocalizeSafeJsString("MessageSent") %>',
+            dismissThisText: '<%= LocalizeSafeJsString("DismissThis") %>',
+            throttlingText: '<%= LocalizeSafeJsString("Throttling") %>',
+            noResultsText: '<%= LocalizeSafeJsString("NoResults") %>',
+            searchingText: '<%= LocalizeSafeJsString("Searching") %>',
+            createMessageErrorText: '<%=LocalizeSafeJsString("CreateMessageError")%>',
+            createMessageErrorWithDescriptionText: '<%=LocalizeSafeJsString("CreateMessageErrorWithDescription")%>',
+            autoSuggestErrorText: '<%=LocalizeSafeJsString("AutoSuggestError")%>'
         });
     	md.init('#<%= memberDirectory.ClientID %>');
 

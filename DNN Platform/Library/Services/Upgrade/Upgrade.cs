@@ -54,6 +54,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
@@ -63,6 +64,7 @@ using DotNetNuke.Services.Analytics;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.EventQueue.Config;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Log;
@@ -1143,7 +1145,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
+        public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
@@ -1506,8 +1508,8 @@ namespace DotNetNuke.Services.Upgrade
             //Remove Module Definitions Module from Host Page (if present)
             RemoveCoreModule("Module Definitions", "Host", "Module Definitions", false);
 
-            //Remove old Module Definition Validator module
-            DesktopModuleController.DeleteDesktopModule("Module Definition Validator");
+            //Remove old Module Definition DynamicContentValidator module
+            DesktopModuleController.DeleteDesktopModule("Module Definition DynamicContentValidator");
 
             //Get Module Definitions
             TabInfo definitionsPage = TabController.Instance.GetTabByName("Module Definitions", Null.NullInteger);
@@ -2545,7 +2547,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion624()
         {
-            UninstallPackage("DotNetNuke.MarketPlace");
+            UninstallPackage("DotNetNuke.MarketPlace", "Module");
         }
 
         private static void UpgradeToVersion700()
@@ -2658,7 +2660,7 @@ namespace DotNetNuke.Services.Upgrade
             };
             LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
 
-            UninstallPackage("DotNetNuke.SearchInput");
+            UninstallPackage("DotNetNuke.SearchInput", "Module");
 
             //enable password strength meter for new installs only
             HostController.Instance.Update("EnableStrengthMeter", Globals.Status == Globals.UpgradeStatus.Install ? "Y" : "N");
@@ -2768,8 +2770,8 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //ensure old codeplex module is uninstalled - need to check for both variants of package name
-            UninstallPackage("DotNetNuke.Module Creator");
-            UninstallPackage("DNNCorp.ModuleCreator");
+            UninstallPackage("DotNetNuke.Module Creator", "Module");
+            UninstallPackage("DNNCorp.ModuleCreator", "Module");
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
@@ -2794,8 +2796,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
-
-                AddDefaultContentWorkflows();
             }
             
             //fixes issue introduced by eventlog's being defined in upgrade.cs
@@ -2833,11 +2833,11 @@ namespace DotNetNuke.Services.Upgrade
             {
                 //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
                 var portalSecurity = new PortalSecurity();
-                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserId, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
+                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserID, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
                 {
                     while (reader.Read())
                     {
-                        var userId = Convert.ToInt32(reader["UserId"]);
+                        var userId = Convert.ToInt32(reader["UserID"]);
                         var userName = reader["Username"].ToString();
 
                         if (userName != HttpUtility.HtmlDecode(userName))
@@ -2864,7 +2864,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion722()
         {
-            UninstallPackage("DotNetNuke.Messaging");
+            UninstallPackage("DotNetNuke.Messaging", "Module");
 
             //add event log type:POTENTIAL_PAYPAL_PAYMENT_FRAUD
             if (!DoesLogTypeExists(EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()))
@@ -2996,7 +2996,99 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
 
             //update help url
-            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
+            HostController.Instance.Update("HelpURL", "http://www.dnnsoftware.com/help", false);
+        }
+
+        private static void UpgradeToVersion733()
+        {
+            var notificationType = new NotificationType { Name = "NewUnauthorizedUserRegistration", Description = "New Unauthorized User Registration Notification" };
+            NotificationsController.Instance.CreateNotificationType(notificationType);
+
+            var actions = new List<NotificationTypeAction>
+                              {
+                                  new NotificationTypeAction
+                                      {
+                                          NameResourceKey = "AuthorizeUser",
+                                          DescriptionResourceKey = "AuthorizeUserDescription",
+                                          APICall = "DesktopModules/InternalServices/API/NewUserNotificationService/Authorize"
+                                      },
+                                  new NotificationTypeAction
+                                      {
+                                          NameResourceKey = "RejectUser",
+                                          DescriptionResourceKey = "RejectUserDescription",
+                                          APICall = "DesktopModules/InternalServices/API/NewUserNotificationService/Reject"
+                                      }
+                              };
+
+            NotificationsController.Instance.SetNotificationTypeActions(actions, notificationType.NotificationTypeId);
+        }
+
+        private static void UpgradeToVersion740()
+        {
+            string PageHeadTextForUpgrade = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
+                                               "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
+                                               "<meta name=\"RATING\" content=\"GENERAL\" />" + "\n" +
+
+                                                "<meta name=\"RESOURCE-TYPE\" content=\"DOCUMENT\" />" + "\n" +
+                                                "<meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\" />" + "\n" +
+                                                "<meta content=\"text/css\" http-equiv=\"Content-Style-Type\" />" + "\n";
+            ArrayList portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, "PageHeadText", PageHeadTextForUpgrade);
+            }
+
+            RemoveContentListModuleFromSearchResultsPage();
+            ReIndexUserSearch();
+        }
+
+        private static void UpgradeToVersion742()
+        {
+            var containerFolder = string.Format("{0}Containers\\DarkKnightMobile", Globals.HostMapPath);  
+            var skinFolder = string.Format("{0}Skins\\DarkKnightMobile", Globals.HostMapPath);  
+            if (!Directory.Exists(skinFolder))  
+    		{  
+                UninstallPackage("DarkKnightMobile", "Skin"); //Skin  
+        	}
+
+            if (!Directory.Exists(containerFolder))
+            {
+                UninstallPackage("DarkKnightMobile", "Container"); //Container  
+            }
+        }
+
+        private static void UpgradeToVersion750()
+        {
+            //Remove Admin Pages
+            RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//RecycleBin");
+        }
+
+        private static void ReIndexUserSearch()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "TRUE");
+            }
+        }
+
+        private static void RemoveContentListModuleFromSearchResultsPage()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.SearchTabId))
+                {
+                    var module = kvp.Value;
+                    if (module.DesktopModule.FriendlyName == "ContentList")
+                    {
+                        //Delete the Module from the Modules list
+                        ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
+                        break;
+                    }
+                }
+            }
         }
 
         private static void AddManageUsersModulePermissions()
@@ -3059,14 +3151,6 @@ namespace DotNetNuke.Services.Upgrade
                    //suppress
                }
             
-        }
-
-        private static void AddDefaultContentWorkflows()
-        {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                ContentWorkflowController.Instance.CreateDefaultWorkflows(portal.PortalID);
-            }
         }
 
         private static ContentItem CreateFileContentItem()
@@ -3176,9 +3260,9 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName)
+        private static void UninstallPackage(string packageName, string packageType)
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
@@ -3643,9 +3727,12 @@ namespace DotNetNuke.Services.Upgrade
 						DisplayTitle = displayTitle
 					};
 
-					try
+				    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
+
+                    try
 					{
 						moduleId = ModuleController.Instance.AddModule(moduleInfo);
+
 					}
 					catch (Exception exc)
 					{
@@ -3995,7 +4082,7 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   DeleteInstallerFiles - clean up install config
+        ///   DeleteInstallerFiles - clean up install config and installwizard files
         ///   If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file
         /// </summary>
         /// <remarks>
@@ -4006,6 +4093,8 @@ namespace DotNetNuke.Services.Upgrade
         public static void DeleteInstallerFiles()
         {
             FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config"));
+            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx"));
+            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx.cs"));
         }
 
         /// -----------------------------------------------------------------------------
@@ -4370,28 +4459,60 @@ namespace DotNetNuke.Services.Upgrade
 
             foreach (string file in files)
             {
-                // script file name must conform to ##.##.##.DefaultProviderName
+                // script file name must conform to ##.##.##.DefaultProviderName 
                 if (file != null)
                 {
-                    if (GetFileName(file).Length == 9 + DefaultProvider.Length)
+                    if (GetFileName(file).Length == 9 + DefaultProvider.Length )
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
                         // check if script file is relevant for upgrade
-                        if (version > databaseVersion && version <= ApplicationVersion)
+                        if (version > databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
                             scriptFiles.Add(file);
+                            //check if any incrementals exist
+                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath,version);
+                            if (incrementalfiles != null)
+                            {
+                                scriptFiles.AddRange(incrementalfiles); 
+                            }
+                            
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
-                        else
+
+                        if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
-                            Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                           
+                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalfiles != null)
+                            {
+                                scriptFiles.AddRange(incrementalfiles);
+                            }
+
+                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
+                      
+                        //else
+                        //{
+                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        //}
                     }
                 }
             }
-            scriptFiles.Sort();
+            
 
             return scriptFiles;
+        }
+
+        private static string[] AddAvailableIncrementalFiles(string providerPath, Version version)
+        {
+            if (version.Major < 8)
+            {
+                return null;
+            }
+           
+            return Directory.GetFiles(providerPath, GetStringVersion(version) + ".*." + DefaultProvider);
+            
+            
         }
 
         private static string GetFileName(string file)
@@ -4604,6 +4725,12 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         if ((node != null))
                         {
+                            //add item to identity install from install wizard.
+                            if (HttpContext.Current != null)
+                            {
+                                HttpContext.Current.Items.Add("InstallFromWizard", true);
+                            }
+
                             int portalId = AddPortal(node, true, 2);
                             if (portalId > -1)
                             {
@@ -4759,49 +4886,26 @@ namespace DotNetNuke.Services.Upgrade
 
             var packages = new Dictionary<string, PackageInfo>();
 
-            foreach (string packageType in packageTypes)
-            {
-                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
-                if (Directory.Exists(installPackagePath))
-                {
-                    var files = Directory.GetFiles(installPackagePath);
-                    if (files.Length > 0)
-                    {
-                        foreach (string file in files)
-                        {
-                            if (Path.GetExtension(file.ToLower()) == ".zip")
-                            {
-                                PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                                //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Parsing - " + file.Replace(installPackagePath + @"\", "") + "<br/>");
-                            }
-                        }
-                    }
-                }
-            }
+            ParsePackagesFromApplicationPath(packageTypes, packages, invalidPackages);
 
             //Add packages with no dependency requirements
             var sortedPackages = packages.Where(p => p.Value.Dependencies.Count == 0).ToDictionary(p => p.Key, p => p.Value);
 
-            int prevDependentCount = -1;
+            var prevDependentCount = -1;
 
             var dependentPackages = packages.Where(p => p.Value.Dependencies.Count > 0).ToDictionary(p=> p.Key, p => p.Value);
-            int dependentCount = dependentPackages.Count;
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Start - Parsing Dependencies<br/>");
+            var dependentCount = dependentPackages.Count;
             while (dependentCount != prevDependentCount)
             {
                 prevDependentCount = dependentCount;
                 var addedPackages = new List<string>();
                 foreach (var package in dependentPackages)
                 {
-                    //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Parsing - " + package.Value.Name + "<br/>");
-                    foreach (var dependency in package.Value.Dependencies)
+                    if ( package.Value.Dependencies.All(
+                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
                     {
-                        if (sortedPackages.Count(p => p.Value.Name == dependency.PackageName && p.Value.Version >= dependency.Version) > 0)
-                        {
-                            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Dependency Resolved - " + package.Value.Name + "<br/>");
-                            sortedPackages.Add(package.Key, package.Value);
-                            addedPackages.Add(package.Key);
-                        }
+                        sortedPackages.Add(package.Key, package.Value);
+                        addedPackages.Add(package.Key);
                     }
                 }
                 foreach (var packageKey in addedPackages)
@@ -4817,13 +4921,69 @@ namespace DotNetNuke.Services.Upgrade
                 sortedPackages.Add(package.Key, package.Value);
             }
 
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
-
-            //foreach (var package in sortedPackages)
-            //{
-            //    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
-            //}
             return sortedPackages;
+        }
+
+        private static void ParsePackagesFromApplicationPath(IEnumerable<string> packageTypes, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
+        {
+            foreach (var packageType in packageTypes)
+            {
+                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
+                if (!Directory.Exists(installPackagePath)){ continue;}
+
+                var files = Directory.GetFiles(installPackagePath);
+                if (files.Length <= 0){ continue;}
+
+	            var optionalPackages = new List<string>();
+                foreach (var file in files)
+                {
+	                var extension = Path.GetExtension(file.ToLowerInvariant());
+	                if (extension != ".zip" && extension != ".resources")
+	                {
+		                continue;
+	                }
+
+					PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
+	                if (packages.ContainsKey(file))
+	                {
+		                //check whether have version conflict and remove old version.
+		                var package = packages[file];
+		                if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1)
+		                {
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName == package.FriendlyName && kvp.Value.Version < package.Version).ToList();
+			                if (oldPackages.Any())
+			                {
+				                foreach (var oldPackage in oldPackages)
+				                {
+					                try
+					                {
+						                packages.Remove(oldPackage.Key);
+										FileWrapper.Instance.Delete(oldPackage.Key);
+					                }
+					                catch (Exception ex)
+					                {
+						                //do nothing here.
+					                }
+				                }
+			                }
+		                }
+	                }
+
+	                if (extension != ".zip")
+	                {
+		                optionalPackages.Add(file);
+	                }
+                }
+
+				//remove optional
+				optionalPackages.ForEach(f =>
+				                         {
+					                         if (packages.ContainsKey(f))
+					                         {
+						                         packages.Remove(f);
+					                         }
+				                         });
+            }
         }
 
         public static void InstallPackages(string packageType, bool writeFeedback)
@@ -4865,6 +5025,13 @@ namespace DotNetNuke.Services.Upgrade
                     XmlDocument configFile = Config.Load();
                     XPathNavigator configNavigator = configFile.CreateNavigator().SelectSingleNode("//configuration/system.web/httpRuntime|//configuration/location/system.web/httpRuntime");
                     if (configNavigator != null && !string.IsNullOrEmpty(configNavigator.GetAttribute("requestValidationMode", "")))
+                    {
+                        isCurrent = true;
+                    }
+                    break;
+                case "4.5":
+                    //Try and instantiate a 4.5 Class
+                    if (Reflection.CreateType("System.Reflection.ReflectionContext", true) != null)
                     {
                         isCurrent = true;
                     }
@@ -4941,6 +5108,21 @@ namespace DotNetNuke.Services.Upgrade
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
+                                                  PortalController.Instance.GetCurrentPortalSettings(),
+                                                  UserController.Instance.GetCurrentUserInfo().UserID,
+                                                  EventLogController.EventLogType.HOST_ALERT);
+                    }
+                    break;
+                case "4.5":
+                    if (!IsNETFrameworkCurrent("4.5"))
+                    {
+                        //Upgrade to .NET 4.0
+                        string upgradeFile = string.Format("{0}\\Config\\Net45.config", Globals.InstallMapPath);
+                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.5 Upgrade");
+                        EventLogController.Instance.AddLog("UpgradeNet",
+                                                  string.IsNullOrEmpty(strMessage)
+                                                      ? "Upgraded Site to .NET 4.5"
+                                                      : string.Format("Upgrade to .NET 4.5 failed. Error reported during attempt to update:{0}", strMessage),
                                                   PortalController.Instance.GetCurrentPortalSettings(),
                                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                                   EventLogController.EventLogType.HOST_ALERT);
@@ -5145,6 +5327,21 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.3.2":
                         UpgradeToVersion732();
                         break;
+                    case "7.3.3":
+                        UpgradeToVersion733();
+                        break;
+                    case "7.4.0":
+                        UpgradeToVersion740();
+                        break;
+					case "7.4.2":  
+ 						UpgradeToVersion742();  
+                        break;  
+                    case "7.5.0":
+                        UpgradeToVersion750();
+                        break;
+                    case "8.0.0":
+                        UpgradeToVersion800();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -5183,6 +5380,36 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+        private static void UpgradeToVersion800()
+        {
+            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0")
+            //{
+            //    switch (iteration)
+            //    {
+            //        case "1":
+            //            UpgradeToVersion800Iteration1();
+            //            break;
+                    
+            //    }
+            //}
+        }
+
+        private static int MaxIncremental(Version version)
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+            //If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    return Directory.GetFiles(providerpath, GetStringVersion(version) + ".*." + DefaultProvider).Length;                  
+                }
+            }
+            return 0;
+        }
+
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
@@ -5207,6 +5434,32 @@ namespace DotNetNuke.Services.Upgrade
 
             return strExceptions;
         }
+
+        public static string UpdateConfigInterval(string providerPath, Version version,int interval, bool writeFeedback)
+        {
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Interval Files: {0}", Globals.FormatVersion(version) + "." + interval.ToString("D2")));
+            }
+            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + "." + interval.ToString("D2") + ".config", version, "Core Upgrade");
+            if (string.IsNullOrEmpty(strExceptions))
+            {
+                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version) + "." + interval.ToString("D2"));
+            }
+            else
+            {
+                DnnInstallLogger.InstallLogError(strExceptions);
+            }
+
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
+            }
+
+            return strExceptions;
+        }
+       
 
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
@@ -5245,6 +5498,7 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+       
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
@@ -5322,7 +5576,7 @@ namespace DotNetNuke.Services.Upgrade
                 versions.Add(new Version(GetFileNameWithoutExtension(scriptFile)));
                 UpgradeVersion(scriptFile, true);
             }
-
+            
             foreach (Version ver in versions)
             {
                 //' perform version specific application upgrades
@@ -5364,10 +5618,8 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
-                if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
-                {
-                    url = url.Replace("http://", "https://");
-                }
+                //use network path reference so it works in ssl-offload scenarios
+                url = url.Replace("http://", "//");
                 url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
                 url += "&type=" + packageType;
@@ -5476,6 +5728,38 @@ namespace DotNetNuke.Services.Upgrade
                     log.AddProperty("No Warnings", "");
                 }
                 LogController.Instance.AddLog(log);
+            }
+
+            if (version.Revision > 0)
+            {
+                if (version.Revision > Globals.GetLastAppliedIteration(version))
+                {
+                    // execute script file (and version upgrades) for version
+                    exceptions = ExecuteScript(scriptFile, writeFeedback);
+
+                    //update any associated config files
+                    string strProviderPath = DataProvider.Instance().GetProviderPath();
+                    UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
+
+                    // update the increment
+                    Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
+
+                    var log = new LogInfo
+                    {
+                        LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                        BypassBuffering = true
+                    };
+                    log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                    if (exceptions.Length > 0)
+                    {
+                        log.AddProperty("Warnings", exceptions);
+                    }
+                    else
+                    {
+                        log.AddProperty("No Warnings", "");
+                    }
+                    LogController.Instance.AddLog(log);
+                }                
             }
             if (string.IsNullOrEmpty(exceptions))
             {

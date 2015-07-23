@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -126,6 +126,9 @@ namespace DotNetNuke.Framework
             }
         }
 
+	/// <summary>Gets the current ScriptManager on the page</summary>
+	/// <param name="objPage">the page instance.</param>
+	/// <returns>The ScriptManager instance, or <c>null</c></returns>
         public static ScriptManager GetScriptManager(Page objPage)
         {
             return objPage.FindControl("ScriptManager") as ScriptManager;

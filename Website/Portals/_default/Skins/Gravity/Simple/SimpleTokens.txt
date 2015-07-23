@@ -4,7 +4,7 @@
 [>NODE]
 	<li>
 	[?ENABLED]
-		<a href="[=URL]" target="[=TARGET]">[=TEXT]</a>
+		<a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]>[=TEXT]</a>
 	[?ELSE]
 		<span>[=TEXT]</span>
 	[/?]

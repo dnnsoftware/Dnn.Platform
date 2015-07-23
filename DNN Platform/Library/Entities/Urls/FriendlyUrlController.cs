@@ -28,11 +28,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -41,9 +40,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-using Assembly = System.Reflection.Assembly;
 
 #endregion
 
@@ -74,7 +70,7 @@ namespace DotNetNuke.Entities.Urls
         #endregion
 
         #region Friendly Url Provider methods
-
+        /*
         /// <summary>
         /// Determines if the tab is excluded from FriendlyUrl Processing
         /// </summary>
@@ -100,7 +96,7 @@ namespace DotNetNuke.Entities.Urls
             string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
             tab.UseBaseFriendlyUrls = settings.UseBaseFriendlyUrls != null && settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
         }
-        /*
+
         /// <summary>
         /// Builds up a collection of the Friendly Urls for a tab
         /// </summary>
@@ -777,30 +773,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
         {
-            bool canUseMobileDevice = true;
-            //if (int.TryParse(app.Request.QueryString[DisableMobileRedirectQueryStringName], out val))
-            //{
-            //    if (val == 0) //forced enable. clear any cookie previously set
-            //    {
-            //        if (app.Response.Cookies[DisableMobileRedirectCookieName] != null)
-            //        {
-            //            HttpCookie cookie = new HttpCookie(DisableMobileRedirectCookieName);
-            //            cookie.Expires = DateTime.Now.AddMinutes(-1);
-            //            app.Response.Cookies.Add(cookie);
-            //        }
-
-            //        if (app.Response.Cookies[DisableRedirectPresistCookieName] != null)
-            //        {
-            //            HttpCookie cookie = new HttpCookie(DisableRedirectPresistCookieName);
-            //            cookie.Expires = DateTime.Now.AddMinutes(-1);
-            //            app.Response.Cookies.Add(cookie);
-            //        }
-            //    }
-            //    else if (val == 1) //forced disable. need to setup cookie
-            //    {
-            //        allowed = false;
-            //    }
-            //}                                  
+            var canUseMobileDevice = true;
             int val;
             if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
             {
@@ -809,17 +782,24 @@ namespace DotNetNuke.Entities.Urls
                 {
                     //no, can't do it
                     canUseMobileDevice = false;
-                    var cookie = new HttpCookie(DisableMobileViewCookieName);
+                    var cookie = new HttpCookie(DisableMobileViewCookieName)
+                    {
+                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    };
                     response.Cookies.Set(cookie);
                 }
                 else
                 {
                     //check for disable mobile view cookie name
-                    HttpCookie cookie = request.Cookies[DisableMobileViewCookieName];
+                    var cookie = request.Cookies[DisableMobileViewCookieName];
                     if (cookie != null)
                     {
                         //if exists, expire cookie to allow redirect
-                        cookie = new HttpCookie(DisableMobileViewCookieName) { Expires = DateTime.Now.AddMinutes(-1) };
+                        cookie = new HttpCookie(DisableMobileViewCookieName)
+                        {
+                            Expires = DateTime.Now.AddMinutes(-1),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
                         response.Cookies.Set(cookie);
                     }
                     //check the DotNetNuke cookies for allowed
@@ -834,7 +814,7 @@ namespace DotNetNuke.Entities.Urls
             else
             {
                 //look for disable mobile view cookie
-                HttpCookie cookie = request.Cookies[DisableMobileViewCookieName];
+                var cookie = request.Cookies[DisableMobileViewCookieName];
                 if (cookie != null)
                 {
                     canUseMobileDevice = false;
@@ -1037,7 +1017,15 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             // Store the result as a cookie.
-                            response.Cookies.Set(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+                            if (viewMobileCookie == null)
+                            {
+                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()) 
+                                    { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                            }
+                            else
+                            {
+                                viewMobileCookie.Value = isMobile.ToString();
+                            }
                         }
                     }
                     else
@@ -1048,6 +1036,7 @@ namespace DotNetNuke.Entities.Urls
             }
             return browserType;
         }
+
 
         public static string ValidateUrl(string cleanUrl, int validateUrlForTabId, PortalSettings settings, out bool modified)
         {
@@ -1071,11 +1060,9 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool ValidateUrl(string url, int validateUrlForTabId, PortalSettings settings)
         {
-            bool isUnique = true;
-
             //Try and get a user by the url
             var user = UserController.GetUserByVanityUrl(settings.PortalId, url);
-            isUnique = (user == null);
+            bool isUnique = (user == null);
 
             if (isUnique)
             {
@@ -1087,8 +1074,14 @@ namespace DotNetNuke.Entities.Urls
             if (isUnique) //check whether have a tab which use the url.
             {
                 var friendlyUrlSettings = new FriendlyUrlSettings(settings.PortalId);
-                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId);
-                foreach (TabInfo tab in tabs.Values)
+                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
+				//DNN-6492: if content localize enabled, only check tab names in current culture.
+	            if (settings.ContentLocalizationEnabled)
+	            {
+		            tabs = tabs.Where(t => t.CultureCode == settings.CultureCode).ToList();
+	            }
+
+                foreach (TabInfo tab in tabs)
                 {
                     if (tab.TabID == validateUrlForTabId)
                     {

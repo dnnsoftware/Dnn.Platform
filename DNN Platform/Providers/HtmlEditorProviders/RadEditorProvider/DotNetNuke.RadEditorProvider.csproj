@@ -13,7 +13,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke.RadEditorProvider</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileUpgradeFlags>
@@ -46,10 +46,16 @@
     <NoWarn>1591,612,618,672</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.0.185, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
+      <HintPath>..\..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -108,7 +114,9 @@
     <Compile Include="Components\DnnEditor.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="Components\DialogParams.cs" />
-    <Compile Include="Components\EditorProvider.cs" />
+    <Compile Include="Components\EditorProvider.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\ErrorCodes.cs" />
     <Compile Include="Components\FileManagerException.cs" />
     <Compile Include="Components\FileSystemValidation.cs" />
@@ -130,6 +138,7 @@
     </Compile>
     <Compile Include="Dialogs\SaveTemplate.aspx.cs">
       <DependentUpon>SaveTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DotNetNukeDialogHandler.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -150,6 +159,7 @@
     </Compile>
     <Compile Include="ProviderConfig.ascx.cs">
       <DependentUpon>ProviderConfig.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +171,13 @@
     <Content Include="Dialogs\DocumentManager.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Dialogs\TemplateManager.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="images\attachment.png" />
     <Content Include="images\Black.gif" />
     <Content Include="images\CommandSprites.gif" />
+    <Content Include="images\CustomLinksSprites.gif" />
     <Content Include="images\down.png" />
     <Content Include="images\editorSprite.png" />
     <Content Include="images\help.png" />
@@ -215,12 +229,16 @@
     <Content Include="ConfigFile\default.ConfigFile.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="DialogHandler.aspx" />
+    <Content Include="DialogHandler.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ToolsFile\ToolsFile.xml.Original.xml" />
     <Content Include="ToolsFile\default.ToolsFile.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dialogs\RenderTemplate.aspx" />
+    <Content Include="Dialogs\RenderTemplate.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Dialogs\SaveTemplate.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -237,11 +255,6 @@
     <Content Include="ImageTester.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{DDF18E36-41A0-4CA7-A098-78CA6E6F41C1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
       <Name>DotNetNuke.Web</Name>

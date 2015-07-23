@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
                     var custom = new ArrayList
                                      {
                                          objVendor.VendorName,
-                                         Globals.GetPortalDomainName(PortalSettings.PortalAlias.HTTPAlias, Request, true) + "/" + Globals.glbDefaultPage + "?AffiliateId=" + VendorId
+                                         Globals.GetPortalDomainName(PortalSettings.PortalAlias.HTTPAlias, Request, true) + "/" + Globals.glbDefaultPage + "?AffiliateId=" + AffiliateId
                                      };
                     var errorMsg = Mail.SendMail(PortalSettings.Email,
                                                     objVendor.Email,

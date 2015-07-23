@@ -29,6 +29,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Xml;
 
@@ -511,10 +512,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
-            //todo: will need to generate a unique faketable name and introduce the dbo user
-            string databaseActions = "CREATE TABLE [dbo].[faketable]([fakeColumn] [int] NULL);select * from faketable;drop table faketable;";
+            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
+            var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
             //TODO: this is an obsolete member, need a better solution to support querystring from install.config (i think)
-            string strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
+            var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
             //if no exceptions we have necessary drop etc permissions
             return string.IsNullOrEmpty(strExceptions);
         }
@@ -548,6 +549,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 //no need to download english, always there
                 if (cultureCode != "en-us" && String.IsNullOrEmpty(downloadUrl) != true)
                 {
+                    var newCulture = new CultureInfo(cultureCode);
+                    Thread.CurrentThread.CurrentCulture = newCulture;
                     GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
@@ -614,9 +617,15 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public CultureInfo GetCultureFromCookie()
         {
-            string language = HttpContext.Current.Request.Cookies["language"].Value;
+            var langCookie = HttpContext.Current.Request.Cookies["language"];
+            var language = langCookie != null ? langCookie.Value : @"en-US";
             var culture = new CultureInfo(language);
             return culture;
+        }
+
+        public string InstallerLogName
+        {
+            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
 
         #endregion

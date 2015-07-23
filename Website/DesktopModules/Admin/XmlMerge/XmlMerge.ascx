@@ -1,4 +1,4 @@
-<%@ Control language="C#" Inherits="DotNetNuke.Modules.XmlMerge.XmlMerge" CodeFile="XmlMerge.ascx.cs" AutoEventWireup="false" Explicit="True" %>
+<%@ Control language="C#" Inherits="DotNetNuke.Modules.XmlMerge.XmlMerge" AutoEventWireup="false" Explicit="True" Codebehind="XmlMerge.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
@@ -66,6 +66,16 @@
 
 	    var $fileUpload = $('#dnnConfigMerge input[type="file"]');
 	    $fileUpload.data("text", '<%=LocalizeSafeJsString("ChooseFile.Text")%>');
+
+        //DNN-5361 Fix xml merge upload button issue
+	    var $cmdUpload = $('a[id$="cmdUpload"]');
+	    $cmdUpload.attr('disabled', true).addClass('dnnDisabled');
+
+	    $fileUpload.change(function () {
+	        if ($(this).val()) {
+	            $cmdUpload.attr('disabled', false).removeClass('dnnDisabled');
+	        }
+	    });
 
 	    var configeditor = CodeMirror.fromTextArea($("textarea[id$='txtConfiguration']")[0], {
 	        lineNumbers: true,

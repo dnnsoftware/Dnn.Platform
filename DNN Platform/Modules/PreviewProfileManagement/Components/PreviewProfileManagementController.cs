@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.PreviewProfileManagement.Components
 
                 //reset default devices created flag
                 string defaultPreviewProfiles;
-                var settings = PortalController.GetPortalSettingsDictionary(portal.PortalID);
+                var settings = PortalController.Instance.GetPortalSettings(portal.PortalID);
                 if (settings.TryGetValue("DefPreviewProfiles_Created", out defaultPreviewProfiles) && defaultPreviewProfiles == "DNNCORP.CE")
                 {
                     PortalController.DeletePortalSetting(portal.PortalID, "DefPreviewProfiles_Created");

@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="dnn" TagName="PRIVACY" Src="~/Admin/Skins/Privacy.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="TERMS" Src="~/Admin/Skins/Terms.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="COPYRIGHT" Src="~/Admin/Skins/Copyright.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="DNNLINK" Src="~/Admin/Skins/DnnLink.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="LINKTOMOBILE" Src="~/Admin/Skins/LinkToMobileSite.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="META" Src="~/Admin/Skins/Meta.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="MENU" src="~/DesktopModules/DDRMenu/Menu.ascx" %>
@@ -81,6 +82,11 @@
 				    </div>
 				    <dnn:COPYRIGHT ID="dnnCopyright" runat="server" CssClass="pull-left" />
                 </div>
+               <div class="row-fluid copyright-container">
+					<span class="split"></span>
+                    <dnn:DNNLINK id="dnnLink" runat="server" CssClass="" Target="_blank"></dnn:DNNLINK>
+					<span class="split"></span>
+				</div>
             </div>
         </div>
 	</div>

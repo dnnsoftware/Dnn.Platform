@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <returns>Exception info.</returns>
         public static ExceptionInfo GetExceptionInfo(Exception e)
         {
-            var objExceptionInfo = new ExceptionInfo();
+            var objExceptionInfo = new ExceptionInfo(e);
 
             while (e.InnerException != null)
             {

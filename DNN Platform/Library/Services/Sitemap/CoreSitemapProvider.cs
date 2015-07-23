@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -31,7 +32,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -41,6 +44,7 @@ namespace DotNetNuke.Services.Sitemap
     {
         private bool includeHiddenPages;
         private float minPagePriority;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
 
         private PortalSettings ps;
         private bool useLevelBasedPagePriority;
@@ -65,19 +69,40 @@ namespace DotNetNuke.Services.Sitemap
             includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
 
             this.ps = ps;
-
-            foreach (TabInfo objTab in TabController.Instance.GetTabsByPortal(portalId).Values)
-            {
-                if (!objTab.IsDeleted && !objTab.DisableLink && objTab.TabType == TabType.Normal && (Null.IsNull(objTab.StartDate) || objTab.StartDate < DateTime.Now) &&
-                    (Null.IsNull(objTab.EndDate) || objTab.EndDate > DateTime.Now) && IsTabPublic(objTab.TabPermissions))
-                {
-                    if (includeHiddenPages || objTab.IsVisible)
-                    {
-                        pageUrl = GetPageUrl(objTab, (ps.ContentLocalizationEnabled) ? objTab.CultureCode : null);
-                        urls.Add(pageUrl);
-                    }
-                }
-            }
+            var currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
+	        var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
+	        var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
+						.Where(t => !t.IsSystem
+									&& !ps.ContentLocalizationEnabled || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
+			foreach (TabInfo tab in tabs)
+			{
+	            try
+	            {
+	                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
+	                    (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+	                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
+	                {
+	                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+	                    {
+							try
+							{
+								pageUrl = GetPageUrl(tab, currentLanguage);
+								urls.Add(pageUrl);
+							}
+							catch (Exception ex)
+							{
+								Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
+							}
+	                    }
+	                }
+	            }
+	            catch (Exception ex)
+	            {
+	                Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapUrlGenerationError",
+	                            "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+	                            tab.TabID, tab.TabName, ex.Message)));
+	            }
+	        }
 
             return urls;
         }
@@ -120,13 +145,13 @@ namespace DotNetNuke.Services.Sitemap
                         (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
                         (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
                         (IsTabPublic(localized.TabPermissions)) &&
-                        (includeHiddenPages || localized.IsVisible))
+                        (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
-                        alternates.Add(new AlternateUrl() 
-                        { 
-                            Url = alternateUrl, 
-                            Language = localized.CultureCode 
+                        alternates.Add(new AlternateUrl()
+                        {
+                            Url = alternateUrl,
+                            Language = localized.CultureCode
                         });
                     }
                 }
@@ -140,7 +165,7 @@ namespace DotNetNuke.Services.Sitemap
                         Url = alternateUrl,
                         Language = currentTab.CultureCode
                     });
-                    
+
                     pageUrl.AlternateUrls = alternates;
                 }
             }

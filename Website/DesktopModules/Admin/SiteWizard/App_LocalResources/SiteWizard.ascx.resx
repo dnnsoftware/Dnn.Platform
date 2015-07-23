@@ -169,13 +169,13 @@
     <value>{0} is not a valid Website Template File.</value>
   </data>
   <data name="Skin.Title" xml:space="preserve">
-    <value>Select a Skin for your Site</value>
+    <value>Select a Theme for your Site</value>
   </data>
   <data name="Skin.Help" xml:space="preserve">
     <value>
-			You can select a Skin from the Skin Viewer (below). This skin will be applied to all
+			You can select a Theme from the Theme Viewer (below). This theme will be applied to all
 			pages in your site. However, when you edit the Page properties you will have the
-			ability to override this default skin with a different one.
+			ability to override this default theme with a different one.
 		</value>
   </data>
   <data name="Container.Title" xml:space="preserve">
@@ -201,8 +201,8 @@
 			These are used by search engines, together with the site's name to help identify and index your site.
 			The keywords need to be separated by commas.
 			&lt;p&gt;
-			Some skins support a Logo, usually in the top left hand corner.  If you are
-			using a skin that supports logos you can choose it on this page.
+			Some themes support a Logo, usually in the top left hand corner.  If you are
+			using a theme that supports logos you can choose it on this page.
 			If the file you would like is not on this site, you can upload one from
 			your local computer.
 			&lt;/p&gt;
@@ -241,7 +241,7 @@
 				Your Site has been successfully configured.
 			&lt;/p&gt;
 			&lt;p&gt;
-				If you changed the skin for your site, it should change when you leave this page.
+				If you changed the theme for your site, it should change when you leave this page.
 			&lt;/p&gt;
         </value>
   </data>

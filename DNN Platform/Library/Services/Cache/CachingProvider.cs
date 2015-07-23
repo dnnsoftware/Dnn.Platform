@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -61,6 +62,8 @@ namespace DotNetNuke.Services.Cache
     {
 		#region Private Members
 
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
+
         private static System.Web.Caching.Cache _cache;
         private const string CachePrefix = "DNN_";
 		
@@ -79,6 +82,12 @@ namespace DotNetNuke.Services.Cache
                 return _cache ?? (_cache = HttpRuntime.Cache);
             }
         }
+
+		/// <summary>
+		/// Whether current caching provider disabled to expire cache.
+		/// </summary>
+		/// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
+		protected static bool CacheExpirationDisable { get; private set; }
 		
 		#endregion
 
@@ -122,6 +131,30 @@ namespace DotNetNuke.Services.Cache
         {
             return ComponentFactory.GetComponent<CachingProvider>();
         }
+
+		/// <summary>
+		/// Disable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
+		/// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
+		/// </summary>
+		/// <seealso cref="CacheExpirationDisable"/>
+		internal static void DisableCacheExpiration()
+		{
+			CacheExpirationDisable = true;
+			Logger.Warn("Disable cache expiration.");
+
+		}
+
+		/// <summary>
+		/// Enable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
+		/// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
+		/// </summary>
+		/// <seealso cref="CacheExpirationDisable"/>
+		internal static void EnableCacheExpiration()
+		{
+			CacheExpirationDisable = false;
+			DataCache.ClearHostCache(true);
+			Logger.Warn("Enable cache expiration.");
+		}
 		
 	#endregion
 
@@ -208,6 +241,7 @@ namespace DotNetNuke.Services.Cache
         private void ClearModuleCacheInternal(int tabId, bool clearRuntime)
         {
             RemoveFormattedCacheKey(DataCache.TabModuleCacheKey, clearRuntime, tabId);
+            RemoveFormattedCacheKey(DataCache.PublishedTabModuleCacheKey, clearRuntime, tabId);
             RemoveFormattedCacheKey(DataCache.ModulePermissionCacheKey, clearRuntime, tabId);
         }
 
@@ -221,7 +255,7 @@ namespace DotNetNuke.Services.Cache
 
         private void ClearPortalCacheInternal(int portalId, bool cascade, bool clearRuntime)
         {
-            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId);
+            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, string.Empty);
 
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
@@ -229,13 +263,18 @@ namespace DotNetNuke.Services.Cache
                 //At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
+                RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
             }
             else
             {
                 foreach (Locale portalLocale in LocaleController.Instance.GetLocales(portalId).Values)
                 {
                     RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
+                    RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
+                RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
             if (cascade)
             {
@@ -483,7 +522,7 @@ namespace DotNetNuke.Services.Cache
         {
             RemoveInternal(CacheKey);
         }
-		
+
 		#endregion
 
         #region Obsolete Methods

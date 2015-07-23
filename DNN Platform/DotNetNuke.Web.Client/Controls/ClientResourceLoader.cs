@@ -58,12 +58,20 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
         if(item.indexOf('$crm_') > -1){
             var content = dataItems[item];
             //check whether script already register to page.
+            if(typeof window.dnnLoadScriptsInAjaxMode === 'undefined'){
+                window.dnnLoadScriptsInAjaxMode = [];
+            }
             var scripts = content.match(/<script.+?><\/script>/gi);
             if(scripts && scripts.length > 0){
                 for(var i = 0; i < scripts.length; i++){
                     var src = scripts[i].match(/src=""(.+?)""/i)[1];
                     if($('script[src=""' + src + '""]').length == 0){
-                        $(document.body).append(scripts[i]);
+                        window.dnnLoadScriptsInAjaxMode.push(src);
+                        var s = document.createElement( 'script' );
+                        s.type = 'text/javascript';
+                        s.src = src;
+                        s.onload = window.dnnLoadScriptsInAjaxModeComplete;
+                        document.body.appendChild(s);
                     }
                 }
             }
@@ -80,6 +88,23 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
         }
     }
 });
+
+if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
+    window.dnnLoadScriptsInAjaxModeComplete = function(){
+        var src = $(this).attr('src');
+        if(typeof window.dnnLoadScriptsInAjaxMode !== 'undefined'){
+            for(var i = 0; i < window.dnnLoadScriptsInAjaxMode.length; i++){
+                if(window.dnnLoadScriptsInAjaxMode[i] == src){
+                    window.dnnLoadScriptsInAjaxMode.splice(i, 1);
+                    break;
+                }
+            }
+            if(window.dnnLoadScriptsInAjaxMode.length == 0){
+                $(window).trigger('dnnScriptLoadComplete');
+            }
+        }
+    }
+}
 }(jQuery));
 ";
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);

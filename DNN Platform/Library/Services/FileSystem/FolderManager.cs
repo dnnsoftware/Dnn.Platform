@@ -33,6 +33,7 @@ using System.Threading;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -89,13 +90,13 @@ namespace DotNetNuke.Services.FileSystem
 
         private void RegisterEventHandlers()
         {
-            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
-                FolderDeleted += value.FolderDeleted;
-                FolderRenamed += value.FolderRenamed;
-                FolderMoved += value.FolderMoved;
-                FolderAdded += value.FolderAdded;
-                FileDeleted += value.FileDeleted;
+                FolderDeleted += events.Value.FolderDeleted;
+                FolderRenamed += events.Value.FolderRenamed;
+                FolderMoved += events.Value.FolderMoved;
+                FolderAdded += events.Value.FolderAdded;
+                FileDeleted += events.Value.FileDeleted;
             }
         }
 
@@ -383,6 +384,25 @@ namespace DotNetNuke.Services.FileSystem
             return defaultMappedPath.ToString();
         }
 
+        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, bool allSubFolders)
+        {
+            Requires.NotNull("parentFolder", parentFolder);
+
+            if (allSubFolders)
+            {
+                var subFolders =
+                    GetFolders(parentFolder.PortalID)
+                        .Where(
+                            f =>
+                                f.FolderPath.StartsWith(parentFolder.FolderPath,
+                                    StringComparison.InvariantCultureIgnoreCase));
+
+                return subFolders.Where(f => f.FolderID != parentFolder.FolderID);
+            }
+
+            return GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
+        }
+
         #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
@@ -477,8 +497,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The added folder.</returns>
         public virtual IFolderInfo AddFolder(FolderMappingInfo folderMapping, string folderPath, string mappedPath)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
+
+	        folderPath = folderPath.Trim();
 
             if (FolderExists(folderMapping.PortalID, folderPath))
             {
@@ -602,7 +624,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A bool value indicating whether the folder exists or not in the specified portal.</returns>
         public virtual bool FolderExists(int portalId, string folderPath)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
 
             return GetFolder(portalId, folderPath) != null;
         }
@@ -645,9 +667,9 @@ namespace DotNetNuke.Services.FileSystem
 
             if (recursive)
             {
-                foreach (var subFolder in GetFolders(folder))
+                foreach (var subFolder in GetFolders(folder, true))
                 {
-                    files.AddRange(GetFiles(subFolder, true, retrieveUnpublishedFiles));
+                    files.AddRange(GetFiles(subFolder, false, retrieveUnpublishedFiles));
                 }
             }
 
@@ -721,7 +743,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(int portalId, string folderPath)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
 
             folderPath = PathUtils.Instance.FormatFolderPath(folderPath);
 
@@ -747,9 +769,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when parentFolder is null.</exception>
         public virtual IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder)
         {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            return GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
+            return GetFolders(parentFolder, false);
         }
 
         /// <summary>
@@ -1009,7 +1029,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The number of folder collisions.</returns>
         public virtual int Synchronize(int portalId, string relativePath, bool isRecursive, bool syncFiles)
         {
-            Requires.NotNull("relativePath", relativePath);
+            Requires.PropertyNotNull("relativePath", relativePath);
 
             if (AreThereFolderMappingsRequiringNetworkConnectivity(portalId, relativePath, isRecursive) && !IsNetworkAvailable())
             {
@@ -1741,11 +1761,8 @@ namespace DotNetNuke.Services.FileSystem
                 //Add any folders from non-core providers
                 if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
                 {
-                    if (!isRecursive)
-                    {
-                        mergedItem.ExistsInFolderMapping = true;
-                    }
-                    else
+                    mergedItem.ExistsInFolderMapping = true;
+                    if (isRecursive)
                     {
                         var folder = GetFolder(portalId, mergedItem.FolderPath);
                         mappedFolders = MergeFolderLists(mappedFolders, GetFolderMappingFoldersRecursive(folderMapping, folder));
@@ -2044,7 +2061,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!folderProvider.FileExists(folder, file.FileName))
                         {
-                            FileManager.Instance.DeleteFile(file);
+                            FileDeletionController.Instance.DeleteFileData(file);
                         }
                     }
                     catch (Exception ex)

@@ -181,6 +181,36 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
+        public void get_null_string_without_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValue<string>("app id");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_null_string_with_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValueOrDefault("app id", "a default value");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_nullable_datetime()
+        {
+            var collection = new Dictionary<string, DateTime?> { { "startDate", null } };
+
+            var value = collection.GetValue<DateTime?>("startDate");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
         [SetCulture("nl-NL")]
         public void get_datetime_from_other_culture()
         {
@@ -454,22 +484,6 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        public void throws_invalidcastexception_when_type_is_not_supported()
-        {
-            var dictionary = new Dictionary<string, string> { { "length", "1:10:10" } };
-
-            Expect(() => dictionary.GetValueOrDefault<TimeSpan>("length"), Throws.TypeOf<InvalidCastException>());
-        }
-
-        [Test]
-        public void throws_invalidcastexception_when_value_is_null_for_value_type()
-        {
-            var dictionary = new Dictionary<string, string> { { "length", null } };
-
-            Expect(() => dictionary.GetValueOrDefault<int>("length"), Throws.TypeOf<InvalidCastException>());
-        }
-
-        [Test]
         public void does_not_throw_invalidcastexception_when_value_is_null_for_reference_type()
         {
             var dictionary = new Dictionary<string, string> { { "length", null } };
@@ -477,14 +491,6 @@ namespace DotNetNuke.Tests.Core.Collections
             var value = dictionary.GetValueOrDefault<ApplicationException>("length");
 
             Expect(value, Is.Null);
-        }
-
-        [Test]
-        public void throws_formatexception_when_value_cannot_be_parsed()
-        {
-            var dictionary = new Dictionary<string, string> { { "ID", "abc123" } };
-
-            Expect(() => dictionary.GetValueOrDefault<int>("ID"), Throws.TypeOf<FormatException>());
         }
 
         [Test]

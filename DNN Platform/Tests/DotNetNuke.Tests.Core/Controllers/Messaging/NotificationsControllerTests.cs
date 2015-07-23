@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
             _mockDataService
-                .Setup(ds => ds.CreateNotificationType(Constants.Messaging_NotificationTypeName, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), Constants.UserID_User12))
+                .Setup(ds => ds.CreateNotificationType(Constants.Messaging_NotificationTypeName, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), Constants.UserID_User12, It.IsAny<bool>()))
                 .Verifiable();
 
             _mockNotificationsController.Object.CreateNotificationType(CreateNewNotificationType());
@@ -181,7 +181,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     expectedNotificationType.Description,
                     (int)expectedNotificationType.TimeToLive.TotalMinutes,
                     expectedNotificationType.DesktopModuleId,
-                    Constants.UserID_User12))
+                    Constants.UserID_User12, false))
                 .Returns(Constants.Messaging_NotificationTypeId);
 
             var actualNotificationType = CreateNewNotificationType();
@@ -1195,7 +1195,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Name = Constants.Messaging_NotificationTypeName,
                 Description = Constants.Messaging_NotificationTypeDescription,
                 TimeToLive = new TimeSpan(0, Constants.Messaging_NotificationTypeTTL, 0),
-                DesktopModuleId = Constants.Messaging_NotificationTypeDesktopModuleId
+                DesktopModuleId = Constants.Messaging_NotificationTypeDesktopModuleId,
+                IsTask = false
             };
         }
 
@@ -1251,6 +1252,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _dtNotificationTypes.Columns.Add("CreatedOnDate", typeof(DateTime));
             _dtNotificationTypes.Columns.Add("LastModifiedByUserID", typeof(int));
             _dtNotificationTypes.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            _dtNotificationTypes.Columns.Add("IsTask", typeof(bool));
 
             _dtNotificationTypeActions = new DataTable();
             _dtNotificationTypeActions.Columns.Add("NotificationTypeActionID", typeof(int));
@@ -1292,6 +1294,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     x.Name == y.Name &&
                     x.Description == y.Description &&
                     x.TimeToLive == y.TimeToLive &&
+                    x.IsTask == y.IsTask &&
                     x.DesktopModuleId == y.DesktopModuleId;
             }
 
