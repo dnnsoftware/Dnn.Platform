@@ -37,6 +37,19 @@ namespace DotNetNuke.Services.Search
             return ComponentFactory.GetComponent<IndexingProvider>();
         }
 
+        /// <summary>
+        /// This method must save search docuents in batches to minimize memory usage instead of returning all documents ollection at once.
+        /// </summary>
+        /// <param name="portalId">Portal ID to index</param>
+        /// <param name="startDateLocal">Minimum modification date of items that need to be indexed</param>
+        /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing</param>
+        /// <returns></returns>
+        public virtual int IndexSearchDocuments(int portalId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Obsolete("Depricated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.")]
         public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             return new List<SearchDocument>();
