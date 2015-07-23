@@ -103,8 +103,10 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/16/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
+        public override int IndexSearchDocuments(int portalId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
+            const int saveThreshold = 1024 * 2;
+            var totalIndexed = 0;
             var searchDocuments = new List<SearchDocument>();
 			var searchModuleCollection = _searchModules.ContainsKey(portalId) ?
 											_searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo) : GetSearchModules(portalId);
@@ -146,6 +148,13 @@ namespace DotNetNuke.Services.Search
                         Logger.Trace("ModuleIndexer: " + searchItems.Count + " search documents found for module [" + module.DesktopModule.ModuleName + " mid:" + module.ModuleID + "]");
 
                         searchDocuments.AddRange(searchItems);
+
+                        if (searchDocuments.Count >= saveThreshold && indexer != null)
+                        {
+                            indexer.Invoke(searchDocuments);
+                            totalIndexed += searchDocuments.Count;
+                            searchDocuments.Clear();
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -153,8 +162,15 @@ namespace DotNetNuke.Services.Search
                     Exceptions.Exceptions.LogException(ex);
                 }
             }
-            
-            return searchDocuments;
+
+            if (searchDocuments.Count > 0 && indexer != null)
+            {
+                indexer.Invoke(searchDocuments);
+                totalIndexed += searchDocuments.Count;
+                searchDocuments.Clear();
+            }
+
+            return totalIndexed;
         }
 
         /// -----------------------------------------------------------------------------
