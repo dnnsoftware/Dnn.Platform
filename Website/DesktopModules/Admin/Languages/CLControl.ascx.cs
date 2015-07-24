@@ -533,6 +533,8 @@ namespace DotNetNuke.Modules.Admin.Languages
                                         }
                                     }
 
+									DataCache.ClearHostCache(true);
+
                                     break;
                                 }
 
