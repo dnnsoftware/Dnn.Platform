@@ -27,6 +27,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -81,10 +82,14 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <returns>Count of indexed records</returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId,
+            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
-            const int saveThreshold = 1024 * 8;
+            Requires.NotNull("indexer", indexer);
+            const int saveThreshold = BatchSize;
             var totalIndexed = 0;
+            var checkpointModified = false;
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
@@ -100,38 +105,45 @@ namespace DotNetNuke.Services.Search
             var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(portalId, false, false)
                 .Cast<ProfilePropertyDefinition>()
                 .Where(d => (textDataType != null && d.DataType == textDataType.EntryID)
-                            || (richTextDataType != null && d.DataType == richTextDataType.EntryID)).ToList();
+                            || (richTextDataType != null && d.DataType == richTextDataType.EntryID))
+                .ToList();
 
             try
             {
-                var startUserId = Null.NullInteger;
+                int startUserId;
+                var checkpointData = GetLastCheckpointData(portalId, scheduleId);
+                if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
+                {
+                    startUserId = Null.NullInteger;
+                }
+
                 int rowsAffected;
+                IList<int> indexedUsers;
                 do
                 {
-                    IList<int> indexedUsers;
-                    rowsAffected = FindModifiedUsers(
-                        portalId, startDateLocal, searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
+                    rowsAffected = FindModifiedUsers(portalId, startDateLocal,
+                        searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
 
-                    if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold && indexer != null)
+                    if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold)
                     {
                         //remove existing indexes
                         DeleteDocuments(portalId, indexedUsers);
-
                         var values = searchDocuments.Values;
-                        indexer.Invoke(values);
-                        var count = values.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-                        totalIndexed += count;
+                        totalIndexed += IndexCollectedDocs(indexer, values);
+                        SetLastCheckpointData(portalId, scheduleId, startUserId.ToString());
+                        SetLocalTimeOfLastIndexedItem(portalId, scheduleId, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
+                        checkpointModified = true;
                     }
                 } while (rowsAffected > 0);
 
-                if (searchDocuments.Count > 0 && indexer != null)
+                if (searchDocuments.Count > 0)
                 {
+                    //remove existing indexes
+                    DeleteDocuments(portalId, indexedUsers);
                     var values = searchDocuments.Values;
-                    indexer.Invoke(values);
-                    var count = values.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-                    totalIndexed += count;
-                    searchDocuments.Clear();
+                    totalIndexed += IndexCollectedDocs(indexer, values);
+                    checkpointModified = true;
                 }
 
                 if (needReindex)
@@ -144,7 +156,20 @@ namespace DotNetNuke.Services.Search
                 Exceptions.Exceptions.LogException(ex);
             }
 
+            if (checkpointModified)
+            {
+                // at last reset start user pointer
+                SetLastCheckpointData(portalId, scheduleId, Null.NullInteger.ToString());
+                SetLocalTimeOfLastIndexedItem(portalId, scheduleId, DateTime.Now);
+            }
             return totalIndexed;
+        }
+
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
+            return total;
         }
 
         private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
@@ -342,7 +367,7 @@ namespace DotNetNuke.Services.Search
 
         private static void DeleteDocuments(int portalId, ICollection<int> usersList)
         {
-            if (usersList.Count == 0)
+            if (usersList == null || usersList.Count == 0)
             {
                 return;
             }
@@ -406,7 +431,7 @@ namespace DotNetNuke.Services.Search
 
         #region Obsoleted Methods
 
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             return null;
