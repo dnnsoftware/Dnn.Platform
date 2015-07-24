@@ -303,12 +303,10 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Returns the last time search indexing was completed successfully.
         /// The returned value in local server time (not UTC).
+        /// Beware that the value stored in teh database is converted to UTC time.
         /// </summary>
-        /// <param name="scheduleId"></param>
-        /// <returns></returns>
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
-            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
             var lastValue = settings[Constants.SearchLastSuccessIndexName] as string;
 
@@ -319,23 +317,66 @@ namespace DotNetNuke.Services.Search.Internals
                 lastValue = HostController.Instance.GetString(name, Null.NullString);
             }
 
-            if (!string.IsNullOrEmpty(lastValue))
+            DateTime lastTime;
+            if (!string.IsNullOrEmpty(lastValue) &&
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastTime))
             {
-                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
-
-                if (lastSuccessfulDateTime <= SqlDateTime.MinValue.Value)
-                    lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
-                else if (lastSuccessfulDateTime >= SqlDateTime.MaxValue.Value)
-                    lastSuccessfulDateTime = SqlDateTime.MaxValue.Value.AddDays(-1);
+                // retrieves the date as UTC but returns to caller as local
+                lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
+                if (lastTime > DateTime.Now) lastTime = DateTime.Now;
+            }
+            else
+            {
+                lastTime = SqlDateTime.MinValue.Value.AddDays(1);
             }
 
-            return lastSuccessfulDateTime;
+            return lastTime;
         }
 
+        /// <summary>
+        /// Stores the last successful time of the system search indexer.
+        /// The passed value should be in local system time; not UTC time.
+        /// Beware that the value stored in teh database is converted to UTC time.
+        /// </summary>
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
-                Constants.SearchLastSuccessIndexName, startDateLocal.ToString(Constants.ReindexDateTimeFormat));
+                Constants.SearchLastSuccessIndexName, startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
+        }
+
+        public DateTime GetIndexerCheckpointUtcTime(int scheduleId, string indexerKey)
+        {
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            var lastValue = settings[indexerKey] as string;
+
+            DateTime lastUtcTime;
+            if (!string.IsNullOrEmpty(lastValue) &&
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastUtcTime))
+            {
+                lastUtcTime = FixSqlDateTime(lastUtcTime);
+            }
+            else
+            {
+                lastUtcTime = DateTime.UtcNow;
+            }
+
+            return lastUtcTime;
+        }
+
+        public void SetIndexerCheckpointUtcTime(int scheduleId, string indexerKey, DateTime lastUtcTime)
+        {
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, lastUtcTime.ToString(Constants.ReindexDateTimeFormat));
+        }
+
+        public string GetIndexerCheckpointData(int scheduleId, string indexerKey)
+        {
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            return settings[indexerKey] as string;
+        }
+
+        public void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData)
+        {
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, checkPointData);
         }
 
         #endregion
@@ -441,6 +482,15 @@ namespace DotNetNuke.Services.Search.Internals
         #endregion
 
         #region private methods
+
+        private static DateTime FixSqlDateTime(DateTime datim)
+        {
+            if (datim <= SqlDateTime.MinValue.Value)
+                datim = SqlDateTime.MinValue.Value.AddDays(1);
+            else if (datim >= SqlDateTime.MaxValue.Value)
+                datim = SqlDateTime.MaxValue.Value.AddDays(-1);
+            return datim;
+        }
 
 		private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
