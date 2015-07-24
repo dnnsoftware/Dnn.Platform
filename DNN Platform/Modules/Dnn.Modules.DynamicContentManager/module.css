@@ -37,6 +37,9 @@ input[type="password"] {
   border: solid 1px #aaaaaa;
   border-radius: 4px;
 }
+.dccContainer .dccMenu {
+  position: relative;
+}
 .dccContainer .dccMenu ul {
   display: inline-block;
   margin-left: 0px;
@@ -437,14 +440,11 @@ input[type="password"] {
   border: solid 1px #aaaaaa;
   margin-top: 20px;
 }
-.dccContainer .dccExtraMargin {
-  margin-top: 25px;
-}
 .dccContainer div.dccLanguageSelector {
-  float: right;
+  position: absolute;
+  top: 6px;
+  left: 635px;
   display: inline-block;
-  padding-top: 15px;
-  padding-right: 25px;
 }
 .dccContainer div.dccLanguageSelector span {
   font-size: 16px;
