@@ -570,23 +570,40 @@ namespace DotNetNuke.Entities.Urls
                         cultureCode = GetCultureOfSettings(portalSettings);
                         //lookup the culture code of the portal settings object
                     }
-                    var primaryAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
 
-                    if (primaryAlias != null)
+                    PortalAliasInfo redirectAlias;
+                    if (aliasMapping == PortalSettings.PortalAliasMapping.Redirect)
                     {
-                        if ((aliasMapping == PortalSettings.PortalAliasMapping.Redirect || !String.IsNullOrEmpty(primaryAlias.CultureCode))
-                            &&  String.Compare(primaryAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
+                        // Alias mapping is redirect -> Search for primary alias
+                        redirectAlias = primaryAliases.Where(e => e.IsPrimary)
+                            .GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                    }
+                    else
+                    {
+                        var httpAliasWithoutCulture = httpAlias.Split('/').First();
+                        var portalAliasList = primaryAliases.Where(e => e.HTTPAlias.StartsWith(httpAliasWithoutCulture, StringComparison.OrdinalIgnoreCase)).ToList();
+                        redirectAlias = 
+                            // Get culture specific portal alias
+                            portalAliasList.Where(e => cultureCode.Equals(e.CultureCode, StringComparison.OrdinalIgnoreCase)).GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings) ??
+                            // Get default (none culture specific) portal alias
+                            portalAliasList.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                    }
+
+                    if (redirectAlias != null)
+                    {
+                        if (!String.IsNullOrEmpty(redirectAlias.CultureCode)
+                            && String.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
                         {
                             //found the primary alias alias, and it's different from the supplied portal alias
                             //and the site is using a redirect portal alias mapping
                             //substitute in the primary Alias for the supplied alias
                             friendlyPath = friendlyPath.Replace(Globals.AddHTTP(httpAlias), String.Empty);
-                            httpAlias = primaryAlias.HTTPAlias;
-                            if (!string.IsNullOrEmpty(primaryAlias.CultureCode))
+                            httpAlias = redirectAlias.HTTPAlias;
+                            if (!string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
-                            else if (primaryAlias.CultureCode == "")
+                            else if (redirectAlias.CultureCode == "")
                             {
                                 cultureSpecificAlias = true;
                                 //770: hacking this so that a change is forced to portal settings when a non-chosen alias is requested.
@@ -595,8 +612,8 @@ namespace DotNetNuke.Entities.Urls
                         else
                         {
                             //check to see if we matched for this alias - if so, it's a culture specific alias
-                            if (String.Compare(primaryAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
-                                !string.IsNullOrEmpty(primaryAlias.CultureCode))
+                            if (String.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
+                                !string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
