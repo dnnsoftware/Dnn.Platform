@@ -625,18 +625,12 @@ namespace DotNetNuke.Entities.Modules
                 //Add Module
                 AddModuleInternal(newModule);
 
-                //copy module settings
-                Hashtable settings = GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
-
-                //Copy each setting to the new TabModule instance
-                foreach (DictionaryEntry setting in settings)
-                {
-                    UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-                }
-
-                var currentUser = UserController.Instance.GetCurrentUserInfo();
+				//copy module settings
+				DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
+				var settings = GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
 
                 // update tabmodule
+				var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dataProvider.UpdateTabModule(newModule.TabModuleID,
                                              newModule.TabID,
                                              newModule.ModuleID,
@@ -665,6 +659,12 @@ namespace DotNetNuke.Entities.Modules
                                              newModule.LocalizedVersionGuid,
                                              newModule.CultureCode,
                                              currentUser.UserID);
+
+				//Copy each setting to the new TabModule instance
+				foreach (DictionaryEntry setting in settings)
+				{
+					UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+				}
 
                 if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                 {
