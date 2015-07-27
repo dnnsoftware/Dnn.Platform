@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -123,6 +124,16 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 }
             }
             return defaultValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, LocalResourceFile);
         }
 
         /// <summary>

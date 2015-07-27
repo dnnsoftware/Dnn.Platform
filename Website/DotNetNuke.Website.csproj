@@ -1410,6 +1410,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="packages.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.02.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -4571,7 +4574,6 @@
     <None Include="Providers\DataProviders\SqlDataProvider\07.03.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\07.03.04.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\07.04.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\07.09.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

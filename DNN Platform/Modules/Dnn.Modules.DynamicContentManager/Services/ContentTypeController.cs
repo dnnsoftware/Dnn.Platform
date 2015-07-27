@@ -10,6 +10,7 @@ using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -178,30 +179,43 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedDescriptions = new List<ContentTypeLocalization>();
             string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
 
-            return SaveEntity(contentTypeId, 
-                                () => new DynamicContentType
-                                                {
-                                                    Name = defaultName,
-                                                    Description = defaultDescription,
-                                                    PortalId = portalId
-                                                },
+            //Check if the content Type exists
+            HttpResponseMessage response;
+            var type = DynamicContentTypeManager.Instance.GetContentTypes(portalId, true).SingleOrDefault((t => t.Name == defaultName));
+            if (type != null)
+            {
+                response = Request.CreateResponse(new { success = false, message = LocalizeString("ContentTypeExists") });
+            }
+            else
+            {
+                response = SaveEntity(contentTypeId,
+                                    () => new DynamicContentType
+                                    {
+                                        Name = defaultName,
+                                        Description = defaultDescription,
+                                        PortalId = portalId
+                                    },
 
-                                contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
+                                    contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
 
-                                () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
+                                    () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
 
-                                contentType =>
-                                                {
-                                                    contentType.Name = defaultName;
-                                                    contentType.Description = defaultDescription;
-                                                    DynamicContentTypeManager.Instance.UpdateContentType(contentType);
-                                                },
+                                    contentType =>
+                                    {
+                                        contentType.Name = defaultName;
+                                        contentType.Description = defaultDescription;
+                                        DynamicContentTypeManager.Instance.UpdateContentType(contentType);
+                                    },
 
-                                (id) =>
-                                                {
-                                                    SaveContentLocalizations(localizedNames, DynamicContentTypeManager.NameKey, id, portalId);
-                                                    SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.DescriptionKey, id, portalId);
-                                                });
+                                    id =>
+                                    {
+                                        SaveContentLocalizations(localizedNames, DynamicContentTypeManager.NameKey, id, portalId);
+                                        SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.DescriptionKey, id, portalId);
+                                    });
+
+            }
+
+            return response;
         }
     }
 }
