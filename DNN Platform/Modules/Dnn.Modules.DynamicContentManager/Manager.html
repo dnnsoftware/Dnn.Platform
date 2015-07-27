@@ -93,9 +93,10 @@
             <div id="contentTypes-editView" class="dccSubPanel" data-bind="visible: mode() == 'editType', with: selectedContentType">
                 <div class="dccEditForm">
                     <div class="dccEditRow">
-                        <div>
+                        <div data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                             <label>[Resx:{key:"Name"}]</label>
                             <input type="text" data-bind="value: name, enable: canEdit" />
+                            <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                         </div>
                         <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
                             <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
@@ -103,9 +104,10 @@
                         </div>
                     </div>
                     <div class="dccEditRow">
-                        <div>
+                        <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
                             <label>[Resx:{key:"Description"}]</label>
                             <textarea class="dccTextArea" type="text" data-bind="value: description, enable: canEdit"></textarea>
+                            <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
                         </div>
                     </div>
 
@@ -173,13 +175,15 @@
                 <div class="dccSubPanel">
                     <div class="dccEditForm">
                         <div class="dccEditRow">
-                            <div>
+                            <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                                 <label>[Resx:{key:"Name"}]</label>
                                 <input type="text" data-bind="value: name">
+                                <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                             </div>
-                            <div>
+                            <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedLabels())">
                                 <label>[Resx:{key:"Label"}]</label>
                                 <input type="text" data-bind="value: label">
+                                <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedLabels())}"></i>
                             </div>
                             <div>
                                 <label>[Resx:{key:"DataType"}]</label>
@@ -187,9 +191,10 @@
                             </div>
                         </div>
                         <div class="dccEditRow">
-                            <div>
+                            <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
                                 <label>[Resx:{key:"Description"}]</label>
                                 <textarea  class="dccTextArea" type="text" data-bind="value: description"></textarea>
+                                <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
                             </div>
                         </div>
 
@@ -241,9 +246,10 @@
                         <td colspan="4" data-bind="with: selectedDataType">
                             <div class="dccEditForm">
                                 <div class="dccEditRow">
-                                    <div>
+                                    <div data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                                         <label>[Resx:{key:"Name"}]</label>
                                         <input type="text" data-bind="value: name, enable: !isSystem() || parentViewModel.isSystemUser" />
+                                        <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                                     </div>
                                     <div>
                                         <label>[Resx:{key:"BaseType"}]</label>
@@ -333,9 +339,10 @@
             <div id="templates-editView" class="dccSubPanel" data-bind="visible: mode() == 'editTemplate', with: selectedTemplate">
                 <div class="dccEditForm">
                     <div class="dccEditRow">
-                        <div>
+                        <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                             <label>[Resx:{key:"Name"}]</label>
                             <input type="text" data-bind="value: name, enable: canEdit" />
+                            <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                         </div>
                         <div>
                             <label>[Resx:{key:"ContentType"}]</label>
@@ -428,6 +435,13 @@
             deleteTemplateConfirmMessage: '[Resx:{key:"DeleteTemplateConfirmMessage"}]',
             deleteDataTypeConfirmMessage: '[Resx:{key:"DeleteDataTypeConfirmMessage"}]',
             saveContentTypeMessage: '[Resx:{key:"SaveContentTypeMessage"}]',
+            invalidContentTypeMessage: '[Resx:{key:"InvalidContentTypeMessage"}]',
+            invalidContentFieldMessage: '[Resx:{key:"InvalidContentFieldMessage"}]',
+            invalidDataTypeMessage: '[Resx:{key:"InvalidDataTypeMessage"}]',
+            invalidTemplateMessage: '[Resx:{key:"InvalidTemplateMessage"}]',
+            defaultValueMissing: '[Resx:{key:"DefaultValueMissing"}]',
+            defaultLocalizedValueMissing: '[Resx:{key:"DefaultLocalizedValueMissing"}]',
+            translationMissing: '[Resx:{key:"TranslationMissing"}]',
             no: '[Resx:{key:"No"}]',
             yes: '[Resx:{key:"Yes"}]',
             ok: '[Resx:{key:"Ok"}]'
