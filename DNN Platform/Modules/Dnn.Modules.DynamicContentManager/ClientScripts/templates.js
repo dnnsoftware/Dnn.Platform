@@ -333,8 +333,8 @@ dcc.templateViewModel = function(parentViewModel, config){
 
         var cursorLocation = codeEditor.cursorCoords();
 
-        $contextMenu.offset({ top: cursorLocation.top, left: cursorLocation.left});
         $contextMenu.show();
+        $contextMenu.offset({ top: cursorLocation.top, left: cursorLocation.left });
 
         return false;
     });

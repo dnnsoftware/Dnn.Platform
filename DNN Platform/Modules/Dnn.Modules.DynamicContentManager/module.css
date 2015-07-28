@@ -454,7 +454,7 @@ input[type="password"] {
   padding: 2px 5px 5px 5px;
   font-size: 15px;
 }
-.dccContainer #templateEditorContextMenu ul {
+.dccContainer ul#templateEditorContextMenu {
   float: left;
   position: relative;
   z-index: 5;
@@ -464,32 +464,36 @@ input[type="password"] {
   border-radius: 4px;
   background-color: white;
 }
-.dccContainer #templateEditorContextMenu ul li {
+.dccContainer ul#templateEditorContextMenu li {
   position: relative;
   margin-right: 10px;
 }
-.dccContainer #templateEditorContextMenu ul li:hover {
+.dccContainer ul#templateEditorContextMenu li:hover {
   background: #d9ecfa;
 }
-.dccContainer #templateEditorContextMenu ul li div {
+.dccContainer ul#templateEditorContextMenu li div {
   display: block;
   padding: 5px;
   text-decoration: none;
   cursor: pointer;
   min-width: 100px;
 }
-.dccContainer #templateEditorContextMenu ul li div span {
+.dccContainer ul#templateEditorContextMenu li div span {
   padding-right: 5px;
 }
-.dccContainer #templateEditorContextMenu ul li div > i {
+.dccContainer ul#templateEditorContextMenu li div > i {
   float: right;
 }
-.dccContainer #templateEditorContextMenu ul li ul {
+.dccContainer ul#templateEditorContextMenu li ul {
   list-style: none;
   position: absolute;
   left: -9999px;
+  border: solid 1px #aaaaaa;
+  box-shadow: 5px 5px 5px #aaaaaa;
+  border-radius: 4px;
+  background-color: white;
 }
-.dccContainer #templateEditorContextMenu ul li:hover ul {
+.dccContainer ul#templateEditorContextMenu li:hover ul {
   left: 100px;
   top: 5px;
 }
