@@ -1088,6 +1088,7 @@ namespace DotNetNuke.Entities.Modules
 
             ClearCache(sourceModule.TabID);
             ClearCache(destinationTab.TabID);
+			ClearModuleSettingsCache(sourceModule.ModuleID);
 
             //Optionally copy the TabModuleSettings
             if (includeSettings)
