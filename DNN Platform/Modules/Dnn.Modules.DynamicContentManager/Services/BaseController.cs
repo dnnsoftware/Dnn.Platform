@@ -17,6 +17,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     public abstract class BaseController : DnnApiController
     {
+		/// <summary>
+		/// Local Resource File Path.
+		/// </summary>
         protected string LocalResourceFile = "~/DesktopModules/Dnn/DynamicContentManager/App_LocalResources/Manager.resx";
 
         /// <summary>

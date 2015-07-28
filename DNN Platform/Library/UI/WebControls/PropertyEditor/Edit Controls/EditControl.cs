@@ -53,7 +53,6 @@ namespace DotNetNuke.UI.WebControls
 		#region "Private Members"
 
         private object[] _CustomAttributes;
-	    private string _editControlId;
 
 		#endregion
 

@@ -75,10 +75,8 @@ namespace DotNetNuke.Modules.Admin.Host
             {
                 case 1:
                     return ResolveUrl("images/checkmark.png");
-                    break;
                 case 2:
                     return ResolveUrl("images/block.png");
-                    break;
             }
             return String.Empty;
         }
@@ -90,10 +88,8 @@ namespace DotNetNuke.Modules.Admin.Host
             {
                 case 1:
                     return Localization.GetString("AllowIP.Text", LocalResourceFile);
-                    break;
                 case 2:
                     return Localization.GetString("DenyIP.Text", LocalResourceFile);
-                    break;
             }
             return String.Empty;
         }

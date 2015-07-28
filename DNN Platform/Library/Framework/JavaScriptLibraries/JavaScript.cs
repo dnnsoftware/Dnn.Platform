@@ -461,7 +461,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             List<string> legacyScripts = (from object item in HttpContextSource.Current.Items.Keys
                                           where item.ToString().StartsWith(LegacyPrefix)
                                           select item.ToString().Substring(7)).ToList();
-            foreach (string legacyScript in legacyScripts)
+#pragma warning disable 618
+			foreach (string legacyScript in legacyScripts)
             {
                 switch (legacyScript)
                 {
@@ -548,8 +549,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
                         break;
                 }
-            }
-        }
+			}
+#pragma warning restore 618
+		}
 
         #endregion
 
@@ -571,13 +573,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         public static string GetJQueryScriptReference()
         {
+#pragma warning disable 618
             string scriptsrc = jQuery.HostedUrl;
             if (!jQuery.UseHostedScript)
             {
                 scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
             }
             return scriptsrc;
-        }
+#pragma warning restore 618
+		}
 
         public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
         {

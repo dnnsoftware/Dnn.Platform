@@ -427,7 +427,7 @@ namespace DotNetNuke.Framework
             //register DNN SkinWidgets Inititialization scripts
             if (PortalSettings.EnableSkinWidgets & !UrlUtils.InPopUp())
             {
-                jQuery.RequestRegistration();
+				JavaScript.RequestRegistration(CommonJs.jQuery);
                 // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
                 ClientAPI.RegisterStartUpScript(Page, "initWidgets", string.Format("<script type=\"text/javascript\" src=\"{0}\" ></script>", ResolveUrl("~/Resources/Shared/scripts/initWidgets.js")));
             }

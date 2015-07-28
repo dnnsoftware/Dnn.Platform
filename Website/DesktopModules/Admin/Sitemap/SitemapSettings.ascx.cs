@@ -32,6 +32,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Sitemap;
@@ -182,7 +183,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         {
             base.OnLoad(e);
 
-            Framework.jQuery.RequestRegistration();
+			JavaScript.RequestRegistration(CommonJs.jQuery);
             AJAX.RegisterScriptManager();
 
             cboSearchEngine.SelectedIndexChanged += OnSearchEngineIndexChanged;

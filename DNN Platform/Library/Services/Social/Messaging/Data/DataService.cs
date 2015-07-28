@@ -36,8 +36,6 @@ using DotNetNuke.Services.Social.Messaging.Internal.Views;
 namespace DotNetNuke.Services.Social.Messaging.Data
 {
     /// <summary>Data Service component for core messaging functions</summary>
-    using DotNetNuke.Services.FileSystem.EventArgs;
-
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         /// <summary>The provider instance</summary>
@@ -52,14 +50,13 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The id of the newly created message</returns>
         public int SaveMessage(Message message, int portalId, int createUpdateUserId)
         {
-
-        /// <summary>Gets the message.</summary>
-        /// <param name="messageId">The message identifier.</param>
-        /// <returns>A <see cref="IDataReader"/> containing the message data</returns>
             //need to fix groupmail
             return _provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId ,message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
         }
 
+		/// <summary>Gets the message.</summary>
+		/// <param name="messageId">The message identifier.</param>
+		/// <returns>A <see cref="IDataReader"/> containing the message data</returns>
         public IDataReader GetMessage(int messageId)
         {
             return _provider.ExecuteReader("CoreMessaging_GetMessage", messageId);

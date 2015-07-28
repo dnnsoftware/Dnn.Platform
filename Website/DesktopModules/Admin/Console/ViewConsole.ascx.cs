@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
@@ -344,7 +345,7 @@ namespace DesktopModules.Admin.Console
 
 			try
 			{
-				jQuery.RequestRegistration();
+				JavaScript.RequestRegistration(CommonJs.jQuery);
 
                 ClientResourceManager.RegisterScript(Page, "~/desktopmodules/admin/console/jquery.console.js");
 

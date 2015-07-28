@@ -2534,6 +2534,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion623()
         {
+#pragma warning disable 618
             if (Host.jQueryUrl == "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
             {
                 HostController.Instance.Update("jQueryUrl", jQuery.DefaultHostedUrl);
@@ -2542,8 +2543,9 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.jQueryUIUrl == "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js")
             {
                 HostController.Instance.Update("jQueryUIUrl", jQuery.DefaultUIHostedUrl);
-            }
-        }
+			}
+#pragma warning restore 618
+		}
 
         private static void UpgradeToVersion624()
         {
@@ -4960,7 +4962,7 @@ namespace DotNetNuke.Services.Upgrade
 						                packages.Remove(oldPackage.Key);
 										FileWrapper.Instance.Delete(oldPackage.Key);
 					                }
-					                catch (Exception ex)
+					                catch (Exception)
 					                {
 						                //do nothing here.
 					                }

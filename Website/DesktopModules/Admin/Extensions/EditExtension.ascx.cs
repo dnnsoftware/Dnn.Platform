@@ -28,6 +28,7 @@ using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
@@ -246,7 +247,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// -----------------------------------------------------------------------------

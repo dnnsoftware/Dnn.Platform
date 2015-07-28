@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -1369,7 +1370,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             base.OnInit(e);
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/dnn.extensions.js", FileOrder.Js.DefaultPriority);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 1);

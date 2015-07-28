@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.Groups
 
         private int AddModule(TabInfo tab, int portalId, string moduleName, string pane)
         {
-            var module = ModuleController.Instance.GetTabModules(tab.TabID).Values.SingleOrDefault(m => m.ModuleName == moduleName);
+			var module = ModuleController.Instance.GetTabModules(tab.TabID).Values.SingleOrDefault(m => m.DesktopModule.ModuleName == moduleName);
             int id = -1;
             if (module == null)
             {
