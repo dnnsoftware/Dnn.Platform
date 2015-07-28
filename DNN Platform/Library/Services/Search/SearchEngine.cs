@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private static int GetAndStoreSearchDocuments(IndexingProvider indexer, DateTime startDateLocal)
+        private int GetAndStoreSearchDocuments(IndexingProvider indexer, DateTime startDateLocal)
         {
             IList<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private static int GetAndStoreModuleMetaData(ModuleIndexer indexer, DateTime startDate)
+        private int GetAndStoreModuleMetaData(ModuleIndexer indexer, DateTime startDate)
         {
             IEnumerable<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
