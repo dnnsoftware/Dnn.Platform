@@ -1311,6 +1311,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
         /// This method will build a dnn property label (Same as used in the user profile edit area) that can be added to a control.
         /// </summary>
         /// <param name="resourceKey"></param>
+		/// <param name="associatedControlId"></param>
         /// <returns></returns>
         /// <remarks></remarks>
 		private PropertyLabelControl BuildLabel(string resourceKey, string associatedControlId)

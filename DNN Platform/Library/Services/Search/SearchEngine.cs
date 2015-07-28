@@ -208,7 +208,9 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException)
                 {
+#pragma warning disable 618
                     searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
+#pragma warning restore 618
                     StoreSearchDocuments(searchDocs);
                     indexedCount += searchDocs.Count();
                 }
@@ -222,7 +224,9 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException)
             {
+#pragma warning disable 618
                 searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
+#pragma warning restore 618
                 StoreSearchDocuments(searchDocs);
                 indexedCount += searchDocs.Count();
             }

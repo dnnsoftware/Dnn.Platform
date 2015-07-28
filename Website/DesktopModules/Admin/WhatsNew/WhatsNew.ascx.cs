@@ -27,6 +27,7 @@ using System.Xml.XPath;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -42,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Host
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         protected override void OnLoad(EventArgs e)

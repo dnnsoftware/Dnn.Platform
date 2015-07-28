@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
                 Response.ContentType = "application/zip, application/octet-stream";
                 Response.WriteFile(packageFile.FullName);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //do nothing here, just ignore the error.
             }

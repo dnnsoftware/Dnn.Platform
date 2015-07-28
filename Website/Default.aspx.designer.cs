@@ -64,7 +64,7 @@ namespace DotNetNuke.Framework {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlMeta MetaDescription;
+        protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaDescription;
         
         /// <summary>
         /// MetaKeywords control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Framework {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlMeta MetaKeywords;
+        protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaKeywords;
         
         /// <summary>
         /// MetaCopyright control.
@@ -163,7 +163,7 @@ namespace DotNetNuke.Framework {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Common.Controls.Form Form;
+        protected new global::DotNetNuke.Common.Controls.Form Form;
         
         /// <summary>
         /// BodySCRIPTS control.

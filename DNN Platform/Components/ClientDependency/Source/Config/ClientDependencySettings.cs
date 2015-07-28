@@ -9,6 +9,7 @@ using ClientDependency.Core.FileRegistration.Providers;
 using ClientDependency.Core.CompositeFiles.Providers;
 using ClientDependency.Core.Logging;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace ClientDependency.Core.Config
 {
@@ -133,8 +134,9 @@ namespace ClientDependency.Core.Config
         public List<string> FileBasedDependencyExtensionList
         {
             get
-            {
-                if (_fileBasedDependencyExtensionList == null)
+			{
+#pragma warning disable 618
+				if (_fileBasedDependencyExtensionList == null)
                 {
                     //Here we are checking for backwards compatibility config sections.
                     if (ConfigSection.FileRegistrationElement.FileBasedDependencyExtensions != ".js,.css"
@@ -151,9 +153,9 @@ namespace ClientDependency.Core.Config
 
                     //always force uppercase
                     _fileBasedDependencyExtensionList = _fileBasedDependencyExtensionList.Select(x => x.ToUpper()).Distinct().ToList();
-
-                }
-                return _fileBasedDependencyExtensionList;
+				}
+#pragma warning restore 618
+				return _fileBasedDependencyExtensionList;
             }
             set
             {
@@ -173,7 +175,7 @@ namespace ClientDependency.Core.Config
             {
                 if (!_allowOnlyFipsAlgorithms.HasValue)
                 {
-                    _allowOnlyFipsAlgorithms = ConfigSection.AllowOnlyFipsAlgorithms;
+					_allowOnlyFipsAlgorithms = CryptoConfig.AllowOnlyFipsAlgorithms;
                 }
                 return _allowOnlyFipsAlgorithms.Value;
             }

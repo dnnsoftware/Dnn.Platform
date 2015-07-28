@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 		#region Private Methods
 
-		protected new string GetRedirectUrl(bool checkSettings = true)
+		protected string GetRedirectUrl(bool checkSettings = true)
 		{
 			var redirectUrl = "";
 			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;

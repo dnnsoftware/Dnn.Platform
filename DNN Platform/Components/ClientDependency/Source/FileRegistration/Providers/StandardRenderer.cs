@@ -23,7 +23,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         }
 
         /// <summary>
-        /// Override because we need to ensure the & is replaced with &amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
+        /// Override because we need to ensure the &amp; is replaced with &amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
         /// </summary>
         /// <param name="allDependencies"></param>
         /// <param name="paths"></param>
