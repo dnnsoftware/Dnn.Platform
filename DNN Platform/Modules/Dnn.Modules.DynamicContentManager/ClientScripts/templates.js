@@ -313,28 +313,30 @@ dcc.templateViewModel = function(parentViewModel, config){
         };
 
         util.templateService().post("SaveTemplate", params,
-            function (data) {
+            function(data) {
                 //Success
                 self.cancel();
             },
-
-            function (data) {
+            function(data) {
                 //Failure
             }
-        )
+        );
     };
 
     self.toggleSelected = function() {
         self.selected(!self.selected());
     };
 
-    codeEditor.on("contextmenu", function(instance, event) {
+    var $codeEditor = $rootElement.find(".CodeMirror");
+    $codeEditor.bind("contextmenu", function (event) {
         event.preventDefault();
 
-        var cursorLocation = instance.cursorCoords();
+        var cursorLocation = codeEditor.cursorCoords();
 
         $contextMenu.offset({ top: cursorLocation.top, left: cursorLocation.left});
         $contextMenu.show();
+
+        return false;
     });
 
     codeEditor.on("mousedown", function(instance, event) {
