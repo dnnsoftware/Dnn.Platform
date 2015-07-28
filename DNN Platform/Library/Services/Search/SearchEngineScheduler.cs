@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Search
                 Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
                 ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                var searchEngine = new SearchEngine();
+                var searchEngine = new SearchEngine(lastSuccessFulDateTime);
                 try
                 {
                     searchEngine.DeleteOldDocsBeforeReindex(lastSuccessFulDateTime);
