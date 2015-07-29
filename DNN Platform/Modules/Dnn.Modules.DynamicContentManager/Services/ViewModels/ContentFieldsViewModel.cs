@@ -20,6 +20,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a ContentFieldsViewModel from a collection of field definitions
         /// </summary>
         /// <param name="fieldDefinitions"></param>
+		/// <param name="settings"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         public ContentFieldsViewModel(IList<FieldDefinition> fieldDefinitions, PortalSettings settings, int pageIndex = 0, int pageSize = 5)

@@ -297,4 +297,10 @@
   <data name="ContentTypeExists.Text" xml:space="preserve">
     <value>A Content Type with that name already exists.  PLease try again with a different name.</value>
   </data>
+  <data name="InsertField.Text" xml:space="preserve">
+    <value>Insert Field</value>
+  </data>
+  <data name="InsertHelper.Text" xml:space="preserve">
+    <value>Insert Helper Tag</value>
+  </data>
 </root>

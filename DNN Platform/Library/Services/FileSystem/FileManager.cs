@@ -318,7 +318,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !ignoreWhiteList))
+            if (!IsAllowedExtension(fileName) && !UserController.Instance.GetCurrentUserInfo().IsSuperUser && !ignoreWhiteList)
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }

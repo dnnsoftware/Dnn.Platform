@@ -42,7 +42,6 @@ namespace ClientDependency.Core
         /// This will add or update a writer for a specific file extension
         /// </summary>
         /// <param name="fileExtension"></param>
-        /// <param name="?"></param>
         /// <param name="writer"></param>
         public static void AddWriterForExtension(string fileExtension, IVirtualFileWriter writer)
         {
@@ -107,7 +106,6 @@ namespace ClientDependency.Core
         /// This will add or update a writer for a specific file extension
         /// </summary>
         /// <param name="fileExtension"></param>
-        /// <param name="?"></param>
         /// <param name="writer"></param>
         public static void AddWriterForExtension(string fileExtension, IFileWriter writer)
         {

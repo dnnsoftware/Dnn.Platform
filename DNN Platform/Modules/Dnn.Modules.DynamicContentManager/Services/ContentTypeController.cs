@@ -69,7 +69,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="pageSize">The size of page to fetch</param>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex, int pageSize)
+        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex = 0, int pageSize = 999)
         {
             return GetPage<FieldDefinition, ContentFieldViewModel>(
                                 () =>

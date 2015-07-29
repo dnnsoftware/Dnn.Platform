@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/16/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Depricated in DNN 7.4.2 Use \'IndexSearchDocuments\' instead for lower memory footprint during search.")]
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             var searchDocuments = new List<SearchDocument>();

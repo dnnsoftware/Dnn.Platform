@@ -26,7 +26,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
@@ -132,10 +131,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string KeyWord3Value = "value3";
         private const string KeyWord4Value = "value4";
         private const string KeyWord5Value = "value5";
-        private const string Line1 = "the quick brown fox jumps over the lazy dog";
-        private const string Line2 = "the quick gold fox jumped over the lazy black dog";
-        private const string Line3 = "the quick fox jumps over the black dog";
+        private const string Line1 = "The quick brown fox jumps over the lazy dog";
+        private const string Line2 = "The quick gold fox jumped over the lazy black dog";
+        private const string Line3 = "the quick fox jumps over the black dog - Italian";
         private const string Line4 = "the red fox jumped over the lazy dark gray dog";
+        private const string Line5 = "the quick fox jumps over the white dog - los de el Espana";
 
         private const int CustomBoost = 80;
 
@@ -302,6 +302,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
             _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(GetSearchTypeByNameCallback);
             _mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(GetSearchTypes());
+            _mockSearchHelper.Setup(x => x.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
             _mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
                 new SearchStopWords
                 {
@@ -309,7 +310,22 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     CultureCode = CultureEsEs,
                     StopWords = "los,de,el",
                 });
-			_mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEnUs,
+                    StopWords = "the,over",
+                });
+            _mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnCa)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEnCa,
+                    StopWords = "the,over",
+                });
+
+            _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
             _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
@@ -408,9 +424,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var searchDocs = new List<SearchDocument> {
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2, CultureCode = CultureEnUs },
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line5, CultureCode = CultureEsEs },
             };
 
             var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
@@ -832,7 +849,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line1,
                 Line2,
                 Line3,
-                Line4
+                Line4,
+                Line5
                 };
 
             AddLinesAsSearchDocs(docs);
@@ -854,7 +872,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line1,
                 Line2,
                 Line3,
-                Line4
+                Line4,
+                Line5
                 };
 
             AddLinesAsSearchDocs(docs);
@@ -1412,22 +1431,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line1,
                 Line2,
                 Line3,
-                Line4
+                Line4,
+                Line5
                 };
             AddLinesAsSearchDocs(docs);
 
             //Act
-            var searches = SearchForKeyword("fox");
+            var search = SearchForKeyword("fox");
 
             //Assert
-            Assert.AreEqual(docs.Length, searches.Results.Count);
+            Assert.AreEqual(docs.Length, search.Results.Count);
             Assert.IsTrue(new[]
                 {
                   "brown <b>fox</b> jumps over the lazy dog",
-                  "quick <b>fox</b> jumps over the black dog",
+                  "quick <b>fox</b> jumps over the black dog - Italian",
                   "gold <b>fox</b> jumped over the lazy black dog",
                   "e red <b>fox</b> jumped over the lazy dark gray dog",
-                }.SequenceEqual(searches.Results.Select(r => StipEllipses(r.Snippet))));
+                  "quick <b>fox</b> jumps over the white dog - los de el Espana"
+                }.SequenceEqual(search.Results.Select(r => StipEllipses(r.Snippet))),
+                "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
         }
 
         [Test]
@@ -1525,37 +1547,37 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-10), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = _searchController.SiteSearch(query);
             Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(Line4, search.Results[0].Title);
+            Assert.AreEqual(Line5, search.Results[0].Title);
 
             //Act and Assert - 1 year or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-368), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = _searchController.SiteSearch(query);
             Assert.AreEqual(2, search.Results.Count);
-            Assert.AreEqual(Line4, search.Results[0].Title);
-            Assert.AreEqual(Line3, search.Results[1].Title);
+            Assert.AreEqual(Line5, search.Results[0].Title);
+            Assert.AreEqual(Line4, search.Results[1].Title);
 
             //Act and Assert - 2 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-800), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = _searchController.SiteSearch(query);
             Assert.AreEqual(3, search.Results.Count);
-            Assert.AreEqual(Line4, search.Results[0].Title);
-            Assert.AreEqual(Line3, search.Results[1].Title);
-            Assert.AreEqual(Line2, search.Results[2].Title);
+            Assert.AreEqual(Line5, search.Results[0].Title);
+            Assert.AreEqual(Line4, search.Results[1].Title);
+            Assert.AreEqual(Line3, search.Results[2].Title);
 
             //Act and Assert - 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = _searchController.SiteSearch(query);
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(Line4, search.Results[0].Title);
-            Assert.AreEqual(Line3, search.Results[1].Title);
-            Assert.AreEqual(Line2, search.Results[2].Title);
-            Assert.AreEqual(Line1, search.Results[3].Title);
+            Assert.AreEqual(4, search.Results.Count);
+            Assert.AreEqual(Line5, search.Results[0].Title);
+            Assert.AreEqual(Line4, search.Results[1].Title);
+            Assert.AreEqual(Line3, search.Results[2].Title);
+            Assert.AreEqual(Line2, search.Results[3].Title);
 
             //Act and Assert - 2 to 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(-800) };
             search = _searchController.SiteSearch(query);
             Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(Line1, search.Results[0].Title);
+            Assert.AreEqual(Line2, search.Results[0].Title);
         }
 
         #endregion
@@ -1744,10 +1766,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = _searchController.SiteSearch(query);
 
             //Assert
-            Assert.AreEqual(added, search.Results.Count);
-            Assert.AreEqual(Tag3, search.Results[0].Tags.ElementAt(0));
-            Assert.AreEqual(Tag4, search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(TagLatest, search.Results[0].Tags.ElementAt(2));
+            Assert.AreEqual(added, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+
+            Assert.AreEqual(Tag3, search.Results[1].Tags.ElementAt(0));
+            Assert.AreEqual(Tag4, search.Results[1].Tags.ElementAt(1));
+            Assert.AreEqual(TagLatest, search.Results[1].Tags.ElementAt(2));
+
+            Assert.AreEqual(Tag2, search.Results[0].Tags.ElementAt(0));
+            Assert.AreEqual(Tag3, search.Results[0].Tags.ElementAt(1));
+            Assert.AreEqual(TagIt.ToLower(), search.Results[0].Tags.ElementAt(2));
         }
 
         [Test]
@@ -2150,10 +2177,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search = _searchController.SiteSearch(query);
 
             //Assert
-            Assert.AreEqual(3, search.Results.Count);
+            Assert.AreEqual(2, search.Results.Count, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
             Assert.AreEqual(Line3, search.Results[0].Title);
-            Assert.AreEqual(Line2, search.Results[1].Title);
-            Assert.AreEqual(Line1, search.Results[2].Title);
+            Assert.AreEqual(Line1, search.Results[1].Title);
         }
 
 
@@ -2339,10 +2365,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(added, search.TotalHits);
-            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", StipEllipses(search.Results[0].Snippet));
-            Assert.AreEqual("quick <b>fox</b> jumps over the black dog", StipEllipses(search.Results[1].Snippet));
-            Assert.AreEqual("gold <b>fox</b> jumped over the lazy black dog", StipEllipses(search.Results[2].Snippet));
-            Assert.AreEqual("e red <b>fox</b> jumped over the lazy dark gray dog", StipEllipses(search.Results[3].Snippet));
+
+            var snippets = search.Results.Select(result => StipEllipses(result.Snippet)).OrderBy(s => s).ToArray();
+            Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", snippets[0]);
+            Assert.AreEqual("e red <b>fox</b> jumped over the lazy dark gray dog", snippets[1]);
+            Assert.AreEqual("gold <b>fox</b> jumped over the lazy black dog", snippets[2]);
+            Assert.AreEqual("quick <b>fox</b> jumps over the black dog - Italian", snippets[3]);
         }
         #endregion
 
@@ -3026,5 +3054,37 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
 		#endregion
 
-	}
+        #region stop-words tests
+
+        [Test]
+        public void SearchController_Search_StopWords_Works()
+        {
+            //Arrange
+            var added = AddStandardSearchDocs();
+            _internalSearchController.Commit();
+
+            //Act
+            var search = SearchForKeywordInModule("the");
+
+            //Assert
+            // the word "the" is ignored in all languages except es-ES
+            Assert.AreEqual(1, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+
+            //Act
+            search = SearchForKeywordInModule("over");
+
+            //Assert
+            // we won't find "over" in neutral, en-US, and en-CA documents, but will find it in the es-ES and it-IT documents.
+            Assert.AreEqual(2, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+
+            //Act
+            search = SearchForKeywordInModule("los");
+
+            //Assert
+            // we won't find "los" in the es-ES document.
+            Assert.AreEqual(0, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+        }
+        #endregion
+
+    }
 }

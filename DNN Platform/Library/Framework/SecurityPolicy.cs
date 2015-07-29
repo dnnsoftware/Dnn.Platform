@@ -119,7 +119,7 @@ namespace DotNetNuke.Framework
                     securityTest.Demand();
                     m_UnManagedCodePermission = true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     m_UnManagedCodePermission = false;
                 }

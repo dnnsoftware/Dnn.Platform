@@ -314,6 +314,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.selected = ko.observable(false);
 
     self.dataTypes = ko.observableArray([]);
+
     self.localizedDescriptions = ko.observableArray([]);
     self.localizedLabels = ko.observableArray([]);
     self.localizedNames = ko.observableArray([]);
@@ -440,6 +441,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
         util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
+
+        getDataTypes();
     }
 
     self.saveContentField = function(data, e) {

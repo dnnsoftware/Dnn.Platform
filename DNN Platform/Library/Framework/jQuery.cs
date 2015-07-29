@@ -43,7 +43,8 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Framework
 {
-    public class jQuery
+#pragma warning disable 618
+	public class jQuery
     {
         private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
         private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
@@ -536,5 +537,6 @@ namespace DotNetNuke.Framework
 
 
         #endregion
-    }
+	}
+#pragma warning restore 618
 }

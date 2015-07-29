@@ -20,10 +20,6 @@
 <div id="DCCmanager-[ModuleContext:ModuleId]" class="dccContainer">
     <div class="dccHeading">
         <span>[Resx:{key:"DCC_Admin"}]</span>
-        <div class="dccLanguageSelector" data-bind="visible: $root.isLocalized">
-            <span  data-bind="text: $root.resx.language"></span>
-            <select data-bind="value: $root.selectedLanguage, options: $root.languages, optionsText: 'language', optionsValue: 'code'"></select>
-        </div>
         <a class="dccIcon" data-bind="visible: $root.showCloseIcon(), click: closeEdit"><i class="fa fa-home"></i></a>
     </div>
     <div class="dccBody">
@@ -42,8 +38,12 @@
                     <div>[Resx:{key:"Settings"}]</div>
                 </li>
             </ul>
+            <div class="dccLanguageSelector" data-bind="visible: $root.isLocalized">
+                <span  data-bind="text: $root.resx.language"></span>
+                <select data-bind="value: $root.selectedLanguage, options: $root.languages, optionsText: 'language', optionsValue: 'code'"></select>
+            </div>
         </div>
-        <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes, css: { dccExtraMargin: $root.isLocalized() }">
+        <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes">
             <div id="contentTypes-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTypes'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findContentType}"/>
@@ -201,7 +201,7 @@
                 </div>
             </div>
         </div>
-        <div class="dccPanel" id="data-types-panel" style="display:none;" data-bind="with: dataTypes, css: { dccExtraMargin: $root.isLocalized() }">
+        <div class="dccPanel" id="data-types-panel" style="display:none;" data-bind="with: dataTypes">
             <div class="dccSubPanel">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findDataType}"/>
@@ -283,7 +283,7 @@
                 </table>
             </div>
         </div>
-        <div class="dccPanel" id="content-templates-panel" style="display:none;" data-bind="with: templates, css: { dccExtraMargin: $root.isLocalized() }">
+        <div class="dccPanel" id="content-templates-panel" style="display:none;" data-bind="with: templates">
             <div id="templates-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTemplates'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findTemplate}" />
@@ -341,8 +341,8 @@
                             <label>[Resx:{key:"ContentType"}]</label>
                             <select data-bind="enable: canEdit, value: contentTypeId, valueAllowUnset: false, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
                         </div>
-                        <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
-                            <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
+                        <div class="toggle" data-bind="css: { disabled: !canSelectGlobal() }">
+                            <span><input type="checkbox" data-bind="checked: isSystem, enable: canSelectGlobal()"></span>
                             <span class="label">[Resx:{key:"SystemTemplate"}]</span>
                         </div>
                     </div>
@@ -355,6 +355,26 @@
                     <div class="dccEditRow">
                         <div>
                             <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
+                            <ul id="templateEditorContextMenu" style="display:none">
+                                <li>
+                                    <div>
+                                        <span>[Resx:{key:"InsertField"}]</span>
+                                        <i class="fa fa-caret-right"></i>
+                                    </div>
+                                    <ul data-bind="foreach: contentFields">
+                                        <li data-bind="click: $parent.insertField"><div data-bind="text:name"></div></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <span>[Resx:{key:"InsertHelper"}]</span>
+                                        <i class="fa fa-caret-right"></i>
+                                    </div>
+                                    <ul data-bind="foreach: codeSnippets">
+                                        <li data-bind="click: $parent.inserSnippet"><div data-bind="text:name"></div></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
@@ -366,7 +386,7 @@
             </div>
         </div>
         <div class="dccPanel" id="settings-panel" style="display:none;">
-        </div displa>
+        </div>
 
         <div id="mask"></div>
         <div id="confirmation-dialog" class="dnnFormPopup dnnClear"  style="display: none;">
