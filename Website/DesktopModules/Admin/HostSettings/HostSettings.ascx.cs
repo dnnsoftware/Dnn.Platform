@@ -44,6 +44,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -511,7 +512,7 @@ namespace DotNetNuke.Modules.Admin.Host
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ddlLogs.SelectedIndexChanged += OnLogFileIndexChanged;
         }
 
@@ -756,7 +757,6 @@ namespace DotNetNuke.Modules.Admin.Host
 
         protected void UpdateSchedule()
         {
-            bool restartSchedule = false;
             bool usersOnLineChanged = (Convert.ToBoolean(ViewState["SelectedUsersOnlineEnabled"]) != chkUsersOnline.Checked);
             if (usersOnLineChanged)
             {
@@ -765,7 +765,6 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     scheduleItem.Enabled = chkUsersOnline.Checked;
                     SchedulingProvider.Instance().UpdateSchedule(scheduleItem);
-                    restartSchedule = true;
                 }
             }
 
@@ -777,7 +776,6 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     scheduleItem.Enabled = chkLogBuffer.Checked;
                     SchedulingProvider.Instance().UpdateSchedule(scheduleItem);
-                    restartSchedule = true;
                 }
             }
         }

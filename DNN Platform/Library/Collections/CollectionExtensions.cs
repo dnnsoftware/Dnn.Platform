@@ -763,7 +763,7 @@ namespace DotNetNuke.Collections
             {
                 value = dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Logger.ErrorFormat("Error loading portal setting: {0} Default value {1} was used instead", key + ":" + dictionary[key], defaultValue.ToString());
             }

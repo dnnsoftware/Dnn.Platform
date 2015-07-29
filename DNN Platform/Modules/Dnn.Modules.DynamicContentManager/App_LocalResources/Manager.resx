@@ -294,4 +294,10 @@
   <data name="Actions.Text" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="InsertField.Text" xml:space="preserve">
+    <value>Insert Field</value>
+  </data>
+  <data name="InsertHelper.Text" xml:space="preserve">
+    <value>Insert Helper Tag</value>
+  </data>
 </root>

@@ -25,18 +25,33 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace Dnn.Modules.Html.Models
 {
+	/// <summary>
+	/// Html Text Class.
+	/// </summary>
     [TableName("HtmlText")]
     [PrimaryKey("ItemID")]
     public class HtmlText
     {
+		/// <summary>
+		/// Item Id.
+		/// </summary>
         public int ItemID { get; set; }
 
+		/// <summary>
+		/// Module Id.
+		/// </summary>
         public int ModuleID { get; set; }
 
+		/// <summary>
+		/// Content.
+		/// </summary>
         [AllowHtml]
         [DisplayFormat(HtmlEncode = false)]
         public string Content { get; set; }
 
+		/// <summary>
+		/// Version.
+		/// </summary>
         public int Version { get; set; }
     }
 }

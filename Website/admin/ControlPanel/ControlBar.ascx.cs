@@ -39,6 +39,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -140,7 +141,7 @@ namespace DotNetNuke.UI.ControlPanels
             if (ControlPanel.Visible && IncludeInControlHierarchy)
             {
                 ClientResourceManager.RegisterStyleSheet(Page, "~/admin/ControlPanel/ControlBar.css");
-                jQuery.RegisterDnnJQueryPlugins(Page);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.controlBar.js");
 
                 // Is there more than one site in this group?

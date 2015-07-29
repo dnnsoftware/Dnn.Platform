@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Exceptions;
@@ -80,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 ModuleConfiguration.ModuleTitle = Localization.GetString("AddPortal", LocalResourceFile);
             }
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>

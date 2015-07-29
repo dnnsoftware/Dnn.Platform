@@ -95,6 +95,9 @@ dcc.templateViewModel = function(parentViewModel, config){
     var settings = config.settings;
     var codeEditor = config.codeEditor;
 
+    var $rootElement = config.$rootElement;
+    var $contextMenu = $rootElement.find("#templateEditorContextMenu");
+
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
 
@@ -108,7 +111,10 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.isSystem = ko.observable(false);
     self.content = ko.observable('');
     self.selected = ko.observable(false);
+
+    self.codeSnippets = ko.observableArray([]);
     self.contentTypes = ko.observableArray([]);
+    self.contentFields = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
         return self.templateId() == -1;
@@ -124,7 +130,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     });
 
     self.name.subscribe(function(newValue) {
-        if(self.filePath() === ""){
+        if (self.filePath() === "" && newValue !== "") {
             self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
         }
     });
@@ -143,6 +149,71 @@ dcc.templateViewModel = function(parentViewModel, config){
         self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
         self.isSystem(false);
     })
+
+    var getCodeSnippets = function() {
+        var params = { };
+
+        util.templateService().get("GetSnippets", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.codeSnippets.removeAll();
+                    for(var i = 0; i < data.data.results.length; i++){
+                        var result = data.data.results[i];
+                        self.codeSnippets.push({
+                            name: result.name,
+                            snippet: result.snippet,
+                        });
+                    }
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+    };
+
+    var getContentFields = function() {
+        if(self.contentTypeId() !== "undefined" && self.contentTypeId() > 0){
+            var params = {
+                contentTypeId: self.contentTypeId()
+            };
+
+            util.contentTypeService().get("GetContentFields", params,
+                function(data) {
+                    if (typeof data !== "undefined" && data != null && data.success === true) {
+                        //Success
+                        self.contentFields.removeAll();
+                        for(var i = 0; i < data.data.results.length; i++){
+                            var result = data.data.results[i];
+                            var localizedNames = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedNames, result.localizedNames);
+                            var localizedDescriptions = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedDescriptions, result.localizedDescriptions);
+                            var localizedLabels = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedLabels, result.localizedLabels);
+                            self.contentFields.push({
+                                contentTypeId: result.contentTypeId,
+                                contentFieldId: result.contentFieldId,
+                                name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedNames()),
+                                label: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedDescriptions()),
+                                description: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedLabels())
+                            });
+                        }
+                    } else {
+                        //Error
+                    }
+                },
+
+                function(){
+                    //Failure
+                }
+            );
+        }
+    };
 
     var getContentTypes = function() {
         var params = {
@@ -220,7 +291,24 @@ dcc.templateViewModel = function(parentViewModel, config){
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
 
+        self.contentTypeId.subscribe(function () {
+            getContentFields();
+        });
+
+        getCodeSnippets();
         getContentTypes();
+    };
+
+    self.insertField = function(data) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection("@Model.Fields[" + data.name + "].value");
+        $contextMenu.hide();
+    };
+
+    self.inserSnippet = function(data) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection(data.snippet);
+        $contextMenu.hide();
     };
 
     self.load = function(data) {
@@ -247,18 +335,33 @@ dcc.templateViewModel = function(parentViewModel, config){
         };
 
         util.templateService().post("SaveTemplate", params,
-            function (data) {
+            function(data) {
                 //Success
                 self.cancel();
             },
-
-            function (data) {
+            function(data) {
                 //Failure
             }
-        )
+        );
     };
 
     self.toggleSelected = function() {
         self.selected(!self.selected());
     };
+
+    var $codeEditor = $rootElement.find(".CodeMirror");
+    $codeEditor.bind("contextmenu", function (event) {
+        event.preventDefault();
+
+        var cursorLocation = codeEditor.cursorCoords();
+
+        $contextMenu.show();
+        $contextMenu.offset({ top: cursorLocation.top, left: cursorLocation.left });
+
+        return false;
+    });
+
+    codeEditor.on("mousedown", function(instance, event) {
+        $contextMenu.hide();
+    });
 }

@@ -8,6 +8,7 @@
 @grid_alt_background_color: #eee;
 @grid_hover_background_color: #d9ecfa;
 @grid_hover_dropdown_background_color: #0087c6;
+@contextMenu_hover_background_color: #d9ecfa;
 
 @primaryBtn_background_color: #0087c6;
 @primaryBtn_color: #fff;
@@ -15,6 +16,7 @@
 @secondaryBtn_color: #333;
 @otherBtn_background_color: #fff;
 @otherBtn_color: #333;
+@boxShadow_color: #aaa;
 
 /*Units*/
 @width: 950px;
@@ -46,7 +48,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     padding-bottom: 10px;
     border-bottom: solid 1px @border_color;
     background-color: @header_background_color;
-    box-shadow: 0px 2px 2px @border_color;
+    box-shadow: 0px 2px 2px @boxShadow_color;
 }
 
 .dccContainer .dccHeading span{
@@ -557,3 +559,53 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     font-size:15px;
 }
 
+.dccContainer ul#templateEditorContextMenu {
+    float: left;
+    position: relative;
+    z-index: 5;
+    list-style: none;
+    border: solid 1px @border_color;
+    box-shadow: 5px 5px 5px @boxShadow_color;
+    border-radius: @border_radius;
+    background-color: @panel_background_color;
+}
+
+.dccContainer ul#templateEditorContextMenu li{
+    position: relative;
+    margin-right: 10px;
+}
+
+.dccContainer ul#templateEditorContextMenu li:hover {
+    background:@contextMenu_hover_background_color;
+}
+
+.dccContainer ul#templateEditorContextMenu li div {
+    display:block;
+    padding:5px;
+    text-decoration:none;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+.dccContainer ul#templateEditorContextMenu li div span{
+    padding-right: 5px;
+}
+
+.dccContainer ul#templateEditorContextMenu li div > i {
+    float: right;
+}
+
+.dccContainer ul#templateEditorContextMenu li ul {
+    list-style: none;
+    position: absolute;
+    left: -9999px;
+    border: solid 1px @border_color;
+    box-shadow: 5px 5px 5px @boxShadow_color;
+    border-radius: @border_radius;
+    background-color: @panel_background_color;
+}
+
+.dccContainer ul#templateEditorContextMenu li:hover ul {
+    left: 100px;
+    top: 5px
+}

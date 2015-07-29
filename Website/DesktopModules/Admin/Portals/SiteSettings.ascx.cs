@@ -63,7 +63,7 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 
 using System.Globalization;
 using System.Web;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
 
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
@@ -92,9 +92,8 @@ namespace DesktopModules.Admin.Portals
     {
 
         #region Private Members
-        private IEnumerable<IEditPagePanelExtensionPoint> advancedSettingsExtensions;
 
-        private int _portalId = -1;
+		private int _portalId = -1;
         
         private string SelectedCultureCode
         {
@@ -910,7 +909,7 @@ namespace DesktopModules.Admin.Portals
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;

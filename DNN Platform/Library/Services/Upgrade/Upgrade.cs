@@ -2534,6 +2534,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion623()
         {
+#pragma warning disable 618
             if (Host.jQueryUrl == "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
             {
                 HostController.Instance.Update("jQueryUrl", jQuery.DefaultHostedUrl);
@@ -2542,8 +2543,9 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.jQueryUIUrl == "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js")
             {
                 HostController.Instance.Update("jQueryUIUrl", jQuery.DefaultUIHostedUrl);
-            }
-        }
+			}
+#pragma warning restore 618
+		}
 
         private static void UpgradeToVersion624()
         {
@@ -4157,6 +4159,56 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+
+        public static string DeleteFilesInterval(string providerPath, Version version, int interval, bool writeFeedback)
+        {
+            var intervalfile=GetStringVersion(version) + "." + interval.ToString("D2");
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + intervalfile);
+            string exceptions = "";
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + intervalfile);
+            }
+
+            try
+            {
+                string listFile = Globals.InstallMapPath + "Cleanup\\" + intervalfile + ".txt";
+
+                if (File.Exists(listFile))
+                {
+                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                // log the results
+                DnnInstallLogger.InstallLogError(exceptions);
+                try
+                {
+                    using (StreamWriter streamWriter = File.CreateText(providerPath + intervalfile + "_Config.log"))
+                    {
+                        streamWriter.WriteLine(exceptions);
+                        streamWriter.Close();
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+            }
+
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)));
+            }
+
+            return exceptions;
+         
+        }
+
         ///-----------------------------------------------------------------------------
         ///<summary>
         ///  ExecuteScripts manages the Execution of Scripts from the Install/Scripts folder.
@@ -4960,7 +5012,7 @@ namespace DotNetNuke.Services.Upgrade
 						                packages.Remove(oldPackage.Key);
 										FileWrapper.Instance.Delete(oldPackage.Key);
 					                }
-					                catch (Exception ex)
+					                catch (Exception)
 					                {
 						                //do nothing here.
 					                }
@@ -5740,6 +5792,7 @@ namespace DotNetNuke.Services.Upgrade
                     //update any associated config files
                     string strProviderPath = DataProvider.Instance().GetProviderPath();
                     UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
+                    DeleteFilesInterval(strProviderPath, version, version.Revision, writeFeedback);
 
                     // update the increment
                     Globals.UpdateDataBaseVersionIncrement(version, version.Revision);

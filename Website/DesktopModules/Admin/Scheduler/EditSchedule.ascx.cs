@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -201,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;

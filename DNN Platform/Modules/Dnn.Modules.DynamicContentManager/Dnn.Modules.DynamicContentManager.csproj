@@ -103,6 +103,7 @@
     <Compile Include="Services\ViewModels\ContentFieldViewModel.cs" />
     <Compile Include="Services\ViewModels\ContentTypeViewModel.cs" />
     <Compile Include="Services\ViewModels\DataTypeViewModel.cs" />
+    <Compile Include="Services\ViewModels\SnippetViewModel.cs" />
     <Compile Include="Services\ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
