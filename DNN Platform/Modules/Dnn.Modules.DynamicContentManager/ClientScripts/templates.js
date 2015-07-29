@@ -12,6 +12,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
     self.rootViewModel = rootViewModel;
 
     self.mode = config.mode;
+    self.isSystemUser = settings.isSystemUser;
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
@@ -101,6 +102,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.rootViewModel = parentViewModel.rootViewModel;
 
     self.canEdit = ko.observable(false);
+    self.canSelectGlobal = ko.observable(false);
     self.templateId = ko.observable(-1);
     self.localizedNames = ko.observableArray([]);
     self.contentType = ko.observable('');
@@ -113,6 +115,10 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.codeSnippets = ko.observableArray([]);
     self.contentTypes = ko.observableArray([]);
     self.contentFields = ko.observableArray([]);
+
+    self.isAddMode = ko.computed(function() {
+        return self.templateId() == -1;
+    });
 
     self.name = ko.computed({
         read: function () {
@@ -128,6 +134,21 @@ dcc.templateViewModel = function(parentViewModel, config){
             self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
         }
     });
+
+    self.contentTypeId.subscribe(function() {
+        var isSystemType = false;
+        var contentTypes = self.contentTypes();
+        var contentTypeId = self.contentTypeId();
+        for (var i = 0; i < contentTypes.length; i++) {
+            var contentType = contentTypes[i];
+            if (contentType.contentTypeId == contentTypeId) {
+                isSystemType = contentType.isSystem;
+                break;
+            }
+        }
+        self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
+        self.isSystem(false);
+    })
 
     var getCodeSnippets = function() {
         var params = { };
@@ -212,6 +233,7 @@ dcc.templateViewModel = function(parentViewModel, config){
                         util.loadLocalizedValues(localizedValues, result.localizedNames);
                         self.contentTypes.push({
                             contentTypeId: result.contentTypeId,
+                            isSystem: result.isSystem,
                             name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
                         });
                     }
