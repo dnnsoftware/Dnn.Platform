@@ -25,6 +25,7 @@
 @panel_width: @width - 2 * @panel_OuterMargin;
 @textBox_padding: 9px;
 @panel_innerWidth: @panel_width - 2 * @panel_InnerMargin -  2 * @textBox_padding;
+@languageSelector_position: @panel_width - 275;
 
 @border_radius: 4px;
 
@@ -69,6 +70,10 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
     border: solid 1px @border_color;
     border-radius: 4px;
+}
+
+.dccContainer .dccMenu {
+    position: relative;
 }
 
 .dccContainer .dccMenu ul {
@@ -538,15 +543,11 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     margin-top: 20px;
 }
 
-.dccContainer .dccExtraMargin {
-    margin-top: 25px;
-}
-
 .dccContainer div.dccLanguageSelector{
-    float: right;
+    position: absolute;
+    top: 6px;
+    left: @languageSelector_position;
     display: inline-block;
-    padding-top: 15px;
-    padding-right: 25px;
 }
 
 .dccContainer div.dccLanguageSelector span{
