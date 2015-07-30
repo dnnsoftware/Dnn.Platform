@@ -645,7 +645,12 @@ namespace DotNetNuke.Common
 
         }
 
-        private static bool IncrementalVersionExists(Version version)
+        /// <summary>
+        /// check if an incremental version exists
+        /// </summary>
+        /// <param name="version">version number</param>
+        /// <returns>true if one exists and hasnt been applied, false otherwise</returns>
+        public static bool IncrementalVersionExists(Version version)
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
