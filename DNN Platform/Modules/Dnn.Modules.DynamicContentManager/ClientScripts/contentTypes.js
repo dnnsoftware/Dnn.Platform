@@ -36,28 +36,11 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
             pageSize: 1000
         };
 
-        util.dataTypeService().get("GetDataTypes", params,
-            function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.dataTypes.removeAll();
-
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var localizedValues = ko.observableArray([]);
-                        util.loadLocalizedValues(localizedValues, result.localizedNames);
-                        self.dataTypes.push({
-                            dataTypeId: result.dataTypeId,
-                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
-                        });
-                    }
-                } else {
-                    //Error
-                }
-            },
-
+        util.dataTypeService().getEntities(params,
+            "GetDataTypes",
+            self.dataTypes,
             function () {
-                //Failure
+                return new dcc.dataTypeViewModel(self, config);
             }
         );
     };
@@ -348,7 +331,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.mode = config.mode;
     self.contentTypeId = ko.observable(-1);
     self.contentFieldId = ko.observable(-1);
-    self.dataType = ko.observable('');
     self.dataTypeId = ko.observable(-1);
     self.selected = ko.observable(false);
 
@@ -395,6 +377,19 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         }
     });
 
+    self.dataType = ko.computed(function() {
+        var value = "";
+        if (self.dataTypes !== undefined) {
+            var entity = util.getEntity(self.dataTypes(), function (dataType) {
+                return (self.dataTypeId() === dataType.dataTypeId());
+            });
+            if (entity != null) {
+                value = entity.name;
+            }
+        }
+        return value;
+    });
+
     self.cancel = function(){
         self.mode("editType");
         parentViewModel.refresh();
@@ -439,7 +434,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.load = function(data) {
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
-        self.dataType(data.dataType);
         self.dataTypeId(data.dataTypeId);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);

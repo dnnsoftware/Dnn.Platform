@@ -138,7 +138,7 @@
                                     <span data-bind="text: label"></span>
                                 </td>
                                 <td>
-                                    <span data-bind="text: dataType"></span>
+                                    <span data-bind="text: dataType()"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="fa fa-pencil"></i></a>
@@ -304,13 +304,13 @@
                             <span data-bind="text: name"></span>
                         </td>
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
-                            <span data-bind="text: contentType"></span>
+                            <span data-bind="text: contentType()"></span>
                         </td>
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="fa fa-check" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="fa fa-search"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="fa fa-pencil"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate""><i class="fa fa-trash-o"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                     </tbody>

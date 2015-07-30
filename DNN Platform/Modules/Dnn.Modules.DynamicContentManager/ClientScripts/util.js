@@ -71,7 +71,18 @@ dcc.utility = function(settings, resx){
         }
     }
 
-    var getLocalizedValue = function(selectedLanguage, localizedValues) {
+    var getEntity = function (values, predicate) {
+        var value = null;
+        for (var i = 0; i < values.length; i++) {
+            if (predicate(values[i])) {
+                value = values[i];
+                break;
+            }
+        }
+        return value;
+    }
+
+    var getLocalizedValue = function (selectedLanguage, localizedValues) {
         var value = "";
         for (var i = 0; i < localizedValues.length; i++) {
             if (selectedLanguage == localizedValues[i].code()) {
@@ -106,6 +117,7 @@ dcc.utility = function(settings, resx){
         alert: alert,
         asyncParallel: asyncParallel,
         confirm: confirm,
+        getEntity: getEntity,
         getLocalizedValue: getLocalizedValue,
         initializeLocalizedValues: initializeLocalizedValues,
         loadLocalizedValues: loadLocalizedValues,
@@ -193,12 +205,18 @@ dcc.sf = function(){
                         array.push(entity);
                     }
 
-                    total(data.data.totalResults);
+                    if (typeof total === 'function') {
+                        total(data.data.totalResults);
+                    }
 
-                    if(typeof onSuccess === 'function') onSuccess();
+                    if (typeof onSuccess === 'function') {
+                        onSuccess();
+                    }
                 } else {
                     //Error
-                    if(typeof onError === 'function') onError();
+                    if (typeof onError === 'function') {
+                        onError();
+                    }
                 }
             },
 
