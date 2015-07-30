@@ -173,18 +173,28 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// 
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="errorMessage"></param>
         /// <param name="createEntity"></param>
         /// <param name="addEntity"></param>
         /// <param name="getEntity"></param>
         /// <param name="updateEntity"></param>
         /// <param name="saveLocalizations"></param>
+        /// <param name="checkEntity"></param>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        protected HttpResponseMessage SaveEntity<TEntity>(int id, Func<TEntity> createEntity, Func<TEntity, int> addEntity, Func<TEntity> getEntity, Action<TEntity> updateEntity, Action<int> saveLocalizations)
+        protected HttpResponseMessage SaveEntity<TEntity>(int id, Func<TEntity> checkEntity, string errorMessage, Func<TEntity> createEntity, Func<TEntity, int> addEntity, Func<TEntity> getEntity, Action<TEntity> updateEntity, Action<int> saveLocalizations)
         {
+            bool isSuccess = true;
             if (id == -1)
             {
-                id = addEntity(createEntity());
+                if (checkEntity() != null)
+                {
+                    isSuccess = false;
+                }
+                else
+                {
+                    id = addEntity(createEntity());
+                }
             }
             else
             {
@@ -199,16 +209,11 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             saveLocalizations(id);
 
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            id
-                                        }
-                            };
+            var response = (isSuccess) 
+                                ? Request.CreateResponse(new { success = true, data = new { id } }) 
+                                : Request.CreateResponse(new { success = false, message = errorMessage });
 
-            return Request.CreateResponse(response);
+            return response;
         }
     }
 }

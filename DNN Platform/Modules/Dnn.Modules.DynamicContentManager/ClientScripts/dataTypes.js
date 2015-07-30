@@ -222,8 +222,14 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
         util.dataTypeService().post("SaveDataType", params,
             function(data){
-                //Success
-                collapseDetailRow(parentViewModel.refresh);
+                if (data.success === true) {
+                    //Success
+                    collapseDetailRow(parentViewModel.refresh);
+                }
+                else {
+                    //Error
+                    util.alert(data.message, resx.ok);
+                }
             },
 
             function(data){

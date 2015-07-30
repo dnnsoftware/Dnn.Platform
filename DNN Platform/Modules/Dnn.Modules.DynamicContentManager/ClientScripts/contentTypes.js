@@ -11,6 +11,8 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
 
     self.rootViewModel = rootViewModel;
 
+    self.dataTypes = ko.observableArray([]);
+
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
     self.searchText = ko.observable("");
@@ -25,6 +27,39 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
     var findContentTypes =  function() {
         self.pageIndex(0);
         self.getContentTypes();
+    };
+
+    var getDataTypes = function () {
+        var params = {
+            searchTerm: '',
+            pageIndex: 0,
+            pageSize: 1000
+        };
+
+        util.dataTypeService().get("GetDataTypes", params,
+            function (data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.dataTypes.removeAll();
+
+                    for (var i = 0; i < data.data.results.length; i++) {
+                        var result = data.data.results[i];
+                        var localizedValues = ko.observableArray([]);
+                        util.loadLocalizedValues(localizedValues, result.localizedNames);
+                        self.dataTypes.push({
+                            dataTypeId: result.dataTypeId,
+                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
+                        });
+                    }
+                } else {
+                    //Error
+                }
+            },
+
+            function () {
+                //Failure
+            }
+        );
     };
 
     self.addContentType = function(){
@@ -75,7 +110,9 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
             findContentTypes();
         });
 
-        $rootElement.find("#contentTypes-editView").css("display", "none")
+        $rootElement.find("#contentTypes-editView").css("display", "none");
+
+        getDataTypes();
     };
 
     self.refresh = function() {
@@ -170,7 +207,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
 
         if(data.contentFields != null) {
-            self.fields().load(data.contentFields)
+            self.fields().load(data.contentFields);
         }
     };
 
@@ -306,14 +343,14 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
 
+    self.dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes;
+
     self.mode = config.mode;
     self.contentTypeId = ko.observable(-1);
     self.contentFieldId = ko.observable(-1);
     self.dataType = ko.observable('');
     self.dataTypeId = ko.observable(-1);
     self.selected = ko.observable(false);
-
-    self.dataTypes = ko.observableArray([]);
 
     self.localizedDescriptions = ko.observableArray([]);
     self.localizedLabels = ko.observableArray([]);
@@ -357,39 +394,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
         }
     });
-
-    var getDataTypes = function() {
-        var params = {
-            searchTerm: '',
-            pageIndex: 0,
-            pageSize: 1000
-        };
-
-        util.dataTypeService().get("GetDataTypes", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.dataTypes.removeAll();
-
-                    for(var i = 0; i < data.data.results.length; i++){
-                        var result = data.data.results[i];
-                        var localizedValues = ko.observableArray([]);
-                        util.loadLocalizedValues(localizedValues, result.localizedNames);
-                        self.dataTypes.push({
-                            dataTypeId: result.dataTypeId,
-                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
-                        });
-                    }
-                } else {
-                    //Error
-                }
-            },
-
-            function(){
-                //Failure
-            }
-        );
-    };
 
     self.cancel = function(){
         self.mode("editType");
@@ -441,8 +445,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
         util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
-
-        getDataTypes();
     }
 
     self.saveContentField = function(data, e) {
@@ -458,8 +460,14 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
 
         util.contentTypeService().post("SaveContentField", params,
             function (data) {
-                //Success
-                self.cancel();
+                if (data.success === true) {
+                    //Success
+                    self.cancel();
+                }
+                else {
+                    //Error
+                    util.alert(data.message, resx.ok);
+                }
             },
 
             function (data) {
