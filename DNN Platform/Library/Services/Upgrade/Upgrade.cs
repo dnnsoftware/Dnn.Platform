@@ -4516,10 +4516,22 @@ namespace DotNetNuke.Services.Upgrade
 
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
-                        else
+                        if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
-                            Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+
+                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalfiles != null)
+                            {
+                                scriptFiles.AddRange(incrementalfiles);
+                            }
+
+                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
+
+                        //else
+                        //{
+                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        //}
                     }
                 }
             }
