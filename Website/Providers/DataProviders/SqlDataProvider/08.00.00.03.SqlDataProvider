@@ -1,19 +1,19 @@
 /* DNN-6786 Define Standard ContentTypes */
 /*****************************************/
 
-INSERT INTO [dbo].[ContentTypes]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes]
            ([ContentType],[IsDynamic],[Description])
      VALUES ('HTML',1,'The HTML type has a single Field of type HTML')
 
-INSERT INTO [dbo].[ContentTypes]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes]
            ([ContentType],[IsDynamic],[Description])
      VALUES ('Markdown',1,'The Markdown type has a single filed of type Markdown')
 
-INSERT INTO [dbo].[ContentTypes]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes]
            ([ContentType],[IsDynamic],[Description])
      VALUES ('Employee',1,'A simple Content Type that describes an employee')
 
-INSERT INTO [dbo].[ContentTypes]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes]
            ([ContentType],[IsDynamic],[Description])
      VALUES ('Product',1,'A simple Content Type that describes a product')
 GO
@@ -21,7 +21,7 @@ GO
 DECLARE @ContentTypeId int
 DECLARE @DataTypeId int
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -29,14 +29,14 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
            ,[Description]
            ,[DataTypeID])
      VALUES
-           ((SELECT ContentTypeId FROM dbo.ContentTypes WHERE ContentType = 'HTML' AND IsDynamic = 1), 
+           ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'HTML' AND IsDynamic = 1), 
 		   -1, 
 		   'HTML', 
 		   'HTML', 
 		   'HTML', 
-		   (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Rich Text'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Rich Text'))
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -44,17 +44,17 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
            ,[Description]
            ,[DataTypeID])
      VALUES
-           ((SELECT ContentTypeId FROM dbo.ContentTypes WHERE ContentType = 'Markdown' AND IsDynamic = 1), 
+           ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Markdown' AND IsDynamic = 1), 
 		   -1, 
 		   'Markdown', 
 		   'Markdown', 
 		   'Markdown', 
-		   (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Markdown'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Markdown'))
 
-SET @ContentTypeId = (SELECT ContentTypeId FROM dbo.ContentTypes WHERE ContentType = 'Employee' AND IsDynamic = 1)
-SET @DataTypeId = (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Text')
+SET @ContentTypeId = (SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Employee' AND IsDynamic = 1)
+SET @DataTypeId = (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Text')
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -69,7 +69,7 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'First Name', 
 		   @DataTypeId)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -84,7 +84,7 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Last Name', 
 		   @DataTypeId)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -99,7 +99,7 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Title', 
 		   @DataTypeId)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -112,11 +112,11 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Picture', 
 		   'Picture', 
 		   'Picture', 
-		   (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Image'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'))
 
-SET @ContentTypeId = (SELECT ContentTypeId FROM dbo.ContentTypes WHERE ContentType = 'Product' AND IsDynamic = 1)
+SET @ContentTypeId = (SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Product' AND IsDynamic = 1)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -131,7 +131,7 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Name', 
 		   @DataTypeId)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -146,7 +146,7 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Description', 
 		   @DataTypeId)
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -159,9 +159,9 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Price', 
 		   'Price', 
 		   'Price', 
-		   (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Decimal'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Decimal'))
 
-INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
            ,[PortalID]
            ,[Name]
@@ -174,5 +174,5 @@ INSERT INTO [dbo].[ContentTypes_FieldDefinitions]
 		   'Picture', 
 		   'Picture', 
 		   'Picture', 
-		   (SELECT DataTypeId FROM dbo.ContentTypes_DataTypes WHERE Name = 'Image'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'))
 GO
