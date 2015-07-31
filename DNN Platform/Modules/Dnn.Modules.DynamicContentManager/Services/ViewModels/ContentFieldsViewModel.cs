@@ -23,7 +23,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
 		/// <param name="settings"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        public ContentFieldsViewModel(IList<FieldDefinition> fieldDefinitions, PortalSettings settings, int pageIndex = 0, int pageSize = 5)
+        public ContentFieldsViewModel(IList<FieldDefinition> fieldDefinitions, PortalSettings settings, int pageIndex = 0, int pageSize = 999)
         {
             Fields = new List<ContentFieldViewModel>();
             foreach (var definition in new PagedList<FieldDefinition>(fieldDefinitions, pageIndex, pageSize))
