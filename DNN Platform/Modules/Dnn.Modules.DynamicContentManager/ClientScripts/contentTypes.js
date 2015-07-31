@@ -126,6 +126,11 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         }
     });
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedDescriptions());
+    };
+
     self.cancel = function(){
         self.rootViewModel.closeEdit();
     };
@@ -175,32 +180,37 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     };
 
     self.saveContentType = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            contentTypeId: jsObject.contentTypeId,
-            localizedDescriptions: jsObject.localizedDescriptions,
-            localizedNames: jsObject.localizedNames,
-            isSystem: jsObject.isSystem
-        };
+        if(!validate()) {
+            util.alert(resx.invalidContentTypeMessage, resx.ok);
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                contentTypeId: jsObject.contentTypeId,
+                localizedDescriptions: jsObject.localizedDescriptions,
+                localizedNames: jsObject.localizedNames,
+                isSystem: jsObject.isSystem
+            };
 
-        util.contentTypeService().post("SaveContentType", params,
-            function(data){
-                //Success
-                if(self.isAddMode()){
-                    util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
-                        self.contentTypeId(data.data.id)
-                        self.fields().clear();
-                    });
-                }
-                else{
-                    self.cancel();
-                }
-            },
+            util.contentTypeService().post("SaveContentType", params,
+                function(data){
+                    //Success
+                    if(self.isAddMode()){
+                        util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
+                            self.contentTypeId(data.data.id)
+                            self.fields().clear();
+                        });
+                    }
+                    else{
+                        self.cancel();
+                    }
+                },
 
-            function(data){
-                //Failure
-            }
-        )
+                function(data){
+                    //Failure
+                }
+            )
+        }
     };
 
     self.toggleSelected = function() {
@@ -385,6 +395,12 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         );
     };
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedLabels()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedDescriptions());
+    };
+
     self.cancel = function(){
         self.mode("editType");
         parentViewModel.refresh();
@@ -440,26 +456,31 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     }
 
     self.saveContentField = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            contentFieldId: jsObject.contentFieldId,
-            contentTypeId: jsObject.contentTypeId,
-            localizedDescriptions: jsObject.localizedDescriptions,
-            localizedNames: jsObject.localizedNames,
-            localizedLabels: jsObject.localizedLabels,
-            dataTypeId: jsObject.dataTypeId
-        };
+        if(!validate()) {
+            util.alert(resx.invalidContentFieldMessage, resx.ok);
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                contentFieldId: jsObject.contentFieldId,
+                contentTypeId: jsObject.contentTypeId,
+                localizedDescriptions: jsObject.localizedDescriptions,
+                localizedNames: jsObject.localizedNames,
+                localizedLabels: jsObject.localizedLabels,
+                dataTypeId: jsObject.dataTypeId
+            };
 
-        util.contentTypeService().post("SaveContentField", params,
-            function (data) {
-                //Success
-                self.cancel();
-            },
+            util.contentTypeService().post("SaveContentField", params,
+                function (data) {
+                    //Success
+                    self.cancel();
+                },
 
-            function (data) {
-                //Failure
-            }
-        )
+                function (data) {
+                    //Failure
+                }
+            )
+        }
     };
 
     self.toggleSelected = function() {

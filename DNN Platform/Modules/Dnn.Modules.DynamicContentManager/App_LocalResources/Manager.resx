@@ -300,4 +300,25 @@
   <data name="InsertHelper.Text" xml:space="preserve">
     <value>Insert Helper Tag</value>
   </data>
+    <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
+    <value>The value of the field in the default language is required.</value>
+  </data>
+  <data name="InvalidContentTypeMessage.Text" xml:space="preserve">
+    <value>You must provide values for all fields for the default language.</value>
+  </data>
+  <data name="TranslationMissing.Text" xml:space="preserve">
+    <value>One or more translation is missing</value>
+  </data>
+  <data name="InvalidContentFieldMessage.Text" xml:space="preserve">
+    <value>You must provide values for all fields for the default language.</value>
+  </data>
+  <data name="InvalidDataTypeMessage.Text" xml:space="preserve">
+    <value>You must provide a value for the Data Type name in the default language</value>
+  </data>
+  <data name="InvalidTemplateMessage.Text" xml:space="preserve">
+    <value>You must provide a value for the Template name in the default language</value>
+  </data>
+  <data name="DefaultValueMissing.Text" xml:space="preserve">
+    <value>This value is required.</value>
+  </data>
 </root>

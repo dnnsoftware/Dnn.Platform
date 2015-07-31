@@ -165,6 +165,15 @@
             }
         };
 
+        viewModel.fieldMessage = function(localizedValues) {
+            return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, viewModel.resx.defaultValueMissing, viewModel.resx.defaultLocalizedValueMissing, viewModel.resx.translationMissing);
+        };
+
+        viewModel.fieldStatus = function(localizedValues) {
+            return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, "dccError", "dccError", "dccWarning");
+        };
+
+
         ko.applyBindings(viewModel, $rootElement[0]);
 
         viewModel.contentTypes.pageIndex(0);
@@ -185,6 +194,7 @@
                     }
                     viewModel.isLocalized(viewModel.languages().length > 1);
                     viewModel.selectedLanguage(data.data.defaultLanguage);
+                    viewModel.defaultLanguage = data.data.defaultLanguage;
                 }
                 else {
                     //Error
