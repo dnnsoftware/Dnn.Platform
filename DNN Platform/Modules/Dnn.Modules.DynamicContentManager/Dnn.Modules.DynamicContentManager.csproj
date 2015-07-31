@@ -116,7 +116,9 @@
     <Content Include="ClientScripts\util.js" />
     <Content Include="license.txt" />
     <Content Include="Manager.html" />
-    <Content Include="module.css" />
+    <Content Include="module.css">
+      <DependentUpon>module.less</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>

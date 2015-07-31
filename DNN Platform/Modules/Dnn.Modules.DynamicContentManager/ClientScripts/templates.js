@@ -11,6 +11,8 @@ dcc.templatesViewModel = function(config, rootViewModel){
 
     self.rootViewModel = rootViewModel;
 
+    self.contentTypes = ko.observableArray([]);
+
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
     self.searchText = ko.observable("");
@@ -25,6 +27,39 @@ dcc.templatesViewModel = function(config, rootViewModel){
     var findTemplates =  function() {
         self.pageIndex(0);
         self.getTemplates();
+    };
+
+    var getContentTypes = function () {
+        var params = {
+            searchTerm: '',
+            pageIndex: 0,
+            pageSize: 1000
+        };
+
+        util.contentTypeService().get("GetContentTypes", params,
+            function (data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.contentTypes.removeAll();
+                    for (var i = 0; i < data.data.results.length; i++) {
+                        var result = data.data.results[i];
+                        var localizedValues = ko.observableArray([]);
+                        util.loadLocalizedValues(localizedValues, result.localizedNames);
+                        self.contentTypes.push({
+                            contentTypeId: result.contentTypeId,
+                            isSystem: result.isSystem,
+                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
+                        });
+                    }
+                } else {
+                    //Error
+                }
+            },
+
+            function () {
+                //Failure
+            }
+        );
     };
 
     self.addTemplate = function(){
@@ -72,6 +107,8 @@ dcc.templatesViewModel = function(config, rootViewModel){
             },
             self.totalResults
         );
+
+        getContentTypes();
     };
 
     self.init = function() {
@@ -80,7 +117,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
             findTemplates();
         });
 
-        $rootElement.find("#templates-editView").css("display", "none")
+        $rootElement.find("#templates-editView").css("display", "none");
     };
 
     self.refresh = function(){
@@ -112,8 +149,8 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.content = ko.observable('');
     self.selected = ko.observable(false);
 
+    self.contentTypes = parentViewModel.contentTypes;
     self.codeSnippets = ko.observableArray([]);
-    self.contentTypes = ko.observableArray([]);
     self.contentFields = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
@@ -148,7 +185,7 @@ dcc.templateViewModel = function(parentViewModel, config){
         }
         self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
         self.isSystem(false);
-    })
+    });
 
     var getCodeSnippets = function() {
         var params = { };
@@ -176,8 +213,8 @@ dcc.templateViewModel = function(parentViewModel, config){
         );
     };
 
-    var getContentFields = function() {
-        if(self.contentTypeId() !== "undefined" && self.contentTypeId() > 0){
+    var getContentFields = function () {
+        if(self.contentTypeId() !== "undefined" && self.contentTypeId() > 0 && self.contentTypeId() !== self.previousContentTypeId){
             var params = {
                 contentTypeId: self.contentTypeId()
             };
@@ -212,40 +249,9 @@ dcc.templateViewModel = function(parentViewModel, config){
                     //Failure
                 }
             );
+
+            self.previousContentTypeId = self.contentTypeId();
         }
-    };
-
-    var getContentTypes = function() {
-        var params = {
-            searchTerm: '',
-            pageIndex: 0,
-            pageSize: 1000
-        };
-
-        util.contentTypeService().get("GetContentTypes", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.contentTypes.removeAll();
-                    for(var i = 0; i < data.data.results.length; i++){
-                        var result = data.data.results[i];
-                        var localizedValues = ko.observableArray([]);
-                        util.loadLocalizedValues(localizedValues, result.localizedNames);
-                        self.contentTypes.push({
-                            contentTypeId: result.contentTypeId,
-                            isSystem: result.isSystem,
-                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
-                        });
-                    }
-                } else {
-                    //Error
-                }
-            },
-
-            function(){
-                //Failure
-            }
-        );
     };
 
     var validate = function(){
@@ -300,7 +306,6 @@ dcc.templateViewModel = function(parentViewModel, config){
         });
 
         getCodeSnippets();
-        getContentTypes();
     };
 
     self.insertField = function(data) {
@@ -345,8 +350,14 @@ dcc.templateViewModel = function(parentViewModel, config){
 
             util.templateService().post("SaveTemplate", params,
             function (data) {
+                if (data.success === true) {
                     //Success
                     self.cancel();
+                }
+                else {
+                    //Error
+                    util.alert(data.message, resx.ok);
+                }
                 },
             function (data) {
                     //Failure

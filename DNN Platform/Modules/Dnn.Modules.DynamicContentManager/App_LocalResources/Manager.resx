@@ -294,6 +294,9 @@
   <data name="Actions.Text" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="ContentTypeExists.Text" xml:space="preserve">
+    <value>A Content Type with that name already exists.  Please try again with a different name.</value>
+  </data>
   <data name="InsertField.Text" xml:space="preserve">
     <value>Insert Field</value>
   </data>
@@ -321,4 +324,14 @@
   <data name="DefaultValueMissing.Text" xml:space="preserve">
     <value>This value is required.</value>
   </data>
+  <data name="ContentFieldExists.Text" xml:space="preserve">
+    <value>A Content Field with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="DataTypeExists.Text" xml:space="preserve">
+    <value>A Data Type with that name already exists.  Please try again with a different name.</value>
+  </data>
+  <data name="TemplateExists.Text" xml:space="preserve">
+    <value>A Template with that name already exists.  Please try again with a different name.</value>
+  </data>
+
 </root>

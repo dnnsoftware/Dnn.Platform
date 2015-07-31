@@ -336,7 +336,7 @@ input[type="password"] {
   background: white;
   color: #333333;
   display: inline-block;
-  padding: 9px 9px;
+  padding: 8px;
   cursor: pointer;
   min-width: 75px;
   border-radius: 3px;
@@ -344,6 +344,7 @@ input[type="password"] {
   font-size: 13px;
   border: 1px solid #aaaaaa;
   text-align: center;
+  line-height: normal;
 }
 .dccContainer div.dccEditForm > div > a.primarybtn,
 .dccContainer div.dccEditForm > div > a.secondarybtn {
