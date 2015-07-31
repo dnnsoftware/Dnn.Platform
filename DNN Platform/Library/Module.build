@@ -21,6 +21,7 @@
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
+      <ProviderFiles Include="..\Website\Install\Provider\*.*" />
       <WebConfig Include="$(WebsitePath)\we*.config" />
       <WebsiteDatabase Include="$(WebsiteAppDataPath)\Data*ase.mdf" />
       <WebsiteRadSpell Include="$(WebsiteRadSpellPath)\*.tdf" />
@@ -60,6 +61,7 @@
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
     <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteInstallPath)\Config" Condition="'@(WebsiteConfigMerge)' == ''" />
+    <Copy SourceFiles="@(ProviderFiles)" DestinationFolder="$(WebsiteInstallPath)\Provider" />
 
     <!-- Copy development.config or release.config to web.config -->
     <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" 
