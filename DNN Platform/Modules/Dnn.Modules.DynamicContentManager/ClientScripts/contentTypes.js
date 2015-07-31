@@ -2,12 +2,13 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.contentTypesViewModel = function(config, rootViewModel){
+dcc.contentTypesViewModel = function(rootViewModel, config){
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.rootViewModel = rootViewModel;
 
@@ -22,6 +23,7 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.contentTypes_NoPagerFormat;
+    // ReSharper disable once InconsistentNaming
     self.selectedContentType = new dcc.contentTypeViewModel(self, config);
 
     var findContentTypes =  function() {
@@ -40,6 +42,7 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
             "GetDataTypes",
             self.dataTypes,
             function () {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.dataTypeViewModel(self, config);
             }
         );
@@ -50,7 +53,7 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
         self.selectedContentType.init();
     };
 
-    self.editContentType = function(data, e) {
+    self.editContentType = function(data) {
         util.asyncParallel([
             function(cb1){
                 self.getContentType(data.contentTypeId(), cb1);
@@ -81,6 +84,7 @@ dcc.contentTypesViewModel = function(config, rootViewModel){
             "GetContentTypes",
             self.results,
             function() {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.contentTypeViewModel(self, config);
             },
             self.totalResults
@@ -107,7 +111,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     var self = this;
     var util = config.util;
     var resx = config.resx;
-    var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
@@ -121,6 +125,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     self.localizedNames = ko.observableArray([]);
     self.localizedDescriptions = ko.observableArray([]);
 
+    // ReSharper disable once InconsistentNaming
     self.fields = ko.observable(new dcc.contentFieldsViewModel(self, config));
     self.fields().init();
 
@@ -134,7 +139,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     });
 
     self.isAddMode = ko.computed(function() {
-        return self.contentTypeId() == -1;
+        return self.contentTypeId() === -1;
     });
 
     self.name = ko.computed({
@@ -155,7 +160,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.rootViewModel.closeEdit();
     };
 
-    self.deleteContentType = function (data, e) {
+    self.deleteContentType = function (data) {
         util.confirm(resx.deleteContentTypeConfirmMessage, resx.yes, resx.no, function() {
             var params = {
                 contentTypeId: data.contentTypeId(),
@@ -164,12 +169,12 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
             };
 
             util.contentTypeService().post("DeleteContentType", params,
-                function(data){
+                function(){
                     //Success
                     parentViewModel.refresh();
                 },
 
-                function(data){
+                function(){
                     //Failure
                 }
             );
@@ -199,7 +204,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         }
     };
 
-    self.saveContentType = function(data, e) {
+    self.saveContentType = function(data) {
         if(!validate()) {
             util.alert(resx.invalidContentTypeMessage, resx.ok);
         }
@@ -213,29 +218,26 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
             };
 
             util.contentTypeService().post("SaveContentType", params,
-                function(data){
-                if(data.success === true) {
-                    //Success
-                    if(self.isAddMode()){
-                        util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
-                            self.contentTypeId(data.data.id)
-                            self.fields().clear();
-                        });
-                    }
-                    else{
-                        self.cancel();
-                    }
-                }
-                else {
-                    //Error
-                    util.alert(data.message, resx.ok);
+                function(data) {
+                    if (data.success === true) {
+                        //Success
+                        if (self.isAddMode()) {
+                            util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
+                                self.contentTypeId(data.data.id);
+                                self.fields().clear();
+                            });
+                        } else {
+                            self.cancel();
+                        }
+                    } else {
+                        //Error
+                        util.alert(data.message, resx.ok);
                     }
                 },
-
-                function(data){
+                function() {
                     //Failure
                 }
-            )
+            );
         }
     };
 
@@ -249,6 +251,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
+    var ko = config.ko;
 
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
@@ -261,6 +264,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentFields_PagerFormat;
     self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
+    // ReSharper disable once InconsistentNaming
     self.selectedContentField = new dcc.contentFieldViewModel(self, config);
 
     self.addContentField = function() {
@@ -268,7 +272,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
         self.selectedContentField.init();
     }
 
-    self.editContentField = function(data, e) {
+    self.editContentField = function(data) {
         util.asyncParallel([
             function(cb1){
                 self.getContentField(self.parentViewModel.contentTypeId, data.contentFieldId(), cb1);
@@ -303,11 +307,12 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
 
         for(var i=0; i < data.fields.length; i++){
             var result = data.fields[i];
+            // ReSharper disable once InconsistentNaming
             var contentField = new dcc.contentFieldViewModel(self, config);
             contentField.load(result);
             self.contentFields.push(contentField);
         }
-        self.totalResults(data.totalResults)
+        self.totalResults(data.totalResults);
     };
 
     self.refresh = function() {
@@ -321,6 +326,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             "GetContentFields",
             self.contentFields,
             function() {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.contentFieldViewModel(self, config);
             },
             self.totalResults
@@ -332,6 +338,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     var self = this;
     var resx = config.resx;
     var util = config.util;
+    var ko = config.ko;
 
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
@@ -349,7 +356,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.localizedNames = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
-        return self.contentFieldId() == -1;
+        return self.contentFieldId() === -1;
     });
 
     self.description = ko.computed({
@@ -390,17 +397,26 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.dataType = ko.computed(function() {
         var value = "";
         if (self.dataTypes !== undefined) {
-            var entity = util.getEntity(self.dataTypes(), function (dataType) {
+            var entity = util.getEntity(self.dataTypes(), function(dataType) {
                 return (self.dataTypeId() === dataType.dataTypeId());
             });
+            value = entity.name;
+        }
         return value;
+    });
+
+    var validate = function () {
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedLabels()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedDescriptions());
+    };
 
     self.cancel = function(){
         self.mode("editType");
         parentViewModel.refresh();
     };
 
-    self.deleteContentField = function (data, e) {
+    self.deleteContentField = function (data) {
         util.confirm(resx.deleteContentFieldConfirmMessage, resx.yes, resx.no, function() {
             var params = {
                 contentFieldId: data.contentFieldId(),
@@ -412,12 +428,12 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             };
 
             util.contentTypeService().post("DeleteContentField", params,
-                function(data){
+                function(){
                     //Success
                     parentViewModel.refresh();
                 },
 
-                function(data){
+                function(){
                     //Failure
                 }
             );
@@ -446,7 +462,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
     }
 
-    self.saveContentField = function(data, e) {
+    self.saveContentField = function(data) {
         if(!validate()) {
             util.alert(resx.invalidContentFieldMessage, resx.ok);
         }
@@ -462,21 +478,19 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             };
 
             util.contentTypeService().post("SaveContentField", params,
-                function (data) {
-                if (data.success === true) {
-                    //Success
-                    self.cancel();
-                }
-                else {
-                    //Error
-                    util.alert(data.message, resx.ok);
-                }
+                function(data) {
+                    if (data.success === true) {
+                        //Success
+                        self.cancel();
+                    } else {
+                        //Error
+                        util.alert(data.message, resx.ok);
+                    }
                 },
-
-                function (data) {
+                function() {
                     //Failure
                 }
-            )
+            );
         }
     };
 

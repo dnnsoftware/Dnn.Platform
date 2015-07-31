@@ -2,12 +2,13 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.templatesViewModel = function(config, rootViewModel){
+dcc.templatesViewModel = function(rootViewModel, config){
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.rootViewModel = rootViewModel;
 
@@ -22,6 +23,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.templates_PagerFormat;
     self.pager_NoPagerFormat = resx.templates_NoPagerFormat;
+    // ReSharper disable once InconsistentNaming
     self.selectedTemplate = new dcc.templateViewModel(self, config);
 
     var findTemplates =  function() {
@@ -40,6 +42,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
             "GetContentTypes",
             self.contentTypes,
             function () {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.contentTypeViewModel(self, config);
             }
         );
@@ -51,7 +54,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
         self.selectedTemplate.bindCodeEditor();
     };
 
-    self.editTemplate = function(data, e) {
+    self.editTemplate = function(data) {
         self.selectedTemplate.init();
         util.asyncParallel([
             function(cb1){
@@ -89,6 +92,7 @@ dcc.templatesViewModel = function(config, rootViewModel){
             "GetTemplates",
             self.results,
             function() {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.templateViewModel(self, config);
             },
             self.totalResults
@@ -113,8 +117,8 @@ dcc.templateViewModel = function(parentViewModel, config){
     var self = this;
     var util = config.util;
     var resx = config.resx;
-    var settings = config.settings;
     var codeEditor = config.codeEditor;
+    var ko = config.ko;
 
     var $rootElement = config.$rootElement;
     var $contextMenu = $rootElement.find("#templateEditorContextMenu");
@@ -137,7 +141,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.contentFields = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
-        return self.templateId() == -1;
+        return self.templateId() === -1;
     });
 
     self.name = ko.computed({
@@ -161,7 +165,7 @@ dcc.templateViewModel = function(parentViewModel, config){
         var contentTypeId = self.contentTypeId();
         for (var i = 0; i < contentTypes.length; i++) {
             var contentType = contentTypes[i];
-            if (contentType.contentTypeId == contentTypeId) {
+            if (contentType.contentTypeId === contentTypeId) {
                 isSystemType = contentType.isSystem;
                 break;
             }
@@ -195,11 +199,9 @@ dcc.templateViewModel = function(parentViewModel, config){
                         var result = data.data.results[i];
                         self.codeSnippets.push({
                             name: result.name,
-                            snippet: result.snippet,
+                            snippet: result.snippet
                         });
                     }
-                } else {
-                    //Error
                 }
             },
 
@@ -236,8 +238,6 @@ dcc.templateViewModel = function(parentViewModel, config){
                                 description: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedLabels())
                             });
                         }
-                    } else {
-                        //Error
                     }
                 },
 
@@ -262,7 +262,7 @@ dcc.templateViewModel = function(parentViewModel, config){
         self.rootViewModel.closeEdit();
     };
 
-    self.deleteTemplate = function (data, e) {
+    self.deleteTemplate = function (data) {
         util.confirm(resx.deleteTemplateConfirmMessage, resx.yes, resx.no, function() {
             var params = {
                 templateId: data.templateId(),
@@ -274,12 +274,12 @@ dcc.templateViewModel = function(parentViewModel, config){
             };
 
             util.templateService().post("DeleteTemplate", params,
-                function(data){
+                function(){
                     //Success
                     parentViewModel.refresh();
                 },
 
-                function(data){
+                function(){
                     //Failure
                 }
             );
@@ -323,10 +323,10 @@ dcc.templateViewModel = function(parentViewModel, config){
         self.filePath(data.filePath);
         self.content(data.content);
 
-        util.loadLocalizedValues(self.localizedNames, data.localizedNames)
-   };
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames);
+    };
 
-    self.saveTemplate = function(data, e) {
+    self.saveTemplate = function(data) {
         if(!validate()) {
             util.alert(resx.invalidTemplateMessage, resx.ok);
 
@@ -353,7 +353,7 @@ dcc.templateViewModel = function(parentViewModel, config){
                     util.alert(data.message, resx.ok);
                 }
                 },
-            function (data) {
+            function () {
                     //Failure
                 }
         );
@@ -376,7 +376,7 @@ dcc.templateViewModel = function(parentViewModel, config){
         return false;
     });
 
-    codeEditor.on("mousedown", function(instance, event) {
+    codeEditor.on("mousedown", function() {
         $contextMenu.hide();
     });
 }
