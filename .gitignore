@@ -216,3 +216,6 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 Website/Install/Temp/
+Website/Providers/HtmlEditorProviders/
+Website/Portals/_default/CK*.xml
+Website/Portals/_default/Install/CK*.xml
