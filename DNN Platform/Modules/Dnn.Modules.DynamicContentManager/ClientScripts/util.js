@@ -70,7 +70,18 @@ dcc.utility = function(settings, resx){
             localizedValues.push(localizedValue);
         }
     }
-
+    
+    var getEntity = function (values, predicate) {
+        var value = null;
+        for (var i = 0; i < values.length; i++) {
+            if (predicate(values[i])) {
+                value = values[i];
+                break;
+            }
+        }
+        return value;
+    }
+    
     var getLocalizationStatus = function(selectedLanguage, localizedValues, defaultMissingText, defaultLocalizedMissingText, translationMissingText) {
         var status = "";
         if(!hasDefaultValue(selectedLanguage, localizedValues)) {
@@ -141,6 +152,7 @@ dcc.utility = function(settings, resx){
         alert: alert,
         asyncParallel: asyncParallel,
         confirm: confirm,
+        getEntity: getEntity,
         getLocalizationStatus: getLocalizationStatus,
         getLocalizedValue: getLocalizedValue,
         hasDefaultValue: hasDefaultValue,
@@ -231,12 +243,18 @@ dcc.sf = function(){
                         array.push(entity);
                     }
 
-                    total(data.data.totalResults);
+                    if (typeof total === 'function') {
+                        total(data.data.totalResults);
+                    }
 
-                    if(typeof onSuccess === 'function') onSuccess();
+                    if (typeof onSuccess === 'function') {
+                        onSuccess();
+                    }
                 } else {
                     //Error
-                    if(typeof onError === 'function') onError();
+                    if (typeof onError === 'function') {
+                        onError();
+                    }
                 }
             },
 
