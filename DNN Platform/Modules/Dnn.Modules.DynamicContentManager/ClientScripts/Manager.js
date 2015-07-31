@@ -108,6 +108,7 @@
                     }
                     viewModel.isLocalized(viewModel.languages().length > 1);
                     viewModel.selectedLanguage(data.data.defaultLanguage);
+                    viewModel.defaultLanguage = data.data.defaultLanguage;
                 }
             },
             function () {
@@ -195,7 +196,6 @@
             return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, "dccError", "dccError", "dccWarning");
         };
 
-
         ko.applyBindings(viewModel, $rootElement[0]);
 
         viewModel.contentTypes.pageIndex(0);
@@ -204,8 +204,6 @@
         $rootElement.find("#contentTypes-menu").addClass("selected");
 
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
-
-                    viewModel.defaultLanguage = data.data.defaultLanguage;
     }
 
     return {

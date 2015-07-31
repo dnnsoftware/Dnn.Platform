@@ -133,13 +133,13 @@
                             </thead>
                             <tbody data-bind="foreach: contentFields()">
                             <tr>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: name"></span>
                                 </td>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: label"></span>
                                 </td>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: dataType()"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">

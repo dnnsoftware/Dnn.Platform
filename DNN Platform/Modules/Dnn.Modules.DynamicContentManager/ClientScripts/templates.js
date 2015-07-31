@@ -291,7 +291,7 @@ dcc.templateViewModel = function(parentViewModel, config){
         self.templateId(-1);
         self.contentTypeId(-1);
         self.filePath('');
-        self.isSystem(self.parentViewModel.isSystemUser);
+        self.isSystem(false);
         self.content('');
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());

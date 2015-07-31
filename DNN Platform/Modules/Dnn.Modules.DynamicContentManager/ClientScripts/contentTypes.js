@@ -400,7 +400,9 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             var entity = util.getEntity(self.dataTypes(), function(dataType) {
                 return (self.dataTypeId() === dataType.dataTypeId());
             });
-            value = entity.name;
+            if (entity != null) {
+                value = entity.name;
+            }
         }
         return value;
     });
