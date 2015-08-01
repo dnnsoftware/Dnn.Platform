@@ -27,14 +27,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'HTML' AND IsDynamic = 1), 
 		   -1, 
 		   'HTML', 
 		   'HTML', 
 		   'HTML', 
-		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Rich Text'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Rich Text'),
+		   0)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -42,14 +44,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Markdown' AND IsDynamic = 1), 
 		   -1, 
 		   'Markdown', 
 		   'Markdown', 
 		   'Markdown', 
-		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Markdown'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Markdown'),
+		   0)
 
 SET @ContentTypeId = (SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Employee' AND IsDynamic = 1)
 SET @DataTypeId = (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Text')
@@ -60,14 +64,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'First Name', 
 		   'First Name', 
 		   'First Name', 
-		   @DataTypeId)
+		   @DataTypeId,
+		   0)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -75,14 +81,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Last Name', 
 		   'Last Name', 
 		   'Last Name', 
-		   @DataTypeId)
+		   @DataTypeId,
+		   1)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -90,14 +98,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Title', 
 		   'Title', 
 		   'Title', 
-		   @DataTypeId)
+		   @DataTypeId,
+		   2)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -105,14 +115,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Picture', 
 		   'Picture', 
 		   'Picture', 
-		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'),
+		   3)
 
 SET @ContentTypeId = (SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Product' AND IsDynamic = 1)
 
@@ -122,14 +134,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Name', 
 		   'Name', 
 		   'Name', 
-		   @DataTypeId)
+		   @DataTypeId,
+		   0)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -137,14 +151,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Description', 
 		   'Description', 
 		   'Description', 
-		   @DataTypeId)
+		   @DataTypeId,
+		   1)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -152,14 +168,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Price', 
 		   'Price', 
 		   'Price', 
-		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Decimal'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Decimal'),
+		   2)
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ([ContentTypeID]
@@ -167,12 +185,14 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Name]
            ,[Label]
            ,[Description]
-           ,[DataTypeID])
+           ,[DataTypeID]
+		   ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
 		   'Picture', 
 		   'Picture', 
 		   'Picture', 
-		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'))
+		   (SELECT DataTypeId FROM {databaseOwner}{objectQualifier}ContentTypes_DataTypes WHERE Name = 'Image'),
+		   3)
 GO

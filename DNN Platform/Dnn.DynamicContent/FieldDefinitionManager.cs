@@ -41,6 +41,8 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
+            field.Order = Get(field.ContentTypeId).Count();
+
             Add(field);
 
             ClearContentTypeCache(field);
@@ -108,7 +110,7 @@ namespace Dnn.DynamicContent
         /// <returns>field definition collection.</returns>
         public IQueryable<FieldDefinition> GetFieldDefinitions(int contentTypeId)
         {
-            return Get(contentTypeId).AsQueryable();
+            return Get(contentTypeId).OrderBy(f => f.Order).AsQueryable();
         }
 
         /// <summary>
