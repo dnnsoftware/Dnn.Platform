@@ -103,12 +103,14 @@
     <Compile Include="Services\ViewModels\ContentFieldViewModel.cs" />
     <Compile Include="Services\ViewModels\ContentTypeViewModel.cs" />
     <Compile Include="Services\ViewModels\DataTypeViewModel.cs" />
+    <Compile Include="Services\ViewModels\MoveContentFieldViewModel.cs" />
     <Compile Include="Services\ViewModels\SnippetViewModel.cs" />
     <Compile Include="Services\ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientScripts\contentTypes.js" />
     <Content Include="ClientScripts\dataTypes.js" />
+    <Content Include="ClientScripts\knockout-sortable.min.js" />
     <Content Include="ClientScripts\manager.js" />
     <Content Include="ClientScripts\pager.js" />
     <Content Include="ClientScripts\settings.js" />

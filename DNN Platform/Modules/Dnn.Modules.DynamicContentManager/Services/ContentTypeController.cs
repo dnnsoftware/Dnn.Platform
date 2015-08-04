@@ -81,6 +81,24 @@ namespace Dnn.Modules.DynamicContentManager.Services
         }
 
         /// <summary>
+        /// Move a Field's position in the list
+        /// </summary>
+        /// <param name="viewModel">A ViewModel (DTO) represneting the object to be moved</param>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MoveContentField(MoveContentFieldViewModel viewModel)
+        {
+            FieldDefinitionManager.Instance.MoveFieldDefintion(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
+
+            var response = new
+                            {
+                                success = true
+                            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// GetContentType retrieves a single ContentType
         /// </summary>
         /// <param name="contentTypeId">The id of the ContentType</param>

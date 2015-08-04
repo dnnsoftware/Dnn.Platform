@@ -298,6 +298,26 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
         if(typeof cb === 'function') cb();
     };
 
+    self.moveContentField = function(arg) {
+        var params = {
+            contentTypeId: parentViewModel.contentTypeId(),
+            sourceIndex: arg.sourceIndex,
+            targetIndex: arg.targetIndex
+        };
+
+        util.contentTypeService().post("MoveContentField", params,
+            function () {
+                //Success
+                self.refresh();
+            },
+
+            function () {
+                //Failure
+            }
+        );
+
+    };
+
     self.init = function() {
         dcc.pager().init(self);
     };
