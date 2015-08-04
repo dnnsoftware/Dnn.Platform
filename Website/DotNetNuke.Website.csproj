@@ -57,6 +57,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke.Web.DDRMenu, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\DNN Platform\Modules\DDRMenu\_dependencies\07.02.00\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
@@ -4637,10 +4641,6 @@
     <ProjectReference Include="..\DNN Platform\Modules\CoreMessaging\DotNetNuke.Modules.CoreMessaging.csproj">
       <Project>{5deab0d5-0f54-44c9-a167-f48264a04b3d}</Project>
       <Name>DotNetNuke.Modules.CoreMessaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
-      <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
-      <Name>DotNetNuke.Modules.DDRMenu</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
