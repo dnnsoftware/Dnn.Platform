@@ -686,18 +686,24 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                 if (folder != null)
                 {
-                    var arrFiles = Globals.GetFileList(PortalId, "page.template", false, folder.FolderPath);
-                    foreach (FileItem objFile in arrFiles)
+                    var files = Globals.GetFileList(PortalId, "page.template", false, folder.FolderPath);
+                    foreach (FileItem file in files)
                     {
-                        var fileItem = new ListItem { Text = objFile.Text.Replace(".page.template", ""), Value = objFile.Text };
-                        cboTemplate.AddItem(fileItem.Text, fileItem.Value);
-                        if (!Page.IsPostBack && fileItem.Text == "Default")
-                        {
-                            cboTemplate.ClearSelection();
-                            cboTemplate.FindItemByText("Default").Selected = true;
-                        }
+                        cboTemplate.AddItem(file.Text.Replace(".page.template", ""), file.Value);
                     }
+
                     cboTemplate.InsertItem(0, Localization.GetString("None_Specified"), "");
+
+					if (!Page.IsPostBack)
+					{
+						cboTemplate.ClearSelection();
+						var defaultItem = cboTemplate.FindItemByText("Default");
+						if (defaultItem != null)
+						{
+							defaultItem.Selected = true;
+						}
+					}
+
                     if (cboTemplate.SelectedIndex == -1)
                     {
                         cboTemplate.SelectedIndex = 0;
@@ -1046,9 +1052,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         try
                         {
                             // open the XML file
-                            var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
-                            if (folder != null)
-                                xmlDoc.Load(PortalSettings.HomeDirectoryMapPath + folder.FolderPath + cboTemplate.SelectedValue);
+                            var fileId = Convert.ToInt32(cboTemplate.SelectedValue);
+							var templateFile = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
+							xmlDoc.Load(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(templateFile));
                         }
                         catch (Exception ex)
                         {
