@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
             if (file.ContentItemID != Null.NullInteger)
             {
-                var workflowCompleted = ContentWorkflowController.Instance.IsWorkflowCompleted(file.ContentItemID);
+                var workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
                 if (!workflowCompleted)
                 {
                     lockReasonKey = "FileLockedRunningWorkflowError";

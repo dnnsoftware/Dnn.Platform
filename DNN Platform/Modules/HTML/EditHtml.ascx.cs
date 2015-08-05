@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.Html
                 var masterContent = _htmlTextController.GetTopHtmlText(objModule.DefaultLanguageModule.ModuleID, false, WorkflowID);
                 if (masterContent != null)
                 {
-                    placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, FormatContent(masterContent.Content), Settings)));
+                    placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, FormatContent(masterContent.Content), Settings, PortalSettings, Page)));
                 }
             }
         }
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.Html
             lblPreviewVersion.Text = htmlContent.Version.ToString();
             lblPreviewWorkflowInUse.Text = GetLocalizedString(htmlContent.WorkflowName);
             lblPreviewWorkflowState.Text = GetLocalizedString(htmlContent.StateName);
-            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings);
+            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings, PortalSettings, Page);
             phEdit.Visible = false;
             phPreview.Visible = true;
             phHistory.Visible = false;
@@ -290,7 +290,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayPreview(string htmlContent)
         {
-            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent, Settings);
+            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent, Settings, PortalSettings, Page);
             divPreviewVersion.Visible = false;
             divPreviewWorlflow.Visible = false;
 
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.Html
             lblCurrentWorkflowInUse.Text = GetLocalizedString(htmlContent.WorkflowName);
             lblCurrentWorkflowState.Text = GetLocalizedString(htmlContent.StateName);
 
-            litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings);
+            litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings, PortalSettings, Page);
             lblCurrentVersion.Text = htmlContent.Version.ToString();
             DisplayVersions();
 

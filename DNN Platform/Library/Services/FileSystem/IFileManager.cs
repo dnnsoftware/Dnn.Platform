@@ -75,6 +75,20 @@ namespace DotNetNuke.Services.FileSystem
         IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID);
 
         /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
+        /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>        
+        IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, bool ignoreWhiteList, string contentType, int createdByUserID);
+
+        /// <summary>
         /// Copies the specified file into the specified folder.
         /// </summary>
         /// <param name="file">The file to copy.</param>
@@ -85,6 +99,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the system defined content types
         /// </summary>
+		[Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes")]
         IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>
@@ -121,6 +136,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="extension">The file extension.</param>
         /// <returns>The Content Type for the specified extension.</returns>
+		[Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension)")]
         string GetContentType(string extension);
 
         /// <summary>

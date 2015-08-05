@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Providers.FiftyOneClientCapabilityProvider</RootNamespace>
     <AssemblyName>DotNetNuke.Providers.FiftyOneClientCapabilityProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -79,7 +79,6 @@
     </Compile>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Administration.ascx.designer.cs">
       <DependentUpon>Administration.ascx</DependentUpon>

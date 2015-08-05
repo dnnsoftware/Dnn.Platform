@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Modules.ModulePermissions" CodeFile="ModulePermissions.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Modules.ModulePermissions" Codebehind="ModulePermissions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <div class="dnnForm dnnModuleSettings dnnClear" id="dnnModulePermissions">
     <div class="msPermissions dnnClear" id="msPermissions">

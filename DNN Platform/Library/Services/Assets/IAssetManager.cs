@@ -40,7 +40,6 @@ namespace DotNetNuke.Services.Assets
         /// <summary>
         /// Searches the files and folders contained in the specified folder.
         /// </summary>
-        /// <param name="moduleId">The id of the Module</param>
         /// <param name="folderId">Folder Identifier</param>
         /// <param name="pattern">The pattern to search for</param>
         /// <param name="startIndex">Start index to retrieve items</param>

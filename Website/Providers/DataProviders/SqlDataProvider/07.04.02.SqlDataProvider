@@ -241,6 +241,7 @@ AS
 GO
 
 /*** Fix bug DNN-4496: SProc GetUsersAdvancedSearch missing the {databaseOwner} placeholder several times calling a database. ***/
+/*** Fix bug DNN-7178: {databaseOwner} incorrectly applied in DNN-4496 which broke the Friends functionality. ***/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
 GO
@@ -272,7 +273,7 @@ AS
 
     -- Get User specific columns
     DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
-    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{databaseOwner}{objectQualifier}vw_Users'
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users' AND TABLE_SCHEMA = REPLACE('{databaseOwner}', '.', '')
 
     -- Lists Filters names and values into tables
     DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
@@ -372,7 +373,7 @@ AS
                                             + ' WHERE UREL.Status = 2'
             END 
 
-        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  {databaseOwner}{objectQualifier}RoleAndRelationUsers) ' END
+        IF @roleAndRelationshipFlag = 1 BEGIN SET @RoleAndRelationshipSelect = ' AND s.UserId IN (SELECT userID FROM  RoleAndRelationUsers) ' END
 
         SET @roleAndRelationshipFilter =  ', RoleAndRelationUsers AS ( SELECT U.userId FROM {databaseOwner}{objectQualifier}vw_Users U ' + @roleFilter + @relationshipFilter + ' )' 
 
@@ -453,6 +454,71 @@ AS
                 @pivotSql + @sortSql            
 
         EXEC(@sql)
+GO
+
+/* Get Workflow Usage */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+AS
+    SELECT COALESCE(cm.MetaDataValue, ci.Content) as 'ContentName', ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+		LEFT JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] cm
+			ON ci.ContentItemID = cm.ContentItemID 
+				AND cm.MetaDataID = (SELECT MetaDataID FROM {databaseOwner}[{objectQualifier}MetaData] WHERE MetaDataName = 'Title')
+	WHERE ct.ContentType != 'Tab' -- Tabs will be managed specifically
+		AND ct.ContentType != 'File' -- Exclude Files
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) not like '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) not like '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NOT NULL
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, 
+		(SELECT CAST(ps.SettingValue AS INT) value 
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] ps
+			WHERE ps.SettingName = 'DefaultTabWorkflowKey' 
+			AND ps.PortalID = t.PortalID) as WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) NOT LIKE '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) NOT LIKE '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', f.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NOT NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', 
+		(SELECT wf.WorkflowID 
+			FROM {databaseOwner}[{objectQualifier}ContentWorkflows] wf
+			WHERE wf.WorkflowKey = 'DirectPublish' 
+			AND wf.PortalID = f.PortalID) AS WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NULL
 GO
 
 /************************************************************/

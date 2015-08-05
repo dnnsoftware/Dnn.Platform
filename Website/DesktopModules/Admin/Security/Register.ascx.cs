@@ -54,11 +54,14 @@ using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
 	public partial class Register : UserUserControlBase
 	{
 		protected const string PasswordStrengthTextBoxCssClass = "password-strength";
@@ -123,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			base.OnInit(e);
 
-			jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");

@@ -249,7 +249,7 @@ namespace DesktopModules.Admin.Tabs
             btnBulkCreate.Click += OnCreatePagesClick;
             cmdUpdate.Click += CmdUpdateClick;
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
             ClientResourceManager.RegisterScript(Page, ClientAPI.ScriptPath + "dnn.controls.js", 14);

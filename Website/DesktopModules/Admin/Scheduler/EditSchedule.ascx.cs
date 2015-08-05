@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -201,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;
@@ -214,15 +215,27 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+
                 if (chkEnabled.Checked)
                 {
                     //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
-                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate != null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate) < DateTime.Now;
+                    if ((startScheduleDatePicker.SelectedDate ?? Null.NullDate) >= DateTime.Now)
+                    {
+                        cmdRun.Visible = false;
+                    }
+                    else
+                    {
+                        // Hide "Run now" if scheduler should not run on this server
+                        if (!SchedulingController.CanRunOnThisServer(txtServers.Text))
+                        {
+                            cmdRun.Visible = false;
+                        }
+                    }
                 }
                 else
                 {
-                    cmdRun.Enabled = chkEnabled.Checked;
-                    cmdRun.Visible = chkEnabled.Checked;
+                    cmdRun.Enabled = false;
+                    cmdRun.Visible = false;
                 }
 
 

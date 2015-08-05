@@ -1,5 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false"
-    CodeFile="HostSettings.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false" Codebehind="HostSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -497,6 +496,10 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+				<div class="dnnFormItem" runat="server" ID="allowLeadingWildcardSettingRow" ControlName="chkAllowLeadingWildcard">
+					<dnn:Label runat="server" ID="lblAllowLeadingWildcard" />
+					<asp:CheckBox runat="server" ID="chkAllowLeadingWildcard" />
+				</div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
@@ -558,25 +561,6 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plControlPanel" controlname="cboControlPanel" runat="server" />
                     <dnn:dnncombobox id="cboControlPanel" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogStorage" controlname="optSiteLogStorage" runat="server" />
-                    <asp:RadioButtonList ID="optSiteLogStorage" CssClass="dnnHSRadioButtons" runat="server"
-                        RepeatLayout="Flow">
-                        <asp:ListItem Value="D" resourcekey="Database" />
-                        <asp:ListItem Value="F" resourcekey="FileSystem" />
-                    </asp:RadioButtonList>
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
-                    <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
-                    <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
-                    <asp:RangeValidator runat="server" id="valSiteLogBuffer" Type="Integer" controltovalidate="txtSiteLogBuffer" validationexpression="^\d*" MinimumValue="1" MaximumValue="999" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="SiteLogBufferValidation"  />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
-                    <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                    <asp:Label ID="lblSiteLogHistory" runat="server" resourcekey="Days" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plUsersOnline" controlname="chkUsersOnline" runat="server" />

@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="false" Explicit="True" CodeFile="ModuleLocalization.ascx.cs" Inherits="DotNetNuke.Admin.Modules.ModuleLocalization" %>
+<%@ Control Language="c#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Admin.Modules.ModuleLocalization" Codebehind="ModuleLocalization.ascx.cs" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnModuleLocalization dnnClear">

@@ -109,6 +109,11 @@ namespace DotNetNuke.Security.Membership
             return null;
         }
 
+        public virtual UserInfo GetUserByHmacAppId(int portalId, string appId)
+        {
+            return null;
+        }
+
         public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             return null;
@@ -161,6 +166,11 @@ namespace DotNetNuke.Security.Membership
         {
             throw new NotImplementedException();
         }
+
+		public virtual bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
+		{
+			throw new NotImplementedException();
+		}
 
 
         public virtual void ChangeUsername(int userId, string newUsername)

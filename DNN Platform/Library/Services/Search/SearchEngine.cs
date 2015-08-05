@@ -62,7 +62,14 @@ namespace DotNetNuke.Services.Search
 
         public int DeletedCount { get; private set; }
 
+        private readonly IList<int> _portalsToReindex;
+
         #endregion
+
+        public SearchEngine(DateTime lastIndexingTime)
+        {
+            _portalsToReindex = SearchHelper.Instance.GetPortalsToReindex(lastIndexingTime).ToList();
+        }
 
         #region internal
         /// -----------------------------------------------------------------------------
@@ -83,47 +90,36 @@ namespace DotNetNuke.Services.Search
             Results = new Dictionary<string, int>();
 
             //Index TAB META-DATA
-            var searchDocs = GetSearchDocuments(tabIndexer, startDate);
-            var searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
-            StoreSearchDocuments(searchDocuments);
-            IndexedSearchDocumentCount += searchDocuments.Count();
-            Results.Add("Tabs", searchDocuments.Count());
+            var searchDocsCount = GetAndStoreSearchDocuments(tabIndexer, startDate);
+            IndexedSearchDocumentCount += searchDocsCount;
+            Results.Add("Tabs", searchDocsCount);
 
             //Index MODULE META-DATA from modules that inherit from ModuleSearchBase
-			searchDocs = GetModuleMetaData(moduleIndexer, startDate);
-            searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
-            StoreSearchDocuments(searchDocuments);
-            IndexedSearchDocumentCount += searchDocuments.Count();
-            Results.Add("Modules (Metadata)", searchDocuments.Count());
+            searchDocsCount = GetAndStoreModuleMetaData(moduleIndexer, startDate);
+            IndexedSearchDocumentCount += searchDocsCount;
+            Results.Add("Modules (Metadata)", searchDocsCount);
 
             //Index MODULE CONTENT from modules that inherit from ModuleSearchBase
-            searchDocs = GetSearchDocuments(moduleIndexer, startDate);
-            searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
-            StoreSearchDocuments(searchDocuments);
-            IndexedSearchDocumentCount += searchDocuments.Count();
-            
-            #pragma warning disable 0618
+            searchDocsCount = GetAndStoreSearchDocuments(moduleIndexer, startDate);
+            IndexedSearchDocumentCount += searchDocsCount;
+
             //Index all Defunct ISearchable module content
+            #pragma warning disable 0618
             var searchItems = GetContent(moduleIndexer);
             SearchDataStoreProvider.Instance().StoreSearchItems(searchItems);
             #pragma warning restore 0618
             IndexedSearchDocumentCount += searchItems.Count;
 
             //Both ModuleSearchBase and ISearchable module content count
-            Results.Add("Modules (Content)", searchDocuments.Count() + searchItems.Count);
+            Results.Add("Modules (Content)", searchDocsCount + searchItems.Count);
 
-            //Index User data
-            if (HostController.Instance.GetBoolean("DisableUserCrawling", false)) return;
-            searchDocs = GetSearchDocuments(userIndexer, startDate);
-            searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
-            StoreSearchDocuments(searchDocuments);
-            var userIndexed =
-                searchDocuments.Select(
-                    d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal)))
-                    .Distinct()
-                    .Count();
-            IndexedSearchDocumentCount += userIndexed;
-            Results.Add("Users", userIndexed);
+            if (!HostController.Instance.GetBoolean("DisableUserCrawling", false))
+            {
+                //Index User data
+                var userIndexed = GetAndStoreSearchDocuments(userIndexer, startDate);
+                IndexedSearchDocumentCount += userIndexed;
+                Results.Add("Users", userIndexed);
+            }
         }
 
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
@@ -148,10 +144,9 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDate"></param>
         internal void DeleteOldDocsBeforeReindex(DateTime startDate)
         {
-            var portal2Reindex = SearchHelper.Instance.GetPortalsToReindex(startDate);
             var controller = InternalSearchController.Instance;
 
-            foreach (var portalId in portal2Reindex)
+            foreach (var portalId in _portalsToReindex)
             {
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId);
@@ -203,23 +198,45 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private IEnumerable<SearchDocument> GetSearchDocuments(IndexingProvider indexer, DateTime startDateLocal)
+        private int GetAndStoreSearchDocuments(IndexingProvider indexer, DateTime startDateLocal)
         {
-            var searchDocs = new List<SearchDocument>();
+            IList<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
+            var indexedCount = 0;
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {
                 indexSince = FixedIndexingStartDate(portal.PortalID, startDateLocal);
-                searchDocs.AddRange(indexer.GetSearchDocuments(portal.PortalID, indexSince));
+                try
+                {
+                    indexedCount += indexer.IndexSearchDocuments(portal.PortalID, indexSince, StoreSearchDocuments);
+                }
+                catch (NotImplementedException)
+                {
+#pragma warning disable 618
+                    searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
+#pragma warning restore 618
+                    StoreSearchDocuments(searchDocs);
+                    indexedCount += searchDocs.Count();
+                }
             }
 
             // Include Host Level Items
             indexSince = FixedIndexingStartDate(-1, startDateLocal);
-            searchDocs.AddRange(indexer.GetSearchDocuments(-1, indexSince));
-            
-            return searchDocs;
+            try
+            {
+                indexedCount += indexer.IndexSearchDocuments(-1, indexSince, StoreSearchDocuments);
+            }
+            catch (NotImplementedException)
+            {
+#pragma warning disable 618
+                searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
+#pragma warning restore 618
+                StoreSearchDocuments(searchDocs);
+                indexedCount += searchDocs.Count();
+            }
+            return indexedCount;
         }
 
         /// -----------------------------------------------------------------------------
@@ -232,23 +249,28 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-		private IEnumerable<SearchDocument> GetModuleMetaData(ModuleIndexer indexer, DateTime startDate)
+        private int GetAndStoreModuleMetaData(ModuleIndexer indexer, DateTime startDate)
         {
-            var searchDocs = new List<SearchDocument>();
+            IEnumerable<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
+            var indexedCount = 0;
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {
                 indexSince = FixedIndexingStartDate(portal.PortalID, startDate);
-                searchDocs.AddRange(indexer.GetModuleMetaData(portal.PortalID, indexSince));
+                searchDocs = indexer.GetModuleMetaData(portal.PortalID, indexSince);
+                StoreSearchDocuments(searchDocs);
+                indexedCount += searchDocs.Count();
             }
 
             // Include Host Level Items
 			indexSince = FixedIndexingStartDate(Null.NullInteger, startDate);
-            searchDocs.AddRange(indexer.GetModuleMetaData(Null.NullInteger, indexSince));
+            searchDocs = indexer.GetModuleMetaData(Null.NullInteger, indexSince);
+            StoreSearchDocuments(searchDocs);
+            indexedCount += searchDocs.Count();
 
-            return searchDocs;
+            return indexedCount;
         }
 
         /// -----------------------------------------------------------------------------
@@ -278,10 +300,10 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDate"></param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        private static DateTime FixedIndexingStartDate(int portalId, DateTime startDate)
+        private DateTime FixedIndexingStartDate(int portalId, DateTime startDate)
         {
-            if (startDate < SqlDateTime.MinValue.Value ||
-                SearchHelper.Instance.IsReindexRequested(portalId, startDate))
+            if (startDate < SqlDateTime.MinValue.Value.AddDays(1) ||
+                _portalsToReindex.Contains(portalId))
             {
                 return SqlDateTime.MinValue.Value.AddDays(1);
             }

@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -336,7 +337,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             btnClear.Click += BtnClearClick;
             btnDelete.Click += BtnDeleteClick;

@@ -55,8 +55,9 @@ namespace DotNetNuke.Common.Lists
 			{
 				res = (CachedCountryList)DotNetNuke.Common.Utilities.DataCache.GetCache(CacheKey(locale));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
+				//do nothing here.
 			}
 			if (res == null)
 			{

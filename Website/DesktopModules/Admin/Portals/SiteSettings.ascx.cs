@@ -63,7 +63,7 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 
 using System.Globalization;
 using System.Web;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
 
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
@@ -74,6 +74,7 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DesktopModules.Admin.Portals
 {
     using DotNetNuke.Services.Mail;
+    using jQuery = DotNetNuke.Framework.jQuery;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -91,9 +92,8 @@ namespace DesktopModules.Admin.Portals
     {
 
         #region Private Members
-        private IEnumerable<IEditPagePanelExtensionPoint> advancedSettingsExtensions;
 
-        private int _portalId = -1;
+		private int _portalId = -1;
         
         private string SelectedCultureCode
         {
@@ -190,10 +190,6 @@ namespace DesktopModules.Admin.Portals
             txtHostSpace.Text = portal.HostSpace.ToString();
             txtPageQuota.Text = portal.PageQuota.ToString();
             txtUserQuota.Text = portal.UserQuota.ToString();
-            if (portal.SiteLogHistory != Null.NullInteger)
-            {
-                txtSiteLogHistory.Text = portal.SiteLogHistory.ToString();
-            }
         }
 
         private void BindMarketing(PortalInfo portal)
@@ -913,7 +909,7 @@ namespace DesktopModules.Admin.Portals
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;
@@ -1319,12 +1315,6 @@ namespace DesktopModules.Admin.Portals
                         userQuota = int.Parse(txtUserQuota.Text);
                     }
 
-                    int siteLogHistory = existingPortal.SiteLogHistory;
-                    if (!String.IsNullOrEmpty(txtSiteLogHistory.Text))
-                    {
-                        siteLogHistory = int.Parse(txtSiteLogHistory.Text);
-                    }
-
                     DateTime expiryDate = existingPortal.ExpiryDate;
                     if (datepickerExpiryDate.SelectedDate.HasValue)
                     {
@@ -1380,7 +1370,6 @@ namespace DesktopModules.Admin.Portals
                                                 Description = txtDescription.Text,
                                                 KeyWords = txtKeyWords.Text,
                                                 BackgroundFile = background,
-                                                SiteLogHistory = siteLogHistory,
                                                 SplashTabId = intSplashTabId,
                                                 HomeTabId = intHomeTabId,
                                                 LoginTabId = intLoginTabId,

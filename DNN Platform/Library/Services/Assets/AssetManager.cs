@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Assets
 
         #endregion
 
-        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression =  null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
+        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
             var folder = GetFolderInfo(folderId);
 
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Assets
             var field = string.IsNullOrEmpty(orderingField) ? "FolderName" : orderingField;
 
             return ApplyOrder(folders.AsQueryable(), field, asc);
-        } 
+        }
 
         private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
         {
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Assets
 
             // Check if the name is reserved
             if (IsReservedName(newFolderName))
-            {                
+            {
                 throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Assets
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingId);
-                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));                
+                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
             }
             catch (FolderAlreadyExistsException)
             {
@@ -463,7 +463,7 @@ namespace DotNetNuke.Services.Assets
                 return path;
             }
 
-            return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);            
+            return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
         }
 
         private string GetNewFolderPath(string newFolderName, IFolderInfo folder)

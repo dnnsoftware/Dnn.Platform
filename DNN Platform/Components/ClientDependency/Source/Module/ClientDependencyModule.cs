@@ -8,13 +8,20 @@ using ClientDependency.Core.Config;
 
 namespace ClientDependency.Core.Module
 {
-
     /// <summary>
     /// This module currently replaces rogue scripts with composite scripts.
     /// Eventually it will handle css files and MVC implementation
     /// </summary>
     public class ClientDependencyModule : IHttpModule
     {
+        public static event EventHandler<ApplyingResponseFilterEventArgs> ApplyingResponseFilter;
+
+        private void OnApplyingResponseFilter(ApplyingResponseFilterEventArgs e)
+        {
+            var handler = ApplyingResponseFilter;
+            if (handler != null) handler(this, e);
+        }
+
         #region IHttpModule Members
 
         void IHttpModule.Dispose() { }
@@ -46,6 +53,19 @@ namespace ClientDependency.Core.Module
             var app = (HttpApplication)sender;
             var http = new HttpContextWrapper(app.Context);
 
+            //if debug is on, then don't compress
+            if (!http.IsDebuggingEnabled)
+            {
+                //IMPORTANT: Compression must be assigned before any other filters are executed!
+                // if compression is applied after the response has been modified then we will end
+                // up getting encoding errors.
+                // The compressor will not attempt to compress if the current filter is not ASP.Net's 
+                // original filter. The filter could be changed by developers or perhaps even hosting
+                // providers (based on their machine.config with their own modules.
+                var c = new MimeTypeCompressor(new HttpContextWrapper(app.Context));
+                c.AddCompression();
+            }
+
             var filters = LoadFilters(http);
 
             if (ValidateCurrentHandler(filters))
@@ -53,12 +73,7 @@ namespace ClientDependency.Core.Module
                 ExecuteFilter(http, filters);
             }
 
-            //if debug is on, then don't compress
-            if (!http.IsDebuggingEnabled)
-            {
-                var c = new MimeTypeCompressor(new HttpContextWrapper(app.Context));
-                c.AddCompression();
-            }
+            
         }
 
         #endregion
@@ -110,12 +125,20 @@ namespace ClientDependency.Core.Module
 
         private void ExecuteFilter(HttpContextBase http, IEnumerable<IFilter> filters)
         {
-            var filter = new ResponseFilterStream(http.Response.Filter, http);
-            foreach (var f in filters.Where(f => f.CanExecute()))
+            //raise event, deverlopers can cancel the filter from being applied depending on what is on the http context.
+            var args = new ApplyingResponseFilterEventArgs(http);
+            OnApplyingResponseFilter(args);
+
+            if (!args.Cancel)
             {
-                filter.TransformString += f.UpdateOutputHtml;
+                var filter = new ResponseFilterStream(http.Response.Filter, http);
+                foreach (var f in filters.Where(f => f.CanExecute()))
+                {
+                    filter.TransformString += f.UpdateOutputHtml;
+                }
+                http.Response.Filter = filter;    
             }
-            http.Response.Filter = filter;
+            
         }
 
         #endregion

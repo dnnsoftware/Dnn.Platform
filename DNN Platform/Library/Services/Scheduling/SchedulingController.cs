@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
 using Microsoft.VisualBasic;
+using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -205,10 +206,31 @@ namespace DotNetNuke.Services.Scheduling
             Scheduler.CoreScheduler.ReloadSchedule();
         }
 
+	    public static void UpdateSchedule(ScheduleItem scheduleItem)
+	    {
+#pragma warning disable 618
+			UpdateSchedule(scheduleItem.ScheduleID,
+							scheduleItem.TypeFullName,
+							scheduleItem.TimeLapse,
+							scheduleItem.TimeLapseMeasurement,
+							scheduleItem.RetryTimeLapse,
+							scheduleItem.RetryTimeLapseMeasurement,
+							scheduleItem.RetainHistoryNum,
+							scheduleItem.AttachToEvent,
+							scheduleItem.CatchUpEnabled,
+							scheduleItem.Enabled,
+							scheduleItem.ObjectDependencies,
+							scheduleItem.Servers,
+							scheduleItem.FriendlyName,
+							scheduleItem.ScheduleStartDate);
+#pragma warning restore 618
+		}
+
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                   string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
         {
-            UpdateSchedule(ScheduleID,
+#pragma warning disable 618
+			UpdateSchedule(ScheduleID,
                             TypeFullName,
                             TimeLapse,
                             TimeLapseMeasurement,
@@ -222,7 +244,8 @@ namespace DotNetNuke.Services.Scheduling
                             Servers,
                             FriendlyName,
                             DateTime.Now);
-        }
+#pragma warning restore 618
+		}
 
         [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
@@ -254,5 +277,21 @@ namespace DotNetNuke.Services.Scheduling
                                                           objScheduleHistoryItem.LogNotes,
                                                           objScheduleHistoryItem.NextStart);
         }
+
+        public static bool CanRunOnThisServer(string servers)
+        {
+            string lwrServers = "";
+            if (servers != null)
+            {
+                lwrServers = servers.ToLower();
+            }
+            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

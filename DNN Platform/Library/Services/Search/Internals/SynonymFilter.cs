@@ -20,8 +20,8 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using DotNetNuke.Entities.Portals;
@@ -98,11 +98,13 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
-            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, _termAtt.Term);
-            if (synonyms.Count() == 0) return false;
+            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, _termAtt.Term).ToArray();
+            if (!synonyms.Any()) return false;
+
+            var cultureInfo = new CultureInfo(cultureCode);
             foreach (var synonym in synonyms)
             {
-                _synonymStack.Push(synonym);
+                _synonymStack.Push(synonym.ToLower(cultureInfo));
             }
             return true;
         }

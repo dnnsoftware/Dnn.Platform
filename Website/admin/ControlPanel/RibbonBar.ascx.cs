@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -202,11 +203,10 @@ namespace DotNetNuke.UI.ControlPanels
                 if (ControlPanel.Visible && IncludeInControlHierarchy)
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/ControlPanel/module.css");
-                    jQuery.RequestHoverIntentRegistration();
                     ClientResourceManager.RegisterScript(this.Page, "~/Resources/ControlPanel/ControlPanel.debug.js");
                 }
 
-                jQuery.RequestDnnPluginsRegistration();
+				JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 Control copyPageButton = CurrentPagePanel.FindControl("CopyPage");
                 if ((copyPageButton != null))

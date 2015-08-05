@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ModuleActions.ascx.cs" Inherits="DotNetNuke.Admin.Containers.ModuleActions" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Admin.Containers.ModuleActions" Codebehind="ModuleActions.ascx.cs" %>
 <asp:LinkButton runat="server" ID="actionButton" />
 
 <script language="javascript" type="text/javascript">
@@ -33,9 +33,9 @@
                 IsShared : <% = IsShared.ToString().ToLower() %>
             });
 
-            $('.dnn_mact > li.actionMenuMove > ul').jScrollPane();
+            $('#moduleActions-' + moduleId + ' .dnn_mact > li.actionMenuMove > ul').jScrollPane();
             
-            $('.dnn_mact li').hoverIntent({
+            $('#moduleActions-' + moduleId + ' .dnn_mact li').hoverIntent({
                 over: function() {
                     // detect position
                     var windowHeight = $(window).height();

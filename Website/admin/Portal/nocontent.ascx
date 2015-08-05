@@ -1,1 +1,1 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Common.Controls.NoContent" CodeFile="NoContent.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Common.Controls.NoContent" Codebehind="NoContent.ascx.cs" %>

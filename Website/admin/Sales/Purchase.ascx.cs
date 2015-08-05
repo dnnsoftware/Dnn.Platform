@@ -39,6 +39,8 @@ using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Admin.Sales
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class Purchase : PortalModuleBase
     {
         private int RoleID = -1;

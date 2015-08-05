@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
@@ -48,6 +49,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 //DNN-4016
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -528,6 +530,14 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
+                        if (schema.Select("ColumnName = 'HmacAppId'").Length > 0)
+                        {
+                            user.HmacAppId = Null.SetNullString(dr["HmacAppId"]);
+                        }
+                        if (schema.Select("ColumnName = 'HmacAppSecret'").Length > 0)
+                        {
+                            user.HmacAppSecret = Null.SetNullString(dr["HmacAppSecret"]);
+                        }
                     }
 
                     user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
@@ -641,7 +651,16 @@ namespace DotNetNuke.Security.Membership
             {
                 membershipUser.IsApproved = user.Membership.Approved;
             }
-            System.Web.Security.Membership.UpdateUser(membershipUser);
+
+	        try
+	        {
+		        System.Web.Security.Membership.UpdateUser(membershipUser);
+	        }
+	        catch (ProviderException ex)
+	        {
+				throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
+	        }
+            
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
@@ -1111,6 +1130,19 @@ namespace DotNetNuke.Security.Membership
             return objUserInfo;
         }
 
+        /// <summary>
+        /// Get a user based on their HMAC AppId
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="appId">HMAC AppId</param>
+        /// <returns>The User as a UserInfo object</returns>
+        public override UserInfo GetUserByHmacAppId(int portalId, string appId)
+        {
+            IDataReader dr = _dataProvider.GetUserByHmacAppId(appId);
+            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            return objUserInfo;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserByUserName retrieves a User from the DataStore
@@ -1545,17 +1577,22 @@ namespace DotNetNuke.Security.Membership
         /// <param name="user"></param>
         public override bool ResetAndChangePassword(UserInfo user,string newPassword)
         {
-            if (RequiresQuestionAndAnswer)
-            {
-                return false;  
-            }
-
-            //Get AspNet MembershipUser
-            MembershipUser aspnetUser = GetMembershipUser(user);
-
-            string resetPassword = ResetPassword(user,String.Empty);
-            return aspnetUser.ChangePassword(resetPassword, newPassword);
+	        return ResetAndChangePassword(user, newPassword, string.Empty);
         }
+
+		public override bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
+		{
+			if (RequiresQuestionAndAnswer && string.IsNullOrEmpty(answer))
+			{
+				return false;
+			}
+
+			//Get AspNet MembershipUser
+			MembershipUser aspnetUser = GetMembershipUser(user);
+
+			string resetPassword = ResetPassword(user, answer);
+			return aspnetUser.ChangePassword(resetPassword, newPassword);
+		}
 
         public override bool RestoreUser(UserInfo user)
         {
@@ -1654,7 +1691,9 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.Instance.GetCurrentUserInfo().UserID);
+                                     UserController.Instance.GetCurrentUserInfo().UserID,
+                                     user.HmacAppId,
+                                     user.HmacAppSecret);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);

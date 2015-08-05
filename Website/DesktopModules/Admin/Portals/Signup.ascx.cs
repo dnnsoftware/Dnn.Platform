@@ -32,12 +32,13 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Exceptions;
@@ -45,13 +46,14 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
-
 using Telerik.Web.UI;
 
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Portals
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class Signup : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Signup));
@@ -79,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 ModuleConfiguration.ModuleTitle = Localization.GetString("AddPortal", LocalResourceFile);
             }
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>

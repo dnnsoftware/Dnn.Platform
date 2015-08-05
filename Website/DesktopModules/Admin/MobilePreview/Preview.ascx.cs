@@ -44,6 +44,8 @@ using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.Admin.MobilePreview
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
 	public partial class Preview : PortalModuleBase
 	{
 		#region "Public Properties"

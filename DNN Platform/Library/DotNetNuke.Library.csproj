@@ -12,7 +12,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke</RootNamespace>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -30,6 +30,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -70,9 +72,35 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CountryListBox, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Services.Syndication">
+      <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -87,9 +115,13 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
@@ -119,11 +151,15 @@
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -139,6 +175,9 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Obsolete\Arg.cs" />
+    <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
@@ -632,6 +671,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\FileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileSizeFormatProvider.cs" />
     <Compile Include="Services\FileSystem\FileUrlHelper.cs" />
@@ -642,6 +682,7 @@
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
     <Compile Include="Services\Assets\IAssetManager.cs" />
+    <Compile Include="Services\FileSystem\IFileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
@@ -720,6 +761,13 @@
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
+    <Compile Include="Services\Tokens\CacheLevel.cs" />
+    <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />
@@ -1282,18 +1330,6 @@
     <Compile Include="Services\Log\EventLog\SendLogNotifications.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\SiteLog\BufferedSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\PurgeSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Mail\Mail.cs" />
     <Compile Include="Services\Mail\MailFormat.cs" />
     <Compile Include="Services\Mail\MailPriority.cs" />
@@ -1456,6 +1492,16 @@
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
+    <Compile Include="UI\Modules\Html5\Html5HostControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
@@ -1469,6 +1515,7 @@
     <Compile Include="UI\Modules\ModuleUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Modules\ReflectedModuleControlFactory.cs" />
     <Compile Include="UI\Modules\StandardModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\WebFormsModuleControlFactory.cs" />
     <Compile Include="UI\Navigation.cs">
@@ -1662,6 +1709,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -1792,10 +1840,13 @@
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{86af9531-d270-4c18-a8b9-c67a8782af69}</Project>
-      <Name>DotNetNuke.Syndication</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="Module.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -200,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDelete.Click += OnDeleteClick;
             cmdCancel.Click += OnCancelClick;

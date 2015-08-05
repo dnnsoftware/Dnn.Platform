@@ -50,7 +50,6 @@ namespace DotNetNuke.Entities.Users
     public class ProfilePropertyAccess : IPropertyAccess
     {
         private readonly UserInfo user;
-        private string administratorRoleName;
 
         public ProfilePropertyAccess(UserInfo user)
         {
