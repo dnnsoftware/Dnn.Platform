@@ -136,7 +136,7 @@
     <value>New</value>
   </data>
   <data name="plAddPage.Help" xml:space="preserve">
-    <value>Chcek this box to create a test page for your new module.</value>
+    <value>Check this box to create a test page for your new module.</value>
   </data>
   <data name="plAddPage.Text" xml:space="preserve">
     <value>Add Test Page?</value>
