@@ -69,6 +69,9 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PetaPoco">
+      <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
     </Reference>
@@ -4175,7 +4178,6 @@
     <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Banner.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\BreadCrumb.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
