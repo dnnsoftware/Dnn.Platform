@@ -196,12 +196,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
             if (folder == null) return;
 
-            var arrFiles = Globals.GetFileList(PortalId, "xml", false, folder.FolderPath);
-            foreach (FileItem objFile in arrFiles)
+            var files = Globals.GetFileList(PortalId, "xml", false, folder.FolderPath);
+            foreach (FileItem file in files)
             {
-                if (objFile.Text.IndexOf("content." + Globals.CleanName(Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
+				if (file.Text.IndexOf("content." + Globals.CleanName(Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-                    cboFiles.AddItem(objFile.Text.Replace("content." + Globals.CleanName(Module.DesktopModule.ModuleName) + ".", ""), objFile.Text);
+					cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(Module.DesktopModule.ModuleName) + ".", ""), file.Value);
                 }
 
                 //legacy support for files which used the FriendlyName
@@ -210,9 +210,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                     continue;
                 }
 
-                if (objFile.Text.IndexOf("content." + Globals.CleanName(Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
+				if (file.Text.IndexOf("content." + Globals.CleanName(Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-                    cboFiles.AddItem(objFile.Text.Replace("content." + Globals.CleanName(Module.DesktopModule.FriendlyName) + ".", ""), objFile.Text);
+					cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(Module.DesktopModule.FriendlyName) + ".", ""), file.Value);
                 }
             }
         }
@@ -223,10 +223,24 @@ namespace DotNetNuke.Modules.Admin.Modules
             var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
             if (folder == null) return;
 
-            var objStreamReader = File.OpenText(PortalSettings.HomeDirectoryMapPath + folder.FolderPath + cboFiles.SelectedItem.Value);
-            var content = objStreamReader.ReadToEnd();
-            objStreamReader.Close();
-            txtContent.Text = content.Replace("><", ">\r\n<");
+	        if (string.IsNullOrEmpty(cboFiles.SelectedValue) || cboFiles.SelectedValue == "-")
+	        {
+				txtContent.Text = string.Empty;
+		        return;
+	        }
+	        try
+	        {
+				var fileId = Convert.ToInt32(cboFiles.SelectedValue);
+		        var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
+				using (var streamReader = new StreamReader(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(file)))
+				{
+					txtContent.Text = streamReader.ReadToEnd();
+				}
+	        }
+	        catch (Exception)
+	        {
+		        txtContent.Text = string.Empty;
+	        }
         }
 
         protected void OnImportClick(object sender, EventArgs e)
