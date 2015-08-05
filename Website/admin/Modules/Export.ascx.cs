@@ -122,7 +122,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 //          Module.DesktopModule.Version + "\">" + content + "</content>";
 
                                 //First check the Portal limits will not be exceeded (this is approximate)
-                                var strFile = PortalSettings.HomeDirectoryMapPath + folder.FolderPath + fileName;
                                 if (PortalController.Instance.HasSpaceAvailable(PortalId, content.Length))
                                 {
                                     //add file to Files table
@@ -133,7 +132,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 }
                                 else
                                 {
-                                    strMessage += "<br>" + string.Format(Localization.GetString("DiskSpaceExceeded"), strFile);
+                                    strMessage += "<br>" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
                                 }
                             }
                             else

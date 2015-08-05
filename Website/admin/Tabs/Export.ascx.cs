@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                     if (folder != null)
                     {
-                        var filename = PortalSettings.HomeDirectoryMapPath + folder.FolderPath + txtFile.Text + ".page.template";
+                        var filename = folder.FolderPath + txtFile.Text + ".page.template";
                         filename = filename.Replace("/", "\\");
 
                         var xmlTemplate = new XmlDocument();
