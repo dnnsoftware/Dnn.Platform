@@ -69,6 +69,10 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PetaPoco, Version=5.0.1.17400, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
     </Reference>
@@ -1007,6 +1011,8 @@
       <DependentUpon>CreateModule.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <None Include="compilerconfig.json" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\template.cs" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateController.cs" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateInfo.cs" />
@@ -1651,7 +1657,9 @@
     <Content Include="admin\Menus\ModuleActions\images\Edit.png" />
     <Content Include="admin\Menus\ModuleActions\images\Move.png" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.ascx" />
-    <Content Include="admin\Menus\ModuleActions\ModuleActions.css" />
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.css">
+      <DependentUpon>ModuleActions.less</DependentUpon>
+    </Content>
     <Content Include="admin\Menus\ModuleActions\ModuleActions.js" />
     <Content Include="admin\Modules\export.ascx" />
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />

@@ -1,0 +1,12 @@
+﻿[
+  {
+    "outputFile": "admin/Menus/ModuleActions/ModuleActions.css",
+    "inputFile": "admin/Menus/ModuleActions/ModuleActions.less",
+    "minify": {
+        "enabled": false
+    },
+    "includeInProject": true,
+    "sourceMap": false,
+    "options":{}
+  }
+]
