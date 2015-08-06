@@ -36,28 +36,11 @@ dcc.templatesViewModel = function(config, rootViewModel){
             pageSize: 1000
         };
 
-        util.contentTypeService().get("GetContentTypes", params,
-            function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.contentTypes.removeAll();
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var localizedValues = ko.observableArray([]);
-                        util.loadLocalizedValues(localizedValues, result.localizedNames);
-                        self.contentTypes.push({
-                            contentTypeId: result.contentTypeId,
-                            isSystem: result.isSystem,
-                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
-                        });
-                    }
-                } else {
-                    //Error
-                }
-            },
-
+        util.contentTypeService().getEntities(params,
+            "GetContentTypes",
+            self.contentTypes,
             function () {
-                //Failure
+                return new dcc.contentTypeViewModel(self, config);
             }
         );
     };
@@ -93,6 +76,9 @@ dcc.templatesViewModel = function(config, rootViewModel){
     };
 
     self.getTemplates = function () {
+
+        getContentTypes();
+
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
@@ -107,8 +93,6 @@ dcc.templatesViewModel = function(config, rootViewModel){
             },
             self.totalResults
         );
-
-        getContentTypes();
     };
 
     self.init = function() {
@@ -142,7 +126,6 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.canSelectGlobal = ko.observable(false);
     self.templateId = ko.observable(-1);
     self.localizedNames = ko.observableArray([]);
-    self.contentType = ko.observable('');
     self.contentTypeId = ko.observable(-1);
     self.filePath = ko.observable('');
     self.isSystem = ko.observable(false);
@@ -185,6 +168,19 @@ dcc.templateViewModel = function(parentViewModel, config){
         }
         self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
         self.isSystem(false);
+    });
+
+    self.contentType = ko.computed(function() {
+        var value = "";
+        if (self.contentTypes !== undefined) {
+            var entity = util.getEntity(self.contentTypes(), function (contentType) {
+                return (self.contentTypeId() === contentType.contentTypeId());
+            });
+            if (entity != null) {
+                value = entity.name;
+            }
+        }
+        return value;
     });
 
     var getCodeSnippets = function() {
@@ -293,7 +289,6 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.init = function(){
         self.canEdit(true);
         self.templateId(-1);
-        self.contentType("");
         self.contentTypeId(-1);
         self.filePath('');
         self.isSystem(self.parentViewModel.isSystemUser);
@@ -323,7 +318,6 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.load = function(data) {
         self.canEdit(data.canEdit);
         self.templateId(data.templateId);
-        self.contentType(data.contentType);
         self.contentTypeId(data.contentTypeId);
         self.isSystem(data.isSystem);
         self.filePath(data.filePath);
