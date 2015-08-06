@@ -82,10 +82,28 @@ namespace DotNetNuke.Modules.Admin.Host
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class HostSettings : PortalModuleBase
-    {
-        #region Private Methods
+	{
+		#region Fields
 
-        /// -----------------------------------------------------------------------------
+		//Field Boost Settings - they are scaled down by 10.
+		internal const int DefaultSearchTitleBoost = 50;
+		internal const int DefaultSearchTagBoost = 40;
+		internal const int DefaultSearchContentBoost = 35;
+		internal const int DefaultSearchDescriptionBoost = 20;
+		internal const int DefaultSearchAuthorBoost = 15;
+
+		//Field Bosst Setting Names
+		internal const string SearchTitleBoostSetting = "Search_Title_Boost";
+		internal const string SearchTagBoostSetting = "Search_Tag_Boost";
+		internal const string SearchContentBoostSetting = "Search_Content_Boost";
+		internal const string SearchDescriptionBoostSetting = "Search_Description_Boost";
+		internal const string SearchAuthorBoostSetting = "Search_Author_Boost";
+
+		#endregion
+
+		#region Private Methods
+
+		/// -----------------------------------------------------------------------------
         /// <summary>
         /// BindData fetches the data from the database and updates the controls
         /// </summary>
@@ -599,6 +617,12 @@ namespace DotNetNuke.Modules.Admin.Host
             cbCustomAnalyzer.DataBind();
             cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
             cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
+
+			txtTitleBoost.Text = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost).ToString();
+			txtTagBoost.Text = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost).ToString();
+			txtContentBoost.Text = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost).ToString();
+			txtDescriptionBoost.Text = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost).ToString();
+			txtAuthorBoost.Text = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost).ToString();
         }
 
         private IList<string> GetAvailableAnalyzers()
@@ -988,6 +1012,14 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("Search_MaxKeyWordLength", txtIndexWordMaxLength.Text);
                 }
             }
+
+			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N");
+
+			HostController.Instance.Update(SearchTitleBoostSetting, string.IsNullOrEmpty(txtTitleBoost.Text) ? DefaultSearchTitleBoost.ToString() : txtTitleBoost.Text);
+			HostController.Instance.Update(SearchTagBoostSetting, string.IsNullOrEmpty(txtTagBoost.Text) ? DefaultSearchTagBoost.ToString() : txtTagBoost.Text);
+			HostController.Instance.Update(SearchContentBoostSetting, string.IsNullOrEmpty(txtContentBoost.Text) ? DefaultSearchContentBoost.ToString() : txtContentBoost.Text);
+			HostController.Instance.Update(SearchDescriptionBoostSetting, string.IsNullOrEmpty(txtDescriptionBoost.Text) ? DefaultSearchDescriptionBoost.ToString() : txtDescriptionBoost.Text);
+			HostController.Instance.Update(SearchAuthorBoostSetting, string.IsNullOrEmpty(txtAuthorBoost.Text) ? DefaultSearchAuthorBoost.ToString() : txtAuthorBoost.Text);
 
             var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
             var newAnalyzer = cbCustomAnalyzer.SelectedValue.Trim();
