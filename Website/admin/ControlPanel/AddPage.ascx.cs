@@ -85,19 +85,13 @@ namespace DotNetNuke.UI.ControlPanel
             var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);
 
-            string templateFile = string.Empty;
-            if ((!string.IsNullOrEmpty(TemplateLst.SelectedValue)))
-            {
-                templateFile = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Templates\\" + TemplateLst.SelectedValue);
-            }
-
             newTab.TabName = Name.Text;
             newTab.IsVisible = IncludeInMenu.Checked;
 
             string errMsg = string.Empty;
             try
             {
-                RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, templateFile);
+				RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, TemplateLst.SelectedValue);
             }
             catch (DotNetNukeException ex)
             {
@@ -209,8 +203,7 @@ namespace DotNetNuke.UI.ControlPanel
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
-                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Text);
-                //TemplateLst.Items.Add(item);
+                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
                 TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {
@@ -218,7 +211,6 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            //TemplateLst.Items.Insert(0, new ListItem(GetString("NoTemplate"), ""));
             TemplateLst.InsertItem(0, GetString("NoTemplate"), "");
         }
 
