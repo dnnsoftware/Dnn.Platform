@@ -1,5 +1,6 @@
 ﻿[JavaScript:{ jsname: "Knockout" }]
 [JavaScript:{ jsname: "Knockout.Mapping" }]
+[JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/knockout-sortable.min.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/manager.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/contentTypes.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/dataTypes.js"}]
@@ -131,15 +132,15 @@
                                 <th width="100px">[Resx:{key:"Actions"}]</th>
                             </tr>
                             </thead>
-                            <tbody data-bind="foreach: contentFields()">
+                            <tbody data-bind="sortable: { data: contentFields(), afterMove: moveContentField }">
                             <tr>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: name"></span>
                                 </td>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: label"></span>
                                 </td>
-                                <td>
+                                <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: dataType()"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
@@ -476,7 +477,7 @@
             settingsPanel: '#settings-panel',
             loadingBarId: '#loadingbar',
             codeEditorArea: '#template-codeEditor',
-            pageSize: 5,
+            pageSize: 10,
             servicesFramework: $.ServicesFramework(moduleId)
         }
 

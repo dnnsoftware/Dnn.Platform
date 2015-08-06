@@ -10,7 +10,7 @@
 
         var listItem = $(target);
 
-        if(listItem.is("li") == false){
+        if(listItem.is("li") === false){
             listItem = listItem.closest('li');
         }
 
@@ -86,7 +86,8 @@
             util: util,
             $rootElement: $rootElement,
             mode: ko.observable("listTypes"),
-            codeEditor: codeEditor
+            codeEditor: codeEditor,
+            ko: ko
         };
 
         //Build the ViewModel
@@ -107,9 +108,7 @@
                     }
                     viewModel.isLocalized(viewModel.languages().length > 1);
                     viewModel.selectedLanguage(data.data.defaultLanguage);
-                }
-                else {
-                    //Error
+                    viewModel.defaultLanguage = data.data.defaultLanguage;
                 }
             },
             function () {
@@ -120,14 +119,17 @@
         viewModel.mode = config.mode;
 
         //Wire up contentTypes subModel
-        viewModel.contentTypes = new dcc.contentTypesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.contentTypes = new dcc.contentTypesViewModel(viewModel, config);
         viewModel.contentTypes.init();
 
         //Wire up dataTypes subModel
-        viewModel.dataTypes = new dcc.dataTypesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.dataTypes = new dcc.dataTypesViewModel(viewModel, config);
         viewModel.dataTypes.init();
 
-        viewModel.templates = new dcc.templatesViewModel(config, viewModel);
+        // ReSharper disable once InconsistentNaming
+        viewModel.templates = new dcc.templatesViewModel(viewModel, config);
         viewModel.templates.init();
 
         viewModel.settings = dcc.settings(ko, resx, settings);
@@ -157,7 +159,7 @@
                     break;
                 case "editField":
                 case "editType":
-                    heading = resx.contentType + " - " + viewModel.contentTypes.selectedContentType.name()
+                    heading = resx.contentType + " - " + viewModel.contentTypes.selectedContentType.name();
                     break;
                 case "dataTypes":
                     heading = resx.dataTypes;
@@ -166,7 +168,7 @@
                     heading = resx.templates;
                     break;
                 case "editTemplate":
-                    heading = resx.template + " - " + viewModel.templates.selectedTemplate.name()
+                    heading = resx.template + " - " + viewModel.templates.selectedTemplate.name();
                     break;
             }
             return heading;
@@ -194,7 +196,6 @@
             return util.getLocalizationStatus(viewModel.defaultLanguage, localizedValues, "dccError", "dccError", "dccWarning");
         };
 
-
         ko.applyBindings(viewModel, $rootElement[0]);
 
         viewModel.contentTypes.pageIndex(0);
@@ -203,7 +204,6 @@
         $rootElement.find("#contentTypes-menu").addClass("selected");
 
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
-
     }
 
     return {

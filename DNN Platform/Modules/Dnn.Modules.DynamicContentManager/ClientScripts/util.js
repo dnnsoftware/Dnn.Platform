@@ -4,8 +4,6 @@ if (typeof dcc === 'undefined' || dcc === null) {
 
 dcc.utility = function(settings, resx){
 
-    var resx = resx;
-
     var alertConfirm = function(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler) {
         $('#confirmation-dialog > div.dnnDialog').html(text);
         $('#confirmation-dialog a#confirmbtn').html(confirmBtnText).unbind('click').bind('click', function() {
@@ -39,7 +37,7 @@ dcc.utility = function(settings, resx){
 
     var alert = function(text, closeBtnText, closeBtnHandler) {
         $('#confirmation-dialog > div.dnnDialogHeader').html(resx.alert);
-        alertConfirm(text, closeBtnText, "", closeBtnHandler, null)
+        alertConfirm(text, closeBtnText, "", closeBtnHandler, null);
     };
 
     var asyncParallel = function(deferreds, callback) {
@@ -59,7 +57,7 @@ dcc.utility = function(settings, resx){
 
     var confirm = function(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler) {
         $('#confirmation-dialog > div.dnnDialogHeader').html(resx.confirm);
-        alertConfirm(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler)
+        alertConfirm(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler);
     };
 
     var initializeLocalizedValues = function(localizedValues, languages){
@@ -70,7 +68,7 @@ dcc.utility = function(settings, resx){
             localizedValues.push(localizedValue);
         }
     }
-
+    
     var getEntity = function (values, predicate) {
         var value = null;
         for (var i = 0; i < values.length; i++) {
@@ -81,19 +79,8 @@ dcc.utility = function(settings, resx){
         }
         return value;
     }
-
-    var getLocalizedValue = function (selectedLanguage, localizedValues) {
-        var value = "";
-        for (var i = 0; i < localizedValues.length; i++) {
-            if (selectedLanguage == localizedValues[i].code()) {
-                value = localizedValues[i].value();
-                break;
-            }
-        }
-        return value;
-    }
-
-    var hasDefaultValue = function(defaultLanguage, localizedValues) {
+    
+    var hasDefaultValue = function (defaultLanguage, localizedValues) {
         var value = true;
         for (var i = 0; i < localizedValues.length; i++) {
             var localizedValue = localizedValues[i];
@@ -105,12 +92,34 @@ dcc.utility = function(settings, resx){
         return value;
     }
 
-    var isTranslated = function(defaultLanguage, localizedValues) {
+    var isTranslated = function (defaultLanguage, localizedValues) {
         var value = true;
         for (var i = 0; i < localizedValues.length; i++) {
             var localizedValue = localizedValues[i];
             if (defaultLanguage !== localizedValue.code() && localizedValue.value() === "") {
                 value = false;
+                break;
+            }
+        }
+        return value;
+    }
+
+    var getLocalizationStatus = function (selectedLanguage, localizedValues, defaultMissingText, defaultLocalizedMissingText, translationMissingText) {
+        var status = "";
+        if(!hasDefaultValue(selectedLanguage, localizedValues)) {
+            status = (localizedValues.length = 1) ? defaultMissingText : defaultLocalizedMissingText;
+        }
+        else if (!isTranslated(selectedLanguage, localizedValues)) {
+            status = translationMissingText;
+        }
+        return status;
+    };
+
+    var getLocalizedValue = function(selectedLanguage, localizedValues) {
+        var value = "";
+        for (var i = 0; i < localizedValues.length; i++) {
+            if (selectedLanguage === localizedValues[i].code()) {
+                value = localizedValues[i].value();
                 break;
             }
         }
@@ -128,7 +137,7 @@ dcc.utility = function(settings, resx){
 
     var setlocalizedValue = function(selectedLanguage, localizedValues, value){
         for (var i = 0; i < localizedValues.length; i++) {
-            if (selectedLanguage == localizedValues[i].code()) {
+            if (selectedLanguage === localizedValues[i].code()) {
                 localizedValues[i].value(value);
             }
         }
@@ -142,7 +151,10 @@ dcc.utility = function(settings, resx){
         asyncParallel: asyncParallel,
         confirm: confirm,
         getEntity: getEntity,
+        getLocalizationStatus: getLocalizationStatus,
         getLocalizedValue: getLocalizedValue,
+        hasDefaultValue: hasDefaultValue,
+        isTranslated: isTranslated,
         initializeLocalizedValues: initializeLocalizedValues,
         loadLocalizedValues: loadLocalizedValues,
         setlocalizedValue: setlocalizedValue,
@@ -157,12 +169,36 @@ dcc.sf = function(){
     var serviceFramework;
     var baseServicepath;
 
-    var call = function(httpMethod, url, params, success, failure, loading, sync, silence){
+    var loadingBar = function (loadingBarId) {
+        if (isLoaded) return;
+        var loadingbar = $(loadingBarId);
+        var progressbar = $(loadingBarId + ' > div');
+        var width = loadingbar.width();
+        loadingbar.show();
+        progressbar.css({ width: 0 }).animate({ width: 0.75 * width }, 300, 'linear', function () {
+            var checkloaded = function () {
+                if (isLoaded) {
+                    isLoaded = false;
+                    clearTimeout(checkloaded);
+                    checkloaded = null;
+                    progressbar.animate({ width: width }, 100, 'linear', function () {
+                        loadingbar.hide();
+                    });
+                }
+                else {
+                    setTimeout(checkloaded, 20);
+                }
+            };
+            checkloaded();
+        });
+    };
+
+    var call = function (httpMethod, url, params, success, failure, loading, sync, silence) {
         var options = {
             url: url,
             beforeSend: serviceFramework.setModuleHeaders,
             type: httpMethod,
-            async: sync == false,
+            async: sync === false,
             success: function(data){
                 if(loadingBarId && !silence) isLoaded = true;
                 if(typeof loading === 'function'){
@@ -190,7 +226,7 @@ dcc.sf = function(){
             }
         };
 
-        if (httpMethod == 'GET') {
+        if (httpMethod === 'GET') {
             options.data = params;
         }
         else {
@@ -279,44 +315,10 @@ dcc.sf = function(){
         baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager');
     };
 
-    var loadingBar = function(loadingBarId){
-        if(isLoaded) return;
-        var loadingbar = $(loadingBarId);
-        var progressbar = $(loadingBarId + ' > div');
-        var width = loadingbar.width();
-        loadingbar.show();
-        progressbar.css({ width: 0 }).animate({ width: 0.75 * width }, 300, 'linear', function(){
-            var checkloaded = function(){
-                if(isLoaded){
-                    isLoaded = false;
-                    clearTimeout(checkloaded);
-                    checkloaded = null;
-                    progressbar.animate({ width: width }, 100, 'linear', function(){
-                        loadingbar.hide();
-                    });
-                }
-                else{
-                    setTimeout(checkloaded, 20);
-                }
-            };
-            checkloaded();
-        });
-    };
-
     var post = function (method, params, success, failure, loading) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
         return call('POST', url, params, success, failure, loading, false, false);
-    };
-
-    var setHeaders = function(xhr){
-        if(tabId){
-            xhr.setRequestHeader('TabId', tabId);
-        }
-
-        if(antiForgeryToken){
-            xhr.setRequestHeader('RequestVerificationToken', antiForgeryToken);
-        }
     };
 
     return {

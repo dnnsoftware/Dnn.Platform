@@ -107,6 +107,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[Label] [nvarchar](100) NOT NULL,
 			[Description] [nvarchar](2000) NULL,
 			[DataTypeID] [int] NOT NULL,
+			[Order] [int] NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_FieldDefinitions] PRIMARY KEY CLUSTERED ([FieldDefinitionID] ASC)
 		)
 
