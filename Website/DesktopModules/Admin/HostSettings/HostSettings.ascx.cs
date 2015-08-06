@@ -610,6 +610,7 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+            chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
 
             var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
 

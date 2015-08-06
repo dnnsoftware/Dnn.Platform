@@ -325,7 +325,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "the,over",
                 });
 
-            _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>())).Returns<string, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
             _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
@@ -657,7 +657,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
         {
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard };
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
             return _searchController.SiteSearch(query);
         }
 
