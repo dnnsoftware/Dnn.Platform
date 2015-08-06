@@ -93,6 +93,30 @@ dcc.utility = function(settings, resx){
         return value;
     }
 
+    var hasDefaultValue = function(defaultLanguage, localizedValues) {
+        var value = true;
+        for (var i = 0; i < localizedValues.length; i++) {
+            var localizedValue = localizedValues[i];
+            if (defaultLanguage === localizedValue.code() && localizedValue.value() === "") {
+                value = false;
+                break;
+            }
+        }
+        return value;
+    }
+
+    var isTranslated = function(defaultLanguage, localizedValues) {
+        var value = true;
+        for (var i = 0; i < localizedValues.length; i++) {
+            var localizedValue = localizedValues[i];
+            if (defaultLanguage !== localizedValue.code() && localizedValue.value() === "") {
+                value = false;
+                break;
+            }
+        }
+        return value;
+    }
+
     var loadLocalizedValues = function(localizedValues, data) {
         localizedValues.removeAll();
         for(var i = 0; i < data.length; i++) {

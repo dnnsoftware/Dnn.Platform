@@ -250,6 +250,10 @@ dcc.templateViewModel = function(parentViewModel, config){
         }
     };
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
+    };
+
     self.bindCodeEditor = function() {
         codeEditor.setValue(self.content());
     };

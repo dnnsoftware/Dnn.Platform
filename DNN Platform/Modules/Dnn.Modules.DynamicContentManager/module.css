@@ -211,17 +211,17 @@ input[type="password"] {
 }
 .dccContainer div.dccEditRow {
   float: left;
+  position: relative;
   width: 100%;
 }
 .dccContainer div.dccEditRow > div {
   float: left;
+}
+.dccContainer div.dccEditRow > div.dccExtraMargin {
   margin-right: 25px;
 }
 .dccContainer .dccTable div.dccEditRow > div {
-  width: 33%;
-  float: left;
-  margin: 0 0 9px 0;
-  position: relative;
+  margin-right: 25px;
 }
 .dccContainer div.dccEditRow > div > label {
   display: block;
@@ -229,7 +229,7 @@ input[type="password"] {
 }
 .dccContainer div.dccEditRow > div > textarea {
   height: 35px;
-  width: 862px;
+  width: 842px;
 }
 .dccContainer div.dccEditRow > div > input,
 .dccContainer div.dccEditRow > div > textarea,
@@ -243,14 +243,29 @@ input[type="password"] {
   width: 500px;
 }
 .dccContainer div.dccEditRow > div > textarea.dccCode {
-  width: 750px;
+  width: 862px;
   height: 350px;
+}
+.dccContainer .dccEditRow i {
+  float: right;
+}
+.dccContainer i.fa-exclamation {
+  font-size: 18px;
+  margin-left: 5px;
+  color: transparent;
+  display: block;
+}
+.dccContainer .dccError i.fa-exclamation {
+  color: #dd0000;
+}
+.dccContainer .dccWarning i.fa-exclamation {
+  color: darkorange;
 }
 .dccContainer div.dccEditRow > div.toggle {
   float: right;
   padding-right: 0px;
   padding-top: 25px;
-  margin-right: 0px;
+  margin-right: 20px;
 }
 .dccContainer .dccTable div.dccEditRow > div.toggle {
   padding-top: 25px;

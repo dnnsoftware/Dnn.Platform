@@ -166,6 +166,10 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         });
     };
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
+    };
+
     self.cancel = function(data, e) {
         collapseDetailRow();
     },

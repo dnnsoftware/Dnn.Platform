@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -276,6 +276,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.In
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345} = {A86EBC44-2BC8-4C4A-997B-2708E4AAC345}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
