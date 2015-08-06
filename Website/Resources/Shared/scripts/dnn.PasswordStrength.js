@@ -40,6 +40,10 @@
 
             //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
             this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth());
+	        var handler = this;
+	        setInterval(function () {
+				handler._$meter.width(handler.$element.outerWidth());
+	        }, 50);
             this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="" /></div>').appendTo(this._$meter);
             this._$meterText = $("<label/>").prependTo(this._$meterValue);
 
