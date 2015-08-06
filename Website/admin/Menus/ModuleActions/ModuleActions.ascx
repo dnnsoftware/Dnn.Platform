@@ -11,79 +11,35 @@
 
             //Initialise the actions menu plugin
             $('#<%= actionButton.ClientID %>').dnnModuleActions({
-                actionButton: "<% =actionButton.UniqueID %>",
-                moduleId: moduleId,
-                tabId: tabId,
-                customActions: <% = CustomActionsJSON %>,
-                adminActions: <% = AdminActionsJSON %>,
-                panes: <% = Panes %>,
-                customText: "<% = CustomText %>",
-                adminText: "<% = AdminText %>",
-                moveText: "<% = MoveText %>",
-                topText: '<% = Localization.GetSafeJSString(LocalizeString("MoveTop.Action"))%>',
-                upText: '<% = Localization.GetSafeJSString(LocalizeString("MoveUp.Action"))%>',
-                downText: '<% = Localization.GetSafeJSString(LocalizeString("MoveDown.Action"))%>',
-                bottomText: '<% = Localization.GetSafeJSString(LocalizeString("MoveBottom.Action"))%>',
-                movePaneText: '<% = Localization.GetSafeJSString(LocalizeString("MoveToPane.Action"))%>',
-                deleteText: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-                rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
-                supportsMove: <% = SupportsMove.ToString().ToLower() %>,
-                supportsQuickActions:supportsQuickActions,
-                IsShared : <% = IsShared.ToString().ToLower() %>
-            });
-
-            $('#moduleActions-' + moduleId + ' .dnn_mact > li.actionMenuMove > ul').jScrollPane();
-            
-            $('#moduleActions-' + moduleId + ' .dnn_mact li').hoverIntent({
-                over: function() {
-                    // detect position
-                    var windowHeight = $(window).height();
-                    var windowScroll  = $(window).scrollTop();
-                    var thisTop = $(this).offset().top;
-                    var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
-
-                    var ul = $(this).find('ul');
-                    var ulHeight = ul.height();
-                    
-                    if(!atViewPortTop) {
-                        ul.css({top: -ulHeight, right: 0}).show('slide', { direction: 'down'},  80, function () {
-                            if($(this).parent().hasClass('actionMenuMove')) {
-                                $(this).jScrollPane();    
-                            }
-                            dnn.addIframeMask(ul[0]);
-                        });
-                    }
-                    else {
-                        ul.css({top: 20, right: 0}).show('slide', { direction: 'up'},  80, function () {
-                            if($(this).parent().hasClass('actionMenuMove')) {
-                                $(this).jScrollPane();    
-                            }
-                            dnn.addIframeMask(ul[0]);
-                        });
-                    }
-                 
+                    actionButton: "<% =actionButton.UniqueID %>",
+                    moduleId: moduleId,
+                    tabId: tabId,
+                    customActions: <% = CustomActionsJSON %>,
+                    adminActions: <% = AdminActionsJSON %>,
+                    panes: <% = Panes %>,
+                    customText: "<% = CustomText %>",
+                    adminText: "<% = AdminText %>",
+                    moveText: "<% = MoveText %>",
+                    topText: '<% = Localization.GetSafeJSString(LocalizeString("MoveTop.Action"))%>',
+                    upText: '<% = Localization.GetSafeJSString(LocalizeString("MoveUp.Action"))%>',
+                    downText: '<% = Localization.GetSafeJSString(LocalizeString("MoveDown.Action"))%>',
+                    bottomText: '<% = Localization.GetSafeJSString(LocalizeString("MoveBottom.Action"))%>',
+                    movePaneText: '<% = Localization.GetSafeJSString(LocalizeString("MoveToPane.Action"))%>',
+                    deleteText: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
+                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+                    confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                    rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
+                    supportsMove: <% = SupportsMove.ToString().ToLower() %>,
+                    supportsQuickActions:supportsQuickActions,
+                    isShared : <% = IsShared.ToString().ToLower() %>
                 },
-                out: function() {
-                    var ul = $(this).find('ul');
-                    
-                    if(ul && ul.position()) {
-                        if (ul.position().top > 0) {
-                            ul.hide('slide', { direction: 'up' }, 80, function() {
-                                dnn.removeIframeMask(ul[0]);
-                            });
-                        } else {
-                            ul.hide('slide', { direction: 'down' }, 80, function() {
-                                dnn.removeIframeMask(ul[0]);
-                            });
-                        }
-                    }
-                },
-                timeout: 400,
-                interval: 200
-            });
+                {
+                    cancel: '<%=Localization.GetSafeJSString("Cancel", Localization.SharedResourceFile) %>',
+                    quickSettings: '<%=Localization.GetSafeJSString("QuickSettings", Localization.SharedResourceFile) %>',
+                    save: '<%=Localization.GetSafeJSString("Save", Localization.SharedResourceFile) %>'
+                }
+            );
         }
 
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
@@ -133,5 +89,6 @@
             });
             $(window).resize();
         });        
+
     } (jQuery));
 </script>

@@ -1,6 +1,6 @@
 ﻿
 (function ($) {
-    $.fn.dnnModuleActions = function (options) {
+    $.fn.dnnModuleActions = function (options, resx) {
         var opts = $.extend({}, $.fn.dnnModuleActions.defaultOptions, options);
         var $self = this;
         var actionButton = opts.actionButton;
@@ -13,8 +13,22 @@
         var panes = opts.panes;
         var supportsMove = opts.supportsMove;
         var count = adminCount + customCount;
-        var isShared = opts.IsShared;
+        var isShared = opts.isShared;
         var supportsQuickActions = opts.supportsQuickActions;
+
+        function closeMenu(ul) {
+            if (ul && ul.position()) {
+                if (ul.position().top > 0) {
+                    ul.hide('slide', { direction: 'up' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                } else {
+                    ul.hide('slide', { direction: 'down' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                }
+            }
+        }
 
         function completeMove(targetPane, moduleOrder) {
             //remove empty pane class
@@ -264,9 +278,17 @@
         function buildQuickSettings(root, rootText, rootClass, rootIcon) {
             var $parent = buildMenuRoot(root, rootText, rootClass, rootIcon);
 
-            var htmlString = "<li id=\"moduleActions-" + moduleId + "-QuickSettings\"><div></div>";
-
+            var htmlString = "<li id=\"moduleActions-" + moduleId + "-QuickSettings\">"
+                              + "<div><div class='qsHeader'>" + resx.quickSettings + "</div><div class='qsContainer'>"
+                              + "</div><div class='qsFooter'><a class='secondarybtn'>" + resx.cancel + "</a>"
+                              + "<a class='primarybtn'>" + resx.save + "</a></div></div>";
             $parent.append(htmlString);
+
+            var $secondarybtn = $parent.find("a.secondarybtn");
+
+            $secondarybtn.click(function() {
+                closeMenu($parent);
+            });
         }
 
         function position(mId) {
@@ -329,6 +351,58 @@
                 watchResize(moduleId);
             }
         }
+
+        $('#moduleActions-' + moduleId + ' .dnn_mact > li.actionMenuMove > ul').jScrollPane();
+
+        $('#moduleActions-' + moduleId + ' .dnn_mact li').hoverIntent({
+            over: function () {
+                // detect position
+                var $self = $(this);
+                var windowHeight = $(window).height();
+                var windowScroll = $(window).scrollTop();
+                var thisTop = $self.offset().top;
+                var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+
+                var ul = $self.find('ul');
+                var ulHeight = ul.height();
+
+                if ($self.hasClass('actionQuickSettings')) {
+                    var container = $(".DnnModule-" + moduleId);
+                    var containerWidth = container.width();
+                    ul.css({ width: containerWidth });
+                }
+
+                if (!atViewPortTop) {
+                    ul.css({
+                        top: -ulHeight,
+                        right: 0
+                    }).show('slide', { direction: 'down' }, 80, function () {
+                        if ($(this).parent().hasClass('actionMenuMove')) {
+                            $(this).jScrollPane();
+                        }
+                        dnn.addIframeMask(ul[0]);
+                    });
+                }
+                else {
+                    ul.css({
+                        top: 20,
+                        right: 0
+                    }).show('slide', { direction: 'up' }, 80, function () {
+                        if ($(this).parent().hasClass('actionMenuMove')) {
+                            $(this).jScrollPane();
+                        }
+                        dnn.addIframeMask(ul[0]);
+                    });
+                }
+
+            },
+            out: function () {
+                var ul = $(this).find('ul');
+                closeMenu(ul);
+            },
+            timeout: 400,
+            interval: 200
+        });
 
         return $self;
     };

@@ -6,8 +6,12 @@
 
 @menu_backgroundColor: #fff;
 @menu_border_color: #ccc;
-@menu_color: #999;
 @menu_hover_backgroundColor:#e8f1fa;
+
+@primarybtn_backgroundColor: #0087c6;
+@primarybtn_color: #fff;
+@secondarybtn_backgroundColor: #e4e4e4;
+@secondarybtn_color: #333333;
 
 @menu_width: 220px;
 @root_width: 20px;
@@ -99,7 +103,6 @@ div.actionMenu ul.dnn_mact > li > ul { /* styles specific to secondary level */
 
 div.actionMenu ul.dnn_mact > li > ul > li {
     display: block;
-    color :@menu_color;
     padding:0; 
     margin: 0;
     border-top: 1px solid @menu_border_color;
@@ -112,16 +115,17 @@ div.actionMenu ul.dnn_mact > li > ul li:hover {
     background-color: @menu_hover_backgroundColor;
 }
 
+div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul li:hover {
+    background-color: @menu_backgroundColor;
+}
+
 div.actionMenu ul.dnn_mact > li ul a {
 	display:block;
-	width: @menu_width - 4;
 	padding:5px 12px;
 	color:#666;
 	text-decoration:none;
 	overflow:hidden; 
-    overflow:ellipsis;
     font-size:11px;
-
 }
 
 div.actionMenu ul.dnn_mact > li ul a > * {
@@ -149,6 +153,68 @@ div.actionMenu ul.dnn_mact > li.actionMenuMove > ul li {
     font-family: Arial;
     line-height: 18px;
     text-shadow: none;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul {
+    min-height: 250px;
+    overflow: auto;
+    cursor:default;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsHeader{
+    margin-top: 9px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid @menu_border_color;
+    font-size: 20px;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsContainer{
+    margin-left: 10px;
+    margin-right: 10px;
+    min-height: 150px;
+    border-bottom: 1px solid @menu_border_color;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter{
+    margin-top: 6px;
+    padding-bottom: 6px;
+    clear: both;
+    width: 100%;
+    padding-top: 10px;
+    text-align: center;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.primarybtn{
+    background: @primarybtn_backgroundColor;
+    color: @primarybtn_color !important;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    min-width: 75px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.secondarybtn{
+    background: @secondarybtn_backgroundColor;
+    color: @secondarybtn_color !important;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    min-width: 75px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
 }
 
 div.actionMenu ul.dnn_mact li.dnn_shared {
