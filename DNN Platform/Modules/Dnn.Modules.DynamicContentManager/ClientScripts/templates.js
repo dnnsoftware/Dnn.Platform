@@ -248,6 +248,10 @@ dcc.templateViewModel = function(parentViewModel, config){
         );
     };
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
+    };
+
     self.bindCodeEditor = function() {
         codeEditor.setValue(self.content());
     };
@@ -324,25 +328,31 @@ dcc.templateViewModel = function(parentViewModel, config){
    };
 
     self.saveTemplate = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            templateId: jsObject.templateId,
-            localizedNames: jsObject.localizedNames,
-            contentTypeId: jsObject.contentTypeId,
-            isSystem: jsObject.isSystem,
-            filePath: jsObject.filePath,
-            content: codeEditor.getValue()
-        };
+        if(!validate()) {
+            util.alert(resx.invalidTemplateMessage, resx.ok);
 
-        util.templateService().post("SaveTemplate", params,
-            function(data) {
-                //Success
-                self.cancel();
-            },
-            function(data) {
-                //Failure
-            }
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                templateId: jsObject.templateId,
+                localizedNames: jsObject.localizedNames,
+                contentTypeId: jsObject.contentTypeId,
+                isSystem: jsObject.isSystem,
+                filePath: jsObject.filePath,
+                content: codeEditor.getValue()
+            };
+
+            util.templateService().post("SaveTemplate", params,
+            function (data) {
+                    //Success
+                    self.cancel();
+                },
+            function (data) {
+                    //Failure
+                }
         );
+        }
     };
 
     self.toggleSelected = function() {

@@ -71,11 +71,46 @@ dcc.utility = function(settings, resx){
         }
     }
 
+    var getLocalizationStatus = function(selectedLanguage, localizedValues, defaultMissingText, defaultLocalizedMissingText, translationMissingText) {
+        var status = "";
+        if(!hasDefaultValue(selectedLanguage, localizedValues)) {
+            status = (localizedValues.length = 1) ? defaultMissingText : defaultLocalizedMissingText;
+        }
+        else if (!isTranslated(selectedLanguage, localizedValues)) {
+            status = translationMissingText;
+        }
+        return status;
+    };
+
     var getLocalizedValue = function(selectedLanguage, localizedValues) {
         var value = "";
         for (var i = 0; i < localizedValues.length; i++) {
             if (selectedLanguage == localizedValues[i].code()) {
                 value = localizedValues[i].value();
+                break;
+            }
+        }
+        return value;
+    }
+
+    var hasDefaultValue = function(defaultLanguage, localizedValues) {
+        var value = true;
+        for (var i = 0; i < localizedValues.length; i++) {
+            var localizedValue = localizedValues[i];
+            if (defaultLanguage === localizedValue.code() && localizedValue.value() === "") {
+                value = false;
+                break;
+            }
+        }
+        return value;
+    }
+
+    var isTranslated = function(defaultLanguage, localizedValues) {
+        var value = true;
+        for (var i = 0; i < localizedValues.length; i++) {
+            var localizedValue = localizedValues[i];
+            if (defaultLanguage !== localizedValue.code() && localizedValue.value() === "") {
+                value = false;
                 break;
             }
         }
@@ -106,7 +141,10 @@ dcc.utility = function(settings, resx){
         alert: alert,
         asyncParallel: asyncParallel,
         confirm: confirm,
+        getLocalizationStatus: getLocalizationStatus,
         getLocalizedValue: getLocalizedValue,
+        hasDefaultValue: hasDefaultValue,
+        isTranslated: isTranslated,
         initializeLocalizedValues: initializeLocalizedValues,
         loadLocalizedValues: loadLocalizedValues,
         setlocalizedValue: setlocalizedValue,

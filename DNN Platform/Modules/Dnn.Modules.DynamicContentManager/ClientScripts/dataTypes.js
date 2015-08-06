@@ -166,6 +166,10 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         });
     };
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
+    };
+
     self.cancel = function(data, e) {
         collapseDetailRow();
     },
@@ -212,25 +216,30 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     };
 
     self.saveDataType = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            dataTypeId: jsObject.dataTypeId,
-            baseType: jsObject.baseType,
-            localizedNames: jsObject.localizedNames,
-            isSystem: jsObject.isSystem
-        };
+        if(!validate()) {
+            util.alert(resx.invalidDataTypeMessage, resx.ok);
 
-        util.dataTypeService().post("SaveDataType", params,
-            function(data){
-                //Success
-                collapseDetailRow(parentViewModel.refresh);
-            },
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                dataTypeId: jsObject.dataTypeId,
+                baseType: jsObject.baseType,
+                localizedNames: jsObject.localizedNames,
+                isSystem: jsObject.isSystem
+            };
 
-            function(data){
-                //Failure
-            }
-        )
+            util.dataTypeService().post("SaveDataType", params,
+                function(data){
+                    //Success
+                    collapseDetailRow(parentViewModel.refresh);
+                },
 
+                function(data){
+                    //Failure
+                }
+            )
+        }
     };
 }
 
