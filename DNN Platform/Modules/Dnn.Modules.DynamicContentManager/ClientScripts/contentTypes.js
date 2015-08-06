@@ -237,13 +237,14 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 else {
                     //Error
                     util.alert(data.message, resx.ok);
-                }
-            },
+                    }
+                },
 
-            function(data){
-                //Failure
-            }
-        )
+                function(data){
+                    //Failure
+                }
+            )
+        }
     };
 
     self.toggleSelected = function() {
@@ -395,6 +396,12 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         }
     });
 
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedLabels()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedDescriptions());
+    };
+
     self.cancel = function(){
         self.mode("editType");
         parentViewModel.refresh();
@@ -448,18 +455,22 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     }
 
     self.saveContentField = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            contentFieldId: jsObject.contentFieldId,
-            contentTypeId: jsObject.contentTypeId,
-            localizedDescriptions: jsObject.localizedDescriptions,
-            localizedNames: jsObject.localizedNames,
-            localizedLabels: jsObject.localizedLabels,
-            dataTypeId: jsObject.dataTypeId
-        };
+        if(!validate()) {
+            util.alert(resx.invalidContentFieldMessage, resx.ok);
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                contentFieldId: jsObject.contentFieldId,
+                contentTypeId: jsObject.contentTypeId,
+                localizedDescriptions: jsObject.localizedDescriptions,
+                localizedNames: jsObject.localizedNames,
+                localizedLabels: jsObject.localizedLabels,
+                dataTypeId: jsObject.dataTypeId
+            };
 
-        util.contentTypeService().post("SaveContentField", params,
-            function (data) {
+            util.contentTypeService().post("SaveContentField", params,
+                function (data) {
                 if (data.success === true) {
                     //Success
                     self.cancel();
@@ -468,12 +479,13 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                     //Error
                     util.alert(data.message, resx.ok);
                 }
-            },
+                },
 
-            function (data) {
-                //Failure
-            }
-        )
+                function (data) {
+                    //Failure
+                }
+            )
+        }
     };
 
     self.toggleSelected = function() {

@@ -8,6 +8,8 @@
 @grid_alt_background_color: #eee;
 @grid_hover_background_color: #d9ecfa;
 @grid_hover_dropdown_background_color: #0087c6;
+@fa_error_color: #d00;
+@fa_warning_color: #ff8c00;
 @contextMenu_hover_background_color: #d9ecfa;
 
 @primaryBtn_background_color: #0087c6;
@@ -280,19 +282,20 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditRow {
     float: left;
+    position: relative;
     width: 100%;
 }
 
 .dccContainer div.dccEditRow > div {
     float: left;
+}
+
+.dccContainer div.dccEditRow > div.dccExtraMargin {
     margin-right: 25px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div {
-    width: 33%;
-    float: left;
-    margin: 0 0 9px 0;
-    position: relative;
+    margin-right: 25px;
 }
 
 .dccContainer div.dccEditRow > div > label{
@@ -302,7 +305,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditRow > div > textarea{
     height: 35px;
-    width: @panel_innerWidth;
+    width: @panel_innerWidth - 20;
 }
 
 .dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
@@ -318,14 +321,34 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 .dccContainer div.dccEditRow > div > textarea.dccCode{
-    width:750px;
+    width:@panel_innerWidth;
     height:350px
 }
+
+.dccContainer .dccEditRow i {
+    float: right;
+}
+
+.dccContainer i.fa-exclamation {
+    font-size: 18px;
+    margin-left: 5px;
+    color: transparent;
+    display: block;
+}
+
+.dccContainer .dccError i.fa-exclamation {
+    color: @fa_error_color;
+}
+
+.dccContainer .dccWarning i.fa-exclamation {
+    color: @fa_warning_color;
+}
+
 .dccContainer div.dccEditRow > div.toggle {
     float: right;
     padding-right: 0px;
     padding-top: 25px;
-    margin-right: 0px;
+    margin-right: 20px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div.toggle {
@@ -560,7 +583,6 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     padding: 2px 5px 5px 5px;
     font-size:15px;
 }
-
 .dccContainer ul#templateEditorContextMenu {
     float: left;
     position: relative;
