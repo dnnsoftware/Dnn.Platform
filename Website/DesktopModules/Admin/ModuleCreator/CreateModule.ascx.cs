@@ -53,7 +53,7 @@ namespace DesktopModules.Admin.ModuleCreator
 
         private void LoadReadMe()
         {
-            var readMePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value + "\\readme.txt";
+            var readMePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value + "\\readme.txt";
             if (File.Exists(readMePath))
             {
                 var readMe = Null.NullString;
@@ -71,7 +71,7 @@ namespace DesktopModules.Admin.ModuleCreator
         private void LoadLanguages()
         {
             optLanguage.Items.Clear();
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates";
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates";
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -83,7 +83,7 @@ namespace DesktopModules.Admin.ModuleCreator
         private void LoadModuleTemplates()
         {
             cboTemplate.Items.Clear();
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue;
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue;
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -116,7 +116,7 @@ namespace DesktopModules.Admin.ModuleCreator
 
         private string CreateModuleControl()
         {
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
             EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
@@ -273,7 +273,6 @@ namespace DesktopModules.Admin.ModuleCreator
                         PackageController.Instance.SaveExtensionPackage(objPackage);
 
                         //Create desktopmodule
-                        var objDesktopModules = new DesktopModuleController();
                         var objDesktopModule = new DesktopModuleInfo();
                         objDesktopModule.DesktopModuleID = Null.NullInteger;
                         objDesktopModule.ModuleName = GetClassName();
@@ -288,8 +287,8 @@ namespace DesktopModules.Admin.ModuleCreator
                         objDesktopModule.Dependencies = "";
                         objDesktopModule.Permissions = "";
                         objDesktopModule.PackageID = objPackage.PackageID;
-                        objDesktopModule.DesktopModuleID = objDesktopModules.AddDesktopModule(objDesktopModule);
-                        objDesktopModule = objDesktopModules.GetDesktopModule(objDesktopModule.DesktopModuleID);
+						objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
+						objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
 
                         //Add OwnerName to the DesktopModule taxonomy and associate it with this module
                         var vocabularyId = -1;

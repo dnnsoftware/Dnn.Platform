@@ -37,6 +37,9 @@ input[type="password"] {
   border: solid 1px #aaaaaa;
   border-radius: 4px;
 }
+.dccContainer .dccMenu {
+  position: relative;
+}
 .dccContainer .dccMenu ul {
   display: inline-block;
   margin-left: 0px;
@@ -452,14 +455,11 @@ input[type="password"] {
   border: solid 1px #aaaaaa;
   margin-top: 20px;
 }
-.dccContainer .dccExtraMargin {
-  margin-top: 25px;
-}
 .dccContainer div.dccLanguageSelector {
-  float: right;
+  position: absolute;
+  top: 6px;
+  left: 635px;
   display: inline-block;
-  padding-top: 15px;
-  padding-right: 25px;
 }
 .dccContainer div.dccLanguageSelector span {
   font-size: 16px;
@@ -468,4 +468,47 @@ input[type="password"] {
   margin-bottom: 0px;
   padding: 2px 5px 5px 5px;
   font-size: 15px;
+}
+.dccContainer ul#templateEditorContextMenu {
+  float: left;
+  position: relative;
+  z-index: 5;
+  list-style: none;
+  border: solid 1px #aaaaaa;
+  box-shadow: 5px 5px 5px #aaaaaa;
+  border-radius: 4px;
+  background-color: white;
+}
+.dccContainer ul#templateEditorContextMenu li {
+  position: relative;
+  margin-right: 10px;
+}
+.dccContainer ul#templateEditorContextMenu li:hover {
+  background: #d9ecfa;
+}
+.dccContainer ul#templateEditorContextMenu li div {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 100px;
+}
+.dccContainer ul#templateEditorContextMenu li div span {
+  padding-right: 5px;
+}
+.dccContainer ul#templateEditorContextMenu li div > i {
+  float: right;
+}
+.dccContainer ul#templateEditorContextMenu li ul {
+  list-style: none;
+  position: absolute;
+  left: -9999px;
+  border: solid 1px #aaaaaa;
+  box-shadow: 5px 5px 5px #aaaaaa;
+  border-radius: 4px;
+  background-color: white;
+}
+.dccContainer ul#templateEditorContextMenu li:hover ul {
+  left: 100px;
+  top: 5px;
 }

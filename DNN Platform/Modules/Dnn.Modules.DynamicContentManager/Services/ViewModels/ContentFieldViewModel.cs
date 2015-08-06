@@ -27,6 +27,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
         /// <param name="definition">The field Definition to use</param>
+		/// <param name="portalSettings">Portal Settings.</param>
         public ContentFieldViewModel(FieldDefinition definition, PortalSettings portalSettings)
         {
             ContentFieldId = definition.FieldDefinitionId;

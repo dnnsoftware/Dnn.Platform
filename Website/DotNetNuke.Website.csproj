@@ -57,6 +57,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke.Web.DDRMenu, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\DNN Platform\Modules\DDRMenu\_dependencies\07.02.00\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
@@ -64,6 +68,9 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="PetaPoco">
+      <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
@@ -4171,7 +4178,6 @@
     <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Banner.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\BreadCrumb.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
@@ -4637,10 +4643,6 @@
     <ProjectReference Include="..\DNN Platform\Modules\CoreMessaging\DotNetNuke.Modules.CoreMessaging.csproj">
       <Project>{5deab0d5-0f54-44c9-a167-f48264a04b3d}</Project>
       <Name>DotNetNuke.Modules.CoreMessaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
-      <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
-      <Name>DotNetNuke.Modules.DDRMenu</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

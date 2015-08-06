@@ -589,7 +589,7 @@ namespace DotNetNuke.Entities.Portals
                 // For New Install
                 string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     pageHead = (setting == "false") ? "" : setting;
@@ -623,7 +623,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 string CompatibleHttpHeader = "IE=edge";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     CompatibleHttpHeader = (setting == "false") ? "" : setting;

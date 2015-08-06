@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 if (!string.IsNullOrEmpty(channelName))
                 {
-                    link += "?c=" + HttpUtility.UrlEncodeUnicode(channelName);
+                    link += "?c=" + HttpUtility.UrlEncode(channelName);
                 }
             }
             else

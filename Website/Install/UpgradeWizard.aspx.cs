@@ -23,14 +23,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
 using System.Xml.XPath;
 
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -211,6 +209,10 @@ namespace DotNetNuke.Services.Install
 
             _upgradeRunning = true;
             _upgradeProgress = 0;
+
+            //Output the current time for the user
+            CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+                ":", DateTime.Now.ToString()));
 
             foreach (var step in _steps)
             {

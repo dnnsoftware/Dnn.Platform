@@ -284,6 +284,7 @@ namespace DotNetNuke.Modules.Html
 		/// <param name = "content">The HtmlText Content</param>
 		/// <param name = "settings">A Hashtable of Module Settings</param>
 		/// <param name="portalSettings">The Portal Settings.</param>
+		/// <param name="page">The Page Instance.</param>
 		/// <history>
 		/// </history>
 		/// -----------------------------------------------------------------------------

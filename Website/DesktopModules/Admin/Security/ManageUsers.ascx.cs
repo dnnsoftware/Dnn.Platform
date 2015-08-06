@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.Admin.Security;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -512,7 +513,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
             ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";

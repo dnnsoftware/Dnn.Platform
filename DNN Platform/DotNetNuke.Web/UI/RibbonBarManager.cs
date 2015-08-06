@@ -39,6 +39,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 
 
@@ -209,7 +210,7 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
-        public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateMapPath)
+        public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
         {
             //Validation:
             //Tab name is required
@@ -394,12 +395,13 @@ namespace DotNetNuke.Web.UI
             }
 
             // create the page from a template
-            if ((!string.IsNullOrEmpty(templateMapPath)))
+            if (!string.IsNullOrEmpty(templateFileId))
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 try
                 {
-                    xmlDoc.Load(templateMapPath);
+	                var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
+					xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                     TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                     
                     //save tab permissions

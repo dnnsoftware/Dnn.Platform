@@ -30,6 +30,7 @@ using System.Threading;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Web.Client;
@@ -290,7 +291,7 @@ namespace DotNetNuke.Modules.SearchResults
             base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterDnnJQueryPlugins(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");

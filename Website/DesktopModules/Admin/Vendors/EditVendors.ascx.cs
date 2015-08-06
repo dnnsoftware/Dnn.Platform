@@ -35,6 +35,7 @@ using DotNetNuke.UI.Skins.Controls;
 
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
@@ -93,8 +94,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
         {
             base.OnInit(e);
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
-
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// -----------------------------------------------------------------------------

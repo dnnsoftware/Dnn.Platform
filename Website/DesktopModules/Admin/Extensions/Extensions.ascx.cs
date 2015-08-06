@@ -25,6 +25,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
@@ -57,8 +58,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
             cmdInstall.Visible = ModuleContext.PortalSettings.UserInfo.IsSuperUser;
             createExtensionLink.Visible = ModuleContext.IsHostMenu;
             createModuleLink.Visible = ModuleContext.IsHostMenu;
- 
-            jQuery.RequestDnnPluginsRegistration();
+
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             installedExtensionsControl.LocalResourceFile = LocalResourceFile;
             installedExtensionsControl.ModuleContext.Configuration = ModuleContext.Configuration;
