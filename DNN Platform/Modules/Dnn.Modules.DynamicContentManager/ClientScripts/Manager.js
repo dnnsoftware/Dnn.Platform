@@ -96,6 +96,27 @@
         viewModel.selectedLanguage = ko.observable('');
         viewModel.isLocalized = ko.observable(false);
 
+        util.languageService().get("GetEnabledLanguages", {},
+            function (data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    for (var i = 0; i < data.data.results.length; i++) {
+                        var result = data.data.results[i];
+                        var language = { code: result.code, language: result.language };
+                        viewModel.languages.push(language);
+                    }
+                    viewModel.isLocalized(viewModel.languages().length > 1);
+                    viewModel.selectedLanguage(data.data.defaultLanguage);
+                }
+                else {
+                    //Error
+                }
+            },
+            function () {
+                //Failure
+            }
+        );
+
         viewModel.mode = config.mode;
 
         //Wire up contentTypes subModel
@@ -183,27 +204,6 @@
 
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
 
-        util.languageService().get("GetEnabledLanguages", {},
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var language = { code: result.code, language: result.language };
-                        viewModel.languages.push(language);
-                    }
-                    viewModel.isLocalized(viewModel.languages().length > 1);
-                    viewModel.selectedLanguage(data.data.defaultLanguage);
-                    viewModel.defaultLanguage = data.data.defaultLanguage;
-                }
-                else {
-                    //Error
-                }
-            },
-            function(){
-                //Failure
-            }
-        );
     }
 
     return {

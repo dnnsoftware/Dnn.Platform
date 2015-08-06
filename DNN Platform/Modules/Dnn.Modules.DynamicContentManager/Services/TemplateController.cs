@@ -153,26 +153,32 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedNames = new List<ContentTypeLocalization>();
             string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-            return SaveEntity(templateId, () => new ContentTemplate
-                                                        {
-                                                            ContentTypeId = viewModel.ContentTypeId,
-                                                            Name = defaultName,
-                                                            TemplateFileId = file.FileId,
-                                                            PortalId = portalId
+            return SaveEntity(templateId,
+                /*CheckEntity*/ () => ContentTemplateManager.Instance.GetContentTemplates(portalId, true).SingleOrDefault((t => t.Name == defaultName)),
 
-                                                        },
+                /*ErrorMsg*/    LocalizeString("TemplateExists"),
 
-                                            template => ContentTemplateManager.Instance.AddContentTemplate(template),
+                /*CreateEntity*/() => new ContentTemplate
+                                            {
+                                                ContentTypeId = viewModel.ContentTypeId,
+                                                Name = defaultName,
+                                                TemplateFileId = file.FileId,
+                                                PortalId = portalId
 
-                                            () => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+                                            },
 
-                                            template =>
-                                                        {
-                                                            template.Name = defaultName;
-                                                            ContentTemplateManager.Instance.UpdateContentTemplate(template);
-                                                        },
+                /*AddEntity*/   template => ContentTemplateManager.Instance.AddContentTemplate(template),
 
-                                            (id) => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
+                /*GetEntity*/   () => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+
+                /*UpdateEntity*/template =>
+                                            {
+                                                template.Name = defaultName;
+                                                ContentTemplateManager.Instance.UpdateContentTemplate(template);
+                                            },
+
+                /*SaveLocal*/   id => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
         }
     }
 }
+ 

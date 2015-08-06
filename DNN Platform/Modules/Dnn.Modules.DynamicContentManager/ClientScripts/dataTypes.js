@@ -216,30 +216,31 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     };
 
     self.saveDataType = function(data, e) {
-        if(!validate()) {
-            util.alert(resx.invalidDataTypeMessage, resx.ok);
+        var jsObject = ko.toJS(data);
+        var params = {
+            dataTypeId: jsObject.dataTypeId,
+            baseType: jsObject.baseType,
+            localizedNames: jsObject.localizedNames,
+            isSystem: jsObject.isSystem
+        };
 
-        }
-        else {
-            var jsObject = ko.toJS(data);
-            var params = {
-                dataTypeId: jsObject.dataTypeId,
-                baseType: jsObject.baseType,
-                localizedNames: jsObject.localizedNames,
-                isSystem: jsObject.isSystem
-            };
-
-            util.dataTypeService().post("SaveDataType", params,
-                function(data){
+        util.dataTypeService().post("SaveDataType", params,
+            function(data){
+                if (data.success === true) {
                     //Success
                     collapseDetailRow(parentViewModel.refresh);
-                },
-
-                function(data){
-                    //Failure
                 }
-            )
-        }
+                else {
+                    //Error
+                    util.alert(data.message, resx.ok);
+                }
+            },
+
+            function(data){
+                //Failure
+            }
+        )
+
     };
 }
 
