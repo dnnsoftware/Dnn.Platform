@@ -4158,6 +4158,51 @@
     });
 })(jQuery);
 
+(function ($) {
+	$.fn.dnnSliderInput = function (options) {
+		var sliderOptions = $.extend({}, $.fn.dnnSliderInput.defaults, options);
+    	return $(this).each(function () {
+    		var $this = $(this);
+		    var value = $this.val();
+		    var $slider = $('<div class="dnnSliderInput"></div>');
+		    $this.hide().after($slider);
+
+		    $slider.slider(sliderOptions);
+		    $slider.slider('value', value);
+
+		    var $tooltip = $('<span class="dnnTooltip"> \
+								<span class="dnnFormHelpContent dnnClear"> \
+									<span class="dnnHelpText bottomArrow"></span> \
+                                </span> \
+							</span>');
+
+		    var calcTooltipPosition = function () {
+			    setTimeout(function() {
+				    var left = $slider.find('.ui-slider-handle')[0].style.left;
+				    $tooltip.css('left', left);
+			    }, 0);
+		    };
+
+		    $tooltip.find('.dnnHelpText').html(value);
+		    $tooltip.data('initialized', true);
+			$slider.append($tooltip);
+
+		    calcTooltipPosition();
+		    $slider.on('slide', function(event, ui) {
+		    	$tooltip.find('.dnnHelpText').html(ui.value);
+		    	$this.val(ui.value);
+			    calcTooltipPosition();
+		    });
+	    });
+    };
+
+	$.fn.dnnSliderInput.defaults = {
+		min: 0,
+		max: 100,
+		step: 1
+	}
+})(jQuery);
+
 // please keep this func at last of this file, thanks
 (function ($) {
     /* Start customised controls */

@@ -1223,4 +1223,34 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
     <value>Enable partial-word search (slow):</value>
   </data>
+  <data name="lblAuthorBoost.Help" xml:space="preserve">
+    <value>Set the boost value of author field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+  </data>
+  <data name="lblAuthorBoost.Text" xml:space="preserve">
+    <value>Author Boost:</value>
+  </data>
+  <data name="lblContentBoost.Help" xml:space="preserve">
+    <value>Set the boost value of content field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+  </data>
+  <data name="lblContentBoost.Text" xml:space="preserve">
+    <value>Content Boost:</value>
+  </data>
+  <data name="lblDescriptionBoost.Help" xml:space="preserve">
+    <value>Set the boost value of description field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+  </data>
+  <data name="lblDescriptionBoost.Text" xml:space="preserve">
+    <value>Description Boost:</value>
+  </data>
+  <data name="lblTagBoost.Help" xml:space="preserve">
+    <value>Set the boost value of tag field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+  </data>
+  <data name="lblTagBoost.Text" xml:space="preserve">
+    <value>Tag Boost:</value>
+  </data>
+  <data name="lblTitleBoost.Help" xml:space="preserve">
+    <value>Set the boost value of title field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+  </data>
+  <data name="lblTitleBoost.Text" xml:space="preserve">
+    <value>Title Boost:</value>
+  </data>
 </root>

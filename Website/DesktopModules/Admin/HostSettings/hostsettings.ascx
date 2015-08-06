@@ -504,6 +504,26 @@
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
                 </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTitleBoost" runat="server" ResourceKey="lblTitleBoost" ControlName="txtTitleBoost" />
+                    <asp:TextBox runat="server" ID="txtTitleBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTagBoost" runat="server" ResourceKey="lblTagBoost"  ControlName="txtTagBoost" />
+                    <asp:TextBox runat="server" ID="txtTagBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plContentBoost" runat="server" ResourceKey="lblContentBoost" ControlName="txtContentBoost"  />
+                    <asp:TextBox runat="server" ID="txtContentBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plDescriptionBoost" runat="server" ResourceKey="lblDescriptionBoost" ControlName="txtDescriptionBoost"  />
+                    <asp:TextBox runat="server" ID="txtDescriptionBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plAuthorBoost" runat="server" ResourceKey="lblAuthorBoost" ControlName="txtAuthorBoost"  />
+                    <asp:TextBox runat="server" ID="txtAuthorBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchIndexPath" runat="server" resourcekey="lblSearchIndexPath" />
@@ -765,6 +785,11 @@
                     }
                 }
             }
+
+	        $('.dnnSliderInput').dnnSliderInput({
+	        	max: 50,
+				step: 5
+	        });
         }
 
         $(document).ready(function () {
