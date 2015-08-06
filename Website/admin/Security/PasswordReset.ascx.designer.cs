@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator valPassword;
+		protected global::System.Web.UI.WebControls.RegularExpressionValidator valPassword;
         
         /// <summary>
         /// lblConfirmPassword control.
