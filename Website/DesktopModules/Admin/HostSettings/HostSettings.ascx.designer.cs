@@ -1696,6 +1696,96 @@ namespace DotNetNuke.Modules.Admin.Host {
         protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cbCustomAnalyzer;
         
         /// <summary>
+        /// plTitleBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plTitleBoost;
+        
+        /// <summary>
+        /// txtTitleBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTitleBoost;
+        
+        /// <summary>
+        /// plTagBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plTagBoost;
+        
+        /// <summary>
+        /// txtTagBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTagBoost;
+        
+        /// <summary>
+        /// plContentBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plContentBoost;
+        
+        /// <summary>
+        /// txtContentBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtContentBoost;
+        
+        /// <summary>
+        /// plDescriptionBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plDescriptionBoost;
+        
+        /// <summary>
+        /// txtDescriptionBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDescriptionBoost;
+        
+        /// <summary>
+        /// plAuthorBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plAuthorBoost;
+        
+        /// <summary>
+        /// txtAuthorBoost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAuthorBoost;
+        
+        /// <summary>
         /// plSearchIndexPath control.
         /// </summary>
         /// <remarks>
