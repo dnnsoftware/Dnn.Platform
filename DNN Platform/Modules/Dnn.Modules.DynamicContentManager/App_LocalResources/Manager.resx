@@ -324,6 +324,7 @@
   <data name="DefaultValueMissing.Text" xml:space="preserve">
     <value>This value is required.</value>
   </data>
+  </data>
   <data name="ContentFieldExists.Text" xml:space="preserve">
     <value>A Content Field with that name already exists.  Please try again with a different name.</value>
   </data>

@@ -1,7 +1,131 @@
 	.dnnSendPasswordContent input[type=text]{width:35%;}
-	.dnnSendPasswordContent ul.dnnActions{margin:10px 0 0 0;border:none;padding:0 0 0 145px;}
+	.dnnSendPasswordContent ul.dnnActions{margin:0;border:none;padding:0;}
 	.dnnSendPasswordContent{width:550px;}
     
-    .dnnPasswordResetContent input[type=text]{width:35%;}
-	.dnnPasswordResetContent ul.dnnActions{margin:10px 0 0 0;border:none;padding:0 0 0 145px;}
+    .dnnPasswordResetContent input[type=text]{width:45%;}
+	.dnnPasswordResetContent ul.dnnActions{margin:0;border:none;padding:0;}
 	.dnnPasswordResetContent{width:550px;}
+
+.dnnPasswordReset .password-strength-container{
+}
+.dnnFormPassword  input[type="password"].password-confirm.checkStength  {
+    width: 248px;   
+}
+
+
+.dnnFormItem .password-strength-container input[type="password"] {
+    width: 100%;
+    margin-bottom: 5px; /* reset the default */
+    max-width: 248px;
+}
+
+.min-length-text {
+    line-height: 14px;
+    color: #8a8a8a
+}
+
+.meter {
+	width: 100%;
+    height: 4px;
+	margin-bottom: 18px; /* reset the default */
+}
+
+.meter div {
+    height: 100%;
+	position: relative;
+}
+
+.meter div span {
+	background-color: #a3a3a3;
+	display: block;
+	float: left;
+	width: 22%;
+	margin-right: 4%;
+	height: 100%;
+}
+.meter div span:last-child {
+	margin-right: 0;
+}
+
+.meter label {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    line-height: 18px;
+	text-transform: capitalize;
+}
+.password-strength-tooltip, .confirm-password-tooltip {
+    position: absolute;
+    z-index: 9;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.75);
+	left: 3% !important;
+	top: auto !important;
+	bottom: 50px !important;
+
+    -webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android 1.6- */
+    -moz-border-radius: 3px; /* Firefox 1-3.6 */
+    border-radius: 3px; /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
+
+    color: #DDDDDD;
+    font-size: 11px;
+    padding: 18px;
+	box-sizing: border-box;
+}
+
+.password-strength-tooltip:before, .confirm-password-tooltip:before {
+    background: none repeat scroll 0 0 transparent;
+    border-top: 7px solid rgba(0, 0, 0, 0.75);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    height: 0;
+	left: 50%;
+	margin-left: -8px;
+    position: absolute;
+    bottom: -7px;
+    width: 0;
+}
+
+.password-strength-tooltip-content {
+    width: 250px;
+}
+
+.confirm-password-tooltip-content {
+    display: block;
+    padding: 6px 12px;
+    white-space: nowrap;
+}
+
+.password-strength-tooltip-content h2 {
+	color: #c7c7c7;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.password-strength-tooltip-content ul {
+    list-style-type: none;
+    margin: 12px
+}
+
+.password-strength-tooltip-content li {
+    list-style-type: none;
+}
+
+.password-strength-tooltip-content li label {
+    display: block;
+    padding: 0 0 0 26px;
+    line-height: 18px;
+    background: url("/Images/icon-validate-fail.png") no-repeat left center;
+}
+
+.password-strength-tooltip-content li label.satisfied {
+    background-image: url("/Images/icon-validate-success.png");
+}
+
+.dnnFormItem input.validate-success, .dnnFormItem input.matched {
+    background: url("/Images/icon-validate-success.png") #fff no-repeat 98% center;
+}
+
+.dnnFormItem input.validate-fail, .dnnFormItem input.unmatched {
+    background: url("/Images/icon-validate-fail.png") #fff no-repeat 98% center;
+}
