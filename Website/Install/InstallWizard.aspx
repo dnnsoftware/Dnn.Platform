@@ -11,6 +11,7 @@
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
     <link rel="stylesheet" type="text/css" href="../Portals/_default/default.css?refresh" />    
     <link rel="stylesheet" type="text/css" href="Install.css?refresh" />    
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />    
      <!--[if IE]>
 	<link rel="stylesheet" type="text/css" href="../Portals/_default/ie.css?refresh" />
     <![endif]-->

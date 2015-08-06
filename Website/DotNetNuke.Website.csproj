@@ -1413,6 +1413,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
