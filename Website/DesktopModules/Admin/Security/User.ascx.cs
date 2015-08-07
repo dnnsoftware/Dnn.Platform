@@ -48,6 +48,7 @@ using Telerik.Web.UI;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using System.Web.UI.WebControls;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
@@ -484,7 +485,7 @@ namespace DotNetNuke.Modules.Admin.Users
             base.OnPreRender(e);
 
 
-			if (Host.EnableStrengthMeter)
+			if (DotNetNuke.Entities.Host.Host.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtPassword.CssClass = "password-strength";

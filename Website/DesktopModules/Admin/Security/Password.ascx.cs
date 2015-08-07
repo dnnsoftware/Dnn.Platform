@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -310,7 +311,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             base.OnPreRender(e);
 
-			if (Host.EnableStrengthMeter)
+			if (DotNetNuke.Entities.Host.Host.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtNewPassword.CssClass = "password-strength";
