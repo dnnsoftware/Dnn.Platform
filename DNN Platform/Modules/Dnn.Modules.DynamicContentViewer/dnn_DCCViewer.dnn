@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.DynamicContentManager" type="Module" version="08.00.00" isSystem="true">
-      <friendlyName>Dynamic Content Manager</friendlyName>
-      <description>DNN Dynamic Content Manager module</description>
+    <package name="Dnn.DynamicContentViewer" type="Module" version="08.00.00" isSystem="true">
+      <friendlyName>Dynamic Content Viewer</friendlyName>
+      <description>DNN Dynamic Content Viewer module</description>
       <owner>
         <name>DNN</name>
         <organization>DNN Corp.</organization>
@@ -18,19 +18,30 @@
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>Dnn.DynamicContentManager</moduleName>
-            <foldername>Dnn/DynamicContentManager</foldername>
+            <moduleName>Dnn.DynamicContentViewer</moduleName>
+            <foldername>Dnn/DynamicContentViewer</foldername>
             <businessControllerClass/>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
-                <definitionName>Dnn.DynamicContentManager</definitionName>
-                <friendlyName>Dynamic Content Manager</friendlyName>
+                <definitionName>Dnn.DynamicContentViewer</definitionName>
+                <friendlyName>Dynamic Content Viewer</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/Dnn/DynamicContentManager/Manager.html</controlSrc>
+                    <controlSrc>Viewer/Index.mvc</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl/>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>QuickSettings</controlKey>
+                    <controlSrc>Settings/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -43,27 +54,18 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-        	<eventMessage>
-						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-						<processorCommand>UpgradeModule</processorCommand>
-						<attributes>
-							<businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
-							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-							<upgradeVersionsList>08.00.00</upgradeVersionsList>
-						</attributes>
-					</eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>
             <assembly>
               <path>bin</path>
-              <name>Dnn.Modules.DynamicContentManager.dll</name>
+              <name>Dnn.Modules.DynamicContentViewer.dll</name>
             </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/Dnn/DynamicContentManager</basePath>
+            <basePath>DesktopModules/Dnn/DynamicContentViewer</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
