@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (_listName == Null.NullString)
                 {
-                    _listName = Name;
+                    _listName = DataField;
                 }
                 return _listName;
             }
