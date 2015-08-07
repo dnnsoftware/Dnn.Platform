@@ -44,8 +44,6 @@
             );
         }
 
-        $()
-
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load
         var resizeThrottle;
