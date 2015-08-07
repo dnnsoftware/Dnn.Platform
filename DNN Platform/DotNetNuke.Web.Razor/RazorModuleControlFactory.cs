@@ -33,14 +33,19 @@ namespace DotNetNuke.Web.Razor
     {
         #region IModuleControlFactory Members
 
+        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        {
+            return new RazorHostControl("~/" + controlSrc);
+        }
+
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            throw new System.NotImplementedException();
+            return CreateControl(containerControl, controlSrc);
         }
 
         #endregion
