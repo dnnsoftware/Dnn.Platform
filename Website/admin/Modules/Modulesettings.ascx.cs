@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     startDatePicker.SelectedDate = Module.StartDate;
                 }
-                if (!Null.IsNull(Module.EndDate))
+				if (!Null.IsNull(Module.EndDate) && Module.EndDate <= endDatePicker.MaxDate)
                 {
                     endDatePicker.SelectedDate = Module.EndDate;
                 }
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             cmdUpdate.Click += OnUpdateClick;
             dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             //get ModuleId
             if ((Request.QueryString["ModuleId"] != null))
