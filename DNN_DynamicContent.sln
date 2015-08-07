@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.UnitTests", "DNN Platform\Tests\Dnn.Tests.DynamicContent.UnitTests\Dnn.Tests.DynamicContent.UnitTests.csproj", "{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,14 @@ Global
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|x86.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
