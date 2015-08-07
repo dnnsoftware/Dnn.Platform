@@ -30,14 +30,19 @@ namespace DotNetNuke.UI.Modules
 {
     public class WebFormsModuleControlFactory : IModuleControlFactory
     {
+        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        {
+            return ControlUtilities.LoadControl<Control>(containerControl, controlSrc);
+        }
+
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return ControlUtilities.LoadControl<Control>(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            return ControlUtilities.LoadControl<Control>(containerControl, controlSrc);
+            return CreateControl(containerControl, controlSrc);
         }
     }
 }

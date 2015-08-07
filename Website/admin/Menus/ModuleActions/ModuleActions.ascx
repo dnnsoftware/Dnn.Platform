@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Admin.Containers.ModuleActions" Codebehind="ModuleActions.ascx.cs" %>
 <asp:LinkButton runat="server" ID="actionButton" />
+<asp:Panel id="quickSettings" runat="server" style="display: none"></asp:Panel>
 
 <script type="text/javascript">
     /*globals jQuery, window */
@@ -32,7 +33,8 @@
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
                     supportsQuickActions:supportsQuickActions,
-                    isShared : <% = IsShared.ToString().ToLower() %>
+                    isShared : <% = IsShared.ToString().ToLower() %>,
+                    quickSettings: "#<%= quickSettings.ClientID %>"
                 },
                 {
                     cancel: '<%=Localization.GetSafeJSString("Cancel", Localization.SharedResourceFile) %>',
@@ -41,6 +43,8 @@
                 }
             );
         }
+
+        $()
 
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load

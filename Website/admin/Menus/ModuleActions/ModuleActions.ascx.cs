@@ -32,6 +32,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Containers;
+using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -106,9 +107,17 @@ namespace DotNetNuke.Admin.Containers
             Panes = "[]";
             try
             {
+                SupportsQuickActions = false;
+
                 var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
                 var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
-                SupportsQuickActions = (quickSettingsControl != null);
+
+                if (quickSettingsControl != null)
+                {
+                    SupportsQuickActions = true;
+                    var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, quickSettingsControl.ControlSrc);
+                    quickSettings.Controls.Add(control);
+                }
 
                 if (ActionRoot.Visible)
                 {

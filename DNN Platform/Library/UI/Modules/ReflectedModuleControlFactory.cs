@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Modules
 {
     public class ReflectedModuleControlFactory : IModuleControlFactory
     {
-        private Control CreateControl(TemplateControl containerControl, string controlSrc)
+        public Control CreateControl(TemplateControl containerControl, string controlSrc)
         {
             // load from a typename in an assembly ( ie. server control)
             Type objType = Reflection.CreateType(controlSrc);

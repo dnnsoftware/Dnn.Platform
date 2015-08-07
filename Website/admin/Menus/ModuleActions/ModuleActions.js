@@ -15,20 +15,7 @@
         var count = adminCount + customCount;
         var isShared = opts.isShared;
         var supportsQuickActions = opts.supportsQuickActions;
-
-        function closeMenu(ul) {
-            if (ul && ul.position()) {
-                if (ul.position().top > 0) {
-                    ul.hide('slide', { direction: 'up' }, 80, function () {
-                        dnn.removeIframeMask(ul[0]);
-                    });
-                } else {
-                    ul.hide('slide', { direction: 'down' }, 80, function () {
-                        dnn.removeIframeMask(ul[0]);
-                    });
-                }
-            }
-        }
+        var quickSettings = opts.quickSettings;
 
         function completeMove(targetPane, moduleOrder) {
             //remove empty pane class
@@ -284,11 +271,12 @@
                               + "<a class='primarybtn'>" + resx.save + "</a></div></div>";
             $parent.append(htmlString);
 
-            var $secondarybtn = $parent.find("a.secondarybtn");
+            var $container = $parent.find(".qsContainer");
 
-            $secondarybtn.click(function() {
-                closeMenu($parent);
-            });
+            var $quickSettings = $(quickSettings);
+            $quickSettings.show();
+
+            $container.append($quickSettings);
         }
 
         function position(mId) {
@@ -398,7 +386,17 @@
             },
             out: function () {
                 var ul = $(this).find('ul');
-                closeMenu(ul);
+                if (ul && ul.position()) {
+                    if (ul.position().top > 0) {
+                        ul.hide('slide', { direction: 'up' }, 80, function () {
+                            dnn.removeIframeMask(ul[0]);
+                        });
+                    } else {
+                        ul.hide('slide', { direction: 'down' }, 80, function () {
+                            dnn.removeIframeMask(ul[0]);
+                        });
+                    }
+                }
             },
             timeout: 400,
             interval: 200
@@ -417,5 +415,51 @@
         bottomText: "Bottom",
         movePaneText: "To {0}",
         supportsQuickActions: true
+    };
+
+    $.fn.dnnQuickSettings = function(options) {
+        var opts = $.extend({}, $.fn.dnnQuickSettings.defaultOptions, options);
+        var onCancel = opts.onCancel;
+        var onSave = opts.onSave;
+
+        var $self = this;
+        var moduleId = opts.moduleId;
+
+        var $container = $("#moduleActions-" + moduleId + "-QuickSettings");
+        var $parent = $container.parent();
+        var $saveButton = $container.find(".qsFooter a.primarybtn");
+        var $cancelButton = $container.find("a.secondarybtn");
+
+        var closeMenu = function (ul) {
+            if (ul && ul.position()) {
+                if (ul.position().top > 0) {
+                    ul.hide('slide', { direction: 'up' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                } else {
+                    ul.hide('slide', { direction: 'down' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                }
+            }
+        }
+
+        $cancelButton.click(function () {
+            onCancel.call(this);
+            closeMenu($parent);
+        });
+
+        $saveButton.click(function () {
+            onSave.call(this);
+            closeMenu($parent);
+        });
+
+        return $self;
+    }
+
+    $.fn.dnnQuickSettings.defaultOptions = {
+        moduleId: -1,
+        onCancel: function () { },
+        onSave: function () { }
     };
 })(jQuery);
