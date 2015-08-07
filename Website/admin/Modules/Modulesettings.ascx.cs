@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     startDatePicker.SelectedDate = Module.StartDate;
                 }
-                if (!Null.IsNull(Module.EndDate))
+				if (!Null.IsNull(Module.EndDate) && Module.EndDate <= endDatePicker.MaxDate)
                 {
                     endDatePicker.SelectedDate = Module.EndDate;
                 }
