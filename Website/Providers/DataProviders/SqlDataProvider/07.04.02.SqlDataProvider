@@ -129,16 +129,18 @@ GO
 /* DNN-5631: prevent duplicate keys */
 /* ******************************** */
 
-IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') 
-                                       AND name = N'IX_{objectQualifier}PortalSettings')
-	DROP INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
-GO
-
 -- ensure there are no duplicate rows:
 DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
  WHERE PortalSettingID NOT IN (SELECT Max(PortalSettingID) M 
                                 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
 								GROUP BY PortalID, CultureCode, SettingName)
+
+-- drop old Index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') 
+                                       AND name = N'IX_{objectQualifier}PortalSettings')
+	DROP INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
+GO
+
 
 -- recreate Index
 CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
