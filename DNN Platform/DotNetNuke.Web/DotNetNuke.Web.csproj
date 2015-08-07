@@ -73,6 +73,10 @@
     <Reference Include="ClientDependency.Core">
       <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.HttpModules">
       <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
@@ -550,10 +554,6 @@
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
   </ItemGroup>
   <Import Project="Library.build" />

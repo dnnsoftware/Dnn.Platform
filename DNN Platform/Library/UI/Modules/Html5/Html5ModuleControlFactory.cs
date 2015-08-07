@@ -26,14 +26,19 @@ namespace DotNetNuke.UI.Modules.Html5
 {
     public class Html5ModuleControlFactory : IModuleControlFactory
     {
+        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        {
+            return new Html5HostControl("~/" + controlSrc);
+        }
+
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return new Html5HostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            return new Html5HostControl("~/" + controlSrc);
+            return CreateControl(containerControl, controlSrc);
         }
     }
 }

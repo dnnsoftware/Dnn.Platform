@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
@@ -32,8 +32,12 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Containers;
+using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+
+// ReSharper disable ConvertPropertyToExpressionBody
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Admin.Containers
@@ -41,7 +45,7 @@ namespace DotNetNuke.Admin.Containers
 {
     public partial class ModuleActions : ActionBase
     {
-        private List<int> validIDs = new List<int>();
+        private readonly List<int> validIDs = new List<int>();
         
         protected string AdminActionsJSON { get; set; }
 
@@ -66,6 +70,8 @@ namespace DotNetNuke.Admin.Containers
 
         protected bool SupportsMove { get; set; }
 
+        protected bool SupportsQuickActions { get; set; }
+
         protected bool IsShared { get; set; }
 
         protected string LocalizeString(string key)
@@ -81,6 +87,7 @@ namespace DotNetNuke.Admin.Containers
             actionButton.Click += actionButton_Click;
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterStyleSheet(Page, "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -100,65 +107,74 @@ namespace DotNetNuke.Admin.Containers
             Panes = "[]";
             try
             {
+                SupportsQuickActions = false;
+
+                var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
+                var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
+
+                if (quickSettingsControl != null)
                 {
-                    if (ActionRoot.Visible)
+                    SupportsQuickActions = true;
+                    var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, quickSettingsControl.ControlSrc);
+                    quickSettings.Controls.Add(control);
+                }
+
+                if (ActionRoot.Visible)
+                {
+                    //Add Menu Items
+                    foreach (ModuleAction rootAction in ActionRoot.Actions)
                     {
-                        //Add Menu Items
-                        foreach (ModuleAction rootAction in ActionRoot.Actions)
+                        //Process Children
+                        var actions = new List<ModuleAction>();
+                        foreach (ModuleAction action in rootAction.Actions)
                         {
-                            //Process Children
-                            var actions = new List<ModuleAction>();
-                            foreach (ModuleAction action in rootAction.Actions)
+                            if (action.Visible)
                             {
-                                if (action.Visible)
+                                if ((EditMode && Globals.IsAdminControl() == false) ||
+                                    (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                 {
-                                    if ((EditMode && Globals.IsAdminControl() == false) ||
-                                        (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
+                                    if (!action.Icon.Contains("://")
+                                            && !action.Icon.StartsWith("/")
+                                            && !action.Icon.StartsWith("~/"))
                                     {
-                                        if (!action.Icon.Contains("://")
-                                                && !action.Icon.StartsWith("/")
-                                                && !action.Icon.StartsWith("~/"))
-                                        {
-                                            action.Icon = "~/images/" + action.Icon;
-                                        }
-                                        if (action.Icon.StartsWith("~/"))
-                                        {
-                                            action.Icon = Globals.ResolveUrl(action.Icon);
-                                        }
+                                        action.Icon = "~/images/" + action.Icon;
+                                    }
+                                    if (action.Icon.StartsWith("~/"))
+                                    {
+                                        action.Icon = Globals.ResolveUrl(action.Icon);
+                                    }
 
-                                        actions.Add(action);
+                                    actions.Add(action);
 
-                                        if(String.IsNullOrEmpty(action.Url))
-                                        {
-                                            validIDs.Add(action.ID);
-                                        }
+                                    if(String.IsNullOrEmpty(action.Url))
+                                    {
+                                        validIDs.Add(action.ID);
                                     }
                                 }
-
                             }
 
-                            var oSerializer = new JavaScriptSerializer();
-                            if (rootAction.Title == Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile))
+                        }
+
+                        var oSerializer = new JavaScriptSerializer();
+                        if (rootAction.Title == Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile))
+                        {
+                            AdminActionsJSON = oSerializer.Serialize(actions);
+                        }
+                        else
+                        {
+                            if (rootAction.Title == Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile))
                             {
-                                AdminActionsJSON = oSerializer.Serialize(actions);
+                                CustomActionsJSON = oSerializer.Serialize(actions);
                             }
                             else
                             {
-                                if (rootAction.Title == Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile))
-                                {
-                                    CustomActionsJSON = oSerializer.Serialize(actions);
-                                }
-                                else
-                                {
-                                    SupportsMove = (actions.Count > 0);
-                                    Panes = oSerializer.Serialize(PortalSettings.ActiveTab.Panes);
-                                }
+                                SupportsMove = (actions.Count > 0);
+                                Panes = oSerializer.Serialize(PortalSettings.ActiveTab.Panes);
                             }
                         }
-                        IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
                     }
+                    IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
                 }
-
             }
             catch (Exception exc) //Module failed to load
             {

@@ -73,6 +73,33 @@ namespace DotNetNuke.UI.Modules
             return controlFactory;
         }
 
+        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            Control control = null;
+            IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
+
+            if (controlFactory != null)
+            {
+                control = controlFactory.CreateControl(containerControl, controlSrc);
+            }
+
+            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // this is necessary for the Localization in PageBase
+            if (control != null)
+            {
+                control.ID = Path.GetFileNameWithoutExtension(controlSrc);
+
+                var moduleControl = control as IModuleControl;
+
+                if (moduleControl != null)
+                {
+                    moduleControl.ModuleContext.Configuration = moduleConfiguration;
+                }
+            }
+
+            return control;
+        }
+
         public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             Control control = null;

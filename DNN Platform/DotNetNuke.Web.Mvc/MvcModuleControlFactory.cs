@@ -27,6 +27,11 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcModuleControlFactory : IModuleControlFactory
     {
+        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        {
+            return new MvcHostControl();
+        }
+
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return new MvcHostControl();
