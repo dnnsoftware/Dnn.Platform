@@ -188,6 +188,11 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
 
+		/// <summary>
+		/// Set Data Field of the control.
+		/// </summary>
+		public string DataField { get; set; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StringValue is the value of the control expressed as a String
