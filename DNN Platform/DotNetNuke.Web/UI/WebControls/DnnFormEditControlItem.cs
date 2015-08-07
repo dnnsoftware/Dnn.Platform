@@ -50,6 +50,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 control.Value = Value;
                 control.OldValue = Value;
                 control.ValueChanged += ValueChanged;
+	            control.DataField = DataField;
 
                 control.CssClass = "dnnFormInput";
 
