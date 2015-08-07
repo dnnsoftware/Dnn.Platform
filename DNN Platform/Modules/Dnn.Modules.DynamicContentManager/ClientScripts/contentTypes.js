@@ -151,6 +151,11 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         }
     });
 
+    var validate = function () {
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames()) &&
+            util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedDescriptions());
+    };
+
     self.cancel = function(){
         self.rootViewModel.closeEdit();
     };
