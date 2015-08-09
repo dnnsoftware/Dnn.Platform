@@ -1,0 +1,6 @@
+﻿DesktopModules/Admin/Skins/editskins.ascx
+DesktopModules/Admin/Skins/editskins.ascx.cs
+DesktopModules/Admin/Skins/module.css
+DesktopModules/Admin/Skins/App_LocalResources/EditSkins.ascx.resx
+DesktopModules/Admin/Skins/App_LocalResources/
+DesktopModules/Admin/Skins/
