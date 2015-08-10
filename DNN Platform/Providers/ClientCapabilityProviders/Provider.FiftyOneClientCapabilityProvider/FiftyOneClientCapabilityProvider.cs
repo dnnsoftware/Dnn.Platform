@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,7 @@ using FiftyOne.Foundation.Mobile;
 using DotNetNuke.Services.ClientCapability;
 
 using FiftyOne.Foundation.UI;
+using FiftyOne.Foundation.Mobile.Detection.Entities;
 
 #endregion
 
@@ -47,6 +48,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     {
         #region Static Methods
 
+        static readonly bool _51DegreesEnabled = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled;
         static readonly object _allCapabilitiesLock = new object();
         static IQueryable<IClientCapability> _allCapabilities;
 
@@ -65,7 +67,8 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                     {
                         if (_allCapabilities == null)
                         {
-                            var capabilities = DataProvider.Devices.Select(device => new FiftyOneClientCapability(device)).Cast<IClientCapability>().ToList();
+                            var capabilities = WebProvider.ActiveProvider.DataSet.Hardware.Profiles.Select(profile =>
+                                    new FiftyOneClientCapability(new Profile[] { profile })).Cast<IClientCapability>().ToList();
 
                             _allCapabilities = capabilities.AsQueryable();
                         }
@@ -83,11 +86,12 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                 {
                     lock (_allClientCapabilityValuesLock)
                     {
-                        if (_allClientCapabilityValues == null)
+                        if (_allClientCapabilityValues == null &&
+                            WebProvider.ActiveProvider != null)
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            foreach (var property in DataProvider.Properties)
+                            foreach (var property in WebProvider.ActiveProvider.DataSet.Properties)
                             {
                                 var values = property.Values.Select(value => value.Name).ToList();
                                 _allClientCapabilityValues.Add(property.Name, values);
@@ -96,13 +100,13 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                     }
 
                     _allClientCapabilityValues = _allClientCapabilityValues.OrderByDescending(kvp =>
-                                                                {
-                                                                    if (HighPiorityCapabilityValues.ContainsKey(kvp.Key))
-                                                                    {
-                                                                        return HighPiorityCapabilityValues[kvp.Key];
-                                                                    }
-                                                                    return 0;
-                                                                }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
+                                                    {
+                                                        if (HighPiorityCapabilityValues.ContainsKey(kvp.Key))
+                                                        {
+                                                            return HighPiorityCapabilityValues[kvp.Key];
+                                                        }
+                                                        return 0;
+                                                    }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
                 }
 
                 return _allClientCapabilityValues;
@@ -139,27 +143,31 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         #region ClientCapabilityProvider Override Methods
 
         /// <summary>
-        /// Returns ClientCapability based on the user agent provided.
+        /// Returns ClientCapability based on the user agent provided. If 51Degrees
+        /// is enabled then the results are returned from 51Degrees. If not then
+        /// the standard capabilities provider is used with the user agent of the
+        /// current request. 
         /// </summary>
+        /// <remarks>
+        /// The above behaviour is as implemented in prior versions with the 
+        /// modification to check that 51Degrees is enabled. The default provider
+        /// in .NET will not be able to use the provided userAgent which is a 
+        /// problem where the current requests useragent and the provided useragent
+        /// are different. This should be looked at in the future.
+        /// TODO - determine default behaviour when 51Degrees disabled.
+        /// </remarks>
         public override IClientCapability GetClientCapability(string userAgent)
         {
-            var request = HttpContext.Current != null ? HttpContext.Current.Request : null;
-            if (request != null && request.UserAgent == userAgent &&
-                request.Browser.Capabilities.Contains(Constants.FiftyOneDegreesProperties))
+            if (_51DegreesEnabled &&
+                WebProvider.ActiveProvider != null)
             {
-                // The useragent has already been processed by 51Degrees.mobi when the request
-                // was processed by the detector module. Uses the values obtained then.
-                var clientCapability = new FiftyOneClientCapability(request.Browser) {UserAgent = request.UserAgent};
-                return clientCapability;
+                var match = WebProvider.ActiveProvider.Match(userAgent);
+                if (match != null)
+                {
+                    return new FiftyOneClientCapability(match);
+                }
             }
-            // The useragent has not already been processed. Therefore process it now
-            // and then set the properties.
-            var match = WebProvider.ActiveProvider.Match(userAgent);
-            if (match != null)
-            {
-                return new FiftyOneClientCapability(match);
-            }
-            return new FiftyOneClientCapability(null as SortedList<string, string[]>);
+            return new FiftyOneClientCapability(HttpContext.Current.Request.Browser);
         }
 
         /// <summary>
@@ -168,15 +176,18 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         public override IClientCapability GetClientCapabilityById(string deviceId)
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);
-
-            var device = DataProvider.GetDeviceFromDeviceID(deviceId);
-            
-			if(device == null)
-			{
-                throw new MobileException(string.Format("Can't get device capability for the id '{0}'", deviceId));
-			}
-
-            return new FiftyOneClientCapability(device);
+            if (_51DegreesEnabled &&
+                WebProvider.ActiveProvider != null)
+            {
+                var profiles = deviceId.Split(new[] { '-' }, System.StringSplitOptions.RemoveEmptyEntries).Select(i =>
+                    WebProvider.ActiveProvider.DataSet.FindProfile(int.Parse(i))).Where(i => i != null).ToArray();
+                if (profiles == null || profiles.Length == 0)
+                {
+                    throw new MobileException(string.Format("Can't get device capability for the id '{0}'", deviceId));
+                }
+                return new FiftyOneClientCapability(profiles);
+            }
+            return null;
         }
 
         /// <summary>
@@ -213,7 +224,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             get
             {
-                return ClientCapabilityValues.ContainsKey("IsTablet");
+                return _51DegreesEnabled && WebProvider.ActiveProvider != null && WebProvider.ActiveProvider.DataSet.Properties["IsTablet"] != null;
             }
         }
 
