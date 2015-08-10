@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dnnsoftware.com
+﻿// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2014
 // by DNN Corporation
 // 
@@ -17,7 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
 using System;
 using System.Globalization;
@@ -73,12 +70,17 @@ namespace DotNetNuke.Web.Mvc
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
             var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
-            var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+            var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
+            var defaultControllerName = (string)defaultRouteData.Values["controller"];
+            var defaultActionName = (string)defaultRouteData.Values["action"];
+            var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
 
             var moduleApplication = new ModuleApplication
                                             {
-                                                DefaultActionName = defaultSegments[1],
-                                                DefaultControllerName = defaultSegments[0],
+                                                DefaultActionName = defaultControllerName,
+                                                DefaultControllerName = defaultActionName,
+                                                DefaultNamespaces = defaultNamespaces,
                                                 ModuleName = desktopModule.ModuleName,
                                                 FolderPath = desktopModule.FolderName
                                             };
@@ -94,9 +96,7 @@ namespace DotNetNuke.Web.Mvc
             if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
-                routeData = new RouteData();
-                routeData.Values.Add("controller", defaultSegments[0]);
-                routeData.Values.Add("action", defaultSegments[1]);
+                routeData = defaultRouteData;
             }
             else
             {
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Mvc
             var moduleRequestContext = new ModuleRequestContext
                                             {
                                                 HttpContext = httpContext,
-                                                ModuleContext = ModuleContext, 
+                                                ModuleContext = ModuleContext,
                                                 ModuleApplication = moduleApplication,
                                                 RouteData = routeData
                                             };
