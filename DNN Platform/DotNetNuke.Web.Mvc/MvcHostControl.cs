@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Mvc
             _controlKey = String.Empty;
         }
 
-        protected MvcHostControl(string controlKey)
+        public MvcHostControl(string controlKey)
         {
             _controlKey = controlKey;
         }

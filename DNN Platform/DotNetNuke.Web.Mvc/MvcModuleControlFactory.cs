@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dnnsoftware.com
+﻿// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2014
 // by DNN Corporation
 // 
@@ -17,7 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
@@ -27,9 +24,9 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcModuleControlFactory : IModuleControlFactory
     {
-        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
-            return new MvcHostControl();
+            return new MvcHostControl(controlKey);
         }
 
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)

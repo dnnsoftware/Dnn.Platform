@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+﻿// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,37 +15,29 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
-#region Usings
 
+using System;
 using System.Web.UI;
-
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
-
-#endregion
 
 namespace DotNetNuke.Web.Razor
 {
     public class RazorModuleControlFactory : IModuleControlFactory
     {
-        #region IModuleControlFactory Members
-
-        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new RazorHostControl("~/" + controlSrc);
         }
 
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            return CreateControl(containerControl, controlSrc);
+            return CreateControl(containerControl, String.Empty, controlSrc);
         }
-
-        #endregion
     }
 }

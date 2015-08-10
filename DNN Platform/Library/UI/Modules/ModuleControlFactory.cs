@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+﻿// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,8 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
-#region Usings
 
 using System;
 using System.IO;
@@ -28,8 +24,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules.Html5;
-
-#endregion
 
 namespace DotNetNuke.UI.Modules
 {
@@ -73,14 +67,14 @@ namespace DotNetNuke.UI.Modules
             return controlFactory;
         }
 
-        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             Control control = null;
             IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
 
             if (controlFactory != null)
             {
-                control = controlFactory.CreateControl(containerControl, controlSrc);
+                control = controlFactory.CreateControl(containerControl, controlKey, controlSrc);
             }
 
             // set the control ID to the resource file name ( ie. controlname.ascx = controlname )

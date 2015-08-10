@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 
@@ -26,19 +27,19 @@ namespace DotNetNuke.UI.Modules.Html5
 {
     public class Html5ModuleControlFactory : IModuleControlFactory
     {
-        public Control CreateControl(TemplateControl containerControl, string controlSrc)
+        public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new Html5HostControl("~/" + controlSrc);
         }
 
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            return CreateControl(containerControl, controlSrc);
+            return CreateControl(containerControl, String.Empty, controlSrc);
         }
     }
 }
