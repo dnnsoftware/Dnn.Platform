@@ -39,7 +39,7 @@
             this._$container = this.$element.parent();
 
             //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
-            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth());
+            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth()).hide();
 	        var handler = this;
 	        setInterval(function () {
 				handler._$meter.width(handler.$element.outerWidth());
@@ -107,6 +107,7 @@
         },
 
         _onInput: function (e) {
+	        this._$meter.show();
             this._updateState();
         },
 
