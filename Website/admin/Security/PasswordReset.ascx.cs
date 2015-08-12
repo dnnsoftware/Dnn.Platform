@@ -29,10 +29,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
@@ -46,6 +48,7 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         #region Private Members
 
+	    private const int RedirectTimeout = 3000;
         private string _ipAddress;
 
         private string ResetToken
@@ -278,7 +281,21 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
             }
-            Response.Redirect(redirectURL);
+
+			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+	        resetMessages.Visible = divPassword.Visible = false;
+
+			//redirect page after 5 seconds
+	        var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+			if (ScriptManager.GetCurrent(Page) != null)
+			{
+				// respect MS AJAX
+				ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
+			}
+			else
+			{
+				Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
+			}
         }
 
         private void LogSuccess()
