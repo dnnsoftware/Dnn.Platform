@@ -210,6 +210,30 @@
         }
     };
 
+	dnn.searchResult.getQueryVariable = function(name) {
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split("=");
+			if (pair[0] === name) {
+				return pair[1];
+			}
+		}
+		return '';
+	};
+
+	dnn.searchResult.pushHistoryState = function (state) {
+		if (!dnn.searchResult.catchHistoryState) {
+			return;
+		}
+
+		var currentState = dnn.searchResult.getQueryVariable("Search");
+		if (state !== currentState) {
+			var url = location.href.replace('Search=' + currentState, 'Search=' + state);
+		    history.pushState(null, "Search", url);
+	    }
+	}
+
     dnn.searchResult.doSearch = function () {
         var sterm = dnn.searchResult.queryOptions.searchTerm;
         var advancedTerm = dnn.searchResult.queryOptions.advancedTerm;
@@ -227,6 +251,7 @@
                 beforeSend: dnn.searchResult.service.setModuleHeaders,
                 success: function (results) {
                     dnn.searchResult.renderResults(results);
+	                dnn.searchResult.pushHistoryState(sterm);
                 },
                 complete: function () {
                     dnn.searchResult.removeLoading();
@@ -332,7 +357,13 @@
 
     dnn.searchResult.init = function (settings) {
 
-        dnn.searchResult.defaultSettings = $.extend(dnn.searchResult.defaultSettings, settings);
+    	dnn.searchResult.defaultSettings = $.extend(dnn.searchResult.defaultSettings, settings);
+    	dnn.searchResult.catchHistoryState = typeof history.pushState !== "undefined";
+		if (dnn.searchResult.catchHistoryState) {
+			    window.addEventListener("popstate", function () {
+					window.location.href = "Search-Results?Search=" + dnn.searchResult.getQueryVariable("Search");
+				});
+		}
 
         // search box
         dnn.searchResult.searchInput = $('#dnnSearchResult_dnnSearchBox').dnnSearchBox({
