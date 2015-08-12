@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Search
 
                             if (Logger.IsTraceEnabled)
                             {
-                                Logger.TraceFormat("ModuleIndexer: {0} search documents found for module [{2} mid:{3}]",
+                                Logger.TraceFormat("ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
                                     searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
                             }
 
