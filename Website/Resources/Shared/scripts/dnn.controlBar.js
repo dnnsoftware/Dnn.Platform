@@ -259,12 +259,13 @@ dnn.controlBar.init = function (settings) {
             data: 'category=' + category + '&loadingStartIndex=' + currentIndex + '&loadingPageSize=' + pageSize + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
-                setTimeout(function() {
+            	setTimeout(function () {
+					var containerId = '#ControlBar_ModuleListHolder_NewModule';
                     if (d && d.length) {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
                         dnn.controlBar.forceLoadingPane = false;
                         dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);                        
-                        var containerId = '#ControlBar_ModuleListHolder_NewModule';
+                        
                         if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
                             dnn.controlBar.allModulesLoaded = true;
                         }
@@ -293,6 +294,10 @@ dnn.controlBar.init = function (settings) {
                             dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
                             dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);
                             dnn.controlBar.allModulesLoaded = true;
+
+							if (d) { //call renderModuleList to re-calculate the list position even ajax request return no data.
+								dnn.controlBar.renderModuleList(containerId, d);
+							}
                         } else {
                             dnn.controlBar.setLoadingModulesMessage(String.format(settings.loadingModulesOnNoDefaultCategoryMessage, dnn.controlBar.getSelectedCategory()));
                             dnn.controlBar.forceCategorySearch = true;
@@ -737,7 +742,6 @@ dnn.controlBar.init = function (settings) {
     };
 
     dnn.controlBar.renderModuleList = function (containerId, moduleList) {
-
         var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
         var container = $(containerId);
         dnn.controlBar.initialiseArrowScrolling(container);
