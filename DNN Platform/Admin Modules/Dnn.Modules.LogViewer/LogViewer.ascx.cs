@@ -47,7 +47,7 @@ using DotNetNuke.UI.WebControls;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.LogViewer
+namespace Dnn.Modules.LogViewer
 {
 
     /// -----------------------------------------------------------------------------
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                             LogController.Instance.DeleteLog(objLogInfo);
                         }
                     }
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 BindPortalDropDown();
                 BindData();
@@ -272,17 +272,17 @@ namespace DotNetNuke.Modules.Admin.LogViewer
 
                 if (String.IsNullOrEmpty(returnMsg))
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailFailure", LocalResourceFile) + " " + returnMsg, ModuleMessage.ModuleMessageType.RedError);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailFailure", LocalResourceFile) + " " + returnMsg, ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
                 returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", LocalResourceFile), strFromEmailAddress);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailFailure", LocalResourceFile) + " " + returnMsg, ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("EmailFailure", LocalResourceFile) + " " + returnMsg, ModuleMessage.ModuleMessageType.RedError);
             }
             BindData();
         }
@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         private void BtnClearClick(Object sender, EventArgs e)
         {
             LogController.Instance.ClearLog();
-            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("LogCleared", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("LogCleared", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
 			
             //add entry to log recording it was cleared
             EventLogController.Instance.AddLog(Localization.GetString("LogCleared", LocalResourceFile),
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoEntries", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoEntries", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 dlLog.Visible = false;
                 btnDelete.Visible = false;
                 btnClear.Visible = false;

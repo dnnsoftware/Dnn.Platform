@@ -1,4 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Admin.LogViewer.LogViewer" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" Codebehind="LogViewer.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Explicit="true" Inherits="Dnn.Modules.LogViewer.LogViewer" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" Codebehind="LogViewer.ascx.cs" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>

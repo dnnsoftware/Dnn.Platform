@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.LogViewer {
+namespace Dnn.Modules.LogViewer {
     
     
     public partial class EditLogTypes {
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plIsActive;
+        protected global::System.Web.UI.UserControl plIsActive;
         
         /// <summary>
         /// chkIsActive control.
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plLogTypeKey;
+        protected global::System.Web.UI.UserControl plLogTypeKey;
         
         /// <summary>
         /// cboLogTypeKey control.
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plLogTypePortalID;
+        protected global::System.Web.UI.UserControl plLogTypePortalID;
         
         /// <summary>
         /// cboLogTypePortalID control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plKeepMostRecent;
+        protected global::System.Web.UI.UserControl plKeepMostRecent;
         
         /// <summary>
         /// cboKeepMostRecent control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEmailNotificationStatus;
+        protected global::System.Web.UI.UserControl plEmailNotificationStatus;
         
         /// <summary>
         /// chkEmailNotificationStatus control.
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plThreshold;
+        protected global::System.Web.UI.UserControl plThreshold;
         
         /// <summary>
         /// cboThreshold control.
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plMailFromAddress;
+        protected global::System.Web.UI.UserControl plMailFromAddress;
         
         /// <summary>
         /// txtMailFromAddress control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plMailToAddress;
+        protected global::System.Web.UI.UserControl plMailToAddress;
         
         /// <summary>
         /// txtMailToAddress control.

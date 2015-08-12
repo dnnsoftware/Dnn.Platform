@@ -43,7 +43,7 @@ using Telerik.Web.UI;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.LogViewer
+namespace Dnn.Modules.LogViewer
 {
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
@@ -274,12 +274,12 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             try
             {
                 LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfigInfo);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 BindSummaryData();
             }
             catch
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DeleteError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
             }
         }
 
@@ -317,13 +317,13 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             {
                 objLogTypeConfigInfo.ID = Convert.ToString(ViewState["LogID"]);
                 LogController.Instance.UpdateLogTypeConfigInfo(objLogTypeConfigInfo);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             else
             {
                 objLogTypeConfigInfo.ID = Guid.NewGuid().ToString();
                 LogController.Instance.AddLogTypeConfigInfo(objLogTypeConfigInfo);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigAdded", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ConfigAdded", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             BindSummaryData();
         }
