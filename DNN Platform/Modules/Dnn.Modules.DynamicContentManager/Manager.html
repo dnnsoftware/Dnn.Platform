@@ -478,8 +478,9 @@
             loadingBarId: '#loadingbar',
             codeEditorArea: '#template-codeEditor',
             pageSize: 10,
-            servicesFramework: $.ServicesFramework(moduleId)
-        }
+            servicesFramework: $.ServicesFramework(moduleId),
+            servicePath: "Dnn/DynamicContentManager"
+        };
 
         var codeEditor = CodeMirror.fromTextArea($("#DCCmanager-" + moduleId + " #template-codeEditor")[0], {
             lineNumbers: true,

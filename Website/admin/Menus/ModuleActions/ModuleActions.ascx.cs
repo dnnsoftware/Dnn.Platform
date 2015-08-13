@@ -82,6 +82,7 @@ namespace DotNetNuke.Admin.Containers
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
             ID = "ModuleActions";
 
             actionButton.Click += actionButton_Click;
@@ -98,9 +99,9 @@ namespace DotNetNuke.Admin.Containers
             ProcessAction(Request.Params["__EVENTARGUMENT"]);
         }
 
-        protected override void OnPreRender(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            base.OnPreRender(e);
+            base.OnLoad(e);
 
             AdminActionsJSON = "[]";
             CustomActionsJSON = "[]";

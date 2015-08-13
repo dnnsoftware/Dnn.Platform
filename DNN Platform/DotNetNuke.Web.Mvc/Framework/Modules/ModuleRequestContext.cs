@@ -21,6 +21,7 @@
 
 using System.Web;
 using System.Web.Routing;
+using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 
@@ -28,6 +29,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleRequestContext
     {
+        public Page DnnPage { get; set; }
+
         public HttpContextBase HttpContext { get; set; }
 
         public ModuleInstanceContext ModuleContext { get; set; }

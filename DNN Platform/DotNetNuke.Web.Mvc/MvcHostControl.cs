@@ -106,6 +106,7 @@ namespace DotNetNuke.Web.Mvc
 
             var moduleRequestContext = new ModuleRequestContext
                                             {
+                                                DnnPage = Page,
                                                 HttpContext = httpContext,
                                                 ModuleContext = ModuleContext,
                                                 ModuleApplication = moduleApplication,
@@ -156,10 +157,8 @@ namespace DotNetNuke.Web.Mvc
 
         }
 
-        protected override void OnPreRender(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            base.OnPreRender(e);
-
             try
             {
                 if (_result != null)
@@ -171,6 +170,8 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
+            base.OnLoad(e);
         }
 
         private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)

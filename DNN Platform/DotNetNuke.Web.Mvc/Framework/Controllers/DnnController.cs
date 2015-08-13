@@ -21,6 +21,7 @@
 
 using System;
 using System.Web.Mvc;
+using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
@@ -49,6 +50,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
+
+        public Page DnnPage { get; set; }
 
         public string LocalResourceFile { get; set; }
 

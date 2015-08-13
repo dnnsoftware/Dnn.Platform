@@ -99,6 +99,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 {
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
+
+                moduleController.DnnPage = context.DnnPage;
+
                 moduleController.ModuleContext = context.ModuleContext;
 
                 moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
