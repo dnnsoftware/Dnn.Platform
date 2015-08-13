@@ -26,59 +26,59 @@
 
 @* ReSharper disable once InconsistentNaming *@
 <script language="javascript" type="text/javascript">
-    var moduleId = @moduleId;
+    (function ($) {
+        var moduleId = @moduleId;
+        $(document).ready(function($) {
+            var resx = {
 
-    jQuery(document).ready(function($) {
-        var resx = {
+            };
 
-        };
-
-        var options = {
-            moduleId: moduleId,
-            contentTypes: [
-                @{
-                    for (var i = 0; i < Model.ContentTypes.Count; i++)
-                    {
-                        var contentType = Model.ContentTypes[i];
-
-                        if (i < Model.ContentTypes.Count - 1)
-                        {
-                            @:{ name: '@contentType.Name', value: @contentType.ContentTypeId },
-                        }
-                        else
-                        {
-                            @:{ name: '@contentType.Name', value: @contentType.ContentTypeId }
-                        }
-                    }
-                }
-            ],
-            templates: [
-                @{
-                    for (var i = 0; i < Model.Templates.Count; i++)
-                        {
-                            var template = Model.Templates[i];
-
-                            if (i < Model.Templates.Count - 1)
+            var options = {
+                moduleId: moduleId,
+                contentTypes: [
+                    @{
+                        for (var i = 0; i < Model.ContentTypes.Count; i++)
                             {
-                                @:{ name: '@template.Name', value: @template.TemplateId },
+                                var contentType = Model.ContentTypes[i];
+
+                                if (i < Model.ContentTypes.Count - 1)
+                                {
+                                    @:{ name: '@contentType.Name', value: @contentType.ContentTypeId },
+                                    }
+                                else
+                                {
+                                    @:{ name: '@contentType.Name', value: @contentType.ContentTypeId }
                                 }
-                            else
-                            {
-                                @:{ name: '@template.Name', value: @template.TemplateId }
                             }
                         }
-                    }
-            ],
-            selectedTypeId: @Model.ContentTypeId,
-            selectedViewTemplateId: @Model.ViewTemplateId,
-            selectedEditTemplateId: @Model.EditTemplateId,
-            servicesFramework: $.ServicesFramework(moduleId),
-            servicePath: "Dnn/DynamicContentViewer"
-        };
+                    ],
+                templates: [
+                    @{
+                        for (var i = 0; i < Model.Templates.Count; i++)
+                            {
+                                var template = Model.Templates[i];
 
-        var quickSettings = new dcc.quickSettings($, ko, options, resx);
+                                if (i < Model.Templates.Count - 1)
+                                {
+                                    @:{ name: '@template.Name', value: @template.TemplateId },
+                                    }
+                                else
+                                {
+                                    @:{ name: '@template.Name', value: @template.TemplateId }
+                                }
+                            }
+                        }
+                    ],
+                selectedTypeId: @Model.ContentTypeId,
+                selectedViewTemplateId: @Model.ViewTemplateId,
+                selectedEditTemplateId: @Model.EditTemplateId,
+                servicesFramework: $.ServicesFramework(moduleId),
+                servicePath: "Dnn/DynamicContentViewer"
+            };
 
-        quickSettings.init("#DCCquickSettings-" + moduleId);
-    });
+            var quickSettings = new dcc.quickSettings($, ko, options, resx);
 
+            quickSettings.init("#DCCquickSettings-" + moduleId);
+        });
+    })(jQuery);
 </script>
