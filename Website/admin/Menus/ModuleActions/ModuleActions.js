@@ -15,6 +15,7 @@
         var count = adminCount + customCount;
         var isShared = opts.isShared;
         var supportsQuickSettings = opts.supportsQuickSettings;
+        var displayQuickSettings = opts.displayQuickSettings;
 
         function completeMove(targetPane, moduleOrder) {
             //remove empty pane class
@@ -117,6 +118,60 @@
                         completeMove(targetPane, (2 * moduleIndex - 2));
                     });
             });
+        }
+
+        function closeMenu(ul) {
+            if (ul && ul.position()) {
+                if (ul.position().top > 0) {
+                    ul.hide('slide', { direction: 'up' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                } else {
+                    ul.hide('slide', { direction: 'down' }, 80, function () {
+                        dnn.removeIframeMask(ul[0]);
+                    });
+                }
+            }
+        }
+
+        function showMenu(ul) {
+            // detect position
+            var $self = ul.parent();
+            var windowHeight = $(window).height();
+            var windowScroll = $(window).scrollTop();
+            var thisTop = $self.offset().top;
+            var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+
+            var ulHeight = ul.height();
+
+            if ($self.hasClass('actionQuickSettings')) {
+                var container = $(".DnnModule-" + moduleId);
+                var containerWidth = container.width();
+                ul.css({ width: containerWidth });
+            }
+
+            if (!atViewPortTop) {
+                ul.css({
+                    top: -ulHeight,
+                    right: 0
+                }).show('slide', { direction: 'down' }, 80, function () {
+                    if ($(this).parent().hasClass('actionMenuMove')) {
+                        $(this).jScrollPane();
+                    }
+                    dnn.addIframeMask(ul[0]);
+                });
+            }
+            else {
+                ul.css({
+                    top: 20,
+                    right: 0
+                }).show('slide', { direction: 'up' }, 80, function () {
+                    if ($(this).parent().hasClass('actionMenuMove')) {
+                        $(this).jScrollPane();
+                    }
+                    dnn.addIframeMask(ul[0]);
+                });
+            }
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
@@ -284,7 +339,7 @@
                 left: containerPosition.left + containerWidth - 65
             });
         }
-	    
+
         function watchResize(mId) {
             var container = $(".DnnModule-" + mId);
             container.data("o-size", { w: container.width(), h: container.height() });
@@ -331,62 +386,15 @@
             }
         }
 
-        $('#moduleActions-' + moduleId + ' .dnn_mact > li.actionMenuMove > ul').jScrollPane();
+        $("#moduleActions-" + moduleId + " .dnn_mact > li.actionMenuMove > ul").jScrollPane();
 
-        $('#moduleActions-' + moduleId + ' .dnn_mact li').hoverIntent({
+        $("#moduleActions-" + moduleId + " .dnn_mact > li").hoverIntent({
             over: function () {
-                // detect position
-                var $self = $(this);
-                var windowHeight = $(window).height();
-                var windowScroll = $(window).scrollTop();
-                var thisTop = $self.offset().top;
-                var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
-
-                var ul = $self.find('ul');
-                var ulHeight = ul.height();
-
-                if ($self.hasClass('actionQuickSettings')) {
-                    var container = $(".DnnModule-" + moduleId);
-                    var containerWidth = container.width();
-                    ul.css({ width: containerWidth });
-                }
-
-                if (!atViewPortTop) {
-                    ul.css({
-                        top: -ulHeight,
-                        right: 0
-                    }).show('slide', { direction: 'down' }, 80, function () {
-                        if ($(this).parent().hasClass('actionMenuMove')) {
-                            $(this).jScrollPane();
-                        }
-                        dnn.addIframeMask(ul[0]);
-                    });
-                }
-                else {
-                    ul.css({
-                        top: 20,
-                        right: 0
-                    }).show('slide', { direction: 'up' }, 80, function () {
-                        if ($(this).parent().hasClass('actionMenuMove')) {
-                            $(this).jScrollPane();
-                        }
-                        dnn.addIframeMask(ul[0]);
-                    });
-                }
-
+                showMenu($(this).find("ul"));
             },
             out: function () {
-                var ul = $(this).find('ul');
-                if (ul && ul.position()) {
-                    if (ul.position().top > 0) {
-                        ul.hide('slide', { direction: 'up' }, 80, function () {
-                            dnn.removeIframeMask(ul[0]);
-                        });
-                    } else {
-                        ul.hide('slide', { direction: 'down' }, 80, function () {
-                            dnn.removeIframeMask(ul[0]);
-                        });
-                    }
+                if (!($(this).hasClass("actionQuickSettings") && displayQuickSettings)) {
+                    closeMenu($(this).find("ul"));
                 }
             },
             timeout: 400,
