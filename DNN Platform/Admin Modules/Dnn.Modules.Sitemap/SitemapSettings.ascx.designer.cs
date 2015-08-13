@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Sitemap {
+namespace Dnn.Modules.Sitemap {
     
     
     public partial class SitemapSettings {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSiteMap;
+        protected global::System.Web.UI.UserControl lblSiteMap;
         
         /// <summary>
         /// lnkSiteMapUrl control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLevelPriority;
+        protected global::System.Web.UI.UserControl lblLevelPriority;
         
         /// <summary>
         /// chkLevelPriority control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblMinPagePriority;
+        protected global::System.Web.UI.UserControl lblMinPagePriority;
         
         /// <summary>
         /// txtMinPagePriority control.
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeHidden;
+        protected global::System.Web.UI.UserControl lblIncludeHidden;
         
         /// <summary>
         /// chkIncludeHidden control.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblExcludePriority;
+        protected global::System.Web.UI.UserControl lblExcludePriority;
         
         /// <summary>
         /// txtExcludePriority control.
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblCache;
+        protected global::System.Web.UI.UserControl lblCache;
         
         /// <summary>
         /// cmbDaysToCache control.
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSearchEngine;
+        protected global::System.Web.UI.UserControl lblSearchEngine;
         
         /// <summary>
         /// cboSearchEngine control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblVerification;
+        protected global::System.Web.UI.UserControl lblVerification;
         
         /// <summary>
         /// txtVerification control.
