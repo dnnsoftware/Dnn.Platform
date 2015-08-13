@@ -1,6 +1,6 @@
 ﻿
 (function ($) {
-    $.fn.dnnModuleActions = function (options, resx) {
+    $.fn.dnnModuleActions = function (options) {
         var opts = $.extend({}, $.fn.dnnModuleActions.defaultOptions, options);
         var $self = this;
         var actionButton = opts.actionButton;
@@ -14,8 +14,7 @@
         var supportsMove = opts.supportsMove;
         var count = adminCount + customCount;
         var isShared = opts.isShared;
-        var supportsQuickActions = opts.supportsQuickActions;
-        var quickSettings = opts.quickSettings;
+        var supportsQuickSettings = opts.supportsQuickSettings;
 
         function completeMove(targetPane, moduleOrder) {
             //remove empty pane class
@@ -265,18 +264,10 @@
         function buildQuickSettings(root, rootText, rootClass, rootIcon) {
             var $parent = buildMenuRoot(root, rootText, rootClass, rootIcon);
 
-            var htmlString = "<li id=\"moduleActions-" + moduleId + "-QuickSettings\">"
-                              + "<div><div class='qsHeader'>" + resx.quickSettings + "</div><div class='qsContainer'>"
-                              + "</div><div class='qsFooter'><a class='secondarybtn'>" + resx.cancel + "</a>"
-                              + "<a class='primarybtn'>" + resx.save + "</a></div></div>";
-            $parent.append(htmlString);
-
-            var $container = $parent.find(".qsContainer");
-
-            var $quickSettings = $(quickSettings);
+            var $quickSettings = $("#moduleActions-" + moduleId + "-QuickSettings");
             $quickSettings.show();
 
-            $container.append($quickSettings);
+            $parent.append($quickSettings);
         }
 
         function position(mId) {
@@ -329,7 +320,7 @@
                 if (supportsMove) {
                     buildMoveMenu(menuRoot, "Move", "actionMenuMove", "arrows");
                 }
-                if (supportsQuickActions) {
+                if (supportsQuickSettings) {
                     buildQuickSettings(menuRoot, "Quick", "actionQuickSettings", "caret-down");
                 }
 
@@ -414,7 +405,7 @@
         downText: "Down",
         bottomText: "Bottom",
         movePaneText: "To {0}",
-        supportsQuickActions: true
+        supportsQuickSettings: false
     };
 
     $.fn.dnnQuickSettings = function(options) {
@@ -426,7 +417,6 @@
         var moduleId = opts.moduleId;
 
         var $container = $("#moduleActions-" + moduleId + "-QuickSettings");
-        var $parent = $container.parent();
         var $saveButton = $container.find(".qsFooter a.primarybtn");
         var $cancelButton = $container.find("a.secondarybtn");
 
@@ -446,12 +436,12 @@
 
         $cancelButton.click(function () {
             onCancel.call(this);
-            closeMenu($parent);
+            closeMenu($container.parent());
         });
 
         $saveButton.click(function () {
             onSave.call(this);
-            closeMenu($parent);
+            closeMenu($container.parent());
         });
 
         return $self;

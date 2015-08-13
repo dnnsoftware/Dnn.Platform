@@ -18,7 +18,7 @@ dcc.quickSettings = function ($, ko, options, resx) {
         $rootElement = $(element);
 
         viewModel.contentTypes = opts.contentTypes;
-        viewModel.templates = ko.observableArray([]);
+        viewModel.templates = ko.observableArray(opts.templates);
         viewModel.selectedTypeId = ko.observable(opts.selectedTypeId);
         viewModel.selectedViewTemplateId = ko.observable(opts.selectedViewTemplateId);
         viewModel.selectedEditTemplateId = ko.observable(opts.selectedEditTemplateId);
@@ -35,7 +35,7 @@ dcc.quickSettings = function ($, ko, options, resx) {
                     viewModel.templates.removeAll();
                     for (var i = 0; i < data.data.results.length; i++) {
                         var result = data.data.results[i];
-                        var template = { name: result.name, value: result.templateId };
+                        var template = { name: result.name, value: result.value };
                         viewModel.templates.push(template);
                     }
                 }
@@ -46,11 +46,39 @@ dcc.quickSettings = function ($, ko, options, resx) {
         );
         };
 
+        var saveSettings = function () {
+            var params = {
+                contentTypeId: viewModel.selectedTypeId(),
+                viewTemplateId: viewModel.selectedViewTemplateId(),
+                editTemplateId: viewModel.selectedEditTemplateId()
+            };
+
+            util.settingsService().post("SaveSettings", params,
+                function (data) {
+                    if (data.success === true) {
+                        //Success
+                    } else {
+                        //Error
+                        util.alert(data.message, resx.ok);
+                    }
+                },
+                function () {
+                    //Failure
+                }
+            );
+
+        };
+
         viewModel.selectedTypeId.subscribe(function (newValue) {
             getTemplates(newValue);
         });
 
         ko.applyBindings(viewModel, $rootElement[0]);
+
+        $(element).dnnQuickSettings({
+            moduleId: opts.moduleId,
+            onSave: saveSettings
+        });
     }
 
 

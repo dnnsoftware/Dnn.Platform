@@ -1,6 +1,27 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Admin.Containers.ModuleActions" Codebehind="ModuleActions.ascx.cs" %>
 <asp:LinkButton runat="server" ID="actionButton" />
-<asp:Panel id="quickSettings" runat="server" style="display: none"></asp:Panel>
+
+<%
+    if (SupportsQuickSettings)
+    {
+        %>
+        <li id="moduleActions-<% = ModuleContext.Configuration.ModuleID %>-QuickSettings" style="display:none">
+            <div>
+                <div class="qsHeader"><%=Localization.GetSafeJSString("QuickSettings", Localization.SharedResourceFile) %></div>
+                <div class="qsContainer">
+                    <asp:Panel id="quickSettings" runat="server">
+    
+                    </asp:Panel>
+                </div>
+                <div class="qsFooter">
+                    <a class="secondarybtn"><%=Localization.GetSafeJSString("Cancel", Localization.SharedResourceFile) %></a>
+                    <a class="primarybtn"><%=Localization.GetSafeJSString("Save", Localization.SharedResourceFile) %></a>
+                </div>
+            </div>
+        </li>
+        <%
+    }
+%>
 
 <script type="text/javascript">
     /*globals jQuery, window */
@@ -8,7 +29,6 @@
         function setUpActions() {
             var moduleId = <% = ModuleContext.Configuration.ModuleID %>;
             var tabId = <% = ModuleContext.Configuration.TabID %>;
-            var supportsQuickActions = <% = SupportsQuickActions.ToString().ToLower() %>;
 
             //Initialise the actions menu plugin
             $('#<%= actionButton.ClientID %>').dnnModuleActions({
@@ -32,14 +52,8 @@
                     confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
-                    supportsQuickActions:supportsQuickActions,
-                    isShared : <% = IsShared.ToString().ToLower() %>,
-                    quickSettings: "#<%= quickSettings.ClientID %>"
-                },
-                {
-                    cancel: '<%=Localization.GetSafeJSString("Cancel", Localization.SharedResourceFile) %>',
-                    quickSettings: '<%=Localization.GetSafeJSString("QuickSettings", Localization.SharedResourceFile) %>',
-                    save: '<%=Localization.GetSafeJSString("Save", Localization.SharedResourceFile) %>'
+                    supportsQuickSettings:<% = SupportsQuickSettings.ToString().ToLower() %>,
+                    isShared : <% = IsShared.ToString().ToLower() %>
                 }
             );
         }
@@ -47,7 +61,7 @@
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load
         var resizeThrottle;
-        var rootMenuWidth = (<% = SupportsQuickActions.ToString().ToLower() %>) ? 85 : 65;
+        var rootMenuWidth = (<% = SupportsQuickSettings.ToString().ToLower() %>) ? 85 : 65;
         $(window).resize(function () {
             if (resizeThrottle) {
                 clearTimeout(resizeThrottle);

@@ -70,7 +70,7 @@ namespace DotNetNuke.Admin.Containers
 
         protected bool SupportsMove { get; set; }
 
-        protected bool SupportsQuickActions { get; set; }
+        protected bool SupportsQuickSettings { get; set; }
 
         protected bool IsShared { get; set; }
 
@@ -108,14 +108,14 @@ namespace DotNetNuke.Admin.Containers
             Panes = "[]";
             try
             {
-                SupportsQuickActions = false;
+                SupportsQuickSettings = false;
 
                 var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
                 var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
 
                 if (quickSettingsControl != null)
                 {
-                    SupportsQuickActions = true;
+                    SupportsQuickSettings = true;
                     var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     quickSettings.Controls.Add(control);
                 }
