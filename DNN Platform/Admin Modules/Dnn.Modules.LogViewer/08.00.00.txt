@@ -1,9 +1,12 @@
 ﻿' Remove the original files from the old installation
-DesktopModules/Admin/Newsletters/Newsletter.ascx
-DesktopModules/Admin/Newsletters/Newsletter.ascx.cs
-DesktopModules/Admin/Newsletters/module.css
-DesktopModules/Admin/Newsletters/App_LocalResources/Newsletter.ascx.resx
+DesktopModules/Admin/LogViewer/LogViewer.ascx
+DesktopModules/Admin/LogViewer/LogViewer.ascx.cs
+DesktopModules/Admin/LogViewer/EditLogTypes.ascx
+DesktopModules/Admin/LogViewer/EditLogTypes.ascx.cs
+DesktopModules/Admin/LogViewer/module.css
+DesktopModules/Admin/LogViewer/App_LocalResources/LogViewer.ascx.resx
+DesktopModules/Admin/LogViewer/App_LocalResources/EditLogTypes.ascx.resx
 
 ' Remove folders
-DesktopModules/Admin/Newsletters/App_LocalResources
-DesktopModules/Admin/Newsletters
+DesktopModules/Admin/LogViewer/App_LocalResources
+DesktopModules/Admin/LogViewer

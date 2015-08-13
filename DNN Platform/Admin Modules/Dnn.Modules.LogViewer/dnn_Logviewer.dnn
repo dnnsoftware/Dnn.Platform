@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.LogViewer" type="Module" version="08.00.00" isSystem="true">
+		<package name="DotNetNuke.LogViewer" type="Module" version="08.00.00">
 			<friendlyName>Log Viewer</friendlyName>
 			<description>Administrators can send bulk email to all users belonging to a particular Role.</description>
 			<iconFile>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconFile>
@@ -14,6 +14,7 @@
 			<releaseNotes src="releaseNotes.txt" />
 			<azureCompatible>true</azureCompatible>
 			<components>
+				<component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
 				<component type="Module">
 					<desktopModule>
 						<moduleName>LogViewer</moduleName>
@@ -74,7 +75,14 @@
 						</resourceFile>
 					</resourceFiles>
 				</component>
-				<component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
+				<component type="File">
+					<files>
+						<basePath>DesktopModules\Admin\LogViewer</basePath>
+						<file>
+							<name>08.00.00.txt</name>
+						</file>
+					</files>
+				</component>
 			</components>
 		</package>
 	</packages>
