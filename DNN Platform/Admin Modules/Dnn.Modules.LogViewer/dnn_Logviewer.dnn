@@ -35,6 +35,8 @@
 										<iconFile>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconFile>
 										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Event Viewer/About the Log Viewer Module.html</helpUrl>
 										<viewOrder>0</viewOrder>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<supportsPopUps>True</supportsPopUps>
 									</moduleControl>
 									<moduleControl>
 										<controlKey>Edit</controlKey>
@@ -44,6 +46,8 @@
 										<iconFile></iconFile>
 										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Event Viewer/SuperUsers/Editing Log Settings.html</helpUrl>
 										<viewOrder>0</viewOrder>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<supportsPopUps>True</supportsPopUps>
 									</moduleControl>
 								</moduleControls>
 							</moduleDefinition>
