@@ -35,6 +35,8 @@
 										<iconFile>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconFile>
 										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Search Engine Site Map/About the Search Engine SiteMap Module.html</helpUrl>
 										<viewOrder>0</viewOrder>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<supportsPopUps>True</supportsPopUps>
 									</moduleControl>
 								</moduleControls>
 							</moduleDefinition>
