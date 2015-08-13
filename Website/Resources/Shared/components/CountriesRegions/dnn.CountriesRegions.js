@@ -88,10 +88,11 @@ function setupCountryAutoComplete() {
 	$('input[data-editor="DnnCountryAutocompleteControl"]').autocomplete({
 		minLength: 2,
 		source: function (request, response) {
+			var control = this.element;
 			if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
 			dnnCountryRegionService.listCountries(request.term, function (data) {
 				if (data.length == 0) {
-					clearCountryValue(this);
+					clearCountryValue(control);
 				};
 				response($.map(data, function (item) {
 					return {
