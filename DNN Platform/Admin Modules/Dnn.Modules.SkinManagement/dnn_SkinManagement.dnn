@@ -18,7 +18,7 @@
           <desktopModule>
             <moduleName>SkinManagement</moduleName>
             <foldername>Admin/SkinManagement</foldername>
-            <businessControllerClass>Dnn.Modules.SkinManagement.Components.SkinManagementController</businessControllerClass>
+            <businessControllerClass>Dnn.Modules.SkinManagement.Components.SkinManagementController, Dnn.Modules.SkinManagement</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
@@ -29,6 +29,26 @@
                   <moduleControl>
                     <controlKey />
                     <controlSrc>DesktopModules/Admin/SkinManagement/editskins.ascx</controlSrc>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile>~/Icons/Sigma/Skins_32X32_Standard.png</iconFile>
+                    <helpUrl>http://www.dnnsoftware.com/help#Dnn.Platform/Documentation/Using the Control Panel/Admin Console/Skins/About the Skins Module.html</helpUrl>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <desktopModule>
+            <moduleName>SkinAttributes</moduleName>
+            <foldername>Admin/SkinManagement</foldername>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Theme Designer</friendlyName>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Admin/SkinManagement/Attributes.ascx</controlSrc>
                     <controlTitle />
                     <controlType>View</controlType>
                     <iconFile>~/Icons/Sigma/Skins_32X32_Standard.png</iconFile>

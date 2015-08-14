@@ -761,7 +761,7 @@ namespace Dnn.Modules.SkinManagement
 			if (UserInfo.IsSuperUser == false && cboSkins.SelectedItem.Value.IndexOf("\\portals\\_default\\", 0) != -1)
 			{
 				strMessage = Localization.GetString("SkinDeleteFailure", LocalResourceFile);
-				UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+				Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
 				failure = true;
 			}
 			else
@@ -772,7 +772,7 @@ namespace Dnn.Modules.SkinManagement
 					if (skinPackage != null)
 					{
 						strMessage = Localization.GetString("UsePackageUnInstall", LocalResourceFile);
-						UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+						Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
 						return;
 					}
 					if (Directory.Exists(strSkinPath))
@@ -790,7 +790,7 @@ namespace Dnn.Modules.SkinManagement
 					if (skinPackage != null)
 					{
 						strMessage = Localization.GetString("UsePackageUnInstall", LocalResourceFile);
-						UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+						Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
 						return;
 					}
 					if (Directory.Exists(strContainerPath))
