@@ -507,7 +507,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     foreach (var actionControl in container.Controls.OfType<IActionControl>())
                     {
-                        if (actionControl is ActionsMenu || actionControl is SolPartActions)
+                        if (actionControl is ActionsMenu)
                         {
                             Control control = actionControl as Control;
                             if (control != null)
