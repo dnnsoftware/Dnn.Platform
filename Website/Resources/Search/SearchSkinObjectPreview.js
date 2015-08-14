@@ -90,7 +90,8 @@
 
                     //attach see more       
                     $('.searchSkinObjectPreview_more', $wrap).on('click', function () {
-                        var href = $wrap.next().attr('href');
+	                    var $searchButton = $wrap.parents('.SearchContainer').length ? $wrap.parent().next() : $wrap.next();
+                        var href = $searchButton.attr('href');
                         var code = href.replace('javascript:', '');
                         eval(code);
                         return false;
