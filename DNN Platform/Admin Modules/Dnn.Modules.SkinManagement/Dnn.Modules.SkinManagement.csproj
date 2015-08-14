@@ -79,7 +79,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="08.00.00.txt" />
+    <Content Include="01.01.00.txt" />
     <Content Include="editskins.ascx" />
     <Content Include="license.txt" />
     <Content Include="Module.build" />

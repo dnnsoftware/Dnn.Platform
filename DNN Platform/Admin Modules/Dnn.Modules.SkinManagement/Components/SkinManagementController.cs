@@ -76,11 +76,11 @@ namespace Dnn.Modules.SkinManagement.Components
                             }
                         }
 
-                        // update the Skins references to Themes
-                        UpdateModuleReferences();
-
                         // delete the Skins page
                         DeleteSkinsPage(portalSettings.PortalId);
+
+                        // update the Skins references to Themes
+                        UpdateModuleReferences();
 
                         // uninstall the old skin modules
                         UninstallOldModules(portalSettings.PortalId);
