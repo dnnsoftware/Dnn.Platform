@@ -166,11 +166,11 @@ namespace Dnn.Modules.SkinManagement.Components
             objModule.PortalID = portalId;
             objModule.TabID = themeTab.TabID;
             objModule.ModuleTitle = moduleDefinition.FriendlyName;
-            objModule.PaneName = Globals.glbDefaultPane;
+            objModule.PaneName = Globals.glbDefaultPane; // ContentPane
             objModule.ModuleDefID = moduleDefinition.ModuleDefID;
             objModule.InheritViewPermissions = true;
             objModule.AllTabs = false;
-            objModule.ModuleOrder = 3;
+            objModule.ModuleOrder = Null.NullInteger; // puts the module on the bottom
 
             ModuleController.Instance.AddModule(objModule);
         }
