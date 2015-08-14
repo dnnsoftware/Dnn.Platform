@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\SkinManagementController.cs" />
     <Compile Include="EditSkins.ascx.cs">
       <DependentUpon>editskins.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -69,6 +70,13 @@
       <DependentUpon>editskins.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Attributes.ascx.cs">
+      <DependentUpon>Attributes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Attributes.ascx.designer.cs">
+      <DependentUpon>Attributes.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="08.00.00.txt" />
@@ -77,6 +85,7 @@
     <Content Include="Module.build" />
     <Content Include="module.css" />
     <Content Include="releaseNotes.txt" />
+    <Content Include="Attributes.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dnn_SkinManagement.dnn">
@@ -99,6 +108,9 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Attributes.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
