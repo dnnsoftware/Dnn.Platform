@@ -1,0 +1,113 @@
+﻿// Copyright (c) DNN Software. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Web.Mvc;
+
+namespace DotNetNuke.Web.Mvc.Helpers
+{
+    public static class DnnLabelExtensions
+    {
+        public static MvcHtmlString Label<TModel>(this DnnHelper<TModel> dnnHelper, string expression, string labelText, string helpText)
+        {
+            return Label(dnnHelper, expression, labelText, helpText, null);
+        }
+
+        public static MvcHtmlString Label<TModel>(this DnnHelper<TModel> dnnHelper, string expression, string labelText, string helpText, object htmlAttributes)
+        {
+            return Label(dnnHelper, expression, labelText, helpText, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        public static MvcHtmlString Label<TModel>(this DnnHelper<TModel> dnnHelper, string expression, string labelText, string helpText, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
+
+            return LabelHelper(htmlHelper,
+                               ModelMetadata.FromStringExpression(expression, htmlHelper.ViewData),
+                               expression,
+                               labelText,
+                               helpText,
+                               htmlAttributes);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string labelText, string helpText)
+        {
+            return LabelFor(dnnHelper, expression, labelText, helpText, null);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string labelText, string helpText, object htmlAttributes)
+        {
+            return LabelFor(dnnHelper, expression, labelText, helpText, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string labelText, string helpText, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
+
+            return LabelHelper(htmlHelper,
+                               ModelMetadata.FromLambdaExpression(expression, dnnHelper.ViewData),
+                               ExpressionHelper.GetExpressionText(expression),
+                               labelText,
+                               helpText,
+                               htmlAttributes);
+        }
+
+        internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
+        {
+            string resolvedLabelText = labelText ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
+            if (String.IsNullOrEmpty(resolvedLabelText))
+            {
+                return MvcHtmlString.Empty;
+            }
+
+            var divTag = new TagBuilder("div");
+            divTag.Attributes.Add("class", "dnnLabel");
+            divTag.Attributes.Add("style", "position:relative;");
+            divTag.MergeAttributes(htmlAttributes, true);
+
+            var labelTag = new TagBuilder("label");
+            labelTag.Attributes.Add("for", TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName)));
+
+            var spanTag = new TagBuilder("span");
+            spanTag.SetInnerText(resolvedLabelText);
+
+            labelTag.InnerHtml = spanTag.ToString();
+
+            divTag.InnerHtml = labelTag.ToString();
+
+            var aTag = new TagBuilder("a");
+            aTag.Attributes.Add("class", "dnnFormHelp");
+            aTag.Attributes.Add("href", "#");
+            aTag.Attributes.Add("tabIndex", "-1");
+
+            divTag.InnerHtml += aTag.ToString();
+
+            var toolTipTag = new TagBuilder("div");
+            toolTipTag.Attributes.Add("class", "dnnTooltip");
+
+            var toolTipContentTag = new TagBuilder("div");
+            toolTipContentTag.Attributes.Add("class", "dnnFormHelpContent dnnClear");
+
+            spanTag = new TagBuilder("span");
+            spanTag.Attributes.Add("class", "dnnHelpText");
+            spanTag.SetInnerText(helpText);
+
+            aTag = new TagBuilder("a");
+            aTag.Attributes.Add("class", "pinHelp");
+            aTag.Attributes.Add("href", "#");
+
+            toolTipContentTag.InnerHtml = spanTag.ToString();
+            toolTipContentTag.InnerHtml += aTag.ToString();
+
+            toolTipTag.InnerHtml = toolTipContentTag.ToString();
+
+            divTag.InnerHtml += toolTipTag.ToString();
+
+
+            return new MvcHtmlString(divTag.ToString(TagRenderMode.Normal));
+        }
+    }
+}

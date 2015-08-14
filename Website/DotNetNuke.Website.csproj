@@ -38,6 +38,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,6 +97,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib">
@@ -944,6 +947,8 @@
       <DependentUpon>CreateModule.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <None Include="compilerconfig.json" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\template.cs" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateController.cs" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateInfo.cs" />
@@ -1585,7 +1590,9 @@
     <Content Include="admin\Menus\ModuleActions\images\Edit.png" />
     <Content Include="admin\Menus\ModuleActions\images\Move.png" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.ascx" />
-    <Content Include="admin\Menus\ModuleActions\ModuleActions.css" />
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.css">
+      <DependentUpon>ModuleActions.less</DependentUpon>
+    </Content>
     <Content Include="admin\Menus\ModuleActions\ModuleActions.js" />
     <Content Include="admin\Modules\export.ascx" />
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />
@@ -4532,6 +4539,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

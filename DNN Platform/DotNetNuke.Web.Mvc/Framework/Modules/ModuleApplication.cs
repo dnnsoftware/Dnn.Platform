@@ -49,13 +49,15 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public virtual IControllerFactory ControllerFactory { get; set; }
 
-        public virtual string DefaultActionName { get; set; }
+        public string DefaultActionName { get; set; }
 
-        public virtual string DefaultControllerName { get; set; }
+        public string DefaultControllerName { get; set; }
 
-        public virtual string FolderPath { get; set; }
+        public string[] DefaultNamespaces { get; set; }
 
-        public virtual string ModuleName { get; set; }
+        public string FolderPath { get; set; }
+
+        public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
 
@@ -97,6 +99,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 {
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
+
+                moduleController.DnnPage = context.DnnPage;
+
                 moduleController.ModuleContext = context.ModuleContext;
 
                 moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
