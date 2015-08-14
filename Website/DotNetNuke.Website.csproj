@@ -88,6 +88,7 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -917,83 +918,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
       <DependentUpon>RequestFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\CLControl.ascx.cs">
-      <DependentUpon>CLControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\CLControl.ascx.designer.cs">
-      <DependentUpon>CLControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EditLanguage.ascx.cs">
-      <DependentUpon>EditLanguage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EditLanguage.ascx.designer.cs">
-      <DependentUpon>EditLanguage.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx.cs">
-      <DependentUpon>EnableLocalizedContent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx.designer.cs">
-      <DependentUpon>EnableLocalizedContent.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditor.ascx.cs">
-      <DependentUpon>LanguageEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditor.ascx.designer.cs">
-      <DependentUpon>LanguageEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditorExt.ascx.cs">
-      <DependentUpon>languageeditorext.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditorExt.ascx.designer.cs">
-      <DependentUpon>languageeditorext.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx.cs">
-      <DependentUpon>LanguageEnabler.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx.designer.cs">
-      <DependentUpon>LanguageEnabler.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx.cs">
-      <DependentUpon>LanguagePackWriter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx.designer.cs">
-      <DependentUpon>LanguagePackWriter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageSettings.ascx.cs">
-      <DependentUpon>LanguageSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageSettings.ascx.designer.cs">
-      <DependentUpon>LanguageSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LocalizePages.ascx.cs">
-      <DependentUpon>LocalizePages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LocalizePages.ascx.designer.cs">
-      <DependentUpon>LocalizePages.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\ResourceVerifier.ascx.cs">
-      <DependentUpon>resourceverifier.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\ResourceVerifier.ascx.designer.cs">
-      <DependentUpon>resourceverifier.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\TranslationStatus.ascx.cs">
-      <DependentUpon>TranslationStatus.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\TranslationStatus.ascx.designer.cs">
-      <DependentUpon>TranslationStatus.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.cs">
       <DependentUpon>listeditor.ascx</DependentUpon>
@@ -1845,20 +1769,6 @@
     <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
     <Content Include="DesktopModules\Admin\HostSettings\module.css" />
     <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\CLControl.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\CLTools.css" />
-    <Content Include="DesktopModules\Admin\Languages\EditLanguage.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\images\detachState.png" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\languageeditorext.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageSettings.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LocalizePages.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\module.css" />
-    <Content Include="DesktopModules\Admin\Languages\resourceverifier.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\TranslationStatus.ascx" />
     <Content Include="DesktopModules\Admin\Lists\listeditor.ascx" />
     <Content Include="DesktopModules\Admin\Lists\ListEntries.ascx" />
     <Content Include="DesktopModules\Admin\Lists\module.css" />
@@ -4257,18 +4167,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\CLTools.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\EditLanguage.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\EnableLocalizedContent.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEditorExt.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEnabler.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguagePackWriter.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LocalizePages.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\ResourceVerifier.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\TranslationStatus.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEntries.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
