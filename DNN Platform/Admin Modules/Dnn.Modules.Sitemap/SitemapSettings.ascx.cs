@@ -21,13 +21,11 @@
 #region Usings
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -38,14 +36,16 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI.WebControls;
-
 using Telerik.Web.UI;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Sitemap
+namespace Dnn.Modules.Sitemap
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class SitemapSettings : PortalModuleBase
     {
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
                     file.Delete();
                 }
 
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ResetOK", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ResetOK", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
         }
 
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
 
             PortalController.UpdatePortalSetting(PortalId, "SitemapCacheDays", cmbDaysToCache.SelectedIndex.ToString());
 
-            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("MessageUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("MessageUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
 
 
             LoadConfiguration();
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("valPriority.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("valPriority.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
             }
         }
 

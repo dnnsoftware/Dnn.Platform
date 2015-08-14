@@ -1,0 +1,9 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/Sitemap/SitemapSettings.ascx
+DesktopModules/Admin/Sitemap/SitemapSettings.ascx.cs
+DesktopModules/Admin/Sitemap/module.css
+DesktopModules/Admin/Sitemap/App_LocalResources/SitemapSettings.ascx.resx
+
+' Remove folders
+DesktopModules/Admin/Sitemap/App_LocalResources
+DesktopModules/Admin/Sitemap
