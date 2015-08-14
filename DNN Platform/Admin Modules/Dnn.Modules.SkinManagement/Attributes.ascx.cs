@@ -276,12 +276,12 @@ namespace Dnn.Modules.SkinManagement
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
+                    Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
             }
             cboSettings.InsertItem(0, "<" + Localization.GetString("Not_Specified") + ">", "");
         }
@@ -340,12 +340,12 @@ namespace Dnn.Modules.SkinManagement
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
+                    Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -383,26 +383,26 @@ namespace Dnn.Modules.SkinManagement
 
                             UpdateManifest();
 
-                            UI.Skins.Skin.AddModuleMessage(this, "Skin Successfully Updated", ModuleMessage.ModuleMessageType.GreenSuccess);
+                            Skin.AddModuleMessage(this, "Skin Successfully Updated", ModuleMessage.ModuleMessageType.GreenSuccess);
                         }
                         catch
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, "Error Updating Skin File", ModuleMessage.ModuleMessageType.RedError);
+                            Skin.AddModuleMessage(this, "Error Updating Skin File", ModuleMessage.ModuleMessageType.RedError);
                         }
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, "Selected File Does Not Contain Token", ModuleMessage.ModuleMessageType.YellowWarning);
+                        Skin.AddModuleMessage(this, "Selected File Does Not Contain Token", ModuleMessage.ModuleMessageType.YellowWarning);
                     }
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "You Must Specify A Value For The Setting", ModuleMessage.ModuleMessageType.YellowWarning);
+                    Skin.AddModuleMessage(this, "You Must Specify A Value For The Setting", ModuleMessage.ModuleMessageType.YellowWarning);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "You Must Select A Token Setting", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "You Must Select A Token Setting", ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
