@@ -16,7 +16,7 @@
         var isShared = opts.IsShared;
         
         if (count > 0 || supportsMove) {
-            var $form = $("body form");
+            var $form = $("form#Form");
             if ($form.find("div#moduleActions-" + moduleId).length === 0) {
                 $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
                 var menu = $form.find("div:last");
