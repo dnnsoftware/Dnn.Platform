@@ -1529,9 +1529,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\Skins\Controls\SkinsEditControl.cs" />
-    <Compile Include="UI\Skins\Controls\SolPartMenu.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="UI\Skins\EventListeners\SkinEventArgs.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
@@ -1701,9 +1698,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingInfo.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
-    <Compile Include="UI\WebControls\SolPartActions.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
     <None Include="Module.build">

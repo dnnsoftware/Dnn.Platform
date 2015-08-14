@@ -2,4 +2,6 @@
 /********************************************/
 
 DELETE FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name in (N'DotNetNuke.SOLPARTACTIONSSkinObject', N'DotNetNuke.SOLPARTMENUSkinObject')
-DELETE FROM {databaseOwner}[{objectQualifier}SkinControls] WHERE ControlKey in (N'ACTIONS', N'MENU',N'SOLPARTACTIONS',N'SOLPARTMENU',)
+DELETE FROM {databaseOwner}[{objectQualifier}SkinControls] WHERE ControlKey in (N'ACTIONS', N'MENU',N'SOLPARTACTIONS',N'SOLPARTMENU')
+
+GO

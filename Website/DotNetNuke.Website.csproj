@@ -1445,6 +1445,10 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.04.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1456,15 +1460,12 @@
     <Content Include="403-3.gif" />
     <Content Include="admin\Containers\actionbutton.ascx" />
     <Content Include="admin\Containers\actionbutton.xml" />
-    <Content Include="admin\Containers\actions.ascx" />
     <Content Include="admin\Containers\dropdownactions.ascx" />
     <Content Include="admin\Containers\icon.ascx" />
     <Content Include="admin\Containers\Icon.xml" />
     <Content Include="admin\Containers\linkactions.ascx" />
     <Content Include="admin\Containers\linkactions.xml" />
     <Content Include="admin\Containers\printmodule.ascx" />
-    <Content Include="admin\Containers\solpartactions.ascx" />
-    <Content Include="admin\Containers\solpartactions.xml" />
     <Content Include="admin\Containers\title.ascx" />
     <Content Include="admin\Containers\Title.xml" />
     <Content Include="admin\Containers\Toggle.ascx" />
@@ -1739,7 +1740,6 @@
     <Content Include="admin\Skins\Login.xml" />
     <Content Include="admin\Skins\logo.ascx" />
     <Content Include="admin\Skins\Logo.xml" />
-    <Content Include="admin\Skins\menu.ascx" />
     <Content Include="admin\Skins\Meta.ascx" />
     <Content Include="admin\Skins\modulemessage.ascx" />
     <Content Include="admin\Skins\nav.ascx" />
@@ -1748,7 +1748,6 @@
     <Content Include="admin\Skins\Privacy.xml" />
     <Content Include="admin\Skins\search.ascx" />
     <Content Include="admin\Skins\Search.xml" />
-    <Content Include="admin\Skins\solpartmenu.ascx" />
     <Content Include="admin\Skins\Styles.ascx" />
     <Content Include="admin\Skins\tags.ascx" />
     <Content Include="admin\Skins\Tags.xml" />
@@ -1784,7 +1783,6 @@
     <Content Include="controls\sectionheadcontrol.ascx" />
     <Content Include="controls\skincontrol.ascx" />
     <Content Include="controls\skinthumbnailcontrol.ascx" />
-    <Content Include="controls\SolpartMenu\spmenu.js" />
     <Content Include="controls\texteditor.ascx" />
     <Content Include="controls\urlcontrol.ascx" />
     <Content Include="controls\urltrackingcontrol.ascx" />
@@ -3556,7 +3554,6 @@
     <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
     <Content Include="Licenses\Sharepoint Logging Library %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
-    <Content Include="Licenses\SolPartMenu %28Custom%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />
     <Content Include="Licenses\WatiN %28Apache%29.txt" />
@@ -4415,7 +4412,6 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="controls\SolpartMenu\SPMenuCaps.config" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\_template.cshtml" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\_template.vbhtml" />
     <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
