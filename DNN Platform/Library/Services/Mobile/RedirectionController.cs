@@ -178,8 +178,9 @@ namespace DotNetNuke.Services.Mobile
             {
                 return redirectUrl;
             }
-			
-			var clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
+
+            IClientCapability clientCapability = null;
+           
 			foreach (var redirection in redirections)
 			{
 				if (redirection.Enabled)
@@ -215,6 +216,10 @@ namespace DotNetNuke.Services.Mobile
 
 					if (checkFurther)
 					{
+					    if (clientCapability == null)
+					    {
+                            clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
+					    }
 						//check if client capability matches with this rule
 						if (DoesCapabilityMatchWithRule(clientCapability, redirection))
 						{
