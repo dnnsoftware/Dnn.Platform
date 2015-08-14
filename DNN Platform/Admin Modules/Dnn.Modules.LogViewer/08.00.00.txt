@@ -1,0 +1,12 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/LogViewer/LogViewer.ascx
+DesktopModules/Admin/LogViewer/LogViewer.ascx.cs
+DesktopModules/Admin/LogViewer/EditLogTypes.ascx
+DesktopModules/Admin/LogViewer/EditLogTypes.ascx.cs
+DesktopModules/Admin/LogViewer/module.css
+DesktopModules/Admin/LogViewer/App_LocalResources/LogViewer.ascx.resx
+DesktopModules/Admin/LogViewer/App_LocalResources/EditLogTypes.ascx.resx
+
+' Remove folders
+DesktopModules/Admin/LogViewer/App_LocalResources
+DesktopModules/Admin/LogViewer

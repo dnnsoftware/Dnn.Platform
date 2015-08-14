@@ -1009,20 +1009,6 @@
     <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.designer.cs">
       <DependentUpon>ListEntries.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\EditLogTypes.ascx.cs">
-      <DependentUpon>editlogtypes.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\EditLogTypes.ascx.designer.cs">
-      <DependentUpon>editlogtypes.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\LogViewer.ascx.cs">
-      <DependentUpon>logviewer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\LogViewer.ascx.designer.cs">
-      <DependentUpon>logviewer.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1883,9 +1869,6 @@
     <Content Include="DesktopModules\Admin\Lists\listeditor.ascx" />
     <Content Include="DesktopModules\Admin\Lists\ListEntries.ascx" />
     <Content Include="DesktopModules\Admin\Lists\module.css" />
-    <Content Include="DesktopModules\Admin\LogViewer\editlogtypes.ascx" />
-    <Content Include="DesktopModules\Admin\LogViewer\logviewer.ascx" />
-    <Content Include="DesktopModules\Admin\LogViewer\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
@@ -4297,8 +4280,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\TranslationStatus.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEntries.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\LogViewer\App_LocalResources\EditLogTypes.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\LogViewer\App_LocalResources\LogViewer.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
