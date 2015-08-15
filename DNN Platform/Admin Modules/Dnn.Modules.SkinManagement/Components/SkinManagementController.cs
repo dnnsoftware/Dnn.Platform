@@ -23,11 +23,11 @@ using System;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Upgrade;
@@ -39,6 +39,11 @@ namespace Dnn.Modules.SkinManagement.Components
     /// </summary>
     public class SkinManagementController : IUpgradeable
     {
+        private const string SKIN_NAME = "Skins";
+        private const string SKIN_DESIGNER_NAME = "Skin Designer";
+        private const string THEME_NAME = "Themes";
+        private const string THEME_DESIGNER_NAME = "Theme Designer";
+
         /// <summary>
         /// 
         /// </summary>
@@ -52,26 +57,26 @@ namespace Dnn.Modules.SkinManagement.Components
                 {
                     case "01.01.00":
                         var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                        var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Themes");
+                        var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_NAME);
                         
                         if (moduleDefinition != null)
                         {
                             //Add Module to Admin Page for all Portals
-                            Upgrade.AddAdminPages("Themes",
+                            Upgrade.AddAdminPages(THEME_NAME,
                                                     "Manage the installed themes, and how they're applied on the site.",
                                                     "~/Icons/Sigma/Skins_16X16_Standard.png",
                                                     "~/Icons/Sigma/Skins_32X32_Standard.png",
                                                     true,
                                                     moduleDefinition.ModuleDefID,
-                                                    "Themes",
+                                                    THEME_NAME,
                                                     "~/Icons/Sigma/Skins_32X32_Standard.png",
                                                     true);
 
                             // add the theme attributes module to the same admin page
-                            var themePage = TabController.Instance.GetTabByName("Themes", portalSettings.PortalId);
+                            var themePage = TabController.Instance.GetTabByName(THEME_NAME, portalSettings.PortalId);
                             if (themePage != null)
                             {
-                                var attributeDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("ThemeDesigner");
+                                var attributeDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_DESIGNER_NAME);
                                 AddAttributeModule(portalSettings.PortalId, themePage, attributeDefinition);
                             }
                         }
@@ -90,15 +95,16 @@ namespace Dnn.Modules.SkinManagement.Components
 
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Exceptions.LogException(ex);
                 return "Failed";
             }
         }
 
         private void DeleteSkinsPage(int portalId)
         {
-            var skinsPage = TabController.Instance.GetTabByName("Skins", portalId);
+            var skinsPage = TabController.Instance.GetTabByName(SKIN_NAME, portalId);
 
             if (skinsPage != null)
             {
@@ -108,16 +114,16 @@ namespace Dnn.Modules.SkinManagement.Components
 
         private void UpdateModuleReferences()
         {
-            var oldSkinModuleId = GetModuleDefinitionID("Skins");
-            var newSkinModuleId = GetModuleDefinitionID("Themes");
+            var oldSkinModuleId = GetModuleDefinitionID(SKIN_NAME);
+            var newSkinModuleId = GetModuleDefinitionID(THEME_NAME);
 
             if (oldSkinModuleId > Null.NullInteger && newSkinModuleId > Null.NullInteger)
             {
                 UpdateModuleReference(oldSkinModuleId, newSkinModuleId);
             }
 
-            var oldAttributeModuleId = GetModuleDefinitionID("Skin Designer");
-            var newAttributeModuleId = GetModuleDefinitionID("Theme Designer");
+            var oldAttributeModuleId = GetModuleDefinitionID(SKIN_DESIGNER_NAME);
+            var newAttributeModuleId = GetModuleDefinitionID(THEME_DESIGNER_NAME);
 
             if (oldAttributeModuleId > Null.NullInteger && newAttributeModuleId > Null.NullInteger)
             {
@@ -144,7 +150,7 @@ namespace Dnn.Modules.SkinManagement.Components
 
         private void UninstallOldModules(int portalId)
         {
-            UninstallOldModule("Skins", portalId);
+            UninstallOldModule(SKIN_NAME, portalId);
             UninstallOldModule("SkinDesigner", portalId);
         }
 
@@ -152,7 +158,7 @@ namespace Dnn.Modules.SkinManagement.Components
         {
             var dm = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
             var package = PackageController.Instance.GetExtensionPackage(portalId, p => p.PackageID == dm.PackageID);
-            var installer = new Installer(package, DotNetNuke.Common.Globals.ApplicationMapPath);
+            var installer = new Installer(package, Globals.ApplicationMapPath);
 
             installer.UnInstall(true);
         }
