@@ -20,6 +20,7 @@
 #endregion
 
 using System.Web.Mvc;
+using System.Web.UI;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.UI.Modules;
 
@@ -28,6 +29,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
     public interface IDnnController : IController
     {
         ControllerContext ControllerContext { get; }
+
+        Page DnnPage { get; set; }
 
         string LocalResourceFile { get; set; }
 
