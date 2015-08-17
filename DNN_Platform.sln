@@ -226,6 +226,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.HtmlEditorManager", "DNN Platform\Modules\HtmlEditorManager\DotNetNuke.Modules.HtmlEditorManager.csproj", "{000181C6-C95F-4302-9130-A66B693FFFD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Razor", "DNN Platform\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj", "{9806C125-8CA9-48CC-940A-CCD0442C5993}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN Platform\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj", "{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -287,6 +290,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Websi
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
 		{EE1329FE-FD88-4E1A-968C-345E394EF080} = {EE1329FE-FD88-4E1A-968C-345E394EF080}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.LogViewer", "DNN Platform\Admin Modules\Dnn.Modules.LogViewer\Dnn.Modules.LogViewer.csproj", "{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Sitemap", "DNN Platform\Admin Modules\Dnn.Modules.Sitemap\Dnn.Modules.Sitemap.csproj", "{8CD1B407-FC7E-4F15-8ABF-C368B647590E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Languages", "DNN Platform\Admin Modules\Dnn.Modules.Languages\Dnn.Modules.Languages.csproj", "{E66B5763-2EAA-470D-84CB-A8FE1D21E864}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -672,6 +681,24 @@ Global
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E}.Release|x86.ActiveCfg = Release|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -756,5 +783,8 @@ Global
 		{53587796-3981-4E25-A8BA-29E62901C003} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3} = {53587796-3981-4E25-A8BA-29E62901C003}
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05} = {53587796-3981-4E25-A8BA-29E62901C003}
+		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{8CD1B407-FC7E-4F15-8ABF-C368B647590E} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{E66B5763-2EAA-470D-84CB-A8FE1D21E864} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 	EndGlobalSection
 EndGlobal

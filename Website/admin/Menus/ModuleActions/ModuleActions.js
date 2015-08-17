@@ -13,6 +13,7 @@
         var panes = opts.panes;
         var supportsMove = opts.supportsMove;
         var count = adminCount + customCount;
+<<<<<<< HEAD
         var isShared = opts.isShared;
         var supportsQuickSettings = opts.supportsQuickSettings;
 
@@ -38,6 +39,24 @@
                     window.location.reload();
                 },
                 error: function () {
+=======
+        var isShared = opts.IsShared;
+        
+        if (count > 0 || supportsMove) {
+            var $form = $("form#Form");
+            if ($form.find("div#moduleActions-" + moduleId).length === 0) {
+                $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
+                var menu = $form.find("div:last");
+                var menuRoot = menu.find("ul");
+                if (customCount > 0) {
+                    buildMenu(menuRoot, "Edit", "actionMenuEdit", customActions, customCount);
+                }
+                if (adminCount > 0) {
+                    buildMenu(menuRoot, "Admin", "actionMenuAdmin", adminActions, adminCount);
+                }
+                if (supportsMove) {
+                    buildMoveMenu(menuRoot, "Move", "actionMenuMove");
+>>>>>>> development
                 }
             });
 

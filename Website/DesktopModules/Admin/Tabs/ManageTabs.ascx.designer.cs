@@ -550,7 +550,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Modules.Admin.Languages.CLControl CLControl1;
+		protected dynamic CLControl1;
         
         /// <summary>
         /// cmdUpdateLocalization control.

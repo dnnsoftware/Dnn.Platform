@@ -1,0 +1,12 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/Languages/CLControl.ascx.cs
+DesktopModules/Admin/Languages/EditLanguage.ascx.cs
+DesktopModules/Admin/Languages/EnableLocalizedContent.ascx.cs
+DesktopModules/Admin/Languages/LanguageEditor.ascx.cs
+DesktopModules/Admin/Languages/LanguageEditorExt.ascx.cs
+DesktopModules/Admin/Languages/LanguageEnabler.ascx.cs
+DesktopModules/Admin/Languages/LanguagePackWriter.ascx.cs
+DesktopModules/Admin/Languages/LanguageSettings.ascx.cs
+DesktopModules/Admin/Languages/LocalizePages.ascx.cs
+DesktopModules/Admin/Languages/ResourceVerifier.ascx.cs
+DesktopModules/Admin/Languages/TranslationStatus.ascx.cs
