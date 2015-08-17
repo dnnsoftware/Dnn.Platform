@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Helpers">
       <HintPath>..\..\Packages\Microsoft.AspNet.WebHelpers.3.1.0\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
@@ -136,12 +140,6 @@
     <Compile Include="Routing\HttpContextExtensions.cs" />
     <Compile Include="Routing\ModuleRoutingProvider.cs" />
     <Compile Include="Routing\StandardModuleRoutingProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
-      <Project>{6B29ADED-7B56-4484-BEA5-C0E09079535B}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
