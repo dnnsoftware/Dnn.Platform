@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.UI;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -60,6 +61,8 @@ namespace DotNetNuke.Admin.Containers
         {
             get { return Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile); }
         }
+
+        protected bool DisplayQuickSettings { get; set; }
 
         protected string MoveText
         {
@@ -109,6 +112,7 @@ namespace DotNetNuke.Admin.Containers
             try
             {
                 SupportsQuickSettings = false;
+                DisplayQuickSettings = false;
 
                 var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
                 var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
@@ -118,6 +122,9 @@ namespace DotNetNuke.Admin.Containers
                     SupportsQuickSettings = true;
                     var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     quickSettings.Controls.Add(control);
+
+                    DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "QS_FirstLoad", "False");
                 }
 
                 if (ActionRoot.Visible)

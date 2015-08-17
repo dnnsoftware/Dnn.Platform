@@ -26,6 +26,8 @@
 <script type="text/javascript">
     /*globals jQuery, window */
     (function ($) {
+        var displayQuickSettings = <% = DisplayQuickSettings.ToString().ToLower() %>;
+
         function setUpActions() {
             var moduleId = <% = ModuleContext.Configuration.ModuleID %>;
             var tabId = <% = ModuleContext.Configuration.TabID %>;
@@ -52,7 +54,8 @@
                     confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
-                    supportsQuickSettings:<% = SupportsQuickSettings.ToString().ToLower() %>,
+                    supportsQuickSettings: <% = SupportsQuickSettings.ToString().ToLower() %>,
+                    displayQuickSettings: displayQuickSettings,
                     isShared : <% = IsShared.ToString().ToLower() %>
                 }
             );
@@ -87,6 +90,38 @@
                                 top: containerPosition.top,
                                 left: containerPosition.left + containerWidth - rootMenuWidth
                             });
+
+                            if (displayQuickSettings) {
+                                var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
+                                var $self = ul.parent();
+                                var windowHeight = $(window).height();
+                                var windowScroll = $(window).scrollTop();
+                                var thisTop = $self.offset().top;
+                                var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+
+                                var ulHeight = ul.height();
+
+                                if ($self.hasClass('actionQuickSettings')) {
+                                    ul.css({ width: containerWidth });
+                                }
+
+                                if (!atViewPortTop) {
+                                    ul.css({
+                                        top: -ulHeight,
+                                        right: 0
+                                    }).show('slide', { direction: 'down' }, 80, function () {
+                                        dnn.addIframeMask(ul[0]);
+                                    });
+                                }
+                                else {
+                                    ul.css({
+                                        top: 20,
+                                        right: 0
+                                    }).show('slide', { direction: 'up' }, 80, function () {
+                                        dnn.addIframeMask(ul[0]);
+                                    });
+                                }
+                            }
                         }
                     });
                     resizeThrottle = null;
