@@ -1343,8 +1343,16 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OAUTHAuthorize2.aspx.cs">
+      <DependentUpon>OAUTHAuthorize2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="OAUTHAuthorize2.aspx" />
+    <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="web.config">
       <SubType>Designer</SubType>

@@ -39,7 +39,7 @@ using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
-using OAuth.AuthorizationServer.Core.Utilities;
+//using OAuth.AuthorizationServer.Core.Utilities;
 
 #endregion
 
