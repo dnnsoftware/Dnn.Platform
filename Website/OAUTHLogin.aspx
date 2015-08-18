@@ -15,7 +15,7 @@
     <form id="Form" runat="server">
       <div class="oauthLogin">
             <h2>DNN OAUTH Login</h2>
-            <%=Request.QueryString["ReturnUrl"].ToString() %>
+            
             <div class="dnnFormItem">
                 Username
                 <asp:textbox id="txtUsername" runat="server" />

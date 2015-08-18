@@ -99,17 +99,7 @@ namespace DotNetNuke.Web.InternalServices
                 //throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest), "Invalid request");
             }
 
-            // Consider auto-approving if safe, so user doesn't have to authorize repeatedly.  
-            // Leaving this step out for now            
-
-            // Show user the authorization page by which they can authorize this client to access their
-            // data within the resource determined by the requested scopes
-            //var model = new AccountAuthorizeModel
-            //{
-            //    Client = requestingClient,
-            //    Scopes = requestingClient.Scopes.Where(x => pendingRequest.Scope.Contains(x.Identifier)).ToList(),
-            //    AuthorizationRequest = pendingRequest
-            //};
+      
             var test = requestingClient.Scopes.Where(x => pendingRequest.Scope.Contains(x.Identifier)).ToList();
 
             var s = new Scope();
@@ -122,7 +112,7 @@ namespace DotNetNuke.Web.InternalServices
             s.Clients = c;
             s.Resources = r;
             s.Description = "Read info from Resource1";
-
+            
             var listscope = new List<Scope>();
             listscope.Add(s);
             var model = new AccountAuthorizeModel
@@ -159,15 +149,16 @@ namespace DotNetNuke.Web.InternalServices
             //return View(model);
             var response = Request.CreateResponse(HttpStatusCode.Moved);
             string uri = null;
+            string domainName = Globals.GetDomainName(HttpContext.Current.Request) ;
             if (pendingRequest.ResponseType.ToString() == "AuthorizationCode")
             {
-                uri="http://localhost/dnn_platform/oauthauthorize2.aspx?client_id=client1&redirect_uri=http://localhost:51090/TokenRequest/ExchangeAccessCodeForAuthToken&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
+                uri=domainName + "/oauthauthorize2.aspx?client_id=client1&redirect_uri=http://localhost:51090/TokenRequest/ExchangeAccessCodeForAuthToken&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
             }
             else
             {
-                uri = "http://localhost/dnn_platform/oauthauthorize2.aspx?scope=DNN-ALL&redirect_uri=http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow&response_type=token&client_id=client1&resource-authentication-token=" + rt.ToString(); 
+                uri = domainName + "/oauthauthorize2.aspx?scope=DNN-ALL&redirect_uri=http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow&response_type=token&client_id=client1&resource-authentication-token=" + rt.ToString(); 
             }
-            //response.Headers.Location = new Uri("http://localhost/dnn_platform/oauthauthorize2.aspx?client_id=client1&redirect_uri=http://localhost:51090/TokenRequest/ExchangeAccessCodeForAuthToken&scope=DNN-ALL&response_type=" +pendingRequest.ResponseType + "&IsApproved=True&state=" + pendingRequest.ClientState.ToString());
+            
             response.Headers.Location = new Uri(uri);
             
             return response;
@@ -259,10 +250,7 @@ namespace DotNetNuke.Web.InternalServices
                 msg.Error = "User denied your request";
             }
 
-            // This will redirect to the client app using their defined callback, so they can handle
-            // the approval or rejection as they see fit
-            //HttpResponseMessage hr = _authorizationServer.Channel.PrepareResponse(authRequest).AsHttpResponseMessage();
-            //return hr;
+          
             
             var response = Request.CreateResponse(HttpStatusCode.Moved);
 
@@ -270,7 +258,7 @@ namespace DotNetNuke.Web.InternalServices
 
             response.Headers.Location = new Uri(deferred.Headers.Location.ToString());
            // response.Headers.Location = new Uri(authRequest.Recipient.ToString());
-//#  response.Headers.Location = new Uri("http://localhost:51090/TokenRequest/ExchangeAccessCodeForAuthToken?code=2oBU%21IAAAAMIcd02FiPn0YkjmgyNfR92o1Qp9OzSR8eMusZYcPI0O4QAAAAEe5ebLcgpoLdQ0kNrZIsXGBRnH3rBaPaErju14m8Re8IPdBU9pvO9F4LIoJSpt9CRKfgHb7-PTmJO4IKPFGhEr6rFQry3mA_RTkRK2jkT4-5m-myhVp_O8AB2oi44fXc4Ee0tfIWb4YC1VaMf-uSBNjstk0o5cLaW8bC-sf0Rusk2KOmzz9JXqjx6iqB8GigDavokJoxLNTrHIqdLMw6yXHrG_TZvD3EqfsOLYavIUgXDvJzIvptM730Q7nVY_YkJ9Jf1SNxnVL9E3Ob9KIEHxwoIJVvgnIDpjzfzHsshGIQ&state=" + pendingRequest.ClientState.ToString());
+
             
             return response;
 

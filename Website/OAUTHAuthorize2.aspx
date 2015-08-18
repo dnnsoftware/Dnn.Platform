@@ -14,13 +14,13 @@
             data in your account.  By clicking 'Approve' below, you authorize Awesome Client 1 to perform the following actions
         </p>
         <p><b>Requested access: </b></p>
-        <ul><li>Read info from Resource1</li></ul>
+        <ul><li>DNN-ALL</li></ul>
 
     <form id="Form" runat="server" action="http://localhost/dnn_platform/DesktopModules/internalservices/API/OAUth/ProcessAuthorization" method="post">
       <input id="client_id" name="client_id" type="hidden" value="client1" />
             <input id="redirect_uri" name="redirect_uri" type="hidden" value="http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow" />
             <input id="state" name="state" type="hidden" value="" />
-            <input id="scope" name="scope" type="hidden" value="Resource1-Read" />
+            <input id="scope" name="scope" type="hidden" value="DNN-ALL" />
             <input id="response_type" name="response_type" type="hidden" value="token" />
 <div>
                 <button type="submit" value="True" name="IsApproved">Approve</button>

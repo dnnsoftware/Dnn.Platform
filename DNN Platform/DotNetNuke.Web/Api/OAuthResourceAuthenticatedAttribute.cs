@@ -17,6 +17,7 @@ using OAuth.AuthorizationServer.Core.Data.Repositories;
 using OAuth.AuthorizationServer.Core.Server;
 using OAuth.AuthorizationServer.Core.Utilities;
 using DNOA = DotNetOpenAuth.OAuth2;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Web.Api
 {
@@ -52,15 +53,14 @@ namespace DotNetNuke.Web.Api
         }
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
-           
-            
-            string redirect = string.Format("{0}?returnUrl={1}", _targetResource.AuthenticationUrl,
+            string domainName = Globals.GetDomainName(HttpContext.Current.Request) + _targetResource.AuthenticationUrl;
+
+            string redirect = string.Format("{0}?returnUrl={1}", domainName,
                 actionContext.Request.RequestUri.ToString());
             var response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Redirect);
             response.Headers.Add("Location", redirect);
             actionContext.Response = response;
-            //filterContext.Result = new RedirectResult(string.Format("{0}?returnUrl={1}",
-            //   _targetResource.AuthenticationUrl, new UrlHelper(filterContext.RequestContext).Encode(filterContext.RequestContext.HttpContext.Request.Url.ToString())));
+        
         }
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
@@ -96,11 +96,7 @@ namespace DotNetNuke.Web.Api
             string tokenName = _targetResource.AuthenticationTokenName;
             string encryptedToken = httpContext.Request[tokenName]; //could be in cookie if previously logged in, or querystring if just logged in
 
-            //string encryptedToken = GetQueryString(httpContext.Request, tokenName);
-            //if (encryptedToken == null)
-            //{
-            //    encryptedToken = GetCookie(httpContext.Request, tokenName);
-            //}
+           
             
             if (string.IsNullOrWhiteSpace(encryptedToken))
             {
