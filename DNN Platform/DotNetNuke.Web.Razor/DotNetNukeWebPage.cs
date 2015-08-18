@@ -24,6 +24,8 @@ namespace DotNetNuke.Web.Razor
 {
     public abstract class DotNetNukeWebPage : WebPageBase
     {
+        private dynamic _model;
+
         protected internal DnnHelper Dnn { get; internal set; }
 
         protected internal HtmlHelper Html { get; internal set; }
@@ -40,16 +42,19 @@ namespace DotNetNuke.Web.Razor
 
         public dynamic Model
         {
-            get { return PageContext.Model; }
+            get { return _model ?? (_model = PageContext.Model); }
+            set { _model = value; }
         }
     }
 
-    public abstract class DotNetNukeWebPage<T>:DotNetNukeWebPage where T : class
+    public abstract class DotNetNukeWebPage<TModel> :DotNetNukeWebPage where TModel : class
     {
-        public new T Model
-        {
-            get { return PageContext.Model as T; }
-        }
+        private TModel _model;
 
+        public new TModel Model
+        {
+            get { return _model ?? (_model = PageContext.Model as TModel); }
+            set { _model = value; }
+        }
     }
 }
