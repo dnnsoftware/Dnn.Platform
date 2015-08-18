@@ -1,90 +1,40 @@
-.dnnNewsletters .dnnFormItem input[type="text"], .dnnNewsletters .dnnFormItem .dnnFormInput, .dnnNewsletters .dnnFormItem textarea {
-    width: 50%;
-}
-.dnnNewsletters .dnnFormItem input[type="checkbox"] {
-    width: auto;
-    float: none;
-}
-.dnnNewsletters .dnnFormItem input[type="radio"] {
-    width: auto;
-}
-.dnnTextEditor label, .dnnTextEditor .dnnFormLabel, .dnnTextEditor .dnnTooltip label {
-    width: auto;
-    margin-top: 0;
-    font-weight: normal;
-    padding: 0 15px 0 5px;
-    text-align: right;
-}
-.dnnTextEditor .dnnFormItem .dnnTooltip {
-    width: 34%;
-}
-span.dnnNewsletterRadios {
-    display: block;
+
+.dnnListEditorTree {
+    width: 20%;
     float: left;
-    overflow: hidden;
-    width: 50%;
-}
-span.dnnNewsletterRadios label {
-    width: auto;
-    text-align: left;
-    font-weight: normal;
-    margin-top: 0;
-    padding: 0 15px 0 5px;
-}
-.dnnFormItem.dnnNewsletterAttachment .urlControl {
-    float: left;
-}
-.dnnFormItem.dnnNewsletterAttachment .dnnFormItem {
-    padding: 0;
-    margin: 0;
-}
-.dnnFormItem.dnnNewsletterAttachment .dnnFormLabel {
-    text-align: left;
-    font-weight: normal;
+    padding: 15px;
+    background-color: #eee;
+    
 }
 
-.dnnFormItem.dnnNewsletterAttachment .dnnFormMessage {
-    margin: 0;
-}
-.dnnFormItem.dnnNewsletterAttachment .dnnUrlControl .dnnFormLabel {
-    font-weight: normal;
-    width: auto;
-    margin-top: 0;
-}
-.dnnFormItem.dnnNewsletterAttachment .dnnUrlControl br {
-    display: none;
+.dnnListEditorDetails {
+    width: 75%;
+    float: right;
 }
 
-.dnnNewsletters .dnnLangSelector {
-    width: 50%;
-    float: left;
-}
-.dnnLangSelector ul li {
-    float: left;
-    display: block;
-    width: 50%;
-}
-.dnnLangSelector ul li label {
-    width: auto;
-}
-.dnnRolesGrid {
-    width: 50%;
-    float: left; 
-    margin-bottom: 18px;  
-}
-.dnnRolesGrid > table{
-    width: 100%;
-    border: 1px solid #ccc;
-}
-.dnnRolesGrid > table td{
-    padding: 6px 0 6px 12px;
-    vertical-align: middle;
-}
-
-.dnnRolesGrid > table tr.dnnGridHeader td{
+.dnnListEditorNoList {
+    color: #999999;
     text-align: center;
 }
 
-.dnnNewsletters .newMessage .dnnFormItem textarea.noResize{ resize: none;}
+/* dnn tree */
+.DNNTree{
+    margin-bottom: 20px;
+}
 
-.dnnNewsletters ul.token-input-list-facebook{ width: 40%;margin-bottom: 18px;}
+.DNNTree span{
+    display: inline-block;
+    vertical-align: top;
+}
+
+.DNNTree span + span {
+    max-width: 130px;
+    margin-bottom: 5px;
+}
+
+
+.DNNTree span img{
+    margin: 0 5px 0 5px;
+}
+
+
