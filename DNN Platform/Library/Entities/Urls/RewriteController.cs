@@ -1319,7 +1319,7 @@ namespace DotNetNuke.Entities.Urls
                     url = url.Replace(queryString, "");
                 }
 
-                var rules = RewriterConfiguration.GetConfig().Rules;
+                var rules = rewriterConfig.Rules;
                 if (rules == null)
                 {
                     throw new NullReferenceException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
@@ -1327,8 +1327,7 @@ namespace DotNetNuke.Entities.Urls
                 for (var i = 0; i <= rules.Count - 1; i++)
                 {
                     //iterate the Config Rules looking for a match
-                    var lookFor = "^" + RewriterUtils.ResolveUrl(applicationPath, rules[i].LookFor) + "$";
-                    var re = new Regex(lookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    var re = rules[i].GetRuleRegex(applicationPath);
                     if (re.IsMatch(url))
                     {
                         var sendTo = rules[i].SendTo;
