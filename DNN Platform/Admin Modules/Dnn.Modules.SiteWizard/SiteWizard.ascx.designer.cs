@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Portals {
+namespace Dnn.Modules.SiteWizard {
     
     
     public partial class SiteWizard {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblTemplateMessage;
+        protected global::System.Web.UI.UserControl lblTemplateMessage;
         
         /// <summary>
         /// chkTemplate control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblTemplateList;
+        protected global::System.Web.UI.UserControl lblTemplateList;
         
         /// <summary>
         /// lstTemplate control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblMergeModule;
+        protected global::System.Web.UI.UserControl lblMergeModule;
         
         /// <summary>
         /// optMerge control.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalSkin;
+		protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalSkin;
         
         /// <summary>
         /// wizContainer control.
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalContainer;
+		protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalContainer;
         
         /// <summary>
         /// wizDetails control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblPortalName;
+        protected global::System.Web.UI.UserControl lblPortalName;
         
         /// <summary>
         /// txtPortalName control.
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDescription;
+        protected global::System.Web.UI.UserControl lblDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblKeyWords;
+        protected global::System.Web.UI.UserControl lblKeyWords;
         
         /// <summary>
         /// txtKeyWords control.
@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.Admin.Portals {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLogo;
+        protected global::System.Web.UI.UserControl lblLogo;
         
         /// <summary>
         /// ctlLogo control.
