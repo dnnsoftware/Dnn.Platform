@@ -1,4 +1,4 @@
-<h3>Newsletters</h3>
+<h3>Log Viewer</h3>
 <div class="License">
 	<h3>About Log Viewer</h3>
 	<p class="Owner">
