@@ -69,7 +69,7 @@
         </component>
 		<component type="File">
 					<files>
-						<basePath>DesktopModules\Admin\Languages</basePath>
+						<basePath>DesktopModules\Admin\Lists</basePath>
 						<file>
 							<name>08.00.00.txt</name>
 						</file>
