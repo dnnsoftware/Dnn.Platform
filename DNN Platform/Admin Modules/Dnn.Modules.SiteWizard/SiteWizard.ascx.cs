@@ -39,7 +39,7 @@ using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Portals
+namespace Dnn.Modules.SiteWizard
 {
 
     /// -----------------------------------------------------------------------------
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                         if (!string.IsNullOrEmpty(message))
                         {
                             message = string.Format(LocalizeString("ModulesNotInstalled"), message);
-                            UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
                         }
                     }
                 }
@@ -487,7 +487,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                         if (chkTemplate.Checked)
                         {
                             e.Cancel = true;
-                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TemplateRequired", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TemplateRequired", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                         }
                     }
                     else
@@ -499,7 +499,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                         if (!xval.Validate(template.TemplateFilePath, schemaFilename))
                         {
                             var message = string.Format(Localization.GetString("InvalidTemplate", LocalResourceFile), Path.GetFileName(template.TemplateFilePath));
-                            UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
                             //Cancel Page move if invalid template
                             e.Cancel = true;
                         }
