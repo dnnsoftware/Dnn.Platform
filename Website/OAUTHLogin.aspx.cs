@@ -89,13 +89,19 @@ namespace DotNetNuke.Services.OAUTHLogin
                                        ";" + "False";
                     var encryptedToken = EncodingUtility.Encode(tokenContent, encryptionKey);
 
-                    // Redirect back to the authorization server, including the authentication token 
-                    // Name of authentication token corresponds to that known by the authorization server
-                    // returnUrl += (returnUrl.Contains("?") ? "&" : "?");
 
-                    returnUrl =
-                        "http://localhost/dnn_platform/DesktopModules/internalservices/API/OAUth/Authorize?scope=DNN-ALL&redirect_uri=http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow&response_type=token&client_id=client1&resource-authentication-token=";
-
+                    returnUrl = Request.QueryString["ReturnUrl"].ToString() + "&scope=DNN-ALL&redirect_uri=" + Request.QueryString["redirect_uri"].ToString() + "&response_type=token";
+                        if (returnUrl.Contains("client_id=client1"))
+                        {
+                            returnUrl=returnUrl + "&resource-authentication-token=";
+                        }
+                        else
+	{
+                            returnUrl=returnUrl + "&client_id=client1&resource-authentication-token=";
+	}
+                        
+                    
+                    
                     //  returnUrl += "resource-authentication-token=" + encryptedToken;
 
                     returnUrl += encryptedToken;

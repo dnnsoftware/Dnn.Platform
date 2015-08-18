@@ -16,10 +16,10 @@
         <p><b>Requested access: </b></p>
         <ul><li>DNN-ALL</li></ul>
 
-    <form id="Form" runat="server" action="http://localhost/dnn_platform/DesktopModules/internalservices/API/OAUth/ProcessAuthorization" method="post">
+    <form id="Form"  action="<%="http://" + DotNetNuke.Common.Globals.GetDomainName(HttpContext.Current.Request) + "/DesktopModules/internalservices/API/OAUth/ProcessAuthorization" %>" method="post">
       <input id="client_id" name="client_id" type="hidden" value="client1" />
-            <input id="redirect_uri" name="redirect_uri" type="hidden" value="http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow" />
-            <input id="state" name="state" type="hidden" value="" />
+            <input id="redirect_uri" name="redirect_uri" type="hidden" value="<% =Request.QueryString["redirect_uri"] %>" />
+            <input id="state" name="state" type="hidden" value="j2FlXtsh_9ssGibjfY7p2" />
             <input id="scope" name="scope" type="hidden" value="DNN-ALL" />
             <input id="response_type" name="response_type" type="hidden" value="token" />
 <div>
