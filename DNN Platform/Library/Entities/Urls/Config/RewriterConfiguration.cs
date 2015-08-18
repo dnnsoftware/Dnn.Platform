@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Urls.Config
 				var ser = new XmlSerializer(typeof (RewriterConfiguration));
                 
 				//Create a FileStream for the Config file
-				string filePath = Globals.ApplicationMapPath + "\\SiteUrls.config";
+                var filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
                 if (File.Exists(filePath))
                 {
 					//make sure file is not read-only
