@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.OAUTHLogin.OAUTHLogin" CodeFile="OAUTHLogin.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OAUTHLogin.aspx.cs" Inherits="DotNetNuke.Website.OAUTHLogin" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -9,7 +9,6 @@
     <meta name="robots" content="noindex,nofollow" />
     <title runat="server" id="Title">DNN OAUTH Login</title>
     <link id="DefaultStylesheet" runat="server" rel="stylesheet" type="text/css" href="~/Portals/_default/default.css" />
-    <link id="InstallStylesheet" runat="server" rel="stylesheet" type="text/css" href="~/Install/install.css" />
 </head>
 <body>
     <form id="Form" runat="server">
@@ -23,7 +22,7 @@
             
             <div class="dnnFormItem">
                 Password
-                <asp:textbox id="txtPassword" textmode="password" runat="server" />
+                <asp:textbox id="txtPassword" textmode="password" runat="server" OnTextChanged="txtPassword_TextChanged" />
             </div>
             <ul class="dnnActions dnnClear">
                 <li><asp:LinkButton id="cmdLogin"  cssclass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Login" /></li>

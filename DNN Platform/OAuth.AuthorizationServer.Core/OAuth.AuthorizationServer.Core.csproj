@@ -24,26 +24,23 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Website\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetOpenAuth.Core">
-      <HintPath>..\..\..\websites\dotnetopenauth\oauth2-master - dnn\oauth2-master\OAuth.AuthorizationServer.Core\bin\Release\DotNetOpenAuth.Core.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2">
-      <HintPath>..\..\..\websites\dotnetopenauth\oauth2-master - dnn\oauth2-master\OAuth.AuthorizationServer.Core\bin\Release\DotNetOpenAuth.OAuth2.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.AuthorizationServer">
-      <HintPath>..\..\..\websites\dotnetopenauth\oauth2-master - dnn\oauth2-master\OAuth.AuthorizationServer.Core\bin\Release\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization">
-      <HintPath>..\..\..\websites\dotnetopenauth\oauth2-master - dnn\oauth2-master\OAuth.AuthorizationServer.Core\bin\Release\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth2.ResourceServer">
-      <HintPath>..\OAuth.AuthorizationServer.API\bin\Debug\DotNetOpenAuth.OAuth2.ResourceServer.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

@@ -90,19 +90,19 @@
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.Core">
-      <HintPath>..\..\..\..\Users\dnn-catha\Desktop\bkup\DotNetOpenAuth.Core.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2">
-      <HintPath>..\OAuth.AuthorizationServer.API\bin\Debug\DotNetOpenAuth.OAuth2.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.AuthorizationServer">
-      <HintPath>..\OAuth.AuthorizationServer.API\bin\Debug\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization">
-      <HintPath>..\..\..\..\Users\dnn-catha\Desktop\bkup\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.ResourceServer">
-      <HintPath>..\..\..\..\Users\dnn-catha\Desktop\bkup\DotNetOpenAuth.OAuth2.ResourceServer.dll</HintPath>
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ResourceServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>

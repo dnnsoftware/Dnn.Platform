@@ -1345,8 +1345,13 @@
     </Compile>
     <Compile Include="OAUTHAuthorize2.aspx.cs">
       <DependentUpon>OAUTHAuthorize2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="OAUTHLogin.aspx.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.designer.cs">
       <DependentUpon>OAUTHLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4522,6 +4527,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
+      <Name>OAuth.AuthorizationServer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
