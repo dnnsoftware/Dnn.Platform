@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Api
         }
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
-            string domainName = Globals.GetDomainName(HttpContext.Current.Request) + _targetResource.AuthenticationUrl;
+            string domainName = "http://" + Globals.GetDomainName(HttpContext.Current.Request) + _targetResource.AuthenticationUrl;
 
             string redirect = string.Format("{0}?returnUrl={1}", domainName,
                 actionContext.Request.RequestUri.ToString());

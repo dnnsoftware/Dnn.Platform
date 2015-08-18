@@ -149,14 +149,14 @@ namespace DotNetNuke.Web.InternalServices
             //return View(model);
             var response = Request.CreateResponse(HttpStatusCode.Moved);
             string uri = null;
-            string domainName = Globals.GetDomainName(HttpContext.Current.Request) ;
+            string domainName = DotNetNuke.Common.Globals.GetDomainName(HttpContext.Current.Request) ;
             if (pendingRequest.ResponseType.ToString() == "AuthorizationCode")
             {
-                uri=domainName + "/oauthauthorize2.aspx?client_id=client1&redirect_uri=http://localhost:51090/TokenRequest/ExchangeAccessCodeForAuthToken&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
+                uri="http://" +domainName + "/oauthauthorize2.aspx?client_id=client1&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] +"&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
             }
             else
             {
-                uri = domainName + "/oauthauthorize2.aspx?scope=DNN-ALL&redirect_uri=http://localhost:51090/TokenRequest/CacheTokenFromImplicitFlow&response_type=token&client_id=client1&resource-authentication-token=" + rt.ToString(); 
+                uri = "http://" + domainName + "/oauthauthorize2.aspx?scope=DNN-ALL&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&response_type=token&client_id=client1&resource-authentication-token=" + rt.ToString(); 
             }
             
             response.Headers.Location = new Uri(uri);
