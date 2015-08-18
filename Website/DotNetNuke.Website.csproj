@@ -922,20 +922,6 @@
     <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
       <DependentUpon>RequestFilters.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.designer.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.designer.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1776,9 +1762,6 @@
     <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
     <Content Include="DesktopModules\Admin\HostSettings\module.css" />
     <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\listeditor.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\ListEntries.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
@@ -4174,8 +4157,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEntries.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
