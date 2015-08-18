@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+﻿// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,30 +15,20 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
-#region Usings
 
 using System.Web.WebPages;
 
 using DotNetNuke.Web.Razor.Helpers;
 
-#endregion
-
 namespace DotNetNuke.Web.Razor
 {
     public abstract class DotNetNukeWebPage : WebPageBase
     {
-        #region Helpers
-
         protected internal DnnHelper Dnn { get; internal set; }
 
         protected internal HtmlHelper Html { get; internal set; }
 
         protected internal UrlHelper Url { get; internal set; }
-
-        #endregion
-
-        #region BaseClass Overrides
 
         protected override void ConfigurePage(WebPageBase parentPage)
         {
@@ -50,11 +38,18 @@ namespace DotNetNuke.Web.Razor
             Context = parentPage.Context;
         }
 
-        #endregion
+        public dynamic Model
+        {
+            get { return PageContext.Model; }
+        }
     }
 
-    public abstract class DotNetNukeWebPage<T>:DotNetNukeWebPage
+    public abstract class DotNetNukeWebPage<T>:DotNetNukeWebPage where T : class
     {
-        public T Model { get; set; }
+        public new T Model
+        {
+            get { return PageContext.Model as T; }
+        }
+
     }
 }

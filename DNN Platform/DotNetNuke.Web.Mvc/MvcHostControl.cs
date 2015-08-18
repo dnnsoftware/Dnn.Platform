@@ -27,6 +27,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
@@ -48,6 +49,47 @@ namespace DotNetNuke.Web.Mvc
         public MvcHostControl(string controlKey)
         {
             _controlKey = controlKey;
+        }
+
+        private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
+        {
+
+            ModuleApplication moduleApplication = null;
+
+            //Check if the MVC Module overrides the base ModuleApplication class.
+            var businessControllerClass = desktopModule.BusinessControllerClass;
+            if (!String.IsNullOrEmpty(businessControllerClass))
+            {
+                var moduleApplicationType = Reflection.CreateType(businessControllerClass);
+                if (moduleApplicationType != null)
+                {
+                    moduleApplication = Reflection.CreateInstance(moduleApplicationType) as ModuleApplication;
+                    if (moduleApplication != null)
+                    {
+                        defaultRouteData.Values["controller"] = moduleApplication.DefaultControllerName;
+                        defaultRouteData.Values["action"] = moduleApplication.DefaultActionName;
+                        defaultRouteData.DataTokens["namespaces"] = moduleApplication.DefaultNamespaces;
+                    }
+                }
+            }
+
+            if (moduleApplication == null)
+            {
+                var defaultControllerName = (string)defaultRouteData.Values["controller"];
+                var defaultActionName = (string)defaultRouteData.Values["action"];
+                var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
+
+                moduleApplication = new ModuleApplication
+                                            {
+                                                DefaultActionName = defaultControllerName,
+                                                DefaultControllerName = defaultActionName,
+                                                DefaultNamespaces = defaultNamespaces,
+                                                ModuleName = desktopModule.ModuleName,
+                                                FolderPath = desktopModule.FolderName
+                                            };
+            }
+
+            return moduleApplication;
         }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
@@ -72,18 +114,8 @@ namespace DotNetNuke.Web.Mvc
             var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
 
             var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
-            var defaultControllerName = (string)defaultRouteData.Values["controller"];
-            var defaultActionName = (string)defaultRouteData.Values["action"];
-            var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
 
-            var moduleApplication = new ModuleApplication
-                                            {
-                                                DefaultActionName = defaultControllerName,
-                                                DefaultControllerName = defaultActionName,
-                                                DefaultNamespaces = defaultNamespaces,
-                                                ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName
-                                            };
+            var moduleApplication = GetModuleApplication(desktopModule, defaultRouteData);
 
             RouteData routeData;
 

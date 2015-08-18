@@ -20,7 +20,7 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentViewer</moduleName>
             <foldername>Dnn/DynamicContentViewer</foldername>
-            <businessControllerClass/>
+            <businessControllerClass>Dnn.Modules.DynamicContentViewer.ModuleApplication</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
@@ -30,7 +30,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>Viewer/Index.mvc</controlSrc>
+                    <controlSrc>Dnn.Modules.DynamicContentViewer.Controllers/Viewer/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -41,7 +41,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>QuickSettings</controlKey>
-                    <controlSrc>Settings/Index.mvc</controlSrc>
+                    <controlSrc>Dnn.Modules.DynamicContentViewer.Controllers/Settings/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>

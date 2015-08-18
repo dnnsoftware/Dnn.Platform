@@ -512,6 +512,8 @@ namespace DotNetNuke.Tests.Utilities
         #endregion
 
         public const int TAB_ValidId = 10;
+        public const int TAB_InValidId = -1;
         public const int MODULE_ValidId = 100;
+        public const int MODULE_InValidId = -1;
     }
 }
