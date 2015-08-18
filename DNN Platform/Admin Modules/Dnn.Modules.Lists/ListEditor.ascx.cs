@@ -19,13 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-
-
 #region Usings
 
 using System;
 using System.Collections;
-
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
@@ -36,9 +34,7 @@ using Telerik.Web.UI;
 
 #endregion
 
-// ReSharper disable CheckNamespace
-namespace DotNetNuke.Common.Lists
-// ReSharper restore CheckNamespace
+namespace Dnn.Modules.Lists
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

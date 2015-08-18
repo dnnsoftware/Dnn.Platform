@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Common.Lists {
+namespace Dnn.Modules.Lists {
     
     
     public partial class ListEditor {
@@ -55,6 +55,6 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Common.Lists.ListEntries lstEntries;
+        protected global::Dnn.Modules.Lists.ListEntries lstEntries;
     }
 }

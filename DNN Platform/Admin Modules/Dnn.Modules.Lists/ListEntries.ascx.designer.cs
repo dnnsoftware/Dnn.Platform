@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Common.Lists {
+namespace Dnn.Modules.Lists {
     
     
     public partial class ListEntries {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plListParent;
+        protected global::System.Web.UI.UserControl plListParent;
         
         /// <summary>
         /// lblListParent control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plListName;
+        protected global::System.Web.UI.UserControl plListName;
         
         /// <summary>
         /// lblListName control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryCount;
+        protected global::System.Web.UI.UserControl plEntryCount;
         
         /// <summary>
         /// lblEntryCount control.
@@ -145,7 +145,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plParentKey;
+        protected global::System.Web.UI.UserControl plParentKey;
         
         /// <summary>
         /// txtParentKey control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryName;
+        protected global::System.Web.UI.UserControl plEntryName;
         
         /// <summary>
         /// txtEntryName control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSelectList;
+        protected global::System.Web.UI.UserControl plSelectList;
         
         /// <summary>
         /// ddlSelectList control.
@@ -244,7 +244,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSelectParent;
+        protected global::System.Web.UI.UserControl plSelectParent;
         
         /// <summary>
         /// ddlSelectParent control.
@@ -262,7 +262,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryText;
+        protected global::System.Web.UI.UserControl plEntryText;
         
         /// <summary>
         /// txtEntryText control.
@@ -289,7 +289,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryValue;
+        protected global::System.Web.UI.UserControl plEntryValue;
         
         /// <summary>
         /// txtEntryValue control.
@@ -325,7 +325,7 @@ namespace DotNetNuke.Common.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEnableSortOrder;
+        protected global::System.Web.UI.UserControl plEnableSortOrder;
         
         /// <summary>
         /// chkEnableSortOrder control.

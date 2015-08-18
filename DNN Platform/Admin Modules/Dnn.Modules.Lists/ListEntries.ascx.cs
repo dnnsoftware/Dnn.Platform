@@ -26,7 +26,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
@@ -39,7 +40,7 @@ using Telerik.Web.UI;
 
 #endregion
 
-namespace DotNetNuke.Common.Lists
+namespace Dnn.Modules.Lists
 {
 	/// <summary>
 	/// Manages Entry List
@@ -408,7 +409,7 @@ namespace DotNetNuke.Common.Lists
 
 			ctlLists.DeleteList(SelectedList, true);
 
-			Response.Redirect(Globals.NavigateURL(TabId));
+			Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId));
 		}
 
 		/// <summary>
@@ -679,7 +680,7 @@ namespace DotNetNuke.Common.Lists
 							{
 								if (entry.Value == curEntry.Value && entry.Text == curEntry.Text)
 								{
-									UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+									DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 									canUpdate = false;
 									break;
 								}
@@ -711,7 +712,7 @@ namespace DotNetNuke.Common.Lists
 
 						if (listController.AddListEntry(entry) == Null.NullInteger) //entry already found in database
 						{
-							UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+							DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 						}
 
 
@@ -738,12 +739,12 @@ namespace DotNetNuke.Common.Lists
 
 						if (listController.AddListEntry(entry) == Null.NullInteger) //entry already found in database
 						{
-							UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+							DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 						}
 						else
 						{
 							SelectedKey = entry.ParentKey.Replace(":", ".") + ":" + entry.ListName;
-							Response.Redirect(Globals.NavigateURL(TabId, "", "Key=" + SelectedKey));
+							Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, "", "Key=" + SelectedKey));
 						}
 						break;
 				}
@@ -789,7 +790,7 @@ namespace DotNetNuke.Common.Lists
 				}
 				else
 				{
-					Response.Redirect(Globals.NavigateURL(TabId));
+					Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId));
 				}
 			}
 			catch (Exception exc) //Module failed to load
