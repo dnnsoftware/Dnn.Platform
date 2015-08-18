@@ -1,0 +1,347 @@
+/******OAUTH Database support******/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Authorizations]') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Authorizations](
+	[AuthorizationId] [int] IDENTITY(1,1) NOT NULL,
+	[ClientId] [nvarchar](128) NULL,
+	[UserId] [nvarchar](128) NULL,
+	[ResourceId] [int] NOT NULL,
+	[Scope] [nvarchar](max) NULL,
+	[CreatedOnUtc] [datetime] NOT NULL,
+	[ExpirationDateUtc] [datetime] NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}Authorizations] PRIMARY KEY CLUSTERED 
+(
+	[AuthorizationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Clients]') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Clients](
+	[Id] [nvarchar](128) NOT NULL,
+	[ClientSecret] [nvarchar](max) NULL,
+	[Callback] [nvarchar](max) NULL,
+	[Name] [nvarchar](max) NULL,
+	[ClientType] [int] NOT NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}Clients] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ClientScopes') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}ClientScopes](
+	[ClientId] [nvarchar](128) NOT NULL,
+	[ScopeId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}ClientScopes] PRIMARY KEY CLUSTERED 
+(
+	[ClientId] ASC,
+	[ScopeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Nonces') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Nonces](
+	[Context] [nvarchar](500) NOT NULL,
+	[Code] [nvarchar](128) NOT NULL,
+	[Timestamp] [datetime] NOT NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}Nonces] PRIMARY KEY CLUSTERED 
+(
+	[Context] ASC,
+	[Code] ASC,
+	[Timestamp] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Resources') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Resources](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Identifier] [nvarchar](max) NULL,
+	[AuthenticationTokenName] [nvarchar](max) NULL,
+	[AuthenticationUrl] [nvarchar](max) NULL,
+	[AuthenticationKey] [nvarchar](max) NULL,
+	[PublicTokenEncryptionKey] [nvarchar](max) NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}Resources] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ResourceScopes') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}ResourceScopes](
+	[ResourceId] [int] NOT NULL,
+	[ScopeId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}ResourceScopes] PRIMARY KEY CLUSTERED 
+(
+	[ResourceId] ASC,
+	[ScopeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Scopes') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Scopes](
+	[Identifier] [nvarchar](128) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}Scopes] PRIMARY KEY CLUSTERED 
+(
+	[Identifier] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SymmetricCryptoKeys') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}SymmetricCryptoKeys](
+	[Bucket] [nvarchar](128) NOT NULL,
+	[Handle] [nvarchar](max) NULL,
+	[ExpiresUtc] [datetime] NOT NULL,
+	[Secret] [varbinary](max) NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}SymmetricCryptoKeys] PRIMARY KEY CLUSTERED 
+(
+	[Bucket] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAUTHUsers') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}OAUTHUsers](
+	[Id] [nvarchar](128) NOT NULL,
+	[CreateDateUtc] [datetime] NOT NULL,
+ CONSTRAINT [PK_{databaseOwner}{objectQualifier}OAUTHUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+ALTER TABLE {databaseOwner}[Authorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}Clients_ClientId] FOREIGN KEY([ClientId])
+REFERENCES {databaseOwner}[Clients] ([Id])
+GO
+ALTER TABLE {databaseOwner}[Authorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}Clients_ClientId]
+GO
+ALTER TABLE {databaseOwner}[Authorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}Users_UserId] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[OAUTHUsers] ([Id])
+GO
+ALTER TABLE {databaseOwner}[Authorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}Users_UserId]
+GO
+ALTER TABLE {databaseOwner}[ClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}Clients_ClientId] FOREIGN KEY([ClientId])
+REFERENCES {databaseOwner}[Clients] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[ClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}Clients_ClientId]
+GO
+ALTER TABLE {databaseOwner}[ClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}Scopes_ScopeId] FOREIGN KEY([ScopeId])
+REFERENCES {databaseOwner}[Scopes] ([Identifier])
+ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[ClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}Scopes_ScopeId]
+GO
+ALTER TABLE {databaseOwner}[ResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}Resources_ResourceId] FOREIGN KEY([ResourceId])
+REFERENCES {databaseOwner}[Resources] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[ResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}Resources_ResourceId]
+GO
+ALTER TABLE {databaseOwner}[ResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}Scopes_ScopeId] FOREIGN KEY([ScopeId])
+REFERENCES {databaseOwner}[Scopes] ([Identifier])
+ON DELETE CASCADE
+GO
+ALTER TABLE {databaseOwner}[ResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}Scopes_ScopeId]
+GO
+
+INSERT {databaseOwner}[Clients] ([Id], [ClientSecret], [Callback], [Name], [ClientType]) VALUES (N'client1', N'clientSecret1', NULL, N'Awesome Client 1', 0)
+INSERT {databaseOwner}[OAUTHUsers] ([Id], [CreateDateUtc]) VALUES (N'test', CAST(N'2015-07-09 00:10:03.870' AS DateTime))
+INSERT {databaseOwner}[Scopes] ([Identifier], [Description]) VALUES (N'DNN-ALL', N'All DNN OAuth Actions')
+SET IDENTITY_INSERT {databaseOwner}[Resources] ON 
+
+INSERT {databaseOwner}[Resources] ([Id], [Identifier], [AuthenticationTokenName], [AuthenticationUrl], [AuthenticationKey], [PublicTokenEncryptionKey]) VALUES (1, N'Resource1', N'resource-authentication-token', N'/oauthlogin.aspx', N'WebAPIsAreAwesome', N'PFJTQUtleVZhbHVlPjxNb2R1bHVzPjZlZnpYTHNvSmQ5OVVQMjdOQ1hWSnpZSFVtMmlLTUVOSlo2eVpVSFNvTE5uYnFMdENZWjZXaEl3SXY5WVBGeit0Z1AvQWN0dXh3N2VWVzdsU0RaU0IvQU8ySk1kOXJ1MkJ4SHRVaUZVd2pySnNHTlRUS1NhVDFDOTA0YXFaTExaRUxmYnVvVllabnFKWkRvdjlreTkwaHZtTTYwY3FXbkU4TGc2aGZSYlFPOD08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjwvUlNBS2V5VmFsdWU+')
+
+SET IDENTITY_INSERT {databaseOwner}[Resources] OFF
+INSERT {databaseOwner}[SymmetricCryptoKeys] ([Bucket], [Handle], [ExpiresUtc], [Secret]) VALUES (N'https://localhost/dnoa/oauth_authorization_code', N'2oBU', CAST(N'2016-07-09 00:06:56.887' AS DateTime), 0x7E84C6E42D6CE5E18D1E99F8C3DAD40566411CC0FFE77F9D90CD263F5BA538CB)
+
+GO
+
+/******OAUTH support objects Database support******/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ClientRepositoryGetById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ClientRepositoryGetById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClientRepositoryGetById]
+	@id nvarchar(256)
+AS
+BEGIN
+	select * from {databaseOwner}{objectQualifier}Clients where id=@id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ResourceRepositoryFindWithSupportedScopes]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ResourceRepositoryFindWithSupportedScopes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ResourceRepositoryFindWithSupportedScopes]
+	@scope nvarchar(256)
+AS
+BEGIN
+	select * from {databaseOwner}{objectQualifier}Resources -- where id=@id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthorizationRepositoryFindCurrent]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthorizationRepositoryFindCurrent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthorizationRepositoryFindCurrent]
+	 @clientIdentifier nvarchar(256),
+	 @userIdentifier nvarchar(256),
+	 @afterUtc datetime
+AS
+BEGIN
+	select * from {databaseOwner}{objectQualifier}Authorizations where ClientId=@clientIdentifier and CreatedOnUtc<=@afterUtc
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}StoreNonce]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}StoreNonce]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}StoreNonce]
+	 @context nvarchar(500),
+	 @nonce nvarchar(128),
+	 @timestampUtc datetime
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[Nonces]
+           ([Context]
+           ,[Code]
+           ,[Timestamp])
+     VALUES
+           (@context,@nonce,@timestampUtc)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}StoreKey]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}StoreKey]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}StoreKey]
+	@Bucket nvarchar(128),
+	@Handle nvarchar(max),
+	@ExpiresUtc datetime,
+	@Secret varbinary(max)
+AS
+BEGIN
+INSERT INTO {databaseOwner}[SymmetricCryptoKeys]
+           ([Bucket]
+           ,[Handle]
+           ,[ExpiresUtc]
+           ,[Secret])
+     VALUES
+           (@Bucket,@Handle,@ExpiresUtc,@Secret)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SCKRGetKey]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKey]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKey]
+	@Bucket nvarchar(128),
+	@Handle nvarchar(max)
+AS
+BEGIN
+	select * from {databaseOwner}[SymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SCKRGetKeys]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKeys]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKeys]
+	@Bucket nvarchar(128)
+AS
+BEGIN
+	select * from {databaseOwner}[SymmetricCryptoKeys] where [Bucket]=@Bucket 
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SCKRRemoveKey]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SCKRRemoveKey]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRRemoveKey]
+	@Bucket nvarchar(128),
+	@Handle nvarchar(max)
+AS
+BEGIN
+	DELETE  from {databaseOwner}[SymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRepositoryGetById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRepositoryGetById]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserRepositoryGetById]
+	@id [nvarchar](128) 
+AS
+BEGIN
+	select * from {databaseOwner}{objectQualifier}OAUTHUsers where [Id]=@id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAuthUserInsert]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}OAuthUserInsert]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}OAuthUserInsert]
+	@Id nvarchar(128),
+	@CreateDateUtc datetime
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[OAUTHUsers]
+           ([Id]
+           ,[CreateDateUtc])
+     VALUES (@Id,@CreateDateUtc)
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAuthAuthorizationInsert]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}OAuthAuthorizationInsert]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}OAuthAuthorizationInsert]
+@ClientId [nvarchar](128) ,
+@UserId [nvarchar](128) ,
+@ResourceId [int]  ,
+@Scope [nvarchar] ,
+@CreatedOnUtc [datetime]  ,
+@ExpirationDateUtc [datetime] 
+AS
+BEGIN
+
+INSERT {databaseOwner}[Authorizations]([ClientId], [UserId], [ResourceId], [Scope], [CreatedOnUtc], [ExpirationDateUtc])
+VALUES (@ClientId, @UserId, @ResourceId, @Scope, @CreatedOnUtc, NULL)
+END
+GO

@@ -105,8 +105,8 @@
     <Compile Include="Views\IProviderConfigurationView.cs" />
     <Compile Include="Views\ProviderConfiguration.ascx.cs">
       <DependentUpon>ProviderConfiguration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\ProviderConfiguration.ascx.designer.cs">
       <DependentUpon>ProviderConfiguration.ascx</DependentUpon>
