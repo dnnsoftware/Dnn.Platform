@@ -65,7 +65,7 @@
         </component>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/Dnn/DynamicContentViewer</basePath>
+            <basePath>DesktopModules/MVC/Dnn/DynamicContentViewer</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
