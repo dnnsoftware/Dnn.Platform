@@ -35,7 +35,7 @@ using Telerik.Web.UI;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Tabs
+namespace Dnn.Modules.Tabs
 {
     public partial class TabLocalization : PortalModuleBase
     {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Tabs {
+namespace Dnn.Modules.Tabs {
     
     
     public partial class ManageTabs {
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTabName;
+        protected global::System.Web.UI.UserControl plTabName;
         
         /// <summary>
         /// txtTabName control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTitle;
+        protected global::System.Web.UI.UserControl plTitle;
         
         /// <summary>
         /// txtTitle control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl urlLabel;
+        protected global::System.Web.UI.UserControl urlLabel;
         
         /// <summary>
         /// UrlContainer control.
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl doNotRedirectLabel;
+        protected global::System.Web.UI.UserControl doNotRedirectLabel;
         
         /// <summary>
         /// doNotRedirectCheckBox control.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plDescription;
+        protected global::System.Web.UI.UserControl plDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plKeywords;
+        protected global::System.Web.UI.UserControl plKeywords;
         
         /// <summary>
         /// txtKeyWords control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTags;
+        protected global::System.Web.UI.UserControl plTags;
         
         /// <summary>
         /// termsSelector control.
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plParentTab;
+        protected global::System.Web.UI.UserControl plParentTab;
         
         /// <summary>
         /// cboParentTab control.
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plInsertPosition;
+        protected global::System.Web.UI.UserControl plInsertPosition;
         
         /// <summary>
         /// rbInsertPosition control.
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plFolder;
+        protected global::System.Web.UI.UserControl plFolder;
         
         /// <summary>
         /// cboFolders control.
@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTemplate;
+        protected global::System.Web.UI.UserControl plTemplate;
         
         /// <summary>
         /// cboTemplate control.
@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plMenu;
+        protected global::System.Web.UI.UserControl plMenu;
         
         /// <summary>
         /// chkMenu control.
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCopyPage;
+        protected global::System.Web.UI.UserControl plCopyPage;
         
         /// <summary>
         /// cboCopyPage control.
@@ -406,7 +406,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plModules;
+        protected global::System.Web.UI.UserControl plModules;
         
         /// <summary>
         /// grdModules control.
@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCopyPerm;
+        protected global::System.Web.UI.UserControl plCopyPerm;
         
         /// <summary>
         /// cmdCopyPerm control.
@@ -487,7 +487,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl cultureTypeLabel;
+        protected global::System.Web.UI.UserControl cultureTypeLabel;
         
         /// <summary>
         /// cultureTypeList control.
@@ -514,7 +514,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl cultureLabel;
+        protected global::System.Web.UI.UserControl cultureLabel;
         
         /// <summary>
         /// cultureLanguageLabel control.
@@ -550,7 +550,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected dynamic CLControl1;
+        protected dynamic CLControl1;
         
         /// <summary>
         /// cmdUpdateLocalization control.
@@ -667,7 +667,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plIcon;
+        protected global::System.Web.UI.UserControl plIcon;
         
         /// <summary>
         /// ctlIcon control.
@@ -676,7 +676,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
+		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
         
         /// <summary>
         /// plIconLarge control.
@@ -685,7 +685,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plIconLarge;
+        protected global::System.Web.UI.UserControl plIconLarge;
         
         /// <summary>
         /// ctlIconLarge control.
@@ -694,7 +694,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIconLarge;
+		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIconLarge;
         
         /// <summary>
         /// plSkin control.
@@ -703,7 +703,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSkin;
+        protected global::System.Web.UI.UserControl plSkin;
         
         /// <summary>
         /// pageSkinCombo control.
@@ -721,7 +721,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plContainer;
+        protected global::System.Web.UI.UserControl plContainer;
         
         /// <summary>
         /// pageContainerCombo control.
@@ -739,7 +739,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCustomStylesheet;
+        protected global::System.Web.UI.UserControl plCustomStylesheet;
         
         /// <summary>
         /// txtCustomStylesheet control.
@@ -766,7 +766,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCopySkin;
+        protected global::System.Web.UI.UserControl plCopySkin;
         
         /// <summary>
         /// cmdCopySkin control.
@@ -784,7 +784,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plDisable;
+        protected global::System.Web.UI.UserControl plDisable;
         
         /// <summary>
         /// chkDisableLink control.
@@ -802,7 +802,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plRefreshInterval;
+        protected global::System.Web.UI.UserControl plRefreshInterval;
         
         /// <summary>
         /// txtRefreshInterval control.
@@ -829,7 +829,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plPageHeadText;
+        protected global::System.Web.UI.UserControl plPageHeadText;
         
         /// <summary>
         /// txtPageHeadText control.
@@ -847,7 +847,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheProvider;
+        protected global::System.Web.UI.UserControl lblCacheProvider;
         
         /// <summary>
         /// cboCacheProvider control.
@@ -874,7 +874,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheStatus;
+        protected global::System.Web.UI.UserControl lblCacheStatus;
         
         /// <summary>
         /// lblCachedItemCount control.
@@ -919,7 +919,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheDuration;
+        protected global::System.Web.UI.UserControl lblCacheDuration;
         
         /// <summary>
         /// txtCacheDuration control.
@@ -964,7 +964,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheIncludeExclude;
+        protected global::System.Web.UI.UserControl lblCacheIncludeExclude;
         
         /// <summary>
         /// rblCacheIncludeExclude control.
@@ -991,7 +991,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeVaryBy;
+        protected global::System.Web.UI.UserControl lblIncludeVaryBy;
         
         /// <summary>
         /// txtIncludeVaryBy control.
@@ -1018,7 +1018,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblExcludeVaryBy;
+        protected global::System.Web.UI.UserControl lblExcludeVaryBy;
         
         /// <summary>
         /// txtExcludeVaryBy control.
@@ -1045,7 +1045,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblMaxVaryByCount;
+        protected global::System.Web.UI.UserControl lblMaxVaryByCount;
         
         /// <summary>
         /// txtMaxVaryByCount control.
@@ -1081,7 +1081,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSecure;
+        protected global::System.Web.UI.UserControl plSecure;
         
         /// <summary>
         /// chkSecure control.
@@ -1099,7 +1099,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plAllowIndex;
+        protected global::System.Web.UI.UserControl plAllowIndex;
         
         /// <summary>
         /// chkAllowIndex control.
@@ -1117,7 +1117,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plPriority;
+        protected global::System.Web.UI.UserControl plPriority;
         
         /// <summary>
         /// txtPriority control.
@@ -1153,7 +1153,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plStartDate;
+        protected global::System.Web.UI.UserControl plStartDate;
         
         /// <summary>
         /// startDatePicker control.
@@ -1171,7 +1171,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEndDate;
+        protected global::System.Web.UI.UserControl plEndDate;
         
         /// <summary>
         /// endDatePicker control.
@@ -1198,7 +1198,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plURL;
+        protected global::System.Web.UI.UserControl plURL;
         
         /// <summary>
         /// ctlURL control.
@@ -1207,7 +1207,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlURL;
+		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlURL;
         
         /// <summary>
         /// redirectRow control.
@@ -1225,7 +1225,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plPermanentRedirect;
+        protected global::System.Web.UI.UserControl plPermanentRedirect;
         
         /// <summary>
         /// chkPermanentRedirect control.
@@ -1270,6 +1270,6 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.ModuleAuditControl ctlAudit;
+		protected global::DotNetNuke.UI.UserControls.ModuleAuditControl ctlAudit;
     }
 }

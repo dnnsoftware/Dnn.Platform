@@ -51,7 +51,7 @@ using Telerik.Web.UI;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DesktopModules.Admin.Tabs
+namespace Dnn.Modules.Tabs
 {
     
     public enum Position

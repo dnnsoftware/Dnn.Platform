@@ -1,4 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DesktopModules.Admin.Tabs.View" Codebehind="Tabs.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Tabs.View" Codebehind="Tabs.ascx.cs" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>

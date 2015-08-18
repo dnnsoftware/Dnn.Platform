@@ -1196,27 +1196,6 @@
     <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
       <DependentUpon>sql.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.designer.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.designer.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.designer.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.cs">
       <DependentUpon>affiliates.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1926,32 +1905,6 @@
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\ClientScripts\dnn.PageUrl.js" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Add.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Collapse.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Delete.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Disabled.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Down.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Edit.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Everyone.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Expand.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Hidden.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Home.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Portal.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_QuestionMark.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Redirect.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Secure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Up.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_User.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserAdmin.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserSecure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_View.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\more.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\update.png" />
-    <Content Include="DesktopModules\Admin\Tabs\ManageTabs.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\module.css" />
-    <Content Include="DesktopModules\Admin\Tabs\TabLocalization.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\Tabs.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\affiliates.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\banners.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\editaffiliate.ascx" />
@@ -4232,9 +4185,6 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\ManageTabs.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\TabLocalization.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\Tabs.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Affiliates.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Banners.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditAffiliate.ascx.resx" />
