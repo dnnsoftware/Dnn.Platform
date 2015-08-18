@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Web.Razor">
+      <HintPath>..\..\DotNetNuke.Web.Razor\bin\DotNetNuke.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -116,6 +119,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="ModuleApplication.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\SettingsController.cs" />
     <Content Include="ClientScripts\dcc.quickSettings.js" />
@@ -137,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Settings.resx" />
+    <Content Include="Views\Viewer\GettingStarted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -144,10 +149,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewEngines\DynamicContentView.cs" />
+    <Compile Include="ViewEngines\DynamicContentViewEngine.cs" />
     <Content Include="Views\Settings\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Viewer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />

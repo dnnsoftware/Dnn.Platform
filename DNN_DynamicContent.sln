@@ -40,6 +40,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN Platform\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj", "{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Razor", "DNN Platform\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj", "{9806C125-8CA9-48CC-940A-CCD0442C5993}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +114,14 @@ Global
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Release|x86.ActiveCfg = Release|x86
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B}.Release|x86.Build.0 = Release|x86
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|x86.Build.0 = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|x86.ActiveCfg = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
