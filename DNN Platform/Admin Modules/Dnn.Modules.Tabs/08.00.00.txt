@@ -1,0 +1,4 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/Tabs/Tabs.ascx.cs
+DesktopModules/Admin/Tabs/ManageTabs.ascx.cs
+DesktopModules/Admin/Tabs/TabLocalization.ascx.cs

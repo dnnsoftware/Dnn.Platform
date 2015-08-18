@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Tabs {
+namespace Dnn.Modules.Tabs {
     
     
     public partial class TabLocalization {
