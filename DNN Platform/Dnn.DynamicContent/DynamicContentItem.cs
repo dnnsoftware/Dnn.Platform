@@ -23,12 +23,12 @@ namespace Dnn.DynamicContent
             Initialize(null);
         }
 
-        public DynamicContentItem(DynamicContentType contentType)
+        public DynamicContentItem(int portalId, DynamicContentType contentType)
         {
+            Requires.NotNegative("portalId", portalId);
             Requires.NotNull("contentType", contentType);
-            Requires.PropertyNotNegative(contentType, "PortalId");
 
-            PortalId = contentType.PortalId;
+            PortalId = portalId;
 
             Initialize(contentType);
         }
@@ -61,6 +61,8 @@ namespace Dnn.DynamicContent
 
         public int ModuleId { get; set; }
 
+        public int TabId { get; set; }
+
         public int PortalId { get; set; }
 
         public void FromJson(string json)
@@ -70,7 +72,7 @@ namespace Dnn.DynamicContent
             var jObject = JObject.Parse(json);
             var contentTypeId = jObject["contentTypeId"].Value<int>();
 
-            ContentType = DynamicContentTypeManager.Instance.GetContentTypes(PortalId)
+            ContentType = DynamicContentTypeManager.Instance.GetContentTypes(PortalId, true)
                                     .SingleOrDefault(t => t.ContentTypeId == contentTypeId);
 
             if (ContentType == null)

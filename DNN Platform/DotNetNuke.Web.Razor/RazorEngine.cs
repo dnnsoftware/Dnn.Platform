@@ -89,12 +89,7 @@ namespace DotNetNuke.Web.Razor
         {
             try
             {
-                if ((Webpage) is DotNetNukeWebPage<T>)
-                {
-                    var mv = (DotNetNukeWebPage<T>) Webpage;
-                    mv.Model = model;
-                }
-                Webpage.ExecutePageHierarchy(new WebPageContext(HttpContext, Webpage, null), writer, Webpage);
+                Webpage.ExecutePageHierarchy(new WebPageContext(HttpContext, Webpage, model), writer, Webpage);
             }
             catch (Exception exc)
             {
@@ -107,6 +102,18 @@ namespace DotNetNuke.Web.Razor
             try
             {
                 Webpage.ExecutePageHierarchy(new WebPageContext(HttpContext, Webpage, null), writer, Webpage);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+        }
+
+        public void Render(TextWriter writer, WebPageContext context)
+        {
+            try
+            {
+                Webpage.ExecutePageHierarchy(context, writer, Webpage);
             }
             catch (Exception exc)
             {

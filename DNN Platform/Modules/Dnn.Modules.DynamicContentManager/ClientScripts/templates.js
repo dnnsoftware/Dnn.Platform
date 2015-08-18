@@ -305,7 +305,7 @@ dcc.templateViewModel = function(parentViewModel, config){
 
     self.insertField = function(data) {
         var doc = codeEditor.doc;
-        doc.replaceSelection("@Model.Fields[" + data.name + "].value");
+        doc.replaceSelection("@Model." + data.name);
         $contextMenu.hide();
     };
 

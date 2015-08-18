@@ -41,8 +41,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotNetNuke">
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Helpers">
