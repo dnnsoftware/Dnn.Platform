@@ -292,11 +292,6 @@ namespace DotNetNuke.UI.Containers
                 ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
                 ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
                 
-				//generate dynamic menu
-				if (String.IsNullOrEmpty(ProviderControl.PathSystemScript))
-                {
-                    ProviderControl.PathSystemScript = Globals.ApplicationPath + "/Controls/SolpartMenu/";
-                }
                 ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
                 ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
                 ProviderControl.IndicateChildImageSub = "action_right.gif";
