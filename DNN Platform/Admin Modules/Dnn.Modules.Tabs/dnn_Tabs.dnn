@@ -81,7 +81,7 @@
 				<component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
 				<component type="File">
 					<files>
-						<basePath>DesktopModules\Admin\Sitemap</basePath>
+						<basePath>DesktopModules\Admin\Tabs</basePath>
 						<file>
 							<name>08.00.00.txt</name>
 						</file>
