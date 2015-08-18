@@ -416,6 +416,15 @@
     var moduleId = parseInt("[ModuleContext:ModuleId]");
     var str = "[ModuleContext:IsSuperUser]";
     var isSystemUser = (str.toLowerCase() === "true");
+    var querystring = "[Request:Querystring]".split("&");
+
+    var initialPanel = "#content-types-panel";
+    for (var i = 0; i < querystring.length; i++) {
+        if (querystring[i] === "tab=Templates") {
+            initialPanel = "#content-templates-panel";
+            break;
+        }
+    }
 
     jQuery(document).ready(function ($) {
         var localizedSettings = {
@@ -470,13 +479,13 @@
 
         var settings = {
             isSystemUser: isSystemUser,
-            initialPanel: '#content-types-panel',
-            contentTypesPanel: '#content-types-panel',
-            dataTypesPanel: '#data-types-panel',
-            contentTemplatesPanel: '#content-templates-panel',
-            settingsPanel: '#settings-panel',
-            loadingBarId: '#loadingbar',
-            codeEditorArea: '#template-codeEditor',
+            initialPanel: initialPanel,
+            contentTypesPanel: "#content-types-panel",
+            dataTypesPanel: "#data-types-panel",
+            contentTemplatesPanel: "#content-templates-panel",
+            settingsPanel: "#settings-panel",
+            loadingBarId: "#loadingbar",
+            codeEditorArea: "#template-codeEditor",
             pageSize: 10,
             servicesFramework: $.ServicesFramework(moduleId),
             servicePath: "Dnn/DynamicContentManager"

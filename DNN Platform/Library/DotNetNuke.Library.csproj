@@ -1514,6 +1514,7 @@
     <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />

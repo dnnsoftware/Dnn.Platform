@@ -3,6 +3,9 @@
 
 using System;
 using System.Web.Mvc;
+using Dnn.Modules.DynamicContentViewer.Controllers;
+using DotNetNuke.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.DynamicContentViewer.ViewEngines
 {
@@ -33,7 +36,12 @@ namespace Dnn.Modules.DynamicContentViewer.ViewEngines
 	    /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
 	    public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 	    {
-	        if (viewName != "GettingStarted")
+            Requires.NotNull(controllerContext);
+            Requires.NotNullOrEmpty("viewName", viewName);
+
+            var controller = controllerContext.Controller as ViewerController;
+
+            if (controller != null && viewName != "GettingStarted")
 	        {
 	            return new ViewEngineResult(new DynamicContentView(controllerContext, viewName), this);
 	        }

@@ -2,19 +2,19 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Models;
-using DotNetNuke.Application;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
@@ -100,7 +100,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
             return View(viewName, model);
         }
 
-        private ModuleActionCollection GetIndexActions()
+        public ModuleActionCollection GetIndexActions()
         {
             var actions = new ModuleActionCollection();
 

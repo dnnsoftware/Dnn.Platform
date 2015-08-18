@@ -16,11 +16,11 @@
 
         listItem.addClass("selected");
 
+        $(panel).show();
+
         if (activePanel === panel) {
             return;
         }
-
-        $(panel).show();
 
         activePanel = panel;
     };
@@ -30,7 +30,7 @@
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
-        viewModel.templates.mode("listTypes");
+        viewModel.mode("listTypes");
     };
 
     var selectDataTypes = function (data, e) {
@@ -38,7 +38,7 @@
         viewModel.dataTypes.pageIndex(0);
         viewModel.dataTypes.searchText('');
         viewModel.dataTypes.getDataTypes();
-        viewModel.templates.mode("dataTypes");
+        viewModel.mode("dataTypes");
     };
 
     var selectTemplates = function (data, e) {
@@ -46,7 +46,7 @@
         viewModel.templates.pageIndex(0);
         viewModel.templates.searchText('');
         viewModel.templates.getTemplates();
-        viewModel.templates.mode("listTemplates");
+        viewModel.mode("listTemplates");
     };
 
     var selectSettings = function (data, e) {
@@ -198,11 +198,11 @@
 
         ko.applyBindings(viewModel, $rootElement[0]);
 
-        viewModel.contentTypes.pageIndex(0);
-        viewModel.contentTypes.searchText('');
-        viewModel.contentTypes.getContentTypes();
-        $rootElement.find("#contentTypes-menu").addClass("selected");
-
+        if (activePanel === "#content-templates-panel") {
+            selectTemplates(null, { target: $rootElement.find("#contentTemplates-menu")[0] });
+        } else {
+            selectContentTypes(null, { target: $rootElement.find("#contentTypes-menu")[0] });
+        }
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
     }
 
