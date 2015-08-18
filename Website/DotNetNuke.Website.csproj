@@ -62,6 +62,10 @@
     <Reference Include="ClientDependency.Core">
       <HintPath>..\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Dnn.Modules.Lists, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Admin Modules\Dnn.Modules.Lists\bin\Dnn.Modules.Lists.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
@@ -922,20 +926,6 @@
     <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
       <DependentUpon>RequestFilters.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.designer.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.designer.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1168,13 +1158,6 @@
     <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
       <DependentUpon>UserSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\SiteWizard\SiteWizard.ascx.cs">
-      <DependentUpon>sitewizard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SiteWizard\SiteWizard.ascx.designer.cs">
-      <DependentUpon>sitewizard.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.cs">
       <DependentUpon>Attributes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1195,27 +1178,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
       <DependentUpon>sql.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.designer.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.designer.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.designer.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.cs">
       <DependentUpon>affiliates.ascx</DependentUpon>
@@ -1353,6 +1315,10 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.04.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1364,15 +1330,12 @@
     <Content Include="403-3.gif" />
     <Content Include="admin\Containers\actionbutton.ascx" />
     <Content Include="admin\Containers\actionbutton.xml" />
-    <Content Include="admin\Containers\actions.ascx" />
     <Content Include="admin\Containers\dropdownactions.ascx" />
     <Content Include="admin\Containers\icon.ascx" />
     <Content Include="admin\Containers\Icon.xml" />
     <Content Include="admin\Containers\linkactions.ascx" />
     <Content Include="admin\Containers\linkactions.xml" />
     <Content Include="admin\Containers\printmodule.ascx" />
-    <Content Include="admin\Containers\solpartactions.ascx" />
-    <Content Include="admin\Containers\solpartactions.xml" />
     <Content Include="admin\Containers\title.ascx" />
     <Content Include="admin\Containers\Title.xml" />
     <Content Include="admin\Containers\Toggle.ascx" />
@@ -1649,7 +1612,6 @@
     <Content Include="admin\Skins\Login.xml" />
     <Content Include="admin\Skins\logo.ascx" />
     <Content Include="admin\Skins\Logo.xml" />
-    <Content Include="admin\Skins\menu.ascx" />
     <Content Include="admin\Skins\Meta.ascx" />
     <Content Include="admin\Skins\modulemessage.ascx" />
     <Content Include="admin\Skins\nav.ascx" />
@@ -1658,7 +1620,6 @@
     <Content Include="admin\Skins\Privacy.xml" />
     <Content Include="admin\Skins\search.ascx" />
     <Content Include="admin\Skins\Search.xml" />
-    <Content Include="admin\Skins\solpartmenu.ascx" />
     <Content Include="admin\Skins\Styles.ascx" />
     <Content Include="admin\Skins\tags.ascx" />
     <Content Include="admin\Skins\Tags.xml" />
@@ -1694,7 +1655,6 @@
     <Content Include="controls\sectionheadcontrol.ascx" />
     <Content Include="controls\skincontrol.ascx" />
     <Content Include="controls\skinthumbnailcontrol.ascx" />
-    <Content Include="controls\SolpartMenu\spmenu.js" />
     <Content Include="controls\texteditor.ascx" />
     <Content Include="controls\urlcontrol.ascx" />
     <Content Include="controls\urltrackingcontrol.ascx" />
@@ -1776,9 +1736,6 @@
     <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
     <Content Include="DesktopModules\Admin\HostSettings\module.css" />
     <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\listeditor.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\ListEntries.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
@@ -1883,8 +1840,6 @@
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
     <Content Include="DesktopModules\Admin\Security\users.ascx" />
     <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
-    <Content Include="DesktopModules\Admin\SiteWizard\module.css" />
-    <Content Include="DesktopModules\Admin\SiteWizard\sitewizard.ascx" />
     <Content Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx" />
     <Content Include="DesktopModules\Admin\Skins\editskins.ascx" />
     <Content Include="DesktopModules\Admin\Skins\module.css" />
@@ -1926,32 +1881,6 @@
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\ClientScripts\dnn.PageUrl.js" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Add.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Collapse.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Delete.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Disabled.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Down.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Edit.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Everyone.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Expand.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Hidden.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Home.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Portal.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_QuestionMark.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Redirect.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Secure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Up.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_User.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserAdmin.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserSecure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_View.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\more.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\update.png" />
-    <Content Include="DesktopModules\Admin\Tabs\ManageTabs.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\module.css" />
-    <Content Include="DesktopModules\Admin\Tabs\TabLocalization.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\Tabs.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\affiliates.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\banners.ascx" />
     <Content Include="DesktopModules\Admin\Vendors\editaffiliate.ascx" />
@@ -3447,7 +3376,6 @@
     <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
     <Content Include="Licenses\Sharepoint Logging Library %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
-    <Content Include="Licenses\SolPartMenu %28Custom%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />
     <Content Include="Licenses\WatiN %28Apache%29.txt" />
@@ -4174,8 +4102,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEntries.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
@@ -4223,7 +4149,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SiteWizard\App_LocalResources\SiteWizard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\SkinDesigner\App_LocalResources\Attributes.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -4232,9 +4157,6 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\ManageTabs.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\TabLocalization.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\Tabs.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Affiliates.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Banners.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditAffiliate.ascx.resx" />
@@ -4291,7 +4213,6 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="controls\SolpartMenu\SPMenuCaps.config" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\_template.cshtml" />
     <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\_template.vbhtml" />
     <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
