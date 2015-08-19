@@ -101,10 +101,6 @@
 
                                 var ulHeight = ul.height();
 
-                                if ($self.hasClass('actionQuickSettings')) {
-                                    ul.css({ width: containerWidth });
-                                }
-
                                 if (!atViewPortTop) {
                                     ul.css({
                                         top: -ulHeight,

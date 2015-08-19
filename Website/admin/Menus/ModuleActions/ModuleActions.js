@@ -144,12 +144,6 @@
 
             var ulHeight = ul.height();
 
-            if ($self.hasClass('actionQuickSettings')) {
-                var container = $(".DnnModule-" + moduleId);
-                var containerWidth = container.width();
-                ul.css({ width: containerWidth });
-            }
-
             if (!atViewPortTop) {
                 ul.css({
                     top: -ulHeight,
