@@ -133,6 +133,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="license.txt" />
+    <Content Include="module.css">
+      <DependentUpon>module.less</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +235,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content Templates\EditorTemplates\Uri.cshtml" />
+    <Content Include="compilerconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="module.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

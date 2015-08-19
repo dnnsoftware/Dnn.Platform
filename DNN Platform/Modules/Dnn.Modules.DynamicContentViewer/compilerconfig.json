@@ -1,0 +1,12 @@
+﻿[
+  {
+    "outputFile": "module.css",
+    "inputFile": "module.less",
+    "minify": {
+      "enabled": false
+    },
+    "includeInProject": true,
+    "sourceMap": false,
+    "options": {}
+  }
+]
