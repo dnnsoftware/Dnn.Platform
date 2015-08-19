@@ -69,9 +69,14 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 }
             }
 
+            if (viewName == "GettingStarted")
+            {
+                return View(viewName);
+            }
+
             var contentItem = GetOrCreateContentItem();
             var model = new ExpandoObject();
-            var modelDictionary = (IDictionary<string, object>) model;
+            var modelDictionary = (IDictionary<string, object>)model;
             foreach (var field in contentItem.Fields)
             {
                 object fieldValue;
@@ -96,7 +101,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 }
                 modelDictionary.Add(field.Key, fieldValue);
             }
-
+            
             return View(viewName, model);
         }
 

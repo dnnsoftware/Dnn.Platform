@@ -42,8 +42,8 @@ namespace Dnn.Modules.DynamicContentViewer.ViewEngines
             var controller = controllerContext.Controller as ViewerController;
 
             if (controller != null && viewName != "GettingStarted")
-	        {
-	            return new ViewEngineResult(new DynamicContentView(controllerContext, viewName), this);
+            {
+                return new ViewEngineResult(new DynamicContentView(controllerContext, viewName), this);
 	        }
 	        else
 	        {
