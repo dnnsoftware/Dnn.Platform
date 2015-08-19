@@ -5,6 +5,7 @@ using System;
 using System.Web.Mvc;
 using Dnn.Modules.DynamicContentViewer.Controllers;
 using DotNetNuke.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.DynamicContentViewer.ViewEngines
 {

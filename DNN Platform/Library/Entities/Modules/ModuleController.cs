@@ -1493,7 +1493,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Get ModuleInfo object of first module instance with a given friendly name of the module definition
+        /// Get ModuleInfo object of first module instance with a given name of the module definition
         /// </summary>
         /// <param name="portalId">ID of the portal, where to look for the module</param>
         /// <param name="definitionName">The name of module definition (NOTE: this looks at <see cref="ModuleDefinitionInfo.DefinitionName"/>, not <see cref="ModuleDefinitionInfo.FriendlyName"/>)</param>

@@ -2,20 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Models;
-using DotNetNuke.Application;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.DynamicContentViewer.Controllers
@@ -43,6 +43,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+		[ModuleActionItems]
         public ActionResult Index()
         {
             var viewName = "GettingStarted";
@@ -102,6 +103,28 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
             }
             
             return View(viewName, model);
+        }
+
+        public ModuleActionCollection GetIndexActions()
+        {
+            var actions = new ModuleActionCollection();
+
+            var managerModule = ModuleController.Instance.GetModuleByDefinition(PortalSettings.PortalId, "Dnn.DynamicContentManager");
+
+            if (managerModule != null && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EDIT", managerModule))
+            {
+                actions.Add(-1,
+                        LocalizeString("EditTemplates"),
+                        ModuleActionType.AddContent,
+                        "",
+                        "",
+                        Globals.NavigateURL(managerModule.TabID, String.Empty, "tab=Templates"),
+                        false,
+                        SecurityAccessLevel.Edit,
+                        true,
+                        false);
+            }
+            return actions;
         }
     }
 }
