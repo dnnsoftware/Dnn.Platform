@@ -556,6 +556,16 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("EnableIPChecking", false);
             }
         }
+        /// <summary>
+        /// determines whether oauth authorization server support is enabled
+        /// </summary>
+        public static bool EnableOAuthAuthorization
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableOAuthAuthorization", false);
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

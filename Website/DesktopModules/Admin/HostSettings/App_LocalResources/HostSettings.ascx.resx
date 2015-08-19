@@ -996,6 +996,9 @@
   <data name="plAsyncTimeout.Text" xml:space="preserve">
     <value>Time Before Timeout:</value>
   </data>
+  <data name="plEnableOAuth.Text" xml:space="preserve">
+    <value>Enable OAuth Authorization:</value>
+  </data>
   <data name="plEnablePasswordHistory.Help" xml:space="preserve">
     <value>Sets whether a list of recently used passwords is maintained and checked to prevent re-use.</value>
   </data>

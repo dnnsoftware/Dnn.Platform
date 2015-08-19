@@ -385,6 +385,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
+            chkEnableOAuth.Checked = Entities.Host.Host.EnableOAuthAuthorization;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
@@ -929,6 +930,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);
                     UpdateSchedule();
                     UpdateSearchIndexConfiguration();
+                    UpdateOAuth();
 
                     // TODO: Remove after refactor: this code/functionality has been copied to ..\AdvancedSettings\SmtpServerSettings.aspx) 
                     var redirectUrl = Request.RawUrl;
@@ -948,6 +950,27 @@ namespace DotNetNuke.Modules.Admin.Host
                     DataCache.ClearCache();
                 }
             }
+        }
+
+        private void UpdateOAuth()
+        {
+            if (Entities.Host.Host.EnableOAuthAuthorization != chkEnableOAuth.Checked)
+            {
+                if (chkEnableOAuth.Checked)
+                {
+                    HostController.Instance.Update("AuthorizationServerPrivateKey", txtNumberPasswords.Text, false);
+                     HostController.Instance.Update("ResourceServerDecryptionKey", txtNumberPasswords.Text, false);
+                     HostController.Instance.Update("AuthorizationServerVerificationKey", txtNumberPasswords.Text, false);
+                   
+                }
+                else
+                {
+                    HostController.Instance.Update("AuthorizationServerPrivateKey", string.Empty, false);
+                    HostController.Instance.Update("ResourceServerDecryptionKey", string.Empty, false);
+                    HostController.Instance.Update("AuthorizationServerVerificationKey", string.Empty, false);
+                }
+            }
+            HostController.Instance.Update("EnableOAuthAuthorization", chkEnableOAuth.Checked ? "Y" : "N", false);
         }
 
         #endregion
