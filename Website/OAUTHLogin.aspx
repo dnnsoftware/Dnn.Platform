@@ -22,11 +22,14 @@
             
             <div class="dnnFormItem">
                 Password
-                <asp:textbox id="txtPassword" textmode="password" runat="server" OnTextChanged="txtPassword_TextChanged" />
+                <asp:textbox id="txtPassword" textmode="password" runat="server"  />
             </div>
             <ul class="dnnActions dnnClear">
                 <li><asp:LinkButton id="cmdLogin"  cssclass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Login" /></li>
             </ul>
+        </div>
+        <div>
+            <asp:Label runat="server" ID="failedMessage"></asp:Label>
         </div>
     </form>
 </body>

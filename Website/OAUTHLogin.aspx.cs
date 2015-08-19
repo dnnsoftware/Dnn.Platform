@@ -9,6 +9,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Localization;
 using OAuth.AuthorizationServer.Core.Utilities;
 
 namespace DotNetNuke.Website
@@ -18,6 +19,11 @@ namespace DotNetNuke.Website
         protected void Page_Load(object sender, EventArgs e)
         {
             cmdLogin.Click += cmdLogin_Click;
+            if (Request.QueryString["failed"] != null)
+            {
+                failedMessage.Text = Localization.GetString("LoginFailed",
+                    "~/desktopmodules/admin/authentication/app_localresources/Login.ascx.resx");
+            }
         }
 
         private void cmdLogin_Click(object sender, EventArgs e)
@@ -54,13 +60,13 @@ namespace DotNetNuke.Website
 
 
                     returnUrl = Request.QueryString["ReturnUrl"].ToString() + "&scope=DNN-ALL&redirect_uri=" + Request.QueryString["redirect_uri"].ToString() + "&response_type=token";
-                    if (returnUrl.Contains("client_id=client1"))
+                    if (returnUrl.Contains("client_id="))
                     {
                         returnUrl = returnUrl + "&resource-authentication-token=";
                     }
                     else
                     {
-                        returnUrl = returnUrl + "&client_id=client1&resource-authentication-token=";
+                        returnUrl = returnUrl + "&client_id=" + Request.QueryString["client_id"] + "&resource-authentication-token=";
                     }
 
 
@@ -91,6 +97,10 @@ namespace DotNetNuke.Website
 
                     //return Redirect(redirectUrl);
                     Response.Redirect(redirectUrl);
+                }
+                else
+                {
+                    Response.Redirect(Request.RawUrl +"&failed=true");
                 }
             }
 

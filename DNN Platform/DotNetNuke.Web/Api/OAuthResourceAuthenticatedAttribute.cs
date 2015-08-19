@@ -57,6 +57,7 @@ namespace DotNetNuke.Web.Api
 
             string redirect = string.Format("{0}?returnUrl={1}", domainName,
                 actionContext.Request.RequestUri.ToString());
+           // redirect = redirect.Replace("&state=", "?state=");
             var response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Redirect);
             response.Headers.Add("Location", redirect);
             actionContext.Response = response;
@@ -69,7 +70,18 @@ namespace DotNetNuke.Web.Api
             
             // Figure out what resource the request is intending to access to see if the
             // user has already authenticated to with it
-            EndUserAuthorizationRequest pendingRequest = _authorizationServer.ReadAuthorizationRequest();
+            EndUserAuthorizationRequest pendingRequest;
+            try
+            {
+                 pendingRequest = _authorizationServer.ReadAuthorizationRequest();
+            }
+            catch (Exception)
+            {
+
+                throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest),"Invalid Client");
+
+            }
+            
             if (pendingRequest == null)
             {
                 throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest), "Missing authorization request.");
