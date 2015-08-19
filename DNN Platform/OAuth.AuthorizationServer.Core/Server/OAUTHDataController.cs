@@ -33,6 +33,21 @@ namespace OAuth.AuthorizationServer.Core.Server
 
         }
 
+        public static void ClientInsert(string clientId,string clientSecret,string callback,string name,int clientType)
+        {
+
+            DataProvider.Instance().ExecuteNonQuery("ClientInsert", clientId,clientSecret,callback,name,clientType);
+
+        }
+
+        public static void DeleteClient(string clientId)
+        {
+
+            DataProvider.Instance().ExecuteNonQuery("ClientDelete", clientId);
+
+        }
+        
+
         public static void OAuthAuthorizationInsert(Authorization auth)
         {
 

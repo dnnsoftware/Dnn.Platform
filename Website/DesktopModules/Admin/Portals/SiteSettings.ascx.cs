@@ -66,7 +66,7 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
-
+using OAuth.AuthorizationServer.Core.Server;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -954,14 +954,17 @@ namespace DesktopModules.Admin.Portals
             {
                 var rnd = new Random(DateTime.Now.Millisecond);
                 int ticks = rnd.Next(0, 3000);
-                PortalController.UpdatePortalSetting(_portalId, "OAuthClient", "Client-" + ticks.ToString(), false);
+                var clientId = "Client-" + ticks.ToString();
+                PortalController.UpdatePortalSetting(_portalId, "OAuthClient", clientId, false);
                 Guid id = Guid.NewGuid();
 
                 PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", id.ToString(), false);
-
+                OAUTHDataController.ClientInsert(clientId, id.ToString(), string.Empty, PortalSettings.PortalName,1);
             }
             else
             {
+                var clientId = PortalController.GetPortalSetting("OAuthClient", _portalId, string.Empty);
+                OAUTHDataController.DeleteClient(clientId);
                 PortalController.UpdatePortalSetting(_portalId, "OAuthClient", string.Empty, false);
                 Guid id = Guid.NewGuid();
 

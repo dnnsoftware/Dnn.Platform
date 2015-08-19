@@ -345,3 +345,32 @@ INSERT {databaseOwner}[Authorizations]([ClientId], [UserId], [ResourceId], [Scop
 VALUES (@ClientId, @UserId, @ResourceId, @Scope, @CreatedOnUtc, NULL)
 END
 GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ClientInsert]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ClientInsert]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClientInsert]
+@ClientId [nvarchar](128) ,
+@ClientSecret nvarchar(max) ,
+@Callback nvarchar(max)  ,
+@Name nvarchar(max) ,
+@ClientType [int]  
+AS
+BEGIN
+
+INSERT {databaseOwner}[Clients]([Id],[ClientSecret],[Callback],[Name],[ClientType])
+VALUES (@ClientId, @ClientSecret, null, @Name, @ClientType)
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ClientDelete]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ClientDelete]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClientDelete]
+@ClientId [nvarchar](128) 
+AS
+BEGIN
+
+delete from {databaseOwner}[Clients] where Id=@ClientId
+END
+GO
