@@ -90,6 +90,10 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -4149,7 +4153,9 @@
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Analytics\App_LocalResources\GoogleAnalyticsSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
@@ -4185,7 +4191,9 @@
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
@@ -4209,7 +4217,9 @@
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ProfessionalPreview\App_LocalResources\ProfessionalPreview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />

@@ -7,7 +7,7 @@
     <title></title>
 </head>
 <body>
-    <h2>Authorize -cathal</h2>
+    <h2>Authorize </h2>
         <div><b>Warning</b>: Never give your login credentials to another web site or application.</div>
         <p>
             The <%=Request.QueryString["client_id"] %> application is requesting to access private
