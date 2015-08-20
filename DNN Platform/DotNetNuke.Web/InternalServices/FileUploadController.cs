@@ -51,6 +51,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
+using ContentDisposition = System.Net.Mime.ContentDisposition;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -658,7 +659,11 @@ namespace DotNetNuke.Web.InternalServices
                     throw new Exception("No server response");
                 }
 
-                var fileName = new Uri(dto.Url).Segments.Last();                    
+	            var fileName = GetFileName(response);
+	            if (string.IsNullOrEmpty(fileName))
+	            {
+		            fileName = new Uri(dto.Url).Segments.Last();
+	            }
                 result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
@@ -696,6 +701,17 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
         }
+
+		private string GetFileName(WebResponse response)
+		{
+			if (!response.Headers.AllKeys.Contains("Content-Disposition"))
+			{
+				return string.Empty;
+			}
+
+			var contentDisposition = response.Headers["Content-Disposition"];
+			return new ContentDisposition(contentDisposition).FileName;
+		}
 
     }
 
