@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -45,26 +46,24 @@ namespace DotNetNuke.Entities.Urls
                 queryString = sendToUrl.Substring(sendToUrl.IndexOf("?", StringComparison.Ordinal) + 1);
                 
                 //Encode querystring values to support unicode characters by M.Kermani
-                queryString = HttpUtility.UrlDecode(queryString);
-                System.Collections.Generic.List<string> listParameters = new System.Collections.Generic.List<string>();
-                string text = "";
-                string[] parameters = queryString.Split('&');
-                for (int counter = 0; counter < parameters.Length; counter++)
+                var parameters = new List<string>();                
+                foreach (var parameter in queryString.Split('&'))
                 {
-                    if (parameters[counter].Contains("="))
+                    var i = parameter.IndexOf('=');
+                    if (i >= 0)
                     {
-                        string[] arrparameter = parameters[counter].Split('=');
-                        listParameters.Add(arrparameter[0] + "=" + HttpUtility.UrlEncode(arrparameter[1]));
+                        var value = HttpUtility.UrlEncode(HttpUtility.UrlDecode(parameter.Substring(i + 1)));
+                        parameters.Add(parameter.Substring(0, i) + "=" + value);
                     }
                     else
                     {
-                        text = "&" + parameters[counter];
+                        parameters.Add(parameter);
                     }
                 }
-                queryString = String.Join("&", listParameters.ToArray()) + text;
+                queryString = String.Join("&", parameters);
                 
             }
-			
+            
             //rewrite the path..
             context.RewritePath(sendToUrlLessQString, string.Empty, queryString);
             //NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
