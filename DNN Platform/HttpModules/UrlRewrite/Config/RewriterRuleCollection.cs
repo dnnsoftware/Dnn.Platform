@@ -21,39 +21,30 @@
 #region Usings
 
 using System;
+using System.Collections;
 
 #endregion
 
-namespace DotNetNuke.Entities.Urls.Config
+namespace DotNetNuke.HttpModules.Config
 {
     [Serializable]
-    public class RewriterRule
+    public class RewriterRuleCollection : CollectionBase
     {
-        private string _lookFor;
-        private string _sendTo;
-
-        public string LookFor
+        public virtual RewriterRule this[int index]
         {
             get
             {
-                return _lookFor;
+                return (RewriterRule) List[index];
             }
             set
             {
-                _lookFor = value;
+                List[index] = value;
             }
         }
 
-        public string SendTo
+        public void Add(RewriterRule r)
         {
-            get
-            {
-                return _sendTo;
-            }
-            set
-            {
-                _sendTo = value;
-            }
+            InnerList.Add(r);
         }
     }
 }

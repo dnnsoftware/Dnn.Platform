@@ -24,7 +24,7 @@ using System;
 
 #endregion
 
-namespace DotNetNuke.Entities.Urls.Config
+namespace DotNetNuke.HttpModules.Config
 {
     [Serializable]
     public class RewriterRule
