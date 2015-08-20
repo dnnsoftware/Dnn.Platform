@@ -876,6 +876,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("PerformanceSetting", cboPerformance.SelectedItem.Value, false);
                     Entities.Host.Host.PerformanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), cboPerformance.SelectedItem.Value);
                     HostController.Instance.Update("AuthenticatedCacheability", cboCacheability.SelectedItem.Value, false);
+                    HostController.Instance.Update("UnauthenticatedCacheability", cboUnauthCacheability.SelectedItem.Value, false);
                     HostController.Instance.Update("PageStatePersister", cboPageState.SelectedItem.Value); 
                     HostController.Instance.Update("ModuleCaching", cboModuleCacheProvider.SelectedItem.Value, false);
                     if (PageCacheRow.Visible)

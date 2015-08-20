@@ -1192,6 +1192,24 @@ namespace DotNetNuke.Modules.Admin.Host {
         protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboCacheability;
         
         /// <summary>
+        /// plcboUnauthCacheability control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plcboUnauthCacheability;
+        
+        /// <summary>
+        /// cboUnauthCacheability control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboUnauthCacheability;
+        
+        /// <summary>
         /// plJQueryVersion control.
         /// </summary>
         /// <remarks>
