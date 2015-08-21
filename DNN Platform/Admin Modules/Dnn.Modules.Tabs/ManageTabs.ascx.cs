@@ -795,21 +795,9 @@ namespace Dnn.Modules.Tabs
             //Set Culture Code
             if (strAction != "edit")
             {
+	            Tab.CultureCode = GetSelectedCultureCode();
                 if (PortalSettings.ContentLocalizationEnabled)
                 {
-                    switch (cultureTypeList.SelectedValue)
-                    {
-                        case "Localized":
-                            var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
-                            Tab.CultureCode = defaultLocale.Code;
-                            break;
-                        case "Culture":
-                            Tab.CultureCode = PortalSettings.CultureCode;
-                            break;
-                        default:
-                            Tab.CultureCode = Null.NullString;
-                            break;
-                    }
                     if (PortalController.GetPortalSetting("CreateNewPageCultureType", PortalId, "Localized") != cultureTypeList.SelectedValue)
                     {
                         PortalController.UpdatePortalSetting(PortalId, "CreateNewPageCultureType", cultureTypeList.SelectedValue, true);
@@ -844,10 +832,6 @@ namespace Dnn.Modules.Tabs
                             positionTabId = positionTab.TabID;
                         }
                     }
-                }
-                else
-                {
-                    Tab.CultureCode = Null.NullString;
                 }
             }
 
@@ -1314,11 +1298,7 @@ namespace Dnn.Modules.Tabs
             var valid = true;
 
             //get default culture if the tab's culture is null
-            var cultureCode = tab.CultureCode;
-            if (string.IsNullOrEmpty(cultureCode))
-            {
-                cultureCode = PortalSettings.DefaultLanguage;
-            }
+            var cultureCode = _strAction != "edit" ? GetSelectedCultureCode() : tab.CultureCode;
 
             //Validate Tab Path
             var tabID = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
@@ -1367,6 +1347,29 @@ namespace Dnn.Modules.Tabs
             tab.TabSettings["DoNotRedirect"] = doNotRedirectCheckBox.Checked.ToString();
 
         }
+
+	    private string GetSelectedCultureCode()
+	    {
+		    var cultureCode = Null.NullString;
+		    if (PortalSettings.ContentLocalizationEnabled)
+		    {
+			    switch (cultureTypeList.SelectedValue)
+			    {
+				    case "Localized":
+					    var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
+					    cultureCode = defaultLocale.Code;
+					    break;
+				    case "Culture":
+					    cultureCode = PortalSettings.CultureCode;
+					    break;
+				    default:
+					    cultureCode = Null.NullString;
+					    break;
+			    }
+		    }
+
+		    return cultureCode;
+	    }
 
         #endregion
 
