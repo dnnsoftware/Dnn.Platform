@@ -16,7 +16,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.dataTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.dataTypes_NoPagerFormat;
@@ -105,7 +105,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
         util.dataTypeService().getEntities(params,
             "GetDataTypes",
@@ -120,7 +120,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
     self.init = function() {
         $rootElement.find('#dataTypes-editrow > td > div').hide();
-        dcc.pager().init(self);
+        dnn.pager().init(self, config);
 
         self.searchText.subscribe(function () {
             findDataTypes();

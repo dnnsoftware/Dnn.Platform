@@ -19,7 +19,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.contentTypes_NoPagerFormat;
@@ -77,7 +77,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
 
         util.contentTypeService().getEntities(params,
@@ -92,7 +92,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
-        dcc.pager().init(self);
+        dnn.pager().init(self, config);
         self.searchText.subscribe(function () {
             findContentTypes();
         });
@@ -260,7 +260,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.contentFieldsHeading = resx.contentFields;
     self.contentFields = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = 999;
+    self.pageSize = ko.observable(999);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentFields_PagerFormat;
     self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
@@ -285,7 +285,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.clear = function() {
         self.contentFields.removeAll();
         self.pageIndex(0);
-        self.pageSize = settings.pageSize;
+        self.pageSize(settings.pageSize);
     };
 
     self.getContentField = function (contentTypeId, contentFieldId, cb) {
@@ -319,7 +319,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     };
 
     self.init = function() {
-        dcc.pager().init(self);
+        dnn.pager().init(self, config);
     };
 
     self.load = function(data) {
@@ -338,8 +338,8 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.refresh = function() {
         var params = {
             contentTypeId: parentViewModel.contentTypeId,
-            pageIndex: self.pageIndex,
-            pageSize: self.pageSize
+            pageIndex: self.pageIndex(),
+            pageSize: self.pageSize()
         };
 
         util.contentTypeService().getEntities(params,

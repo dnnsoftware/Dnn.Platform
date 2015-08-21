@@ -19,7 +19,7 @@ dcc.templatesViewModel = function(rootViewModel, config){
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.templates_PagerFormat;
     self.pager_NoPagerFormat = resx.templates_NoPagerFormat;
@@ -85,7 +85,7 @@ dcc.templatesViewModel = function(rootViewModel, config){
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
 
         util.templateService().getEntities(params,
@@ -100,7 +100,7 @@ dcc.templatesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
-        dcc.pager().init(self);
+        dnn.pager().init(self, config);
         self.searchText.subscribe(function () {
             findTemplates();
         });

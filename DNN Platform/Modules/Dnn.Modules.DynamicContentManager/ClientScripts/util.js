@@ -226,7 +226,7 @@ dcc.sf = function(){
             }
         };
 
-        if (httpMethod === 'GET') {
+        if (httpMethod === "GET") {
             options.data = params;
         }
         else {
@@ -235,7 +235,7 @@ dcc.sf = function(){
             options.dataType = 'json';
         }
 
-        if (typeof loading === 'function') {
+        if (typeof loading === "function") {
             loading(true);
         }
 
@@ -246,13 +246,13 @@ dcc.sf = function(){
     var get = function (method, params, success, failure, loading) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
-        return call('GET', url, params, success, failure, loading, false, false);
+        return call("GET", url, params, success, failure, loading, false, false);
     };
 
     var getEntities = function(params, method, array, createEntity, total, onSuccess, onError, onFailure) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
-        call('GET', url, params,
+        call("GET", url, params,
             function(data) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
@@ -290,7 +290,7 @@ dcc.sf = function(){
     var getEntity = function(params, method, entity, onSuccess, onError, onFailure) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
-        call('GET', url, params,
+        call("GET", url, params,
             function(data) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
@@ -318,7 +318,7 @@ dcc.sf = function(){
     var post = function (method, params, success, failure, loading) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
-        return call('POST', url, params, success, failure, loading, false, false);
+        return call("POST", url, params, success, failure, loading, false, false);
     };
 
     return {

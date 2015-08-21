@@ -1,19 +1,20 @@
-if (typeof dcc === 'undefined' || dcc === null) {
-    dcc = {};
+if (typeof dnn === 'undefined' || dnn === null) {
+    dnn = {};
 };
 
-dcc.pager = function(){
+dnn.pager = function () {
 
-    var init = function(viewModel) {
+    var init = function (viewModel, config) {
+        var ko = config.ko;
 
         viewModel.pageIndex = ko.observable(0);
 
         viewModel.startIndex = ko.computed(function () {
-            return viewModel.pageIndex() * viewModel.pageSize + 1;
+            return viewModel.pageIndex() * viewModel.pageSize() + 1;
         });
 
         viewModel.endIndex = ko.computed(function () {
-            return Math.min((viewModel.pageIndex() + 1) * viewModel.pageSize, viewModel.totalResults());
+            return Math.min((viewModel.pageIndex() + 1) * viewModel.pageSize(), viewModel.totalResults());
         });
 
         viewModel.currentPage = ko.computed(function () {
@@ -22,7 +23,7 @@ dcc.pager = function(){
 
         viewModel.totalPages = ko.computed(function () {
             if (typeof viewModel.totalResults === 'function' && viewModel.totalResults())
-                return Math.ceil(viewModel.totalResults() / viewModel.pageSize);
+                return Math.ceil(viewModel.totalResults() / viewModel.pageSize());
             return 1;
         });
 
