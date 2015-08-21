@@ -92,7 +92,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
-        dnn.pager().init(self, config);
+        dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findContentTypes();
         });
@@ -319,7 +319,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     };
 
     self.init = function() {
-        dnn.pager().init(self, config);
+        dnn.koPager().init(self, config);
     };
 
     self.load = function(data) {

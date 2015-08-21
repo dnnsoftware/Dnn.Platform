@@ -100,7 +100,7 @@ dcc.templatesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
-        dnn.pager().init(self, config);
+        dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findTemplates();
         });

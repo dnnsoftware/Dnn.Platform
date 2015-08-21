@@ -116,7 +116,7 @@
     <Content Include="ClientScripts\dataTypes.js" />
     <Content Include="ClientScripts\knockout-sortable.min.js" />
     <Content Include="ClientScripts\manager.js" />
-    <Content Include="ClientScripts\pager.js" />
+    <Content Include="ClientScripts\koPager.js" />
     <Content Include="ClientScripts\settings.js" />
     <Content Include="ClientScripts\templates.js" />
     <Content Include="ClientScripts\util.js" />

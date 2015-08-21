@@ -120,7 +120,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
     self.init = function() {
         $rootElement.find('#dataTypes-editrow > td > div').hide();
-        dnn.pager().init(self, config);
+        dnn.koPager().init(self, config);
 
         self.searchText.subscribe(function () {
             findDataTypes();

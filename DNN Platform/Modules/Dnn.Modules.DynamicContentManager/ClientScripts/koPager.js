@@ -2,7 +2,7 @@ if (typeof dnn === 'undefined' || dnn === null) {
     dnn = {};
 };
 
-dnn.pager = function () {
+dnn.koPager = function () {
 
     var init = function (viewModel, config) {
         var ko = config.ko;
