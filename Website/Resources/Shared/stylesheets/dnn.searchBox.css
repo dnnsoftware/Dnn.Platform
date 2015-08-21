@@ -66,7 +66,7 @@
         background: none;
         vertical-align: top;
         margin: 4px 0 0 0;
-        z-index: 5;
+        z-index: 1;
     }
 
         .dnnSearchBox > a.dnnSearchBoxClearText.dnnShow{
