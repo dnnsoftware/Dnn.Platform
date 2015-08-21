@@ -360,6 +360,19 @@
                         </Items>
                     </dnn:dnncombobox>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plcboUnauthCacheability" controlname="cboUnauthCacheability" runat="server" />
+                    <dnn:dnncombobox id="cboUnauthCacheability" runat="server">
+                        <Items>
+                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
+                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
+                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
+                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        </Items>
+                    </dnn:dnncombobox>
+                </div>
             </fieldset>
             <h2 id="Panel-JQuery" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("JQuery")%></a></h2>
             <fieldset>

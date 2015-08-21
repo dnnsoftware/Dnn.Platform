@@ -227,29 +227,28 @@ namespace DotNetNuke.Framework
                     Exceptions.ProcessHttpException(Request);
                 }
             }
-            if (Request.IsAuthenticated)
+            string cacheability = Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
+
+            switch (cacheability)
             {
-                switch (Host.AuthenticatedCacheability)
-                {
-                    case "0":
-                        Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                        break;
-                    case "1":
-                        Response.Cache.SetCacheability(HttpCacheability.Private);
-                        break;
-                    case "2":
-                        Response.Cache.SetCacheability(HttpCacheability.Public);
-                        break;
-                    case "3":
-                        Response.Cache.SetCacheability(HttpCacheability.Server);
-                        break;
-                    case "4":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
-                        break;
-                    case "5":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
-                        break;
-                }
+                case "0":
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    break;
+                case "1":
+                    Response.Cache.SetCacheability(HttpCacheability.Private);
+                    break;
+                case "2":
+                    Response.Cache.SetCacheability(HttpCacheability.Public);
+                    break;
+                case "3":
+                    Response.Cache.SetCacheability(HttpCacheability.Server);
+                    break;
+                case "4":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+                    break;
+                case "5":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
+                    break;
             }
 
             //page comment

@@ -546,6 +546,12 @@
   <data name="plEnableHelp.Help" xml:space="preserve">
     <value>You can enable or disable the Online Help Action Menu for Modules.  If enabled, you will need to provide the Help URL for the module, in the Module Definitions, although this may have been provided by the developer of the module.</value>
   </data>
+  <data name="plcboUnauthCacheability.Text" xml:space="preserve">
+    <value>Unauthenticated Cacheability:</value>
+  </data>
+  <data name="plcboUnauthCacheability.Help" xml:space="preserve">
+    <value>Sets the Cache-Control HTTP header value for unauthenticated users.</value>
+  </data>
   <data name="plCacheability.Text" xml:space="preserve">
     <value>Authenticated Cacheability:</value>
   </data>
