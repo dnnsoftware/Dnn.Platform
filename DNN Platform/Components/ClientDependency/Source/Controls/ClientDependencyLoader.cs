@@ -339,14 +339,14 @@ namespace ClientDependency.Core.Controls
 			var iClientDependency = typeof(IClientDependencyFile);
             foreach (var ctl in ctls)
 			{
-                // find dependencies
-                var controlType = ctl.GetType();
+       //         // find dependencies
+       //         var controlType = ctl.GetType();
 
-			    dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
-                    .OfType<ClientDependencyAttribute>()
-                    .Cast<IClientDependencyFile>());
+	   //         dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
+       //             .OfType<ClientDependencyAttribute>()
+       //             .Cast<IClientDependencyFile>());
 
-			    if (iClientDependency.IsAssignableFrom(ctl.GetType()))
+			    if (iClientDependency.IsInstanceOfType(ctl))
                 {
                     var include = (IClientDependencyFile)ctl;
                     dependencies.Add(include);

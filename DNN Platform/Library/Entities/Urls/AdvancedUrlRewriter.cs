@@ -509,6 +509,11 @@ namespace DotNetNuke.Entities.Urls
                             if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
                             {
                                 context.Items.Add("PortalSettings", portalSettings);
+
+                                // load PortalSettings and HostSettings dictionaries into current context
+                                // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
+                                context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
                             }
                             //check if a secure redirection is needed
                             //this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
