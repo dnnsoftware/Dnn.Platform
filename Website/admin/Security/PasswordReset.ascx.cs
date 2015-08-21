@@ -112,6 +112,7 @@ namespace DotNetNuke.Modules.Admin.Security
 			txtUsername.Attributes.Add("data-default",useEmailAsUserName ? LocalizeString("Email") : LocalizeString("Username"));
 			txtPassword.Attributes.Add("data-default", LocalizeString("Password"));
 			txtConfirmPassword.Attributes.Add("data-default", LocalizeString("Confirm"));
+            txtAnswer.Attributes.Add("data-default", LocalizeString("Answer"));
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -160,6 +161,19 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
         {
+            string username = txtUsername.Text;
+
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer && String.IsNullOrEmpty(txtAnswer.Text))
+            {
+                var user = UserController.GetUserByName(username);
+                if (user != null)
+                {
+                    lblQuestion.Text = user.Membership.PasswordQuestion;
+                }
+                divQA.Visible = true;
+                return;
+            }
+
             //1. Check New Password and Confirm are the same
             if (txtPassword.Text != txtConfirmPassword.Text)
             {
@@ -193,10 +207,8 @@ namespace DotNetNuke.Modules.Admin.Security
                     lblHelp.Text = failed;
                     return;  
                 }
-
             }
 
-            string username = txtUsername.Text;
             if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
             {
                 var testUser = UserController.GetUserByEmail(PortalId, username); // one additonal call to db to see if an account with that email actually exists
@@ -206,7 +218,13 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken, out errorMessage) == false)
+            string answer = String.Empty;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                answer = txtAnswer.Text;
+            }
+
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, answer, ResetToken, out errorMessage) == false)
             {
                 resetMessages.Visible = true;
                 var failed = errorMessage;

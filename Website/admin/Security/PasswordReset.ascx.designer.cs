@@ -49,15 +49,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         protected global::System.Web.UI.WebControls.Panel divPassword;
         
         /// <summary>
-        /// lblUsername control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblUsername;
-        
-        /// <summary>
         /// txtUsername control.
         /// </summary>
         /// <remarks>
@@ -74,15 +65,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valUsername;
-        
-        /// <summary>
-        /// lblPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblPassword;
         
         /// <summary>
         /// passwordContainer control.
@@ -109,16 +91,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::System.Web.UI.WebControls.RegularExpressionValidator valPassword;
-        
-        /// <summary>
-        /// lblConfirmPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblConfirmPassword;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator valPassword;
         
         /// <summary>
         /// txtConfirmPassword control.
@@ -148,13 +121,13 @@ namespace DotNetNuke.Modules.Admin.Security {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divQA;
         
         /// <summary>
-        /// plAnswer control.
+        /// lblQuestion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plAnswer;
+        protected global::System.Web.UI.WebControls.Label lblQuestion;
         
         /// <summary>
         /// txtAnswer control.
