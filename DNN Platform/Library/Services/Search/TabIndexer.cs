@@ -23,7 +23,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
@@ -55,64 +55,98 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns the collection of SearchDocuments populated with Tab MetaData for the given portal.
+        /// Returns the number of SearchDocuments indexed with Tab MetaData for the given portal.
         /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="startDateLocal"></param>
-        /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/16/2013  created
-        /// </history>
+        /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Depricated in DNN 7.4.2 Use \'IndexSearchDocuments\' instead for lower memory footprint during search.")]
-        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
+        public override int IndexSearchDocuments(int portalId,
+            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
+            Requires.NotNull("indexer", indexer);
+            const int saveThreshold = 1024;
+            var totalIndexed = 0;
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-            var tabs = TabController.Instance.GetTabsByPortal(portalId).AsList()
-                                    .Where(t => ((t.TabSettings["AllowIndex"] == null) ||
-                                                 (t.TabSettings["AllowIndex"] != null &&
-                                                  t.TabSettings["AllowIndex"].ToString().ToLower() != "false")) &&
-                                                t.LastModifiedOnDate > startDateLocal);
-            try
+            var tabs = (
+                from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
+                where t.LastModifiedOnDate > startDateLocal && (t.TabSettings["AllowIndex"] == null ||
+                                                                "true".Equals(t.TabSettings["AllowIndex"].ToString(),
+                                                                    StringComparison.CurrentCultureIgnoreCase))
+                select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
+
+            if (tabs.Any())
             {
                 foreach (var tab in tabs)
                 {
-                    var searchDoc = new SearchDocument
+                    try
                     {
-                        SearchTypeId = TabSearchTypeId,
-                        UniqueKey = Constants.TabMetaDataPrefixTag + tab.TabID,
-                        TabId = tab.TabID,
-                        PortalId = tab.PortalID,
-                        CultureCode = tab.CultureCode,
-                        ModifiedTimeUtc = tab.LastModifiedOnDate,
-                        Body = tab.PageHeadText,
-                        Description = tab.Description
-                    };
-                    searchDoc.Keywords.Add("keywords", tab.KeyWords);
+                        var searchDoc = GetTabSearchDocument(tab);
+                        searchDocuments.Add(searchDoc);
 
-                    //Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
-                    searchDoc.Title = tab.TabName;
-                    searchDoc.Keywords.Add("title", tab.Title);
-                    
-                    if (tab.Terms != null && tab.Terms.Count > 0)
-                    {
-                        searchDoc.Tags = tab.Terms.Select(t => t.Name);
+                        if (searchDocuments.Count >= saveThreshold)
+                        {
+                            totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        Exceptions.Exceptions.LogException(ex);
+                    }
+                }
 
-                    Logger.Trace("TabIndexer: Search document for metaData added for page [" + tab.Title + " tid:" + tab.TabID + "]");
-
-                    searchDocuments.Add(searchDoc);
+                if (searchDocuments.Count > 0)
+                {
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId);
                 }
             }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
 
-            return searchDocuments;
+            return totalIndexed;
         }
 
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.")]
+        private static SearchDocument GetTabSearchDocument(TabInfo tab)
+        {
+            var searchDoc = new SearchDocument
+            {
+                SearchTypeId = TabSearchTypeId,
+                UniqueKey = Constants.TabMetaDataPrefixTag + tab.TabID,
+                TabId = tab.TabID,
+                PortalId = tab.PortalID,
+                CultureCode = tab.CultureCode,
+                ModifiedTimeUtc = tab.LastModifiedOnDate,
+                Body = tab.PageHeadText,
+                Description = tab.Description
+            };
+
+            searchDoc.Keywords.Add("keywords", tab.KeyWords);
+
+            //Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
+            searchDoc.Title = tab.TabName;
+            searchDoc.Keywords.Add("title", tab.Title);
+
+            if (tab.Terms != null && tab.Terms.Count > 0)
+            {
+                searchDoc.Tags = tab.Terms.Select(t => t.Name);
+            }
+
+            if (Logger.IsTraceEnabled)
+            {
+                Logger.Trace("TabIndexer: Search document for metaData added for page [" + tab.Title + " tid:" + tab.TabID + "]");
+            }
+
+            return searchDoc;
+        }
+
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer,
+            ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Count;
+            SetLocalTimeOfLastIndexedItem(portalId, scheduleId, searchDocuments.Last().ModifiedTimeUtc);
+            searchDocuments.Clear();
+            return total;
+        }
+
+        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             return null;

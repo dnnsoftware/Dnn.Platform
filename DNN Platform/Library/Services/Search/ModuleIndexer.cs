@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -93,84 +94,101 @@ namespace DotNetNuke.Services.Search
 
 		/// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns the collection of SearchDocuments for the portal.
-        /// This replaces "GetSearchIndexItems" as a newer implementation of search.
+        /// Returns the number of indexed SearchDocuments for the portal.
         /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="startDateLocal"></param>
+        /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/16/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId,
+            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
+            Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
             var totalIndexed = 0;
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-			var searchModuleCollection = _searchModules.ContainsKey(portalId) ?
-											_searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo) : GetSearchModules(portalId);
+			var searchModuleCollection = _searchModules.ContainsKey(portalId)
+                ? _searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+                : GetSearchModules(portalId);
 
-            foreach (var module in searchModuleCollection)
+            //Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
+            //We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
+            //LastContentModifiedOnDate remains MinValue for modules that don't update this property
+            var modulesInDateRange = searchModuleCollection.Where(module =>
+                !((SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal)))
+                .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
+
+            if (modulesInDateRange.Any())
             {
-                try
+                ModuleInfo lastModule = null;
+                foreach (var module in modulesInDateRange)
                 {
-                    //Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
-                    //We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate
-                    //LastContentModifiedOnDate remains minvalue for modules that don't update this property
-                    if (module.LastContentModifiedOnDate > SqlDateTime.MinValue.Value && module.LastContentModifiedOnDate < startDateLocal)
+                    lastModule = module;
+                    try
                     {
-                        continue;
-                    }
+                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                        var contentInfo = new SearchContentModuleInfo {ModSearchBaseControllerType= (ModuleSearchBase) controller, ModInfo = module};
+                        var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
-                    var controller =  Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                    var contentInfo = new SearchContentModuleInfo {ModSearchBaseControllerType= (ModuleSearchBase) controller, ModInfo = module};
-                    var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
-
-                    if (searchItems != null && searchItems.Count > 0)
-                    {
-                        //Add Module MetaData
-                        foreach (var searchItem in searchItems)
+                        if (searchItems != null && searchItems.Count > 0)
                         {
-                            searchItem.ModuleDefId = module.ModuleDefID;
-                            searchItem.ModuleId = module.ModuleID;
-                            if (string.IsNullOrEmpty(searchItem.CultureCode))
+                            AddModuleMetaData(searchItems, module);
+                            searchDocuments.AddRange(searchItems);
+
+                            if (Logger.IsTraceEnabled)
                             {
-                                searchItem.CultureCode = module.CultureCode;
+                                Logger.TraceFormat("ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
+                                    searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
                             }
 
-                            if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                            if (searchDocuments.Count >= saveThreshold)
                             {
-                                searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, module);
+                                searchDocuments.Clear();
                             }
                         }
-
-                        Logger.Trace("ModuleIndexer: " + searchItems.Count + " search documents found for module [" + module.DesktopModule.ModuleName + " mid:" + module.ModuleID + "]");
-
-                        searchDocuments.AddRange(searchItems);
-
-                        if (searchDocuments.Count >= saveThreshold && indexer != null)
-                        {
-                            indexer.Invoke(searchDocuments);
-                            totalIndexed += searchDocuments.Count;
-                            searchDocuments.Clear();
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.Exceptions.LogException(ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Exceptions.Exceptions.LogException(ex);
-                }
-            }
 
-            if (searchDocuments.Count > 0 && indexer != null)
-            {
-                indexer.Invoke(searchDocuments);
-                totalIndexed += searchDocuments.Count;
-                searchDocuments.Clear();
+                if (searchDocuments.Count > 0)
+                {
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, lastModule);
+                }
             }
 
             return totalIndexed;
+        }
+
+        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
+        {
+            foreach (var searchItem in searchItems)
+            {
+                searchItem.ModuleDefId = module.ModuleDefID;
+                searchItem.ModuleId = module.ModuleID;
+                if (string.IsNullOrEmpty(searchItem.CultureCode))
+                {
+                    searchItem.CultureCode = module.CultureCode;
+                }
+
+                if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                {
+                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                }
+            }
+        }
+
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int scheduleId, ModuleInfo module)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Count;
+            // no way for module to be null when searchDocuments is not empty
+            SetLocalTimeOfLastIndexedItem(module.PortalID, scheduleId, module.LastContentModifiedOnDate);
+            return total;
         }
 
         /// -----------------------------------------------------------------------------
@@ -301,7 +319,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.
+        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetSearchIndexItems gets the SearchInfo Items for the Portal
@@ -314,7 +332,7 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   09/07/2010  Modified: Included logic to add TabId to searchItems
         /// </history>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             var searchItems = new SearchItemInfoCollection();
