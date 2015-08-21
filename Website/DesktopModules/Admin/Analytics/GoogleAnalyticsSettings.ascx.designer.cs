@@ -31,15 +31,6 @@ namespace DotNetNuke.Modules.Admin.Analytics {
         protected global::System.Web.UI.WebControls.TextBox txtTrackingId;
         
         /// <summary>
-        /// valTrackingId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator valTrackingId;
-        
-        /// <summary>
         /// lblUrlParameter control.
         /// </summary>
         /// <remarks>
