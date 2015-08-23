@@ -114,14 +114,6 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
             var clientCapabilitiesByEmptyId = _clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
 
-        [Test]
-        [ExpectedException(typeof(MobileException))]
-        public void FiftyOneClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_NonExisting_ClientCapabilityId()
-        {
-            //Act
-            string NonExistingClientCapabilityId = "Abuelita";
-            var clientCapabilitiesByNonExistingId = _clientCapabilityProvider.GetClientCapabilityById(NonExistingClientCapabilityId);
-        }
 
         #endregion
 
