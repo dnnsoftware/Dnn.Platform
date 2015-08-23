@@ -78,23 +78,23 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
 
         #region Testing Getting ClientCapabilities based on clientID
 
-        [Test]
-        [Ignore("The current version of Fifty One Degress does not support this")]
-        public void FiftyOneClientCapabilityProvider_GetClientCapabilityById_Returns_ClientCapability_For_ClientId()
-        {
-            //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
-            var actual = clientCapability.Capabilities;            
+        //[Test]
+        //[Ignore("The current version of Fifty One Degress does not support this")]
+        //public void FiftyOneClientCapabilityProvider_GetClientCapabilityById_Returns_ClientCapability_For_ClientId()
+        //{
+        //    //Arrange
+        //    var clientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
+        //    var actual = clientCapability.Capabilities;            
 
-            //Act
-            var clientCapabilitiesById = _clientCapabilityProvider.GetClientCapabilityById(clientCapability.ID);
-            var expected = clientCapabilitiesById.Capabilities;
+        //    //Act
+        //    var clientCapabilitiesById = _clientCapabilityProvider.GetClientCapabilityById(clientCapability.ID);
+        //    var expected = clientCapabilitiesById.Capabilities;
 
-            //Assert
-            Assert.AreEqual(clientCapability.ID, clientCapabilitiesById.ID);
-            Assert.IsTrue( actual.OrderBy(kvp => kvp.Key).SequenceEqual( expected.OrderBy(kvp=>kvp.Key)) );
-            Assert.IsTrue( actual.OrderBy(kvp => kvp.Value).SequenceEqual( expected.OrderBy(kvp=>kvp.Value)) );
-        }
+        //    //Assert
+        //    Assert.AreEqual(clientCapability.ID, clientCapabilitiesById.ID);
+        //    Assert.IsTrue( actual.OrderBy(kvp => kvp.Key).SequenceEqual( expected.OrderBy(kvp=>kvp.Key)) );
+        //    Assert.IsTrue( actual.OrderBy(kvp => kvp.Value).SequenceEqual( expected.OrderBy(kvp=>kvp.Value)) );
+        //}
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
