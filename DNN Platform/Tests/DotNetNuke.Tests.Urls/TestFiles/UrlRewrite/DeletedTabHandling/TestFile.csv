@@ -1,5 +1,6 @@
 ﻿Test,						DeletedTabHandling,			SoftDeleted,	HardDeleted,	Disabled,	Expired,		Scheme,		Page Name,		Test Url,					Expected Url,					Status,		Final Url,				RedirectReason
 Default,					,							false,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	200
+Disabled Default,           ,                           false,          false,          true,       false,          http://,    Test Page,      http://{alias}/Test-Page,   {defaultPage}?TabId={tabId},    404,        http://{alias}/,        Disabled_Page
 Expired Default	,			,							false,			false,			false,		true,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	200,		http://{alias}/,		Deleted_Page
 SoftDeleted Default	,		,							true,			false,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
 HardDeleted Default	,		,							false,			true,			false,		false,			http://,	Test Page,		http://{alias}/Test-Page,	{defaultPage}?TabId={tabId},	404,		http://{alias}/,		Deleted_Page
