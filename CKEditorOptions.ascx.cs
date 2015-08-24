@@ -1147,7 +1147,7 @@ namespace DNNConnect.CKEditorProvider
                 this.ModuleId, string.Format("{0}{2}#{1}", moduleKey, "-1", SettingConstants.TOOLB));
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
+            EditorController.ClearEditorCache();
         }
 
         /// <summary>
@@ -2970,7 +2970,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
+            EditorController.ClearEditorCache();
         }
 
         /// <summary>
@@ -3217,7 +3217,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
+            EditorController.ClearEditorCache();
 
             this.ShowNotification(
                 Localization.GetString("lblInfoCopyAll.Text", this.ResXFile, this.LangCode),

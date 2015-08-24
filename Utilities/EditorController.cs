@@ -37,7 +37,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllPageSettings", portalId.ToString());
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKE_Host");
+            ClearEditorCache();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteCurrentPageSettings", tabId.ToString());
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKE_Host");
+            ClearEditorCache();
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllChildPageSettings", tabId);
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKE_Host");
+            ClearEditorCache();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllPortalSettings", portalId.ToString());
 
             // Finally Clear Cache
-            DataCache.RemoveCache("CKE_Host");
+            ClearEditorCache();
         }
 
         /// <summary>
@@ -122,6 +122,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         public static void AddOrUpdateEditorHostSetting(string settingName, string settingValue)
         {
             DataProvider.Instance().ExecuteNonQuery("CKE_AddOrUpdateEditorHostSetting", settingName, settingValue);
+        }
+
+        public static void ClearEditorCache()
+        {
+            DataCache.RemoveCache("CKE_Host");
         }
     }
 }
