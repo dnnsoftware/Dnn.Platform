@@ -2584,7 +2584,6 @@ namespace DotNetNuke.Entities.Urls
                                 rewritePathOnly = rewritePathOnly.Substring(pathAliasEnd + result.PortalAlias.HTTPAlias.Length);
                             }
                             
-                            rewritePathOnly = HttpUtility.UrlDecode(rewritePathOnly, Encoding.UTF8);
                             //now check to see if need to remove /default.aspx from the end of the requested Url
                             string requestedUrl = fullUrl;
                             int requestedUrlAliasEnd = requestedUrl.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase) 
