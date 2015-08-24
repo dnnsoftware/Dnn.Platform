@@ -1,8 +1,8 @@
-if (typeof dcc === 'undefined' || dcc === null) {
-    dcc = {};
+if (typeof dnn === 'undefined' || dnn === null) {
+    dnn = {};
 };
 
-dcc.utility = function(settings, resx){
+dnn.utility = function (settings, resx) {
 
     var alertConfirm = function(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler) {
         $('#confirmation-dialog > div.dnnDialog').html(text);
@@ -143,7 +143,7 @@ dcc.utility = function(settings, resx){
         }
     }
 
-    var sf = dcc.sf();
+    var sf = dnn.sf();
     sf.init(settings);
 
     return {
@@ -162,7 +162,7 @@ dcc.utility = function(settings, resx){
     }
 };
 
-dcc.sf = function(){
+dnn.sf = function(){
     var isLoaded = false;
     var loadingBarId;
     var serviceController = "";
