@@ -4170,11 +4170,7 @@
 		    $slider.slider(sliderOptions);
 		    $slider.slider('value', value);
 
-		    var $tooltip = $('<span class="dnnTooltip"> \
-								<span class="dnnFormHelpContent dnnClear"> \
-									<span class="dnnHelpText bottomArrow"></span> \
-                                </span> \
-							</span>');
+		    var $tooltip = $('<span class="dnnTooltip"><span class="dnnFormHelpContent dnnClear"><span class="dnnHelpText bottomArrow"></span></span></span>');
 
 		    var calcTooltipPosition = function () {
 			    setTimeout(function() {
