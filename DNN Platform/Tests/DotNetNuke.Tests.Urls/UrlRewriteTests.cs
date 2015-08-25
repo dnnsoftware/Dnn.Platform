@@ -374,6 +374,7 @@ namespace DotNetNuke.Tests.Urls
                     tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
                 }
                 UpdateTab(tab);
+                CacheController.FlushPageIndexFromCache();
             }
 
             string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
@@ -382,11 +383,11 @@ namespace DotNetNuke.Tests.Urls
             {
                 switch (deletedTabHandling)
                 {
-                    case "Do404Error":
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
+                    case "Do301RedirectToPortalHome":
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
                         break;
                     default:
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
                         break;
                 }
             }
