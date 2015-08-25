@@ -114,10 +114,6 @@
                         <dnn:label id="plFavIcon" runat="server" controlname="ctlFavIcon" />
                         <dnn:FilePickerUploader ID="ctlFavIcon" runat="server" Required="True" FileFilter="ico" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:label id="plSkinWidgestEnabled" runat="server" controlname="chkSkinWidgestEnabled" />
-                        <asp:CheckBox ID="chkSkinWidgestEnabled" runat="server" />
-                    </div>
                     <div id="siteSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalSkin" controlname="portalSkinCombo" runat="server" />
