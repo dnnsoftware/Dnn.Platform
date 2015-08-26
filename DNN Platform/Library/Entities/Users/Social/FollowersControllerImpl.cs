@@ -40,14 +40,14 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         private static event EventHandler<RelationshipEventArgs> FollowRequested;
         private static event EventHandler<RelationshipEventArgs> UnfollowRequested;
 
-        static FollowersControllerImpl()
-        {
-            foreach (var handlers in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
-            {
-                FollowRequested += handlers.Value.FollowRequested;
-                UnfollowRequested += handlers.Value.UnfollowRequested;
-            }
-        }
+        //static FollowersControllerImpl()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        FollowRequested += handlers.Value.FollowRequested;
+        //        UnfollowRequested += handlers.Value.UnfollowRequested;
+        //    }
+        //}
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -100,17 +100,17 @@ namespace DotNetNuke.Entities.Users
 
         private static event EventHandler<UserEventArgs> UserApproved;
 
-        static UserController()
-        {            
-            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
-            {
-                UserAuthenticated += handlers.Value.UserAuthenticated;
-                UserCreated += handlers.Value.UserCreated;
-                UserDeleted += handlers.Value.UserDeleted;
-                UserRemoved += handlers.Value.UserRemoved;
-                UserApproved += handlers.Value.UserApproved;
-            }
-        }
+        //static UserController()
+        //{            
+        //    foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        UserAuthenticated += handlers.Value.UserAuthenticated;
+        //        UserCreated += handlers.Value.UserCreated;
+        //        UserDeleted += handlers.Value.UserDeleted;
+        //        UserRemoved += handlers.Value.UserRemoved;
+        //        UserApproved += handlers.Value.UserApproved;
+        //    }
+        //}
 
         #region Private Methods
 

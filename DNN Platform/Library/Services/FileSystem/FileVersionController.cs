@@ -273,10 +273,10 @@ namespace DotNetNuke.Services.FileSystem
         #region helper methods
         private void RegisterEventHandlers()
         {
-            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            {
-                FileChanged += events.Value.FileOverwritten;
-            }
+            //foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
+            //{
+            //    FileChanged += events.Value.FileOverwritten;
+            //}
         }
 
         private void OnFileChanged(IFileInfo fileInfo, int userId)

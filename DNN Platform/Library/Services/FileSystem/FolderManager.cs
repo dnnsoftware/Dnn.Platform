@@ -90,14 +90,14 @@ namespace DotNetNuke.Services.FileSystem
 
         private void RegisterEventHandlers()
         {
-            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            {
-                FolderDeleted += events.Value.FolderDeleted;
-                FolderRenamed += events.Value.FolderRenamed;
-                FolderMoved += events.Value.FolderMoved;
-                FolderAdded += events.Value.FolderAdded;
-                FileDeleted += events.Value.FileDeleted;
-            }
+            //foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
+            //{
+            //    FolderDeleted += events.Value.FolderDeleted;
+            //    FolderRenamed += events.Value.FolderRenamed;
+            //    FolderMoved += events.Value.FolderMoved;
+            //    FolderAdded += events.Value.FolderAdded;
+            //    FileDeleted += events.Value.FileDeleted;
+            //}
         }
 
         private int AddFolderInternal(IFolderInfo folder)
