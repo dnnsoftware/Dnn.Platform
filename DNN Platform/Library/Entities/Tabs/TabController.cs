@@ -79,35 +79,6 @@ namespace DotNetNuke.Entities.Tabs
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabController));
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        private static event EventHandler<TabEventArgs> TabCreated;
-        private static event EventHandler<TabEventArgs> TabUpdated;
-        private static event EventHandler<TabEventArgs> TabRemoved; // soft delete
-        private static event EventHandler<TabEventArgs> TabDeleted; // hard delete
-        private static event EventHandler<TabEventArgs> TabRestored;
-        private static event EventHandler<TabEventArgs> TabMarkedAsPublished; 
-
-        private static event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
-        private static event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
-
-        //static TabController()
-        //{
-        //    foreach (var handlers in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
-        //    {
-        //        TabCreated += handlers.Value.TabCreated;
-        //        TabUpdated += handlers.Value.TabUpdated;
-        //        TabRemoved += handlers.Value.TabRemoved;
-        //        TabDeleted += handlers.Value.TabDeleted;
-        //        TabRestored += handlers.Value.TabRestored;
-        //        TabMarkedAsPublished += handlers.Value.TabMarkedAsPublished;
-        //    }
-
-        //    foreach (var handlers in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
-        //    {
-        //        TabSerialize += handlers.Value.TabSerialize;
-        //        TabDeserialize += handlers.Value.TabDeserialize;
-        //    }
-        //}
-
         /// <summary>
         /// Gets the current page in current http request.
         /// </summary>
@@ -229,8 +200,7 @@ namespace DotNetNuke.Entities.Tabs
                 MarkAsPublished(tab);
             }
 
-            if (TabCreated != null)
-                TabCreated(null, new TabEventArgs { Tab = tab });
+            EventManager.Instance.OnTabCreated(new TabEventArgs { Tab = tab });
 
             return tab.TabID;
         }
@@ -273,8 +243,7 @@ namespace DotNetNuke.Entities.Tabs
 				}
 				else
 				{
-					localizedCopy.TabPermissions.AddRange(
-						originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
+					localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
 				}
 
 				//Get the original Tabs Parent
@@ -283,17 +252,13 @@ namespace DotNetNuke.Entities.Tabs
 				{
 					TabInfo originalParent = GetTab(originalTab.ParentId, originalTab.PortalID, false);
 
-					if (originalParent != null)
-					{
-						//Get the localized parent
-						TabInfo localizedParent = GetTabByCulture(originalParent.TabID, originalParent.PortalID, locale);
+                    //Get the localized parent
+                    TabInfo localizedParent = GetTabByCulture(originalParent.TabID, originalParent.PortalID, locale);
+                    localizedCopy.ParentId = localizedParent.TabID;
+                }
 
-						localizedCopy.ParentId = localizedParent.TabID;
-					}
-				}
-
-				//Save Tab
-				AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
+                //Save Tab
+                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
 
 				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
 				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
@@ -767,10 +732,7 @@ namespace DotNetNuke.Entities.Tabs
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
-            if (TabDeleted != null)
-            {
-                TabDeleted(null, new TabEventArgs { Tab = tab });
-            }
+            EventManager.Instance.OnTabDeleted(new TabEventArgs { Tab = tab });
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)
@@ -812,8 +774,8 @@ namespace DotNetNuke.Entities.Tabs
                     EventLogController.Instance.AddLog(tabToDelete, portalSettings, portalSettings.UserId, "",
                                               EventLogController.EventLogType.TAB_SENT_TO_RECYCLE_BIN);
                     deleted = true;
-                    if (TabRemoved != null)
-                        TabRemoved(null, new TabEventArgs { Tab = tabToDelete });
+
+                    EventManager.Instance.OnTabRemoved(new TabEventArgs { Tab = tabToDelete });
                 }
             }
 
@@ -1839,9 +1801,7 @@ namespace DotNetNuke.Entities.Tabs
 
             ClearCache(tab.PortalID);
 
-            if (TabRestored != null)
-                TabRestored(null, new TabEventArgs { Tab = tab });
-
+            EventManager.Instance.OnTabRestored(new TabEventArgs { Tab = tab });
         }
 
         /// <summary>
@@ -2016,8 +1976,7 @@ namespace DotNetNuke.Entities.Tabs
                 ClearCache(originalTab.PortalID);
             }
 
-            if (TabUpdated != null)
-                TabUpdated(null, new TabEventArgs { Tab = updatedTab });
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -2069,8 +2028,7 @@ namespace DotNetNuke.Entities.Tabs
             //Clear Tab Caches
             ClearCache(tab.PortalID);
 
-            if (TabMarkedAsPublished != null)
-                TabMarkedAsPublished(null, new TabEventArgs { Tab = tab });
+            EventManager.Instance.OnTabMarkedAsPublished(new TabEventArgs { Tab = tab });
         }
 
         #endregion
@@ -2233,22 +2191,13 @@ namespace DotNetNuke.Entities.Tabs
 
             //if deserialize tab from install wizard, we need parse desiralize handlers first.
             var installFromWizard = HttpContext.Current != null && HttpContext.Current.Items.Contains("InstallFromWizard");
-            if (installFromWizard && TabDeserialize == null)
+            if (installFromWizard)
             {
                 HttpContext.Current.Items.Remove("InstallFromWizard");
-                foreach (var handlers in new EventHandlersContainer<ITabSyncEventHandler>().EventHandlers)
-                {
-                    TabSerialize += handlers.Value.TabSerialize;
-                    TabDeserialize += handlers.Value.TabDeserialize;
-                }
+                EventManager.Instance.RefreshTabSyncHandlers();
             }
 
-
-            if (TabDeserialize != null)
-            {
-                var tab = Instance.GetTab(tabId, portalId);
-                TabDeserialize(null, new TabSyncEventArgs { Tab = tab, TabNode = nodePanes.ParentNode });
-            }
+            EventManager.Instance.OnTabDeserialize(new TabSyncEventArgs { Tab = Instance.GetTab(tabId, portalId), TabNode = nodePanes.ParentNode });
         }
 
         /// <summary>
@@ -2893,10 +2842,7 @@ namespace DotNetNuke.Entities.Tabs
                 tabUrlsNode.AppendChild(tabXml.ImportNode(tabUrlNode, true));
             }
 
-            if (TabSerialize != null)
-            {
-                TabSerialize(null, new TabSyncEventArgs{Tab = tab, TabNode = tabNode});
-            }
+            EventManager.Instance.OnTabSerialize(new TabSyncEventArgs { Tab = tab, TabNode = tabNode });
 
             return tabNode;
         }

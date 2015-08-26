@@ -90,28 +90,6 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        private static event EventHandler<UserEventArgs> UserAuthenticated;
-
-        private static event EventHandler<UserEventArgs> UserCreated;
-
-        private static event EventHandler<UserEventArgs> UserDeleted;
-
-        private static event EventHandler<UserEventArgs> UserRemoved;
-
-        private static event EventHandler<UserEventArgs> UserApproved;
-
-        //static UserController()
-        //{            
-        //    foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
-        //    {
-        //        UserAuthenticated += handlers.Value.UserAuthenticated;
-        //        UserCreated += handlers.Value.UserCreated;
-        //        UserDeleted += handlers.Value.UserDeleted;
-        //        UserRemoved += handlers.Value.UserRemoved;
-        //        UserApproved += handlers.Value.UserApproved;
-        //    }
-        //}
-
         #region Private Methods
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
@@ -906,10 +884,7 @@ namespace DotNetNuke.Entities.Users
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
-                if (UserCreated != null)
-                {
-                    UserCreated(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user });
             }
 
             //Reset PortalId
@@ -998,10 +973,7 @@ namespace DotNetNuke.Entities.Users
 
                 DataProvider.Instance().AddSearchDeletedItems(document);
 
-                if (UserDeleted != null)
-                {
-                    UserDeleted(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserDeleted(new UserEventArgs { User = user });
             }
 
             FixMemberPortalId(user, portalId);
@@ -1677,10 +1649,7 @@ namespace DotNetNuke.Entities.Users
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
 
-                if (UserRemoved != null)
-                {
-                    UserRemoved(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user });
             }
 
             //Reset PortalId
@@ -1908,11 +1877,8 @@ namespace DotNetNuke.Entities.Users
 
 		    if (!user.Membership.Approving) return;
 		    user.Membership.ConfirmApproved();
-		    if (UserApproved != null)
-		    {
-		        UserApproved(null, new UserEventArgs { User = user, SendNotification = sendNotification });
-		    }
-		}
+            EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1977,10 +1943,7 @@ namespace DotNetNuke.Entities.Users
             var security = new PortalSecurity();
             security.SignIn(user, createPersistentCookie);
 
-            if (UserAuthenticated != null)
-            {
-                UserAuthenticated(null, new UserEventArgs() {User = user});
-            }
+            EventManager.Instance.OnUserAuthenticated(new UserEventArgs { User = user });
         }
 
         /// -----------------------------------------------------------------------------
