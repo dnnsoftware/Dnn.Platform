@@ -89,24 +89,24 @@ namespace DotNetNuke.Entities.Tabs
         private static event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
         private static event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
 
-        static TabController()
-        {
-            foreach (var handlers in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
-            {
-                TabCreated += handlers.Value.TabCreated;
-                TabUpdated += handlers.Value.TabUpdated;
-                TabRemoved += handlers.Value.TabRemoved;
-                TabDeleted += handlers.Value.TabDeleted;
-                TabRestored += handlers.Value.TabRestored;
-                TabMarkedAsPublished += handlers.Value.TabMarkedAsPublished;
-            }
+        //static TabController()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
+        //    {
+        //        TabCreated += handlers.Value.TabCreated;
+        //        TabUpdated += handlers.Value.TabUpdated;
+        //        TabRemoved += handlers.Value.TabRemoved;
+        //        TabDeleted += handlers.Value.TabDeleted;
+        //        TabRestored += handlers.Value.TabRestored;
+        //        TabMarkedAsPublished += handlers.Value.TabMarkedAsPublished;
+        //    }
 
-            foreach (var handlers in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
-            {
-                TabSerialize += handlers.Value.TabSerialize;
-                TabDeserialize += handlers.Value.TabDeserialize;
-            }
-        }
+        //    foreach (var handlers in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
+        //    {
+        //        TabSerialize += handlers.Value.TabSerialize;
+        //        TabDeserialize += handlers.Value.TabDeserialize;
+        //    }
+        //}
 
         /// <summary>
         /// Gets the current page in current http request.

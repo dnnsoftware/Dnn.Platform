@@ -58,13 +58,13 @@ namespace DotNetNuke.Entities.Profile
 
         private static event EventHandler<ProfileEventArgs> ProfileUpdated;
 
-        static ProfileController()
-        {
-            foreach (var handlers in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
-            {
-                ProfileUpdated += handlers.Value.ProfileUpdated;
-            }
-        }
+        //static ProfileController()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        ProfileUpdated += handlers.Value.ProfileUpdated;
+        //    }
+        //}
 
         #region Private Members
 

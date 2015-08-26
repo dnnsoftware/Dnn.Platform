@@ -93,13 +93,13 @@ namespace DotNetNuke.Entities.Portals
             return () => new PortalController();
         }
 
-        public PortalController()
-        {
-            foreach (var handlers in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
-            {
-                PortalCreated += handlers.Value.PortalCreated;
-            }
-        }
+        //public PortalController()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        PortalCreated += handlers.Value.PortalCreated;
+        //    }
+        //}
 
         #region Private Methods
 

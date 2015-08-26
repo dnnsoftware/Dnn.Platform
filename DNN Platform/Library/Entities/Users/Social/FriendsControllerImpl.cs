@@ -40,15 +40,15 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         private static event EventHandler<RelationshipEventArgs> FriendshipAccepted;
         private static event EventHandler<RelationshipEventArgs> FriendshipDeleted;
 
-        static FriendsControllerImpl()
-        {
-            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
-            {
-                FriendshipRequested += handlers.Value.FriendshipRequested;
-                FriendshipAccepted += handlers.Value.FriendshipAccepted;
-                FriendshipDeleted += handlers.Value.FriendshipDeleted;
-            }
-        }
+        //static FriendsControllerImpl()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        FriendshipRequested += handlers.Value.FriendshipRequested;
+        //        FriendshipAccepted += handlers.Value.FriendshipAccepted;
+        //        FriendshipDeleted += handlers.Value.FriendshipDeleted;
+        //    }
+        //}
 
         /// -----------------------------------------------------------------------------
         /// <summary>

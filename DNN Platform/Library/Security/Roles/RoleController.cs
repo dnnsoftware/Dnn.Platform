@@ -70,16 +70,16 @@ namespace DotNetNuke.Security.Roles
             return () => new RoleController();
         }
 
-        static RoleController()
-        {
-            foreach (var handlers in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
-            {
-                RoleCreated += handlers.Value.RoleCreated;
-                RoleDeleted += handlers.Value.RoleDeleted;
-                RoleJoined += handlers.Value.RoleJoined;
-                RoleLeft += handlers.Value.RoleLeft;
-            }
-        }
+        //static RoleController()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
+        //    {
+        //        RoleCreated += handlers.Value.RoleCreated;
+        //        RoleDeleted += handlers.Value.RoleDeleted;
+        //        RoleJoined += handlers.Value.RoleJoined;
+        //        RoleLeft += handlers.Value.RoleLeft;
+        //    }
+        //}
 
         #region Private Methods
 

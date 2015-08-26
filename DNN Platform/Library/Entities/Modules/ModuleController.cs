@@ -76,16 +76,16 @@ namespace DotNetNuke.Entities.Modules
         private static event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
         private static event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
 
-        static ModuleController()
-        {
-            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
-            {
-                ModuleCreated += handlers.Value.ModuleCreated;
-                ModuleUpdated += handlers.Value.ModuleUpdated;
-                ModuleRemoved += handlers.Value.ModuleRemoved;
-                ModuleDeleted += handlers.Value.ModuleDeleted;
-            }
-        }
+        //static ModuleController()
+        //{
+        //    foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
+        //    {
+        //        ModuleCreated += handlers.Value.ModuleCreated;
+        //        ModuleUpdated += handlers.Value.ModuleUpdated;
+        //        ModuleRemoved += handlers.Value.ModuleRemoved;
+        //        ModuleDeleted += handlers.Value.ModuleDeleted;
+        //    }
+        //}
 
         #region Private Methods
 
