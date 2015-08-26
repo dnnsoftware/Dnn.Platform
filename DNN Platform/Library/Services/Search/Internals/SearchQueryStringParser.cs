@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Services.Search.Internals
@@ -65,7 +66,7 @@ namespace DotNetNuke.Services.Search.Internals
                     var tag = m.Groups[1].ToString();
                     if (!string.IsNullOrEmpty(tag))
                     {
-                        tags.Add(tag.Trim());
+                        tags.Add(HttpUtility.HtmlEncode(tag.Trim()));
                     }
                     m = m.NextMatch();
                 }

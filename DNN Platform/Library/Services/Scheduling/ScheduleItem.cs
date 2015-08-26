@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         #region Private Members
 
+        private static readonly DateTime MinNextTime = DateTime.Now; 
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
@@ -83,9 +84,9 @@ namespace DotNetNuke.Services.Scheduling
             {
                 if (!_NextStart.HasValue)
                 {
-                    _NextStart = DateTime.Now;
+                    _NextStart = MinNextTime;
                 }
-                return _NextStart.Value;
+                return _NextStart.Value > MinNextTime ? _NextStart.Value : MinNextTime;
             }
             set
             {

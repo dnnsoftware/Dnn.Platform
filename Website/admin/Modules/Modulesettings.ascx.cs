@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -156,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     startDatePicker.SelectedDate = Module.StartDate;
                 }
-                if (!Null.IsNull(Module.EndDate))
+				if (!Null.IsNull(Module.EndDate) && Module.EndDate <= endDatePicker.MaxDate)
                 {
                     endDatePicker.SelectedDate = Module.EndDate;
                 }
@@ -320,7 +321,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             cmdUpdate.Click += OnUpdateClick;
             dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             //get ModuleId
             if ((Request.QueryString["ModuleId"] != null))
@@ -353,21 +354,11 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (moduleControlInfo != null)
                 {
-                    _control = ControlUtilities.LoadControl<Control>(Page, moduleControlInfo.ControlSrc);
+                    _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
 
                     var settingsControl = _control as ISettingsControl;
                     if (settingsControl != null)
                     {
-                        //Set ID
-                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(moduleControlInfo.ControlSrc);
-                        if (fileNameWithoutExtension != null)
-                        {
-                            _control.ID = fileNameWithoutExtension.Replace('.', '-');
-                        }
-
-                        //add module settings
-                        settingsControl.ModuleContext.Configuration = Module;
-
                         hlSpecificSettings.Text = Localization.GetString("ControlTitle_settings", settingsControl.LocalResourceFile);
                         if (String.IsNullOrEmpty(hlSpecificSettings.Text))
                         {

@@ -374,6 +374,7 @@ namespace DotNetNuke.Tests.Urls
                     tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
                 }
                 UpdateTab(tab);
+                CacheController.FlushPageIndexFromCache();
             }
 
             string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
@@ -565,7 +566,7 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_PrimaryPortalAliasTestCases")]
-        public void AdvancedUrlRewriter_PrimaryPortalAlias(Dictionary<string, string> testFields)
+        public void AdvancedUrlRewriter_0_PrimaryPortalAlias(Dictionary<string, string> testFields)
         {
             string defaultAlias = testFields["DefaultAlias"];
 

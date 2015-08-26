@@ -52,25 +52,6 @@ namespace DotNetNuke.Services.Scheduling
 
         #endregion
 
-        #region Private Methods
-
-        private bool CanRunOnThisServer(string servers)
-        {
-            string lwrServers = "";
-            if (servers != null)
-            {
-                lwrServers = servers.ToLower();
-            }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
         #region Public Methods
 
         public override int AddSchedule(ScheduleItem scheduleItem)
@@ -223,7 +204,7 @@ namespace DotNetNuke.Services.Scheduling
             if (scheduleHistoryItem.TimeLapse != Null.NullInteger
                 && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString
                 && scheduleHistoryItem.Enabled
-                && CanRunOnThisServer(scheduleItem.Servers))
+                && SchedulingController.CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
                 Scheduler.CoreScheduler.AddToScheduleQueue(scheduleHistoryItem);
@@ -270,20 +251,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem)
         {
-            SchedulingController.UpdateSchedule(scheduleItem.ScheduleID,
-                                    scheduleItem.TypeFullName,
-                                    scheduleItem.TimeLapse,
-                                    scheduleItem.TimeLapseMeasurement,
-                                    scheduleItem.RetryTimeLapse,
-                                    scheduleItem.RetryTimeLapseMeasurement,
-                                    scheduleItem.RetainHistoryNum,
-                                    scheduleItem.AttachToEvent,
-                                    scheduleItem.CatchUpEnabled,
-                                    scheduleItem.Enabled,
-                                    scheduleItem.ObjectDependencies,
-                                    scheduleItem.Servers,
-                                    scheduleItem.FriendlyName,
-                                    scheduleItem.ScheduleStartDate);
+            SchedulingController.UpdateSchedule(scheduleItem);
         }
 
         public override void UpdateSchedule(ScheduleItem scheduleItem)
@@ -291,20 +259,7 @@ namespace DotNetNuke.Services.Scheduling
             //Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
             //save item
-            SchedulingController.UpdateSchedule(scheduleItem.ScheduleID,
-                                                scheduleItem.TypeFullName,
-                                                scheduleItem.TimeLapse,
-                                                scheduleItem.TimeLapseMeasurement,
-                                                scheduleItem.RetryTimeLapse,
-                                                scheduleItem.RetryTimeLapseMeasurement,
-                                                scheduleItem.RetainHistoryNum,
-                                                scheduleItem.AttachToEvent,
-                                                scheduleItem.CatchUpEnabled,
-                                                scheduleItem.Enabled,
-                                                scheduleItem.ObjectDependencies,
-                                                scheduleItem.Servers,
-                                                scheduleItem.FriendlyName,
-                                                scheduleItem.ScheduleStartDate);
+            SchedulingController.UpdateSchedule(scheduleItem);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 

@@ -993,6 +993,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
             //add editor control to panel
             _panel.Controls.Add(_editor);
+			_panel.Controls.Add(new RenderTemplateUrl());
         }
 
         protected void Panel_Load(object sender, EventArgs e)

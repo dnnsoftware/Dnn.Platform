@@ -183,9 +183,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var selectedFolder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                 if (selectedFolder == null) return;
 
-                var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
+                var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument();
-                using (var content = FileManager.Instance.GetFileContent(selectedFile))
+                using (var content = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
                 {
                     xmlDoc.Load(content);
                 }
@@ -306,9 +306,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (cboTemplate.SelectedIndex > 0 && cboFolders.SelectedItem != null)
                 {
-                    var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
+                    var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
                     var xmldoc = new XmlDocument();
-                    using (var fileContent = FileManager.Instance.GetFileContent(selectedFile))
+                    using (var fileContent = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
                     {
                         xmldoc.Load(fileContent);
                         var node = xmldoc.SelectSingleNode("//portal/description");

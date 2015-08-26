@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             var retryTimeLapseKey = (int)e.Item.OwnerTableView.DataKeyValues[e.Item.ItemIndex]["RetryTimeLapse"];
             var timeLapseMeasurementKey = e.Item.OwnerTableView.DataKeyValues[e.Item.ItemIndex]["TimeLapseMeasurement"].ToString();
             var retryTimeLapseMeasurementKey = e.Item.OwnerTableView.DataKeyValues[e.Item.ItemIndex]["RetryTimeLapseMeasurement"].ToString();
-            var nextStartKey = e.Item.OwnerTableView.DataKeyValues[e.Item.ItemIndex]["NextStart"].ToString();
+            var nextStart = e.Item.OwnerTableView.DataKeyValues[e.Item.ItemIndex]["NextStart"];
 
             var dataItem = (GridDataItem)e.Item;
 
@@ -260,8 +260,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             lblRetryTimeLapse.Text = GetTimeLapse(retryTimeLapseKey, retryTimeLapseMeasurementKey);
 
             var lblNextStart = ((Label)(dataItem)["NextStart"].FindControl("lblNextStart"));
-            lblNextStart.Text = nextStartKey;
-            lblNextStart.Visible = enabledKey;
+            lblNextStart.Text = nextStart.ToString();
+            // hide next start if scheduler is not enabled or no next start could be calculated
+            lblNextStart.Visible = enabledKey && !Null.IsNull(nextStart);
 
             var hlHistory = ((HyperLink)(dataItem)["ViewHistory"].FindControl("hlHistory"));
             hlHistory.NavigateUrl = EditUrl("ScheduleID", scheduleKey.ToString(), "History");

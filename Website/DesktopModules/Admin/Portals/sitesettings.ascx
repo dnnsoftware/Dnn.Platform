@@ -1,5 +1,5 @@
 <%@ Control Inherits="DesktopModules.Admin.Portals.SiteSettings" Language="C#"
-    AutoEventWireup="false" EnableViewState="True" CodeFile="SiteSettings.ascx.cs" %>
+    AutoEventWireup="false" EnableViewState="True" Codebehind="SiteSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -410,6 +410,13 @@
                             </asp:RadioButtonList>
                         </div>
                         <div class="dnnFormItem">
+                            <dnn:label id="plIncludeAttachments" runat="server" controlname="optMsgIncludeAttachments" />
+                            <asp:RadioButtonList ID="optMsgIncludeAttachments" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
+                                <asp:ListItem Value="YES" resourcekey="MsgAllowAttachmentsYes" />
+                                <asp:ListItem Value="NO" resourcekey="MsgAllowAttachmentsNo" />
+                            </asp:RadioButtonList>
+                        </div>
+                        <div class="dnnFormItem">
                             <dnn:label id="plMsgSendEmail" runat="server" controlname="optMsgSendEmails" />
                             <asp:RadioButtonList ID="optMsgSendEmail" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
                                 <asp:ListItem Value="YES" resourcekey="MsgSendEmailYes" />
@@ -443,10 +450,6 @@
                         <div class="dnnFormItem">
                             <dnn:label id="plUserQuota" runat="server" controlname="txtUserQuota" />
                             <asp:TextBox ID="txtUserQuota" runat="server" MaxLength="6" />
-                        </div>
-                        <div class="dnnFormItem">
-                            <dnn:label id="plSiteLogHistory" runat="server" controlname="txtSiteLogHistory" />
-                            <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
                         </div>
                         <div class="dnnFormItem ssasPremiumModule">
                             <dnn:label id="plDesktopModules" runat="server" controlname="ctlDesktopModules" />

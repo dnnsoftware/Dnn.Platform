@@ -657,7 +657,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 PortalId = _objPortal.PortalID;
             }
-            var folders = FolderManager.Instance.GetFolders(UserController.GetCurrentUserInfo(), Permissions);
+            var folders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo(), Permissions);
             foreach (FolderInfo folder in folders)
             {
                 var FolderItem = new ListItem();
@@ -1409,7 +1409,7 @@ namespace DotNetNuke.UI.UserControls
                 var fileManager = FileManager.Instance;
                 var folderManager = FolderManager.Instance;
 
-                var settings = PortalController.GetCurrentPortalSettings();
+                var settings = PortalController.Instance.GetCurrentPortalSettings();
                 var portalID = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
 
                 var fileName = Path.GetFileName(txtFile.PostedFile.FileName);

@@ -1224,7 +1224,10 @@ GO
 --update the value from portal settings to portal localization table
 UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom404TabId = SettingValue
     FROM {databaseOwner}{objectQualifier}PortalLocalization pl
-    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage404'
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps 
+		ON ps.PortalID = pl.PortalID 
+		AND ps.SettingName = 'AUM_ErrorPage404'
+		AND ISNUMERIC(ps.SettingValue + '.e0') = 1 -- We must ensure that setting value is integer
 GO
 
 DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage404'
@@ -1232,7 +1235,10 @@ GO
 
 UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom500TabId = SettingValue
     FROM {databaseOwner}{objectQualifier}PortalLocalization pl
-    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage500'
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps 
+		ON ps.PortalID = pl.PortalID 
+		AND ps.SettingName = 'AUM_ErrorPage500'
+		AND ISNUMERIC(ps.SettingValue + '.e0') = 1 -- We must ensure that setting value is integer
 GO
 
 DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage500'

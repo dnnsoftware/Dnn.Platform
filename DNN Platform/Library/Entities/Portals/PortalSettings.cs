@@ -228,7 +228,8 @@ namespace DotNetNuke.Entities.Portals
 
         public int SearchTabId { get; set; }
 
-		public int SiteLogHistory { get; set; }
+        [Obsolete("Deprecated in 8.0.0")]
+        public int SiteLogHistory { get; set; }
 
 		public int SplashTabId { get; set; }
 
@@ -516,6 +517,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user identifier.</summary>
+        /// <value>The user identifier.</value>
 		public int UserId
 		{
 			get
@@ -528,6 +531,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user.</summary>
+        /// <value>The current user information.</value>
 		public UserInfo UserInfo
 		{
 			get
@@ -584,7 +589,7 @@ namespace DotNetNuke.Entities.Portals
                 // For New Install
                 string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     pageHead = (setting == "false") ? "" : setting;
@@ -618,7 +623,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 string CompatibleHttpHeader = "IE=edge";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     CompatibleHttpHeader = (setting == "false") ? "" : setting;
@@ -783,11 +788,6 @@ namespace DotNetNuke.Entities.Portals
 				case "backgroundfile":
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(BackgroundFile, format);
-					break;
-				case "siteloghistory":
-					isPublic = false;
-					propertyNotFound = false;
-					result = SiteLogHistory.ToString(outputFormat, formatProvider);
 					break;
 				case "admintabid":
 					isPublic = false;

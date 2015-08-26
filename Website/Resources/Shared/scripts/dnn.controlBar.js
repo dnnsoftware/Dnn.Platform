@@ -939,7 +939,7 @@ dnn.controlBar.init = function (settings) {
                 cursor: 'move',
                 placeholder: "dnnDropTarget",
                 helper: function (event, ui) {
-                    var dragTip = $('<div class="dnnDragdropTip helperGrabbing"></div>');
+                    var dragTip = $('<div class="dnnDragdropTip helperGrabbing ControlBar_ModuleDiv"></div>');
                     var title = $('span', this).html();
                     dragTip.html(title);
                     dragTip.mouseup(function () {

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="JavaScriptLibraryEditor.ascx.cs" Inherits="DotNetNuke.Modules.Admin.Extensions.JavaScriptLibraryEditor" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Modules.Admin.Extensions.JavaScriptLibraryEditor" Codebehind="JavaScriptLibraryEditor.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls"%>
 

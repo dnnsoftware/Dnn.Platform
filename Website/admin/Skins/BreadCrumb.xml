@@ -15,7 +15,7 @@
     <Name>RootLevel</Name>
     <Type>Integer</Type>
     <Help>Defines from what level in the page hierarchy the breadcrumb should render</Help>
-    <Value>Same,Child,Parent,Root</Value>
+    <Value></Value>
   </Setting>
   <Setting>
     <Name>UseTitle</Name>

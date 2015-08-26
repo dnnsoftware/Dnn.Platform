@@ -90,6 +90,14 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        public static string UnauthenticatedCacheability
+        {
+            get
+            {
+                return HostController.Instance.GetString("UnauthenticatedCacheability", "4");
+            }
+        }
+
         /// <summary>
         /// gets whether or not CDN has been enabled for all registered javascript libraries
         /// </summary>
@@ -1381,12 +1389,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	01/29/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogBuffer
         {
             get
             {
-                var slb = HostController.Instance.GetInteger("SiteLogBuffer", 1);
-                return slb < 1 ? 1 : slb;
+                return 1;
             }
         }
 
@@ -1401,11 +1409,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	01/29/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogHistory
         {
             get
             {
-                return HostController.Instance.GetInteger("SiteLogHistory");
+                return 0;
             }
         }
 
@@ -1420,16 +1429,12 @@ namespace DotNetNuke.Entities.Host
         ///   [cnurse]	03/05/2008   Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 8.0.0")]
         public static string SiteLogStorage
         {
             get
             {
-                string setting = HostController.Instance.GetString("SiteLogStorage");
-                if (string.IsNullOrEmpty(setting))
-                {
-                    setting = "D";
-                }
-                return setting;
+                return "D";
             }
         }
 
@@ -1882,13 +1887,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-        /// <summary>
-        /// Get the IgnoreWhiteList value, used during portal template import.
-        /// </summary>
-        static bool IgnoreWhiteList
-        {
-            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
-        }
 
         #endregion
 

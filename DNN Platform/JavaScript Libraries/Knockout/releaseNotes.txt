@@ -1,0 +1,73 @@
+<div class="markdown-body">
+<h2>Enhancements</h2>
+
+<p><a href="https://github.com/knockout/knockout/pull/1504" class="issue-link" title="Components should render synchronously when possible">#1504</a> - Component configuration 
+
+can specify a <code>synchronous</code> option to render already loaded components synchronously.<br>
+<a href="https://github.com/knockout/knockout/pull/1463" class="issue-link" title="Request feature: runtime composition of ko 3.2 component">#1463</a> - Component child 
+
+elements are provided to the <code>createViewModel</code> method, component child elements are exposed on the binding context as <code>$componentTemplateNodes</code>, and the 
+
+<code>template</code> binding can accept an array of DOM nodes directly through the <code>nodes</code> option.<br>
+<a href="https://github.com/knockout/knockout/pull/1449" class="issue-link" title="knockout 3.2 component binding context $root">#1449</a> - Binding context now contains a 
+
+<code>$component</code> property that references the nearest component view model (allows for easily binding to the root of the current component).<br>
+<a href="https://github.com/knockout/knockout/pull/1596" class="issue-link" title="Create writable computed within custom-element component">#1596</a> - Create a writable 
+
+computed within a custom element component when an expression evaluates to an observable (less need to use <code>.$raw</code> property).<br>
+<a href="https://github.com/knockout/knockout/pull/1576" class="issue-link" title='computed observables notify "awake" and "asleep" events'>#1576</a> - computed observables 
+
+(pure or deferred) notify an <code>awake</code> event with the current value when awakening, pure computeds notify an <code>asleep</code> event with an <code>undefined</code> 
+
+value when going to sleep, and the <code>getSubscriptionsCount</code> method on an observable can accept an event name argument to return only the count of subscriptions for 
+
+that event.<br>
+<a href="https://github.com/knockout/knockout/pull/1543" class="issue-link" title="Add caching to sleeping pure computed observables">#1543</a> - Sleeping pure computed 
+
+observables now cache their value.<br>
+<a href="https://github.com/knockout/knockout/pull/1635" class="issue-link" title="Export the setTextContent utility">#1635</a> - Export 
+
+<code>ko.utils.setTextContent</code><br>
+<a href="https://github.com/knockout/knockout/pull/1427" class="issue-link" title="Make ko.dependencyDetection.ignore exported outside">#1427</a> - Export 
+
+<code>ko.dependencyDetection.ignore</code> as <code>ko.ignoreDependencies</code></p>
+
+<h2>Fixes</h2>
+
+<p><a href="https://github.com/knockout/knockout/pull/1321" class="issue-link" title="Multi-window situation crashed in IE10 due to not being able to call the appendChild 
+
+method with argument being an element from a different window.">#1321</a> - Ensure that template nodes are created and moved within the correct document to fix cross-window 
+
+issues in IE.<br>
+<a href="https://github.com/knockout/knockout/pull/1434" class="issue-link" title="Binding parser skips all colons between the name and value">#1434</a> - Binding parser skips 
+
+all colons between the name and value. Support returning malformed bindings (non key-value pairs).<br>
+<a href="https://github.com/knockout/knockout/issues/1468" class="issue-link" title="css binding: Computed Observable set to null doesn't update GUI">#1468</a> - 
+
+<code>css</code> binding was not clearing a previously added dynamic class when the value bound against changes to null.<br>
+<a href="https://github.com/knockout/knockout/pull/1507" class="issue-link" title="Release cached arrayItemContext after it has been used">#1507</a> - Memory leak fix for 
+
+<code>foreach</code>/<code>template</code> binding<br>
+<a href="https://github.com/knockout/knockout/pull/1513" class="issue-link" title="Fix error in fixUpContinuousNodeArray when using jquery.tmpl">#1513</a> - Fix error in 
+
+<code>fixUpContinuousNodeArray</code> when using <code>jquery.tmpl</code><br>
+<a href="https://github.com/knockout/knockout/pull/1515" class="issue-link" title="Add missing update of exposed dependendObservable._latestValue (DEBUG only)">#1515</a> - 
+
+Update <code>dependentObservable._latestValue</code> when a pureComputed wakes up (affects debug build only)<br>
+<a href="https://github.com/knockout/knockout/pull/1526" class="issue-link" title="Component API should not directly use require">#1526</a> - Component's <code>require</code> 
+
+option should not try to do an AMD-style <code>require</code> in a CommonJS scenario.<br>
+<a href="https://github.com/knockout/knockout/pull/1556" class="issue-link" title="Add check that optionsAfterRender binding was provided a function">#1556</a> - Check that the 
+
+value passed to <code>optionsAfterRender</code> is a function before calling<br>
+<a href="https://github.com/knockout/knockout/pull/1597" class="issue-link" title="Fix svg css binding">#1597</a> - CSS binding now works properly with SVG elements<br>
+<a href="https://github.com/knockout/knockout/pull/1606" class="issue-link" title="Fix : do not bind contents of &lt;textarea&gt; elements">#1606</a> - Don't bind contents of 
+
+<code>&lt;textarea&gt;</code> elements<br>
+<a href="https://github.com/knockout/knockout/pull/1623" class="issue-link" title="valueAllowUnset - null selection not maintained when option items update">#1623</a> - When 
+
+using <code>valueAllowUnset: true</code>, <code>null</code> selection should be maintained when <code>option</code> items are updated.<br>
+<a href="https://github.com/knockout/knockout/pull/1634" class="issue-link" title="Clean up subscription to arrayChange when there are no subscribers">#1634</a> - Better 
+
+clean-up of <code>arrayChange</code> subscriptions</p>
+</div>

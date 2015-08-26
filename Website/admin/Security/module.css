@@ -1,7 +1,8 @@
 	.dnnSendPasswordContent input[type=text]{width:35%;}
-	.dnnSendPasswordContent ul.dnnActions{margin:10px 0 0 0;border:none;padding:0 0 0 145px;}
+	.dnnSendPasswordContent ul.dnnActions{margin:0;border:none;padding:0;}
 	.dnnSendPasswordContent{width:550px;}
     
-    .dnnPasswordResetContent input[type=text]{width:35%;}
-	.dnnPasswordResetContent ul.dnnActions{margin:10px 0 0 0;border:none;padding:0 0 0 145px;}
+    .dnnPasswordResetContent input[type=text]{width:45%;}
+	.dnnPasswordResetContent ul.dnnActions{margin:0;border:none;padding:0;}
 	.dnnPasswordResetContent{width:550px;}
+	.dnnPasswordResetContent .confirm-password-tooltip{ left: 3% !important; }

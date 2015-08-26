@@ -250,10 +250,10 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing Tablets Width
 
         [Test]
-        public void FiftyOneClientCapability_Width_Returns_768_For_IPad()
+        public void FiftyOneClientCapability_Width_Returns_1024_For_IPad()
         {
             //Arrange
-            var width = 768;
+            var width = 1024;
             var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
             // Act
@@ -268,10 +268,10 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing Tablets Height
 
         [Test]
-        public void FiftyOneClientCapability_Height_Returns_1024_For_IPad()
+        public void FiftyOneClientCapability_Height_Returns_768_For_IPad()
         {
             //Arrange
-            var height = 1024;
+            var height = 768;
             var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
             // Act

@@ -21,9 +21,6 @@
 #region Usings
 
 using System;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Scheduling;
@@ -76,21 +73,12 @@ namespace DotNetNuke.Services.Search
                 Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
                 ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                var searchEngine = new SearchEngine();
+                var searchEngine = new SearchEngine(ScheduleHistoryItem, lastSuccessFulDateTime);
                 try
                 {
-                    searchEngine.DeleteOldDocsBeforeReindex(lastSuccessFulDateTime);
-                    searchEngine.DeleteRemovedObjects(ScheduleHistoryItem.StartDate.ToUniversalTime());
-                    searchEngine.IndexContent(lastSuccessFulDateTime);
-
-                    foreach (var result in searchEngine.Results)
-                    {
-                        ScheduleHistoryItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0} Indexed: {1}", result.Key, result.Value));
-                    }
-
-                    ScheduleHistoryItem.AddLogNote("<br/>&nbsp;&nbsp;Deleted Objects: " + searchEngine.DeletedCount);
-                    ScheduleHistoryItem.AddLogNote("<br/><b>Total Items Indexed: " + searchEngine.IndexedSearchDocumentCount + "</b>");
-
+                    searchEngine.DeleteOldDocsBeforeReindex();
+                    searchEngine.DeleteRemovedObjects();
+                    searchEngine.IndexContent();
                     searchEngine.CompactSearchIndexIfNeeded(ScheduleHistoryItem);
                 }
                 finally

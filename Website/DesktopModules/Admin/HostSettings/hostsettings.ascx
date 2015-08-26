@@ -1,5 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false"
-    CodeFile="HostSettings.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false" Codebehind="HostSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -361,6 +360,19 @@
                         </Items>
                     </dnn:dnncombobox>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plcboUnauthCacheability" controlname="cboUnauthCacheability" runat="server" />
+                    <dnn:dnncombobox id="cboUnauthCacheability" runat="server">
+                        <Items>
+                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
+                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
+                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
+                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        </Items>
+                    </dnn:dnncombobox>
+                </div>
             </fieldset>
             <h2 id="Panel-JQuery" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("JQuery")%></a></h2>
             <fieldset>
@@ -497,9 +509,33 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+				<div class="dnnFormItem" runat="server" ID="allowLeadingWildcardSettingRow" ControlName="chkAllowLeadingWildcard">
+					<dnn:Label runat="server" ID="lblAllowLeadingWildcard" />
+					<asp:CheckBox runat="server" ID="chkAllowLeadingWildcard" />
+				</div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTitleBoost" runat="server" ResourceKey="lblTitleBoost" ControlName="txtTitleBoost" />
+                    <asp:TextBox runat="server" ID="txtTitleBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTagBoost" runat="server" ResourceKey="lblTagBoost"  ControlName="txtTagBoost" />
+                    <asp:TextBox runat="server" ID="txtTagBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plContentBoost" runat="server" ResourceKey="lblContentBoost" ControlName="txtContentBoost"  />
+                    <asp:TextBox runat="server" ID="txtContentBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plDescriptionBoost" runat="server" ResourceKey="lblDescriptionBoost" ControlName="txtDescriptionBoost"  />
+                    <asp:TextBox runat="server" ID="txtDescriptionBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plAuthorBoost" runat="server" ResourceKey="lblAuthorBoost" ControlName="txtAuthorBoost"  />
+                    <asp:TextBox runat="server" ID="txtAuthorBoost" CssClass="dnnSliderInput"></asp:TextBox>
                 </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">
@@ -558,25 +594,6 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plControlPanel" controlname="cboControlPanel" runat="server" />
                     <dnn:dnncombobox id="cboControlPanel" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogStorage" controlname="optSiteLogStorage" runat="server" />
-                    <asp:RadioButtonList ID="optSiteLogStorage" CssClass="dnnHSRadioButtons" runat="server"
-                        RepeatLayout="Flow">
-                        <asp:ListItem Value="D" resourcekey="Database" />
-                        <asp:ListItem Value="F" resourcekey="FileSystem" />
-                    </asp:RadioButtonList>
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
-                    <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
-                    <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
-                    <asp:RangeValidator runat="server" id="valSiteLogBuffer" Type="Integer" controltovalidate="txtSiteLogBuffer" validationexpression="^\d*" MinimumValue="1" MaximumValue="999" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="SiteLogBufferValidation"  />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
-                    <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                    <asp:Label ID="lblSiteLogHistory" runat="server" resourcekey="Days" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plUsersOnline" controlname="chkUsersOnline" runat="server" />
@@ -781,6 +798,11 @@
                     }
                 }
             }
+
+	        $('.dnnSliderInput').dnnSliderInput({
+	        	max: 50,
+				step: 5
+	        });
         }
 
         $(document).ready(function () {

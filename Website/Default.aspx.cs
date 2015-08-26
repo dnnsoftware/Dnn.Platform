@@ -43,7 +43,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.SiteLog;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI;
@@ -228,29 +227,28 @@ namespace DotNetNuke.Framework
                     Exceptions.ProcessHttpException(Request);
                 }
             }
-            if (Request.IsAuthenticated)
+            string cacheability = Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
+
+            switch (cacheability)
             {
-                switch (Host.AuthenticatedCacheability)
-                {
-                    case "0":
-                        Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                        break;
-                    case "1":
-                        Response.Cache.SetCacheability(HttpCacheability.Private);
-                        break;
-                    case "2":
-                        Response.Cache.SetCacheability(HttpCacheability.Public);
-                        break;
-                    case "3":
-                        Response.Cache.SetCacheability(HttpCacheability.Server);
-                        break;
-                    case "4":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
-                        break;
-                    case "5":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
-                        break;
-                }
+                case "0":
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    break;
+                case "1":
+                    Response.Cache.SetCacheability(HttpCacheability.Private);
+                    break;
+                case "2":
+                    Response.Cache.SetCacheability(HttpCacheability.Public);
+                    break;
+                case "3":
+                    Response.Cache.SetCacheability(HttpCacheability.Server);
+                    break;
+                case "4":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+                    break;
+                case "5":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
+                    break;
             }
 
             //page comment
@@ -428,7 +426,7 @@ namespace DotNetNuke.Framework
             //register DNN SkinWidgets Inititialization scripts
             if (PortalSettings.EnableSkinWidgets & !UrlUtils.InPopUp())
             {
-                jQuery.RequestRegistration();
+				JavaScript.RequestRegistration(CommonJs.jQuery);
                 // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
                 ClientAPI.RegisterStartUpScript(Page, "initWidgets", string.Format("<script type=\"text/javascript\" src=\"{0}\" ></script>", ResolveUrl("~/Resources/Shared/scripts/initWidgets.js")));
             }
@@ -487,11 +485,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// - manage affiliates
-        /// - log visit to site
         /// </remarks>
-        /// <history>
-        /// 	[sun1]	1/19/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ManageRequest()
         {
@@ -516,38 +510,6 @@ namespace DotNetNuke.Framework
                         Response.Cookies.Add(objCookie);
                     }
                 }
-            }
-
-            //site logging
-            if (PortalSettings.SiteLogHistory != 0)
-            {
-                //get User ID
-
-                //URL Referrer
-                string urlReferrer = "";
-                try
-                {
-                    if (Request.UrlReferrer != null)
-                    {
-                        urlReferrer = Request.UrlReferrer.ToString();
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-
-                }
-                string strSiteLogStorage = Host.SiteLogStorage;
-                int intSiteLogBuffer = Host.SiteLogBuffer;
-
-                //log visit
-                var objSiteLogs = new SiteLogController();
-
-                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                objSiteLogs.AddSiteLog(PortalSettings.PortalId, objUserInfo.UserID, urlReferrer, Request.Url.ToString(),
-                                       Request.UserAgent, Request.UserHostAddress, Request.UserHostName,
-                                       PortalSettings.ActiveTab.TabID, affiliateId, intSiteLogBuffer,
-                                       strSiteLogStorage);
             }
         }
 
@@ -827,7 +789,7 @@ namespace DotNetNuke.Framework
                 MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
             }
             Page.Header.Title = Title;
-            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader))
+            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader) && !HeaderIsWritten)
             {
                 Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
             }

@@ -1262,9 +1262,10 @@ td > .dnnLabel {
 
 .dnnFormHelpContent span {
     display: block;
+	word-wrap: break-word;
 }
 
-.dnnTooltip .dnnFormHelpContent span:after,
+/*.dnnTooltip .dnnFormHelpContent span:after,
 .dnnHelperTip .dnnFormHelpContent span:after {
     position: absolute;
     content: "";
@@ -1276,6 +1277,36 @@ td > .dnnLabel {
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 7px solid #000;
+}*/
+
+.dnnTooltip .dnnFormHelpContent .dnnHelpText {
+    word-wrap: break-word;
+}
+
+.bottomArrow:after
+{
+    position: absolute;
+    content: "";
+    left: 15px;
+    bottom: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #000;
+}
+.topArrow:before {
+    position: absolute;
+    content: "";
+    left: 15px;
+    top: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #000;
 }
 
 a.pinHelp {
@@ -3723,3 +3754,47 @@ html.mobileView {
     max-height: none !important; 
 }
 
+.dnnPlaceholder{ color: #666; }
+
+/* DNN Slider Input Style */
+div.dnnSliderInput {
+	position: relative;
+	display: inline-block;
+	width: 47%;
+    margin:15px 0 23px 0;
+    max-width: 445px;
+	border: 1px solid #d3d3d3;
+	-ms-border-radius: 3px;
+	border-radius: 3px;
+	height: 10px;
+}
+
+div.dnnSliderInput .ui-slider-handle {
+	position: absolute;
+    z-index: 2;
+    width: 14px;
+    height: 14px;
+    cursor: default;
+	border: 1px solid #aaaaaa;
+    background-color: #cccccc;
+    font-weight: normal;
+    color: #555555;
+	outline: none;
+	top: -2px;
+	margin-left: -7px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+div.dnnSliderInput .dnnTooltip {
+	top: -37px;
+	margin-left: -22px;
+}
+div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
+	visibility: visible;
+	padding: 4px 10px;
+	width: 25px;
+	text-align: center;
+	z-index: 1;
+}
+/*END DNN Slider Input Style*/

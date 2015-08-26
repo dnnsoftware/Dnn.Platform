@@ -181,6 +181,11 @@ namespace DotNetNuke.Framework
 
 		public string CanonicalLinkUrl { get; set; }
 
+		/// <summary>
+		/// Indicate whether http headers has been sent to client. 
+		/// </summary>
+		public bool HeaderIsWritten { get; internal set; }
+
         #endregion
 
         #region Private Methods

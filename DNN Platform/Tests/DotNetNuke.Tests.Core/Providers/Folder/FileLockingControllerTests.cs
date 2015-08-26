@@ -21,6 +21,8 @@
 
 using System;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
@@ -36,16 +38,16 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileLockingControllerTests
     {
-        private Mock<IContentWorkflowController> _mockContentWorkflowController;        
+        private Mock<IWorkflowEngine> _mockWorkFlowEngine;        
         private Mock<IUserSecurityController> _mockUserSecurityController;
         
         [SetUp]
         public void Setup()
         {
-            _mockContentWorkflowController = new Mock<IContentWorkflowController>();
+            _mockWorkFlowEngine = new Mock<IWorkflowEngine>();
             _mockUserSecurityController = new Mock<IUserSecurityController>();
 
-            ContentWorkflowController.RegisterInstance(_mockContentWorkflowController.Object);
+            WorkflowEngine.SetTestableInstance(_mockWorkFlowEngine.Object);
             UserSecurityController.SetTestableInstance(_mockUserSecurityController.Object);
 
         }
@@ -94,8 +96,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEnablePublishPeriod(true)
                 .WithContentItemId(It.IsAny<int>())
                 .Build();
+
             _mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
-            _mockContentWorkflowController.Setup(mwc => mwc.IsWorkflowCompleted(It.IsAny<int>())).Returns(false);
+            _mockWorkFlowEngine.Setup(mwc => mwc.IsWorkflowCompleted(It.IsAny<int>())).Returns(false);
 
             //Act
             string someReason;

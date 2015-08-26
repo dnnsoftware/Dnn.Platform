@@ -426,6 +426,21 @@ namespace DotNetNuke.Data
 			}
 		}
 
+        public virtual void UpdateDatabaseVersionIncrement(int Major, int Minor, int Build, int Increment, string AppName)
+        {
+            ExecuteNonQuery("UpdateDatabaseVersionIncrement", Major, Minor, Build, Increment, AppName);
+        }
+
+        public virtual int GetLastAppliedIteration(int Major, int Minor, int Build)
+        {
+            return ExecuteScalar<int>("GetLastAppliedIteration", Major, Minor, Build);
+        }
+
+        public virtual string GetUnappliedIterations(string version)
+        {
+            return ExecuteScalar<string>("GetUnappliedIterations", version);
+        }
+
 		#endregion
 
 		#region Host Settings Methods
@@ -2310,6 +2325,16 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetDuplicateEmailCount", portalId);
         }
 
+        public virtual IDataReader GetUserByHmacAppId(string appId)
+        {
+            return ExecuteReader("GetUserByHmacAppId", appId);
+        }
+
+        public virtual string GetHmacSecretByHmacAppId(string appId)
+        {
+            return ExecuteScalar<string>("GetHmacSecretByHmacAppId", appId);
+        }
+
         public virtual int GetSingleUserByEmail(int portalId, string emailToMatch)
         {
             return ExecuteScalar<int>("GetSingleUserByEmail", portalId, emailToMatch);
@@ -2328,7 +2353,7 @@ namespace DotNetNuke.Data
 		public virtual void UpdateUser(int userId, int portalID, string firstName, string lastName, bool isSuperUser,
 										string email, string displayName, string vanityUrl, bool updatePassword,
 										bool isApproved, bool refreshRoles, string lastIpAddress, Guid passwordResetToken,
-										DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID)
+                                        DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID, string hmacAppId, string hmacAppSecret )
 		{
 			ExecuteNonQuery("UpdateUser",
 									  userId,
@@ -2346,7 +2371,9 @@ namespace DotNetNuke.Data
 									  passwordResetToken,
 									  GetNull(passwordResetExpiration),
 									  isDeleted,
-									  lastModifiedByUserID);
+									  lastModifiedByUserID,
+                                      hmacAppId,
+                                      hmacAppSecret);
 		}
 
 		#endregion
@@ -2585,43 +2612,6 @@ namespace DotNetNuke.Data
 									  ControlSrc,
 									  SupportsPartialRendering,
 									  LastModifiedByUserID);
-		}
-
-		#endregion
-
-		#region SiteLog
-
-		public virtual void AddSiteLog(DateTime dateTime, int portalId, int userId, string referrer, string URL,
-										string userAgent, string userHostAddress, string userHostName, int tabId,
-										int affiliateId)
-		{
-			ExecuteNonQuery("AddSiteLog",
-									  dateTime,
-									  portalId,
-									  GetNull(userId),
-									  GetNull(referrer),
-									  GetNull(URL),
-									  GetNull(userAgent),
-									  GetNull(userHostAddress),
-									  GetNull(userHostName),
-									  GetNull(tabId),
-									  GetNull(affiliateId));
-		}
-
-		public virtual void DeleteSiteLog(DateTime dateTime, int portalId)
-		{
-			ExecuteNonQuery("DeleteSiteLog", dateTime, portalId);
-		}
-
-		public virtual IDataReader GetSiteLog(int portalId, string portalAlias, string reportName, DateTime startDate,
-											DateTime endDate)
-		{
-			return ExecuteReader(reportName, portalId, portalAlias, startDate, endDate);
-		}
-
-		public virtual IDataReader GetSiteLogReports()
-		{
-			return ExecuteReader("GetSiteLogReports");
 		}
 
 		#endregion

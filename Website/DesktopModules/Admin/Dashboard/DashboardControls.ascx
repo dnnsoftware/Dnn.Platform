@@ -1,5 +1,5 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Dashboard.DashboardControls" Language="C#" AutoEventWireup="false" CodeFile="DashboardControls.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Dashboard.DashboardControls" Language="C#" AutoEventWireup="false" Codebehind="DashboardControls.ascx.cs" %>
 <div class="dnnDashboardControls">
     <asp:datagrid id="grdDashboardControls" AutoGenerateColumns="false" width="100%" CellPadding="0" GridLines="None" cssclass="dnnGrid" Runat="server">
         <headerstyle cssclass="dnnGridHeader" verticalalign="Top" />

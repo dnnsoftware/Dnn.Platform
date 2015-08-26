@@ -53,7 +53,6 @@ namespace DotNetNuke.UI.WebControls
 		#region "Private Members"
 
         private object[] _CustomAttributes;
-	    private string _editControlId;
 
 		#endregion
 
@@ -188,6 +187,11 @@ namespace DotNetNuke.UI.WebControls
         /// </history>
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
+
+		/// <summary>
+		/// Set Data Field of the control.
+		/// </summary>
+		public string DataField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

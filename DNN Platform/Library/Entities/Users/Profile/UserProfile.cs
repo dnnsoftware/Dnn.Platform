@@ -303,24 +303,7 @@ namespace DotNetNuke.Entities.Users
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    bool isVisible = (user.UserID == _user.UserID);
-                    if (!isVisible)
-                    {
-                        switch (photoProperty.ProfileVisibility.VisibilityMode)
-                        {
-                            case UserVisibilityMode.AllUsers:
-                                isVisible = true;
-                                break;
-                            case UserVisibilityMode.MembersOnly:
-                                isVisible = user.UserID > 0;
-                                break;
-                            case UserVisibilityMode.AdminOnly:
-                                isVisible = user.IsInRole(settings.AdministratorRoleName);
-                                break;
-                            case UserVisibilityMode.FriendsAndGroups:
-                                break;
-                        }
-                    }
+	                bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, _user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));

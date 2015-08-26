@@ -70,9 +70,9 @@ namespace DotNetNuke.Services.FileSystem
         #region Abstract Methods
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.NotNull("newFolderPath", newFolderPath);
+            Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             if (folderPath == newFolderPath) return;
@@ -119,14 +119,14 @@ namespace DotNetNuke.Services.FileSystem
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
-            Requires.NotNull("fileName", fileName);
+            Requires.PropertyNotNull("fileName", fileName);
 
             return FileWrapper.Instance.Exists(GetActualPath(folder, fileName));
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             return DirectoryWrapper.Instance.Exists(GetActualPath(folderMapping, folderPath));
@@ -192,19 +192,12 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
 
             var portalSettings = GetPortalSettings(file.PortalId);
-            string rootFolder;
-            if (file.PortalId == Null.NullInteger)
-            {
-                //Host
-                rootFolder = Globals.HostPath;
-            }
-            else
-            {
-                //Portal
-                rootFolder = portalSettings.HomeDirectory;
-            }
+            var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
+
+            var fullPath = rootFolder + file.Folder + file.FileName;
+
             //check if a filename has a character that is not valid for urls
-            if (Regex.IsMatch(file.FileName, @"[&()<>?*]"))
+            if (Regex.IsMatch(fullPath, @"[&()<>?*+%]"))
             {
                 return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
             }
@@ -212,12 +205,10 @@ namespace DotNetNuke.Services.FileSystem
             // Does site management want the cachebuster parameter?
             if (portalSettings.AddCachebusterToResourceUris)
             {
-                return TestableGlobals.Instance.ResolveUrl(rootFolder + file.Folder + file.FileName + "?ver=" + file.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff"));
+                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + file.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff"));
             }
-            else
-            {
-                return TestableGlobals.Instance.ResolveUrl(rootFolder + file.Folder + file.FileName);
-            }
+
+            return TestableGlobals.Instance.ResolveUrl(fullPath);
         }
 
         public override string GetFolderProviderIconPath()
@@ -245,7 +236,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             return DirectoryWrapper.Instance.GetDirectories(GetActualPath(folderMapping, folderPath))

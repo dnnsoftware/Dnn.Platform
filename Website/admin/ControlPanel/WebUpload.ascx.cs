@@ -45,6 +45,8 @@ using DotNetNuke.Web.Common;
 
 namespace DotNetNuke.Modules.Admin.FileManager
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
     /// Class	 : WebUpload

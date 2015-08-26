@@ -26,7 +26,6 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Social.Messaging.Data;
@@ -37,14 +36,9 @@ using DotNetNuke.Services.Social.Messaging.Internal.Views;
 
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
+    /// <summary>The Controller class for social Messaging</summary>
     /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The Controller class for social Messaging
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <history>
-    /// </history>
+    /// <history></history>
     /// -----------------------------------------------------------------------------
     internal class InternalMessagingControllerImpl : IInternalMessagingController
     {
@@ -226,12 +220,20 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return CBO.FillObject<Message>(_dataService.GetLastSentMessage(sender.UserID, PortalController.GetEffectivePortalId(sender.PortalID)));
         }
 
-        ///<summary>Are attachments allowed</summary>        
-        ///<returns>True or False</returns>
-        /// <param name="portalId">Portal Id</param>               
+        /// <summary>Whether or not attachments are included with outgoing email.</summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <returns>True or False</returns>
+        public virtual bool IncludeAttachments(int portalId)
+        {
+            return this.GetPortalSetting("MessagingIncludeAttachments", portalId, "YES") == "YES";
+        }
+
+        /// <summary>Are attachments allowed</summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <returns>True or False</returns>
         public virtual bool AttachmentsAllowed(int portalId)
         {
-            return GetPortalSetting("MessagingAllowAttachments", portalId, "YES") == "YES";
+            return this.GetPortalSetting("MessagingAllowAttachments", portalId, "YES") == "YES";
         }
 
         ///<summary>Maximum number of Recipients allowed</summary>        
@@ -385,7 +387,15 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             return _dataService.CountArchivedConversations(userId, portalId);
         }
-        
+
+        /// <summary>Gets the attachments.</summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>A list of message attachments for the given message</returns>
+        public IEnumerable<MessageFileView> GetAttachments(int messageId)
+        {
+           return this._dataService.GetMessageAttachmentsByMessage(messageId);
+        }
+
         #endregion
 
         #region Internal Methods

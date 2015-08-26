@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (portalId < 0)
             {
                 // host level setting
-                HostController.Instance.Update(Constants.SearchReindexSettingName, text);
+                HostController.Instance.Update(Constants.SearchReindexSettingName, text, true);
             }
             else
             {
@@ -263,12 +263,12 @@ namespace DotNetNuke.Services.Search.Internals
 
         public bool GetSearchCompactFlag()
         {
-            return "1" == HostController.Instance.GetString(Constants.SearchoptimizeFlagName, Null.NullString);
+            return "1" == HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString);
         }
 
         public void SetSearchReindexRequestTime(bool turnOn)
         {
-            HostController.Instance.Update(Constants.SearchoptimizeFlagName, turnOn ? "1" : "0");
+            HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
         /// <summary>
@@ -303,12 +303,10 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Returns the last time search indexing was completed successfully.
         /// The returned value in local server time (not UTC).
+        /// Beware that the value stored in teh database is converted to UTC time.
         /// </summary>
-        /// <param name="scheduleId"></param>
-        /// <returns></returns>
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
-            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
             var lastValue = settings[Constants.SearchLastSuccessIndexName] as string;
 
@@ -319,23 +317,66 @@ namespace DotNetNuke.Services.Search.Internals
                 lastValue = HostController.Instance.GetString(name, Null.NullString);
             }
 
-            if (!string.IsNullOrEmpty(lastValue))
+            DateTime lastTime;
+            if (!string.IsNullOrEmpty(lastValue) &&
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastTime))
             {
-                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
-
-                if (lastSuccessfulDateTime <= SqlDateTime.MinValue.Value)
-                    lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
-                else if (lastSuccessfulDateTime >= SqlDateTime.MaxValue.Value)
-                    lastSuccessfulDateTime = SqlDateTime.MaxValue.Value.AddDays(-1);
+                // retrieves the date as UTC but returns to caller as local
+                lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
+                if (lastTime > DateTime.Now) lastTime = DateTime.Now;
+            }
+            else
+            {
+                lastTime = SqlDateTime.MinValue.Value.AddDays(1);
             }
 
-            return lastSuccessfulDateTime;
+            return lastTime;
         }
 
+        /// <summary>
+        /// Stores the last successful time of the system search indexer.
+        /// The passed value should be in local system time; not UTC time.
+        /// Beware that the value stored in teh database is converted to UTC time.
+        /// </summary>
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
-                Constants.SearchLastSuccessIndexName, startDateLocal.ToString(Constants.ReindexDateTimeFormat));
+                Constants.SearchLastSuccessIndexName, startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
+        }
+
+        public DateTime GetIndexerCheckpointUtcTime(int scheduleId, string indexerKey)
+        {
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            var lastValue = settings[indexerKey] as string;
+
+            DateTime lastUtcTime;
+            if (!string.IsNullOrEmpty(lastValue) &&
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastUtcTime))
+            {
+                lastUtcTime = FixSqlDateTime(lastUtcTime);
+            }
+            else
+            {
+                lastUtcTime = DateTime.UtcNow;
+            }
+
+            return lastUtcTime;
+        }
+
+        public void SetIndexerCheckpointUtcTime(int scheduleId, string indexerKey, DateTime lastUtcTime)
+        {
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, lastUtcTime.ToString(Constants.ReindexDateTimeFormat));
+        }
+
+        public string GetIndexerCheckpointData(int scheduleId, string indexerKey)
+        {
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            return settings[indexerKey] as string;
+        }
+
+        public void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData)
+        {
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, checkPointData);
         }
 
         #endregion
@@ -369,10 +410,10 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
+		/// <param name="allowLeadingWildcard"></param>
         /// <returns>cleaned and pre-processed search phrase</returns>
-        public string RephraseSearchText(string searchPhrase, bool useWildCard)
+		public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
-
             searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
@@ -403,7 +444,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (!insideQuote && useWildCard)
                         {
                             // end of a word; we need to append a wild card to search when needed
-                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()) + " ");
+                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -418,7 +459,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else if (useWildCard)
             {
-                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()));
+                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
             }
             else
             {
@@ -442,7 +483,16 @@ namespace DotNetNuke.Services.Search.Internals
 
         #region private methods
 
-        private string FixLastWord(string lastWord)
+        private static DateTime FixSqlDateTime(DateTime datim)
+        {
+            if (datim <= SqlDateTime.MinValue.Value)
+                datim = SqlDateTime.MinValue.Value.AddDays(1);
+            else if (datim >= SqlDateTime.MaxValue.Value)
+                datim = SqlDateTime.MaxValue.Value.AddDays(-1);
+            return datim;
+        }
+
+		private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
                 return string.Empty;
@@ -477,8 +527,8 @@ namespace DotNetNuke.Services.Search.Internals
                 if (lastWord.Length > 0 && lastWord != "AND" && lastWord != "OR")
                 {
                     lastWord = (beginIsGroup && endIsGroup)
-                        ? string.Format("{0} OR {0}*", lastWord)
-                        : string.Format("({0} OR {0}*)", lastWord);
+						? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
+						: string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
                 if (beginIsGroup) lastWord = c1 + lastWord;

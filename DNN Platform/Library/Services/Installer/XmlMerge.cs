@@ -529,7 +529,9 @@ namespace DotNetNuke.Services.Installer
                                                                      Version,
                                                                      DateTime.Now);
                             XmlComment commentHeader = TargetConfig.CreateComment(commentHeaderText);
-                            XmlComment commentNode = TargetConfig.CreateComment(targetNode.OuterXml);
+
+		                    var targetNodeContent = GetNodeContentWithoutComment(targetNode);
+							XmlComment commentNode = TargetConfig.CreateComment(targetNodeContent);
                             rootNode.RemoveChild(targetNode);
                             rootNode.InnerXml = rootNode.InnerXml + commentHeader.OuterXml + commentNode.OuterXml + child.OuterXml;
                             break;
@@ -539,6 +541,35 @@ namespace DotNetNuke.Services.Installer
                 }
             }
         }
+
+	    private string GetNodeContentWithoutComment(XmlNode node)
+	    {
+		    var cloneNode = node.Clone();
+		    RemoveCommentNodes(cloneNode);
+
+		    return cloneNode.OuterXml;
+	    }
+
+	    private void RemoveCommentNodes(XmlNode node)
+	    {
+		    var commentNodes = new List<XmlNode>();
+		    foreach (XmlNode childNode in node.ChildNodes)
+		    {
+			    if (childNode.NodeType == XmlNodeType.Comment)
+			    {
+				    commentNodes.Add(childNode);
+			    }
+				else if (childNode.HasChildNodes)
+				{
+					RemoveCommentNodes(childNode);
+				}
+		    }
+
+		    if (commentNodes.Count > 0)
+		    {
+			    commentNodes.ForEach(n => { node.RemoveChild(n); });
+		    }
+	    }
 		
 		#endregion
 

@@ -239,7 +239,6 @@ namespace DotNetNuke.Entities.Content
             get { return _images ?? (_images = AttachmentController.DeserializeFileInfo(Metadata[AttachmentController.ImageKey]).ToList()); }
 	    }
 
-
         /// <summary>
         /// Gets or sets the Content Workflow State ID.
         /// </summary>

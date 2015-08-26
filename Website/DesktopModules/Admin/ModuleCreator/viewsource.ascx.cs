@@ -46,7 +46,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Modules
+namespace DotNetNuke.Modules.Admin.ModuleCreator
 {
     public partial class ViewSource : PortalModuleBase
     {
@@ -238,7 +238,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private void LoadLanguages()
         {
             optLanguage.Items.Clear();
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates";
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates";
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private void LoadModuleTemplates()
         {
             cboTemplate.Items.Clear();
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue;
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue;
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void LoadReadMe()
         {
-            var templatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value;
+			var templatePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedItem.Value;
             if (File.Exists(templatePath + "\\readme.txt"))
             {
                 var readMe = Null.NullString;
@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID ==objDesktopModule.PackageID);
 
-            var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
+			var moduleTemplatePath = Server.MapPath(ControlPath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
 
             EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
