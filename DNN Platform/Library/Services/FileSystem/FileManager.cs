@@ -34,6 +34,7 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
@@ -58,15 +59,6 @@ namespace DotNetNuke.Services.FileSystem
     public class FileManager : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
-        
-        #region Private Events
-        private event EventHandler<FileDeletedEventArgs> FileDeleted;
-        private event EventHandler<FileRenamedEventArgs> FileRenamed;
-        private event EventHandler<FileMovedEventArgs> FileMoved;
-        private event EventHandler<FileChangedEventArgs> FileOverwritten;
-        private event EventHandler<FileAddedEventArgs> FileAdded;
-        private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
-        #endregion
 
         #region Properties
 
@@ -119,13 +111,6 @@ namespace DotNetNuke.Services.FileSystem
 
         private const int BufferSize = 4096;
 
-        #endregion
-
-        #region Constructor
-        internal FileManager()
-        {
-            RegisterEventHandlers();
-        }
         #endregion
 
         #region Private Methods
@@ -209,94 +194,63 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void RegisterEventHandlers()
-        {
-            //foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            //{
-            //    FileDeleted += events.Value.FileDeleted;
-            //    FileRenamed += events.Value.FileRenamed;
-            //    FileMoved += events.Value.FileMoved;
-            //    FileAdded += events.Value.FileAdded;
-            //    FileOverwritten += events.Value.FileOverwritten;
-            //    FileMetadataChanged += events.Value.FileMetadataChanged;
-            //}
-        }
-
         #region On File Events
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
-            if (FileDeleted != null)
-            {
-                FileDeleted(this, new FileDeletedEventArgs
-                    {
-                        FileInfo = fileInfo,
-                        UserId = userId,
-                        IsCascadeDeleting = false
-                    });
-            }
+            EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
+                                                        {
+                                                            FileInfo = fileInfo,
+                                                            UserId = userId,
+                                                            IsCascadeDeleting = false
+                                                        });
         }
 
         private void OnFileRenamed(IFileInfo fileInfo, string oldFileName, int userId)
         {
-            if (FileRenamed != null)
-            {
-                FileRenamed(this, new FileRenamedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId,
-                    OldFileName = oldFileName
-                });
-            }
+            EventManager.Instance.OnFileRenamed(new FileRenamedEventArgs
+                                                        {
+                                                            FileInfo = fileInfo,
+                                                            UserId = userId,
+                                                            OldFileName = oldFileName
+                                                        });
         }
 
         private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
         {
-            if (FileMoved != null)
-            {
-                FileMoved(this, new FileMovedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId,
-                    OldFilePath = oldFilePath
-                });
-            }
+            EventManager.Instance.OnFileMoved(new FileMovedEventArgs
+                                                {
+                                                    FileInfo = fileInfo,
+                                                    UserId = userId,
+                                                    OldFilePath = oldFilePath
+                                                });
         }
 
         private void OnFileOverwritten(IFileInfo fileInfo, int userId)
         {
-            if (FileOverwritten != null)
-            {
-                FileOverwritten(this, new FileChangedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId
-                });
-            }
+            EventManager.Instance.OnFileOverwritten(new FileChangedEventArgs
+                                                        {
+                                                            FileInfo = fileInfo,
+                                                            UserId = userId
+                                                        });
         }
 
         private void OnFileMetadataChanged(IFileInfo fileInfo, int userId)
         {
-            if (FileMetadataChanged != null)
-            {
-                FileMetadataChanged(this, new FileChangedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId
-                });
-            }
+            EventManager.Instance.OnFileMetadataChanged(new FileChangedEventArgs
+                                                            {
+                                                                FileInfo = fileInfo,
+                                                                UserId = userId
+                                                            });
         }
 
         private void OnFileAdded(IFileInfo fileInfo, IFolderInfo folderInfo, int userId)
         {
-            if (FileAdded != null)
-            {
-                FileAdded(this, new FileAddedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId,
-                    FolderInfo = folderInfo
-                });
-            }
+            EventManager.Instance.OnFileAdded(new FileAddedEventArgs
+                                                    {
+                                                        FileInfo = fileInfo,
+                                                        UserId = userId,
+                                                        FolderInfo = folderInfo
+                                                    });
         }
         #endregion
 
