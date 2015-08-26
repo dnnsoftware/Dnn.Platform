@@ -132,7 +132,7 @@
                                 <th width="100px">[Resx:{key:"Actions"}]</th>
                             </tr>
                             </thead>
-                            <tbody data-bind="sortable: { data: contentFields(), afterMove: moveContentField, options: { handle: '.dccMove'} }">
+                            <tbody data-bind="sortable: { data: contentFields(), afterMove: moveContentField, options: { containment: 'parent', scroll: true, scrollSensitivity: 60, handle: '.dccMove'} }">
                             <tr>
                                 <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: name"></span>
