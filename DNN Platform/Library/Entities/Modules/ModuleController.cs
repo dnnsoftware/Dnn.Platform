@@ -99,9 +99,11 @@ namespace DotNetNuke.Entities.Modules
                     var controller = businessController as IPortable;
                     if (controller != null)
                     {
-                        string Content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                        if (!String.IsNullOrEmpty(Content))
+                        string content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                        if (!String.IsNullOrEmpty(content))
                         {
+                            content = XmlUtils.RemoveTroublesomeCharacters(content);
+
                             //add attributes to XML document
                             if (nodeModule.OwnerDocument != null)
                             {
@@ -124,8 +126,8 @@ namespace DotNetNuke.Entities.Modules
                                 {
                                     newnode.Attributes.Append(xmlattr);
                                 }
-                                Content = HttpContext.Current.Server.HtmlEncode(Content);
-                                newnode.InnerXml = XmlUtils.XMLEncode(Content);
+                                content = HttpContext.Current.Server.HtmlEncode(content);
+                                newnode.InnerXml = XmlUtils.XMLEncode(content);
                                 nodeModule.AppendChild(newnode);
                             }
                         }

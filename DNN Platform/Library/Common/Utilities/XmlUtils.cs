@@ -757,6 +757,29 @@ namespace DotNetNuke.Common.Utilities
             return "<![CDATA[" + html + "]]>";
         }
 
+        /// <summary>
+        /// Removes control characters and other non-UTF-8 characters
+        /// </summary>
+        /// <param name="content">The string to process</param>
+        /// <returns>A string with no control characters or entities above 0x00FD</returns>
+        public static string RemoveTroublesomeCharacters(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                return content;
+            }
+
+            StringBuilder newString = new StringBuilder();
+            foreach (var ch in content)
+            {
+                if (XmlConvert.IsXmlChar(ch))
+                {
+                    newString.Append(ch);
+                }
+            }
+            return newString.ToString();
+
+        }
 
         public static void XSLTransform(XmlDocument doc, ref StreamWriter writer, string xsltUrl)
         {
