@@ -215,7 +215,7 @@
                     }
 
                     if (isEnabled(action)) {
-                        htmlString += "<a href=\"" + action.Url + "\"><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
+                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
                     } else {
                         htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
                     }
