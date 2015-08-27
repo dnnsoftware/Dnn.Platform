@@ -16,6 +16,8 @@ using DotNetOpenAuth.OAuth2;
 using System.ServiceModel.Channels;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using DotNetNuke.Entities.Controllers;
+using OAuth.AuthorizationServer.Core.Server;
 using DNOA = DotNetOpenAuth.OAuth2;
 
 namespace DotNetNuke.Web.Api
@@ -30,12 +32,12 @@ namespace DotNetNuke.Web.Api
         static OAuthAuthorizeScopeAttribute()
         {
             var decrypter = new RSACryptoServiceProvider();
-            var base64EncodedKey = ConfigurationManager.AppSettings["ResourceServerDecryptionKey"];
+            var base64EncodedKey = OAUTHDataController.GetSettings().ResourceServerDecryptionKey;
             decrypter.FromXmlString(Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedKey)));
             Decrypter = decrypter;
 
             var verifier = new RSACryptoServiceProvider();
-            var base64VerifierEncodedKey = ConfigurationManager.AppSettings["AuthorizationServerVerificationKey"];
+            var base64VerifierEncodedKey = OAUTHDataController.GetSettings().AuthorizationServerVerificationKey;
             verifier.FromXmlString(Encoding.UTF8.GetString(Convert.FromBase64String(base64VerifierEncodedKey)));
             SignatureVerifier = verifier;
         }

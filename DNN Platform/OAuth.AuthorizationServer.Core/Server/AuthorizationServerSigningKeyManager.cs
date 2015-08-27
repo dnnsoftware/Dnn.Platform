@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
+using DotNetNuke.Entities.Controllers;
 
 namespace OAuth.AuthorizationServer.Core.Server
 {
@@ -11,7 +12,7 @@ namespace OAuth.AuthorizationServer.Core.Server
         public RSACryptoServiceProvider GetSigner()
         {
             var signer = new RSACryptoServiceProvider();
-            var base64EncodedKey = ConfigurationManager.AppSettings["AuthorizationServerPrivateKey"];
+            var base64EncodedKey = OAUTHDataController.GetSettings().AuthorizationServerPrivateKey; 
             signer.FromXmlString(Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedKey)));
             return signer;            
         }

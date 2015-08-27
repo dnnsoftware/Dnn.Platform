@@ -1,5 +1,15 @@
 /******OAUTH Database support******/
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAuthSettings]') AND type in (N'U'))
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}OAuthSettings](
+	[AuthorizationServerPrivateKey] [nvarchar](max) NULL,
+	[ResourceServerDecryptionKey] [nvarchar](max) NULL,
+	[AuthorizationServerVerificationKey] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAuthAuthorizations]') AND type in (N'U'))
 BEGIN
 CREATE TABLE {databaseOwner}[{objectQualifier}OAuthAuthorizations](
@@ -372,5 +382,31 @@ AS
 BEGIN
 
 delete from {databaseOwner}[OAuthClients] where Id=@ClientId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetOAuthSettings]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetOAuthSettings]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetOAuthSettings]
+AS
+BEGIN
+
+SELECT * from {databaseOwner}[OAuthSettings] 
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}InsertOAuthSettings]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}InsertOAuthSettings]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}InsertOAuthSettings]
+@AuthorizationServerPrivateKey nvarchar(max),
+@ResourceServerDecryptionKey nvarchar(max),
+@AuthorizationServerVerificationKey nvarchar(max)
+AS
+BEGIN
+
+INSERT INTO {databaseOwner}[OAuthSettings] ([AuthorizationServerPrivateKey],[ResourceServerDecryptionKey] ,[AuthorizationServerVerificationKey])
+VALUES (@AuthorizationServerPrivateKey,@ResourceServerDecryptionKey,@AuthorizationServerVerificationKey)
 END
 GO

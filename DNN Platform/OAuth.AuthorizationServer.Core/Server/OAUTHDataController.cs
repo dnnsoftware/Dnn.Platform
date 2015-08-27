@@ -12,6 +12,22 @@ namespace OAuth.AuthorizationServer.Core.Server
 {
     public static class OAUTHDataController
     {
+
+        public static Settings GetSettings()
+        {
+
+            return CBO.FillObject<Settings>(DataProvider.Instance().ExecuteReader("GetOAuthSettings"));
+
+        }
+
+        public static void InsertSettings(string authorizationServerPrivateKey, string resourceServerDecryptionKey, string authorizationServerVerificationKey)
+        {
+
+            DataProvider.Instance().ExecuteNonQuery("InsertOAuthSettings",authorizationServerPrivateKey,resourceServerDecryptionKey,authorizationServerVerificationKey);
+
+        }
+
+
         public static Client ClientRepositoryGetById(string id)
         {
 

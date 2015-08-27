@@ -60,6 +60,7 @@
     <Compile Include="Data\Model\Nonce.cs" />
     <Compile Include="Data\Model\Resource.cs" />
     <Compile Include="Data\Model\Scope.cs" />
+    <Compile Include="Data\Model\Settings.cs" />
     <Compile Include="Data\Model\SymmetricCryptoKey.cs" />
     <Compile Include="Data\Model\OAUTHUser.cs" />
     <Compile Include="Data\Repositories\NonceRepository.cs" />
