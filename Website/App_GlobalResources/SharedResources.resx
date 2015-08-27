@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeleteItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Item?</value>
+    <value>Are you sure you wish to delete this item?</value>
   </data>
   <data name="DeletetUser.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This User?</value>
+    <value>Are you sure you wish to delete this user?</value>
   </data>
   <data name="UnregisterUser.Text" xml:space="preserve">
     <value>Are you sure you want to unregister? This will delete your user account.</value>
   </data>
   <data name="RemoveItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Remove This Item?</value>
+    <value>Are you sure you wish to remove this item?</value>
   </data>
   <data name="Calendar.Text" xml:space="preserve">
     <value>Calendar</value>
