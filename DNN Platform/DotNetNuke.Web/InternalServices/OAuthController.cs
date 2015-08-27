@@ -153,11 +153,11 @@ namespace DotNetNuke.Web.InternalServices
             string state = model.AuthorizationRequest.ClientState;
             if (pendingRequest.ResponseType.ToString() == "AuthorizationCode")
             {
-                uri = "http://" + domainName + "/oauthauthorize2.aspx?client_id=" + pendingRequest.ClientIdentifier +"&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
+                uri = "http://" + domainName + "/oauthauthorize.aspx?client_id=" + pendingRequest.ClientIdentifier +"&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
             }
             else
             {
-                uri = "http://" + domainName + "/oauthauthorize2.aspx?scope=DNN-ALL&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&response_type=token&client_id=" + pendingRequest.ClientIdentifier +"&resource-authentication-token=" + rt.ToString(); 
+                uri = "http://" + domainName + "/oauthauthorize.aspx?scope=DNN-ALL&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&response_type=token&client_id=" + pendingRequest.ClientIdentifier +"&resource-authentication-token=" + rt.ToString(); 
             }
             
             response.Headers.Location = new Uri(uri);

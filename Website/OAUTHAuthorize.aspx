@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="OAUTHAuthorize2.aspx.cs" Inherits="OAUTHAuthorize2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="OAUTHAuthorize.aspx.cs" Inherits="OAUTHAuthorize" %>
 
 <!DOCTYPE html>
 

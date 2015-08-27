@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OAuth.AuthorizationServer.Core.Server;
 
-public partial class OAUTHAuthorize2 : System.Web.UI.Page
+public partial class OAUTHAuthorize : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
