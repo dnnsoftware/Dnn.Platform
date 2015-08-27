@@ -38,8 +38,8 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             pageSize: 1000
         };
 
-        util.dataTypeService().getEntities(params,
-            "GetDataTypes",
+        util.dataTypeService().getEntities("GetDataTypes",
+            params,
             self.dataTypes,
             function () {
                 // ReSharper disable once InconsistentNaming
@@ -68,7 +68,9 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             contentTypeId: contentTypeId
         };
 
-        util.contentTypeService().getEntity(params, "GetContentType", self.selectedContentType);
+        util.contentTypeService().getEntity("GetContentType",
+            params,
+            self.selectedContentType);
 
         if(typeof cb === 'function') cb();
     };
@@ -80,8 +82,8 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             pageSize: self.pageSize()
         };
 
-        util.contentTypeService().getEntities(params,
-            "GetContentTypes",
+        util.contentTypeService().getEntities("GetContentTypes",
+            params,
             self.results,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -293,7 +295,9 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             contentTypeId: contentTypeId,
             contentFieldId: contentFieldId
         };
-        util.contentTypeService().getEntity(params, "GetContentField", self.selectedContentField);
+        util.contentTypeService().getEntity("GetContentField",
+            params,
+            self.selectedContentField);
 
         if(typeof cb === 'function') cb();
     };
@@ -342,8 +346,8 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             pageSize: self.pageSize()
         };
 
-        util.contentTypeService().getEntities(params,
-            "GetContentFields",
+        util.contentTypeService().getEntities("GetContentFields",
+            params,
             self.contentFields,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -417,9 +421,10 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.dataType = ko.computed(function() {
         var value = "";
         if (self.dataTypes !== undefined) {
-            var entity = util.getEntity(self.dataTypes(), function(dataType) {
-                return (self.dataTypeId() === dataType.dataTypeId());
-            });
+            var entity = util.getEntity(self.dataTypes(),
+                function (dataType) {
+                    return (self.dataTypeId() === dataType.dataTypeId());
+                });
             if (entity != null) {
                 value = entity.name;
             }

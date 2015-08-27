@@ -249,7 +249,7 @@ dnn.sf = function(){
         return call("GET", url, params, success, failure, loading, false, false);
     };
 
-    var getEntities = function(params, method, array, createEntity, total, onSuccess, onError, onFailure) {
+    var getEntities = function (method, params, array, createEntity, total, onSuccess, onError, onFailure) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
         call("GET", url, params,
@@ -287,7 +287,7 @@ dnn.sf = function(){
         );
     };
 
-    var getEntity = function(params, method, entity, onSuccess, onError, onFailure) {
+    var getEntity = function (method, params, entity, onSuccess, onError, onFailure) {
         var self = this;
         var url = baseServicepath + self.serviceController + '/' + method;
         call("GET", url, params,

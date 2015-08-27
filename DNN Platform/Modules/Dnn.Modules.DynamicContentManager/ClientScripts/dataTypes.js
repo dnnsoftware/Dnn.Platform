@@ -96,7 +96,9 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         var params = {
             dataTypeId: dataTypeId
         };
-        util.dataTypeService().getEntity(params, "GetDataType", self.selectedDataType);
+        util.dataTypeService().getEntity("GetDataType",
+            params,
+            self.selectedDataType);
 
         if(typeof cb === 'function') cb();
     };
@@ -107,8 +109,8 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
             pageIndex: self.pageIndex(),
             pageSize: self.pageSize()
         };
-        util.dataTypeService().getEntities(params,
-            "GetDataTypes",
+        util.dataTypeService().getEntities("GetDataTypes",
+            params,
             self.results,
             function() {
                 // ReSharper disable once InconsistentNaming

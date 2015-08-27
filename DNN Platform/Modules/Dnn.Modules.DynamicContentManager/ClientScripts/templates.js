@@ -38,8 +38,8 @@ dcc.templatesViewModel = function(rootViewModel, config){
             pageSize: 1000
         };
 
-        util.contentTypeService().getEntities(params,
-            "GetContentTypes",
+        util.contentTypeService().getEntities("GetContentTypes",
+            params,
             self.contentTypes,
             function () {
                 // ReSharper disable once InconsistentNaming
@@ -69,7 +69,9 @@ dcc.templatesViewModel = function(rootViewModel, config){
         var params = {
             templateId: templateId
         };
-        util.templateService().getEntity(params, "GetTemplate", self.selectedTemplate,
+        util.templateService().getEntity("GetTemplate",
+            params,
+            self.selectedTemplate,
             function(){
                 self.selectedTemplate.bindCodeEditor();
             }
@@ -88,8 +90,8 @@ dcc.templatesViewModel = function(rootViewModel, config){
             pageSize: self.pageSize()
         };
 
-        util.templateService().getEntities(params,
-            "GetTemplates",
+        util.templateService().getEntities("GetTemplates",
+            params,
             self.results,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -177,7 +179,9 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.contentType = ko.computed(function() {
         var value = "";
         if (self.contentTypes !== undefined) {
-            var entity = util.getEntity(self.contentTypes(), function (contentType) {
+            var entity = util.getEntity(
+                self.contentTypes(),
+                function (contentType) {
                 return (self.contentTypeId() === contentType.contentTypeId());
             });
             if (entity != null) {
