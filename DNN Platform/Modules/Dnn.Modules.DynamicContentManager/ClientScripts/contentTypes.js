@@ -98,6 +98,9 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         self.searchText.subscribe(function () {
             findContentTypes();
         });
+        self.pageSize.subscribe(function () {
+            findContentTypes();
+        });
 
         $rootElement.find("#contentTypes-editView").css("display", "none");
 

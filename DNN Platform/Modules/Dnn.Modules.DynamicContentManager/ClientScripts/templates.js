@@ -106,7 +106,9 @@ dcc.templatesViewModel = function(rootViewModel, config){
         self.searchText.subscribe(function () {
             findTemplates();
         });
-
+        self.pageSize.subscribe(function () {
+            findTemplates();
+        });
         $rootElement.find("#templates-editView").css("display", "none");
     };
 
