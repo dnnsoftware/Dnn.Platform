@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Modules
                         string content = Convert.ToString(controller.ExportModule(module.ModuleID));
                         if (!String.IsNullOrEmpty(content))
                         {
-                            content = XmlUtils.RemoveTroublesomeCharacters(content);
+                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
 
                             //add attributes to XML document
                             if (nodeModule.OwnerDocument != null)
