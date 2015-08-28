@@ -1307,6 +1307,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
+    <Content Include="Resources\Shared\scripts\dnn.utility.js" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="web.config">
       <SubType>Designer</SubType>

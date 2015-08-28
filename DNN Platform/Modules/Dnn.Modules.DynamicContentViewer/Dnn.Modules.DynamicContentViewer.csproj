@@ -129,7 +129,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientScripts\util.js" />
     <Content Include="dnn_DCCViewer.dnn" />
     <Content Include="license.txt" />
     <Content Include="ReleaseNotes.txt" />

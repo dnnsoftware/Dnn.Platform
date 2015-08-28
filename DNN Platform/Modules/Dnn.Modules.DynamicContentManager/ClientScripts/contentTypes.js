@@ -19,7 +19,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.contentTypes_NoPagerFormat;
@@ -38,8 +38,8 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             pageSize: 1000
         };
 
-        util.dataTypeService().getEntities(params,
-            "GetDataTypes",
+        util.dataTypeService().getEntities("GetDataTypes",
+            params,
             self.dataTypes,
             function () {
                 // ReSharper disable once InconsistentNaming
@@ -68,7 +68,9 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             contentTypeId: contentTypeId
         };
 
-        util.contentTypeService().getEntity(params, "GetContentType", self.selectedContentType);
+        util.contentTypeService().getEntity("GetContentType",
+            params,
+            self.selectedContentType);
 
         if(typeof cb === 'function') cb();
     };
@@ -77,11 +79,11 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
 
-        util.contentTypeService().getEntities(params,
-            "GetContentTypes",
+        util.contentTypeService().getEntities("GetContentTypes",
+            params,
             self.results,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -92,7 +94,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
-        dcc.pager().init(self);
+        dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findContentTypes();
         });
@@ -260,7 +262,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.contentFieldsHeading = resx.contentFields;
     self.contentFields = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = 999;
+    self.pageSize = ko.observable(999);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentFields_PagerFormat;
     self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
@@ -285,7 +287,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.clear = function() {
         self.contentFields.removeAll();
         self.pageIndex(0);
-        self.pageSize = settings.pageSize;
+        self.pageSize(settings.pageSize);
     };
 
     self.getContentField = function (contentTypeId, contentFieldId, cb) {
@@ -293,7 +295,9 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             contentTypeId: contentTypeId,
             contentFieldId: contentFieldId
         };
-        util.contentTypeService().getEntity(params, "GetContentField", self.selectedContentField);
+        util.contentTypeService().getEntity("GetContentField",
+            params,
+            self.selectedContentField);
 
         if(typeof cb === 'function') cb();
     };
@@ -329,7 +333,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     },
 
     self.init = function() {
-        dcc.pager().init(self);
+        dnn.koPager().init(self, config);
     };
 
     self.load = function(data) {
@@ -348,12 +352,12 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.refresh = function() {
         var params = {
             contentTypeId: parentViewModel.contentTypeId,
-            pageIndex: self.pageIndex,
-            pageSize: self.pageSize
+            pageIndex: self.pageIndex(),
+            pageSize: self.pageSize()
         };
 
-        util.contentTypeService().getEntities(params,
-            "GetContentFields",
+        util.contentTypeService().getEntities("GetContentFields",
+            params,
             self.contentFields,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -427,9 +431,10 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.dataType = ko.computed(function() {
         var value = "";
         if (self.dataTypes !== undefined) {
-            var entity = util.getEntity(self.dataTypes(), function(dataType) {
-                return (self.dataTypeId() === dataType.dataTypeId());
-            });
+            var entity = util.getEntity(self.dataTypes(),
+                function (dataType) {
+                    return (self.dataTypeId() === dataType.dataTypeId());
+                });
             if (entity != null) {
                 value = entity.name;
             }

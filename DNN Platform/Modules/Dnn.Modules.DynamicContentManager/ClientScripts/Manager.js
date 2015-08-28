@@ -58,7 +58,7 @@
 
         activePanel = settings.initialPanel;
 
-        var util = dcc.utility(settings, resx);
+        var util = dnn.utility(settings, resx);
 
         util.languageService = function(){
             util.sf.serviceController = "Language";

@@ -6,7 +6,8 @@ dcc.quickSettings = function ($, ko, options, resx) {
     var opts = $.extend({}, dcc.quickSettings.defaultOptions, options);
     var $rootElement;
 
-    var util = dcc.utility(opts, resx);
+    // ReSharper disable once UseOfImplicitGlobalInFunctionScope
+    var util = dnn.utility(opts, resx);
     util.settingsService = function () {
         util.sf.serviceController = "Settings";
         return util.sf;
