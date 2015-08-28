@@ -19,6 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Configuration;
+using System.Web.Configuration;
+using System.Xml;
+
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
     using System;
@@ -194,6 +198,9 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             CheckBoxShareUsage.Checked = Manager.ShareUsage;
             CheckBoxImageOptimiser.Checked = Manager.ImageOptimiserEnabled;
             CheckBoxFileMode.Checked = Manager.MemoryMode == false;
+
+            //fix possible duplicate Detector http modules
+            FixDetectorHttpModule();
         }
 
         private void UploadComplete(object sender, ActivityResult e)
@@ -218,6 +225,41 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             var dataSetName = Manager.Enabled && 
                 WebProvider.ActiveProvider != null ? WebProvider.ActiveProvider.DataSet.Name : LocalizeString("LicenseType_Lite.Text");
             return string.Format(content, dataSetName);
+        }
+
+        //remove the community version of detector http module if evoq version exists.
+        private void FixDetectorHttpModule()
+        {
+            try
+            {
+                var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+                var section = configuration.GetSection("system.webServer");
+                if (section != null)
+                {
+                    var xml = new XmlDocument();
+                    xml.LoadXml(section.SectionInformation.GetRawXml());
+
+                    var nodes = xml.SelectNodes("//modules/add[@name='Detector']");
+                    if (nodes != null && nodes.Count > 1)
+                    {
+                        var duplicateNode =
+                            xml.SelectSingleNode(
+                                "//modules/add[@name='Detector'][@type='FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation']");
+                        if (duplicateNode != null && duplicateNode.ParentNode != null)
+                        {
+                            duplicateNode.ParentNode.RemoveChild(duplicateNode);
+
+                            section.SectionInformation.SetRawXml(xml.InnerXml);
+                            configuration.Save();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // do nothing here.
+            }
+            
         }
     }
 }
