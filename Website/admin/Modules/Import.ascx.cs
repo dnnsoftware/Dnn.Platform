@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             var xmlDoc = new XmlDocument();
                             try
                             {
-                                var content = XmlUtils.RemoveTroublesomeCharacters(txtContent.Text);
+                                var content = XmlUtils.RemoveInvalidXmlCharacters(txtContent.Text);
                                 xmlDoc.LoadXml(content);
                             }
                             catch

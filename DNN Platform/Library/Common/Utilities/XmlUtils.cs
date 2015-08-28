@@ -762,7 +762,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="content">The string to process</param>
         /// <returns>A string with no control characters or entities above 0x00FD</returns>
-        public static string RemoveTroublesomeCharacters(string content)
+        public static string RemoveInvalidXmlCharacters(string content)
         {
             if (string.IsNullOrEmpty(content))
             {
