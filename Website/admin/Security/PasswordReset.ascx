@@ -22,8 +22,10 @@
             <asp:RequiredFieldValidator ID="valConfirmPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Confirm.Required" Display="Dynamic" ControlToValidate="txtConfirmPassword" />
         </div>
 		<div id="divQA" runat="server" visible="false">
+		    <div class="dnnFormItem">
+				<asp:label id = "lblQuestion" runat="server" />
+			</div>
 			<div class="dnnFormItem">
-				<dnn:label id="plAnswer" runat="server" controlname="txtAnswer" CssClass="dnnFormRequired" />
 				<asp:textbox id="txtAnswer" runat="server" size="25" maxlength="20" />
 			</div>
 		</div>
