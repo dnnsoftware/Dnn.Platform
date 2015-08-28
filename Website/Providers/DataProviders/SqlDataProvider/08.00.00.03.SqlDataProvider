@@ -1,5 +1,24 @@
+/* DNN-6785 Define more Standard DataTypes  */
+/********************************************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Time', 8)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'DateTime', 7)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Image', 2)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'File', 2)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Page', 2)
+GO
+
 /* DNN-6786 Define Standard ContentTypes */
 /*****************************************/
+
+IF NOT EXISTS( SELECT * FROM sys.columns 
+            WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes_FieldDefinitions')
+           AND name = 'Order')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes_FieldDefinitions 
+                  ADD [Order] [int] NOT NULL DEFAULT (0)
+    END 
+GO
 
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes]
            ([ContentType],[IsDynamic],[Description])
@@ -28,7 +47,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'HTML' AND IsDynamic = 1), 
 		   -1, 
@@ -45,7 +64,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            ((SELECT ContentTypeId FROM {databaseOwner}{objectQualifier}ContentTypes WHERE ContentType = 'Markdown' AND IsDynamic = 1), 
 		   -1, 
@@ -65,7 +84,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -82,7 +101,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -99,7 +118,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -116,7 +135,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -135,7 +154,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -152,7 +171,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -169,7 +188,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
@@ -186,7 +205,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
            ,[Label]
            ,[Description]
            ,[DataTypeID]
-		   ,[Order])
+	     ,[Order])
      VALUES
            (@ContentTypeId, 
 		   -1, 
