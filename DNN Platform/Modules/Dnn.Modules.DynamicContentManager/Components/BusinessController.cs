@@ -51,6 +51,9 @@ namespace Dnn.Modules.DynamicContentManager.Components
                         }
 
                         var gettingStartedFile = FileManager.Instance.GetFile(-1, "Content Templates/GettingStarted.cshtml");
+
+                        //Ensure Getting Started is registered
+                        FolderManager.Instance.Synchronize(-1);
                         
                         var htmlContentType = DynamicContentTypeManager.Instance.GetContentTypes(-1, false).SingleOrDefault(t => t.Name == "HTML" && t.IsDynamic);
                         if (htmlContentType != null && gettingStartedFile != null)
