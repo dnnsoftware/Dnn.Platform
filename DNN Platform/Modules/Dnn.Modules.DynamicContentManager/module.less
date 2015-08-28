@@ -146,7 +146,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     transition: background 100ms linear;;
 }
 
-.dccContainer .dccTable tbody tr:hover {
+.dccContainer .dccTable > tbody > tr:hover {
     background: @grid_hover_background_color;
 }
 
@@ -177,13 +177,6 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     border-bottom-right-radius: 5px;
 }
 
-.dccContainer .dccTable tfoot td > div > div {
-    margin-top: 6px;
-}
-
-.dccContainer .dccTable tfoot td > div > div.left {
-    margin-bottom: 6px;
-}
 
 .dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
     display: none;
@@ -209,12 +202,12 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr:hover td:last-child {
+.dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
     background: @grid_hover_dropdown_background_color;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td,
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row:hover td{
+.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td{
     background: @grid_hover_dropdown_background_color;
     color: @panel_background_color;
     border-color: @grid_hover_dropdown_background_color;
@@ -225,24 +218,43 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
 }
 
-.dccContainer ul.pager{
+//Pager
+
+.dccContainer .dccTable .dccPager {
+    width: 100%;
+}
+
+.dccContainer .dccTable .dccPager td {
+    padding: 0px;
+    height: 40px;
+    width: 33%;
+}
+
+.dccContainer .dccTable .dccPager td select {
+    margin-bottom: 1px;
+}
+
+.dccContainer .dccTable .dccPager td div {
+    margin-bottom: 0px;
+}
+
+.dccContainer .dccTable .dccPager td div.right {
+    margin-top: 9px;
+}
+
+.dccContainer .dccTable .dccPager td ul {
     display: block;
     list-style-type: none;
-    margin: 0 10px 0 8px;
+    margin: 4px 10px 0 8px;
     padding: 0;
 }
 
-.dccContainer ul.pager > li{
+.dccContainer .dccTable .dccPager td ul > li {
     display: inline-block;
     list-style-type: none;
 }
 
-.dccContainer .dccTable td a{
-    color: #0087c6;
-    text-decoration: none;
-}
-
-.dccContainer .dccTable td a.prev, .dccContainer .dccTable td a.next{
+.dccContainer .dccTable .dccPager td a.prev, .dccContainer .dccTable .dccPager td a.next {
     background-position: center center;
     background-repeat: no-repeat;
     border: 1px solid @border_color;
@@ -254,15 +266,15 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background-color: @panel_background_color;
 }
 
-.dccContainer .dccTable td a.prev {
+.dccContainer .dccTable .dccPager td a.prev {
     background-image: url('images/left.png');
 }
 
-.dccContainer .dccTable td a.next {
+.dccContainer .dccTable .dccPager td a.next {
     background-image: url('images/right.png');
 }
 
-.dccContainer .dccTable td a.prev.disabled, .dccContainer .dccTable td a.next.disabled {
+.dccContainer .dccTable .dccPager td a.prev.disabled, .dccContainer .dccTable .dccPager td a.next.disabled {
     opacity: 0.50;
     cursor: default;
 }

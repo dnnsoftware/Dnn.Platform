@@ -127,6 +127,9 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         self.searchText.subscribe(function () {
             findDataTypes();
         });
+        self.pageSize.subscribe(function () {
+            findDataTypes();
+        });
     };
 
     self.refresh = function() {
