@@ -269,17 +269,6 @@ namespace DotNetNuke.Modules.Admin.Security
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
             var canSend = true;
 
-            if (MembershipProviderConfig.RequiresQuestionAndAnswer && String.IsNullOrEmpty(txtAnswer.Text))
-            {
-                GetUser();
-                if (_user != null)
-                {
-                    lblQuestion.Text = _user.Membership.PasswordQuestion;
-                }
-                divQA.Visible = true;
-                return;
-            }
-
             if ((UseCaptcha && ctlCaptcha.IsValid) || (!UseCaptcha))
             {
                 if (String.IsNullOrEmpty(txtUsername.Text.Trim()))
@@ -332,33 +321,6 @@ namespace DotNetNuke.Modules.Admin.Security
                                 Mail.SendMail(_user, MessageType.PasswordReminderUserIsNotApproved, PortalSettings);
                                 canSend = false;
                             }
-                            //if (MembershipProviderConfig.PasswordRetrievalEnabled)
-                            //{
-                            //    try
-                            //    {
-                            //        _user.Membership.Password = UserController.GetPassword(ref _user, txtAnswer.Text);
-                            //    }
-                            //    catch (Exception exc)
-                            //    {
-                            //        Logger.Error(exc);
-
-                            //        canSend = false;
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    try
-                            //    {
-                            //        _user.Membership.Password = UserController.GeneratePassword();
-                            //        UserController.ResetPassword(_user, txtAnswer.Text);
-                            //    }
-                            //    catch (Exception exc)
-                            //    {
-                            //        Logger.Error(exc);
-
-                            //        canSend = false;
-                            //    }
-                            //}
                             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                             {
                                 UserController.ResetPasswordToken(_user);
