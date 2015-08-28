@@ -59,11 +59,11 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                     {
                         if (file.PortalId > -1)
                         {
-                            viewName = "~" + PortalSettings.HomeDirectory + file.RelativePath;
+                            viewName = PortalSettings.HomeDirectory + file.RelativePath;
                         }
                         else
                         {
-                            viewName = "~" + Globals.HostPath + file.RelativePath;
+                            viewName = Globals.HostPath + file.RelativePath;
                         }
                     }
                 }

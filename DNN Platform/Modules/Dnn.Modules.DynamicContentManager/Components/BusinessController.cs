@@ -2,10 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Linq;
+using Dnn.DynamicContent;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade;
 
 #pragma warning disable 1591
@@ -45,6 +48,20 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                                       "~/images/icon_tag_32px.gif",
                                                       true);
                             }
+                        }
+
+                        var gettingStartedFile = FileManager.Instance.GetFile(-1, "Content Templates/GettingStarted.cshtml");
+                        
+                        var htmlContentType = DynamicContentTypeManager.Instance.GetContentTypes(-1, false).SingleOrDefault(t => t.Name == "HTML" && t.IsDynamic);
+                        if (htmlContentType != null && gettingStartedFile != null)
+                        {
+                            var template = new ContentTemplate(-1)
+                                                {
+                                                    Name = "Getting Started",
+                                                    TemplateFileId = gettingStartedFile.FileId,
+                                                    ContentTypeId = htmlContentType.ContentTypeId
+                                                };
+                            ContentTemplateManager.Instance.UpdateContentTemplate(template);
                         }
 
                         break;
