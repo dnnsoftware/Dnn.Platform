@@ -91,7 +91,7 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                     TemplateFileId = file.FileId,
                                     ContentTypeId = htmlContentType.ContentTypeId
                                 };
-                                ContentTemplateManager.Instance.UpdateContentTemplate(template);
+                                ContentTemplateManager.Instance.AddContentTemplate(template);
                             }
                         }
                         catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
