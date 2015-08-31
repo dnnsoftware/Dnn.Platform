@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -694,6 +695,7 @@ namespace DotNetNuke.Entities.Urls
                                              RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 if (String.Compare(pageName, defaultPageName, StringComparison.OrdinalIgnoreCase) != 0)
                 //take out the end page name, it will get re-added
+                {
                     var pgNameRx = UrlRewriterUtils.GetCahcedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     friendlyPath = pgNameRx.Replace(friendlyPath, "");
                 }

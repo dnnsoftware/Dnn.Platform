@@ -304,6 +304,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _forceLowerCase.Value;
             }
+            internal set { _forceLowerCase = value; }
         }
 
         public string ForceLowerCaseRegex
@@ -323,6 +324,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _forcePortalDefaultLanguage.Value;
             }
+            internal set { _forcePortalDefaultLanguage = value; }
         }
 
         public DNNPageForwardType ForwardExternalUrlsType
@@ -343,6 +345,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _friendlyAdminHostUrls.Value;
             }
+            internal set { _friendlyAdminHostUrls = value; }
         }
 
         public bool EnableCustomProviders
@@ -390,6 +393,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return _includePageName.Value;
             }
+            internal set { _includePageName = value; }
         }
 
         public bool LogCacheMessages
@@ -465,6 +469,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _redirectDefaultPage.Value;
             }
+            internal set { _redirectUnfriendly = value; }
         }
 
         public bool RedirectOldProfileUrl
@@ -490,6 +495,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _redirectUnfriendly.Value;
             }
+            internal set { _redirectUnfriendly = value; }
         }
 
         public bool RedirectWrongCase
@@ -502,6 +508,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 return _redirectWrongCase.Value;
             }
+            internal set { _redirectWrongCase = value; }
         }
 
         public string Regex404
@@ -595,7 +602,11 @@ namespace DotNetNuke.Entities.Urls
 
         public string UrlFormat
         {
-            get { return _urlFormat ?? (_urlFormat = GetStringSetting(UrlFormatSetting, "advanced")); }
+            get
+            {
+                return _urlFormat ?? (_urlFormat = GetStringSetting(UrlFormatSetting, "advanced"));
+            }
+            internal set { _urlFormat = value; }
         }
 
         public string UseBaseFriendlyUrls
