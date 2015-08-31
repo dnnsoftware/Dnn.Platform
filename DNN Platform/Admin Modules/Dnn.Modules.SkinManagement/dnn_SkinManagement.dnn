@@ -12,6 +12,9 @@
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />
+      <dependencies>
+        <dependency type="CoreVersion">08.00.00</dependency>
+      </dependencies>
       <azureCompatible>true</azureCompatible>
       <components>
         <component type="Module">
@@ -37,12 +40,6 @@
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-          <desktopModule>
-            <moduleName>SkinAttributes</moduleName>
-            <foldername>Admin/SkinManagement</foldername>
-            <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Theme Designer</friendlyName>
                 <moduleControls>

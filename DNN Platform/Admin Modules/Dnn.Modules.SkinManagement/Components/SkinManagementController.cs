@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -58,7 +59,7 @@ namespace Dnn.Modules.SkinManagement.Components
                     case "01.01.00":
                         var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_NAME);
-                        
+
                         if (moduleDefinition != null)
                         {
                             //Add Module to Admin Page for all Portals
@@ -77,7 +78,12 @@ namespace Dnn.Modules.SkinManagement.Components
                             if (themePage != null)
                             {
                                 var attributeDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_DESIGNER_NAME);
-                                AddAttributeModule(portalSettings.PortalId, themePage, attributeDefinition);
+
+                                // only add the attributes module if it's not on the page already
+                                if (themePage.Modules.Cast<ModuleInfo>().ToList().All(m => m.ModuleDefID != attributeDefinition.ModuleDefID))
+                                {
+                                    AddAttributeModule(portalSettings.PortalId, themePage, attributeDefinition);
+                                }
                             }
                         }
 
@@ -88,7 +94,7 @@ namespace Dnn.Modules.SkinManagement.Components
                         UpdateModuleReferences();
 
                         // uninstall the old skin modules
-                        UninstallOldModules(portalSettings.PortalId);
+                        UninstallOldModules();
 
                         break;
                 }
@@ -136,28 +142,40 @@ namespace Dnn.Modules.SkinManagement.Components
             // change the module referece from the original ID, to the new ID
             DataProvider.Instance()
                 .ExecuteSQL(
-                    string.Format(
-                        "UPDATE {databaseOwner}[{objectQualifier}Modules] SET [ModuleDefID] = {0} WHERE [ModuleDefID] = {1}",
-                        newModuleDefinitionId, oldModuleDefinitionId));
+                    string.Concat(
+                        "UPDATE {databaseOwner}[{objectQualifier}Modules] SET [ModuleDefID] = ",
+                        newModuleDefinitionId,
+                        " WHERE [ModuleDefID] = ",
+                        oldModuleDefinitionId)
+                );
         }
 
         private int GetModuleDefinitionID(string friendlyName)
         {
             var definition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName);
 
-            return definition.ModuleDefID > Null.NullInteger ? definition.ModuleDefID : Null.NullInteger;
+            if (definition != null)
+            {
+                return definition.ModuleDefID > Null.NullInteger ? definition.ModuleDefID : Null.NullInteger;
+            }
+
+            return Null.NullInteger;
         }
 
-        private void UninstallOldModules(int portalId)
+        private void UninstallOldModules()
         {
-            UninstallOldModule(SKIN_NAME, portalId);
-            UninstallOldModule("SkinDesigner", portalId);
+            UninstallOldModule(SKIN_NAME);
+            UninstallOldModule("SkinDesigner");
         }
 
-        private void UninstallOldModule(string moduleName, int portalId)
+        private void UninstallOldModule(string moduleName)
         {
-            var dm = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
-            var package = PackageController.Instance.GetExtensionPackage(portalId, p => p.PackageID == dm.PackageID);
+            var dm = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
+
+            if (dm == null) return;
+
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == dm.PackageID);
+
             var installer = new Installer(package, Globals.ApplicationMapPath);
 
             installer.UnInstall(true);
@@ -166,7 +184,7 @@ namespace Dnn.Modules.SkinManagement.Components
         private void AddAttributeModule(int portalId, TabInfo themeTab, ModuleDefinitionInfo moduleDefinition)
         {
             var objModule = new ModuleInfo();
-            
+
             objModule.Initialize(portalId);
 
             objModule.PortalID = portalId;
