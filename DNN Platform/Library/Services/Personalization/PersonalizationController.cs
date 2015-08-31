@@ -125,6 +125,9 @@ namespace DotNetNuke.Services.Personalization
                     if (userId > Null.NullInteger)
                     {
                         DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
+
+                        var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                        DataCache.RemoveCache(cacheKey);
                     }
                     else
                     {
