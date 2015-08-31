@@ -148,50 +148,50 @@ CREATE TABLE {databaseOwner}[{objectQualifier}OAuthUsers](
 END
 GO
 
-ALTER TABLE {databaseOwner}[OAuthAuthorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}OAuthAuthorizations_{databaseOwner}{objectQualifier}OAuthClients_ClientId] FOREIGN KEY([ClientId])
-REFERENCES {databaseOwner}[OAuthClients] ([Id])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthAuthorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}OAuthAuthorizations_{databaseOwner}{objectQualifier}OAuthClients_ClientId] FOREIGN KEY([ClientId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthClients] ([Id])
 GO
-ALTER TABLE {databaseOwner}[OAuthAuthorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}OAuthAuthorizations_{databaseOwner}{objectQualifier}OAuthClients_ClientId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthAuthorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}OAuthAuthorizations_{databaseOwner}{objectQualifier}OAuthClients_ClientId]
 GO
-ALTER TABLE {databaseOwner}[OAuthAuthorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}OAuthUsers_UserId] FOREIGN KEY([UserId])
-REFERENCES {databaseOwner}[OAuthUsers] ([Id])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthAuthorizations]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}OAuthUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthUsers] ([Id])
 GO
-ALTER TABLE {databaseOwner}[OAuthAuthorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}OAuthUsers_UserId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthAuthorizations] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}Authorizations_{databaseOwner}{objectQualifier}OAuthUsers_UserId]
 GO
-ALTER TABLE {databaseOwner}[OAuthClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthClients_ClientId] FOREIGN KEY([ClientId])
-REFERENCES {databaseOwner}[OAuthClients] ([Id])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthClients_ClientId] FOREIGN KEY([ClientId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthClients] ([Id])
 ON DELETE CASCADE
 GO
-ALTER TABLE {databaseOwner}[OAuthClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthClients_ClientId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthClients_ClientId]
 GO
-ALTER TABLE {databaseOwner}[OAuthClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId] FOREIGN KEY([ScopeId])
-REFERENCES {databaseOwner}[OAuthScopes] ([Identifier])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthClientScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId] FOREIGN KEY([ScopeId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthScopes] ([Identifier])
 ON DELETE CASCADE
 GO
-ALTER TABLE {databaseOwner}[OAuthClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthClientScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ClientScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId]
 GO
-ALTER TABLE {databaseOwner}[OAuthResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthResources_ResourceId] FOREIGN KEY([ResourceId])
-REFERENCES {databaseOwner}[OAuthResources] ([Id])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthResources_ResourceId] FOREIGN KEY([ResourceId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthResources] ([Id])
 ON DELETE CASCADE
 GO
-ALTER TABLE {databaseOwner}[OAuthResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthResources_ResourceId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthResources_ResourceId]
 GO
-ALTER TABLE {databaseOwner}[OAuthResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId] FOREIGN KEY([ScopeId])
-REFERENCES {databaseOwner}[OAuthScopes] ([Identifier])
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthResourceScopes]  WITH CHECK ADD  CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId] FOREIGN KEY([ScopeId])
+REFERENCES {databaseOwner}[{objectQualifier}OAuthScopes] ([Identifier])
 ON DELETE CASCADE
 GO
-ALTER TABLE {databaseOwner}[OAuthResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId]
+ALTER TABLE {databaseOwner}[{objectQualifier}OAuthResourceScopes] CHECK CONSTRAINT [FK_{databaseOwner}{objectQualifier}ResourceScopes_{databaseOwner}{objectQualifier}OAuthScopes_ScopeId]
 GO
 
-INSERT {databaseOwner}[OAuthClients] ([Id], [ClientSecret], [Callback], [Name], [ClientType]) VALUES (N'client1', N'clientSecret1', NULL, N'Awesome Client 1', 0)
-INSERT {databaseOwner}[OAuthUsers] ([Id], [CreateDateUtc]) VALUES (N'test', CAST(N'2015-07-09 00:10:03.870' AS DateTime))
-INSERT {databaseOwner}[OAuthScopes] ([Identifier], [Description]) VALUES (N'DNN-ALL', N'All DNN OAuth Actions')
-SET IDENTITY_INSERT {databaseOwner}[OAuthResources] ON 
+INSERT {databaseOwner}[{objectQualifier}OAuthClients] ([Id], [ClientSecret], [Callback], [Name], [ClientType]) VALUES (N'client1', N'clientSecret1', NULL, N'Awesome Client 1', 0)
+INSERT {databaseOwner}[{objectQualifier}OAuthUsers] ([Id], [CreateDateUtc]) VALUES (N'test', CAST(N'2015-07-09 00:10:03.870' AS DateTime))
+INSERT {databaseOwner}[{objectQualifier}OAuthScopes] ([Identifier], [Description]) VALUES (N'DNN-ALL', N'All DNN OAuth Actions')
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}OAuthResources] ON 
 
-INSERT {databaseOwner}[OAuthResources] ([Id], [Identifier], [AuthenticationTokenName], [AuthenticationUrl], [AuthenticationKey], [PublicTokenEncryptionKey]) VALUES (1, N'Resource1', N'resource-authentication-token', N'/oauthlogin.aspx', N'WebAPIsAreAwesome', N'PFJTQUtleVZhbHVlPjxNb2R1bHVzPjZlZnpYTHNvSmQ5OVVQMjdOQ1hWSnpZSFVtMmlLTUVOSlo2eVpVSFNvTE5uYnFMdENZWjZXaEl3SXY5WVBGeit0Z1AvQWN0dXh3N2VWVzdsU0RaU0IvQU8ySk1kOXJ1MkJ4SHRVaUZVd2pySnNHTlRUS1NhVDFDOTA0YXFaTExaRUxmYnVvVllabnFKWkRvdjlreTkwaHZtTTYwY3FXbkU4TGc2aGZSYlFPOD08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjwvUlNBS2V5VmFsdWU+')
+INSERT {databaseOwner}[{objectQualifier}OAuthResources] ([Id], [Identifier], [AuthenticationTokenName], [AuthenticationUrl], [AuthenticationKey], [PublicTokenEncryptionKey]) VALUES (1, N'Resource1', N'resource-authentication-token', N'/oauthlogin.aspx', N'WebAPIsAreAwesome', N'PFJTQUtleVZhbHVlPjxNb2R1bHVzPjZlZnpYTHNvSmQ5OVVQMjdOQ1hWSnpZSFVtMmlLTUVOSlo2eVpVSFNvTE5uYnFMdENZWjZXaEl3SXY5WVBGeit0Z1AvQWN0dXh3N2VWVzdsU0RaU0IvQU8ySk1kOXJ1MkJ4SHRVaUZVd2pySnNHTlRUS1NhVDFDOTA0YXFaTExaRUxmYnVvVllabnFKWkRvdjlreTkwaHZtTTYwY3FXbkU4TGc2aGZSYlFPOD08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjwvUlNBS2V5VmFsdWU+')
 
-SET IDENTITY_INSERT {databaseOwner}[OAuthResources] OFF
-INSERT {databaseOwner}[OAuthSymmetricCryptoKeys] ([Bucket], [Handle], [ExpiresUtc], [Secret]) VALUES (N'https://localhost/dnoa/oauth_authorization_code', N'2oBU', CAST(N'2016-07-09 00:06:56.887' AS DateTime), 0x7E84C6E42D6CE5E18D1E99F8C3DAD40566411CC0FFE77F9D90CD263F5BA538CB)
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}OAuthResources] OFF
+INSERT {databaseOwner}[{objectQualifier}OAuthSymmetricCryptoKeys] ([Bucket], [Handle], [ExpiresUtc], [Secret]) VALUES (N'https://localhost/dnoa/oauth_authorization_code', N'2oBU', CAST(N'2016-07-09 00:06:56.887' AS DateTime), 0x7E84C6E42D6CE5E18D1E99F8C3DAD40566411CC0FFE77F9D90CD263F5BA538CB)
 
 GO
 
@@ -245,7 +245,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}StoreNonce]
 	 @timestampUtc datetime
 AS
 BEGIN
-	INSERT INTO {databaseOwner}[OAuthNonces]
+	INSERT INTO {databaseOwner}[{objectQualifier}OAuthNonces]
            ([Context]
            ,[Code]
            ,[Timestamp])
@@ -265,7 +265,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}StoreKey]
 	@Secret varbinary(max)
 AS
 BEGIN
-INSERT INTO {databaseOwner}[OAuthSymmetricCryptoKeys]
+INSERT INTO {databaseOwner}[{objectQualifier}OAuthSymmetricCryptoKeys]
            ([Bucket]
            ,[Handle]
            ,[ExpiresUtc]
@@ -283,7 +283,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKey]
 	@Handle nvarchar(max)
 AS
 BEGIN
-	select * from {databaseOwner}[OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
+	select * from {databaseOwner}[{objectQualifier}OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
 END
 GO
 
@@ -294,7 +294,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRGetKeys]
 	@Bucket nvarchar(128)
 AS
 BEGIN
-	select * from {databaseOwner}[OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket 
+	select * from {databaseOwner}[{objectQualifier}OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket 
 END
 GO
 
@@ -306,7 +306,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SCKRRemoveKey]
 	@Handle nvarchar(max)
 AS
 BEGIN
-	DELETE  from {databaseOwner}[OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
+	DELETE  from {databaseOwner}[{objectQualifier}OAuthSymmetricCryptoKeys] where [Bucket]=@Bucket AND [Handle]=@Handle
 END
 GO
 
@@ -330,7 +330,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}OAuthUserInsert]
 	@CreateDateUtc datetime
 AS
 BEGIN
-	INSERT INTO {databaseOwner}[OAuthUsers]
+	INSERT INTO {databaseOwner}[{objectQualifier}OAuthUsers]
            ([Id]
            ,[CreateDateUtc])
      VALUES (@Id,@CreateDateUtc)
@@ -351,7 +351,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}OAuthAuthorizationInsert]
 AS
 BEGIN
 
-INSERT {databaseOwner}[OAuthAuthorizations]([ClientId], [UserId], [ResourceId], [Scope], [CreatedOnUtc], [ExpirationDateUtc])
+INSERT {databaseOwner}[{objectQualifier}OAuthAuthorizations]([ClientId], [UserId], [ResourceId], [Scope], [CreatedOnUtc], [ExpirationDateUtc])
 VALUES (@ClientId, @UserId, @ResourceId, @Scope, @CreatedOnUtc, NULL)
 END
 GO
@@ -368,7 +368,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClientInsert]
 AS
 BEGIN
 
-INSERT {databaseOwner}[OAuthClients]([Id],[ClientSecret],[Callback],[Name],[ClientType])
+INSERT {databaseOwner}[{objectQualifier}OAuthClients]([Id],[ClientSecret],[Callback],[Name],[ClientType])
 VALUES (@ClientId, @ClientSecret, null, @Name, @ClientType)
 END
 GO
@@ -381,7 +381,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ClientDelete]
 AS
 BEGIN
 
-delete from {databaseOwner}[OAuthClients] where Id=@ClientId
+delete from {databaseOwner}[{objectQualifier}OAuthClients] where Id=@ClientId
 END
 GO
 
@@ -392,7 +392,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetOAuthSettings]
 AS
 BEGIN
 
-SELECT * from {databaseOwner}[OAuthSettings] 
+SELECT * from {databaseOwner}[{objectQualifier}OAuthSettings] 
 END
 GO
 
@@ -406,7 +406,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}InsertOAuthSettings]
 AS
 BEGIN
 
-INSERT INTO {databaseOwner}[OAuthSettings] ([AuthorizationServerPrivateKey],[ResourceServerDecryptionKey] ,[AuthorizationServerVerificationKey])
+INSERT INTO {databaseOwner}[{objectQualifier}OAuthSettings] ([AuthorizationServerPrivateKey],[ResourceServerDecryptionKey] ,[AuthorizationServerVerificationKey])
 VALUES (@AuthorizationServerPrivateKey,@ResourceServerDecryptionKey,@AuthorizationServerVerificationKey)
 END
 GO
