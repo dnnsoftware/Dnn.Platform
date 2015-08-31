@@ -28,11 +28,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TestUtilities")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 
-[assembly: AssemblyCompany("DotNetNuke Corporation")]
-[assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DotNetNuke")]
-
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -55,5 +50,3 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
