@@ -1,0 +1,115 @@
+﻿<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="DotNetNuke.Vendors" type="Module" version="08.00.00">
+            <friendlyName>Vendors</friendlyName>
+            <description>Administrators can manage the Vendors and Banners associated to the site. This module allows you to add a new vendor, modify an existing vendor, and delete a vendor.</description>
+            <iconFile>~/Icons/Sigma/Vendors_32X32_Standard.png</iconFile>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>Vendors</moduleName>
+                        <foldername>Admin/Vendors</foldername>
+                        <businessControllerClass>Dnn.Modules.Vendors.Components.VendorsController</businessControllerClass>
+                        <supportedFeatures>
+                            <supportedFeature type="Upgradeable" />
+                        </supportedFeatures>
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>Vendors</friendlyName>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey />
+                                        <controlSrc>DesktopModules/Admin/Vendors/Vendors.ascx</controlSrc>
+                                        <controlTitle />
+                                        <controlType>View</controlType>
+                                        <iconFile></iconFile>
+                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/About the Admin Vendors Module.html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                        <supportsPartialRendering>True</supportsPartialRendering>
+                                        <supportsPopUps>True</supportsPopUps>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Affiliate</controlKey>
+                                        <controlSrc>DesktopModules/Admin/Vendors/EditAffiliate.ascx</controlSrc>
+                                        <controlTitle>Affiliate Management</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile></iconFile>
+                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Affiliate Accounts/Adding an Affiliate Referral Account .html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                        <supportsPartialRendering>True</supportsPartialRendering>
+                                        <supportsPopUps>True</supportsPopUps>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Banner</controlKey>
+                                        <controlSrc>DesktopModules/Admin/Vendors/editbanner.ascx</controlSrc>
+                                        <controlTitle>Banner</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile></iconFile>
+                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Banners/Adding an Image Banner to a Vendor.html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                        <supportsPartialRendering>True</supportsPartialRendering>
+                                        <supportsPopUps>True</supportsPopUps>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Edit</controlKey>
+                                        <controlSrc>DesktopModules/Admin/Vendors/editvendors.ascx</controlSrc>
+                                        <controlTitle>Edit Vendors</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile></iconFile>
+                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Vendors/Module Editors/Vendor Accounts/Adding a New Vendor.html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                        <supportsPartialRendering>True</supportsPartialRendering>
+                                        <supportsPopUps>True</supportsPopUps>
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                    <eventMessage>
+                        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                        <processorCommand>UpgradeModule</processorCommand>
+                        <attributes>
+                            <businessControllerClass>Dnn.Modules.Vendors.Components.VendorsController</businessControllerClass>
+                            <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                            <upgradeVersionsList>08.00.00</upgradeVersionsList>
+                        </attributes>
+                    </eventMessage>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.Modules.Vendors.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/Admin/Vendors</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
+                <component type="File">
+                    <files>
+                        <basePath>DesktopModules\Admin\Vendors</basePath>
+                        <file>
+                            <name>08.00.00.txt</name>
+                        </file>
+                    </files>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

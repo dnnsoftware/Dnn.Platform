@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Vendors {
+namespace Dnn.Modules.Vendors {
     
     
     public partial class Vendors {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Vendors {
+namespace Dnn.Modules.Vendors {
     
     
     public partial class EditAffiliate {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plStartDate;
+        protected global::System.Web.UI.UserControl plStartDate;
         
         /// <summary>
         /// StartDatePicker control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEndDate;
+        protected global::System.Web.UI.UserControl plEndDate;
         
         /// <summary>
         /// EndDatePicker control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCPC;
+        protected global::System.Web.UI.UserControl plCPC;
         
         /// <summary>
         /// txtCPC control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCPA;
+        protected global::System.Web.UI.UserControl plCPA;
         
         /// <summary>
         /// txtCPA control.

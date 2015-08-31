@@ -37,7 +37,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Vendors
+namespace Dnn.Modules.Vendors
 {
 	/// -----------------------------------------------------------------------------
 	/// <summary>
