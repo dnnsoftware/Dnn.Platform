@@ -71,6 +71,14 @@
             </resourceFile>
           </resourceFiles>
         </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Portals/_default</basePath>
+            <resourceFile>
+              <name>ContentTemplates.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
       </components>
     </package>
   </packages>

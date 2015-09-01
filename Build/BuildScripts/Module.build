@@ -24,6 +24,7 @@
       <DataFiles Include="Resources/*.xml" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);
                  @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig)" />
+      <ContentTemplates Include="Content Templates/*/*.cshtml" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">

@@ -129,7 +129,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dnn_DCCViewer.dnn" />
+    <Content Include="dnn_DCCViewer.dnn">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="license.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -173,6 +175,63 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Viewer.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\GettingStarted.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Boolean.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Bytes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\DateTime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Float.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Guid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Integer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\String.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\TimeSpan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Uri.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Boolean.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Bytes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\DateTime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Float.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Guid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Integer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\String.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\TimeSpan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Uri.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
