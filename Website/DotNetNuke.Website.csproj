@@ -1279,7 +1279,6 @@
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
@@ -1322,6 +1321,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\07.04.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
+    <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

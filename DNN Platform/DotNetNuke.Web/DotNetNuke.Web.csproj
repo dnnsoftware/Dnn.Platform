@@ -76,6 +76,7 @@
     <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.HttpModules">
       <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>

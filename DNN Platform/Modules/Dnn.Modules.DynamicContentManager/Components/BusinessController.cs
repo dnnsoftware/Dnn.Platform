@@ -80,8 +80,6 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                 file.FileId = FileManager.Instance.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
                             }
 
-                            FileManager.Instance.UpdateFile(file);
-
                             var htmlContentType = DynamicContentTypeManager.Instance.GetContentTypes(-1, false).SingleOrDefault(t => t.Name == "HTML" && t.IsDynamic);
                             if (htmlContentType != null)
                             {
