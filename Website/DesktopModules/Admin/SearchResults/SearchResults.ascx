@@ -119,7 +119,7 @@
             dnn.searchResult.queryOptions = {
                 searchTerm: '<%= SearchTerm %>',
                 sortOption: 0,
-                pageIndex: 1,
+                pageIndex: <%= PageIndex %>,
                 pageSize: 15
             };
 

@@ -43,6 +43,8 @@ namespace DotNetNuke.Modules.SearchResults
 {
     public partial class SearchResults : PortalModuleBase
     {
+        private const int DefaultPageIndex = 1;
+
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
@@ -78,6 +80,25 @@ namespace DotNetNuke.Modules.SearchResults
         protected string LastModifiedParam
         {
             get { return Request.QueryString["LastModified"] != null ? HttpUtility.HtmlEncode(Request.QueryString["LastModified"]) : string.Empty; }
+        }
+
+        protected int PageIndex
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Page"]))
+                {
+                    return DefaultPageIndex;
+                }
+
+                int pageIndex;
+                if (Int32.TryParse(Request.QueryString["Page"], out pageIndex))
+                {
+                    return pageIndex;
+                }
+                
+                return DefaultPageIndex;
+            }
         }
 
         protected string CheckedExactSearch

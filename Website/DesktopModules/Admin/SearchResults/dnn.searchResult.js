@@ -315,9 +315,20 @@
             urlChanged = true;
 	    }
 
+	    var pageIndex = dnn.searchResult.queryOptions.pageIndex;
+        if (pageIndex > 1) {
+            if (!queries['qs-page'] || parseInt(queries['qs-page']) !== pageIndex) {
+                queries['qs-page'] = pageIndex;
+                urlChanged = true;
+            }
+        }else if (queries['qs-page']) {
+            queries['qs-page'] = '';
+            urlChanged = true;
+        }
+
 	    if (urlChanged) {
 	        var url = dnn.searchResult.buildLocationInfo(locationInfo);
-	        history.pushState(null, "Search", url);
+	        history.pushState({searchState: true}, "Search", url);
 	    }
 	}
 
@@ -446,8 +457,14 @@
 
     	dnn.searchResult.defaultSettings = $.extend(dnn.searchResult.defaultSettings, settings);
     	dnn.searchResult.catchHistoryState = typeof history.pushState !== "undefined";
-		if (dnn.searchResult.catchHistoryState) {
-		    window.addEventListener("popstate", function () {
+    	if (dnn.searchResult.catchHistoryState) {
+		    history.replaceState({searchState: true}, "Search", document.URL);
+		    window.addEventListener("popstate", function (e) {
+
+		        if (!e.state.searchState) {
+		            return;
+		        }
+
 		        var locationInfo = dnn.searchResult.parseLocationInfo();
 		        var url = dnn.searchResult.buildLocationInfo(locationInfo);
 		        window.location.href = url;
@@ -509,7 +526,11 @@
             };
 
             dnn.searchResult.generateAdvancedSearchTerm();
-            dnn.searchResult.queryOptions.pageIndex = 1;
+
+            if (!isTrigger) {
+                dnn.searchResult.queryOptions.pageIndex = 1;
+            }
+
             dnn.searchResult.doSearch();
 
             if(!isTrigger) $('.DnnModule .dnnSearchBoxPanel .dnnSearchBox_advanced_label').triggerHandler('click');
