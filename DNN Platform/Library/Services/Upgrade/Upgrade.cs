@@ -3059,13 +3059,6 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static void UpgradeToVersion750()
-        {
-            //Remove Admin Pages
-            RemoveAdminPages("//Admin//Newsletters");
-            RemoveAdminPages("//Admin//RecycleBin");
-        }
-
         private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -5387,9 +5380,6 @@ namespace DotNetNuke.Services.Upgrade
                         break;
 					case "7.4.2":  
  						UpgradeToVersion742();  
-                        break;  
-                    case "7.5.0":
-                        UpgradeToVersion750();
                         break;
                     case "8.0.0":
                         UpgradeToVersion800();
@@ -5434,16 +5424,26 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion800()
         {
-            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0")
-            //{
-            //    switch (iteration)
-            //    {
-            //        case "1":
-            //            UpgradeToVersion800Iteration1();
-            //            break;
-                    
-            //    }
-            //}
+            foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0"))
+            {
+                switch (iteration)
+                {
+                    case '6':
+                        RemoveAdminPages("//Admin//Languages");
+                        RemoveAdminPages("//Admin//Lists");
+                        RemoveAdminPages("//Admin//LogViewer");
+                        RemoveAdminPages("//Admin//Newsletters");
+                        RemoveAdminPages("//Admin//Pages");
+                        RemoveAdminPages("//Admin//RecycleBin");
+                        RemoveAdminPages("//Admin//SiteLog");
+                        RemoveAdminPages("//Admin//SiteWizard");
+                        RemoveAdminPages("//Admin//Vendors");
+                        RemoveHostPage("Lists");
+                        RemoveHostPage("Vendors");
+                        break;
+
+                }
+            }
         }
 
         private static int MaxIncremental(Version version)
