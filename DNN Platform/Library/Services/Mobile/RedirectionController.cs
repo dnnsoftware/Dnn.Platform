@@ -696,9 +696,9 @@ namespace DotNetNuke.Services.Mobile
                 int matchCount = 0;
                 foreach (IMatchRule rule in redirection.MatchRules)
                 {
-                    if (clientCapability.Capabilities != null && clientCapability.Capabilities.ContainsKey(rule.Capability))
+                    if (!string.IsNullOrEmpty(clientCapability[rule.Capability]))
                     {
-                        if (clientCapability.Capabilities[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
+                        if (clientCapability[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
                         {
                             matchCount++;
                         }
