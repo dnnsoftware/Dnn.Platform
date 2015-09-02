@@ -78,14 +78,24 @@
                     <tfoot>
                     <tr>
                         <td colspan="4">
-                            <div>
-                                <div class="left" data-bind="html: pagerItemsDescription"></div>
-                                <ul class="right pager" data-bind="visible: pagerVisible">
-                                    <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
-                                    <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
-                                </ul>
-                                <div class="right" data-bind="html: pagerDescription"></div>
-                            </div>
+                            <table class="dccPager">
+                                <tr>
+                                    <td>
+                                        <span data-bind="text: rootViewModel.resx.contentTypesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                    </td>
+                                    <td>
+                                        <div data-bind="html: pagerItemsDescription"></div>
+                                    </td>
+                                    <td>
+                                        <ul class="right pager" data-bind="visible: pagerVisible">
+                                            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                        </ul>
+                                        <div class="right" data-bind="html: pagerDescription"></div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     </tfoot>
@@ -276,14 +286,24 @@
                     <tfoot>
                     <tr>
                         <td colspan="4">
-                            <div>
-                                <div class="left" data-bind="html: pagerItemsDescription"></div>
-                                <ul class="right pager" data-bind="visible: pagerVisible">
-                                    <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
-                                    <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
-                                </ul>
-                                <div class="right" data-bind="html: pagerDescription"></div>
-                            </div>
+                            <table class="dccPager">
+                                <tr>
+                                    <td>
+                                        <span data-bind="text: rootViewModel.resx.dataTypesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                    </td>
+                                    <td>
+                                        <div data-bind="html: pagerItemsDescription"></div>
+                                    </td>
+                                    <td>
+                                        <ul class="right pager" data-bind="visible: pagerVisible">
+                                            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                        </ul>
+                                        <div class="right" data-bind="html: pagerDescription"></div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     </tfoot>
@@ -324,14 +344,24 @@
                     <tfoot>
                     <tr>
                         <td colspan="4">
-                            <div>
-                                <div class="left" data-bind="html: pagerItemsDescription"></div>
-                                <ul class="right pager" data-bind="visible: pagerVisible">
-                                    <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
-                                    <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
-                                </ul>
-                                <div class="right" data-bind="html: pagerDescription"></div>
-                            </div>
+                            <table class="dccPager">
+                                <tr>
+                                    <td>
+                                        <span data-bind="text: rootViewModel.resx.templatesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                    </td>
+                                    <td>
+                                        <div data-bind="html: pagerItemsDescription"></div>
+                                    </td>
+                                    <td>
+                                        <ul class="right pager" data-bind="visible: pagerVisible">
+                                            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                        </ul>
+                                        <div class="right" data-bind="html: pagerDescription"></div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     </tfoot>
@@ -474,7 +504,10 @@
             translationMissing: '[Resx:{key:"TranslationMissing"}]',
             no: '[Resx:{key:"No"}]',
             yes: '[Resx:{key:"Yes"}]',
-            ok: '[Resx:{key:"Ok"}]'
+            ok: '[Resx:{key:"Ok"}]',
+            dataTypesPageSize: '[Resx:{key:"DataTypesPageSize"}]',
+            contentTypesPageSize: '[Resx:{key:"ContentTypesPageSize"}]',
+            templatesPageSize: '[Resx:{key:"TemplatesPageSize"}]'
         };
 
         var settings = {
