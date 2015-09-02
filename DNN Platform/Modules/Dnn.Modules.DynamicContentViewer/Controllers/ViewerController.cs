@@ -48,24 +48,32 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         {
             var viewName = "GettingStarted";
             var templateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ViewTemplateId, -1);
+            ContentTemplate template = null;
             if (templateId > -1)
             {
-                ContentTemplate template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
-                if (template != null)
+                template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
+            }
+            else
+            {
+                template = ContentTemplateManager.Instance.GetContentTemplates(PortalSettings.PortalId, true)
+                        .SingleOrDefault(t => t.Name == "Getting Started");
+            }
+
+            IFileInfo file = null;
+            if (template != null)
+            {
+                file = FileManager.Instance.GetFile(template.TemplateFileId);
+            }
+
+            if (file != null)
+            {
+                if (file.PortalId > -1)
                 {
-                    var fileId = template.TemplateFileId;
-                    var file = FileManager.Instance.GetFile(fileId);
-                    if (file != null)
-                    {
-                        if (file.PortalId > -1)
-                        {
-                            viewName = "~" + PortalSettings.HomeDirectory + file.RelativePath;
-                        }
-                        else
-                        {
-                            viewName = "~" + Globals.HostPath + file.RelativePath;
-                        }
-                    }
+                    viewName = PortalSettings.HomeDirectory + file.RelativePath;
+                }
+                else
+                {
+                    viewName = Globals.HostPath + file.RelativePath;
                 }
             }
 
@@ -74,34 +82,37 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 return View(viewName);
             }
 
-            var contentItem = GetOrCreateContentItem();
             var model = new ExpandoObject();
-            var modelDictionary = (IDictionary<string, object>)model;
-            foreach (var field in contentItem.Fields)
+            if (templateId > -1)
             {
-                object fieldValue;
-                if (field.Value.Value == null)
+                var contentItem = GetOrCreateContentItem();
+                var modelDictionary = (IDictionary<string, object>)model;
+                foreach (var field in contentItem.Fields)
                 {
-                    switch (field.Value.Definition.DataType.UnderlyingDataType)
+                    object fieldValue;
+                    if (field.Value.Value == null)
                     {
-                        case UnderlyingDataType.String:
-                            fieldValue = String.Empty;
-                            break;
-                        case UnderlyingDataType.Boolean:
-                            fieldValue = false;
-                            break;
-                        default:
-                            fieldValue = 0;
-                            break;
+                        switch (field.Value.Definition.DataType.UnderlyingDataType)
+                        {
+                            case UnderlyingDataType.String:
+                                fieldValue = String.Empty;
+                                break;
+                            case UnderlyingDataType.Boolean:
+                                fieldValue = false;
+                                break;
+                            default:
+                                fieldValue = 0;
+                                break;
+                        }
                     }
+                    else
+                    {
+                        fieldValue = field.Value.Value;
+                    }
+                    modelDictionary.Add(field.Key, fieldValue);
                 }
-                else
-                {
-                    fieldValue = field.Value.Value;
-                }
-                modelDictionary.Add(field.Key, fieldValue);
             }
-            
+
             return View(viewName, model);
         }
 

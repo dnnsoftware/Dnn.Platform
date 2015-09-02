@@ -2,11 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.IO;
+using System.Linq;
+using Dnn.DynamicContent;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 #pragma warning disable 1591
 
@@ -46,6 +52,51 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                                       true);
                             }
                         }
+
+                        //Ensure Getting Started is registered
+                        var folder = FolderManager.Instance.GetFolder(-1, "Content Templates/");
+                        var fileName = "GettingStarted.cshtml";
+                        var file = new FileInfo
+                                        {
+                                            PortalId = -1,
+                                            FileName = fileName,
+                                            Extension = "cshtml",
+                                            FolderId = folder.FolderID,
+                                            Folder = folder.FolderPath,
+                                            StartDate = DateTime.Now,
+                                            EndDate = Null.NullDate,
+                                            EnablePublishPeriod = false,
+                                            ContentItemID = Null.NullInteger
+                                        };
+
+                        //Save new File
+                        try
+                        {
+                            //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
+                            using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
+                            {
+                                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+                                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                                file.FileId = FileManager.Instance.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
+                            }
+
+                            var htmlContentType = DynamicContentTypeManager.Instance.GetContentTypes(-1, false).SingleOrDefault(t => t.Name == "HTML" && t.IsDynamic);
+                            if (htmlContentType != null)
+                            {
+                                var template = new ContentTemplate(-1)
+                                {
+                                    Name = "Getting Started",
+                                    TemplateFileId = file.FileId,
+                                    ContentTypeId = htmlContentType.ContentTypeId
+                                };
+                                ContentTemplateManager.Instance.AddContentTemplate(template);
+                            }
+                        }
+                        catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
+                        {
+                            Logger.Error(ex.Message);
+                        }
+
 
                         break;
                 }

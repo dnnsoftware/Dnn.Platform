@@ -169,8 +169,8 @@ dcc.templateViewModel = function(parentViewModel, config){
         var contentTypeId = self.contentTypeId();
         for (var i = 0; i < contentTypes.length; i++) {
             var contentType = contentTypes[i];
-            if (contentType.contentTypeId === contentTypeId) {
-                isSystemType = contentType.isSystem;
+            if (contentType.contentTypeId() === contentTypeId) {
+                isSystemType = contentType.isSystem();
                 break;
             }
         }
