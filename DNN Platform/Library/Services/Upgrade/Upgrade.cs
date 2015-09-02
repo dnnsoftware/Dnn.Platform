@@ -5445,6 +5445,12 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//Vendors");
             RemoveHostPage("Lists");
             RemoveHostPage("Vendors");
+
+            var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.Vendors");
+            PackageController.Instance.DeleteExtensionPackage(package);
+
+            package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
+            PackageController.Instance.DeleteExtensionPackage(package);
         }
 
         private static int MaxIncremental(Version version)

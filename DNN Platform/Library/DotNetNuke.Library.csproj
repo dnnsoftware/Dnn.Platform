@@ -1450,36 +1450,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
-    <Compile Include="Services\Vendors\AffiliateController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\AffiliateInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

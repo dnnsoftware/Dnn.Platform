@@ -356,13 +356,6 @@
     <Compile Include="admin\Security\SendPassword.ascx.designer.cs">
       <DependentUpon>SendPassword.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.designer.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\BreadCrumb.ascx.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -635,27 +628,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.designer.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.designer.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.designer.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
@@ -1543,8 +1515,6 @@
     <Content Include="admin\Security\module.css" />
     <Content Include="admin\Security\PasswordReset.ascx" />
     <Content Include="admin\Security\SendPassword.ascx" />
-    <Content Include="admin\Skins\banner.ascx" />
-    <Content Include="admin\Skins\banner.xml" />
     <Content Include="admin\Skins\breadcrumb.ascx" />
     <Content Include="admin\Skins\BreadCrumb.xml" />
     <Content Include="admin\Skins\controlpanel.ascx" />
@@ -1642,12 +1612,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx" />
-    <Content Include="DesktopModules\Admin\Banners\banneroptions.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\banners.png" />
-    <Content Include="DesktopModules\Admin\Banners\displaybanners.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\readme.txt" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
     <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
@@ -3977,7 +3941,6 @@
     <EmbeddedResource Include="admin\Security\App_LocalResources\AccessDenied.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Banner.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
@@ -4020,8 +3983,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
