@@ -326,7 +326,7 @@
             urlChanged = true;
         }
 
-	    if (urlChanged) {
+        if (urlChanged) {
 	        var url = dnn.searchResult.buildLocationInfo(locationInfo);
 	        history.pushState({searchState: true}, "Search", url);
 	    }
@@ -465,9 +465,7 @@
 		            return;
 		        }
 
-		        var locationInfo = dnn.searchResult.parseLocationInfo();
-		        var url = dnn.searchResult.buildLocationInfo(locationInfo);
-		        window.location.href = url;
+		        window.location.reload();
 		    });
 		}
 
