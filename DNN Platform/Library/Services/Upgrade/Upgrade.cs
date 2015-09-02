@@ -5262,128 +5262,138 @@ namespace DotNetNuke.Services.Upgrade
             }
             try
             {
-                switch (version.ToString(3))
+                if (version.Revision == -1)
                 {
-                    case "3.2.3":
-                        UpgradeToVersion323();
-                        break;
-                    case "4.4.0":
-                        UpgradeToVersion440();
-                        break;
-                    case "4.7.0":
-                        UpgradeToVersion470();
-                        break;
-                    case "4.8.2":
-                        UpgradeToVersion482();
-                        break;
-                    case "5.0.0":
-                        UpgradeToVersion500();
-                        break;
-                    case "5.0.1":
-                        UpgradeToVersion501();
-                        break;
-                    case "5.1.0":
-                        UpgradeToVersion510();
-                        break;
-                    case "5.1.1":
-                        UpgradeToVersion511();
-                        break;
-                    case "5.1.3":
-                        UpgradeToVersion513();
-                        break;
-                    case "5.2.0":
-                        UpgradeToVersion520();
-                        break;
-                    case "5.2.1":
-                        UpgradeToVersion521();
-                        break;
-                    case "5.3.0":
-                        UpgradeToVersion530();
-                        break;
-                    case "5.4.0":
-                        UpgradeToVersion540();
-                        break;
-                    case "5.4.3":
-                        UpgradeToVersion543();
-                        break;
-                    case "5.5.0":
-                        UpgradeToVersion550();
-                        break;
-                    case "5.6.0":
-                        UpgradeToVersion560();
-                        break;
-                    case "5.6.2":
-                        UpgradeToVersion562();
-                        break;
-                    case "6.0.0":
-                        UpgradeToVersion600();
-                        break;
-                    case "6.0.1":
-                        UpgradeToVersion601();
-                        break;
-                    case "6.0.2":
-                        UpgradeToVersion602();
-                        break;
-                    case "6.1.0":
-                        UpgradeToVersion610();
-                        break;
-                    case "6.1.2":
-                        UpgradeToVersion612();
-                        break;
-                    case "6.1.3":
-                        UpgradeToVersion613();
-                        break;
-                    case "6.2.0":
-                        UpgradeToVersion620();
-                        break;
-                    case "6.2.1":
-                        UpgradeToVersion621();
-                        break;
-                    case "6.2.3":
-                        UpgradeToVersion623();
-                        break;
-                    case "6.2.4":
-                        UpgradeToVersion624();
-                        break;
-                    case "7.0.0":
-                        UpgradeToVersion700();
-                        break;
-                    case "7.1.0":
-                        UpgradeToVersion710();
-                        break;
-                    case "7.1.1":
-                        UpgradeToVersion711();
-                        break;
-                    case "7.1.2":
-                        UpgradeToVersion712();
-                        break;
-                    case "7.2.0":
-                        UpgradeToVersion720();
-                        break;
-                    case "7.2.1":
-                        UpgradeToVersion721();
-                        break;
-                    case "7.2.2":
-                        UpgradeToVersion722();
-                        break;
-                    case "7.3.0":
-                        UpgradeToVersion730();
-                        break;
-                    case "7.3.2":
-                        UpgradeToVersion732();
-                        break;
-                    case "7.3.3":
-                        UpgradeToVersion733();
-                        break;
-                    case "7.4.0":
-                        UpgradeToVersion740();
-                        break;
-					case "7.4.2":  
- 						UpgradeToVersion742();  
-                        break;
-                    case "8.0.0":
-                        UpgradeToVersion800();
-                        break;
+                    switch (version.ToString(3))
+                    {
+                        case "3.2.3":
+                            UpgradeToVersion323();
+                            break;
+                        case "4.4.0":
+                            UpgradeToVersion440();
+                            break;
+                        case "4.7.0":
+                            UpgradeToVersion470();
+                            break;
+                        case "4.8.2":
+                            UpgradeToVersion482();
+                            break;
+                        case "5.0.0":
+                            UpgradeToVersion500();
+                            break;
+                        case "5.0.1":
+                            UpgradeToVersion501();
+                            break;
+                        case "5.1.0":
+                            UpgradeToVersion510();
+                            break;
+                        case "5.1.1.0":
+                            UpgradeToVersion511();
+                            break;
+                        case "5.1.3":
+                            UpgradeToVersion513();
+                            break;
+                        case "5.2.0":
+                            UpgradeToVersion520();
+                            break;
+                        case "5.2.1":
+                            UpgradeToVersion521();
+                            break;
+                        case "5.3.0":
+                            UpgradeToVersion530();
+                            break;
+                        case "5.4.0":
+                            UpgradeToVersion540();
+                            break;
+                        case "5.4.3":
+                            UpgradeToVersion543();
+                            break;
+                        case "5.5.0":
+                            UpgradeToVersion550();
+                            break;
+                        case "5.6.0":
+                            UpgradeToVersion560();
+                            break;
+                        case "5.6.2":
+                            UpgradeToVersion562();
+                            break;
+                        case "6.0.0":
+                            UpgradeToVersion600();
+                            break;
+                        case "6.0.1":
+                            UpgradeToVersion601();
+                            break;
+                        case "6.0.2":
+                            UpgradeToVersion602();
+                            break;
+                        case "6.1.0":
+                            UpgradeToVersion610();
+                            break;
+                        case "6.1.2":
+                            UpgradeToVersion612();
+                            break;
+                        case "6.1.3":
+                            UpgradeToVersion613();
+                            break;
+                        case "6.2.0":
+                            UpgradeToVersion620();
+                            break;
+                        case "6.2.1":
+                            UpgradeToVersion621();
+                            break;
+                        case "6.2.3":
+                            UpgradeToVersion623();
+                            break;
+                        case "6.2.4":
+                            UpgradeToVersion624();
+                            break;
+                        case "7.0.0":
+                            UpgradeToVersion700();
+                            break;
+                        case "7.1.0":
+                            UpgradeToVersion710();
+                            break;
+                        case "7.1.1":
+                            UpgradeToVersion711();
+                            break;
+                        case "7.1.2":
+                            UpgradeToVersion712();
+                            break;
+                        case "7.2.0":
+                            UpgradeToVersion720();
+                            break;
+                        case "7.2.1":
+                            UpgradeToVersion721();
+                            break;
+                        case "7.2.2":
+                            UpgradeToVersion722();
+                            break;
+                        case "7.3.0":
+                            UpgradeToVersion730();
+                            break;
+                        case "7.3.2":
+                            UpgradeToVersion732();
+                            break;
+                        case "7.3.3":
+                            UpgradeToVersion733();
+                            break;
+                        case "7.4.0":
+                            UpgradeToVersion740();
+                            break;
+                        case "7.4.2":
+                            UpgradeToVersion742();
+                            break;
+                    }
+                }
+                else
+                {
+                    //Incremental
+                    switch (version.ToString(4))
+                    {
+                        case "8.0.0.6":
+                            UpgradeToVersion8006();
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -5422,28 +5432,19 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
-        private static void UpgradeToVersion800()
+        private static void UpgradeToVersion8006()
         {
-            foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0"))
-            {
-                switch (iteration)
-                {
-                    case '6':
-                        RemoveAdminPages("//Admin//Languages");
-                        RemoveAdminPages("//Admin//Lists");
-                        RemoveAdminPages("//Admin//LogViewer");
-                        RemoveAdminPages("//Admin//Newsletters");
-                        RemoveAdminPages("//Admin//Pages");
-                        RemoveAdminPages("//Admin//RecycleBin");
-                        RemoveAdminPages("//Admin//SiteLog");
-                        RemoveAdminPages("//Admin//SiteWizard");
-                        RemoveAdminPages("//Admin//Vendors");
-                        RemoveHostPage("Lists");
-                        RemoveHostPage("Vendors");
-                        break;
-
-                }
-            }
+            RemoveAdminPages("//Admin//Languages");
+            RemoveAdminPages("//Admin//Lists");
+            RemoveAdminPages("//Admin//LogViewer");
+            RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//Pages");
+            RemoveAdminPages("//Admin//RecycleBin");
+            RemoveAdminPages("//Admin//SiteLog");
+            RemoveAdminPages("//Admin//SiteWizard");
+            RemoveAdminPages("//Admin//Vendors");
+            RemoveHostPage("Lists");
+            RemoveHostPage("Vendors");
         }
 
         private static int MaxIncremental(Version version)
