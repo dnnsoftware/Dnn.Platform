@@ -39,7 +39,7 @@ using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
-namespace DesktopModules.Admin.Console
+namespace Dnn.Modules.Console
 {
 
     public partial class Settings : ModuleSettingsBase

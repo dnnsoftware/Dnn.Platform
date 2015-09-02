@@ -657,20 +657,6 @@
     <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.designer.cs">
       <DependentUpon>displaybanners.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.designer.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1704,11 +1690,6 @@
     <Content Include="DesktopModules\Admin\Banners\displaybanners.ascx" />
     <Content Include="DesktopModules\Admin\Banners\module.css" />
     <Content Include="DesktopModules\Admin\Banners\readme.txt" />
-    <Content Include="DesktopModules\Admin\Console\console.png" />
-    <Content Include="DesktopModules\Admin\Console\jquery.console.js" />
-    <Content Include="DesktopModules\Admin\Console\module.css" />
-    <Content Include="DesktopModules\Admin\Console\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\Console\ViewConsole.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
     <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
@@ -4090,8 +4071,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\ViewConsole.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
