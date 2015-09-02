@@ -7,19 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Vendors {
+namespace Dnn.Modules.Vendors {
     
     
-    public partial class Banners {
+    public partial class Affiliates {
         
         /// <summary>
-        /// grdBanners control.
+        /// grdAffiliates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid grdBanners;
+        protected global::System.Web.UI.WebControls.DataGrid grdAffiliates;
         
         /// <summary>
         /// cmdAdd control.

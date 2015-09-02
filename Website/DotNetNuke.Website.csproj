@@ -1183,48 +1183,6 @@
     <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
       <DependentUpon>sql.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.designer.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.designer.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.designer.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.designer.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.designer.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.designer.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1902,13 +1860,6 @@
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\affiliates.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\banners.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editaffiliate.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editbanner.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editvendors.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\module.css" />
-    <Content Include="DesktopModules\Admin\Vendors\vendors.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -4184,12 +4135,6 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Affiliates.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Banners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditAffiliate.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditBanner.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditVendors.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Vendors.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />

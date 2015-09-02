@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Vendors {
+namespace Dnn.Modules.Vendors {
     
     
     public partial class EditVendors {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plVendorName;
+        protected global::System.Web.UI.UserControl plVendorName;
         
         /// <summary>
         /// txtVendorName control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plFirstName;
+        protected global::System.Web.UI.UserControl plFirstName;
         
         /// <summary>
         /// txtFirstName control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plLastName;
+        protected global::System.Web.UI.UserControl plLastName;
         
         /// <summary>
         /// txtLastName control.
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEmail;
+        protected global::System.Web.UI.UserControl plEmail;
         
         /// <summary>
         /// txtEmail control.
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plWebsite;
+        protected global::System.Web.UI.UserControl plWebsite;
         
         /// <summary>
         /// txtWebsite control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plLogo;
+        protected global::System.Web.UI.UserControl plLogo;
         
         /// <summary>
         /// ctlLogo control.
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plAuthorized;
+        protected global::System.Web.UI.UserControl plAuthorized;
         
         /// <summary>
         /// chkAuthorized control.
@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plKeyWords;
+        protected global::System.Web.UI.UserControl plKeyWords;
         
         /// <summary>
         /// txtKeyWords control.

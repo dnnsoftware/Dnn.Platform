@@ -1,0 +1,7 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/Vendors/affiliates.ascx.cs
+DesktopModules/Admin/Vendors/banners.ascx.cs
+DesktopModules/Admin/Vendors/editaffiliate.ascx.cs
+DesktopModules/Admin/Vendors/editbanner.ascx.cs
+DesktopModules/Admin/Vendors/editvendors.ascx.cs
+DesktopModules/Admin/Vendors/Vendors.ascx.cs

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Vendors {
+namespace Dnn.Modules.Vendors {
     
     
     public partial class EditBanner {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plBannerName;
+        protected global::System.Web.UI.UserControl plBannerName;
         
         /// <summary>
         /// txtBannerName control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plBannerType;
+        protected global::System.Web.UI.UserControl plBannerType;
         
         /// <summary>
         /// cboBannerType control.
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plBannerGroup;
+        protected global::System.Web.UI.UserControl plBannerGroup;
         
         /// <summary>
         /// DNNTxtBannerGroup control.
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plImage;
+        protected global::System.Web.UI.UserControl plImage;
         
         /// <summary>
         /// ctlImage control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plWidth;
+        protected global::System.Web.UI.UserControl plWidth;
         
         /// <summary>
         /// txtWidth control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plHeight;
+        protected global::System.Web.UI.UserControl plHeight;
         
         /// <summary>
         /// txtHeight control.
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plDescription;
+        protected global::System.Web.UI.UserControl plDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plURL;
+        protected global::System.Web.UI.UserControl plURL;
         
         /// <summary>
         /// ctlURL control.
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCPM;
+        protected global::System.Web.UI.UserControl plCPM;
         
         /// <summary>
         /// txtCPM control.
@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plImpressions;
+        protected global::System.Web.UI.UserControl plImpressions;
         
         /// <summary>
         /// txtImpressions control.
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plStartDate;
+        protected global::System.Web.UI.UserControl plStartDate;
         
         /// <summary>
         /// StartDatePicker control.
@@ -280,7 +280,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEndDate;
+        protected global::System.Web.UI.UserControl plEndDate;
         
         /// <summary>
         /// EndDatePicker control.
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.Admin.Vendors {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plCriteria;
+        protected global::System.Web.UI.UserControl plCriteria;
         
         /// <summary>
         /// optCriteria control.

@@ -35,7 +35,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Vendors
+namespace Dnn.Modules.Vendors
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -214,13 +214,13 @@ namespace DotNetNuke.Modules.Admin.Vendors
                     if (String.IsNullOrEmpty(errorMsg))
                     {
                         strMessage = Localization.GetString("NotificationSuccess", LocalResourceFile);
-                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.GreenSuccess);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else
                     {
                         strMessage = Localization.GetString("NotificationFailure", LocalResourceFile);
                         strMessage = string.Format(strMessage, errorMsg);
-                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
                     }
                 }
             }

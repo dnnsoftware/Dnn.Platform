@@ -32,7 +32,7 @@ using DotNetNuke.Services.Vendors;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Vendors
+namespace Dnn.Modules.Vendors
 {
 	/// -----------------------------------------------------------------------------
 	/// <summary>

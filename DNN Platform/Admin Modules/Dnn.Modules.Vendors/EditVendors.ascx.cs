@@ -39,7 +39,7 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Vendors
+namespace Dnn.Modules.Vendors
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
         /// -----------------------------------------------------------------------------
         private void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type)
         {
-            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString(message, LocalResourceFile), type);
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString(message, LocalResourceFile), type);
         }
 
         #endregion
