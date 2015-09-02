@@ -35,6 +35,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mobile;
+using DotNetNuke.Tests.Core.Services.ClientCapability;
 using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 
@@ -856,7 +857,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private IClientCapability GetClientCapabilityCallBack(string userAgent)
 		{
-            IClientCapability clientCapability = new DotNetNuke.Services.ClientCapability.ClientCapability();
+            IClientCapability clientCapability = new TestClientCapability();
             if (userAgent == iphoneUserAgent)
             {
                 clientCapability.IsMobile = true;

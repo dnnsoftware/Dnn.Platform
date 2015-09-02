@@ -165,6 +165,7 @@
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
+    <Compile Include="Services\ClientCapability\TestClientCapability.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
