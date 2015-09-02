@@ -24,12 +24,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Services.Upgrade;
 
-namespace Dnn.Modules.RecycleBin.Components
+namespace Dnn.Modules.Console.Components
 {
     /// <summary>
     /// 
     /// </summary>
-    public class RecycleBinController : IUpgradeable
+    public class ConsoleController : IUpgradeable
     {
         /// <summary>
         /// 
@@ -43,20 +43,7 @@ namespace Dnn.Modules.RecycleBin.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Recycle Bin");
-                        if (moduleDefinition != null)
-                        {
-                            //Add Module to Admin Page for all Portals
-                            Upgrade.AddAdminPages("Recycle Bin",
-                                                    "Send email messages to users, security roles and specific email addresses.",
-                                                    "~/Icons/Sigma/Trash_16X16_Standard.png",
-                                                    "~/Icons/Sigma/Trash_32X32_Standard.png",
-                                                    true,
-                                                    moduleDefinition.ModuleDefID,
-                                                    "Recycle Bin",
-                                                    "~/Icons/Sigma/Trash_32X32_Standard.png",
-                                                    true);
-                        }
+
                         break;
                 }
                 return "Success";

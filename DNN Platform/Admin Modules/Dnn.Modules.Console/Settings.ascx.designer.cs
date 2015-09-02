@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesktopModules.Admin.Console {
+namespace Dnn.Modules.Console {
     
     
     public partial class Settings {
@@ -19,7 +19,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl Label1;
+        protected global::System.Web.UI.UserControl Label1;
         
         /// <summary>
         /// modeList control.
@@ -46,7 +46,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblParentTab;
+        protected global::System.Web.UI.UserControl lblParentTab;
         
         /// <summary>
         /// ParentTab control.
@@ -73,7 +73,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeParent;
+        protected global::System.Web.UI.UserControl lblIncludeParent;
         
         /// <summary>
         /// IncludeParent control.
@@ -100,7 +100,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl tabsLabel;
+        protected global::System.Web.UI.UserControl tabsLabel;
         
         /// <summary>
         /// tabs control.
@@ -118,7 +118,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDefaultSize;
+        protected global::System.Web.UI.UserControl lblDefaultSize;
         
         /// <summary>
         /// DefaultSize control.
@@ -136,7 +136,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowResize;
+        protected global::System.Web.UI.UserControl lblAllowResize;
         
         /// <summary>
         /// AllowResize control.
@@ -154,7 +154,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDefaultView;
+        protected global::System.Web.UI.UserControl lblDefaultView;
         
         /// <summary>
         /// DefaultView control.
@@ -172,7 +172,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowViewChange;
+        protected global::System.Web.UI.UserControl lblAllowViewChange;
         
         /// <summary>
         /// AllowViewChange control.
@@ -190,7 +190,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblShowTooltip;
+        protected global::System.Web.UI.UserControl lblShowTooltip;
         
         /// <summary>
         /// ShowTooltip control.
@@ -208,7 +208,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblOrderTabsByHierarchy;
+        protected global::System.Web.UI.UserControl lblOrderTabsByHierarchy;
         
         /// <summary>
         /// OrderTabsByHierarchy control.
@@ -226,7 +226,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeHiddenPages;
+        protected global::System.Web.UI.UserControl lblIncludeHiddenPages;
         
         /// <summary>
         /// IncludeHiddenPages control.
@@ -244,7 +244,7 @@ namespace DesktopModules.Admin.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblConsoleWidth;
+        protected global::System.Web.UI.UserControl lblConsoleWidth;
         
         /// <summary>
         /// ConsoleWidth control.

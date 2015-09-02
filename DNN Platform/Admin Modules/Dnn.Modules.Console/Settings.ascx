@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DesktopModules.Admin.Console.Settings" Codebehind="Settings.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Console.Settings" Codebehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnConsole dnnClear">

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesktopModules.Admin.Console {
+namespace Dnn.Modules.Console {
     
     
     public partial class ViewConsole {
