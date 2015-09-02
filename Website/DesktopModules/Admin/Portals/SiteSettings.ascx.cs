@@ -62,10 +62,11 @@ using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 using System.Globalization;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
-
+using OAuth.AuthorizationServer.Core.Server;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -434,6 +435,28 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
+            BindOAuth(portal);
+        }
+
+        private void BindOAuth(PortalInfo portal)
+        {
+            if (Host.EnableOAuthAuthorization == false)
+            {
+                OAuthStatus.Visible = true;
+                OAuthClient.Visible = false;
+                OAuthSecret.Visible = false;
+                cmdOAuth.Visible = false;
+                return;
+            }
+
+            var btnstatus=PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", portal.PortalID, false);
+            cmdOAuth.Text = Localization.GetString(btnstatus ? "DisableOAuth" : "EnableOAuth", LocalResourceFile);
+
+            OAuthSitesettingsClientLabel.Text=PortalController.GetPortalSetting("OAuthClient",_portalId, string.Empty);
+            OAuthSitesettingsSecretLabel.Text = PortalController.GetPortalSetting("OAuthSecret", _portalId, string.Empty);
+            OAuthStatus.Visible = !btnstatus;
+            OAuthClient.Visible = btnstatus;
+            OAuthSecret.Visible = btnstatus;
         }
 
         private void BindCustomSettings(PortalInfo portal)
@@ -913,6 +936,7 @@ namespace DesktopModules.Admin.Portals
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;
+            cmdOAuth.Click += UpdateOAuth;
             rblSMTPmode.SelectedIndexChanged += OnSmtpModeChanged;
             chkPayPalSandboxEnabled.CheckedChanged += OnChkPayPalSandboxChanged;
             IncrementCrmVersionButton.Click += IncrementCrmVersion;
@@ -921,6 +945,33 @@ namespace DesktopModules.Admin.Portals
 
             InitializeDropDownLists();
 
+        }
+
+        private void UpdateOAuth(object sender, EventArgs e)
+        {
+            var btnstatus = PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", PortalSettings.PortalId, false);
+            if (btnstatus==false)
+            {
+                var rnd = new Random(DateTime.Now.Millisecond);
+                int ticks = rnd.Next(0, 3000);
+                var clientId = "Client-" + ticks.ToString();
+                PortalController.UpdatePortalSetting(_portalId, "OAuthClient", clientId, false);
+                Guid id = Guid.NewGuid();
+
+                PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", id.ToString(), false);
+                OAUTHDataController.ClientInsert(clientId, id.ToString(), string.Empty, PortalSettings.PortalName,1);
+            }
+            else
+            {
+                var clientId = PortalController.GetPortalSetting("OAuthClient", _portalId, string.Empty);
+                OAUTHDataController.DeleteClient(clientId);
+                PortalController.UpdatePortalSetting(_portalId, "OAuthClient", string.Empty, false);
+                Guid id = Guid.NewGuid();
+
+                PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", string.Empty, false);
+            }
+            PortalController.UpdatePortalSetting(_portalId, "EnableOAuthAuthorization", (!btnstatus).ToString(), true);
+            Response.Redirect(Request.RawUrl, true);
         }
 
         /// <summary>
@@ -1574,6 +1625,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
                     PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "AddCachebusterToResourceUris", chkAddCachebusterToResourceUris.Checked.ToString());
+
 
                     profileDefinitions.Update();
 

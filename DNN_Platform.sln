@@ -39,6 +39,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web", "DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj", "{EE1329FE-FD88-4E1A-968C-345E394EF080}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719} = {D1A7A2BF-04F8-48A3-A824-D20F2F987719}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.HttpModules", "DNN Platform\HttpModules\DotNetNuke.HttpModules.csproj", "{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}"
@@ -291,6 +292,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.SiteWizard", "DNN Platform\Admin Modules\Dnn.Modules.SiteWizard\Dnn.Modules.SiteWizard.csproj", "{4C471207-E8A8-475A-9B29-68FB3272AEAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Languages", "DNN Platform\Admin Modules\Dnn.Modules.Languages\Dnn.Modules.Languages.csproj", "{E66B5763-2EAA-470D-84CB-A8FE1D21E864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer.API", "DNN Platform\OAuth.AuthorizationServer.API\OAuth.AuthorizationServer.API.csproj", "{D1A7A2BF-04F8-48A3-A824-D20F2F987719}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49} = {C7DAB16C-365F-4E43-AF8A-D50087DF7C49}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer.Core", "DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj", "{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -682,6 +690,18 @@ Global
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -766,5 +786,7 @@ Global
 		{5897E180-382C-47CE-B782-FF2DA0707010} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{4C471207-E8A8-475A-9B29-68FB3272AEAC} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{D1A7A2BF-04F8-48A3-A824-D20F2F987719} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
+		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 	EndGlobalSection
 EndGlobal

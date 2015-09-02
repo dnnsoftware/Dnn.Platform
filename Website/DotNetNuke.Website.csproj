@@ -94,6 +94,10 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -1304,10 +1308,23 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OAUTHAuthorize.aspx.cs">
+      <DependentUpon>OAUTHAuthorize.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.designer.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
     <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
     <Content Include="Resources\Shared\scripts\dnn.utility.js" />
+    <Content Include="OAUTHAuthorize.aspx" />
+    <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
@@ -1322,6 +1339,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
     <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.06.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -4066,7 +4084,9 @@
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Analytics\App_LocalResources\GoogleAnalyticsSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
@@ -4102,7 +4122,9 @@
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
@@ -4124,7 +4146,9 @@
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ProfessionalPreview\App_LocalResources\ProfessionalPreview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
@@ -4437,6 +4461,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
+      <Name>OAuth.AuthorizationServer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

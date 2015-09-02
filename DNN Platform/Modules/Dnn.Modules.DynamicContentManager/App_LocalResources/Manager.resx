@@ -303,7 +303,7 @@
   <data name="InsertHelper.Text" xml:space="preserve">
     <value>Insert Helper Tag</value>
   </data>
-    <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
+  <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
     <value>The value of the field in the default language is required.</value>
   </data>
   <data name="InvalidContentTypeMessage.Text" xml:space="preserve">
@@ -333,5 +333,13 @@
   <data name="TemplateExists.Text" xml:space="preserve">
     <value>A Template with that name already exists.  Please try again with a different name.</value>
   </data>
-
+  <data name="DataTypesPageSize.Text" xml:space="preserve">
+    <value>Data Types per page</value>
+  </data>
+  <data name="ContentTypesPageSize.Text" xml:space="preserve">
+    <value>Content Types per page</value>
+  </data>
+  <data name="TemplatesPageSize.Text" xml:space="preserve">
+    <value>Templates per page</value>
+  </data>
 </root>

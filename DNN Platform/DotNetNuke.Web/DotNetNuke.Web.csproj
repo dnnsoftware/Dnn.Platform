@@ -90,6 +90,21 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2">
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.AuthorizationServer">
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization">
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ResourceServer">
+      <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ResourceServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -102,14 +117,17 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -184,6 +202,8 @@
     <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
     <Compile Include="Api\IPortalAliasRouteManager.cs" />
     <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
+    <Compile Include="Api\OAuthAuthorizeScopeAttribute.cs" />
+    <Compile Include="Api\OAuthResourceAuthenticatedAttribute.cs" />
     <Compile Include="Api\PortalAliasRouteManager.cs" />
     <Compile Include="Api\RouteExtensions.cs" />
     <Compile Include="Api\RequireHostAttribute.cs" />
@@ -207,6 +227,7 @@
     <Compile Include="InternalServices\GettingStartedController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
     <Compile Include="InternalServices\NotificationDTO.cs" />
+    <Compile Include="InternalServices\OAuthController.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
     <Compile Include="InternalServices\SearchServiceController.cs" />
@@ -218,6 +239,7 @@
     <Compile Include="InternalServices\MessagingServiceController.cs" />
     <Compile Include="InternalServices\ServiceRouteMapper.cs" />
     <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
+    <Compile Include="InternalServices\TestLogicController.cs" />
     <Compile Include="InternalServices\UserFileController.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
@@ -556,6 +578,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OAuth.AuthorizationServer.API\OAuth.AuthorizationServer.API.csproj">
+      <Project>{d1a7a2bf-04f8-48a3-a824-d20f2f987719}</Project>
+      <Name>OAuth.AuthorizationServer.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
+      <Name>OAuth.AuthorizationServer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
