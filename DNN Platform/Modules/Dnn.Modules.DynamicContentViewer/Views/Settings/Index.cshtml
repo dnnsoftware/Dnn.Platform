@@ -10,6 +10,9 @@
     JavaScript.RequestRegistration("Knockout");
 }
 <div id="DCCquickSettings-@moduleId" class="dnnForm">
+    <div class="dnnFormMessage dnnFormInfo">
+        @Dnn.LocalizeString("SettingsInfo")
+    </div>
     <div class="dnnFormItem">
         @Dnn.Label("contentType", Dnn.LocalizeString("ContentType"), Dnn.LocalizeString("ContentType.Help"))
         <select id="contentType" data-bind="options: contentTypes, value: selectedTypeId, optionsText: 'name', optionsValue: 'value'"></select>
