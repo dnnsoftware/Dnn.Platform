@@ -282,12 +282,11 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folderMapping", folderMapping);
 
             var folderProvider = Instance(folderMapping.FolderProviderType);
-
-            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
-
             var folder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
             var folderManager = new FolderManager();
             var subFolders = folderManager.GetFolderMappingFoldersRecursive(folderMapping, folder).Skip(1).Reverse();
+
+            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
 
             foreach (var subFolderPath in subFolders.Select(s => s.Key))
             {
