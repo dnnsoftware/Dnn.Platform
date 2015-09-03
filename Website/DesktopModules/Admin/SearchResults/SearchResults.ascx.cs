@@ -44,6 +44,8 @@ namespace DotNetNuke.Modules.SearchResults
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;
+        private const int DefaultPageSize = 15;
+        private const int DefaultSortOption = 0;
 
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
@@ -98,6 +100,44 @@ namespace DotNetNuke.Modules.SearchResults
                 }
                 
                 return DefaultPageIndex;
+            }
+        }
+
+        protected int PageSize
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Size"]))
+                {
+                    return DefaultPageSize;
+                }
+
+                int pageSize;
+                if (Int32.TryParse(Request.QueryString["Size"], out pageSize))
+                {
+                    return pageSize;
+                }
+
+                return DefaultPageSize;
+            }
+        }
+
+        protected int SortOption
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Sort"]))
+                {
+                    return DefaultSortOption;
+                }
+
+                int sortOption;
+                if (Int32.TryParse(Request.QueryString["Sort"], out sortOption))
+                {
+                    return sortOption;
+                }
+
+                return DefaultSortOption;
             }
         }
 
@@ -327,6 +367,12 @@ namespace DotNetNuke.Modules.SearchResults
 
             SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
+
+            var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
+            if (pageSizeItem != null)
+            {
+                pageSizeItem.Selected = true;
+            }
 
             SetLastModifiedFilter();
         }
