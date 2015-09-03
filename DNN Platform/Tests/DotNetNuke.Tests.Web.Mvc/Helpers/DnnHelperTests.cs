@@ -1,7 +1,4 @@
-﻿#region Copyright
-
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+﻿// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -19,58 +16,68 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-#endregion
-
 using System;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Web.Mvc.Fakes;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Helpers;
 using Moq;
 using NUnit.Framework;
+// ReSharper disable ObjectCreationAsStatement
 
 namespace DotNetNuke.Tests.Web.Mvc.Helpers
 {
     [TestFixture]
     public class DnnHelperTests
     {
+        private Mock<ControllerBase> _mockController;
+        private Mock<IViewDataContainer> _mockViewDataContainer ;
+        private ViewContext _viewContext;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mockController = new Mock<ControllerBase>();
+            _viewContext = new ViewContext();
+
+            _mockViewDataContainer = new Mock<IViewDataContainer>();
+        }
+
         [Test]
         public void Constructor_Throws_On_Null_ViewContext()
         {
             //Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null));
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, _mockViewDataContainer.Object));
+        }
+
+        [Test]
+        public void Constructor_Throws_On_Null_ViewDataContainer()
+        {
+            //Act,Assert
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, _mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Throws_On_Invalid_Controller_Property()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var viewContext = new ViewContext();
-            viewContext.Controller = mockController.Object;
+            _viewContext.Controller = _mockController.Object;
 
             //Act,Assert
-            Assert.Throws<InvalidOperationException>(() => new DnnHelper(viewContext));
+            Assert.Throws<InvalidOperationException>(() => new DnnHelper(_viewContext, _mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Sets_ModuleContext_Property()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
+            var mockDnnController = _mockController.As<IDnnController>();
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext();
-            viewContext.Controller = mockController.Object;
+            _viewContext.Controller = _mockController.Object;
 
             //Act
-            var helper = new DnnHelper(viewContext);
+            var helper = new DnnHelper(_viewContext, _mockViewDataContainer.Object);
 
             //Assert
             Assert.AreEqual(expectedContext, helper.ModuleContext);

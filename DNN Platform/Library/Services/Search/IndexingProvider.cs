@@ -22,9 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-
-using DotNetNuke.ComponentModel;
+using System.Linq;
+using DotNetNuke.Common;
 using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 #endregion
 
@@ -32,17 +33,83 @@ namespace DotNetNuke.Services.Search
 {
     public abstract class IndexingProvider
     {
-        public static IndexingProvider Instance()
+        /// <summary>
+        /// This method must save search docuents in batches to minimize memory usage instead of returning all documents ollection at once.
+        /// </summary>
+        /// <param name="portalId">Portal ID to index</param>
+        /// <param name="startDateLocal">Minimum modification date of items that need to be indexed</param>
+        /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing</param>
+        /// <returns></returns>
+        public virtual int IndexSearchDocuments(int portalId,
+            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
-            return ComponentFactory.GetComponent<IndexingProvider>();
+            throw new NotImplementedException();
         }
 
+        [Obsolete("Depricated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.")]
         public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
-            return new List<SearchDocument>();
+            return Enumerable.Empty<SearchDocument>();
         }
 
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
+
+        private const string TimePostfix = "UtcTime";
+        private const string DataPostfix = "Data";
+
+        protected DateTime GetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
+        {
+            var lastTime = SearchHelper.Instance.GetIndexerCheckpointUtcTime(
+                scheduleId, ScheduleItemSettingKey(portalId, TimePostfix)).ToLocalTime();
+            return lastTime < localTime ? lastTime : localTime;
+        }
+
+        protected void SetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
+        {
+            SearchHelper.Instance.SetIndexerCheckpointUtcTime(
+                scheduleId, ScheduleItemSettingKey(portalId, TimePostfix), localTime.ToUniversalTime());
+        }
+
+        /// <summary>
+        /// This can be any free format data that can help the indexer to perform its job
+        /// </summary>
+        protected string GetLastCheckpointData(int portalId, int scheduleId)
+        {
+            return SearchHelper.Instance.GetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix));
+        }
+
+        /// <summary>
+        /// This can be any free format data that can help the indexer to perform its job
+        /// </summary>
+        protected void SetLastCheckpointData(int portalId, int scheduleId, string data)
+        {
+            SearchHelper.Instance.SetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix), data);
+        }
+
+        /// <summary>
+        /// Creates a unique name for the IndexingProvider implementation that can be used
+        /// to save/retrieve scheduler item {key,name} setting pairs per portal and feature.
+        /// </summary>
+        /// <remarks>
+        /// Note that changing the class name in derived classes will cause this key to differ
+        /// from the names stored in the database; therefore, don't change the derived class
+        /// [full] names once these are deployed to market in an actual release version.
+        /// <para>The format of the key is as follows:
+        /// <ol>
+        /// <li>"Search" literal</li>
+        /// <li>Name of the indexer class</li>
+        /// <li>Hash of the full class name of the indexer class (this and the previous will keep the key short and unique)</li>
+        /// <li>Portal ID the setting is related to</li>
+        /// <li>An additional property identifier set by the caller (this allows more items to be saved per indexer per portal)</li>
+        /// </ol>
+        /// </para>
+        /// </remarks>
+        private string ScheduleItemSettingKey(int portalId, string propertyId)
+        {
+            Requires.NotNullOrEmpty("propertyId", propertyId);
+            var t = GetType();
+            return string.Join("_", "Search", t.Name, t.FullName.GetHashCode().ToString("x8"), portalId.ToString(), propertyId);
+        }
     }
 }

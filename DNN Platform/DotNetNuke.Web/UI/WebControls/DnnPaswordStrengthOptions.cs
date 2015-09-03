@@ -57,6 +57,12 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "criteriaAtLeastNCharsText")]
         public string CriteriaAtLeastNCharsText;
 
+		[DataMember(Name = "passwordRulesHeadText")]
+		public string PasswordRulesHeadText;
+
+		[DataMember(Name = "passwordRulesBodyText")]
+		public string PasswordRulesBodyText;
+
         public DnnPaswordStrengthOptions()
         {
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
@@ -68,7 +74,9 @@ namespace DotNetNuke.Web.UI.WebControls
             CriteriaOneUpperCaseLetterText = Utilities.GetLocalizedString("CriteriaOneUpperCaseLetter");
             CriteriaOneLowerCaseLetterText = Utilities.GetLocalizedString("CriteriaOneLowerCaseLetter");
             CriteriaOneNumberText = Utilities.GetLocalizedString("CriteriaOneNumber");
-            CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+			CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+			PasswordRulesBodyText = Utilities.GetLocalizedString("PasswordRulesBodyText");
 
             WeakColor = "#ed1e24";
             FairColor = "#f6d50a";
@@ -94,6 +102,9 @@ namespace DotNetNuke.Web.UI.WebControls
             CriteriaSpecialCharText = MinNumberOfSpecialChars > 0 ?
                 string.Format(Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars"), MinNumberOfSpecialChars) :
                 Utilities.GetLocalizedString("CriteriaSpecialChar");
+
+	        PasswordRulesBodyText = string.Format(PasswordRulesBodyText, MinLength, CriteriaSpecialCharText);
+
         }
     }
 }

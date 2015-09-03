@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" CodeFile="SearchResults.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" Codebehind="SearchResults.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
@@ -118,9 +118,9 @@
             dnn.searchResult.moduleId = <%= ModuleId %>;
             dnn.searchResult.queryOptions = {
                 searchTerm: '<%= SearchTerm %>',
-                sortOption: 0,
-                pageIndex: 1,
-                pageSize: 15
+                sortOption: <%= SortOption %>,
+                pageIndex: <%= PageIndex %>,
+                pageSize: <%= PageSize %>
             };
 
             dnn.searchResult.init({

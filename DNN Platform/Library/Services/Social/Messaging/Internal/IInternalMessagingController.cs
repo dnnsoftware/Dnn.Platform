@@ -1,5 +1,4 @@
 #region Copyright
-// 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
@@ -19,13 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Social.Messaging.Internal.Views;
-
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Social.Messaging.Internal.Views;
+
+    /// <summary>Interface used for Message Controller behaviors</summary>
     public interface IInternalMessagingController
     {
         #region Reply APIs
@@ -35,7 +36,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender);
 
         #endregion
-
 
         #region CRUD APIs
 
@@ -74,6 +74,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="portalId">Portal Id</param>        
         bool AttachmentsAllowed(int portalId);
 
+        /// <summary>Whether or not to includes the attachment in the email message.</summary>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <returns></returns>
+        bool IncludeAttachments(int portalId);
+
 		///<summary>Whether disable regular users to send message to user/group, default is false.</summary>        
 		/// <param name="portalId">Portal Id</param>    
 	    bool DisablePrivateMessage(int portalId);
@@ -82,34 +87,114 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Upgrade APIs
 
+        /// <summary>Converts the legacy messages.</summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
         void ConvertLegacyMessages(int pageIndex, int pageSize);
+
+        /// <summary>Counts the legacy messages.</summary>
+        /// <returns>A count of messages</returns>
         int CountLegacyMessages();
 
         #endregion
 
         #region Get View APIs
 
+        /// <summary>Gets the inbox.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="sortColumn">The sort column.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="readStatus">The read status.</param>
+        /// <param name="archivedStatus">The archived status.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool @ascending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus);
 
+        /// <summary>Gets the inbox.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="sortColumn">The sort column.</param>
+        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
+        /// <summary>Gets the recent inbox.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetRecentInbox(int userId);
 
+        /// <summary>Gets the recent inbox.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetRecentInbox(int userId, int afterMessageId, int numberOfRecords);
 
+        /// <summary>Gets the sent box.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="sortColumn">The sort column.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="readStatus">The read status.</param>
+        /// <param name="archivedStatus">The archived status.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool ascending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus);
 
+        /// <summary>Gets the sent box.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="sortColumn">The sort column.</param>
+        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
+        /// <summary>Gets the recent sent box.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetRecentSentbox(int userId);
 
+        /// <summary>Gets the recent sent box.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetRecentSentbox(int userId, int afterMessageId, int numberOfRecords);
 
+        /// <summary>Gets the archived messages.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <returns>A <see cref="MessageBoxView"/></returns>
         MessageBoxView GetArchivedMessages(int userId, int afterMessageId, int numberOfRecords);
 
+        /// <summary>Gets the message thread.</summary>
+        /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="sortColumn">The sort column.</param>
+        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="totalRecords">The total records.</param>
+        /// <returns>A <see cref="MessageThreadsView"/></returns>
         MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool ascending, ref int totalRecords);
 
+        /// <summary>Gets the message thread.</summary>
+        /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="afterMessageId">The after message identifier.</param>
+        /// <param name="numberOfRecords">The number of records.</param>
+        /// <param name="totalRecords">The total records.</param>
+        /// <returns>A <see cref="MessageThreadsView"/></returns>
         MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, ref int totalRecords);
+
+        /// <summary>Gets the attachments for the specified message.</summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>A list of <see cref="MessageFileView"/></returns>
+        IEnumerable<MessageFileView> GetAttachments(int messageId);
 
         #endregion
 

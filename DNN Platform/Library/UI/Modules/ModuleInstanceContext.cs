@@ -344,9 +344,19 @@ namespace DotNetNuke.UI.Modules
         private void AddHelpActions()
         {
             var url = string.Empty;
+            var showInNewWindow = false;
             if (!string.IsNullOrEmpty(Configuration.ModuleControl.HelpURL) && Host.EnableModuleOnLineHelp && PortalSettings.EnablePopUps)
             {
-                url = UrlUtils.PopUpUrl(Configuration.ModuleControl.HelpURL, PortalSettings, false, false, 550, 950);
+                var supportInPopup = SupportShowInPopup(Configuration.ModuleControl.HelpURL);
+                if (supportInPopup)
+                {
+                    url = UrlUtils.PopUpUrl(Configuration.ModuleControl.HelpURL, PortalSettings, false, false, 550, 950);
+                }
+                else
+                {
+                    url = Configuration.ModuleControl.HelpURL;
+                    showInNewWindow = true;
+                }
             }
             else
             {
@@ -362,7 +372,7 @@ namespace DotNetNuke.UI.Modules
                                      Url = url,
                                      Secure = SecurityAccessLevel.Edit,
                                      Visible = true,
-                                     NewWindow = false,
+                                     NewWindow = showInNewWindow,
                                      UseActionEvent = true
                                  };
             _moduleGenericActions.Actions.Add(helpAction);
@@ -630,7 +640,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
-                                     "",
+                                     ModuleActionType.ExportModule,
                                      "",
                                      "action_export.gif",
                                      NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
@@ -645,7 +655,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
-                                     "",
+                                     ModuleActionType.ImportModule,
                                      "",
                                      "action_import.gif",
                                      NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
@@ -758,6 +768,18 @@ namespace DotNetNuke.UI.Modules
                     action.ClientScript = UrlUtils.PopUpUrl(action.Url, _moduleControl as Control, PortalSettings, true, false);
                 }
             }
+        }
+
+        private bool SupportShowInPopup(string url)
+        {
+            if (HttpContext.Current == null || !url.Contains("://"))
+            {
+                return true;
+            }
+
+            var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
+            return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                   || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
         }
 
         #endregion

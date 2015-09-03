@@ -29,6 +29,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.Dashboard.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Installer;
@@ -48,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Dashboard
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdInstall.NavigateUrl = Util.InstallURL(TabId, "DashboardControl");
             cmdManage.NavigateUrl = EditUrl("DashboardControls");

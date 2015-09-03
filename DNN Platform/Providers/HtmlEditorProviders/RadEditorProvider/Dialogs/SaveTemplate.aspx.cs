@@ -23,7 +23,8 @@ using DotNetNuke.Common.Utilities;
 
 using System;
 using System.Collections;
-
+using System.IO;
+using System.Text;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Permissions;
@@ -32,6 +33,7 @@ using DotNetNuke.Services.FileSystem;
 using Telerik.Web.UI;
 using DotNetNuke.Services.Exceptions;
 using System.Web;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 namespace DotNetNuke.Providers.RadEditorProvider
 {
@@ -191,16 +193,16 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				DotNetNuke.Services.FileSystem.FileInfo existingFile = fileCtrl.GetFile(newFileName, portalSettings.PortalId, folder.FolderID);
 
 				// error if file exists
-				if (! Overwrite.Checked && existingFile != null)
+				if (!Overwrite.Checked && existingFile != null)
 				{
 					ShowSaveTemplateMessage(GetString("msgFileExists.Text"));
 					return;
 				}
 
 				FileInfo newFile = existingFile;
-				if ((newFile == null))
+				if (newFile == null)
 				{
-					newFile = new FileInfo();
+					newFile = new FileInfo{ FileId = Null.NullInteger };
 				}
 
 				newFile.FileName = newFileName;
@@ -208,28 +210,21 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				newFile.Extension = "html";
 				newFile.Size = fileContents.Length;
 				newFile.FolderId = folder.FolderID;
+				newFile.Folder = FileSystemUtils.FormatFolderPath(folder.FolderPath);
 
-				errorMessage = FileSystemUtils.CreateFileFromString(rootFolder, newFile.FileName, fileContents, newFile.ContentType, string.Empty, false);
-
-				if (! (string.IsNullOrEmpty(errorMessage)))
-				{
-					ShowSaveTemplateMessage(errorMessage);
-					return;
-				}
-
-				existingFile = fileCtrl.GetFile(newFileName, portalSettings.PortalId, folder.FolderID);
-				if (newFile.FileId != existingFile.FileId)
-				{
-					newFile.FileId = existingFile.FileId;
-				}
+				var memStream = new MemoryStream();
+				byte[] fileDataBytes = Encoding.UTF8.GetBytes(fileContents);
+				memStream.Write(fileDataBytes, 0, fileDataBytes.Length);
+				memStream.Flush();
+				memStream.Position = 0;
 
 				if (newFile.FileId != Null.NullInteger)
 				{
-					fileCtrl.UpdateFile(newFile.FileId, newFile.FileName, newFile.Extension, newFile.Size, newFile.Width, newFile.Height, newFile.ContentType, folder.FolderPath, folder.FolderID);
+					FileManager.Instance.UpdateFile(newFile, memStream);
 				}
 				else
 				{
-					fileCtrl.AddFile(portalSettings.PortalId, newFile.FileName, newFile.Extension, newFile.Size, newFile.Width, newFile.Height, newFile.ContentType, folder.FolderPath, folder.FolderID, true);
+					FileManager.Instance.AddFile(folder, newFileName, memStream, true);
 				}
 
 				ShowSaveTemplateMessage(string.Empty);

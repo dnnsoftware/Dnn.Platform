@@ -221,6 +221,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+        public void IncludeAttachments_Returns_True_When_MessagingIncludeAttachments_Setting_Is_YES()
+        {
+            _mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
+            var result = _mockInternalMessagingController.Object.IncludeAttachments(Constants.CONTENT_ValidPortalId);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
         public void AttachmentsAllowed_Returns_False_When_MessagingAllowAttachments_Setting_Is_Not_YES()
         {
             _mockInternalMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("NO");

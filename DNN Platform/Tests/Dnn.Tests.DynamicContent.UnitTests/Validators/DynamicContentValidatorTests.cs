@@ -44,7 +44,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
                                             PortalId = Constants.PORTAL_ValidPortalId
                                         };
 
-            var contentItem = new DynamicContentItem(contentType);
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, contentType);
             var validator = new DynamicContentValidator(contentItem);
 
             //Action
@@ -68,7 +68,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
 
             var contentType = new DynamicContentType {PortalId = Constants.PORTAL_ValidPortalId};
             contentType.FieldDefinitions.Add(fieldDefinition);
-            var contentItem = new DynamicContentItem(contentType);
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, contentType);
             var validator = new DynamicContentValidator(contentItem);
 
             //Action

@@ -953,7 +953,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 var setEditorOverrideCSSPath = "<script type=\"text/javascript\">var __editorOverrideCSSPath = \"" + editorOverrideCSSPath + "\";</script>";
                 _panel.Page.ClientScript.RegisterClientScriptBlock(GetType(), "EditorOverrideCSSPath", setEditorOverrideCSSPath);
 
-				ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js?cdv=" + Host.CrmVersion);
+				ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js");
                 //_editor.Skin = "Black";
 	            _editor.PreventDefaultStylesheet = true;
             }
@@ -993,6 +993,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
             //add editor control to panel
             _panel.Controls.Add(_editor);
+			_panel.Controls.Add(new RenderTemplateUrl());
         }
 
         protected void Panel_Load(object sender, EventArgs e)

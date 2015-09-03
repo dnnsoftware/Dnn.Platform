@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
@@ -44,6 +45,8 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Modules.Admin.Security
 {
+    using jQuery = DotNetNuke.Framework.jQuery;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditRoles PortalModuleBase is used to manage a Security Role
@@ -145,7 +148,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cboBillingFrequency.SelectedIndexChanged += OnBillingFrequencyIndexChanged;
             cboTrialFrequency.SelectedIndexChanged += OnTrialFrequencyIndexChanged;

@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeleteItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Item?</value>
+    <value>Are you sure you wish to delete this item?</value>
   </data>
   <data name="DeletetUser.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This User?</value>
+    <value>Are you sure you wish to delete this user?</value>
   </data>
   <data name="UnregisterUser.Text" xml:space="preserve">
     <value>Are you sure you want to unregister? This will delete your user account.</value>
   </data>
   <data name="RemoveItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Remove This Item?</value>
+    <value>Are you sure you wish to remove this item?</value>
   </data>
   <data name="Calendar.Text" xml:space="preserve">
     <value>Calendar</value>
@@ -999,6 +999,12 @@
   <data name="PasswordResetFailed.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and which is long and complex enough to meet the sites password complexity requirements.</value>
   </data>
+  <data name="PasswordInadequate.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure to choose a password which is long and complex enough to meet the sites password complexity requirements.</value>
+  </data>
+  <data name="PasswordBanned.Text" xml:space="preserve">
+    <value>Your new password was not accepted as it was banned or the same as your username.</value>
+  </data>
   <data name="PasswordResetFailed_UserUndefined.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and username is correct.</value>
   </data>
@@ -1007,6 +1013,9 @@
   </data>
   <data name="PasswordResetFailed_PasswordInHistory.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password.</value>
+  </data>
+  <data name="PasswordResetFailed_WrongAnswer.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure you input correct username and answer.</value>
   </data>
   <data name="InsecureAdmin.Text" xml:space="preserve">
     <value>Your admin account is still using a known default password. Please go to the Admin-&gt;User accounts menu and update the password. In addition, please ensure that you have updated the email address to a valid value.</value>
@@ -1934,5 +1943,8 @@
   </data>
   <data name="DefaultSaveDraftWorkflowName.Text" xml:space="preserve">
     <value>Save Draft</value>
+  </data>
+  <data name="QuickSettings.Text" xml:space="preserve">
+    <value>Quick Settings</value>
   </data>
 </root>

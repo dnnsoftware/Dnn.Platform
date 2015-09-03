@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ClientDependency.Core.Controls
 {
+    /// <summary>
+    /// A control used to add a Css file dependency
+    /// </summary>
 	public class CssInclude : ClientDependencyInclude
 	{
-        internal bool EncodeImages { get; set; }
+	    private CssMediaType _cssMedia;
+	    internal bool EncodeImages { get; set; }
 
 		public CssInclude()
 		{
@@ -27,27 +30,19 @@ namespace ClientDependency.Core.Controls
             CssMedia = mediaType;
         }
 
-	    public CssMediaType CssMedia
-	    {
-	        get
-	        {
-	            if (HtmlAttributes.ContainsKey("media"))
-	            {
-	                return (CssMediaType)Enum.Parse(typeof (CssMediaType), HtmlAttributes["media"], true);
-	            }
-	            return CssMediaType.All;
-	        }
-	        set
-	        {
-	            if (HtmlAttributes.ContainsKey("media"))
-	            {
-	                HtmlAttributes["media"] = value.ToString().ToLowerInvariant();
-	            }
-	            else
-	            {
-                    HtmlAttributes.Add("media", value.ToString().ToLowerInvariant());
-	            }
-	        }
-	    }
+        public CssMediaType CssMedia
+        {
+            get { return _cssMedia; }
+            set
+            {
+                if (value != CssMediaType.All)
+                {
+                    HtmlAttributes.Remove("media");
+                    HtmlAttributes.Remove("Media");
+                    HtmlAttributes["media"] = value.ToString().ToLowerInvariant();
+                }
+                _cssMedia = value;
+            }
+        }
 	}
 }

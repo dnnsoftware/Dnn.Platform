@@ -840,7 +840,7 @@ namespace DotNetNuke.Security.Permissions
                                 permissionKey = "CONTENT,DELETE,EXPORT,IMPORT,MANAGE";
                             }
 
-                            if (TabPermissionController.CanAddContentToPage())
+                            if (TabPermissionController.CanAddContentToPage(tab))
                             {
                                 //Need to check for Deny Edit at the Module Level
                                 if (permissionKey == "CONTENT")

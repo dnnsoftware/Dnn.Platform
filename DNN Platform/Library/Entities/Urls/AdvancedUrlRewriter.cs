@@ -509,6 +509,11 @@ namespace DotNetNuke.Entities.Urls
                             if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
                             {
                                 context.Items.Add("PortalSettings", portalSettings);
+
+                                // load PortalSettings and HostSettings dictionaries into current context
+                                // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
+                                context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
                             }
                             //check if a secure redirection is needed
                             //this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
@@ -2579,7 +2584,6 @@ namespace DotNetNuke.Entities.Urls
                                 rewritePathOnly = rewritePathOnly.Substring(pathAliasEnd + result.PortalAlias.HTTPAlias.Length);
                             }
                             
-                            rewritePathOnly = HttpUtility.UrlDecode(rewritePathOnly, Encoding.UTF8);
                             //now check to see if need to remove /default.aspx from the end of the requested Url
                             string requestedUrl = fullUrl;
                             int requestedUrlAliasEnd = requestedUrl.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase) 

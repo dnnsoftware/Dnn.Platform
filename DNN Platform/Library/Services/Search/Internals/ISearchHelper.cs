@@ -143,6 +143,7 @@ namespace DotNetNuke.Services.Search.Internals
         #endregion
 
         #region Reindex and Compact settings
+
         DateTime GetSearchReindexRequestTime(int portalId);
         DateTime SetSearchReindexRequestTime(int portalId);
         bool GetSearchCompactFlag();
@@ -151,11 +152,18 @@ namespace DotNetNuke.Services.Search.Internals
         IEnumerable<int> GetPortalsToReindex(DateTime startDate);
         DateTime GetLastSuccessfulIndexingDateTime(int scheduleId);
         void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal);
+
+        DateTime GetIndexerCheckpointUtcTime(int scheduleId, string indexerKey);
+        void SetIndexerCheckpointUtcTime(int scheduleId, string indexerKey, DateTime lastUtcTime);
+
+        string GetIndexerCheckpointData(int scheduleId, string indexerKey);
+        void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData);
+
         #endregion
 
         #region Other Search Helper methods
         Tuple<int, int> GetSearchMinMaxLength();
-        string RephraseSearchText(string searchPhrase, bool useWildCard);
+		string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false);
         string StripTagsNoAttributes(string html, bool retainSpace);
         #endregion
     }

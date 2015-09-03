@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Modules.Html5
 {
     public class ModuleContextPropertyAccess : IPropertyAccess
     {
-        private ModuleInstanceContext _moduleContext;
+        private readonly ModuleInstanceContext _moduleContext;
 
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {

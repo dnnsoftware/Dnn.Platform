@@ -58,6 +58,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 //using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
@@ -84,6 +85,8 @@ namespace DotNetNuke.Entities.Portals
 
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
+
+        protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
 
@@ -476,7 +479,7 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.HostSpace,
                                                                 Host.Host.PageQuota,
                                                                 Host.Host.UserQuota,
-                                                                Host.Host.SiteLogHistory,
+                                                                0, //site log history function has been removed.
                                                                 homeDirectory,
                                                                 cultureCode,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
@@ -855,7 +858,7 @@ namespace DotNetNuke.Entities.Portals
                     //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
                     using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
                     {
-                        var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
+                        var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
                         var userId = UserController.Instance.GetCurrentUserInfo().UserID;
                         file.FileId = fileManager.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
 					}
@@ -1104,24 +1107,11 @@ namespace DotNetNuke.Entities.Portals
 
             if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
-                //Lookup culturecode but cache it in the HttpContext for performance
-                var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
-                if (httpContext != null)
-                {
-                    cultureCode = (string)httpContext.Items[activeLanguageKey];
-                }
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = GetActivePortalLanguage(portalId);
-                    if (httpContext != null)
-                    {
-                        httpContext.Items[activeLanguageKey] = cultureCode;
-                    }
-                }
+                cultureCode = GetActivePortalLanguageFromHttpContext(httpContext, portalId);
             }
 
             //Get PortalSettings from Context or from cache
-            var dictionaryKey = String.Format("PortalSettingsDictionary{0}{1}", portalId, cultureCode);
+            var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
             Dictionary<string, string> dictionary = null;
             if (httpContext != null)
             {
@@ -1141,6 +1131,28 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return dictionary;
+        }
+
+        private static string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
+        {
+            var cultureCode = string.Empty;
+
+            //Lookup culturecode but cache it in the HttpContext for performance
+            var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
+            if (httpContext != null)
+            {
+                cultureCode = (string)httpContext.Items[activeLanguageKey];
+            }
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetActivePortalLanguage(portalId);
+                if (httpContext != null)
+                {
+                    httpContext.Items[activeLanguageKey] = cultureCode;
+                }
+            }
+
+            return cultureCode;
         }
 
         private string GetTemplateName(string languageFileName)
@@ -1407,10 +1419,7 @@ namespace DotNetNuke.Entities.Portals
             }
             objPortal.BackgroundFile = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "backgroundfile");
             objPortal.PaymentProcessor = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "paymentprocessor");
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "siteloghistory")))
-            {
-                objPortal.SiteLogHistory = XmlUtils.GetNodeValueInt(nodeSettings, "siteloghistory");
-            }
+            
             objPortal.DefaultLanguage = XmlUtils.GetNodeValue(nodeSettings, "defaultlanguage", "en-US");
             UpdatePortalInfo(objPortal);
 
@@ -2018,7 +2027,7 @@ namespace DotNetNuke.Entities.Portals
                                             portal.Description,
                                             portal.KeyWords,
                                             portal.BackgroundFile,
-                                            portal.SiteLogHistory,
+                                            0, //site log history function has been removed.
                                             portal.SplashTabId,
                                             portal.HomeTabId,
                                             portal.LoginTabId,
@@ -2056,6 +2065,14 @@ namespace DotNetNuke.Entities.Portals
                 {
                     DataCache.ClearPortalCache(portalID, false);
                     DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+
+                    var httpContext = HttpContext.Current;
+                    if (httpContext != null)
+                    {
+                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
+                        var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
+                        httpContext.Items[dictionaryKey] = null;
+                    }
                 }
             }
         }

@@ -32,8 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.Helpers">
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebHelpers.3.1.0\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebHelpers.3.1.1\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -42,8 +47,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -51,36 +56,36 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Routing">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebMatrix.Data">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.Data.3.0.0\lib\net45\WebMatrix.Data.dll</HintPath>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.Data.3.1.1\lib\net45\WebMatrix.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebMatrix.WebData">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.WebData.3.0.0\lib\net45\WebMatrix.WebData.dll</HintPath>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.WebData.3.1.1\lib\net45\WebMatrix.WebData.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,20 +119,22 @@
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
-    <Compile Include="Helpers\EditorExtensions.cs" />
-    <Compile Include="Helpers\InputExtensions.cs" />
-    <Compile Include="Helpers\LabelExtensions.cs" />
-    <Compile Include="Helpers\DisplayExtensions.cs" />
+    <Compile Include="Helpers\DnnHelperOfT.cs" />
+    <Compile Include="Helpers\DnnLabelExtensions.cs" />
+    <Compile Include="Helpers\HtmlEditorExtensions.cs" />
+    <Compile Include="Helpers\HtmlInputExtensions.cs" />
+    <Compile Include="Helpers\HtmlLabelExtensions.cs" />
+    <Compile Include="Helpers\HtmlDisplayExtensions.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
     <Compile Include="Helpers\DnnHtmlHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelper.cs" />
     <Compile Include="Helpers\DnnUrlHelper.cs" />
-    <Compile Include="Helpers\LinkExtensions.cs" />
-    <Compile Include="Helpers\NameExtensions.cs" />
-    <Compile Include="Helpers\SelectExtensions.cs" />
-    <Compile Include="Helpers\TextAreaExtensions.cs" />
-    <Compile Include="Helpers\ValidationExtensions.cs" />
-    <Compile Include="Helpers\ValueExtensions.cs" />
+    <Compile Include="Helpers\HtmlLinkExtensions.cs" />
+    <Compile Include="Helpers\HtmlNameExtensions.cs" />
+    <Compile Include="Helpers\HtmlSelectExtensions.cs" />
+    <Compile Include="Helpers\HtmlTextAreaExtensions.cs" />
+    <Compile Include="Helpers\HtmlValidationExtensions.cs" />
+    <Compile Include="Helpers\HtmlValueExtensions.cs" />
     <Compile Include="MvcHostControl.cs" />
     <Compile Include="MvcHttpModule.cs" />
     <Compile Include="MvcModuleControlFactory.cs" />
@@ -136,12 +143,6 @@
     <Compile Include="Routing\HttpContextExtensions.cs" />
     <Compile Include="Routing\ModuleRoutingProvider.cs" />
     <Compile Include="Routing\StandardModuleRoutingProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
-      <Project>{6B29ADED-7B56-4484-BEA5-C0E09079535B}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

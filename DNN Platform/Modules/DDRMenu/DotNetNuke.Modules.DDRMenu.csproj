@@ -12,6 +12,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -67,7 +68,7 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Web.Razor, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Razor">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web.Razor\bin\DotNetNuke.Web.Razor.dll</HintPath>
     </Reference>
@@ -85,9 +86,8 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -143,9 +143,6 @@
     <Compile Include="SkinObject.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SolPartSkinObject.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="TemplateEngine\ClientOption.cs" />
     <Compile Include="TemplateEngine\ITemplateProcessor.cs" />
     <Compile Include="TemplateEngine\RazorTemplateProcessor.cs">
@@ -172,13 +169,10 @@
     <Content Include="MenuSettings.ascx" />
     <Content Include="MenuView.ascx" />
     <Content Include="ReleaseNotes.txt" />
-    <Content Include="SolPartMenu.ascx" />
     <Content Include="DNNMenu\DNNMenu-menudef.xml" />
     <Content Include="DNNMenu\DNNMenu.js" />
     <Content Include="DumpXML\DumpXML-menudef.xml" />
     <Content Include="DumpXML\DumpXML.xslt" />
-    <Content Include="SolPart\SolPart-menudef.xml" />
-    <Content Include="SolPart\SolPartMenu.js" />
     <Content Include="02.00.03.txt" />
   </ItemGroup>
   <ItemGroup>

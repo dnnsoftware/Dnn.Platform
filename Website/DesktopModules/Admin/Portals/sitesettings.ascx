@@ -1,5 +1,5 @@
 <%@ Control Inherits="DesktopModules.Admin.Portals.SiteSettings" Language="C#"
-    AutoEventWireup="false" EnableViewState="True" CodeFile="SiteSettings.ascx.cs" %>
+    AutoEventWireup="false" EnableViewState="True" Codebehind="SiteSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -410,6 +410,13 @@
                             </asp:RadioButtonList>
                         </div>
                         <div class="dnnFormItem">
+                            <dnn:label id="plIncludeAttachments" runat="server" controlname="optMsgIncludeAttachments" />
+                            <asp:RadioButtonList ID="optMsgIncludeAttachments" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
+                                <asp:ListItem Value="YES" resourcekey="MsgAllowAttachmentsYes" />
+                                <asp:ListItem Value="NO" resourcekey="MsgAllowAttachmentsNo" />
+                            </asp:RadioButtonList>
+                        </div>
+                        <div class="dnnFormItem">
                             <dnn:label id="plMsgSendEmail" runat="server" controlname="optMsgSendEmails" />
                             <asp:RadioButtonList ID="optMsgSendEmail" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
                                 <asp:ListItem Value="YES" resourcekey="MsgSendEmailYes" />
@@ -443,10 +450,6 @@
                         <div class="dnnFormItem">
                             <dnn:label id="plUserQuota" runat="server" controlname="txtUserQuota" />
                             <asp:TextBox ID="txtUserQuota" runat="server" MaxLength="6" />
-                        </div>
-                        <div class="dnnFormItem">
-                            <dnn:label id="plSiteLogHistory" runat="server" controlname="txtSiteLogHistory" />
-                            <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
                         </div>
                         <div class="dnnFormItem ssasPremiumModule">
                             <dnn:label id="plDesktopModules" runat="server" controlname="ctlDesktopModules" />
@@ -514,6 +517,25 @@
                             <dnn:label id="plAddCachebusterToResourceUris" runat="server" controlname="chkAddCachebusterToResourceUris" />
                             <asp:CheckBox runat="server" ID="chkAddCachebusterToResourceUris" />
                         </div>
+                    </fieldset>
+                    <h2 id="dnnSitePanel-OAuth" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("OAuthSite")%></a></h2>
+                    <fieldset>
+                        <div class="dnnFormItem" runat="server" id="OAuthStatus">
+                            <%=LocalizeString("OAuthNotEnabled")%>
+                            </div>
+                        
+                         <div class="dnnFormItem" runat="server" id="OAuthClient">
+                        <dnn:label id="plOAuthSitesettingsClient" runat="server" controlname="OAuthSitesettingsClientLabel" />
+                        <asp:Label runat="server" ID="OAuthSitesettingsClientLabel" />
+                    </div>
+			            <div class="dnnFormItem" runat="server" id="OAuthSecret">
+                        <dnn:label id="plOAuthSitesettingsSecret" runat="server" controlname="OAuthSitesettingsSecretLabel" />
+                        <asp:Label runat="server" ID="OAuthSitesettingsSecretLabel" />
+                    </div>
+                        <ul class="dnnActions dnnClear">
+                            <li>
+                                <asp:LinkButton ID="cmdOAuth"  runat="server" CssClass="dnnPrimaryAction" /></li>
+                        </ul>
                     </fieldset>
                 </div>
             </div>

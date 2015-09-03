@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
 EndProject
@@ -37,34 +37,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web.Mvc", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{6CD360CB-28EF-4727-90D3-06E2741EC568}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "Website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "Website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "Website\"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64DC5798-9D37-4F8D-97DD-8403E6E70DD3} = {64DC5798-9D37-4F8D-97DD-8403E6E70DD3}
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+		{EE1329FE-FD88-4E1A-968C-345E394EF080} = {EE1329FE-FD88-4E1A-968C-345E394EF080}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,11 +120,6 @@ Global
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|x86.ActiveCfg = Release|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -159,6 +136,14 @@ Global
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|x86.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

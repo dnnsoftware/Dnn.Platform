@@ -4,12 +4,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using System.Xml.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Security;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -33,8 +38,64 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteTemplate(TemplateViewModel viewModel)
         {
-            return DeleteEntity(() => ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true),
-                                template => ContentTemplateManager.Instance.DeleteContentTemplate(template));
+            var response = DeleteEntity(() => ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true),
+                                        (template) => {
+                                                            ContentTemplateManager.Instance.DeleteContentTemplate(template);
+                                                            var file = FileManager.Instance.GetFile(template.TemplateFileId);
+                                                            FileManager.Instance.DeleteFile(file);
+                                                        });
+
+            return response;
+        }
+
+        /// <summary>
+        /// GetSnippets retrieves a collection of code snippets
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetSnippets()
+        {
+            var snippets = new List<SnippetViewModel>();
+            LoadSnippets(Globals.HostMapPath, snippets);
+            LoadSnippets(PortalSettings.HomeDirectoryMapPath, snippets);
+
+            var response = new
+            {
+                success = true,
+                data = new
+                        {
+                            results = snippets,
+                            totalResults = snippets.Count
+                }
+            };
+
+            return Request.CreateResponse(response);
+        }
+
+        private void LoadSnippets(string path, List<SnippetViewModel> snippets)
+        {
+            var filePath = path + "Config/Snippets.config";
+            if (File.Exists(filePath))
+            {
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    var xmlDoc = XDocument.Load(stream);
+                    if (xmlDoc.Root != null)
+                    {
+                        var xmlSnippets = from el in xmlDoc.Root.Elements()
+                                          select el;
+
+                        snippets.AddRange(from xmlSnippet in xmlSnippets
+                            let xmlTitle = (from el in xmlSnippet.Descendants() where el.Name.LocalName == "Title" select el).First()
+                            let xmlCode = (from el in xmlSnippet.Descendants() where el.Name.LocalName == "Code" select el).First()
+                            select new SnippetViewModel
+                                            {
+                                                Name = xmlTitle.Value,
+                                                Snippet = xmlCode.Value
+                                            });
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -77,13 +138,10 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var fileName = Path.GetFileName(viewModel.FilePath);
             var portalId = (viewModel.IsSystem) ? -1 : PortalSettings.PortalId;
 
-            var folder = FolderManager.Instance.GetFolder(portalId, folderPath);
-            if (folder == null)
-            {
-                return Request.CreateResponse(new {success = false, message = Localization.GetString("FolderNotFound", LocalResourceFile)});
-            }
+            var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
+                         FolderManager.Instance.AddFolder(portalId, folderPath);
 
-            var contentType = FileManager.Instance.GetContentType(Path.GetExtension(fileName));
+            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
             var file = FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType, PortalSettings.UserId);
 
             if (file == null)
@@ -95,26 +153,32 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedNames = new List<ContentTypeLocalization>();
             string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-            return SaveEntity(templateId, () => new ContentTemplate
-                                                        {
-                                                            ContentTypeId = viewModel.ContentTypeId,
-                                                            Name = defaultName,
-                                                            TemplateFileId = file.FileId,
-                                                            PortalId = portalId
+            return SaveEntity(templateId,
+                /*CheckEntity*/ () => ContentTemplateManager.Instance.GetContentTemplates(portalId, true).SingleOrDefault((t => t.Name == defaultName)),
 
-                                                        },
+                /*ErrorMsg*/    LocalizeString("TemplateExists"),
 
-                                            template => ContentTemplateManager.Instance.AddContentTemplate(template),
+                /*CreateEntity*/() => new ContentTemplate
+                                            {
+                                                ContentTypeId = viewModel.ContentTypeId,
+                                                Name = defaultName,
+                                                TemplateFileId = file.FileId,
+                                                PortalId = portalId
 
-                                            () => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+                                            },
 
-                                            template =>
-                                                        {
-                                                            template.Name = defaultName;
-                                                            ContentTemplateManager.Instance.UpdateContentTemplate(template);
-                                                        },
+                /*AddEntity*/   template => ContentTemplateManager.Instance.AddContentTemplate(template),
 
-                                            (id) => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
+                /*GetEntity*/   () => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+
+                /*UpdateEntity*/template =>
+                                            {
+                                                template.Name = defaultName;
+                                                ContentTemplateManager.Instance.UpdateContentTemplate(template);
+                                            },
+
+                /*SaveLocal*/   id => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
         }
     }
 }
+ 

@@ -44,6 +44,8 @@ using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.Admin.Extensions
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class Download : ModuleUserControlBase
     {
         public static int BufferSize = 1024;

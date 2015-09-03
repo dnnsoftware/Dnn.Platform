@@ -228,7 +228,6 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.KeyWords = portal.KeyWords;
             portalSettings.BackgroundFile = portal.BackgroundFile;
             portalSettings.GUID = portal.GUID;
-            portalSettings.SiteLogHistory = portal.SiteLogHistory;
             portalSettings.AdminTabId = portal.AdminTabId;
             portalSettings.SuperTabId = portal.SuperTabId;
             portalSettings.SplashTabId = portal.SplashTabId;

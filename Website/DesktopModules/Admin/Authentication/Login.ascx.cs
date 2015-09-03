@@ -58,6 +58,7 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.Admin.Authentication
 {
+    using Host = DotNetNuke.Entities.Host.Host;
 
 	/// <summary>
 	/// The Signin UserModuleBase is used to provide a login for a registered user
@@ -875,10 +876,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					pnlProceed.Visible = true;
 					break;
 				case UserValidStatus.UPDATEPASSWORD:
-					//AddModuleMessage("PasswordUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
-					//PageNo = 2;
-					//pnlProceed.Visible = false;
-                    var redirTo = string.Format("/default.aspx?ctl=PasswordReset&resetToken={0}&forced=true", objUser.PasswordResetToken);
+					var portalAlias = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
+					var redirTo = string.Format("{0}/default.aspx?ctl=PasswordReset&resetToken={1}&forced=true", portalAlias, objUser.PasswordResetToken);
 			        Response.Redirect(redirTo);
 					break;
 				case UserValidStatus.UPDATEPROFILE:

@@ -175,10 +175,6 @@ namespace DotNetNuke.Web.DDRMenu
 				navProvider.CSSNodeHover = "ModuleTitle_MenuItemSel";
 				navProvider.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
 				navProvider.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
-				if (String.IsNullOrEmpty(navProvider.PathSystemScript))
-				{
-					navProvider.PathSystemScript = Globals.ApplicationPath + "/Controls/SolpartMenu/";
-				}
 				navProvider.PathImage = Globals.ApplicationPath + "/Images/";
 				navProvider.PathSystemImage = Globals.ApplicationPath + "/Images/";
 				navProvider.IndicateChildImageSub = "action_right.gif";

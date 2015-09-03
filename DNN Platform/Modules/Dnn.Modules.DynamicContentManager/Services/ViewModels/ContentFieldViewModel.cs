@@ -27,12 +27,14 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
         /// <param name="definition">The field Definition to use</param>
+		/// <param name="portalSettings">Portal Settings.</param>
         public ContentFieldViewModel(FieldDefinition definition, PortalSettings portalSettings)
         {
             ContentFieldId = definition.FieldDefinitionId;
             ContentTypeId = definition.ContentTypeId;
             DataTypeId = definition.DataTypeId;
             DataType = definition.DataType.Name;
+            Order = definition.Order;
 
             LocalizedDescriptions = GetLocalizedValues(definition.Description, FieldDefinitionManager.DescriptionKey, ContentFieldId, definition.PortalId, portalSettings);
             LocalizedLabels = GetLocalizedValues(definition.Label, FieldDefinitionManager.LabelKey, ContentFieldId, definition.PortalId, portalSettings);
@@ -80,5 +82,11 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("localizedNames")]
         public List<dynamic> LocalizedNames { get; set; }
+
+        /// <summary>
+        /// The order of the Content Field
+        /// </summary>
+        [JsonProperty("order")]
+        public int Order { get; set; }
     }
 }

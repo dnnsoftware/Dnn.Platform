@@ -180,9 +180,6 @@
   <data name="//Admin//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
   </data>
-  <data name="//Admin//SiteLog.String" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
   <data name="//Admin//Newsletters.String" xml:space="preserve">
     <value>Newsletters</value>
   </data>

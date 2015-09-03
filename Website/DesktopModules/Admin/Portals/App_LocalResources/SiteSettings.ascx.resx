@@ -426,12 +426,6 @@
   <data name="plHostSpace.Help" xml:space="preserve">
     <value>The amount of Disk Space in MB allowed for this site (enter 0 for unlimited space).</value>
   </data>
-  <data name="plSiteLogHistory.Text" xml:space="preserve">
-    <value>Site Log History (Days):</value>
-  </data>
-  <data name="plSiteLogHistory.Help" xml:space="preserve">
-    <value>The number of days of site activity that is kept for this site.</value>
-  </data>
   <data name="plDesktopModules.Text" xml:space="preserve">
     <value>Available modules:</value>
   </data>
@@ -704,6 +698,12 @@
   </data>
   <data name="plMsgAllowAttachments.Help" xml:space="preserve">
     <value>Select if attachments are allowed or not.</value>
+  </data>
+  <data name="plIncludeAttachments.Text" xml:space="preserve">
+    <value>Include Attachments:</value>
+  </data>
+  <data name="plIncludeAttachments.Help" xml:space="preserve">
+    <value>Select if attachments are to be included with outgoing email.</value>
   </data>
   <data name="MsgAllowAttachmentsYes.Text" xml:space="preserve">
     <value>Yes</value>
@@ -1214,6 +1214,12 @@ The host-level settings are currently set as follows:
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
     <value>You Must Specify The Host Email Address</value>
   </data>
+  <data name="EnableOAuth.Text" xml:space="preserve">
+    <value>Enable OAuth</value>
+  </data>
+  <data name="DisableOAuth.Text" xml:space="preserve">
+    <value>Disable OAuth</value>
+  </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
   </data>
@@ -1251,6 +1257,12 @@ The host-level settings are currently set as follows:
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
   </data>
+  <data name="OAuthSite.Text" xml:space="preserve">
+    <value>OAuth Settings</value>
+  </data>
+  <data name="OAuthNotEnabled.Text" xml:space="preserve">
+    <value>OAuth is currently not enabled for this site.</value>
+  </data>
   <data name="plPageHeadText.Help" xml:space="preserve">
     <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
   </data>
@@ -1268,6 +1280,18 @@ The host-level settings are currently set as follows:
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
     <value>X-UA-Compatible Http Header</value>
+  </data>
+  <data name="plOAuthSitesettingsClient.Help" xml:space="preserve">
+    <value>OAuth Client identity for 3rd party usage</value>
+  </data>
+  <data name="plOAuthSitesettingsClient.Text" xml:space="preserve">
+    <value>Client Identifier</value>
+  </data>
+  <data name="plOAuthSitesettingsSecret.Help" xml:space="preserve">
+    <value>OAuth Client (shared) secret for 3rd party usage</value>
+  </data>
+  <data name="plOAuthSitesettingsSecret.Text" xml:space="preserve">
+    <value>Client Secret</value>
   </data>
   <data name="plAddCachebusterToResourceUris.Help" xml:space="preserve">
     <value>Add a cache buster parameter (ver=[file timestamp]) to file resource URIs.</value>

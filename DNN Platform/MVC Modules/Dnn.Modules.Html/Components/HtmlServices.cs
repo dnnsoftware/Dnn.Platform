@@ -6,11 +6,19 @@ using System.Web;
 
 namespace Dnn.Modules.Html.Components
 {
+	/// <summary>
+	/// Html Module Upgradable Controller.
+	/// </summary>
 	public class HtmlServices : IUpgradeable
 	{
-		public string UpgradeModule(string Version)
+		/// <summary>
+		/// Upgrade Module.
+		/// </summary>
+		/// <param name="version"></param>
+		/// <returns></returns>
+		public string UpgradeModule(string version)
 		{
-			switch (Version)
+			switch (version)
 			{
 				case "07.05.00":
 					break;

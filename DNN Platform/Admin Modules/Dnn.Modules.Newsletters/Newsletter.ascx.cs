@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// DotNetNuke® - http://www.dnnsoftware.com
+// Copyright (c) 2002-2015
+// by DNN Corp.
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
@@ -88,6 +89,10 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
         #region Protected Methods
 
+		/// <summary>
+		/// Get Initial Entries.
+		/// </summary>
+		/// <returns></returns>
         protected string GetInitialEntries()
         {
             int id;
@@ -126,7 +131,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             try
             {

@@ -30,6 +30,7 @@ using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -130,7 +131,7 @@ namespace DotNetNuke.Modules.XmlMerge
             cmdUpload.Click += OnUploadClick;
             ddlConfig.SelectedIndexChanged += OnConfigFileIndexChanged;
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         protected override void OnLoad(EventArgs e)

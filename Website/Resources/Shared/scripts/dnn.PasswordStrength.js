@@ -38,27 +38,55 @@
             this.$element = $(this.element);
             this._$container = this.$element.parent();
 
-            $("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
-            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container);
-            this._$meterValue = $("<div/>").appendTo(this._$meter);
-            this._$meterText = $("<label/>").appendTo(this._$meter);
+            //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
+            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth()).hide();
+	        var handler = this;
+	        setInterval(function () {
+				handler._$meter.width(handler.$element.outerWidth());
+	        }, 50);
+            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="" /></div>').appendTo(this._$meter);
+            this._$meterText = $("<label/>").prependTo(this._$meterValue);
 
-            this._$meter.dnntooltip({
+            this.$element.dnntooltip({
                 getTooltipMarkup: $.proxy(this._getTooltipMarkup, this),
                 cssClass: "password-strength-tooltip",
-                left: -14,
-                top: -122,
+                top: 0,
+				left: 0,
                 closeOnMouseLeave: true,
                 container: this._$container
             });
 
             this.$element.on("change keyup paste input propertychange", $.proxy(this._onInput, this));
 
+	        this.$element.on('focus', function() {
+		        $(this).trigger('mouseenter');
+	        }).on('blur', function() {
+		        $(this).trigger('mouseleave');
+	        });
+
+	        var validateFunction = window['ValidatorValidate'];
+			if (typeof validateFunction === 'function') {
+				window['ValidatorValidate'] = function() {
+					validateFunction.apply(window, arguments);
+
+					var validator = arguments[0];
+					var field = $('#' + validator.controltovalidate);
+					if (validator.isvalid) {
+						field.removeClass('validate-fail').addClass('validate-success');
+					} else {
+						field.removeClass('validate-success').addClass('validate-fail');
+					}
+				}
+			}
+
             this._updateState();
         },
 
         _initializeTooltip: function() {
-            this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content");
+        	this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content");
+			this._$tooltipContent.width(this.$element.outerWidth() * 0.8 - 16);
+			$('<h2 />').html(this.options.passwordRulesHeadText).appendTo(this._$tooltipContent);
+			$('<div />').html(this.options.passwordRulesBodyText).appendTo(this._$tooltipContent);
             var list = $("<ul/>").appendTo(this._$tooltipContent);
             this._$labelOneUpperCaseLetter = $("<label/>").text(this.options.criteriaOneUpperCaseLetterText).appendTo($("<li/>").appendTo(list));
             this._$labelOneLowerCaseLetter = $("<label/>").text(this.options.criteriaOneLowerCaseLetterText).appendTo($("<li/>").appendTo(list));
@@ -79,6 +107,7 @@
         },
 
         _onInput: function (e) {
+	        this._$meter.show();
             this._updateState();
         },
 
@@ -87,30 +116,37 @@
             this._strength = this._getStrength(password, this.options);
             this._updateMeterState(this._strength);
             this._updateTooltipState(this._strength);
+	        this._updateFieldState(this._strength);
         },
 
         _updateMeterState: function (strength) {
             var rating = Math.min(strength.rating, strength.maxRating);
-
-            var maxWidth = this._$meter.innerWidth();
-            var strengthWidth = (rating * maxWidth) / strength.maxRating;
-            this._$meterValue.width(strengthWidth);
-
+            var bgColor = '';
+	        var ratingIndex = 0;
             if (rating === 0) {
                 this._$meterText.text("");
             }
             else if (rating < 3) {
                 this._$meterText.text(this.options.weakText);
-                this._$meterValue.css("background-color", this.options.weakColor);
+                bgColor = this.options.weakColor;
+	            ratingIndex = rating;
             }
             else if (rating > 2 && rating < 5) {
                 this._$meterText.text(this.options.fairText);
-                this._$meterValue.css("background-color", this.options.fairColor);
+                bgColor = this.options.fairColor;
+	            ratingIndex = 3;
             }
             else if (rating > 4) {
                 this._$meterText.text(this.options.strongText);
-                this._$meterValue.css("background-color", this.options.strongColor);
+                bgColor = this.options.strongColor;
+	            ratingIndex = 4;
             }
+
+	        this._$meter.find('span').css('background-color', '').each(function(index, item) {
+		        if (index < ratingIndex) {
+			        $(this).css('background-color', bgColor);
+		        }
+	        });
         },
 
         _updateTooltipState: function (strength) {
@@ -132,6 +168,19 @@
                 $label.removeClass("satisfied");
             }
         },
+
+		_updateFieldState: function(strength) {
+			var rating = Math.min(strength.rating, strength.maxRating);
+			if (this.$element.val().length > 0) {
+				if (rating > 1) {
+					this.$element.removeClass('validate-fail').addClass('validate-success');
+				} else {
+					this.$element.removeClass('validate-success').addClass('validate-fail');
+				}
+			} else {
+				this.$element.removeClass('validate-success validate-fail');
+			}
+		},
 
         _getStrength: function(password, options) {
             var rating = 0;

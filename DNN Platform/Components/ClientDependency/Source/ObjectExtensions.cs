@@ -8,6 +8,13 @@ namespace ClientDependency.Core
     {
         public static IDictionary<string, object> ToDictionary(this object o)
         {
+            var asObjectDictionary = o as IDictionary<string, object>;
+            if (asObjectDictionary != null)
+                return asObjectDictionary;
+            var asStringDictionary = o as IDictionary<string, string>;
+            if (asStringDictionary != null)
+                return asStringDictionary.ToDictionary(x => x.Key, x => (object) x.Value);
+
             if (o != null)
             {
                 var props = TypeDescriptor.GetProperties(o);

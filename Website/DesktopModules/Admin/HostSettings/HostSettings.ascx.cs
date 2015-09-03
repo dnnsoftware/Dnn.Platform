@@ -44,6 +44,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -63,6 +64,7 @@ using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
+using OAuth.AuthorizationServer.Core.Server;
 
 #endregion
 
@@ -82,10 +84,28 @@ namespace DotNetNuke.Modules.Admin.Host
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class HostSettings : PortalModuleBase
-    {
-        #region Private Methods
+	{
+		#region Fields
 
-        /// -----------------------------------------------------------------------------
+		//Field Boost Settings - they are scaled down by 10.
+		internal const int DefaultSearchTitleBoost = 50;
+		internal const int DefaultSearchTagBoost = 40;
+		internal const int DefaultSearchContentBoost = 35;
+		internal const int DefaultSearchDescriptionBoost = 20;
+		internal const int DefaultSearchAuthorBoost = 15;
+
+		//Field Bosst Setting Names
+		internal const string SearchTitleBoostSetting = "Search_Title_Boost";
+		internal const string SearchTagBoostSetting = "Search_Tag_Boost";
+		internal const string SearchContentBoostSetting = "Search_Content_Boost";
+		internal const string SearchDescriptionBoostSetting = "Search_Description_Boost";
+		internal const string SearchAuthorBoostSetting = "Search_Author_Boost";
+
+		#endregion
+
+		#region Private Methods
+
+		/// -----------------------------------------------------------------------------
         /// <summary>
         /// BindData fetches the data from the database and updates the controls
         /// </summary>
@@ -183,8 +203,8 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindJQuery()
         {
-            jQueryVersion.Text = jQuery.Version;
-            jQueryUIVersion.Text = jQuery.UIVersion;            
+            jQueryVersion.Text = Framework.jQuery.Version;
+            jQueryUIVersion.Text = Framework.jQuery.UIVersion;            
         }
 
 		private void BindCdnSettings()
@@ -353,25 +373,11 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
 
-            if (String.IsNullOrEmpty(Entities.Host.Host.SiteLogStorage))
-            {
-                optSiteLogStorage.Items.FindByValue("D").Selected = true;
-            }
-            else
-            {
-                optSiteLogStorage.Items.FindByValue(Entities.Host.Host.SiteLogStorage).Selected = true;
-            }
-            
-            txtSiteLogBuffer.Text = Entities.Host.Host.SiteLogBuffer.ToString();
-            txtSiteLogHistory.Text = Entities.Host.Host.SiteLogHistory.ToString();
-
             chkUsersOnline.Checked = Entities.Host.Host.EnableUsersOnline;
             txtUsersOnlineTime.Text = Entities.Host.Host.UsersOnlineTimeWindow.ToString();
             txtAutoAccountUnlock.Text = Entities.Host.Host.AutoAccountUnlockDuration.ToString();
 
             txtFileExtensions.Text = Entities.Host.Host.AllowedExtensionWhitelist.ToStorageString();
-
-            
 
             chkLogBuffer.Checked = Entities.Host.Host.EventLogBuffer;
             txtHelpURL.Text = Entities.Host.Host.HelpURL;
@@ -380,6 +386,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
+            chkEnableOAuth.Checked = Entities.Host.Host.EnableOAuthAuthorization;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
@@ -525,7 +532,7 @@ namespace DotNetNuke.Modules.Admin.Host
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ddlLogs.SelectedIndexChanged += OnLogFileIndexChanged;
         }
 
@@ -592,6 +599,7 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+			chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
 
             var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
 
@@ -599,6 +607,12 @@ namespace DotNetNuke.Modules.Admin.Host
             cbCustomAnalyzer.DataBind();
             cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
             cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
+
+			txtTitleBoost.Text = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost).ToString();
+			txtTagBoost.Text = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost).ToString();
+			txtContentBoost.Text = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost).ToString();
+			txtDescriptionBoost.Text = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost).ToString();
+			txtAuthorBoost.Text = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost).ToString();
         }
 
         private IList<string> GetAvailableAnalyzers()
@@ -769,7 +783,6 @@ namespace DotNetNuke.Modules.Admin.Host
 
         protected void UpdateSchedule()
         {
-            bool restartSchedule = false;
             bool usersOnLineChanged = (Convert.ToBoolean(ViewState["SelectedUsersOnlineEnabled"]) != chkUsersOnline.Checked);
             if (usersOnLineChanged)
             {
@@ -778,7 +791,6 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     scheduleItem.Enabled = chkUsersOnline.Checked;
                     SchedulingProvider.Instance().UpdateSchedule(scheduleItem);
-                    restartSchedule = true;
                 }
             }
 
@@ -790,7 +802,6 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     scheduleItem.Enabled = chkLogBuffer.Checked;
                     SchedulingProvider.Instance().UpdateSchedule(scheduleItem);
-                    restartSchedule = true;
                 }
             }
         }
@@ -837,9 +848,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HostSpace", txtHostSpace.Text, false);
                     HostController.Instance.Update("PageQuota", txtPageQuota.Text, false);
                     HostController.Instance.Update("UserQuota", txtUserQuota.Text, false);
-                    HostController.Instance.Update("SiteLogStorage", optSiteLogStorage.SelectedItem.Value, false);
-                    HostController.Instance.Update("SiteLogBuffer", txtSiteLogBuffer.Text, false);
-                    HostController.Instance.Update("SiteLogHistory", txtSiteLogHistory.Text, false);
                     HostController.Instance.Update("DemoPeriod", txtDemoPeriod.Text, false);
                     HostController.Instance.Update("DemoSignup", chkDemoSignup.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("Copyright", chkCopyright.Checked ? "Y" : "N", false);
@@ -870,6 +878,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("PerformanceSetting", cboPerformance.SelectedItem.Value, false);
                     Entities.Host.Host.PerformanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), cboPerformance.SelectedItem.Value);
                     HostController.Instance.Update("AuthenticatedCacheability", cboCacheability.SelectedItem.Value, false);
+                    HostController.Instance.Update("UnauthenticatedCacheability", cboUnauthCacheability.SelectedItem.Value, false);
                     HostController.Instance.Update("PageStatePersister", cboPageState.SelectedItem.Value); 
                     HostController.Instance.Update("ModuleCaching", cboModuleCacheProvider.SelectedItem.Value, false);
                     if (PageCacheRow.Visible)
@@ -923,6 +932,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);
                     UpdateSchedule();
                     UpdateSearchIndexConfiguration();
+                    UpdateOAuth();
 
                     // TODO: Remove after refactor: this code/functionality has been copied to ..\AdvancedSettings\SmtpServerSettings.aspx) 
                     var redirectUrl = Request.RawUrl;
@@ -941,6 +951,16 @@ namespace DotNetNuke.Modules.Admin.Host
                     //TODO: this is temporary until the AUM Caching is moved into the core.                    
                     DataCache.ClearCache();
                 }
+            }
+        }
+
+        private void UpdateOAuth()
+        {
+          HostController.Instance.Update("EnableOAuthAuthorization", chkEnableOAuth.Checked ? "Y" : "N", false);
+            var settings = OAUTHDataController.GetSettings();
+            if (settings==null)
+            {
+                OAUTHDataController.InsertSettings("PFJTQUtleVZhbHVlPjxNb2R1bHVzPjZlZnpYTHNvSmQ5OVVQMjdOQ1hWSnpZSFVtMmlLTUVOSlo2eVpVSFNvTE5uYnFMdENZWjZXaEl3SXY5WVBGeit0Z1AvQWN0dXh3N2VWVzdsU0RaU0IvQU8ySk1kOXJ1MkJ4SHRVaUZVd2pySnNHTlRUS1NhVDFDOTA0YXFaTExaRUxmYnVvVllabnFKWkRvdjlreTkwaHZtTTYwY3FXbkU4TGc2aGZSYlFPOD08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjxQPjlrUjZaNGtabGVMeTlVMlo4WFl3WXd5VTA2d1g2UTR0QytlUitRZm5jOWJJK1loVFFRQXA1RXM1MGZwcWorWE8yQUhnb3RwN1NMRHdLSmZ5UmUzcElRPT08L1A+PFE+OHlacEFEUndhTG45MHFIY1liVG14N094b20wQVlrNVJnaDRyTTF1cGpNTEVHZTF5M01Xa2R0eUs0L3RsamVOeEJmOS82a0w4WTEyRU4zZDluaCtZRHc9PTwvUT48RFA+SW94VXg3V2FHMGJ0WXJCeVNrZVVYakRqcUJaYWZGMTZ3RkxLVGE5b0x2NFF6OERxUFJJeXprNG5YR2ZQRDBUa0ViV2h0L2NDbUo0Sjh3ZnQreFYzUVE9PTwvRFA+PERRPlhpOWd1TzJYSlZuMlVpTFVwUnhYMEw5d2JZUmZnN1RtcWNwWjNaa0NBajVuaTh1SWxMQVNWdUJ6QklDYkErMDRHS1N4dmVLWXRUekNQR0lTeks5Y1RRPT08L0RRPjxJbnZlcnNlUT5kcmVJNmhLaXFOVjZQWXEva2pybENpQk5XaGV1SVRUcGZTS0lEa0ZYd0xLaThrQ2hKcW1FWVltVjFqb2hOOVJEMzNEU2xGcnY0TXZ1cWFUWG5iMXBwdz09PC9JbnZlcnNlUT48RD5uTGZDUUpGTk53TGtyYzB6RHArQ2owRU42dFoxM2FSck1KZUJvNEpVbzBOUXU3b0I0MjNzc0VpYlkvZDlvUVFWek5Ja200azM4YnN1a0VNNjhBVWxNOUJqTGpNZjZmdFF3YlJWbUY0cllPZmZ4czhoUGszRXN3aWoycVlsNmxUMVpUaFM3MHd0MWlyQWQrWmFKNWN5V29HSnZVTWs4cWpQaWNSeEtkbEdub0U9PC9EPjwvUlNBS2V5VmFsdWU+", "PFJTQUtleVZhbHVlPjxNb2R1bHVzPjkwNU9zRjVnYXNIOUVFY0VYV2RaSXNpNlozbWxKRjhlMFlPancrVmY0M0lYTnhmc3ZzOUxvdTR6dVpUOHV5dndpT25jaDUrSXBIOHZTZ2ZzaUZLbFZuQXRzcXhUcU5HVXFBWk5HWG9rZ3FiS0d6WTFoajZLVWxHUlErcThJMHdFbzBrWFh3cjQ3bWFIN01pRVYvaXBiSjZvVmtkbC9XVHJybXMyb2JFR09CRT08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjwvUlNBS2V5VmFsdWU+", "PFJTQUtleVZhbHVlPjxNb2R1bHVzPjkwNU9zRjVnYXNIOUVFY0VYV2RaSXNpNlozbWxKRjhlMFlPancrVmY0M0lYTnhmc3ZzOUxvdTR6dVpUOHV5dndpT25jaDUrSXBIOHZTZ2ZzaUZLbFZuQXRzcXhUcU5HVXFBWk5HWG9rZ3FiS0d6WTFoajZLVWxHUlErcThJMHdFbzBrWFh3cjQ3bWFIN01pRVYvaXBiSjZvVmtkbC9XVHJybXMyb2JFR09CRT08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjxQPi9DSTYxZ1ZhZzlUMTRkMmdLb0hJSUc2NU5rQ0FzQlVzTlEzMGtRK2l2UEFIWTV5b2JpSXdxTDVxSk54cjhsVUhGMDJxQVR2TUxOYnNaT3J2a3V1bjF3PT08L1A+PFE+K3hrZ0pSQXJhRFRiem9VeElEbVZ4UVZtUVhia1NFS244bnpTYkZEN2ptSzRKd3h5NmlNR2ZTakljdFliNmhxQTc3dFlrTzFpSHVHTnZtS0FHMU9DVnc9PTwvUT48RFA+R1MwUjB1MFY3TFFIR1ZhWDk2YWQ1UjhwUDFHUmlBT1ZObmIrUkwzYThpTEZtaHk2ZE1UVk53Uk1kUUhOaFpVWDhDdkJIZjVxbE0raEt6S0tXWkZPWVE9PTwvRFA+PERRPjRQMnpldUpSTXE5aVlWdWhHREhoREVmNVJ5RmtEWWVFZTFmektGRXNCbnBZYmN6T3p4TVJSbWFicmFKQ0l2TWFvelNvZUR2c1ZxVmVYOEJjNzU5VlF3PT08L0RRPjxJbnZlcnNlUT5vVm5hNG1HQkx5SzN3OHdOQzhGVVBlVHlISzN5SkFSTXdDU0ZTLytTajI5eUdEbCtPeE5CRlNvUW9uWmwwdWFFeFdBN0VJTjJVZUxSZzhicWFELzUyQT09PC9JbnZlcnNlUT48RD5ZTkJQRGN4a2dtYWU0eGhxSlFhb1ptMmVTNVBiaW5tU1h3TGh3WGF5S3lBbTVuSi9ROU56RUwyZmtpODVJU3o2WlI3b0xrL045bGV6ODQ5V2thZUpBYUMzZm96c2Zrek9KVXBOQlNWS1RCRkR6K0dyRHV1a0tLL2JDbDBCVHZnT3E5R0k2UWUwUXpFUnV0SVIwUjY3cXptUUxmenRhVVc4UGVOSTcwTVhHZUU9PC9EPjwvUlNBS2V5VmFsdWU+");
             }
         }
 
@@ -988,6 +1008,14 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("Search_MaxKeyWordLength", txtIndexWordMaxLength.Text);
                 }
             }
+
+			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N");
+
+			HostController.Instance.Update(SearchTitleBoostSetting, string.IsNullOrEmpty(txtTitleBoost.Text) ? DefaultSearchTitleBoost.ToString() : txtTitleBoost.Text);
+			HostController.Instance.Update(SearchTagBoostSetting, string.IsNullOrEmpty(txtTagBoost.Text) ? DefaultSearchTagBoost.ToString() : txtTagBoost.Text);
+			HostController.Instance.Update(SearchContentBoostSetting, string.IsNullOrEmpty(txtContentBoost.Text) ? DefaultSearchContentBoost.ToString() : txtContentBoost.Text);
+			HostController.Instance.Update(SearchDescriptionBoostSetting, string.IsNullOrEmpty(txtDescriptionBoost.Text) ? DefaultSearchDescriptionBoost.ToString() : txtDescriptionBoost.Text);
+			HostController.Instance.Update(SearchAuthorBoostSetting, string.IsNullOrEmpty(txtAuthorBoost.Text) ? DefaultSearchAuthorBoost.ToString() : txtAuthorBoost.Text);
 
             var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
             var newAnalyzer = cbCustomAnalyzer.SelectedValue.Trim();

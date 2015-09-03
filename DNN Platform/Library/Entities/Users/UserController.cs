@@ -727,9 +727,9 @@ namespace DotNetNuke.Entities.Users
         /// errorMessage will define why reset failed
         /// </summary>
         /// <param name="newPassword">The new password.</param>
-        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
         {
             bool retValue;
             errorMessage = Null.NullString;
@@ -749,7 +749,7 @@ namespace DotNetNuke.Entities.Users
                 return false;
             }
             var m = new MembershipPasswordController();
-            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
                 errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory");
                 return false;
@@ -759,15 +759,33 @@ namespace DotNetNuke.Entities.Users
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+	            try
+	            {
+					retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
 
-                //update reset token values to ensure token is 1-time use
-                user.PasswordResetExpiration = DateTime.MinValue;
-                user.PasswordResetToken = Guid.NewGuid();
+		            if (retValue)
+		            {
+			            //update reset token values to ensure token is 1-time use
+			            user.PasswordResetExpiration = DateTime.MinValue;
+			            user.PasswordResetToken = Guid.NewGuid();
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+			            //Update User
+			            user.Membership.UpdatePassword = false;
+			            UpdateUser(user.PortalID, user);
+
+			            m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, true); //add the password into history.
+		            }
+		            else
+		            {
+						errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
+		            }
+	            }
+	            catch (Exception)
+	            {
+		            retValue = false;
+					errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
+	            }
+                
             }
             else
             {
@@ -908,7 +926,8 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-	        var arrUsers = GetUnAuthorizedUsers(portalId);
+            //DNN-6924 for superusers call GetUsers(includeDeleted, superUsersOnly, portalId)
+	        var arrUsers = (portalId == -1) ? GetUsers(true, true, portalId) : GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
                 var user = arrUsers[i] as UserInfo;
@@ -1827,6 +1846,21 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(portalId, user, loggedAction, true);
         }
 
+         /// -----------------------------------------------------------------------------
+         /// <summary>
+         ///   updates a user
+         /// </summary>
+         /// <param name = "portalId">the portalid of the user</param>
+         /// <param name = "user">the user object</param>
+         /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
+         /// <remarks>
+         /// </remarks>
+         public static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
+         {
+             UpdateUser(portalId, user, loggedAction, sendNotification, true);
+         }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		///   updates a user
@@ -1834,11 +1868,12 @@ namespace DotNetNuke.Entities.Users
 		/// <param name = "portalId">the portalid of the user</param>
 		/// <param name = "user">the user object</param>
 		/// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
 		/// <param name="clearCache">Whether clear cache after update user.</param>
 		/// <remarks>
 		/// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
 		/// </remarks>
-		internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool clearCache)
+         internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
 		{
 		    var originalPortalId = user.PortalID;
 			portalId = GetEffectivePortalId(portalId);
@@ -1871,14 +1906,12 @@ namespace DotNetNuke.Entities.Users
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
 
-            if (user.Membership.Approving)
-            {
-                user.Membership.ConfirmApproved();
-                if (UserApproved != null)
-                {
-                    UserApproved(null, new UserEventArgs { User = user });
-                }                    
-            }
+		    if (!user.Membership.Approving) return;
+		    user.Membership.ConfirmApproved();
+		    if (UserApproved != null)
+		    {
+		        UserApproved(null, new UserEventArgs { User = user, SendNotification = sendNotification });
+		    }
 		}
 
         /// -----------------------------------------------------------------------------

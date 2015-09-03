@@ -41,6 +41,8 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.Admin.Sales
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class PayPalIPN : PageBase
     {
         private void InitializeComponent()

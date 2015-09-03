@@ -91,7 +91,12 @@ namespace DotNetNuke.Tests.Utilities
 
         #region PortalSettings Constants
 
+        /// <summary>The setting name that stores whether attachments are allowed.</summary>
         public const string PORTALSETTING_MessagingAllowAttachments_Name = "MessagingAllowAttachments";
+
+        /// <summary>The setting name that stores whether outgoing emails will include an attachment.</summary>
+        public const string PORTALSETTING_MessagingIncludeAttachments_Name = "MessagingIncludeAttachments";
+
         public const string PORTALSETTING_MessagingAllowAttachments_Value_YES = "YES";
         public const string PORTALSETTING_MessagingAllowAttachments_Value_NO = "NO";
 
@@ -507,6 +512,8 @@ namespace DotNetNuke.Tests.Utilities
         #endregion
 
         public const int TAB_ValidId = 10;
+        public const int TAB_InValidId = -1;
         public const int MODULE_ValidId = 100;
+        public const int MODULE_InValidId = -1;
     }
 }

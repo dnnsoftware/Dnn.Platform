@@ -50,6 +50,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
@@ -137,10 +138,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected TimeSpan AuthTokenExpiry { get; set; }
         protected Uri MeGraphEndpoint { get; set; }
         protected Uri TokenEndpoint { get; set; }
+        protected string OAuthHeaderCode { get; set; }
 
         //oAuth 2
         protected string AuthTokenName { get; set; }        
         protected string Scope { get; set; }
+		protected string AccessToken { get; set; }
         protected string VerificationCode
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
@@ -356,6 +359,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.ContentType = "application/x-www-form-urlencoded";
                 //request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
+				
+				if (!String.IsNullOrEmpty(OAuthHeaderCode))
+				{ 
+					byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret); 
+					string Api64Encoded = System.Convert.ToBase64String(API64); 
+					//Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
+					request.Headers.Add("Authorization: " + OAuthHeaderCode + " " + Api64Encoded); 
+				}
 
                 if (!String.IsNullOrEmpty(parameters))
                 {
@@ -641,7 +652,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
-                profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
+                if (LocaleController.IsValidCultureName(user.Locale.Replace('_', '-')))
+                {
+                    profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
+                }
+                else
+                {
+                    profileProperties.Add("PreferredLocale", settings.CultureCode);
+                }
             }
 
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
@@ -722,8 +740,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             string responseText = (OAuthVersion == "1.0")
-                ? ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint) 
-                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty);
+                            ? ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint)
+                            : string.IsNullOrEmpty(AccessToken)
+                                ? ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty)
+                                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + AccessToken + "=" + AuthToken), null, String.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }

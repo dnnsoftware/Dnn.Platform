@@ -70,13 +70,23 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[PortalID] [int] NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[UnderlyingDataType] [int] NOT NULL,
-			[CreatedByUserID] [int] NOT NULL,
+			[CreatedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedByUserID] DEFAULT (-1),
 			[CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate()),
-			[LastModifiedByUserID] [int] NOT NULL,
+			[LastModifiedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedByUserID] DEFAULT (-1),
 			[LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate()),
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)
 			)	
 	END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Text', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Rich Text', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Markdown', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Integer', 2)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Decimal', 3)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'True/False', 1)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Url', 6)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Date', 7)
 GO
 
 /* DNN-6784 Allow developers to manage ContentFields */
@@ -197,6 +207,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[Key] [nvarchar](256) NOT NULL,
 			[Value] [nvarchar](max) NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_Localizations] PRIMARY KEY CLUSTERED ([LocalizationID] ASC)
+		)
 	END
 GO
 
@@ -343,6 +354,62 @@ AS
 	SELECT top 1 HmacAppSecret FROM {databaseOwner}{objectQualifier}vw_Users
 	WHERE  HmacAppId=@HmacAppId 
 GO
+
+/* Update Version table for increment column */
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Version' AND COLUMN_NAME='Increment')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Version
+			ADD	Increment int NULL
+	END
+GO
+
+/* Drop existing constraint */
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Version DROP CONSTRAINT [IX_{objectQualifier}Version]
+END
+GO
+
+/* Add new  constraint */
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Version ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  ([Major], [Minor], [Build],[Increment])
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateDatabaseVersionIncrement]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int,
+	@Increment int,
+	@Name	nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Version
+	SET Increment=@Increment where Major=@Major AND Minor=@Minor AND Build=@Build AND Name=@Name
+		
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLastAppliedIteration]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int	
+
+AS
+
+	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
+GO
+	
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

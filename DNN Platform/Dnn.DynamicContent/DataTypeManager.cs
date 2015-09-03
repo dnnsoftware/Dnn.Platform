@@ -119,7 +119,7 @@ namespace Dnn.DynamicContent
         public IQueryable<DataType> GetDataTypes(int portalId, bool includeSystem = false)
         {
             List<DataType> dataTypes = Get(portalId).ToList();
-            if (includeSystem)
+            if (includeSystem && portalId > -1)
             {
                 dataTypes.AddRange(Get(-1));
             }

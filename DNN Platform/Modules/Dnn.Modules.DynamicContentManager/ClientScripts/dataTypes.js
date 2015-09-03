@@ -2,12 +2,13 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.dataTypesViewModel = function(config, rootViewModel) {
+dcc.dataTypesViewModel = function(rootViewModel, config) {
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.rootViewModel = rootViewModel;
 
@@ -15,7 +16,7 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.dataTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.dataTypes_NoPagerFormat;
@@ -30,6 +31,7 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
         { name: resx.dateTime, value:7},
         { name: resx.timeSpan, value:8}
     ]);
+    // ReSharper disable once InconsistentNaming
     self.selectedDataType = new dcc.dataTypeViewModel(self, config);
 
     var findDataTypes =  function() {
@@ -59,7 +61,7 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
     self.editDataType = function(data, e){
         var row = $rootElement.find(e.target);
 
-        if(row.is("tr") == false){
+        if(row.is("tr") === false){
             row = row.closest('tr');
         }
 
@@ -94,7 +96,9 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
         var params = {
             dataTypeId: dataTypeId
         };
-        util.dataTypeService().getEntity(params, "GetDataType", self.selectedDataType);
+        util.dataTypeService().getEntity("GetDataType",
+            params,
+            self.selectedDataType);
 
         if(typeof cb === 'function') cb();
     };
@@ -103,12 +107,13 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
-        util.dataTypeService().getEntities(params,
-            "GetDataTypes",
+        util.dataTypeService().getEntities("GetDataTypes",
+            params,
             self.results,
             function() {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.dataTypeViewModel(self, config);
             },
             self.totalResults
@@ -117,9 +122,12 @@ dcc.dataTypesViewModel = function(config, rootViewModel) {
 
     self.init = function() {
         $rootElement.find('#dataTypes-editrow > td > div').hide();
-        dcc.pager().init(self);
+        dnn.koPager().init(self, config);
 
         self.searchText.subscribe(function () {
+            findDataTypes();
+        });
+        self.pageSize.subscribe(function () {
             findDataTypes();
         });
     };
@@ -134,6 +142,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     var util = config.util;
     var resx = config.resx;
     var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
@@ -146,7 +155,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     self.localizedNames = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
-        return self.dataTypeId() == -1;
+        return self.dataTypeId() === -1;
     });
 
     self.name = ko.computed({
@@ -159,18 +168,22 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     });
 
     var collapseDetailRow = function(cb) {
-        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row')
+        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
         $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
             $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             if(typeof cb === 'function') cb();
         });
     };
 
-    self.cancel = function(data, e) {
+    var validate = function(){
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
+    };
+
+    self.cancel = function() {
         collapseDetailRow();
     },
 
-    self.deleteDataType = function (data, e) {
+    self.deleteDataType = function (data) {
         util.confirm(resx.deleteDataTypeConfirmMessage, resx.yes, resx.no, function() {
             var params = {
                 dataTypeId: data.dataTypeId(),
@@ -180,12 +193,12 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             };
 
             util.dataTypeService().post("DeleteDataType", params,
-                function(data){
+                function(){
                     //Success
                     collapseDetailRow(parentViewModel.refresh);
                 },
 
-                function(data){
+                function(){
                     //Failure
                 }
             );
@@ -208,29 +221,38 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         self.baseType(data.baseType);
         self.isSystem(data.isSystem);
 
-        util.loadLocalizedValues(self.localizedNames, data.localizedNames)
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames);
     };
 
-    self.saveDataType = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            dataTypeId: jsObject.dataTypeId,
-            baseType: jsObject.baseType,
-            localizedNames: jsObject.localizedNames,
-            isSystem: jsObject.isSystem
-        };
+    self.saveDataType = function(data) {
+        if(!validate()) {
+            util.alert(resx.invalidDataTypeMessage, resx.ok);
 
-        util.dataTypeService().post("SaveDataType", params,
-            function(data){
-                //Success
-                collapseDetailRow(parentViewModel.refresh);
-            },
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                dataTypeId: jsObject.dataTypeId,
+                baseType: jsObject.baseType,
+                localizedNames: jsObject.localizedNames,
+                isSystem: jsObject.isSystem
+            };
 
-            function(data){
-                //Failure
-            }
-        )
-
+            util.dataTypeService().post("SaveDataType", params,
+                function(data) {
+                    if (data.success === true) {
+                        //Success
+                        collapseDetailRow(parentViewModel.refresh);
+                    } else {
+                        //Error
+                        util.alert(data.message, resx.ok);
+                    }
+                },
+                function() {
+                    //Failure
+                }
+            );
+        }
     };
 }
 

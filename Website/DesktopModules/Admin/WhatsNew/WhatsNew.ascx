@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Host.WhatsNew" CodeFile="WhatsNew.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Host.WhatsNew" Codebehind="WhatsNew.ascx.cs" %>
 <p id="header" runat="server"></p>
 <div class="dnnForm dnnWhatsNew dnnClear" id="dnnWhatsNew">
     <div class="dnnFormExpandContent"><a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a></div>

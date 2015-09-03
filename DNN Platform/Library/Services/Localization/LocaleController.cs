@@ -298,6 +298,14 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        public static bool IsValidCultureName(string name)
+        {
+            return
+                CultureInfo
+                .GetCultures(CultureTypes.SpecificCultures)
+                .Any(c => c.Name == name);
+        }
+
         #endregion
     }
 }

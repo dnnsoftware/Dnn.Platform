@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dnnsoftware.com
+﻿// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2014
 // by DNN Corporation
 // 
@@ -17,7 +15,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
 using System;
 using System.Globalization;
@@ -30,6 +27,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
@@ -48,9 +46,50 @@ namespace DotNetNuke.Web.Mvc
             _controlKey = String.Empty;
         }
 
-        protected MvcHostControl(string controlKey)
+        public MvcHostControl(string controlKey)
         {
             _controlKey = controlKey;
+        }
+
+        private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
+        {
+
+            ModuleApplication moduleApplication = null;
+
+            //Check if the MVC Module overrides the base ModuleApplication class.
+            var businessControllerClass = desktopModule.BusinessControllerClass;
+            if (!String.IsNullOrEmpty(businessControllerClass))
+            {
+                var moduleApplicationType = Reflection.CreateType(businessControllerClass);
+                if (moduleApplicationType != null)
+                {
+                    moduleApplication = Reflection.CreateInstance(moduleApplicationType) as ModuleApplication;
+                    if (moduleApplication != null)
+                    {
+                        defaultRouteData.Values["controller"] = moduleApplication.DefaultControllerName;
+                        defaultRouteData.Values["action"] = moduleApplication.DefaultActionName;
+                        defaultRouteData.DataTokens["namespaces"] = moduleApplication.DefaultNamespaces;
+                    }
+                }
+            }
+
+            if (moduleApplication == null)
+            {
+                var defaultControllerName = (string)defaultRouteData.Values["controller"];
+                var defaultActionName = (string)defaultRouteData.Values["action"];
+                var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
+
+                moduleApplication = new ModuleApplication
+                                            {
+                                                DefaultActionName = defaultControllerName,
+                                                DefaultControllerName = defaultActionName,
+                                                DefaultNamespaces = defaultNamespaces,
+                                                ModuleName = desktopModule.ModuleName,
+                                                FolderPath = desktopModule.FolderName
+                                            };
+            }
+
+            return moduleApplication;
         }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
@@ -73,15 +112,10 @@ namespace DotNetNuke.Web.Mvc
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
             var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
-            var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
 
-            var moduleApplication = new ModuleApplication
-                                            {
-                                                DefaultActionName = defaultSegments[1],
-                                                DefaultControllerName = defaultSegments[0],
-                                                ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName
-                                            };
+            var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
+
+            var moduleApplication = GetModuleApplication(desktopModule, defaultRouteData);
 
             RouteData routeData;
 
@@ -94,9 +128,7 @@ namespace DotNetNuke.Web.Mvc
             if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
-                routeData = new RouteData();
-                routeData.Values.Add("controller", defaultSegments[0]);
-                routeData.Values.Add("action", defaultSegments[1]);
+                routeData = defaultRouteData;
             }
             else
             {
@@ -106,8 +138,9 @@ namespace DotNetNuke.Web.Mvc
 
             var moduleRequestContext = new ModuleRequestContext
                                             {
+                                                DnnPage = Page,
                                                 HttpContext = httpContext,
-                                                ModuleContext = ModuleContext, 
+                                                ModuleContext = ModuleContext,
                                                 ModuleApplication = moduleApplication,
                                                 RouteData = routeData
                                             };
@@ -156,10 +189,8 @@ namespace DotNetNuke.Web.Mvc
 
         }
 
-        protected override void OnPreRender(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            base.OnPreRender(e);
-
             try
             {
                 if (_result != null)
@@ -171,6 +202,8 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
+            base.OnLoad(e);
         }
 
         private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)

@@ -1,4 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.AdvancedSettings.AdvancedSettings" Language="C#" AutoEventWireup="false" EnableViewState="True" CodeFile="AdvancedSettings.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.AdvancedSettings.AdvancedSettings" Language="C#" AutoEventWireup="false" EnableViewState="True" Codebehind="AdvancedSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="SmtpServerSettings" Src="~/DesktopModules/admin/AdvancedSettings/SmtpServerSettings.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="LanguagePacks" Src="~/DesktopModules/admin/AdvancedSettings/LanguagePacks.ascx" %>
 <%@ Register TagPrefix="dnn" tagName="SkinEdit" src="~/DesktopModules/admin/Skins/editskins.ascx"%>

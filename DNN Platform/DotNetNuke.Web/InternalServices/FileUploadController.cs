@@ -37,9 +37,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.UI.WebControls;
-using ClientDependency.Core;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common.Utils;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
@@ -51,6 +51,8 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
+using ContentDisposition = System.Net.Mime.ContentDisposition;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -249,7 +251,7 @@ namespace DotNetNuke.Web.InternalServices
             var savedFileDto = new SavedFileDTO();
             try
             {
-                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
@@ -292,7 +294,8 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+	            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+				var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
 
                 if (extract && extension.ToLower() == "zip")
                 {
@@ -329,7 +332,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string ShowImage(int fileId)
         {
-            var image = (Services.FileSystem.FileInfo)FileManager.Instance.GetFile(fileId);
+            var image = (FileInfo)FileManager.Instance.GetFile(fileId);
 
             if (image != null && IsAllowedExtension(image.Extension) && IsImageExtension(image.Extension))
             {
@@ -419,7 +422,7 @@ namespace DotNetNuke.Web.InternalServices
             Stream fileContent = null;
             try
             {
-                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
@@ -469,7 +472,7 @@ namespace DotNetNuke.Web.InternalServices
                 else
                 {
                     file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
-                                                        FileManager.Instance.GetContentType(Path.GetExtension(fileName)),
+                                                        FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
                                                         userInfo.UserID);
                     if (extract && extension.ToLower() == "zip")
                     {
@@ -602,7 +605,10 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
-                                stream = item.ReadAsStreamAsync().Result;
+                                if (Regex.Match(fileName, "[\\\\/]\\.\\.[\\\\/]").Success==false )
+                                    {
+                                        stream = item.ReadAsStreamAsync().Result;
+                                    }
                                 break;
                         }
                     }
@@ -646,9 +652,16 @@ namespace DotNetNuke.Web.InternalServices
             Stream responseStream = null;
             var mediaTypeFormatter = new JsonMediaTypeFormatter();
             mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+
+            if (VerifySafeUrl(dto.Url) == false)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+
             try
             {
-                var request = (HttpWebRequest) WebRequest.Create(dto.Url);
+                var request = (HttpWebRequest)WebRequest.Create(dto.Url);
                 request.Credentials = CredentialCache.DefaultCredentials;
                 response = request.GetResponse();
                 responseStream = response.GetResponseStream();
@@ -657,8 +670,12 @@ namespace DotNetNuke.Web.InternalServices
                     throw new Exception("No server response");
                 }
 
-                var fileName = new Uri(dto.Url).Segments.Last();                    
-                result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+	            var fileName = GetFileName(response);
+	            if (string.IsNullOrEmpty(fileName))
+	            {
+		            fileName = new Uri(dto.Url).Segments.Last();
+	            }
+	            result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                 /* Response Content Type cannot be application/json 
@@ -696,6 +713,51 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+		private string GetFileName(WebResponse response)
+		{
+			if (!response.Headers.AllKeys.Contains("Content-Disposition"))
+			{
+				return string.Empty;
+			}
+
+			var contentDisposition = response.Headers["Content-Disposition"];
+			return new ContentDisposition(contentDisposition).FileName;
+		}
+
+        private bool VerifySafeUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            if (uri.Scheme == "http" || uri.Scheme == "https")
+            {
+
+                if (!uri.Host.Contains("."))
+                {
+                    return false;
+                }
+                if (uri.IsLoopback)
+                {
+                    return false;
+                }
+                if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
+                {
+                    return false;
+                }
+
+                if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
+                {
+                    //check nonroutable IP addresses
+                    if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            return false;
+        }
     }
 
 }

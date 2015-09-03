@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Sales.Purchase" CodeFile="Purchase.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Sales.Purchase" Codebehind="Purchase.ascx.cs" %>
 <br>
 <table cellSpacing="0" cellPadding="0" width="750" border="0" summary="Purchase Design Table">
 	<tr vAlign="top">

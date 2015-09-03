@@ -30,6 +30,7 @@ using System.Threading;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Web.Client;
@@ -42,6 +43,10 @@ namespace DotNetNuke.Modules.SearchResults
 {
     public partial class SearchResults : PortalModuleBase
     {
+        private const int DefaultPageIndex = 1;
+        private const int DefaultPageSize = 15;
+        private const int DefaultSortOption = 0;
+
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
@@ -77,6 +82,63 @@ namespace DotNetNuke.Modules.SearchResults
         protected string LastModifiedParam
         {
             get { return Request.QueryString["LastModified"] != null ? HttpUtility.HtmlEncode(Request.QueryString["LastModified"]) : string.Empty; }
+        }
+
+        protected int PageIndex
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Page"]))
+                {
+                    return DefaultPageIndex;
+                }
+
+                int pageIndex;
+                if (Int32.TryParse(Request.QueryString["Page"], out pageIndex))
+                {
+                    return pageIndex;
+                }
+                
+                return DefaultPageIndex;
+            }
+        }
+
+        protected int PageSize
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Size"]))
+                {
+                    return DefaultPageSize;
+                }
+
+                int pageSize;
+                if (Int32.TryParse(Request.QueryString["Size"], out pageSize))
+                {
+                    return pageSize;
+                }
+
+                return DefaultPageSize;
+            }
+        }
+
+        protected int SortOption
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Sort"]))
+                {
+                    return DefaultSortOption;
+                }
+
+                int sortOption;
+                if (Int32.TryParse(Request.QueryString["Sort"], out sortOption))
+                {
+                    return sortOption;
+                }
+
+                return DefaultSortOption;
+            }
         }
 
         protected string CheckedExactSearch
@@ -290,7 +352,7 @@ namespace DotNetNuke.Modules.SearchResults
             base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterDnnJQueryPlugins(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
@@ -305,6 +367,12 @@ namespace DotNetNuke.Modules.SearchResults
 
             SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
+
+            var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
+            if (pageSizeItem != null)
+            {
+                pageSizeItem.Selected = true;
+            }
 
             SetLastModifiedFilter();
         }

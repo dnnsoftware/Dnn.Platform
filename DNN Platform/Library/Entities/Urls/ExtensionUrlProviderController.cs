@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static void ClearCache()
         {
-            foreach (PortalAliasInfo portal in PortalController.Instance.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 ClearCache(portal.PortalID);
             }

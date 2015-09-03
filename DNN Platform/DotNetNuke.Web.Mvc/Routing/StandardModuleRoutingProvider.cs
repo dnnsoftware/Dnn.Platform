@@ -63,19 +63,41 @@ namespace DotNetNuke.Web.Mvc.Routing
         public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
             var segments = moduleControl.ControlSrc.Replace(".mvc", "").Split('/');
+            string routeNamespace = String.Empty;
+            string routeControllerName;
+            string routeActionName;
+            if (segments.Length == 3)
+            {
+                routeNamespace = segments[0];
+                routeControllerName = segments[1];
+                routeActionName = segments[2];
+            }
+            else
+            {
+                routeControllerName = segments[0];
+                routeActionName = segments[1];
+            }
 
-            var actionName = httpContext.Request.QueryString.GetValueOrDefault("action", segments[1]);
-            var controllerName = httpContext.Request.QueryString.GetValueOrDefault("controller", segments[0]);
+            var actionName = (httpContext == null) ? routeActionName : httpContext.Request.QueryString.GetValueOrDefault("action", routeActionName);
+            var controllerName = (httpContext == null) ? routeControllerName : httpContext.Request.QueryString.GetValueOrDefault("controller", routeControllerName);
 
             var routeData = new RouteData();
             routeData.Values.Add("controller", controllerName);
             routeData.Values.Add("action", actionName);
-            foreach (var param in httpContext.Request.QueryString.AllKeys)
+
+            if (httpContext != null)
             {
-                if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
+                foreach (var param in httpContext.Request.QueryString.AllKeys)
                 {
-                    routeData.Values.Add(param, httpContext.Request.QueryString[param]);
+                    if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
+                    {
+                        routeData.Values.Add(param, httpContext.Request.QueryString[param]);
+                    }
                 }
+            }
+            if (!String.IsNullOrEmpty(routeNamespace))
+            {
+                routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
             }
 
             return routeData;
