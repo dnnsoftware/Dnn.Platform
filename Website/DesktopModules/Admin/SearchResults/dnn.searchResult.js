@@ -326,6 +326,28 @@
             urlChanged = true;
         }
 
+        var sortOption = dnn.searchResult.queryOptions.sortOption;
+        if (sortOption > 0) {
+            if (!queries['qs-sort'] || parseInt(queries['qs-sort']) !== sortOption) {
+                queries['qs-sort'] = sortOption;
+                urlChanged = true;
+            }
+        }else if (queries['qs-sort']) {
+            queries['qs-sort'] = '';
+            urlChanged = true;
+        }
+
+        var pageSize = dnn.searchResult.queryOptions.pageSize;
+        if (pageSize > 0 && pageSize !== 15) {
+            if (!queries['qs-size'] || parseInt(queries['qs-size']) !== pageSize) {
+                queries['qs-size'] = pageSize;
+                urlChanged = true;
+            }
+        }else if (queries['qs-size']) {
+            queries['qs-size'] = '';
+            urlChanged = true;
+        }
+
         if (urlChanged) {
 	        var url = dnn.searchResult.buildLocationInfo(locationInfo);
 	        history.pushState({searchState: true}, "Search", url);
@@ -629,6 +651,11 @@
             return false;
 
         });
+
+        if (dnn.searchResult.queryOptions.sortOption === 1) {
+            $('.dnnSearchResultSortOptions > li').removeClass('active');
+            $('.dnnSearchResultSortOptions > li > a[href="#byDate"]').parent().addClass('active');
+        }
 
         setTimeout(function() { $('#dnnSearchResultAdvancedSearch').trigger("click", [true]); }, 0);
     };
