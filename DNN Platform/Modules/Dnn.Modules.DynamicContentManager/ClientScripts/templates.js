@@ -159,7 +159,7 @@ dcc.templateViewModel = function(parentViewModel, config){
 
     self.name.subscribe(function(newValue) {
         if (self.filePath() === "" && newValue !== "") {
-            self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
+            self.filePath("Content Templates/" + newValue.replace(/\s/g, "") + ".cshtml");
         }
     });
 
@@ -311,7 +311,7 @@ dcc.templateViewModel = function(parentViewModel, config){
 
     self.insertField = function(data) {
         var doc = codeEditor.doc;
-        doc.replaceSelection("@Model." + data.name);
+        doc.replaceSelection("@Dnn.DisplayFor(\""+ data.name + "\")");
         $contextMenu.hide();
     };
 

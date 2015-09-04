@@ -74,35 +74,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 return View(viewName);
             }
 
-            var contentItem = GetOrCreateContentItem();
-            var model = new ExpandoObject();
-            var modelDictionary = (IDictionary<string, object>)model;
-            foreach (var field in contentItem.Fields)
-            {
-                object fieldValue;
-                if (field.Value.Value == null)
-                {
-                    switch (field.Value.Definition.DataType.UnderlyingDataType)
-                    {
-                        case UnderlyingDataType.String:
-                            fieldValue = String.Empty;
-                            break;
-                        case UnderlyingDataType.Boolean:
-                            fieldValue = false;
-                            break;
-                        default:
-                            fieldValue = 0;
-                            break;
-                    }
-                }
-                else
-                {
-                    fieldValue = field.Value.Value;
-                }
-                modelDictionary.Add(field.Key, fieldValue);
-            }
-            
-            return View(viewName, model);
+            return View(viewName, GetOrCreateContentItem());
         }
 
         public ModuleActionCollection GetIndexActions()

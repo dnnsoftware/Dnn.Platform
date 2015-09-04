@@ -20,7 +20,7 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentViewer</moduleName>
             <foldername>Dnn/DynamicContentViewer</foldername>
-            <businessControllerClass>Dnn.Modules.DynamicContentViewer.ModuleApplication</businessControllerClass>
+            <businessControllerClass/>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>

@@ -119,7 +119,9 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="ModuleApplication.cs" />
+    <Compile Include="Helpers\DnnDisplayExtensions.cs" />
+    <Compile Include="Helpers\DnnEditorExtensions.cs" />
+    <Compile Include="Helpers\TemplateHelper.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\SettingsController.cs" />
     <Content Include="ClientScripts\dcc.quickSettings.js" />
@@ -132,6 +134,7 @@
     <Content Include="dnn_DCCViewer.dnn">
       <SubType>Designer</SubType>
     </Content>
+    <Compile Include="Helpers\DefaultDisplayTemplates.cs" />
     <Content Include="license.txt" />
     <Content Include="module.css">
       <DependentUpon>module.less</DependentUpon>
@@ -153,8 +156,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewEngines\DynamicContentView.cs" />
-    <Compile Include="ViewEngines\DynamicContentViewEngine.cs" />
     <Content Include="Views\Settings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +241,7 @@
   <ItemGroup>
     <Content Include="module.less" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -70,6 +70,9 @@ div.actionMenu ul.dnn_mact > li > ul {
   /* styles specific to secondary level */
   right: 0;
 }
+div.actionMenu ul.dnn_mact > li.actionQuickSettings ul {
+  width: auto;
+}
 div.actionMenu ul.dnn_mact > li > ul > li {
   display: block;
   padding: 0;
