@@ -18,7 +18,7 @@
                     <desktopModule>
                         <moduleName>Console</moduleName>
                         <foldername>Admin/Console</foldername>
-                        <businessControllerClass>Dnn.Modules.Console.Components.ConsoleController</businessControllerClass>
+                        <businessControllerClass>Dnn.Modules.Console.Components.BusinessController</businessControllerClass>
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
@@ -56,7 +56,7 @@
                         <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
                         <processorCommand>UpgradeModule</processorCommand>
                         <attributes>
-                            <businessControllerClass>Dnn.Modules.Console.Components.ConsoleController</businessControllerClass>
+                            <businessControllerClass>Dnn.Modules.Console.Components.BusinessController</businessControllerClass>
                             <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
                             <upgradeVersionsList>08.00.00</upgradeVersionsList>
                         </attributes>

@@ -1354,6 +1354,11 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("UpdateTabModuleVersionByModule", moduleId);
 		}
 
+        public virtual IDataReader GetInstalledModules()
+        {
+            return ExecuteReader("GetInstalledModules");
+        }
+
 		#endregion
 
 		#region DesktopModule Methods
