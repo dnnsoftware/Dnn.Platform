@@ -1242,6 +1242,9 @@
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1256,6 +1259,9 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
     <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.06.SqlDataProvider" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
