@@ -1,1 +1,10 @@
-﻿@Model.ToString()
+﻿@{
+    if (Model)
+    {
+        <input type="checkbox" checked="checked" />
+    }
+    else
+    {
+        <input type="checkbox" />
+    }
+}

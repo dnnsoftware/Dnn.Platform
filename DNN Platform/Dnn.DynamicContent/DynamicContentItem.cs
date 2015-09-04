@@ -101,33 +101,46 @@ namespace Dnn.DynamicContent
                         throw new JsonInvalidFieldException(fieldName);
                     }
 
-                    var value = jField["value"];
                     DynamicContentField field;
-                    switch (value.Type)
+                    var stringValue = jField["value"].Value<string>();
+                    switch (definition.DataType.UnderlyingDataType)
                     {
-                        case JTokenType.Boolean:
+
+                        case UnderlyingDataType.Boolean:
                             field = new DynamicContentField(definition) {Value = jField["value"].Value<bool>() };
                             break;
-                        case JTokenType.Bytes:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Byte[]>() };
+                        case UnderlyingDataType.Bytes:
+                            field = new DynamicContentField(definition) { Value = Convert.FromBase64String(stringValue) };
                             break;
-                        case JTokenType.Date:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<DateTime>() };
+                        case UnderlyingDataType.DateTime:
+                            DateTime dateTimeResult;
+                            field = DateTime.TryParse(stringValue, out dateTimeResult)
+                                    ? new DynamicContentField(definition) { Value = dateTimeResult }
+                                    : new DynamicContentField(definition) { Value = stringValue };
                             break;
-                        case JTokenType.Float:
+                        case UnderlyingDataType.Float:
                             field = new DynamicContentField(definition) { Value = jField["value"].Value<float>() };
                             break;
-                        case JTokenType.Guid:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Guid>() };
+                        case UnderlyingDataType.Guid:
+                            Guid guidResult;
+                            field = Guid.TryParse(stringValue, out guidResult) 
+                                    ? new DynamicContentField(definition) { Value = guidResult } 
+                                    : new DynamicContentField(definition) { Value = stringValue };
                             break;
-                        case JTokenType.Integer:
+                        case UnderlyingDataType.Integer:
                             field = new DynamicContentField(definition) { Value = jField["value"].Value<int>() };
                             break;
-                        case JTokenType.TimeSpan:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<TimeSpan>() };
+                        case UnderlyingDataType.TimeSpan:
+                            TimeSpan timeSpanResult;
+                            field = TimeSpan.TryParse(stringValue, out timeSpanResult)
+                                    ? new DynamicContentField(definition) { Value = timeSpanResult }
+                                    : new DynamicContentField(definition) { Value = stringValue };
                             break;
-                        case JTokenType.Uri:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Uri>() };
+                        case UnderlyingDataType.Uri:
+                            Uri uriResult = null;
+                            field = Uri.TryCreate(stringValue, UriKind.Absolute, out uriResult) 
+                                    ? new DynamicContentField(definition) {Value = uriResult} 
+                                    : new DynamicContentField(definition) { Value = stringValue};
                             break;
                         default:
                             field = new DynamicContentField(definition) { Value = jField["value"].Value<string>() };

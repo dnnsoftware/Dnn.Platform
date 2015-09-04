@@ -56,7 +56,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             var portalRoot = settings.HomeDirectory;
             var hostRoot = Globals.HostPath;
             var portalRootMap = settings.HomeDirectoryMapPath;
-            var hostRootMap = Globals.HostPath;
+            var hostRootMap = Globals.HostMapPath;
 
             //Check Portal for Template Name
             var path = GetTemplate(templateName, portalRoot, portalRootMap, mode);
@@ -100,8 +100,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
 
             if (contentItem == null)
             {
-                throw new InvalidOperationException(
-                    "This helper is only supported for models of type DynamicContentItem");
+                throw new InvalidOperationException("This helper is only supported for models of type DynamicContentItem");
             }
 
             var contentField = contentItem.Fields[fieldName];

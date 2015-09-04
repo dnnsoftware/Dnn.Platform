@@ -1,1 +1,23 @@
-﻿@Model.ToString()
+﻿@using System.Text
+
+@functions{
+    public string ToHexString(byte[] hex)
+    {
+        if (hex == null)
+        {
+            return null;
+        }
+        if (hex.Length == 0)
+        {
+            return string.Empty;
+        }
+        var s = new StringBuilder();
+        foreach (byte b in hex)
+        {
+            s.Append(b.ToString("x2"));
+        }
+        return s.ToString();
+    }
+}
+
+@ToHexString(Model)
