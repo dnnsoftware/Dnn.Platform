@@ -119,8 +119,10 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Helpers\DefaultEditorTemplates.cs" />
     <Compile Include="Helpers\DnnDisplayExtensions.cs" />
     <Compile Include="Helpers\DnnEditorExtensions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\TemplateHelper.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\SettingsController.cs" />
