@@ -81,6 +81,8 @@ namespace Dnn.Modules.SkinManagement.Components
                             }
                         }
 
+                        // TODO: Iterate through each installed portal
+
                         // delete the Skins page
                         DeleteSkinsPage(portalSettings.PortalId);
 
@@ -88,7 +90,7 @@ namespace Dnn.Modules.SkinManagement.Components
                         UpdateModuleReferences();
 
                         // uninstall the old skin modules
-                        UninstallOldModules(portalSettings.PortalId);
+                        UninstallOldModules();
 
                         break;
                 }
@@ -133,6 +135,7 @@ namespace Dnn.Modules.SkinManagement.Components
 
         private void UpdateModuleReference(int oldModuleDefinitionId, int newModuleDefinitionId)
         {
+            // TODO: Use string.Concat instead of string.Format
             // change the module referece from the original ID, to the new ID
             DataProvider.Instance()
                 .ExecuteSQL(
@@ -148,16 +151,16 @@ namespace Dnn.Modules.SkinManagement.Components
             return definition.ModuleDefID > Null.NullInteger ? definition.ModuleDefID : Null.NullInteger;
         }
 
-        private void UninstallOldModules(int portalId)
+        private void UninstallOldModules()
         {
-            UninstallOldModule(SKIN_NAME, portalId);
-            UninstallOldModule("SkinDesigner", portalId);
+            UninstallOldModule(SKIN_NAME);
+            UninstallOldModule("SkinDesigner");
         }
 
-        private void UninstallOldModule(string moduleName, int portalId)
+        private void UninstallOldModule(string moduleName)
         {
-            var dm = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
-            var package = PackageController.Instance.GetExtensionPackage(portalId, p => p.PackageID == dm.PackageID);
+            var dm = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
+            var package = PackageController.Instance.GetExtensionPackage(-1, p => p.PackageID == dm.PackageID);
             var installer = new Installer(package, Globals.ApplicationMapPath);
 
             installer.UnInstall(true);
