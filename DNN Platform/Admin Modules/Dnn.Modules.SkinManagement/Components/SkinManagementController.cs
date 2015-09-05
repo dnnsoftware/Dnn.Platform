@@ -81,10 +81,8 @@ namespace Dnn.Modules.SkinManagement.Components
                             }
                         }
 
-                        // TODO: Iterate through each installed portal
-
                         // delete the Skins page
-                        DeleteSkinsPage(portalSettings.PortalId);
+                        DeleteSkinsPage();
 
                         // update the Skins references to Themes
                         UpdateModuleReferences();
@@ -104,13 +102,21 @@ namespace Dnn.Modules.SkinManagement.Components
             }
         }
 
-        private void DeleteSkinsPage(int portalId)
+        private void DeleteSkinsPage()
         {
-            var skinsPage = TabController.Instance.GetTabByName(SKIN_NAME, portalId);
+            var portals = PortalController.Instance.GetPortals();
 
-            if (skinsPage != null)
+            //Add Page to Admin Menu of all configured Portals
+            for (var index = 0; index <= portals.Count - 1; index++)
             {
-                TabController.Instance.DeleteTab(skinsPage.TabID, portalId);
+                var portal = (PortalInfo)portals[index];
+
+                var skinsPage = TabController.Instance.GetTabByName(SKIN_NAME, portal.PortalID);
+
+                if (skinsPage != null)
+                {
+                    TabController.Instance.DeleteTab(skinsPage.TabID, portal.PortalID);
+                }
             }
         }
 
@@ -135,13 +141,12 @@ namespace Dnn.Modules.SkinManagement.Components
 
         private void UpdateModuleReference(int oldModuleDefinitionId, int newModuleDefinitionId)
         {
-            // TODO: Use string.Concat instead of string.Format
             // change the module referece from the original ID, to the new ID
             DataProvider.Instance()
                 .ExecuteSQL(
-                    string.Format(
-                        "UPDATE {databaseOwner}[{objectQualifier}Modules] SET [ModuleDefID] = {0} WHERE [ModuleDefID] = {1}",
-                        newModuleDefinitionId, oldModuleDefinitionId));
+                    string.Concat(
+                        "UPDATE {databaseOwner}[{objectQualifier}Modules] SET [ModuleDefID] = ", newModuleDefinitionId, " WHERE [ModuleDefID] = ",
+                        oldModuleDefinitionId));
         }
 
         private int GetModuleDefinitionID(string friendlyName)
