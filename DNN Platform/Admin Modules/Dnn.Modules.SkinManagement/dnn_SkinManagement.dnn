@@ -13,6 +13,9 @@
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="coreversion">08.00.00</dependency>
+      </dependencies>
       <components>
         <component type="Module">
           <desktopModule>
