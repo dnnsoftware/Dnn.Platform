@@ -577,6 +577,23 @@ AS
 	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
 GO		
 
+/* DNN-7520: return proper number, even if multiple duplicate email addresses found */
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDuplicateEmailCount]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+    @PortalId Int  -- Null|-1 for Host users
+AS 
+BEGIN
+	SELECT COUNT(1) TotalCount
+	 FROM (SELECT 1 N FROM {databaseOwner}[{objectQualifier}vw_Users] U 
+	        WHERE Coalesce(U.PortalId, @PortalID, -1) = IsNull(@PortalId, -1)
+			GROUP BY U.[Email] HAVING COUNT(1) > 1) S
+END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
