@@ -42,7 +42,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.XmlMerge
+namespace Dnn.Modules.XmlMerge
 {
     public partial class XmlMerge : PortalModuleBase
     {
@@ -176,15 +176,15 @@ namespace DotNetNuke.Modules.XmlMerge
                 {
                     var doc = new XmlDocument();
                     doc.LoadXml(txtScript.Text);
-                    Application.Application app = DotNetNukeContext.Current.Application;
-                    var merge = new Services.Installer.XmlMerge(doc, Globals.FormatVersion(app.Version), app.Description);
+                    var app = DotNetNukeContext.Current.Application;
+                    var merge = new DotNetNuke.Services.Installer.XmlMerge(doc, Globals.FormatVersion(app.Version), app.Description);
                     merge.UpdateConfigs();
 
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Success", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Success", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 catch (Exception ex)
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ERROR_Merge", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ERROR_Merge", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     Exceptions.LogException(ex);
                 }
             }
@@ -200,12 +200,12 @@ namespace DotNetNuke.Modules.XmlMerge
                 Config.Save(configDoc, ddlConfig.SelectedValue);
                 LoadConfig(ddlConfig.SelectedValue);
 
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Success", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Success", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                UI.Skins.Skin.AddModuleMessage(this, string.Format(Localization.GetString("ERROR_ConfigurationFormat", LocalResourceFile), ex.Message), ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, string.Format(Localization.GetString("ERROR_ConfigurationFormat", LocalResourceFile), ex.Message), ModuleMessage.ModuleMessageType.RedError);
                 return;
             }
         }
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.XmlMerge
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, string.Format(Localization.GetString("ERROR_ConfigurationFormat", LocalResourceFile),""), ModuleMessage.ModuleMessageType.RedError);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, string.Format(Localization.GetString("ERROR_ConfigurationFormat", LocalResourceFile), ""), ModuleMessage.ModuleMessageType.RedError);
             }
         }
 

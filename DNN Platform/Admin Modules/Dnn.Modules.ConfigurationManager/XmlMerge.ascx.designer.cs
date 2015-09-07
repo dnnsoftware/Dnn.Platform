@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.XmlMerge {
+namespace Dnn.Modules.XmlMerge {
     
     
     public partial class XmlMerge {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.XmlMerge {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plConfig;
+        protected global::System.Web.UI.UserControl plConfig;
         
         /// <summary>
         /// ddlConfig control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.XmlMerge {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plScript;
+        protected global::System.Web.UI.UserControl plScript;
         
         /// <summary>
         /// uplScript control.

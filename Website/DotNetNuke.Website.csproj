@@ -1162,13 +1162,6 @@
     <Compile Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx.designer.cs">
       <DependentUpon>WhatsNew.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.designer.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1820,8 +1813,6 @@
     <Content Include="DesktopModules\Admin\ViewProfile\viewProfile.png" />
     <Content Include="DesktopModules\Admin\WhatsNew\module.css" />
     <Content Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx" />
-    <Content Include="DesktopModules\Admin\XmlMerge\module.css" />
-    <Content Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
@@ -4085,7 +4076,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\WhatsNew\App_LocalResources\WhatsNew.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\XmlMerge\App_LocalResources\XmlMerge.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
