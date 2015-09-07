@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.SQL {
+namespace Dnn.Modules.Sql {
     
     
-    public partial class SQL {
+    public partial class Sql {
         
         /// <summary>
         /// lblSavedQuery control.
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.SQL {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSavedQuery;
+        protected global::System.Web.UI.UserControl lblSavedQuery;
         
         /// <summary>
         /// ddlSavedQuery control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.SQL {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plConnection;
+        protected global::System.Web.UI.UserControl plConnection;
         
         /// <summary>
         /// ddlConnection control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.SQL {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl errorLabel;
+        protected global::System.Web.UI.UserControl errorLabel;
         
         /// <summary>
         /// txtError control.
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.SQL {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblName;
+        protected global::System.Web.UI.UserControl lblName;
         
         /// <summary>
         /// txtName control.
