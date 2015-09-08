@@ -450,7 +450,7 @@ namespace DotNetNuke.UI.Skins
                 return false;
             }
             
-            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
             return controller is IVersionable;
         }
 
