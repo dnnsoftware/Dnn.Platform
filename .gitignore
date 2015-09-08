@@ -167,6 +167,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ii]nstall/[Dd]ot[Nn]et[Nn]uke.install.config
 [Ww]ebsite/[Ii]nstall/installstat.log.resources.txt
 [Ww]ebsite/[Ii]nstall/upgradestat.log.resources.txt
+[Ww]ebsite/[Ii]nstall/[Ii]nstall[Ww]izard*.*
 
 [Ww]ebsite/[Ll]icenses/*.txt
 
