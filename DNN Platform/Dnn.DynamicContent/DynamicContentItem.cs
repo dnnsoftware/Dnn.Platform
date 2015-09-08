@@ -103,14 +103,23 @@ namespace Dnn.DynamicContent
 
                     DynamicContentField field;
                     var stringValue = jField["value"].Value<string>();
+                    if (stringValue == null)
+                    {
+                        stringValue = String.Empty;
+                    }
                     switch (definition.DataType.UnderlyingDataType)
                     {
 
                         case UnderlyingDataType.Boolean:
-                            field = new DynamicContentField(definition) {Value = jField["value"].Value<bool>() };
+                            Boolean boolResult;
+                            field = Boolean.TryParse(stringValue, out boolResult)
+                                    ? new DynamicContentField(definition) { Value = boolResult }
+                                    : new DynamicContentField(definition) { Value = false };
                             break;
                         case UnderlyingDataType.Bytes:
-                            field = new DynamicContentField(definition) { Value = Convert.FromBase64String(stringValue) };
+                            field = (String.IsNullOrEmpty(stringValue)) 
+                                    ? new DynamicContentField(definition) { Value = new byte[] {} }
+                                    : new DynamicContentField(definition) { Value = Convert.FromBase64String(stringValue) };
                             break;
                         case UnderlyingDataType.DateTime:
                             DateTime dateTimeResult;
@@ -119,7 +128,10 @@ namespace Dnn.DynamicContent
                                     : new DynamicContentField(definition) { Value = stringValue };
                             break;
                         case UnderlyingDataType.Float:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<float>() };
+                            Double dblResult;
+                            field = Double.TryParse(stringValue, out dblResult)
+                                    ? new DynamicContentField(definition) { Value = dblResult }
+                                    : new DynamicContentField(definition) { Value = 0.0 };
                             break;
                         case UnderlyingDataType.Guid:
                             Guid guidResult;
@@ -128,7 +140,10 @@ namespace Dnn.DynamicContent
                                     : new DynamicContentField(definition) { Value = stringValue };
                             break;
                         case UnderlyingDataType.Integer:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<int>() };
+                            Int32 intResult;
+                            field = Int32.TryParse(stringValue, out intResult)
+                                    ? new DynamicContentField(definition) { Value = intResult }
+                                    : new DynamicContentField(definition) { Value = 0 };
                             break;
                         case UnderlyingDataType.TimeSpan:
                             TimeSpan timeSpanResult;
