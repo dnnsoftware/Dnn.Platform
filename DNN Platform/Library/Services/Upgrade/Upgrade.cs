@@ -5450,6 +5450,8 @@ namespace DotNetNuke.Services.Upgrade
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
             PackageController.Instance.DeleteExtensionPackage(package);
+
+            UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
 
         private static int MaxIncremental(Version version)
