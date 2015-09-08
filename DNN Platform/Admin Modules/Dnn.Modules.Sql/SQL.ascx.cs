@@ -45,7 +45,7 @@ using System.Web.UI;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.SQL
+namespace Dnn.Modules.Sql
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.SQL
     /// </history>
     /// -----------------------------------------------------------------------------
     // ReSharper disable InconsistentNaming
-    public partial class SQL : PortalModuleBase
+    public partial class Sql : PortalModuleBase
     // ReSharper restore InconsistentNaming
     {
 
@@ -119,11 +119,11 @@ namespace DotNetNuke.Modules.Admin.SQL
                     if (strError == Null.NullString)
                     {
                         pnlResults.Visible = true;
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                         pnlError.Visible = true;
                         txtError.Text = strError;
                     }
@@ -154,18 +154,18 @@ namespace DotNetNuke.Modules.Admin.SQL
                             rptResults.DataBind();
 
                             pnlResults.Visible = true;
-                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                         }
                         else
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             pnlError.Visible = true;
                             txtError.Text = errorMessage;
                         }
                     }
                     catch (SqlException sqlException)
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                         pnlError.Visible = true;
                         txtError.Text = sqlException.Message;
                         return;

@@ -1,5 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.SQL.SQL" Codebehind="SQL.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Sql.Sql" Codebehind="SQL.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>

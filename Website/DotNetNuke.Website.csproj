@@ -1037,13 +1037,6 @@
     <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.designer.cs">
       <DependentUpon>editskins.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1608,42 +1601,6 @@
     <Content Include="DesktopModules\Admin\Skins\module.css" />
     <Content Include="DesktopModules\Admin\Solutions\Solutions.ascx" />
     <Content Include="DesktopModules\Admin\Solutions\solutions.gif" />
-    <Content Include="DesktopModules\Admin\SQL\module.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\jquery.dataTables.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\TableTools.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\background.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\favicon.ico" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_both.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedColumns.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedHeader.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\jquery.dataTables.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\TableTools.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\ZeroClipboard.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
-    <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -3013,7 +2970,6 @@
     <Content Include="Install\Cleanup\07.03.01.txt" />
     <Content Include="Install\Cleanup\07.04.01.txt" />
     <Content Include="Install\Cleanup\07.04.02.txt" />
-    <Content Include="Install\Cleanup\08.00.00.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
@@ -3886,7 +3842,6 @@
     <None Include="DesktopModules\Admin\Solutions\App_LocalResources\Solutions.ascx.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
@@ -3943,8 +3898,6 @@
     <None Include="DesktopModules\Admin\Portals\portal.template.xsx">
       <DependentUpon>portal.template.xsd</DependentUpon>
     </None>
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\as3\lib\AlivePDF.swc" />
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\images\Sorting icons.psd" />
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
     <None Include="Install\Config\04.06.00.config" />
