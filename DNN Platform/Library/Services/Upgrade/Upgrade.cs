@@ -5458,6 +5458,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion8007()
         {
             RemoveHostPage("Dashboard");
+            RemoveHostPage("SQL");
+            RemoveHostPage("Configuration Manager");
 
             UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }

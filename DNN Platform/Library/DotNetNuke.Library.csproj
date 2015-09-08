@@ -625,8 +625,6 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
     <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />

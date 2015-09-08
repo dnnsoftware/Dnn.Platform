@@ -22,6 +22,7 @@
 using System;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Upgrade;
 
 namespace Dnn.Modules.Sql.Components
@@ -43,7 +44,23 @@ namespace Dnn.Modules.Sql.Components
                 switch (version)
                 {
                     case "08.00.00":
+                        ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("SQL");
+                        if (moduleDefinition != null)
+                        {
+                            //Create New Host Page (or get existing one)
+                            TabInfo sqlPage = Upgrade.AddHostPage("SQL",
+                                                        "Execute SQL queries against the database..",
+                                                        "~/Icons/Sigma/Sql_32x32_Standard.png",
+                                                        "~/Icons/Sigma/Sql_16x16_Standard.png",
+                                                        true);
 
+                            //Add Module To Page
+                            Upgrade.AddModuleToPage(sqlPage,
+                                                        moduleDefinition.ModuleDefID,
+                                                        "SQL",
+                                                        "~/Icons/Sigma/Sql_32x32_Standard.png",
+                                                        true);
+                        }
                         break;
                 }
                 return "Success";
