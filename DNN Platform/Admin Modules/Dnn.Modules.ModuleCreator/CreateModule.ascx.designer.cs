@@ -7,91 +7,73 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.ModuleCreator {
+namespace Dnn.Module.ModuleCreator {
     
     
-    public partial class ViewSource {
+    public partial class CreateModule {
         
         /// <summary>
-        /// plFile control.
+        /// createForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
+        protected global::System.Web.UI.WebControls.PlaceHolder createForm;
         
         /// <summary>
-        /// cboFile control.
+        /// plOwner control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboFile;
+        protected global::System.Web.UI.UserControl plOwner;
         
         /// <summary>
-        /// plSource control.
+        /// txtOwner control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSource;
+        protected global::System.Web.UI.WebControls.TextBox txtOwner;
         
         /// <summary>
-        /// lblPath control.
+        /// plModule control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPath;
+        protected global::System.Web.UI.UserControl plModule;
         
         /// <summary>
-        /// txtSource control.
+        /// txtModule control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSource;
+        protected global::System.Web.UI.WebControls.TextBox txtModule;
         
         /// <summary>
-        /// cmdUpdate control.
+        /// plDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
+        protected global::System.Web.UI.UserControl plDescription;
         
         /// <summary>
-        /// cmdConfigure control.
+        /// txtDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdConfigure;
-        
-        /// <summary>
-        /// cmdPackage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdPackage;
-        
-        /// <summary>
-        /// cmdCancel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink cmdCancel1;
+        protected global::System.Web.UI.WebControls.TextBox txtDescription;
         
         /// <summary>
         /// plLanguage control.
@@ -100,7 +82,7 @@ namespace DotNetNuke.Modules.Admin.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plLanguage;
+        protected global::System.Web.UI.UserControl plLanguage;
         
         /// <summary>
         /// optLanguage control.
@@ -118,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTemplate;
+        protected global::System.Web.UI.UserControl plTemplate;
         
         /// <summary>
         /// cboTemplate control.
@@ -136,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plControl;
+        protected global::System.Web.UI.UserControl plControl;
         
         /// <summary>
         /// txtControl control.
@@ -148,24 +130,6 @@ namespace DotNetNuke.Modules.Admin.ModuleCreator {
         protected global::System.Web.UI.WebControls.TextBox txtControl;
         
         /// <summary>
-        /// plType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plType;
-        
-        /// <summary>
-        /// cboType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList cboType;
-        
-        /// <summary>
         /// cmdCreate control.
         /// </summary>
         /// <remarks>
@@ -173,15 +137,6 @@ namespace DotNetNuke.Modules.Admin.ModuleCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCreate;
-        
-        /// <summary>
-        /// cmdCancel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink cmdCancel2;
         
         /// <summary>
         /// lblDescription control.

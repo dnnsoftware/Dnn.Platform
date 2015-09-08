@@ -832,35 +832,8 @@
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\template.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateInfo.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\_CONTROL_.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\templateJob.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateAPIController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateRouteMapper.cs" />
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.designer.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.designer.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
       <DependentUpon>portals.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1597,65 +1570,6 @@
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
     <Content Include="DesktopModules\Admin\MobilePreview\Scripts\PreviewEmulator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\icon.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\js\ModuleCreator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\logo.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\readme.txt" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\template.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateInfo.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\_CONTROL_.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\templateJob.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateRouteMapper.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\template.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\template.xml" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx" />
     <Content Include="DesktopModules\Admin\Portals\module.css" />
     <Content Include="DesktopModules\Admin\Portals\portals.ascx" />
     <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
@@ -3942,22 +3856,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.resx">
-      <DependentUpon>Settings.ascx.cs</DependentUpon>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
@@ -4048,8 +3946,6 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\_template.cshtml" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\_template.vbhtml" />
     <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
       <SubType>Designer</SubType>
     </None>
