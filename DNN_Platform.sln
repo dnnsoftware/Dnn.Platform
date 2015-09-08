@@ -303,8 +303,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Console", "DNN Platform\Admin Modules\Dnn.Modules.Console\Dnn.Modules.Console.csproj", "{946F0EA1-6187-4878-A32F-B7BF70E13CE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.ConfigurationManager", "DNN Platform\Admin Modules\Dnn.Modules.ConfigurationManager\Dnn.Modules.ConfigurationManager.csproj", "{F93FF11D-1FB8-461E-838F-32BF0353C34B}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Sql", "DNN Platform\Admin Modules\Dnn.Modules.Sql\Dnn.Modules.Sql.csproj", "{6542F074-9C02-421F-9A75-F7496D7D04D5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.ModuleCreator", "DNN Platform\Admin Modules\Dnn.Modules.ModuleCreator\Dnn.Modules.ModuleCreator.csproj", "{BD519B8A-169C-4328-BF67-62CD278435BC}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Dashboard", "DNN Platform\Admin Modules\Dnn.Modules.Dashboard\Dnn.Modules.Dashboard.csproj", "{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}"
 EndProject
 Global
