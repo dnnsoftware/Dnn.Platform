@@ -25,9 +25,8 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// </summary>
     public class ViewerController : DnnController
     {
-        private DynamicContentItem GetOrCreateContentItem()
+        private DynamicContentItem GetOrCreateContentItem(int contentTypeId)
         {
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
             var contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
 
             if (contentItem == null)
@@ -82,7 +81,15 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 return View(viewName);
             }
 
-            return View(viewName, GetOrCreateContentItem());
+
+            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
+            DynamicContentItem contentItem = null;
+            if (contentTypeId > -1)
+            {
+                contentItem = GetOrCreateContentItem(contentTypeId);
+            }
+
+            return View(viewName, contentItem);
         }
 
         public ModuleActionCollection GetIndexActions()
