@@ -1,4 +1,4 @@
-<%@ Control language="C#" Inherits="DotNetNuke.Modules.XmlMerge.XmlMerge" AutoEventWireup="false" Explicit="True" Codebehind="XmlMerge.ascx.cs" %>
+<%@ Control language="C#" Inherits="Dnn.Modules.XmlMerge.XmlMerge" AutoEventWireup="false" Explicit="True" Codebehind="XmlMerge.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
