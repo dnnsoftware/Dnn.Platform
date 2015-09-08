@@ -43,6 +43,37 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 
         #endregion
 
+        #region Properties
+
+        public override string this[string name]
+        {
+            get
+            {
+                if (_match != null)
+                {
+                    return string.Join(Constants.ValueSeperator, _match[name]);
+                }
+                else if (_profiles != null && _profiles.Any())
+                {
+                    return string.Join(Constants.ValueSeperator, _profiles[0][name]);
+                }
+                else if(_caps != null)
+                {
+                    var capabilities =
+                        _caps.Capabilities[Constants.FiftyOneDegreesProperties] as SortedList<string, string[]>;
+
+                    if (capabilities != null)
+                    {
+                        return string.Join(Constants.ValueSeperator, capabilities[name]);
+                    }
+                }
+
+                return string.Empty;
+            }
+        }
+
+        #endregion
+
         #region Constructor
 
         /// <summary>

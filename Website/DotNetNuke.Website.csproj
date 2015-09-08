@@ -384,13 +384,6 @@
     <Compile Include="admin\Security\SendPassword.ascx.designer.cs">
       <DependentUpon>SendPassword.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.designer.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\BreadCrumb.ascx.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -663,41 +656,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.designer.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.designer.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.designer.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.designer.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
@@ -1211,48 +1169,6 @@
     <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
       <DependentUpon>sql.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.designer.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.designer.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.designer.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.designer.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.designer.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.designer.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1311,7 +1227,6 @@
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
@@ -1355,6 +1270,9 @@
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1367,8 +1285,12 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\07.04.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
+    <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.06.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1628,8 +1550,6 @@
     <Content Include="admin\Security\module.css" />
     <Content Include="admin\Security\PasswordReset.ascx" />
     <Content Include="admin\Security\SendPassword.ascx" />
-    <Content Include="admin\Skins\banner.ascx" />
-    <Content Include="admin\Skins\banner.xml" />
     <Content Include="admin\Skins\breadcrumb.ascx" />
     <Content Include="admin\Skins\BreadCrumb.xml" />
     <Content Include="admin\Skins\controlpanel.ascx" />
@@ -1727,17 +1647,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx" />
-    <Content Include="DesktopModules\Admin\Banners\banneroptions.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\banners.png" />
-    <Content Include="DesktopModules\Admin\Banners\displaybanners.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\readme.txt" />
-    <Content Include="DesktopModules\Admin\Console\console.png" />
-    <Content Include="DesktopModules\Admin\Console\jquery.console.js" />
-    <Content Include="DesktopModules\Admin\Console\module.css" />
-    <Content Include="DesktopModules\Admin\Console\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\Console\ViewConsole.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
     <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
@@ -1931,13 +1840,6 @@
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
     <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\affiliates.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\banners.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editaffiliate.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editbanner.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editvendors.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\module.css" />
-    <Content Include="DesktopModules\Admin\Vendors\vendors.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -4074,7 +3976,6 @@
     <EmbeddedResource Include="admin\Security\App_LocalResources\AccessDenied.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Banner.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
@@ -4117,10 +4018,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\ViewConsole.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
@@ -4213,12 +4110,6 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Affiliates.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Banners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditAffiliate.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditBanner.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditVendors.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Vendors.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />

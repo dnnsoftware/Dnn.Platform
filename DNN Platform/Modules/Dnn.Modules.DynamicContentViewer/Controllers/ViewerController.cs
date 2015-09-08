@@ -48,24 +48,32 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         {
             var viewName = "GettingStarted";
             var templateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ViewTemplateId, -1);
+            ContentTemplate template = null;
             if (templateId > -1)
             {
-                ContentTemplate template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
-                if (template != null)
+                template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
+            }
+            else
+            {
+                template = ContentTemplateManager.Instance.GetContentTemplates(PortalSettings.PortalId, true)
+                        .SingleOrDefault(t => t.Name == "Getting Started");
+            }
+
+            IFileInfo file = null;
+            if (template != null)
+            {
+                file = FileManager.Instance.GetFile(template.TemplateFileId);
+            }
+
+            if (file != null)
+            {
+                if (file.PortalId > -1)
                 {
-                    var fileId = template.TemplateFileId;
-                    var file = FileManager.Instance.GetFile(fileId);
-                    if (file != null)
-                    {
-                        if (file.PortalId > -1)
-                        {
-                            viewName = "~" + PortalSettings.HomeDirectory + file.RelativePath;
-                        }
-                        else
-                        {
-                            viewName = "~" + Globals.HostPath + file.RelativePath;
-                        }
-                    }
+                    viewName = PortalSettings.HomeDirectory + file.RelativePath;
+                }
+                else
+                {
+                    viewName = Globals.HostPath + file.RelativePath;
                 }
             }
 

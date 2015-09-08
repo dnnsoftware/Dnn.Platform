@@ -40,7 +40,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
 
@@ -470,12 +469,6 @@ namespace DotNetNuke.Entities.Modules
                         Mail.SendMail(newUser, MessageType.UserRegistrationVerified, PortalSettings);
                         UserController.UserLogin(PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", PortalSettings.PortalName, "", ref loginStatus, false);
                         break;
-                }
-                //affiliate
-                if (!Null.IsNull(User.AffiliateID))
-                {
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(newUser.AffiliateID, 0, 1);
                 }
                 //store preferredlocale in cookie
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);

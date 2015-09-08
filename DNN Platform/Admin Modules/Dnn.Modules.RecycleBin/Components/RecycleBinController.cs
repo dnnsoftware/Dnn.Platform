@@ -42,7 +42,7 @@ namespace Dnn.Modules.RecycleBin.Components
             {
                 switch (version)
                 {
-                    case "07.05.00":
+                    case "08.00.00":
                         ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Recycle Bin");
                         if (moduleDefinition != null)
                         {

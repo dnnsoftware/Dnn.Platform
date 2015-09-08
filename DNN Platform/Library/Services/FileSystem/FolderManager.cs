@@ -1688,36 +1688,29 @@ namespace DotNetNuke.Services.FileSystem
 
                 var folderPath = baseFolderPath + relativePath;
 
-                try
+                if (folderProvider.FolderExists(mappedPath, folderMapping))
                 {
-                    if (folderProvider.FolderExists(mappedPath, folderMapping))
+                    var item = new MergedTreeItem
                     {
-                        var item = new MergedTreeItem
-                        {
-                            FolderID = -1,
-                            FolderMappingID = folderMapping.FolderMappingID,
-                            FolderPath = folderPath,
-                            ExistsInFolderMapping = true,
-                            MappedPath = mappedPath
-                        };
+                        FolderID = -1,
+                        FolderMappingID = folderMapping.FolderMappingID,
+                        FolderPath = folderPath,
+                        ExistsInFolderMapping = true,
+                        MappedPath = mappedPath
+                    };
 
-                        if (!result.ContainsKey(item.FolderPath))
-                        {
-                            result.Add(item.FolderPath, item);
-                        }
+                    if (!result.ContainsKey(item.FolderPath))
+                    {
+                        result.Add(item.FolderPath, item);
+                    }
 
-                        foreach (var subfolderPath in folderProvider.GetSubFolders(mappedPath, folderMapping))
+                    foreach (var subfolderPath in folderProvider.GetSubFolders(mappedPath, folderMapping))
+                    {
+                        if (folderMapping.SyncAllSubFolders || folderProvider.FolderExists(subfolderPath, folderMapping))
                         {
-                            if (folderMapping.SyncAllSubFolders || folderProvider.FolderExists(subfolderPath, folderMapping))
-                            {
-                                stack.Push(subfolderPath);
-                            }
+                            stack.Push(subfolderPath);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
                 }
             }
 
@@ -1761,8 +1754,11 @@ namespace DotNetNuke.Services.FileSystem
                 //Add any folders from non-core providers
                 if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
                 {
-                    mergedItem.ExistsInFolderMapping = true;
-                    if (isRecursive)
+                    if (!isRecursive)
+                    {
+                        mergedItem.ExistsInFolderMapping = true;
+                    }
+                    else
                     {
                         var folder = GetFolder(portalId, mergedItem.FolderPath);
                         mappedFolders = MergeFolderLists(mappedFolders, GetFolderMappingFoldersRecursive(folderMapping, folder));

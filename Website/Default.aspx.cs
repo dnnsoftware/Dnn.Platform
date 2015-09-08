@@ -44,7 +44,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Modules;
@@ -479,40 +478,6 @@ namespace DotNetNuke.Framework
             attributeList.Text = HtmlAttributeList;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>
-        /// - manage affiliates
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void ManageRequest()
-        {
-            //affiliate processing
-            int affiliateId = -1;
-            if (Request.QueryString["AffiliateId"] != null)
-            {
-                if (Regex.IsMatch(Request.QueryString["AffiliateId"], "^\\d+$"))
-                {
-                    affiliateId = Int32.Parse(Request.QueryString["AffiliateId"]);
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(affiliateId, 1, 0);
-
-                    //save the affiliateid for acquisitions
-                    if (Request.Cookies["AffiliateId"] == null) //do not overwrite
-                    {
-                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
-                        {
-                            Expires = DateTime.Now.AddYears(1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                        };
-                        Response.Cookies.Add(objCookie);
-                    }
-                }
-            }
-        }
-
         private void ManageFavicon()
         {
             string headerLink = FavIcon.GetHeaderLink(PortalSettings.PortalId);
@@ -763,12 +728,6 @@ namespace DotNetNuke.Framework
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
-
-            //process the current request
-            if (!Globals.IsAdminControl())
-            {
-                ManageRequest();
-            }
 
             //Set the Head tags
             metaPanel.Visible = !UrlUtils.InPopUp();
