@@ -1112,7 +1112,32 @@ namespace DotNetNuke.UI.Skins
             ActionEventListeners.Add(new ModuleActionEventListener(moduleId, e));
         }
 
+        private static bool isFallbackSkin(string skinPath)
+        {
+            SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
+            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
+            if (defaultSkinPath.EndsWith("\\"))
+            {
+                defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
+            }
+            return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
+        }
 
+        public static List<InstalledSkinInfo> GetInstalledSkins()
+        {
+            var list = new List<InstalledSkinInfo>();
+            foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
+            {
+                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                {
+                    var skin = new InstalledSkinInfo();
+                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "");
+                    list.Add(skin);
+                }
+            }
+            return list;
+        }
 
         #endregion
     }

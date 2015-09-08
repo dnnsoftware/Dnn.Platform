@@ -636,69 +636,6 @@
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.designer.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.designer.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.designer.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.designer.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.designer.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.designer.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.designer.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.designer.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.designer.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.designer.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
       <DependentUpon>AvailableExtensions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1172,6 +1109,7 @@
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
@@ -1215,6 +1153,9 @@
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1229,6 +1170,9 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
     <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.06.SqlDataProvider" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1587,17 +1531,6 @@
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard_32X32.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Export.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\module.css" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
@@ -3898,16 +3831,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Export.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Database.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Host.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Modules.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Portals.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Server.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Skins.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />

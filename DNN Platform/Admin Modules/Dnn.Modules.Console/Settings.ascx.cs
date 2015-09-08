@@ -25,12 +25,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
-
+using Dnn.Modules.Console.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;

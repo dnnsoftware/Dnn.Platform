@@ -56,7 +56,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -5451,6 +5450,8 @@ namespace DotNetNuke.Services.Upgrade
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
             PackageController.Instance.DeleteExtensionPackage(package);
+
+            UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
 
         private static int MaxIncremental(Version version)
@@ -5685,7 +5686,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&name=" + packageName;
                 if (packageType.ToLowerInvariant() == "module")
                 {
-                    var moduleType = (from m in ModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
+                    var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
                     {
                         url += "&no=" + moduleType.Instances;
