@@ -862,13 +862,6 @@
     <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
       <DependentUpon>template.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.designer.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.cs">
       <DependentUpon>editschedule.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1173,6 +1166,7 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1575,8 +1569,6 @@
     <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
     <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
     <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\professionalPreview.gif" />
     <Content Include="DesktopModules\Admin\Scheduler\editschedule.ascx" />
     <Content Include="DesktopModules\Admin\Scheduler\module.css" />
     <Content Include="DesktopModules\Admin\Scheduler\viewschedule.ascx" />
@@ -3862,7 +3854,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ProfessionalPreview\App_LocalResources\ProfessionalPreview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />

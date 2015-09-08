@@ -1,0 +1,39 @@
+
+/* DNN-7477 - Remove Dashboard */
+/*******************************/
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_AddControl') AND (type = 'P')))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl
+GO
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_DeleteControl') AND (type = 'P')))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_DeleteControl
+GO
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetControls') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetControls]
+GO
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDashboardControlByPackageId') AND (type = 'P')))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+GO
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDashboardControlByPackageId') AND (type = 'P')))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+GO
+
+IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDbBackups') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbBackups
+GO
+
+IF (EXISTS (SELECT name FROM sys.objects WHERE (name = N'{objectQualifier}Dashboard_GetDbFileInfo') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbFileInfo
+GO
+
+IF (EXISTS (SELECT name FROM sys.objects WHERE (name = N'{objectQualifier}Dashboard_GetDbInfo') AND (type = 'P')))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetDbInfo]
+GO
+
+IF (EXISTS (SELECT name FROM sys.objects WHERE (name = N'{objectQualifier}Dashboard_UpdateControl') AND (type = 'P')))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl
+GO

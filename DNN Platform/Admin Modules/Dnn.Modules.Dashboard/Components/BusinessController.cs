@@ -23,6 +23,7 @@ using System;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Installer.Installers;
 using DotNetNuke.Services.Upgrade;
 
@@ -48,6 +49,25 @@ namespace Dnn.Modules.Dashboard.Components
                 {
                     case "08.00.00":
                         AddDashboardControlInstaller();
+
+                        ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Dashboard");
+                        if (moduleDefinition != null)
+                        {
+                            //Create New Host Page (or get existing one)
+                            TabInfo dashboardPage = Upgrade.AddHostPage("Dashboard",
+                                                        "Summary view of application and site settings.",
+                                                        "~/images/icon_dashboard_16px.gif",
+                                                        "~/images/icon_dashboard_32px.gif",
+                                                        true);
+
+                            //Add Module To Page
+                            Upgrade.AddModuleToPage(dashboardPage,
+                                                        moduleDefinition.ModuleDefID,
+                                                        "Dashboard",
+                                                        "~/images/icon_dashboard_32px.gif",
+                                                        true);
+                        }
+
                         break;
                 }
                 return "Success";

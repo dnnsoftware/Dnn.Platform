@@ -327,7 +327,7 @@ namespace DotNetNuke.Services.Upgrade
                                       Url = "http://www.dnnsoftware.com",
                                       Email = "support@dnnsoftware.com"
                                   };
-                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer" || desktopModuleName == "Dashboard")
+                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer")
                 {
                     package.IsSystemPackage = true;
                 }
@@ -5392,6 +5392,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.6":
                             UpgradeToVersion8006();
                             break;
+                        case "8.0.0.7":
+                            UpgradeToVersion8007();
+                            break;
                     }
                 }
             }
@@ -5450,6 +5453,11 @@ namespace DotNetNuke.Services.Upgrade
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
             PackageController.Instance.DeleteExtensionPackage(package);
+        }
+
+        private static void UpgradeToVersion8007()
+        {
+            RemoveHostPage("Dashboard");
 
             UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
