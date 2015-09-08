@@ -188,6 +188,8 @@
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
+    <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -998,25 +1000,6 @@
     <Compile Include="Framework\UserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Modules\Console\Components\ConsoleController.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardControl.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\BackupInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DatabaseController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbFileInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\DataService.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\IDashboardData.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModuleInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModulesController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalsController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinsController.cs" />
     <Compile Include="Modules\HtmlEditorProvider.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1232,7 +1215,6 @@
     </Compile>
     <Compile Include="Services\Installer\Installers\ConfigInstaller.cs" />
     <Compile Include="Services\Installer\Installers\ContainerInstaller.cs" />
-    <Compile Include="Services\Installer\Installers\DashboardInstaller.cs" />
     <Compile Include="Services\Installer\Installers\FileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\InstallerFactory.cs" />
     <Compile Include="Services\Installer\Installers\LanguageInstaller.cs" />
@@ -1516,6 +1498,7 @@
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventType.cs" />
+    <Compile Include="UI\Skins\InstalledSkinInfo.cs" />
     <Compile Include="UI\Skins\ISkinControl.cs" />
     <Compile Include="UI\Skins\NavObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
