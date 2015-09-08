@@ -1354,6 +1354,11 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("UpdateTabModuleVersionByModule", moduleId);
 		}
 
+        public virtual IDataReader GetInstalledModules()
+        {
+            return ExecuteReader("GetInstalledModules");
+        }
+
 		#endregion
 
 		#region DesktopModule Methods
@@ -4161,30 +4166,6 @@ namespace DotNetNuke.Data
 		#endregion
 
 		#region Obsolete Methods
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual IDataReader GetVendorClassifications(int VendorId)
-		{
-			return ExecuteReader("GetVendorClassifications", GetNull(VendorId));
-		}
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual void DeleteVendorClassifications(int VendorId)
-		{
-			ExecuteNonQuery("DeleteVendorClassifications", VendorId);
-		}
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual int AddVendorClassification(int VendorId, int ClassificationId)
-		{
-			return ExecuteScalar<int>("AddVendorClassification", VendorId, ClassificationId);
-		}
 
 		[Obsolete(
 			"Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]

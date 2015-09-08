@@ -1,6 +1,6 @@
-﻿#region Copyright
+#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke� - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,40 +18,52 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+#region Usings
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml;
+
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Upgrade;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Exceptions;
+
+#endregion
 
 namespace Dnn.Modules.Console.Components
 {
     /// <summary>
-    /// 
+    /// Controls the Console
     /// </summary>
-    public class ConsoleController : IUpgradeable
+    public class ConsoleController
     {
         /// <summary>
-        /// 
+        /// Gets the size values.
         /// </summary>
-        /// <param name="version"></param>
-        /// <returns></returns>
-        public string UpgradeModule(string version)
+        /// <returns>A list with different icon types</returns>
+        public static IList<string> GetSizeValues()
         {
-            try
-            {
-                switch (version)
-                {
-                    case "08.00.00":
+            IList<string> returnValue = new List<string>();
+            returnValue.Add("IconFile");
+            returnValue.Add("IconFileLarge");
+            returnValue.Add("IconNone");
+            return returnValue;
+        }
 
-                        break;
-                }
-                return "Success";
-            }
-            catch (Exception)
-            {
-                return "Failed";
-            }
+        /// <summary>
+        /// Gets the view values.
+        /// </summary>
+        /// <returns>Show or Hide</returns>
+        public static IList<string> GetViewValues()
+        {
+            IList<string> returnValue = new List<string>();
+            returnValue.Add("Hide");
+            returnValue.Add("Show");
+            return returnValue;
         }
     }
 }
