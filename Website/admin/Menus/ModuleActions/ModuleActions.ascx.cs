@@ -28,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -79,6 +80,8 @@ namespace DotNetNuke.Admin.Containers
             ID = "ModuleActions";
 
             actionButton.Click += actionButton_Click;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
