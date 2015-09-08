@@ -125,7 +125,7 @@ namespace Dnn.DynamicContent
                             DateTime dateTimeResult;
                             field = DateTime.TryParse(stringValue, out dateTimeResult)
                                     ? new DynamicContentField(definition) { Value = dateTimeResult }
-                                    : new DynamicContentField(definition) { Value = stringValue };
+                                    : new DynamicContentField(definition) { Value = new DateTime(2000, 1, 1) };
                             break;
                         case UnderlyingDataType.Float:
                             Double dblResult;
@@ -137,7 +137,7 @@ namespace Dnn.DynamicContent
                             Guid guidResult;
                             field = Guid.TryParse(stringValue, out guidResult) 
                                     ? new DynamicContentField(definition) { Value = guidResult } 
-                                    : new DynamicContentField(definition) { Value = stringValue };
+                                    : new DynamicContentField(definition) { Value = Guid.NewGuid() };
                             break;
                         case UnderlyingDataType.Integer:
                             Int32 intResult;
@@ -149,7 +149,7 @@ namespace Dnn.DynamicContent
                             TimeSpan timeSpanResult;
                             field = TimeSpan.TryParse(stringValue, out timeSpanResult)
                                     ? new DynamicContentField(definition) { Value = timeSpanResult }
-                                    : new DynamicContentField(definition) { Value = stringValue };
+                                    : new DynamicContentField(definition) { Value = new TimeSpan(0,0,0) };
                             break;
                         case UnderlyingDataType.Uri:
                             Uri uriResult = null;
