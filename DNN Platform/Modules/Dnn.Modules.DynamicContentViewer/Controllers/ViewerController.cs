@@ -25,9 +25,8 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// </summary>
     public class ViewerController : DnnController
     {
-        private DynamicContentItem GetOrCreateContentItem()
+        private DynamicContentItem GetOrCreateContentItem(int contentTypeId)
         {
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
             var contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
 
             if (contentItem == null)
@@ -82,38 +81,15 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 return View(viewName);
             }
 
-            var model = new ExpandoObject();
-            if (templateId > -1)
+
+            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
+            DynamicContentItem contentItem = null;
+            if (contentTypeId > -1)
             {
-                var contentItem = GetOrCreateContentItem();
-                var modelDictionary = (IDictionary<string, object>)model;
-                foreach (var field in contentItem.Fields)
-                {
-                    object fieldValue;
-                    if (field.Value.Value == null)
-                    {
-                        switch (field.Value.Definition.DataType.UnderlyingDataType)
-                        {
-                            case UnderlyingDataType.String:
-                                fieldValue = String.Empty;
-                                break;
-                            case UnderlyingDataType.Boolean:
-                                fieldValue = false;
-                                break;
-                            default:
-                                fieldValue = 0;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        fieldValue = field.Value.Value;
-                    }
-                    modelDictionary.Add(field.Key, fieldValue);
-                }
+                contentItem = GetOrCreateContentItem(contentTypeId);
             }
 
-            return View(viewName, model);
+            return View(viewName, contentItem);
         }
 
         public ModuleActionCollection GetIndexActions()

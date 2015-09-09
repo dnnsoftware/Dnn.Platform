@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"
