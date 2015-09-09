@@ -664,69 +664,6 @@
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.designer.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.designer.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.designer.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.designer.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.designer.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.designer.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.designer.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.designer.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.designer.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.designer.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
       <DependentUpon>AvailableExtensions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -923,35 +860,8 @@
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\template.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateInfo.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\_CONTROL_.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\templateJob.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateAPIController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateRouteMapper.cs" />
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.designer.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.designer.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
       <DependentUpon>portals.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -979,13 +889,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
       <DependentUpon>template.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.designer.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.cs">
       <DependentUpon>editschedule.ascx</DependentUpon>
@@ -1162,13 +1065,6 @@
     <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.designer.cs">
       <DependentUpon>editskins.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1189,13 +1085,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx.designer.cs">
       <DependentUpon>WhatsNew.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.designer.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
@@ -1227,6 +1116,7 @@
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
@@ -1291,6 +1181,7 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1649,17 +1540,6 @@
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard_32X32.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Export.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\module.css" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
@@ -1699,72 +1579,11 @@
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
     <Content Include="DesktopModules\Admin\MobilePreview\Scripts\PreviewEmulator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\icon.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\js\ModuleCreator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\logo.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\readme.txt" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\template.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateInfo.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\_CONTROL_.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\templateJob.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateRouteMapper.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\template.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\template.xml" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx" />
     <Content Include="DesktopModules\Admin\Portals\module.css" />
     <Content Include="DesktopModules\Admin\Portals\portals.ascx" />
     <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
     <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
     <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\professionalPreview.gif" />
     <Content Include="DesktopModules\Admin\Scheduler\editschedule.ascx" />
     <Content Include="DesktopModules\Admin\Scheduler\module.css" />
     <Content Include="DesktopModules\Admin\Scheduler\viewschedule.ascx" />
@@ -1804,42 +1623,6 @@
     <Content Include="DesktopModules\Admin\Skins\module.css" />
     <Content Include="DesktopModules\Admin\Solutions\Solutions.ascx" />
     <Content Include="DesktopModules\Admin\Solutions\solutions.gif" />
-    <Content Include="DesktopModules\Admin\SQL\module.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\jquery.dataTables.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\TableTools.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\background.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\favicon.ico" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_both.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedColumns.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedHeader.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\jquery.dataTables.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\TableTools.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\ZeroClipboard.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
-    <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1849,8 +1632,6 @@
     <Content Include="DesktopModules\Admin\ViewProfile\viewProfile.png" />
     <Content Include="DesktopModules\Admin\WhatsNew\module.css" />
     <Content Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx" />
-    <Content Include="DesktopModules\Admin\XmlMerge\module.css" />
-    <Content Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
@@ -3209,7 +2990,6 @@
     <Content Include="Install\Cleanup\07.03.01.txt" />
     <Content Include="Install\Cleanup\07.04.01.txt" />
     <Content Include="Install\Cleanup\07.04.02.txt" />
-    <Content Include="Install\Cleanup\08.00.00.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
@@ -4019,16 +3799,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Export.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Database.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Host.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Modules.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Portals.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Server.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Skins.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
@@ -4054,29 +3824,12 @@
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.resx">
-      <DependentUpon>Settings.ascx.cs</DependentUpon>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ProfessionalPreview\App_LocalResources\ProfessionalPreview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
@@ -4109,12 +3862,10 @@
     <None Include="DesktopModules\Admin\Solutions\App_LocalResources\Solutions.ascx.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\WhatsNew\App_LocalResources\WhatsNew.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\XmlMerge\App_LocalResources\XmlMerge.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
@@ -4160,16 +3911,12 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\_template.cshtml" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\_template.vbhtml" />
     <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="DesktopModules\Admin\Portals\portal.template.xsx">
       <DependentUpon>portal.template.xsd</DependentUpon>
     </None>
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\as3\lib\AlivePDF.swc" />
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\images\Sorting icons.psd" />
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
     <None Include="Install\Config\04.06.00.config" />
