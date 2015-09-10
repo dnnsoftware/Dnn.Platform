@@ -14,6 +14,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Helpers;
+using LabelHelper = DotNetNuke.Web.Mvc.Helpers.DnnLabelExtensions;
 
 namespace Dnn.Modules.DynamicContentViewer.Helpers
 {
@@ -65,7 +66,10 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             ViewEngineResult viewEngineResult = ViewEngines.Engines.FindPartialView(dnnHelper.ViewContext, template);
             if (viewEngineResult.View != null)
             {
-                actionCache[dataType] = new ActionCacheViewItem { View = viewEngineResult.View };
+                if (!String.IsNullOrEmpty(dataType))
+                {
+                    actionCache[dataType] = new ActionCacheViewItem { View = viewEngineResult.View };
+                }
 
                 using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
                 {
@@ -93,6 +97,18 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             }
 
             return result;
+        }
+
+        private static DynamicContentItem GetContentItem<TModel>(DnnHelper<TModel> dnnHelper)
+        {
+            var contentItem = dnnHelper.ViewData.Model as DynamicContentItem;
+
+            if (contentItem == null)
+            {
+                throw new InvalidOperationException("This helper is only supported for models of type DynamicContentItem");
+            }
+
+            return contentItem;
         }
 
         internal static Dictionary<string, Func<HtmlHelper, string>> GetDefaultActions(DataBoundControlMode mode)
@@ -159,6 +175,45 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             return path;
         }
 
+        private static ViewDataDictionary GetViewData<TModel>(DnnHelper<TModel> dnnHelper, object model, object additionalViewData)
+        {
+            var viewData = new ViewDataDictionary(dnnHelper.ViewData)
+            {
+                Model = model
+            };
+
+            if (additionalViewData != null)
+            {
+                foreach (KeyValuePair<string, object> kvp in TypeHelper.ObjectToDictionary(additionalViewData))
+                {
+                    viewData[kvp.Key] = kvp.Value;
+                }
+            }
+
+            return viewData;
+        }
+
+        internal static MvcHtmlString LabelFor<TModel>(DnnHelper<TModel> dnnHelper, string fieldName, string htmlFieldName, object htmlAttributes)
+        {
+            var contentItem = GetContentItem(dnnHelper);
+
+            var contentField = contentItem.Fields[fieldName];
+
+            if (contentField == null)
+            {
+                throw new InvalidOperationException("The fieldName does not represent a valid DynamicContentField");
+            }
+
+            if (String.IsNullOrEmpty(htmlFieldName))
+            {
+                htmlFieldName = fieldName;
+            }
+
+            var htmlHelper = MakeHtmlHelper(dnnHelper, dnnHelper.ViewData);
+
+            return LabelHelper.LabelHelper(htmlHelper, htmlFieldName, contentField.Definition.Label, contentField.Definition.Description, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
         private static HtmlHelper MakeHtmlHelper(DnnHelper dnnHelper, ViewDataDictionary viewData)
         {
             var viewContext = dnnHelper.ViewContext;
@@ -170,12 +225,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
 
         internal static MvcHtmlString TemplateFor<TModel>(DnnHelper<TModel> dnnHelper, string fieldName, string templateName, string htmlFieldName, DataBoundControlMode mode, object additionalViewData)
         {
-            var contentItem = dnnHelper.ViewData.Model as DynamicContentItem;
-
-            if (contentItem == null)
-            {
-                throw new InvalidOperationException("This helper is only supported for models of type DynamicContentItem");
-            }
+            var contentItem = GetContentItem(dnnHelper);
 
             var contentField = contentItem.Fields[fieldName];
 
@@ -186,18 +236,8 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
 
             var dataType = contentField.Definition.DataType;
 
-            var viewData = new ViewDataDictionary(dnnHelper.ViewData)
-                                        {
-                                            Model = contentField.Value
-                                        };
-
-            if (additionalViewData != null)
-            {
-                foreach (KeyValuePair<string, object> kvp in TypeHelper.ObjectToDictionary(additionalViewData))
-                {
-                    viewData[kvp.Key] = kvp.Value;
-                }
-            }
+            var viewData = GetViewData(dnnHelper, contentField.Value, additionalViewData);
+            viewData["FieldName"] = contentField.Definition.Name;
 
             Dictionary<string, ActionCacheItem> actionCache = GetActionCache(dnnHelper);
 
@@ -221,11 +261,20 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
                 }
                 else
                 {
-                    htmlString = contentField.Value == null 
-                                    ? String.Empty 
-                                    : ExecuteTemplate(dnnHelper, dataType.Name, template, viewData);
+                    htmlString = ExecuteTemplate(dnnHelper, dataType.Name, template, viewData);
                 }
             }
+
+            return MvcHtmlString.Create(htmlString);
+        }
+
+        internal static MvcHtmlString TemplateFor<TModel>(DnnHelper<TModel> dnnHelper, string templateName, object additionalViewData)
+        {
+            var contentItem = GetContentItem(dnnHelper);
+
+            var viewData = GetViewData(dnnHelper, contentItem, additionalViewData);
+
+            var htmlString = ExecuteTemplate(dnnHelper, String.Empty, templateName, viewData);
 
             return MvcHtmlString.Create(htmlString);
         }

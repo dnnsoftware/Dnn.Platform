@@ -10,11 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
-		Website\Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider
-		Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
+		Website\DesktopModules\MVC\Web.config = Website\DesktopModules\MVC\Web.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"
@@ -63,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Razor", "DNN
 	ProjectSection(ProjectDependencies) = postProject
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Html", "DNN Platform\MVC Modules\Dnn.Modules.Html\Dnn.Modules.Html.csproj", "{99780E6C-A19B-4B03-B092-87BE4CD9E575}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +145,14 @@ Global
 		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|x86.ActiveCfg = Release|Any CPU
 		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|x86.Build.0 = Release|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|x86.Build.0 = Debug|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|x86.ActiveCfg = Release|Any CPU
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,5 +164,6 @@ Global
 		{3B984D43-33BE-4918-A7B3-84729F4CEC92} = {8FDA59A1-2095-4B3A-8EE2-25347FA94A35}
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3} = {88E649D7-1379-430F-B794-1F3B9B442C80}
+		{99780E6C-A19B-4B03-B092-87BE4CD9E575} = {8FDA59A1-2095-4B3A-8EE2-25347FA94A35}
 	EndGlobalSection
 EndGlobal

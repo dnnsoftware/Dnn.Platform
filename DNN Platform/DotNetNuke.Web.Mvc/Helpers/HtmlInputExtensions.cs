@@ -93,6 +93,48 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // TextBox
 
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value, string format)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value, format);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value, string format, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value, format, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextBox(this DnnHtmlHelper html, string name, object value, string format, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextBox(name, value, format, htmlAttributes);
+        }
+
         public static MvcHtmlString TextBoxFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
         {
             var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;

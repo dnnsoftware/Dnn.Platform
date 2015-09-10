@@ -138,4 +138,7 @@
   <data name="SettingsInfo.Text" xml:space="preserve">
     <value>In order to display some content you need to select a Content Type - from the first drop-down and View and Edit Templates from the other drop-downs.</value>
   </data>
+  <data name="AutoTemplate.Text" xml:space="preserve">
+    <value>Auto Generated Template</value>
+  </data>
 </root>

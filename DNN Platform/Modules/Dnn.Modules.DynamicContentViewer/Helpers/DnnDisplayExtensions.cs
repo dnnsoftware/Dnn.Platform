@@ -1,11 +1,8 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
-using Dnn.DynamicContent;
 using DotNetNuke.Web.Mvc.Helpers;
 
 namespace Dnn.Modules.DynamicContentViewer.Helpers

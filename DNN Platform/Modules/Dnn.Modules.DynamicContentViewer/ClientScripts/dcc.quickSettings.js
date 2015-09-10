@@ -19,7 +19,14 @@ dcc.quickSettings = function ($, ko, options, resx) {
         $rootElement = $(element);
 
         viewModel.contentTypes = opts.contentTypes;
-        viewModel.templates = ko.observableArray(opts.templates);
+        viewModel.editTemplates = ko.observableArray([]);
+        viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
+        for (var i = 0; i < opts.templates.length; i++) {
+            var result = opts.templates[i];
+            var template = { name: result.name, value: result.value };
+            viewModel.editTemplates.push(template);
+        }
+        viewModel.viewTemplates = ko.observableArray(opts.templates);
         viewModel.selectedTypeId = ko.observable(opts.selectedTypeId);
         viewModel.selectedViewTemplateId = ko.observable(opts.selectedViewTemplateId);
         viewModel.selectedEditTemplateId = ko.observable(opts.selectedEditTemplateId);
@@ -33,11 +40,14 @@ dcc.quickSettings = function ($, ko, options, resx) {
             function (data) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
-                    viewModel.templates.removeAll();
+                    viewModel.editTemplates.removeAll();
+                    viewModel.viewTemplates.removeAll();
+                    viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
                     for (var i = 0; i < data.data.results.length; i++) {
                         var result = data.data.results[i];
                         var template = { name: result.name, value: result.value };
-                        viewModel.templates.push(template);
+                        viewModel.editTemplates.push(template);
+                        viewModel.viewTemplates.push(template);
                     }
                 }
             },
@@ -81,8 +91,6 @@ dcc.quickSettings = function ($, ko, options, resx) {
             onSave: saveSettings
         });
     }
-
-
 
     return {
         init: init

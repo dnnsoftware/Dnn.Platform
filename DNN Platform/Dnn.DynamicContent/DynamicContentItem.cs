@@ -158,7 +158,7 @@ namespace Dnn.DynamicContent
                                     : new DynamicContentField(definition) { Value = stringValue};
                             break;
                         default:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<string>() };
+                            field = new DynamicContentField(definition) { Value = stringValue };
                             break;
                     }
 

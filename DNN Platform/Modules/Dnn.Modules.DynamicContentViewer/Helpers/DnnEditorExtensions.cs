@@ -11,7 +11,7 @@ using DotNetNuke.Web.Mvc.Helpers;
 namespace Dnn.Modules.DynamicContentViewer.Helpers
 {
     /// <summary>
-    /// 
+    /// A class which provides extension methods to render Content Filed editors
     /// </summary>
     public static class DnnEditorExtensions
     {
