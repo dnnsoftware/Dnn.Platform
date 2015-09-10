@@ -4,6 +4,7 @@
 using System;
 using System.CodeDom;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Models;
@@ -35,6 +36,23 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 DynamicContentItemManager.Instance.AddContentItem(contentItem);
             }
             return contentItem;
+        }
+
+        private DynamicContentItem GetContentItem()
+        {
+            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
+            DynamicContentItem contentItem = null;
+            if (contentTypeId > -1)
+            {
+                contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
+            }
+
+            return contentItem;
+        }
+
+        public ActionResult Cancel()
+        {
+            return RedirectToDefaultRoute();
         }
 
         /// <summary>
@@ -74,25 +92,46 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 }
             }
 
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
-            DynamicContentItem contentItem = null;
-            if (contentTypeId > -1)
-            {
-                contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
-            }
-
             ViewData["EditTemplate"] = templateName;
 
-            return View(contentItem);
+            return View(GetContentItem());
         }
 
         /// <summary>
         /// The Edit Action will process the posted Form
         /// </summary>
+        /// <param name="collection">The collection of Form name/value pairs that represents the Content Item's fields</param>
         /// <returns>The ViewResult</returns>
         [HttpPost]
-        public ActionResult EditPost()
+        public ActionResult Edit(FormCollection collection)
         {
+            DynamicContentItem contentItem = GetContentItem();
+
+            if (contentItem != null)
+            {
+                foreach (var field in contentItem.Fields.Values)
+                {
+                    switch (field.Definition.DataType.UnderlyingDataType)
+                    {
+                        case UnderlyingDataType.Boolean:
+                            //Handle special case of Boolean values due to the way a checkbox works with MVC Helpers
+                            // return value is "true;false" if true and "false" if false
+                            field.Value = (collection[field.Definition.Name].Contains("true"));
+                            break;
+                        case UnderlyingDataType.Integer:
+                            field.Value = collection.GetValueOrDefault(field.Definition.Name, 0);
+                            break;
+                        case UnderlyingDataType.Float:
+                            field.Value = collection.GetValueOrDefault(field.Definition.Name, 0.0);
+                            break;
+                        default:
+                            field.Value = collection.GetValueOrDefault(field.Definition.Name, String.Empty);
+                            break;
+                    }
+                }
+
+                DynamicContentItemManager.Instance.UpdateContentItem(contentItem);
+            }
 
             return RedirectToDefaultRoute();
         }

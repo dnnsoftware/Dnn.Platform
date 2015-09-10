@@ -13,6 +13,42 @@ namespace DotNetNuke.Web.Mvc.Helpers
     {
         // CheckBox
 
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name);
+        }
+
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name, bool isChecked)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name, isChecked);
+        }
+
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name, bool isChecked, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name, isChecked, htmlAttributes);
+        }
+
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name, htmlAttributes);
+        }
+
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name, htmlAttributes);
+        }
+
+        public static MvcHtmlString CheckBox(this DnnHtmlHelper html, string name, bool isChecked, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.CheckBox(name, isChecked, htmlAttributes);
+        }
+
         public static MvcHtmlString CheckBoxFor<TModel>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression)
         {
             var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;

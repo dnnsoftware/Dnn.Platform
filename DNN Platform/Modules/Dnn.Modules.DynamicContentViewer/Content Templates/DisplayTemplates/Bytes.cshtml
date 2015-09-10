@@ -1,7 +1,3 @@
-﻿@using Dnn.Modules.DynamicContentViewer.Helpers
+﻿@model byte[]
 
-@{
-    var byteArray = Model as byte[];
-}
-
-@byteArray.ToHexString()
+@Model.ToHexString()

@@ -115,6 +115,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNull(dynamicContent, "ContentType");
             Requires.PropertyNotNegative(dynamicContent.ContentType, "ContentTypeId");
             Requires.PropertyNotNegative(dynamicContent, "ModuleId");
+            Requires.PropertyNotNegative(dynamicContent, "TabId");
 
             var contentItem = new ContentItem
                                 {
@@ -122,7 +123,7 @@ namespace Dnn.DynamicContent
                                     ContentTypeId = dynamicContent.ContentType.ContentTypeId,
                                     Content = dynamicContent.ToJson(),
                                     ModuleID = dynamicContent.ModuleId,
-                                    TabID = -1,
+                                    TabID = dynamicContent.TabId,
                                     ContentKey = String.Empty
                                 };
 

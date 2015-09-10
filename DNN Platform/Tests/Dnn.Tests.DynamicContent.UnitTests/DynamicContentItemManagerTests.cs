@@ -482,6 +482,29 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void UpdateContentItem_Throws_On_Negative_TabId_Property_Of_ContentItem()
+        {
+            //Arrange
+            var controller = new DynamicContentItemManager();
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
+
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, GetContentType(contentTypeId, Constants.PORTAL_ValidPortalId))
+            {
+                ContentItemId = Constants.CONTENT_ValidContentItemId,
+                TabId = Constants.TAB_InValidId
+            };
+
+            //Act, Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.UpdateContentItem(contentItem));
+        }
+
+
+        [Test]
         public void UpdateContentItem_Calls_ContentController_UpdateContentItem()
         {
             //Arrange

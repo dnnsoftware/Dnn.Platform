@@ -155,7 +155,7 @@ namespace Dnn.DynamicContent
                             Uri uriResult = null;
                             field = Uri.TryCreate(stringValue, UriKind.Absolute, out uriResult) 
                                     ? new DynamicContentField(definition) {Value = uriResult} 
-                                    : new DynamicContentField(definition) { Value = stringValue};
+                                    : new DynamicContentField(definition) { Value = new Uri(stringValue) };
                             break;
                         default:
                             field = new DynamicContentField(definition) { Value = stringValue };
