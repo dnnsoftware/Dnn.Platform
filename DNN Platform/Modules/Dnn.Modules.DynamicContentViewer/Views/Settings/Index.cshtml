@@ -8,6 +8,13 @@
     ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/Resources/Shared/scripts/dnn.utility.js");
 
     JavaScript.RequestRegistration("Knockout");
+
+    var routeValues = new RouteValueDictionary();
+    routeValues["dnnprintmode"] = "true";
+    routeValues["SkinSrc"] = "[G]Skins/_default/No+Skin";
+    routeValues["ContainerSrc"] = "[G]Containers/_default/No+Container";
+
+
 }
 <div id="DCCquickSettings-@moduleId" class="dnnForm">
     <div class="dnnFormMessage dnnFormInfo">
@@ -38,6 +45,8 @@
 
             var options = {
                 moduleId: moduleId,
+                url: "@(Url.Action("Index","Viewer", routeValues))",
+                container: "#dccViewerContainer-@Model.ModuleId",
                 contentTypes: [
                     @{
                         for (var i = 0; i < Model.ContentTypes.Count; i++)
