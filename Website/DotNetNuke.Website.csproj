@@ -1155,6 +1155,23 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.css" />
+    <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.js" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_222222_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_454545_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_888888_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\jquery-ui.css" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
     <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
     <Content Include="Resources\Shared\scripts\dnn.utility.js" />
     <Content Include="OAUTHAuthorize.aspx" />
