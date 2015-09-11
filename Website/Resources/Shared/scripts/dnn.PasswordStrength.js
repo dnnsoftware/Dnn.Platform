@@ -107,6 +107,10 @@
         },
 
         _onInput: function (e) {
+	        if (e.type === 'propertychange' && e.originalEvent.propertyName.toLowerCase() !== 'value') {
+		        return;
+	        }
+
 	        this._$meter.show();
             this._updateState();
         },
