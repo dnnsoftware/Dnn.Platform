@@ -473,10 +473,18 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new NumericField(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
             }
 
+            bool tagBoostApplied = false;
             foreach (var tag in searchDocument.Tags)
             {
                 var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost) field.Boost = _tagBoost / 10f;
+                if (!tagBoostApplied)
+                {
+                    if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost)
+                    {
+                        field.Boost = _tagBoost / 10f;
+                        tagBoostApplied = true;
+                    }
+                }
                 doc.Add(field);
             }
 
