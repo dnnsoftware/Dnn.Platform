@@ -15,7 +15,6 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// </summary>
     public class SettingsController : DnnController
     {
-
         /// <summary>
         /// The Index action renders the default Settings View
         /// </summary>

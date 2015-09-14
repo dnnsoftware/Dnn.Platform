@@ -40,6 +40,17 @@
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
+                    <controlKey>Edit</controlKey>
+                    <controlSrc>Dnn.Modules.DynamicContentViewer.Controllers/Viewer/Edit.mvc</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl/>
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
                     <controlKey>QuickSettings</controlKey>
                     <controlSrc>Dnn.Modules.DynamicContentViewer.Controllers/Settings/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>

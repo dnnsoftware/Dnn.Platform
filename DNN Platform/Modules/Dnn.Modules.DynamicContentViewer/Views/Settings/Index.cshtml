@@ -19,11 +19,11 @@
     </div>
     <div>
         @Dnn.Label("viewTemplateId", Dnn.LocalizeString("ViewTemplate"), Dnn.LocalizeString("ViewTemplate.Help"))
-        <select id="viewTemplateId" data-bind="options: templates, value: selectedViewTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
+        <select id="viewTemplateId" data-bind="options: viewTemplates, value: selectedViewTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
     </div>
     <div>
         @Dnn.Label("editTemplateId", Dnn.LocalizeString("EditTemplate"), Dnn.LocalizeString("EditTemplate.Help"))
-        <select id="editTemplateId" data-bind="options: templates, value: selectedEditTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
+        <select id="editTemplateId" data-bind="options: editTemplates, value: selectedEditTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
         var moduleId = @moduleId;
         $(document).ready(function($) {
             var resx = {
-
+                autoTemplate: "@Dnn.LocalizeString("AutoTemplate")"
             };
 
             var options = {

@@ -58,7 +58,14 @@ namespace DotNetNuke.Web.Mvc.Helpers
         internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
         {
             string resolvedLabelText = labelText ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
-            if (String.IsNullOrEmpty(resolvedLabelText))
+            string resolvedId = TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName));
+
+            return LabelHelper(html, resolvedId, resolvedLabelText, helpText, htmlAttributes);
+        }
+
+        public static MvcHtmlString LabelHelper(HtmlHelper html, string htmlFieldName, string labelText, string helpText = null, IDictionary<string, object> htmlAttributes = null)
+        {
+            if (String.IsNullOrEmpty(labelText))
             {
                 return MvcHtmlString.Empty;
             }
@@ -69,10 +76,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
             divTag.MergeAttributes(htmlAttributes, true);
 
             var labelTag = new TagBuilder("label");
-            labelTag.Attributes.Add("for", TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName)));
+            labelTag.Attributes.Add("for", htmlFieldName);
 
             var spanTag = new TagBuilder("span");
-            spanTag.SetInnerText(resolvedLabelText);
+            spanTag.SetInnerText(labelText);
 
             labelTag.InnerHtml = spanTag.ToString();
 
