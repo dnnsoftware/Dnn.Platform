@@ -24,6 +24,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
             var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
             var settings = new Settings
                                 {
+                                    ModuleId = ActiveModule.ModuleID,
                                     ContentTypeId = contentTypeId,
                                     ContentTypes = DynamicContentTypeManager.Instance.GetContentTypes(PortalSettings.PortalId, true).ToList(),
                                     ViewTemplateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ViewTemplateId, -1),

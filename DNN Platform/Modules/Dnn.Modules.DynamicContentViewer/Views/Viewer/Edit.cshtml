@@ -1,12 +1,14 @@
 ﻿@using DotNetNuke.Framework.JavaScriptLibraries
 
+@model Dnn.DynamicContent.DynamicContentItem
+
 @{
     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 }
 
 <div class="dccEditContent">
     <div class="dccContainer">
-        @Dnn.TemplateFor((string)ViewData["EditTemplate"])
+        @Dnn.TemplateFor((string)ViewData["Template"])
     </div>
     <div class="dccFooter">
         <input type="button" class="secondarybtn" title="@Dnn.LocalizeString("Cancel")" value="@Dnn.LocalizeString("Cancel")">

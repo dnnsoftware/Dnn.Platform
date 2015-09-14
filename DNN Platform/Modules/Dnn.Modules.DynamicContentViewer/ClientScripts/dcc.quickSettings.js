@@ -67,7 +67,7 @@ dcc.quickSettings = function ($, ko, options, resx) {
             util.settingsService().post("SaveSettings", params,
                 function (data) {
                     if (data.success === true) {
-                        //Success
+                        $(opts.container).load(opts.url + " .dccViewContent");
                     } else {
                         //Error
                         util.alert(data.message, resx.ok);

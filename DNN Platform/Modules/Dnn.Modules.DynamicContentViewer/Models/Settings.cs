@@ -39,6 +39,12 @@ namespace Dnn.Modules.DynamicContentViewer.Models
         public int EditTemplateId { get; set; }
 
         /// <summary>
+        /// The Id of the Module
+        /// </summary>
+        [JsonProperty("moduleId")]
+        public int ModuleId { get; set; }
+
+        /// <summary>
         /// A list of templates for the currently selected contentType
         /// </summary>
         public IList<ContentTemplate> Templates { get; set; }
