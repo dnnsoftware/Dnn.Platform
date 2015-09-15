@@ -55,6 +55,12 @@ namespace DotNetNuke.UI.Modules.Html5
                     return _moduleContext.PortalId.ToString();
                 case "issuperuser":
                     return _moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                default:
+                    if (_moduleContext.Settings.ContainsKey(propertyName))
+                    {
+                        return (string)_moduleContext.Settings[propertyName];
+                    }
+                    break;
             }
 
             propertyNotFound = true;
