@@ -1449,6 +1449,12 @@ namespace DotNetNuke.Entities.Urls
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+
+            //return false if AdminTabId is -1, it could happen when a portal is in the middle of importing
+            if (adminTab == null)
+            {
+                return false;
+            }
             
             string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin
