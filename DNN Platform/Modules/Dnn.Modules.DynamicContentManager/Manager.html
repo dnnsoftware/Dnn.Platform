@@ -156,7 +156,7 @@
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="fa fa-pencil"></i></a>
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="fa fa-trash-o"></i></a>
-                                    <a class="dccIcon dccMove" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-arrows"></i></a>
+                                    <a class="dccIcon dccMove" data-bind="visible: selected() && $parent.parentViewModel.canEdit() && $parent.contentFields().length > 1"><i class="fa fa-arrows"></i></a>
                                 </td>
                             </tr>
                             </tbody>

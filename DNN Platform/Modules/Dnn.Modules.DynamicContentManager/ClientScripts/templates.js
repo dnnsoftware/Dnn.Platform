@@ -102,6 +102,7 @@ dcc.templatesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
         dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findTemplates();
@@ -279,14 +280,15 @@ dcc.templateViewModel = function(parentViewModel, config){
                 content: codeEditor.getValue()
             };
 
-            util.templateService().post("DeleteTemplate", params,
+            util.templateService().delete("DeleteTemplate", params,
                 function(){
                     //Success
                     parentViewModel.refresh();
                 },
 
-                function(){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         });
@@ -348,20 +350,14 @@ dcc.templateViewModel = function(parentViewModel, config){
                 content: codeEditor.getValue()
             };
 
-            util.templateService().post("SaveTemplate", params,
-            function (data) {
-                if (data.success === true) {
-                    //Success
-                    self.cancel();
-                }
-                else {
-                    //Error
-                    util.alert(data.message, resx.ok);
-                }
-                },
+            util.templateService().put("SaveTemplate", params,
             function () {
+                self.cancel();
+            },
+            function (xhr, status, err) {
                     //Failure
-                }
+                util.alert(status + ":" + err, resx.ok);
+            }
         );
         }
     };

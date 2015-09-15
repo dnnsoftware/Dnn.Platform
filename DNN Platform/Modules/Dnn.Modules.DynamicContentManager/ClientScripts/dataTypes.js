@@ -122,6 +122,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
     self.init = function() {
         $rootElement.find('#dataTypes-editrow > td > div').hide();
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
         dnn.koPager().init(self, config);
 
         self.searchText.subscribe(function () {
@@ -198,8 +199,9 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
                     collapseDetailRow(parentViewModel.refresh);
                 },
 
-                function(){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         });
@@ -239,17 +241,11 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             };
 
             util.dataTypeService().post("SaveDataType", params,
-                function(data) {
-                    if (data.success === true) {
-                        //Success
-                        collapseDetailRow(parentViewModel.refresh);
-                    } else {
-                        //Error
-                        util.alert(data.message, resx.ok);
-                    }
-                },
                 function() {
-                    //Failure
+                    collapseDetailRow(parentViewModel.refresh);
+                },
+                function (xhr, status, err) {
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         }
