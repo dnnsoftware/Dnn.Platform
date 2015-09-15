@@ -74,32 +74,42 @@ div.actionMenu ul.dnn_mact > li.actionQuickSettings ul {
   width: auto;
 }
 div.actionMenu ul.dnn_mact > li > ul > li {
-  display: block;
-  padding: 0;
-  margin: 0;
-  border-top: 1px solid #cccccc;
-  white-space: nowrap;
+    display: block;
+    color: #808080;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #cccccc;
+    white-space: nowrap;
+    height: 35px;
+    line-height: 25px;
+    font-size: 14px;
+    font-family: Arial;
 }
 div.actionMenu ul.dnn_mact > li > ul > li:first-child {
   border: none;
 }
 div.actionMenu ul.dnn_mact > li > ul li:hover {
-  background-color: #e8f1fa;
+    background-color: #e8f0f9;
 }
 div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul li:hover {
   background-color: #ffffff;
 }
 div.actionMenu ul.dnn_mact > li ul a {
-  display: block;
-  padding: 5px 12px;
-  color: #666;
-  text-decoration: none;
-  overflow: hidden;
-  font-size: 11px;
+    display: block;
+    padding: 5px 10px;
+    color: #666;
+    text-decoration: none;
+    overflow: hidden;
+    font-size: 11px;
 }
 div.actionMenu ul.dnn_mact > li ul a > * {
-  display: inline-block;
-  margin-right: 5px;
+    display: inline-block;
+    margin-right: 5px;
+}
+div.actionMenu ul.dnn_mact > li ul a > img
+{
+    margin-top: -3px;
+    margin-right: 10px;
 }
 div.actionMenu ul.dnn_mact > li > ul > li:hover a {
   color: #333;
