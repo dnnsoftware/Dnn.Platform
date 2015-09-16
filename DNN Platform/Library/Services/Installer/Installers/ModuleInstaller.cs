@@ -28,8 +28,10 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Entities.Tabs;
 
 #endregion
 
@@ -100,10 +102,63 @@ namespace DotNetNuke.Services.Installer.Installers
                         Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
                     }
                     var controller = new DesktopModuleController();
-                    controller.DeleteDesktopModule(tempDesktopModule);
+                    
 
                     Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    //remove admin/host pages
+                    if (!String.IsNullOrEmpty(tempDesktopModule.AdminPage))
+                    {
+                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
+                        
+                        var portals = PortalController.Instance.GetPortals();
+                        foreach (PortalInfo portal in portals)
+                        {
+                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                            //var tabID = TabController.Instance.GetTabByName(tempDesktopModule.Description);
+                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
+                            if ((temp != null))
+                            {
+                               
+                                var mods = TabModulesController.Instance.GetTabModules((temp));
+                                bool noOtherTabModule = true;
+                                foreach (ModuleInfo mod in mods)
+                                {
+                                    if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
+                                    {
+                                        noOtherTabModule = false;
+                                        
+                                    }
+                                }
+                                if (noOtherTabModule)
+                                {
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminRemoved, _desktopModule.AdminPage));
+                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                }
+                            }
+                        }
+                        //if (currPage != null)
+                        //{
+                        //    var mods=TabModulesController.Instance.GetTabModules(currPage);
+                        //    foreach (ModuleInfo mod in mods)
+                        //    {
+                              
+                        //    }
+
+
+                        //}
+                      // TabModulesController.Instance.GetTabModules(tempDesktopModule.t) GetModules
+                        
+                      //  Upgrade.Upgrade.RemoveAdminPages(tabPath);
+                    }
+                    if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
+                    {
+                        Upgrade.Upgrade.RemoveHostPage("/Host//" + tempDesktopModule.HostPage);
+                        Log.AddInfo(string.Format(Util.MODULE_HostRemoved, tempDesktopModule.HostPage));
+                    }
+
+                    controller.DeleteDesktopModule(tempDesktopModule);
                 }
+
             }
             catch (Exception ex)
             {
@@ -166,6 +221,51 @@ namespace DotNetNuke.Services.Installer.Installers
 			if (!_desktopModule.IsPremium)
             {
                 DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+            }
+
+            //Add DesktopModule to all portals
+            if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
+            {
+                // DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+                //Upgrade.Upgrade.AddAdminPage()
+                //Create New Host Page (or get existing one)
+                foreach (PortalInfo pi in PortalController.Instance.GetPortals())
+                {
+                    TabInfo configurationPage = Upgrade.Upgrade.AddAdminPage(pi, _desktopModule.AdminPage,
+                   _desktopModule.Description,
+                   "",
+                   "",
+                   true);
+                    ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
+                    //Add Module To Page
+                    Upgrade.Upgrade.AddModuleToPage(configurationPage,
+                        moduleDefinition.ModuleDefID,
+                        _desktopModule.Description,
+                        "",
+                        true);
+                    Log.AddInfo(string.Format(Util.MODULE_AdminAdded, _desktopModule.AdminPage));
+                }
+               
+            }
+            //Add DesktopModule to all portals
+            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
+            {
+                // DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+                //Upgrade.Upgrade.AddAdminPage()
+                //Create New Host Page (or get existing one)
+                TabInfo configurationPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
+                    _desktopModule.Description,
+                    "",
+                    "",
+                    true);
+                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
+                //Add Module To Page
+                Upgrade.Upgrade.AddModuleToPage(configurationPage,
+                    moduleDefinition.ModuleDefID,
+                    _desktopModule.Description,
+                    "",
+                    true);
+                Log.AddInfo(string.Format(Util.MODULE_HostAdded, _desktopModule.AdminPage));
             }
         }
 

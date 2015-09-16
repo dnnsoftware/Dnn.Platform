@@ -1242,6 +1242,18 @@
   <data name="MODULE_UnRegistered.Text" xml:space="preserve">
     <value>Module un-registered successfully - {0}</value>
   </data>
+  <data name="MODULE_AdminAdded.Text" xml:space="preserve">
+    <value>Module added Admin page {0} to all portals.</value>
+  </data>
+  <data name="MODULE_HostAdded.Text" xml:space="preserve">
+    <value>Module added Host page {0}.</value>
+  </data>
+  <data name="MODULE_AdminRemoved.Text" xml:space="preserve">
+    <value>Uninstall removed Admin page {0} from all portals.</value>
+  </data>
+  <data name="MODULE_HostRemoved.Text" xml:space="preserve">
+    <value>Uninstall removed Host page {0}.</value>
+  </data>
   <data name="PACKAGE_NoLicense.Text" xml:space="preserve">
     <value>The license for this package is not currently included within the installation file, please check with the vendor for full license details.</value>
   </data>

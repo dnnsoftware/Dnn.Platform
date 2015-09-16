@@ -141,6 +141,10 @@ namespace DotNetNuke.Services.Installer
         public static string MODULE_ReadSuccess = GetLocalizedString("MODULE_ReadSuccess");
         public static string MODULE_Registered = GetLocalizedString("MODULE_Registered");
         public static string MODULE_UnRegistered = GetLocalizedString("MODULE_UnRegistered");
+        public static string MODULE_AdminAdded = GetLocalizedString("MODULE_AdminAdded");
+        public static string MODULE_HostAdded = GetLocalizedString("MODULE_HostAdded");
+        public static string MODULE_AdminRemoved = GetLocalizedString("MODULE_AdminRemoved");
+        public static string MODULE_HostRemoved = GetLocalizedString("MODULE_HostRemoved");
         public static string PACKAGE_NoLicense = GetLocalizedString("PACKAGE_NoLicense");
         public static string PACKAGE_NoReleaseNotes = GetLocalizedString("PACKAGE_NoReleaseNotes");
         public static string PACKAGE_UnRecognizable = GetLocalizedString("PACKAGE_UnRecognizable");

@@ -1367,7 +1367,7 @@ namespace DotNetNuke.Data
 											string description, string version, bool isPremium, bool isAdmin,
 											string businessControllerClass, int supportedFeatures, int shareable,
 											string compatibleVersions, string dependencies, string permissions,
-											 int contentItemId, int createdByUserID)
+											 int contentItemId, int createdByUserID, string adminPage, string hostPage)
 		{
 			return ExecuteScalar<int>("AddDesktopModule",
 														packageID,
@@ -1385,7 +1385,9 @@ namespace DotNetNuke.Data
 														GetNull(dependencies),
 														GetNull(permissions),
 														contentItemId,
-														createdByUserID);
+														createdByUserID,
+                                                        adminPage,
+                                                        hostPage);
 		}
 
 		public virtual void DeleteDesktopModule(int desktopModuleId)
@@ -1408,7 +1410,7 @@ namespace DotNetNuke.Data
 												bool isAdmin, string businessControllerClass, int supportedFeatures,
 												int shareable, string compatibleVersions, string dependencies,
 												string permissions,
-												 int contentItemId, int lastModifiedByUserID)
+												 int contentItemId, int lastModifiedByUserID, string adminpage, string hostpage)
 		{
 			ExecuteNonQuery("UpdateDesktopModule",
 									  desktopModuleId,
@@ -1427,7 +1429,9 @@ namespace DotNetNuke.Data
 									  GetNull(dependencies),
 									  GetNull(permissions),
 									  contentItemId,
-									  lastModifiedByUserID);
+									  lastModifiedByUserID,
+                                      adminpage,
+                                      hostpage);
 		}
 
 		#endregion

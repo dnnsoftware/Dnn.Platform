@@ -1,0 +1,182 @@
+/* Add AdminPage, HostPage to DesktopModules table */
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}DesktopModules' AND COLUMN_NAME = 'AdminPage')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModules] ADD AdminPage nvarchar(128)
+END
+GO
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}DesktopModules' AND COLUMN_NAME = 'HostPage')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModules] ADD HostPage nvarchar(128)
+END
+GO
+
+/* AddDesktopModule */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+	@PackageID		int,
+	@ModuleName		nvarchar(128),
+	@FolderName		nvarchar(128),
+	@FriendlyName		nvarchar(128),
+	@Description		nvarchar(2000),
+	@Version		nvarchar(8),
+	@IsPremium		bit,
+	@IsAdmin		bit,
+	@BusinessController	nvarchar(200),
+	@SupportedFeatures	int,
+	@Shareable		int,
+	@CompatibleVersions	nvarchar(500),
+	@Dependencies		nvarchar(400),
+	@Permissions		nvarchar(400),
+	@ContentItemId		int,
+	@CreatedByUserID	int,
+	@AdminPage		nvarchar(128),
+	@HostPage		nvarchar(128)
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}DesktopModules (
+		PackageID,
+		ModuleName,
+		FolderName,
+		FriendlyName,
+		Description,
+		Version,
+		IsPremium,
+		IsAdmin,
+		BusinessControllerClass,
+		SupportedFeatures,
+		Shareable,
+		CompatibleVersions,
+		Dependencies,
+		Permissions,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		ContentItemId,
+		AdminPage,
+		HostPage
+	)
+	VALUES (
+		@PackageID,
+		@ModuleName,
+		@FolderName,
+		@FriendlyName,
+		@Description,
+		@Version,
+		@IsPremium,
+		@IsAdmin,
+		@BusinessController,
+		@SupportedFeatures,
+		@Shareable,
+		@CompatibleVersions,
+		@Dependencies,
+		@Permissions,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@ContentItemId,
+		@AdminPage,
+		@HostPage
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* UpdateDesktopModule */
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+	@DesktopModuleId		int,    
+	@PackageID			int,
+	@ModuleName			nvarchar(128),
+	@FolderName			nvarchar(128),
+	@FriendlyName			nvarchar(128),
+	@Description			nvarchar(2000),
+	@Version			nvarchar(8),
+	@IsPremium			bit,
+	@IsAdmin			bit,
+	@BusinessController		nvarchar(200),
+	@SupportedFeatures		int,
+	@Shareable			int,
+	@CompatibleVersions		nvarchar(500),
+	@Dependencies			nvarchar(400),
+	@Permissions			nvarchar(400),
+	@ContentItemId			int,
+	@LastModifiedByUserID		int,
+	@AdminPage		nvarchar(128),
+	@HostPage		nvarchar(128)
+
+AS
+		UPDATE {databaseOwner}{objectQualifier}DesktopModules
+		SET    	
+			PackageID = @PackageID,
+			ModuleName = @ModuleName,
+			FolderName = @FolderName,
+			FriendlyName = @FriendlyName,
+			Description = @Description,
+			Version = @Version,
+			IsPremium = @IsPremium,
+			IsAdmin = @IsAdmin,
+			BusinessControllerClass = @BusinessController,
+			SupportedFeatures = @SupportedFeatures,
+			Shareable = @Shareable,
+			CompatibleVersions = @CompatibleVersions,
+			Dependencies = @Dependencies,
+			Permissions = @Permissions,
+			ContentItemId = @ContentItemId,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate(),
+			AdminPage=@AdminPage,
+			HostPage=@HostPage
+	WHERE  DesktopModuleId = @DesktopModuleId
+
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_DesktopModules]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_DesktopModules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_DesktopModules]
+AS
+	SELECT
+		DM.DesktopModuleID,
+		DM.FriendlyName,
+		DM.Description,
+		DM.Version,
+		DM.IsPremium,
+		DM.IsAdmin,
+		DM.BusinessControllerClass,
+		DM.FolderName,
+		DM.ModuleName,
+		DM.SupportedFeatures,
+		DM.CompatibleVersions,
+		DM.Dependencies,
+		DM.Permissions,
+		DM.PackageID,
+		DM.CreatedByUserID,
+		DM.CreatedOnDate,
+		DM.LastModifiedByUserID,
+		DM.LastModifiedOnDate,
+		CI.ContentItemID,
+		CI.[Content],
+		CI.ContentTypeID,
+		CI.TabID,
+		CI.ModuleID,
+		CI.ContentKey,
+		CI.Indexed,
+		DM.Shareable,
+		DM.AdminPage,
+		DM.HostPage
+	FROM {databaseOwner}[{objectQualifier}DesktopModules] AS DM
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI ON DM.ContentItemId = CI.ContentItemID
+GO

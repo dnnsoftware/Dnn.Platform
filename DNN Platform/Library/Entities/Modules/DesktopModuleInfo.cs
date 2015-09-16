@@ -90,6 +90,11 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
+        /// <summary>
+        /// returns whether this has an associated Admin page
+        /// </summary>
+        public string AdminPage { get; set; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the BusinessControllerClass of the Desktop Module
@@ -189,6 +194,11 @@ namespace DotNetNuke.Entities.Modules
         /// </history>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
+
+        /// <summary>
+        /// returns whether this has an associated hostpage
+        /// </summary>
+        public string HostPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -387,6 +397,8 @@ namespace DotNetNuke.Entities.Modules
             Dependencies = Null.SetNullString(dr["Dependencies"]);
             Permissions = Null.SetNullString(dr["Permissions"]);
 		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            AdminPage = Null.SetNullString(dr["AdminPage"]);
+            HostPage = Null.SetNullString(dr["HostPage"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -459,6 +471,12 @@ namespace DotNetNuke.Entities.Modules
                         case "codeSubDirectory":
                             CodeSubDirectory = reader.ReadElementContentAsString();
                             break;
+                        case "adminpage":
+                            AdminPage = reader.ReadElementContentAsString();
+                            break;
+                        case "hostpage":
+                            HostPage = reader.ReadElementContentAsString();
+                            break;
                         case "isAdmin":
                             bool isAdmin;
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
@@ -502,6 +520,14 @@ namespace DotNetNuke.Entities.Modules
             if (!string.IsNullOrEmpty(CodeSubDirectory))
             {
                 writer.WriteElementString("codeSubDirectory", CodeSubDirectory);
+            }
+            if (!string.IsNullOrEmpty(AdminPage))
+            {
+                writer.WriteElementString("adminpage", AdminPage);
+            }
+            if (!string.IsNullOrEmpty(HostPage))
+            {
+                writer.WriteElementString("hostpage", HostPage);
             }
 			
             //Write out Supported Features
