@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -40,6 +41,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Upgrade;
 
 #endregion
 
@@ -524,7 +526,35 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (!desktopModule.IsPremium)
                 {
+                    if (!String.IsNullOrEmpty(desktopModule.AdminPage))
+                    {
+                        string tabPath = "//Admin//" + desktopModule.AdminPage;
+                        var tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+                        TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portalId);
+                        ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(desktopModule.FriendlyName);
+                        TabInfo newAdminPage = null;
+                        if ((portalAdmin == null))
+                        {
+                            newAdminPage = Upgrade.AddAdminPage(PortalController.Instance.GetPortal(portalId), desktopModule.AdminPage,
+                                                                                 desktopModule.TabDescription,
+                                                                                 desktopModule.TabIconFile,
+                                                                                 desktopModule.TabIconFileLarge,
+                                                                                 true);
+                        }
+                        if (moduleDefinition != null)
+                        {
+                            Upgrade.AddModuleToPage(newAdminPage,
+                           moduleDefinition.ModuleDefID,
+                           desktopModule.TabDescription,
+                           desktopModule.TabIconFile,
+                           true);
+                        }
+                    }
+
+
                     AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+
+
                 }
             }
             DataCache.ClearPortalCache(portalId, true);
