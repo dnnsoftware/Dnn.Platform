@@ -294,6 +294,8 @@ namespace DotNetNuke.Entities.Modules
             set; 
         }
 
+        public string TabIconFile { get; set; }
+        public string TabIconFileLarge { get; set; }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Definitions for this Desktop Module
@@ -477,6 +479,12 @@ namespace DotNetNuke.Entities.Modules
                         case "hostpage":
                             HostPage = reader.ReadElementContentAsString();
                             break;
+                        case "tabIconFile":
+                            TabIconFile = reader.ReadElementContentAsString();
+                            break;
+                        case "tabIconFileLarge":
+                            TabIconFileLarge = reader.ReadElementContentAsString();
+                            break;
                         case "isAdmin":
                             bool isAdmin;
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
@@ -528,6 +536,14 @@ namespace DotNetNuke.Entities.Modules
             if (!string.IsNullOrEmpty(HostPage))
             {
                 writer.WriteElementString("hostpage", HostPage);
+            }
+            if (!string.IsNullOrEmpty(TabIconFile))
+            {
+                writer.WriteElementString("tabIconFile", HostPage);
+            }
+            if (!string.IsNullOrEmpty(TabIconFileLarge))
+            {
+                writer.WriteElementString("tabIconFileLarge", HostPage);
             }
 			
             //Write out Supported Features

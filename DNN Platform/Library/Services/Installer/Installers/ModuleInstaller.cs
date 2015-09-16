@@ -233,15 +233,15 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     TabInfo configurationPage = Upgrade.Upgrade.AddAdminPage(pi, _desktopModule.AdminPage,
                    _desktopModule.Description,
-                   "",
-                   "",
+                   _desktopModule.TabIconFile,
+                   _desktopModule.TabIconFileLarge,
                    true);
                     ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
                     //Add Module To Page
                     Upgrade.Upgrade.AddModuleToPage(configurationPage,
                         moduleDefinition.ModuleDefID,
                         _desktopModule.Description,
-                        "",
+                        _desktopModule.TabIconFile,
                         true);
                     Log.AddInfo(string.Format(Util.MODULE_AdminAdded, _desktopModule.AdminPage));
                 }
