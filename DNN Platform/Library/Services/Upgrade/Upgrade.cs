@@ -3933,26 +3933,13 @@ namespace DotNetNuke.Services.Upgrade
             return adminUser;
         }
 
-        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
+            if (string.IsNullOrEmpty(currentCulture))
+                currentCulture = "en-US";
+
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
-
-            //Load Template
-            var installTemplate = new XmlDocument();
-            Upgrade.GetInstallTemplate(installTemplate);
-            //Parse the root node
-            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
-            String currentCulture = "";
-            if (rootNode != null)
-            {
-                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
-            }
-
-            if (String.IsNullOrEmpty(currentCulture))
-            {
-                currentCulture = Localization.Localization.SystemLocale;
-            }
-            currentCulture = currentCulture.ToLower();
+            
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
@@ -3972,6 +3959,28 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return match;
+        }
+
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        {
+            //Load Template
+            var installTemplate = new XmlDocument();
+            Upgrade.GetInstallTemplate(installTemplate);
+            //Parse the root node
+            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
+            String currentCulture = "";
+            if (rootNode != null)
+            {
+                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
+            }
+
+            if (String.IsNullOrEmpty(currentCulture))
+            {
+                currentCulture = Localization.Localization.SystemLocale;
+            }
+            currentCulture = currentCulture.ToLower();
+
+            return FindBestTemplate(templateFileName, currentCulture);
         }
 
         public static string BuildUserTable(IDataReader dr, string header, string message)
