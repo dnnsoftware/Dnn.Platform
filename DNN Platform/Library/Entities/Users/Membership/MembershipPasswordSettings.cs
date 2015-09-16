@@ -82,6 +82,14 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
+        /// <summary>
+        /// Regular Expression to validate password strength.
+        /// </summary>
+        public string ValidationExpression
+        {
+            get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
+        }
+
         #endregion
 
         #region initialization methods
