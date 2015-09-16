@@ -347,7 +347,8 @@ namespace DotNetNuke.Entities.Modules
                                                                 desktopModule.Dependencies,
                                                                 desktopModule.Permissions,
                                                                 desktopModule.ContentItemId,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID,
+                                                                desktopModule.AdminPage, desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
@@ -374,7 +375,9 @@ namespace DotNetNuke.Entities.Modules
                                                  desktopModule.Dependencies,
                                                  desktopModule.Permissions,
                                                  desktopModule.ContentItemId,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID,
+                                                 desktopModule.AdminPage,
+                                                 desktopModule.HostPage);
 
                 //Update Tags
                 if (saveTerms)

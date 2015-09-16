@@ -22,6 +22,10 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
+                      <hostPage>Dashboard</hostPage>
+                      <tabIconFile>~/images/icon_dashboard_16px.gif</tabIconFile>
+                      <tabIconFileLarge>~/images/icon_dashboard_32px.gif</tabIconFileLarge>
+                      <tabDescription>Summary view of application and site settings.</tabDescription>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Dashboard</friendlyName>

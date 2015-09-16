@@ -284,6 +284,8 @@ namespace Dnn.Module.ModuleCreator
                         objDesktopModule.Version = "01.00.00";
                         objDesktopModule.BusinessControllerClass = "";
                         objDesktopModule.CompatibleVersions = "";
+                        objDesktopModule.AdminPage = "";
+                        objDesktopModule.HostPage = "";
                         objDesktopModule.Dependencies = "";
                         objDesktopModule.Permissions = "";
                         objDesktopModule.PackageID = objPackage.PackageID;

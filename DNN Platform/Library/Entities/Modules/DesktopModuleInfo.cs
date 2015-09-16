@@ -90,6 +90,11 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
+        /// <summary>
+        /// returns whether this has an associated Admin page
+        /// </summary>
+        public string AdminPage { get; set; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the BusinessControllerClass of the Desktop Module
@@ -190,6 +195,11 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
+        /// <summary>
+        /// returns whether this has an associated hostpage
+        /// </summary>
+        public string HostPage { get; set; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the Module is an Admin Module
@@ -283,7 +293,18 @@ namespace DotNetNuke.Entities.Modules
             get;
             set; 
         }
-
+        /// <summary>
+        /// Gets and sets the iconfile if this is defined in the module manifest
+        /// </summary>
+        public string TabIconFile { get; set; }
+        /// <summary>
+        /// Gets and sets the large iconfile if this is defined in the module manifest
+        /// </summary>
+        public string TabIconFileLarge { get; set; }
+        /// <summary>
+        /// Gets and sets the tab description if this is defined in the module manifest
+        /// </summary>
+        public string TabDescription { get; set; }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Definitions for this Desktop Module
@@ -387,6 +408,8 @@ namespace DotNetNuke.Entities.Modules
             Dependencies = Null.SetNullString(dr["Dependencies"]);
             Permissions = Null.SetNullString(dr["Permissions"]);
 		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            AdminPage = Null.SetNullString(dr["AdminPage"]);
+            HostPage = Null.SetNullString(dr["HostPage"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -459,6 +482,21 @@ namespace DotNetNuke.Entities.Modules
                         case "codeSubDirectory":
                             CodeSubDirectory = reader.ReadElementContentAsString();
                             break;
+                        case "adminPage":
+                            AdminPage = reader.ReadElementContentAsString();
+                            break;
+                        case "hostPage":
+                            HostPage = reader.ReadElementContentAsString();
+                            break;
+                        case "tabIconFile":
+                            TabIconFile = reader.ReadElementContentAsString();
+                            break;
+                        case "tabIconFileLarge":
+                            TabIconFileLarge = reader.ReadElementContentAsString();
+                            break;
+                        case "tabDescription":
+                            TabDescription = reader.ReadElementContentAsString();
+                            break;
                         case "isAdmin":
                             bool isAdmin;
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
@@ -502,6 +540,27 @@ namespace DotNetNuke.Entities.Modules
             if (!string.IsNullOrEmpty(CodeSubDirectory))
             {
                 writer.WriteElementString("codeSubDirectory", CodeSubDirectory);
+            }
+            if (!string.IsNullOrEmpty(AdminPage))
+            {
+                writer.WriteElementString("adminPage", AdminPage);
+            }
+            if (!string.IsNullOrEmpty(HostPage))
+            {
+                writer.WriteElementString("hostPage", HostPage);
+            }
+            if (!string.IsNullOrEmpty(TabIconFile))
+            {
+                writer.WriteElementString("tabIconFile", HostPage);
+            }
+            if (!string.IsNullOrEmpty(TabIconFileLarge))
+            {
+                writer.WriteElementString("tabIconFileLarge", HostPage);
+            }
+
+            if (!string.IsNullOrEmpty(TabDescription))
+            {
+                writer.WriteElementString("tabDescription", TabDescription);
             }
 			
             //Write out Supported Features

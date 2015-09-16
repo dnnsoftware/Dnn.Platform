@@ -22,6 +22,11 @@
             <supportedFeatures>
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
+            <adminPage>Lists</adminPage>
+            <hostPage>Lists</hostPage>
+            <tabIconFile>~/Icons/Sigma/Lists_16X16_Standard.png</tabIconFile>
+            <tabIconFileLarge>~/Icons/Sigma/Lists_32X32_Standard.png</tabIconFileLarge>
+            <tabDescription>Lists.</tabDescription>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Lists</friendlyName>

@@ -964,6 +964,16 @@ namespace DotNetNuke.Entities.Modules
                     propertyNotFound = false;
                     result = (PropertyAccess.Boolean2LocalizedYesNo(DesktopModule.IsUpgradeable, formatProvider));
                     break;
+                case "adminpage":
+                    isPublic = false;
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(DesktopModule.AdminPage, format);
+                    break;
+                case "hostpage":
+                    isPublic = false;
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(DesktopModule.HostPage, format);
+                    break;
             }
             if (!isPublic && currentScope != Scope.Debug)
             {

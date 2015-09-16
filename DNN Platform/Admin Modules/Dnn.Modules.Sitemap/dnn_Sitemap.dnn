@@ -23,6 +23,10 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
+            <adminPage>Search Engine SiteMap</adminPage>
+            <tabIconFile>~/Icons/Sigma/Sitemap_16X16_Standard.png</tabIconFile>
+            <tabIconFileLarge>~/Icons/Sigma/Sitemap_32X32_Standard.png</tabIconFileLarge>
+            <tabDescription>Configure the sitemap for submission to common search engines.</tabDescription>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Sitemap</friendlyName>
