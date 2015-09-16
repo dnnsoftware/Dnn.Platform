@@ -46,13 +46,17 @@
                 return false;
             }
             this._focusOutHandler = $.proxy(this._onFocusOut, this);
-            this._$firstElement.on('focusout', this._focusOutHandler);
-            this._$secondElement.on('focusout', this._focusOutHandler);
+            this._$firstElement.on('focusout change keyup paste input propertychange', this._focusOutHandler);
+            this._$secondElement.on('focusout change keyup paste input propertychange', this._focusOutHandler);
 
             return true;
         },
 
         _onFocusOut: function (eventObject) {
+            if (eventObject.type === 'propertychange' && eventObject.originalEvent.propertyName.toLowerCase() !== 'value') {
+		        return;
+            }
+
             if (eventObject.target === this._$firstElement[0]) {
                 // leaving the first element
                 this._isSecondElementVisited && this._compare(this._$firstElement, this._$secondElement);
