@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         foreach (PortalInfo portal in portals)
                         {
                             var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                            //var tabID = TabController.Instance.GetTabByName(tempDesktopModule.Description);
+                            
                             TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
                             if ((temp != null))
                             {
@@ -131,32 +131,23 @@ namespace DotNetNuke.Services.Installer.Installers
                                 }
                                 if (noOtherTabModule)
                                 {
-                                    Log.AddInfo(string.Format(Util.MODULE_AdminRemoved, _desktopModule.AdminPage));
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, _desktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, _desktopModule.AdminPage, portal.PortalID));
                             }
                         }
-                        //if (currPage != null)
-                        //{
-                        //    var mods=TabModulesController.Instance.GetTabModules(currPage);
-                        //    foreach (ModuleInfo mod in mods)
-                        //    {
-                              
-                        //    }
-
-
-                        //}
-                      // TabModulesController.Instance.GetTabModules(tempDesktopModule.t) GetModules
                         
-                      //  Upgrade.Upgrade.RemoveAdminPages(tabPath);
                     }
                     if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
-                        Upgrade.Upgrade.RemoveHostPage("/Host//" + tempDesktopModule.HostPage);
-                        Log.AddInfo(string.Format(Util.MODULE_HostRemoved, tempDesktopModule.HostPage));
+                        Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
+                        Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
+                    
                 }
 
             }
@@ -226,46 +217,63 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add DesktopModule to all portals
             if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
             {
-                // DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
-                //Upgrade.Upgrade.AddAdminPage()
-                //Create New Host Page (or get existing one)
-                foreach (PortalInfo pi in PortalController.Instance.GetPortals())
+              
+                foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
-                    TabInfo configurationPage = Upgrade.Upgrade.AddAdminPage(pi, _desktopModule.AdminPage,
-                   _desktopModule.Description,
-                   _desktopModule.TabIconFile,
-                   _desktopModule.TabIconFileLarge,
-                   true);
+                    string tabPath = "//Admin//" + _desktopModule.AdminPage;
+                    var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                    TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portal.PortalID);
                     ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                    //Add Module To Page
-                    Upgrade.Upgrade.AddModuleToPage(configurationPage,
+                    TabInfo newAdminPage = null;
+                    if ((portalAdmin == null ))
+                    {
+                        newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
+                                                                             _desktopModule.Description,
+                                                                             _desktopModule.TabIconFile,
+                                                                             _desktopModule.TabIconFileLarge,
+                                                                             true);
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
+                    }
+                    
+                    if (moduleDefinition != null)
+                    {
+                        Upgrade.Upgrade.AddModuleToPage(newAdminPage,
+                       moduleDefinition.ModuleDefID,
+                       _desktopModule.Description,
+                       _desktopModule.TabIconFile,
+                       true);
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
+                    }
+
+                   
+                }
+               
+            }
+            //Add host items
+            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
+            {
+                string tabPath = "//Host//" + _desktopModule.AdminPage;
+                var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
+                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
+                TabInfo newHostPage = TabController.Instance.GetTab(tabID, Null.NullInteger);
+                if (newHostPage == null)
+                {
+                    newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
+                        _desktopModule.Description,
+                        _desktopModule.TabIconFile, _desktopModule.TabIconFileLarge,
+                        true);
+                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
+                }
+                if (moduleDefinition != null)
+                {
+                //Add Module To Page
+                    Upgrade.Upgrade.AddModuleToPage(newHostPage,
                         moduleDefinition.ModuleDefID,
                         _desktopModule.Description,
                         _desktopModule.TabIconFile,
                         true);
-                    Log.AddInfo(string.Format(Util.MODULE_AdminAdded, _desktopModule.AdminPage));
+                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));
                 }
-               
-            }
-            //Add DesktopModule to all portals
-            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
-            {
-                // DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
-                //Upgrade.Upgrade.AddAdminPage()
-                //Create New Host Page (or get existing one)
-                TabInfo configurationPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
-                    _desktopModule.Description,
-                    "",
-                    "",
-                    true);
-                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                //Add Module To Page
-                Upgrade.Upgrade.AddModuleToPage(configurationPage,
-                    moduleDefinition.ModuleDefID,
-                    _desktopModule.Description,
-                    "",
-                    true);
-                Log.AddInfo(string.Format(Util.MODULE_HostAdded, _desktopModule.AdminPage));
             }
         }
 
