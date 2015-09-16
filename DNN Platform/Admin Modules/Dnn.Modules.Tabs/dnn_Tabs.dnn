@@ -22,6 +22,10 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
+            <adminPage>Pages</adminPage>
+            <tabIconFile>~/Icons/Sigma/Tabs_16X16_Standard.png</tabIconFile>
+            <tabIconFileLarge>~/Icons/Sigma/Tabs_32X32_Standard.png</tabIconFileLarge>
+            <tabDescription>Page Management</tabDescription>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Tabs</friendlyName>
