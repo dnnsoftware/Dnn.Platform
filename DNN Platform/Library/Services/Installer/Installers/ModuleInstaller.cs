@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     if ((portalAdmin == null ))
                     {
                         newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
-                                                                             _desktopModule.Description,
+                                                                             _desktopModule.TabDescription,
                                                                              _desktopModule.TabIconFile,
                                                                              _desktopModule.TabIconFileLarge,
                                                                              true);
@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         Upgrade.Upgrade.AddModuleToPage(newAdminPage,
                        moduleDefinition.ModuleDefID,
-                       _desktopModule.Description,
+                       _desktopModule.TabDescription,
                        _desktopModule.TabIconFile,
                        true);
                         Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (newHostPage == null)
                 {
                     newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
-                        _desktopModule.Description,
+                        _desktopModule.TabDescription,
                         _desktopModule.TabIconFile, _desktopModule.TabIconFileLarge,
                         true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 //Add Module To Page
                     Upgrade.Upgrade.AddModuleToPage(newHostPage,
                         moduleDefinition.ModuleDefID,
-                        _desktopModule.Description,
+                        _desktopModule.TabDescription,
                         _desktopModule.TabIconFile,
                         true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));

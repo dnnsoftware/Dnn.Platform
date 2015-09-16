@@ -293,9 +293,18 @@ namespace DotNetNuke.Entities.Modules
             get;
             set; 
         }
-
+        /// <summary>
+        /// Gets and sets the iconfile if this is defined in the module manifest
+        /// </summary>
         public string TabIconFile { get; set; }
+        /// <summary>
+        /// Gets and sets the large iconfile if this is defined in the module manifest
+        /// </summary>
         public string TabIconFileLarge { get; set; }
+        /// <summary>
+        /// Gets and sets the tab description if this is defined in the module manifest
+        /// </summary>
+        public string TabDescription { get; set; }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Definitions for this Desktop Module
@@ -473,10 +482,10 @@ namespace DotNetNuke.Entities.Modules
                         case "codeSubDirectory":
                             CodeSubDirectory = reader.ReadElementContentAsString();
                             break;
-                        case "adminpage":
+                        case "adminPage":
                             AdminPage = reader.ReadElementContentAsString();
                             break;
-                        case "hostpage":
+                        case "hostPage":
                             HostPage = reader.ReadElementContentAsString();
                             break;
                         case "tabIconFile":
@@ -484,6 +493,9 @@ namespace DotNetNuke.Entities.Modules
                             break;
                         case "tabIconFileLarge":
                             TabIconFileLarge = reader.ReadElementContentAsString();
+                            break;
+                        case "tabDescription":
+                            TabDescription = reader.ReadElementContentAsString();
                             break;
                         case "isAdmin":
                             bool isAdmin;
@@ -531,11 +543,11 @@ namespace DotNetNuke.Entities.Modules
             }
             if (!string.IsNullOrEmpty(AdminPage))
             {
-                writer.WriteElementString("adminpage", AdminPage);
+                writer.WriteElementString("adminPage", AdminPage);
             }
             if (!string.IsNullOrEmpty(HostPage))
             {
-                writer.WriteElementString("hostpage", HostPage);
+                writer.WriteElementString("hostPage", HostPage);
             }
             if (!string.IsNullOrEmpty(TabIconFile))
             {
@@ -544,6 +556,11 @@ namespace DotNetNuke.Entities.Modules
             if (!string.IsNullOrEmpty(TabIconFileLarge))
             {
                 writer.WriteElementString("tabIconFileLarge", HostPage);
+            }
+
+            if (!string.IsNullOrEmpty(TabDescription))
+            {
+                writer.WriteElementString("tabDescription", TabDescription);
             }
 			
             //Write out Supported Features

@@ -1258,7 +1258,7 @@
     <value>Module added Host page {0}.</value>
   </data>
   <data name="MODULE_HostPageAdded.Text" xml:space="preserve">
-    <value>Module added to Host page {0}.</value>
+    <value>Host page {0} added.</value>
   </data>
   <data name="MODULE_HostPagemoduleAdded.Text" xml:space="preserve">
     <value>Module added to Host page {0}.</value>
