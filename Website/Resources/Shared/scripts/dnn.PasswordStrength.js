@@ -39,13 +39,13 @@
             this._$container = this.$element.parent();
 
             //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
-            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth()).css('visibility', 'hidden');
+            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth());
 	        var handler = this;
 	        setInterval(function () {
 	            handler._$meter.width(handler.$element.outerWidth());
                 handler._$tooltipContent.width(handler.$element.outerWidth() - 20);
 	        }, 50);
-            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="" /></div>').appendTo(this._$meter);
+            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="last" /></div>').appendTo(this._$meter);
             this._$meterText = $("<label/>").prependTo(this._$meterValue);
 
             this._$tooltipContainer = $('<div class="password-strength-tooltip" />');
@@ -119,7 +119,10 @@
 		        return;
 	        }
 
-	        this._$meter.css('visibility', 'visible');
+            if (this.$element.val() !== '') {
+                this._$meter.addClass('visible');
+            }
+
             this._updateState();
         },
 
