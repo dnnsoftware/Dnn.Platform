@@ -70,7 +70,8 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         public void DeleteContentType(DynamicContentType contentType)
         {
-            Delete(contentType);
+            Requires.NotNull(contentType);
+            Requires.PropertyNotNegative(contentType, "ContentTypeId");
 
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
@@ -87,6 +88,8 @@ namespace Dnn.DynamicContent
             //Delete Localizations
             ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(NameKey, contentType.ContentTypeId));
             ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(DescriptionKey, contentType.ContentTypeId));
+
+            Delete(contentType);
         }
 
         /// <summary>
@@ -97,7 +100,6 @@ namespace Dnn.DynamicContent
         /// <param name="includeSystem">A flag to determine if System content types (ie. content types that are available for all portals)
         /// should be returned. Defaults to false</param>
         /// <returns>content type</returns>
-        //TODO add Unit Tests for this method
         public DynamicContentType GetContentType(int contentTypeId, int portalId, bool includeSystem = false)
         {
             DynamicContentType contentType = Get(portalId).SingleOrDefault(ct => ct.ContentTypeId == contentTypeId);
