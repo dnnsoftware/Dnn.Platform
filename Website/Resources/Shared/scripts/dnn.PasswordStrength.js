@@ -178,10 +178,7 @@
             var password = this.$element.val();
             var strength = this._strength = this._getStrength(password, this.options);
 
-            var matchedPasswordPolicy = strength.hasLengthOfNChars
-                && (this.options.minNumberOfSpecialChars === 0 || strength.hasMinNumberOfSpecialChars)
-                && (this.options.validationExpression === '' || strength.matchValidationExpression);
-
+            var matchedPasswordPolicy = this._matchedPasswordPolicy(strength);
             if (matchedPasswordPolicy || this.$element.val() === '') {
                 this._$tooltipContainer.fadeOut('fast');
             } else {
@@ -203,12 +200,8 @@
         },
 
 		_updateFieldState: function(strength) {
-			var rating = Math.min(strength.rating, strength.maxRating);
 			if (this.$element.val().length > 0) {
-                var matchedPasswordPolicy = strength.hasLengthOfNChars
-                                                && (this.options.minNumberOfSpecialChars === 0 || strength.hasMinNumberOfSpecialChars)
-                                                && (this.options.validationExpression === '' || strength.matchValidationExpression);
-
+			    var matchedPasswordPolicy = this._matchedPasswordPolicy(strength);
 				if (matchedPasswordPolicy) {
 					this.$element.removeClass('validate-fail').addClass('validate-success');
 				} else {
@@ -218,6 +211,12 @@
 				this.$element.removeClass('validate-success validate-fail');
 			}
 		},
+
+        _matchedPasswordPolicy: function(strength) {
+            return strength.hasLengthOfNChars
+                        && (this.options.minNumberOfSpecialChars === 0 || strength.hasMinNumberOfSpecialChars)
+                        && (this.options.validationExpression === '' || strength.matchValidationExpression);
+        },
 
         _getStrength: function(password, options) {
             var rating = 0;

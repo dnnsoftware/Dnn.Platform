@@ -184,7 +184,7 @@
                 this._$confirmElement.addClass(this.options.unmatchedCssClass);
             }
 
-            var disabled = (!val1 && !val2) || !val2;
+            var disabled = !val1 || !val2;
             this._$confirmElement.dnntooltip("disabled", disabled);
 
             this._updateTooltipState(this._isMatched);
