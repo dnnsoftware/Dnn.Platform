@@ -636,6 +636,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 if (detailInSnapshot
                     || deleteOrResetAction)
                 {
+                    _tabVersionDetailController.ClearCache(tabVersionDetail.TabVersionId);
                     tabVersionDetail.TabVersionId = snapshotTabVersion.TabVersionId;
                     _tabVersionDetailController.SaveTabVersionDetail(tabVersionDetail);
                 }
