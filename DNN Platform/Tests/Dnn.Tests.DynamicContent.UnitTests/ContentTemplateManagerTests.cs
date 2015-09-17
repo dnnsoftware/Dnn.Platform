@@ -349,7 +349,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetContentTemplates_Overload_Returns_List_Of_ContentTemplatess()
+        public void GetContentTemplates_Overload_Returns_List_Of_ContentTemplates()
         {
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
@@ -444,6 +444,54 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 Assert.IsFalse(contentTemplates.HasNextPage);
             }
+        }
+
+        [Test]
+        public void GetContentTemplatesByContentType_Calls_Repository_Get()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var contentTemplates = contentTemplateController.GetContentTemplatesByContentType(contentTypeId);
+
+            //Assert
+            _mockContentTemplateRepository.Verify(r => r.Get());
+        }
+
+        [Test]
+        public void GetContentTemplatesByContentType_Returns_Empty_List_Of_ContentTemplates_If_No_ContentTemplates()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            _mockContentTemplateRepository.Setup(r => r.Get())
+                .Returns(GetValidContentTemplates(0, contentTypeId));
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
+
+            //Act
+            var contentTemplates = contentTemplateController.GetContentTemplatesByContentType(contentTypeId);
+
+            //Assert
+            Assert.IsNotNull(contentTemplates);
+            Assert.AreEqual(0, contentTemplates.Count());
+        }
+
+        [Test]
+        public void GetContentTemplatesByContentType_Returns_List_Of_ContentTemplates()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            _mockContentTemplateRepository.Setup(r => r.Get())
+                .Returns(GetValidContentTemplates(Constants.CONTENTTYPE_ValidContentTemplateCount, contentTypeId));
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
+
+            //Act
+            var contentTemplates = contentTemplateController.GetContentTemplatesByContentType(contentTypeId);
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTemplateCount, contentTemplates.Count());
         }
 
         [Test]

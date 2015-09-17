@@ -62,6 +62,13 @@ namespace Dnn.DynamicContent
         IPagedList<ContentTemplate> GetContentTemplates(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false);
 
         /// <summary>
+        /// This method retrieves all the content templates for a given content Type regardless of portal
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the Content Type</param>
+        /// <returns>content template collection.</returns>
+        IQueryable<ContentTemplate> GetContentTemplatesByContentType(int contentTypeId);
+
+        /// <summary>
         /// Updates the content template.
         /// </summary>
         /// <param name="contentTemplate">The content template.</param>

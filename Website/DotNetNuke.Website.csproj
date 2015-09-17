@@ -1199,6 +1199,8 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.08.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.09.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
