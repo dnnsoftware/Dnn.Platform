@@ -63,7 +63,6 @@ namespace Dnn.DynamicContent
             }
         }
 
-
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
         /// </summary>
@@ -88,7 +87,6 @@ namespace Dnn.DynamicContent
         /// <param name="includeSystem">A flag to determine if System Templates (ie. Templates that are available for all portals)
         /// should be searched. Defaults to false</param>
         /// <returns>content template</returns>
-        //TODO add Unit Tests for this method
         public ContentTemplate GetContentTemplate(int templateId, int portalId, bool includeSystem = false)
         {
             return GetContentTemplates(portalId, includeSystem).SingleOrDefault((t) => t.TemplateId == templateId);
@@ -144,6 +142,16 @@ namespace Dnn.DynamicContent
             }
 
             return new PagedList<ContentTemplate>(templates, pageIndex, pageSize);
+        }
+
+        /// <summary>
+        /// This method retrieves all the content templates for a given content Type regardless of portal
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the Content Type</param>
+        /// <returns>content template collection.</returns>
+        public IQueryable<ContentTemplate> GetContentTemplatesByContentType(int contentTypeId)
+        {
+            return Get().Where(t => t.ContentTypeId == contentTypeId).AsQueryable();
         }
 
         /// <summary>
