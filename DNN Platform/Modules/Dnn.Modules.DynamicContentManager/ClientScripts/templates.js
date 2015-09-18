@@ -260,8 +260,12 @@ dcc.templateViewModel = function(parentViewModel, config){
         return util.hasDefaultValue(self.rootViewModel.defaultLanguage,self.localizedNames());
     };
 
-    self.bindCodeEditor = function() {
+    self.bindCodeEditor = function () {
         codeEditor.setValue(self.content());
+
+        util.onVisible($rootElement.find(".CodeMirror"), 250, function () {
+            codeEditor.refresh();
+        });
     };
 
     self.cancel = function(){
