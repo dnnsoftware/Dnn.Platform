@@ -115,15 +115,27 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 }
             }
 
-            //install LP if installing in a different language            
+            //install LP if installing in a different language
             string culture = installConfig.InstallCulture;
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                Upgrade.InstallPackage(installFolder + "\\installlanguage.resources", "Language", false);
+                string lpFilePath = installFolder + "\\installlanguage.resources";
+
+                if (File.Exists(lpFilePath))
+                {
+                    if (!Upgrade.InstallPackage(lpFilePath, "Language", false))
+                    {
+                        culture = "en-US";
+                    }
+                }
+                else
+                {
+                    culture = "en-US";
+                }
             }
 
-            var template = Upgrade.FindBestTemplate(portal.TemplateFileName);
+            var template = Upgrade.FindBestTemplate(portal.TemplateFileName, culture);
             UserInfo userInfo;
             
             if (!String.IsNullOrEmpty(portal.AdminUserName))
@@ -167,7 +179,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             //remove en-US from portal if installing in a different language
-			if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
+            if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 var locale = LocaleController.Instance.GetLocale("en-US");              
                 Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId);
