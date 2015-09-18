@@ -14,6 +14,54 @@ namespace DotNetNuke.Web.Mvc.Helpers
         private const int TextAreaRows = 2;
         private const int TextAreaColumns = 20;
 
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, string value)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, value);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, string value, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, value, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, string value, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, value, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, string value, int rows, int columns, object htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, value, rows, columns, htmlAttributes);
+        }
+
+        public static MvcHtmlString TextArea(this DnnHtmlHelper html, string name, string value, int rows, int columns, IDictionary<string, object> htmlAttributes)
+        {
+            var htmlHelper = html.HtmlHelper;
+            return htmlHelper.TextArea(name, value, rows, columns, htmlAttributes);
+        }
+
         public static MvcHtmlString TextAreaFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
         {
             var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
@@ -43,6 +91,5 @@ namespace DotNetNuke.Web.Mvc.Helpers
             var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
             return htmlHelper.TextAreaFor(expression, rows, columns, htmlAttributes);
         }
-
     }
 }

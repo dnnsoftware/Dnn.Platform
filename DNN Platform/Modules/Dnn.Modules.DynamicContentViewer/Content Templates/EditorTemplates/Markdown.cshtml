@@ -1,0 +1,18 @@
+﻿@using DotNetNuke.Web.Client.ClientResourceManagement
+@model String
+
+@{
+    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/Resources/Shared/Components/CodeEditor/lib/codemirror.js");
+    ClientResourceManager.RegisterStyleSheet(Dnn.DnnPage, "~/Resources/Shared/Components/CodeEditor/lib/codemirror.css");
+    ClientResourceManager.RegisterStyleSheet(Dnn.DnnPage, "~/Resources/Shared/Components/SimpleMDE/simplemde.css");
+    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/Resources/Shared/Components/SimpleMDE/simplemde.js");
+    ClientResourceManager.RegisterStyleSheet(Dnn.DnnPage, "//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css");
+}
+
+@Html.TextArea(ViewData["FieldName"] as string, Model)
+
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function($) {
+        new SimpleMDE({ element: $(".dccEditContent #@ViewData["FieldName"]")[0] });
+    });
+</script>

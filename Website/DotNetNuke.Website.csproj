@@ -1155,6 +1155,13 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\simplemde.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\spell-checker.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\spell-checker.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\typo.js" />
     <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.css" />
     <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.js" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -4167,7 +4174,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51164/</IISUrl>
+          <IISUrl>http://localhost:49989/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
