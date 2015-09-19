@@ -1,5 +1,25 @@
-﻿@model String
+﻿@using DotNetNuke.Web.Client.ClientResourceManagement
+@model String
 
-@Html.TextBox(ViewData["FieldName"] as string, Model)
+@{
+    var fieldName = ViewData["FieldName"] as string;
 
-This is a Rich Text Editor
+    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/Resources/Shared/Components/CKEditor/ckeditor.js");
+}
+
+<div class="dnnFormEditor">
+    <textarea id="@fieldName" name="@fieldName">@(new HtmlString(Server.HtmlDecode(Model)))</textarea>
+</div>
+
+<script type="text/javascript">
+    /* TODO: Create JavaScript facade for HTMLEditors to minimize direct dependency */
+    var editor = CKEDITOR.replace("@fieldName", {
+        height: "325px",
+        allowedContent: true,
+        on: {
+            change: function (evt) {
+                $("#@fieldName").val(evt.editor.getData());
+            }
+        }
+    });
+</script>

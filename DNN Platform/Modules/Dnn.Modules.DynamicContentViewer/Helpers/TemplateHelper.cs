@@ -151,13 +151,13 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             //Check Portal for DataType
             if (String.IsNullOrEmpty(path))
             {
-                path = GetTemplate(dataType.Name, portalRoot, portalRootMap, mode);
+                path = GetTemplate(dataType.Name.Replace(" ", ""), portalRoot, portalRootMap, mode);
             }
 
             //Check Host for DataType
             if (String.IsNullOrEmpty(path))
             {
-                path = GetTemplate(dataType.Name, hostRoot, hostRootMap, mode);
+                path = GetTemplate(dataType.Name.Replace(" ", ""), hostRoot, hostRootMap, mode);
             }
 
             //Check Portal for Underlying DataType

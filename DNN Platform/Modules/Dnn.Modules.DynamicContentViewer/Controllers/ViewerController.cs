@@ -81,6 +81,8 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         /// <param name="collection">The collection of Form name/value pairs that represents the Content Item's fields</param>
         /// <returns>The ViewResult</returns>
         [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(FormCollection collection)
         {
             DynamicContentItem contentItem = GetContentItem();
@@ -89,21 +91,34 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
             {
                 foreach (var field in contentItem.Fields.Values)
                 {
-                    switch (field.Definition.DataType.UnderlyingDataType)
+                    switch (field.Definition.DataType.Name)
                     {
-                        case UnderlyingDataType.Boolean:
-                            //Handle special case of Boolean values due to the way a checkbox works with MVC Helpers
-                            // return value is "true;false" if true and "false" if false
-                            field.Value = (collection[field.Definition.Name].Contains("true"));
+                        case "Rich Text":
+                            var html = collection[field.Definition.Name];
+                            field.Value = String.IsNullOrEmpty(html) ? String.Empty : Server.HtmlEncode(html);
                             break;
-                        case UnderlyingDataType.Integer:
-                            field.Value = collection.GetValueOrDefault(field.Definition.Name, 0);
-                            break;
-                        case UnderlyingDataType.Float:
-                            field.Value = collection.GetValueOrDefault(field.Definition.Name, 0.0);
+                        case "Markdown":
+                            var markdown = collection[field.Definition.Name];
+                            field.Value = String.IsNullOrEmpty(markdown) ? String.Empty : markdown;
                             break;
                         default:
-                            field.Value = collection.GetValueOrDefault(field.Definition.Name, String.Empty);
+                            switch (field.Definition.DataType.UnderlyingDataType)
+                            {
+                                case UnderlyingDataType.Boolean:
+                                    //Handle special case of Boolean values due to the way a checkbox works with MVC Helpers
+                                    // return value is "true;false" if true and "false" if false
+                                    field.Value = (collection[field.Definition.Name].Contains("true"));
+                                    break;
+                                case UnderlyingDataType.Integer:
+                                    field.Value = collection.GetValueOrDefault(field.Definition.Name, 0);
+                                    break;
+                                case UnderlyingDataType.Float:
+                                    field.Value = collection.GetValueOrDefault(field.Definition.Name, 0.0);
+                                    break;
+                                default:
+                                    field.Value = collection.GetValueOrDefault(field.Definition.Name, String.Empty);
+                                    break;
+                            }
                             break;
                     }
                 }
