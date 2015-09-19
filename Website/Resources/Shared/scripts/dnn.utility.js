@@ -135,6 +135,25 @@ dnn.utility = function (settings, resx) {
         }
     }
 
+    var onVisible = function (element, timeOut, callback) {
+
+        if (element.interval) {
+            clearInterval(element.interval);
+        } else {
+            element.interval = setInterval(function () {
+                if (!element.length || !element.is(':visible')) {
+                    return;
+                }
+
+                // if element does exist and is visible then stop the interval and run code
+                clearInterval(element.interval);
+
+                // place your code here to run when the element becomes visible
+                callback();
+            }, timeOut);
+        }
+    }
+
     var setlocalizedValue = function(selectedLanguage, localizedValues, value){
         for (var i = 0; i < localizedValues.length; i++) {
             if (selectedLanguage === localizedValues[i].code()) {
@@ -157,6 +176,7 @@ dnn.utility = function (settings, resx) {
         isTranslated: isTranslated,
         initializeLocalizedValues: initializeLocalizedValues,
         loadLocalizedValues: loadLocalizedValues,
+        onVisible: onVisible,
         setlocalizedValue: setlocalizedValue,
         sf: sf
     }
