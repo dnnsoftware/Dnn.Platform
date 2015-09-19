@@ -8,6 +8,7 @@
 
 <%-- Custom CSS Registration --%>
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.css" />
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/theme/dnn-sql.css" />
 
 <%-- Custom JavaScript Registration --%>
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/lib/codemirror.js" Priority="1" />
@@ -200,7 +201,8 @@
             matchBrackets: true,
             lineWrapping: true,
             indentWithTabs: true,
-            mode: 'text/x-sql'            
+            theme: 'dnn-sql light',
+            mode: 'text/x-sql'
         });
 
         editor.on("blur", function (cm) {
