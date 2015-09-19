@@ -56,7 +56,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -328,7 +327,7 @@ namespace DotNetNuke.Services.Upgrade
                                       Url = "http://www.dnnsoftware.com",
                                       Email = "support@dnnsoftware.com"
                                   };
-                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer" || desktopModuleName == "Dashboard")
+                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer")
                 {
                     package.IsSystemPackage = true;
                 }
@@ -3934,26 +3933,13 @@ namespace DotNetNuke.Services.Upgrade
             return adminUser;
         }
 
-        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
+            if (string.IsNullOrEmpty(currentCulture))
+                currentCulture = Localization.Localization.SystemLocale;
+
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Load Template
-            var installTemplate = new XmlDocument();
-            Upgrade.GetInstallTemplate(installTemplate);
-            //Parse the root node
-            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
-            String currentCulture = "";
-            if (rootNode != null)
-            {
-                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
-            }
-
-            if (String.IsNullOrEmpty(currentCulture))
-            {
-                currentCulture = Localization.Localization.SystemLocale;
-            }
-            currentCulture = currentCulture.ToLower();
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
@@ -3973,6 +3959,28 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return match;
+        }
+
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        {
+            //Load Template
+            var installTemplate = new XmlDocument();
+            Upgrade.GetInstallTemplate(installTemplate);
+            //Parse the root node
+            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
+            String currentCulture = "";
+            if (rootNode != null)
+            {
+                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
+            }
+
+            if (String.IsNullOrEmpty(currentCulture))
+            {
+                currentCulture = Localization.Localization.SystemLocale;
+            }
+            currentCulture = currentCulture.ToLower();
+
+            return FindBestTemplate(templateFileName, currentCulture);
         }
 
         public static string BuildUserTable(IDataReader dr, string header, string message)
@@ -5393,6 +5401,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.6":
                             UpgradeToVersion8006();
                             break;
+                        case "8.0.0.7":
+                            UpgradeToVersion8007();
+                            break;
                     }
                 }
             }
@@ -5451,6 +5462,15 @@ namespace DotNetNuke.Services.Upgrade
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
             PackageController.Instance.DeleteExtensionPackage(package);
+        }
+
+        private static void UpgradeToVersion8007()
+        {
+            RemoveHostPage("Dashboard");
+            RemoveHostPage("SQL");
+            RemoveHostPage("Configuration Manager");
+
+            UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
 
         private static int MaxIncremental(Version version)
@@ -5685,7 +5705,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&name=" + packageName;
                 if (packageType.ToLowerInvariant() == "module")
                 {
-                    var moduleType = (from m in ModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
+                    var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
                     {
                         url += "&no=" + moduleType.Instances;

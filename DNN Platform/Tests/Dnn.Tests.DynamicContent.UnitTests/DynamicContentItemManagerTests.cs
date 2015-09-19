@@ -46,6 +46,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             FieldDefinitionManager.ClearInstance();
             ModuleController.ClearInstance();
+            DataTypeManager.ClearInstance();
         }
 
         [Test]
@@ -349,9 +350,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             var mockModuleController = new Mock<IModuleController>();
-            mockModuleController.Setup(c => c.GetModule(Constants.MODULE_ValidId, Constants.TAB_ValidId, false))
-                .Returns(new ModuleInfo() { PortalID = Constants.PORTAL_ValidPortalId });
+            mockModuleController.Setup(c => c.GetModule(moduleId, tabId, false))
+                .Returns(new ModuleInfo() { PortalID = portalId });
             ModuleController.SetTestableInstance(mockModuleController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>()))
+                .Returns(() => new List<DataType>
+                                    {
+                                        new DataType() { DataTypeId = -1, UnderlyingDataType = UnderlyingDataType.String}
+                                    }
+                                .AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
             var contentItem = new ContentItem { Content = _testJson.ToString(), ModuleID = moduleId, TabID = tabId };
 
@@ -482,6 +492,29 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void UpdateContentItem_Throws_On_Negative_TabId_Property_Of_ContentItem()
+        {
+            //Arrange
+            var controller = new DynamicContentItemManager();
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
+
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, GetContentType(contentTypeId, Constants.PORTAL_ValidPortalId))
+            {
+                ContentItemId = Constants.CONTENT_ValidContentItemId,
+                TabId = Constants.TAB_InValidId
+            };
+
+            //Act, Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.UpdateContentItem(contentItem));
+        }
+
+
+        [Test]
         public void UpdateContentItem_Calls_ContentController_UpdateContentItem()
         {
             //Arrange
@@ -515,6 +548,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var moduleId = Constants.MODULE_ValidId;
+            var tabId = Constants.TAB_ValidId;
             var portalId = Constants.PORTAL_ValidPortalId;
             var contentItemId = Constants.CONTENT_ValidContentItemId;
             var controller = new DynamicContentItemManager();
@@ -533,8 +567,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dynamicContent = new DynamicContentItem(portalId, GetContentType(contentTypeId, portalId))
                                         {
                                             ModuleId = moduleId,
+                                            TabId = tabId,
                                             ContentItemId = contentItemId
-            };
+                                        };
 
             dynamicContent.Fields["FieldName1"].Value = 1;
             dynamicContent.Fields["FieldName2"].Value = true;
@@ -551,7 +586,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             controller.UpdateContentItem(dynamicContent);
 
             //Assert
-            Assert.AreEqual(-1, contentItem.TabID);
+            Assert.AreEqual(tabId, contentItem.TabID);
             Assert.AreEqual(contentItemId, contentItem.ContentItemId);
             Assert.AreEqual(moduleId, contentItem.ModuleID);
             Assert.AreEqual(contentTypeId, contentItem.ContentTypeId);
@@ -563,9 +598,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1" });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2" });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3" });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId });
 
             return contentType;
         }

@@ -23,7 +23,7 @@ using System.Web.Routing;
 
 namespace DotNetNuke.Web.Mvc.Common
 {
-    internal static class TypeHelper
+    public static class TypeHelper
     {
         /// <summary>
         /// Given an object of anonymous type, add each property as a key and associated with its value to a dictionary.

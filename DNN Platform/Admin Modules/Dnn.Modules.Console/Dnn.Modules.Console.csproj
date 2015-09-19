@@ -71,6 +71,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\ConsoleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.ascx.cs">

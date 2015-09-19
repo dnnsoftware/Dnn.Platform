@@ -101,36 +101,64 @@ namespace Dnn.DynamicContent
                         throw new JsonInvalidFieldException(fieldName);
                     }
 
-                    var value = jField["value"];
                     DynamicContentField field;
-                    switch (value.Type)
+                    var stringValue = jField["value"].Value<string>();
+                    if (stringValue == null)
                     {
-                        case JTokenType.Boolean:
-                            field = new DynamicContentField(definition) {Value = jField["value"].Value<bool>() };
+                        stringValue = String.Empty;
+                    }
+                    switch (definition.DataType.UnderlyingDataType)
+                    {
+
+                        case UnderlyingDataType.Boolean:
+                            Boolean boolResult;
+                            field = Boolean.TryParse(stringValue, out boolResult)
+                                    ? new DynamicContentField(definition) { Value = boolResult }
+                                    : new DynamicContentField(definition) { Value = false };
                             break;
-                        case JTokenType.Bytes:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Byte[]>() };
+                        case UnderlyingDataType.Bytes:
+                            field = (String.IsNullOrEmpty(stringValue)) 
+                                    ? new DynamicContentField(definition) { Value = new byte[] {} }
+                                    : new DynamicContentField(definition) { Value = Convert.FromBase64String(stringValue) };
                             break;
-                        case JTokenType.Date:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<DateTime>() };
+                        case UnderlyingDataType.DateTime:
+                            DateTime dateTimeResult;
+                            field = DateTime.TryParse(stringValue, out dateTimeResult)
+                                    ? new DynamicContentField(definition) { Value = dateTimeResult }
+                                    : new DynamicContentField(definition) { Value = new DateTime(2000, 1, 1) };
                             break;
-                        case JTokenType.Float:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<float>() };
+                        case UnderlyingDataType.Float:
+                            Double dblResult;
+                            field = Double.TryParse(stringValue, out dblResult)
+                                    ? new DynamicContentField(definition) { Value = dblResult }
+                                    : new DynamicContentField(definition) { Value = 0.0 };
                             break;
-                        case JTokenType.Guid:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Guid>() };
+                        case UnderlyingDataType.Guid:
+                            Guid guidResult;
+                            field = Guid.TryParse(stringValue, out guidResult) 
+                                    ? new DynamicContentField(definition) { Value = guidResult } 
+                                    : new DynamicContentField(definition) { Value = Guid.NewGuid() };
                             break;
-                        case JTokenType.Integer:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<int>() };
+                        case UnderlyingDataType.Integer:
+                            Int32 intResult;
+                            field = Int32.TryParse(stringValue, out intResult)
+                                    ? new DynamicContentField(definition) { Value = intResult }
+                                    : new DynamicContentField(definition) { Value = 0 };
                             break;
-                        case JTokenType.TimeSpan:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<TimeSpan>() };
+                        case UnderlyingDataType.TimeSpan:
+                            TimeSpan timeSpanResult;
+                            field = TimeSpan.TryParse(stringValue, out timeSpanResult)
+                                    ? new DynamicContentField(definition) { Value = timeSpanResult }
+                                    : new DynamicContentField(definition) { Value = new TimeSpan(0,0,0) };
                             break;
-                        case JTokenType.Uri:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<Uri>() };
+                        case UnderlyingDataType.Uri:
+                            Uri uriResult = null;
+                            field = Uri.TryCreate(stringValue, UriKind.Absolute, out uriResult) 
+                                    ? new DynamicContentField(definition) {Value = uriResult} 
+                                    : new DynamicContentField(definition) { Value = null };
                             break;
                         default:
-                            field = new DynamicContentField(definition) { Value = jField["value"].Value<string>() };
+                            field = new DynamicContentField(definition) { Value = stringValue };
                             break;
                     }
 

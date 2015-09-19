@@ -1242,6 +1242,33 @@
   <data name="MODULE_UnRegistered.Text" xml:space="preserve">
     <value>Module un-registered successfully - {0}</value>
   </data>
+  <data name="MODULE_AdminPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageRemoved.Text" xml:space="preserve">
+    <value>Admin page {0} removed from portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageAdded.Text" xml:space="preserve">
+    <value>Admin page {0} added to portal {1}.</value>
+  </data>
+  <data name="MODULE_HostAdded.Text" xml:space="preserve">
+    <value>Module added Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageAdded.Text" xml:space="preserve">
+    <value>Host page {0} added.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageRemoved.Text" xml:space="preserve">
+    <value>Host page {0} removed.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Host page {0}.</value>
+  </data>
   <data name="PACKAGE_NoLicense.Text" xml:space="preserve">
     <value>The license for this package is not currently included within the installation file, please check with the vendor for full license details.</value>
   </data>

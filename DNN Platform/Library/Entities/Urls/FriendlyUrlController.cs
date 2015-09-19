@@ -833,16 +833,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
-            //fallback position - all portals match 'Admin'
-            const string adminPageName = "Admin";
-            //we should be checking that the tab path matches //Admin//pagename or //admin
-            //in this way we should avoid partial matches (ie //Administrators
-            if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
-                || String.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                return true;
-            }
-            return false;
+            return RewriteController.IsAdminTab(portalId, tabPath, settings);
         }
 
         #endregion

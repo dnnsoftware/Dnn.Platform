@@ -8,7 +8,6 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Modules.Dashboard.Components.Portals;
 
     public class Generic : ILocalisation
 	{

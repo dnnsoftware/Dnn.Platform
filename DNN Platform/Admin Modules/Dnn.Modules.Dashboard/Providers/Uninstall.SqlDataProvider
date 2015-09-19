@@ -1,0 +1,48 @@
+﻿/* Update Dashboard Controls */
+/*****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_AddControl') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_AddControl
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_DeleteControl') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_DeleteControl
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetControls') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetControls
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByKey') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByKey
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetDbBackups') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbBackups
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetDbFileInfo') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbFileInfo
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_GetDbInfo') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDbInfo
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}Dashboard_UpdateControl') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_UpdateControl
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Dashboard_Controls]') AND type in (N'U'))
+    DROP TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

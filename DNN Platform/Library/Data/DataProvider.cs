@@ -1354,6 +1354,11 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("UpdateTabModuleVersionByModule", moduleId);
 		}
 
+        public virtual IDataReader GetInstalledModules()
+        {
+            return ExecuteReader("GetInstalledModules");
+        }
+
 		#endregion
 
 		#region DesktopModule Methods
@@ -1362,7 +1367,7 @@ namespace DotNetNuke.Data
 											string description, string version, bool isPremium, bool isAdmin,
 											string businessControllerClass, int supportedFeatures, int shareable,
 											string compatibleVersions, string dependencies, string permissions,
-											 int contentItemId, int createdByUserID)
+											 int contentItemId, int createdByUserID, string adminPage, string hostPage)
 		{
 			return ExecuteScalar<int>("AddDesktopModule",
 														packageID,
@@ -1380,7 +1385,9 @@ namespace DotNetNuke.Data
 														GetNull(dependencies),
 														GetNull(permissions),
 														contentItemId,
-														createdByUserID);
+														createdByUserID,
+                                                        adminPage,
+                                                        hostPage);
 		}
 
 		public virtual void DeleteDesktopModule(int desktopModuleId)
@@ -1403,7 +1410,7 @@ namespace DotNetNuke.Data
 												bool isAdmin, string businessControllerClass, int supportedFeatures,
 												int shareable, string compatibleVersions, string dependencies,
 												string permissions,
-												 int contentItemId, int lastModifiedByUserID)
+												 int contentItemId, int lastModifiedByUserID, string adminpage, string hostpage)
 		{
 			ExecuteNonQuery("UpdateDesktopModule",
 									  desktopModuleId,
@@ -1422,7 +1429,9 @@ namespace DotNetNuke.Data
 									  GetNull(dependencies),
 									  GetNull(permissions),
 									  contentItemId,
-									  lastModifiedByUserID);
+									  lastModifiedByUserID,
+                                      adminpage,
+                                      hostpage);
 		}
 
 		#endregion
@@ -4161,30 +4170,6 @@ namespace DotNetNuke.Data
 		#endregion
 
 		#region Obsolete Methods
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual IDataReader GetVendorClassifications(int VendorId)
-		{
-			return ExecuteReader("GetVendorClassifications", GetNull(VendorId));
-		}
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual void DeleteVendorClassifications(int VendorId)
-		{
-			ExecuteNonQuery("DeleteVendorClassifications", VendorId);
-		}
-
-		[Obsolete(
-			"Obsoleted in 6.0.0, the Vendor Classifications feature was never fully implemented and will be removed from the API"
-			)]
-		public virtual int AddVendorClassification(int VendorId, int ClassificationId)
-		{
-			return ExecuteScalar<int>("AddVendorClassification", VendorId, ClassificationId);
-		}
 
 		[Obsolete(
 			"Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]

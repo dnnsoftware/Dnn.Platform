@@ -16,6 +16,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     [TestFixture]
     public class DynamicContentItemTests
     {
+        private const int DATATYPE_String = 1;
+        private const int DATATYPE_Integer = 2;
+        private const int DATATYPE_Boolean = 3;
+
         private JObject _testJson = new JObject(
                                 new JProperty("contentTypeId", Constants.CONTENTTYPE_ValidContentTypeId),
                                 new JProperty("content",
@@ -45,6 +49,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             FieldDefinitionManager.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
+            DataTypeManager.ClearInstance();
         }
 
         [Test]
@@ -309,6 +314,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(new List<DynamicContentType>() { GetContentType(contentTypeId, portalId) }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
+
             //Act
             dynamicContent.FromJson(_testJson.ToString());
 
@@ -334,6 +343,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockContentTypeController.Setup(c => c.GetContentTypes(portalId, true))
                 .Returns(new List<DynamicContentType>() { GetContentType(contentTypeId, portalId) }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
             //Act
             dynamicContent.FromJson(_testJson.ToString());
@@ -362,6 +375,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockContentTypeController.Setup(c => c.GetContentTypes(portalId, true))
                 .Returns(new List<DynamicContentType>() { GetContentType(contentTypeId, portalId) }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
             //Act
             dynamicContent.FromJson(_testJson.ToString());
@@ -393,6 +410,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockContentTypeController.Setup(c => c.GetContentTypes(portalId, true))
                 .Returns(new List<DynamicContentType>() { contentType }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
             //Act, Assert
             Assert.Throws<JsonInvalidFieldException>(() => dynamicContent.FromJson(_testJson.ToString()));
@@ -428,11 +449,22 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             var contentType = new DynamicContentType() {ContentTypeId = contentTypeId, PortalId = portalId};
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1"});
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2" });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3" });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, DataTypeId = DATATYPE_Integer });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, DataTypeId = DATATYPE_Boolean });
+            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, DataTypeId = DATATYPE_String });
 
             return contentType;
+        }
+
+        private List<DataType> GetDataTypes()
+        {
+            var dataTypes = new List<DataType>();
+
+            dataTypes.Add(new DataType { DataTypeId = DATATYPE_Integer, UnderlyingDataType = UnderlyingDataType.Integer});
+            dataTypes.Add(new DataType { DataTypeId = DATATYPE_String, UnderlyingDataType = UnderlyingDataType.String });
+            dataTypes.Add(new DataType { DataTypeId = DATATYPE_Boolean, UnderlyingDataType = UnderlyingDataType.Boolean });
+
+            return dataTypes;
         }
 
     }
