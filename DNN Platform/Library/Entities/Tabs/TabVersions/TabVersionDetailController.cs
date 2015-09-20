@@ -81,14 +81,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             Provider.DeleteTabVersionDetail(tabVersionDetailId);
             ClearCache(tabVersionId);
         }
-        #endregion
 
-        #region Private Methods
-        private void ClearCache(int tabVersionId)
+        public void ClearCache(int tabVersionId)
         {
             DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
         }
+        #endregion
 
+        #region Private Methods
         private static string GetTabVersionDetailCacheKey(int tabVersionId)
         {
             return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);

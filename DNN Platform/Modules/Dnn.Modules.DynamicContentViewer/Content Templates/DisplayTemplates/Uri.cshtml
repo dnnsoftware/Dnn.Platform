@@ -1,3 +1,8 @@
 ﻿@model Uri
 
-<a href="@Model.ToString()">@Model.ToString()</a>
+@{
+    if (Model != null)
+    {
+        <a href="@Model.ToString()">@Model.ToString()</a>
+    }
+}

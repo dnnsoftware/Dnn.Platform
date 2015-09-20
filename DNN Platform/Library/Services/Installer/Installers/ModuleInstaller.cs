@@ -28,8 +28,10 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Entities.Tabs;
 
 #endregion
 
@@ -100,10 +102,54 @@ namespace DotNetNuke.Services.Installer.Installers
                         Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
                     }
                     var controller = new DesktopModuleController();
-                    controller.DeleteDesktopModule(tempDesktopModule);
+                    
 
                     Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    //remove admin/host pages
+                    if (!String.IsNullOrEmpty(tempDesktopModule.AdminPage))
+                    {
+                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
+                        
+                        var portals = PortalController.Instance.GetPortals();
+                        foreach (PortalInfo portal in portals)
+                        {
+                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                            
+                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
+                            if ((temp != null))
+                            {
+                               
+                                var mods = TabModulesController.Instance.GetTabModules((temp));
+                                bool noOtherTabModule = true;
+                                foreach (ModuleInfo mod in mods)
+                                {
+                                    if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
+                                    {
+                                        noOtherTabModule = false;
+                                        
+                                    }
+                                }
+                                if (noOtherTabModule)
+                                {
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                }
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, _desktopModule.AdminPage, portal.PortalID));
+                            }
+                        }
+                        
+                    }
+                    if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
+                    {
+                        Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
+                        Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                    }
+
+                    controller.DeleteDesktopModule(tempDesktopModule);
+                    
                 }
+
             }
             catch (Exception ex)
             {
@@ -166,6 +212,68 @@ namespace DotNetNuke.Services.Installer.Installers
 			if (!_desktopModule.IsPremium)
             {
                 DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+            }
+
+            //Add DesktopModule to all portals
+            if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
+            {
+              
+                foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+                {
+                    string tabPath = "//Admin//" + _desktopModule.AdminPage;
+                    var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                    TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portal.PortalID);
+                    ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
+                    TabInfo newAdminPage = null;
+                    if ((portalAdmin == null ))
+                    {
+                        newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
+                                                                             _desktopModule.TabDescription,
+                                                                             _desktopModule.TabIconFile,
+                                                                             _desktopModule.TabIconFileLarge,
+                                                                             true);
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
+                    }
+                    
+                    if (moduleDefinition != null)
+                    {
+                        Upgrade.Upgrade.AddModuleToPage(newAdminPage,
+                       moduleDefinition.ModuleDefID,
+                       _desktopModule.TabDescription,
+                       _desktopModule.TabIconFile,
+                       true);
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
+                    }
+
+                   
+                }
+               
+            }
+            //Add host items
+            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
+            {
+                string tabPath = "//Host//" + _desktopModule.AdminPage;
+                var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
+                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
+                TabInfo newHostPage = TabController.Instance.GetTab(tabID, Null.NullInteger);
+                if (newHostPage == null)
+                {
+                    newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
+                        _desktopModule.TabDescription,
+                        _desktopModule.TabIconFile, _desktopModule.TabIconFileLarge,
+                        true);
+                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
+                }
+                if (moduleDefinition != null)
+                {
+                //Add Module To Page
+                    Upgrade.Upgrade.AddModuleToPage(newHostPage,
+                        moduleDefinition.ModuleDefID,
+                        _desktopModule.TabDescription,
+                        _desktopModule.TabIconFile,
+                        true);
+                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));
+                }
             }
         }
 

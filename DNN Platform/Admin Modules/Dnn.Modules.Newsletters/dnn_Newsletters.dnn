@@ -22,6 +22,10 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
+                      <adminPage>Newsletters</adminPage>
+                      <tabIconFile>~/Icons/Sigma/BulkMail_16X16_Standard.png</tabIconFile>
+                      <tabIconFileLarge>~/Icons/Sigma/BulkMail_32X32_Standard.png</tabIconFileLarge>
+                      <tabDescription>Send email messages to users, security roles and specific email addresses</tabDescription>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Newsletters</friendlyName>
