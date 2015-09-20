@@ -8,6 +8,8 @@
   margin-right: 10px;
   min-height: 150px;
   border-bottom: 1px solid #cccccc;
+  overflow: auto;
+  padding-bottom: 20px;
 }
 .dccEditContent .dccFooter {
   margin-top: 6px;
@@ -46,4 +48,8 @@
   text-decoration: none;
   text-align: center;
   font-size: 13px;
+}
+.dccEditContent .dnnFormEditor {
+  width: 63%;
+  float: right;
 }
