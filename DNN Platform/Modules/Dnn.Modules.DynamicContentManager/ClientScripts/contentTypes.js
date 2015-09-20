@@ -94,6 +94,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     };
 
     self.init = function() {
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
         dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findContentTypes();
@@ -179,8 +180,9 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                     parentViewModel.refresh();
                 },
 
-                function(){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         });
@@ -224,23 +226,18 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
 
             util.contentTypeService().post("SaveContentType", params,
                 function(data) {
-                    if (data.success === true) {
-                        //Success
-                        if (self.isAddMode()) {
-                            util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
-                                self.contentTypeId(data.data.id);
-                                self.fields().clear();
-                            });
-                        } else {
-                            self.cancel();
-                        }
+                    if (self.isAddMode()) {
+                        util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function () {
+                            self.contentTypeId(data.id);
+                            self.fields().clear();
+                        });
                     } else {
-                        //Error
-                        util.alert(data.message, resx.ok);
+                        self.cancel();
                     }
                 },
-                function() {
-                    //Failure
+                function (xhr, status, err) {
+                    //Error
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         }
@@ -318,8 +315,9 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
                 self.refresh();
             },
 
-            function () {
+            function (xhr, status, err) {
                 //Failure
+                util.alert(status + ":" + err, resx.ok);
             }
         );
 
@@ -336,6 +334,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     },
 
     self.init = function() {
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
         dnn.koPager().init(self, config);
     };
 
@@ -473,8 +472,9 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                     parentViewModel.refresh();
                 },
 
-                function(){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         });
@@ -488,8 +488,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedDescriptions, self.rootViewModel.languages());
-
-        getDataTypes();
     };
 
     self.load = function(data) {
@@ -518,17 +516,12 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             };
 
             util.contentTypeService().post("SaveContentField", params,
-                function(data) {
-                    if (data.success === true) {
-                        //Success
-                        self.cancel();
-                    } else {
-                        //Error
-                        util.alert(data.message, resx.ok);
-                    }
-                },
                 function() {
+                    self.cancel();
+                },
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         }

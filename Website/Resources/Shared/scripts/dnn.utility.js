@@ -213,7 +213,7 @@ dnn.sf = function(){
         });
     };
 
-    var call = function (httpMethod, url, params, success, failure, loading, sync, silence) {
+    var call = function (httpMethod, url, params, onSuccess, onFailure, loading, sync, silence) {
         var options = {
             url: url,
             beforeSend: serviceFramework.setModuleHeaders,
@@ -221,26 +221,26 @@ dnn.sf = function(){
             async: sync === false,
             success: function(data){
                 if(loadingBarId && !silence) isLoaded = true;
-                if(typeof loading === 'function'){
+                if(typeof loading === "function"){
                     loading(false);
                 }
 
-                if(typeof success === 'function'){
-                    success(data || {});
+                if(typeof onSuccess === "function"){
+                    onSuccess(data || {});
                 }
             },
             error: function(xhr, status, err){
                 if(loadingBarId && !silence) isLoaded = true;
-                if(typeof loading === 'function'){
+                if(typeof loading === "function"){
                     loading(false);
                 }
 
-                if(typeof failure === 'function'){
+                if(typeof onFailure === "function"){
                     if(xhr){
-                        failure(xhr, err);
+                        onFailure(xhr, status, err);
                     }
                     else{
-                        failure(null, 'Unknown error');
+                        onFailure(null, "Unknown error", "");
                     }
                 }
             }
@@ -250,9 +250,9 @@ dnn.sf = function(){
             options.data = params;
         }
         else {
-            options.contentType = 'application/json; charset=UTF-8';
+            options.contentType = "application/json; charset=UTF-8";
             options.data = JSON.stringify(params);
-            options.dataType = 'json';
+            options.dataType = "json";
         }
 
         if (typeof loading === "function") {
@@ -263,21 +263,27 @@ dnn.sf = function(){
         return $.ajax(options);
     };
 
-    var get = function (method, params, success, failure, loading) {
+    var deleteInternal = function (method, params, onSuccess, onFailure, loading) {
         var self = this;
-        var url = baseServicepath + self.serviceController + '/' + method;
-        return call("GET", url, params, success, failure, loading, false, false);
+        var url = baseServicepath + self.serviceController + "/" + method;
+        return call("DELETE", url, params, onSuccess, onFailure, loading, false, false);
     };
 
-    var getEntities = function (method, params, array, createEntity, total, onSuccess, onError, onFailure) {
+    var get = function (method, params, onSuccess, onFailure, loading) {
         var self = this;
-        var url = baseServicepath + self.serviceController + '/' + method;
+        var url = baseServicepath + self.serviceController + "/" + method;
+        return call("GET", url, params, onSuccess, onFailure, loading, false, false);
+    };
+
+    var getEntities = function (method, params, array, createEntity, updateTotal, onSuccess, onFailure) {
+        var self = this;
+        var url = baseServicepath + self.serviceController + "/" + method;
         call("GET", url, params,
             function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data != null) {
                     //Success
                     array.removeAll();
-                    var results = data.data.results;
+                    var results = data.results;
                     for(var i=0; i < results.length; i++){
                         var result = results[i];
                         var entity = createEntity();
@@ -285,17 +291,12 @@ dnn.sf = function(){
                         array.push(entity);
                     }
 
-                    if (typeof total === 'function') {
-                        total(data.data.totalResults);
+                    if (typeof updateTotal === 'function') {
+                        updateTotal(data.total);
                     }
 
                     if (typeof onSuccess === 'function') {
                         onSuccess();
-                    }
-                } else {
-                    //Error
-                    if (typeof onError === 'function') {
-                        onError();
                     }
                 }
             },
@@ -307,19 +308,16 @@ dnn.sf = function(){
         );
     };
 
-    var getEntity = function (method, params, entity, onSuccess, onError, onFailure) {
+    var getEntity = function (method, params, entity, onSuccess, onFailure) {
         var self = this;
-        var url = baseServicepath + self.serviceController + '/' + method;
+        var url = baseServicepath + self.serviceController + "/" + method;
         call("GET", url, params,
             function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data != null) {
                     //Success
-                    entity.load(data.data.result);
+                    entity.load(data);
                     if(typeof onSuccess === 'function') onSuccess();
-                } else {
-                    //Error
-                    if(typeof onError === 'function') onError();
-                }
+                } 
             },
 
             function(){
@@ -335,18 +333,26 @@ dnn.sf = function(){
         baseServicepath = serviceFramework.getServiceRoot(settings.servicePath);
     };
 
-    var post = function (method, params, success, failure, loading) {
+    var post = function (method, params, onSuccess, onFailure, loading) {
         var self = this;
-        var url = baseServicepath + self.serviceController + '/' + method;
-        return call("POST", url, params, success, failure, loading, false, false);
+        var url = baseServicepath + self.serviceController + "/" + method;
+        return call("POST", url, params, onSuccess, onFailure, loading, false, false);
+    };
+
+    var put = function (method, params, onSuccess, onFailure, loading) {
+        var self = this;
+        var url = baseServicepath + self.serviceController + "/" + method;
+        return call("PUT", url, params, onSuccess, onFailure, loading, false, false);
     };
 
     return {
+        "delete": deleteInternal,
         get: get,
         getEntities: getEntities,
         getEntity: getEntity,
         init: init,
         post: post,
+        put: put,
         serviceController: serviceController
     }
 };

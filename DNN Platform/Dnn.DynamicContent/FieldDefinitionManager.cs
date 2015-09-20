@@ -78,6 +78,19 @@ namespace Dnn.DynamicContent
         {
             Delete(field);
 
+            //Update field order of remaining fields
+            var sql = @"BEGIN
+                            UPDATE {objectQualifier}ContentTypes_FieldDefinitions
+                                SET[Order] = [Order] - 1
+                                    WHERE[Order] > @1
+                                    AND ContentTypeID = @0
+                        END";
+
+            using (var context = DotNetNuke.Data.DataContext.Instance())
+            {
+                context.Execute(CommandType.Text, sql, field.ContentTypeId, field.Order);
+            }
+
             ClearContentTypeCache(field);
 
             //Delete any ValidationRules
@@ -130,14 +143,14 @@ namespace Dnn.DynamicContent
                 //Next update all the intermediate fields
                 var sql = @"IF @1 > @2 -- Move other items down order
                             BEGIN
-                                UPDATE dnn_ContentTypes_FieldDefinitions
+                                UPDATE {objectQualifier}ContentTypes_FieldDefinitions
                                     SET[Order] = [Order] + 1
                                         WHERE[Order] < @1 AND[Order] >= @2
                                         AND ContentTypeID = @0
                             END
                         ELSE --Move other items up order
                             BEGIN
-                                UPDATE dnn_ContentTypes_FieldDefinitions
+                                UPDATE {objectQualifier}ContentTypes_FieldDefinitions
                                     SET[Order] = [Order] - 1
                                         WHERE[Order] > @1 AND[Order] <= @2
                                         AND ContentTypeId = @0
