@@ -97,7 +97,7 @@ namespace Dnn.DynamicContent
                 {
                     _templates = (ContentTypeId == -1)
                                         ? new List<ContentTemplate>()
-                                        : ContentTemplateManager.Instance.GetContentTemplates(ContentTypeId, PortalId, true).ToList();
+                                        : ContentTemplateManager.Instance.GetContentTemplatesByContentType(ContentTypeId).ToList();
                 }
                 return _templates;
             }

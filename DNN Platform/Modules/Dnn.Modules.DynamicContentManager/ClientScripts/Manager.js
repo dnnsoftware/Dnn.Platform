@@ -99,16 +99,16 @@
 
         util.languageService().get("GetEnabledLanguages", {},
             function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data != null) {
                     //Success
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
+                    for (var i = 0; i < data.results.length; i++) {
+                        var result = data.results[i];
                         var language = { code: result.code, language: result.language };
                         viewModel.languages.push(language);
                     }
                     viewModel.isLocalized(viewModel.languages().length > 1);
-                    viewModel.selectedLanguage(data.data.defaultLanguage);
-                    viewModel.defaultLanguage = data.data.defaultLanguage;
+                    viewModel.selectedLanguage(data.defaultLanguage);
+                    viewModel.defaultLanguage = data.defaultLanguage;
                 }
             },
             function () {

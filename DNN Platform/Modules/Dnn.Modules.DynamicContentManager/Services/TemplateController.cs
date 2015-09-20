@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -34,7 +35,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// </summary>
         /// <param name="viewModel">The Template to delete</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteTemplate(TemplateViewModel viewModel)
         {
@@ -60,16 +61,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
             LoadSnippets(PortalSettings.HomeDirectoryMapPath, snippets);
 
             var response = new
-            {
-                success = true,
-                data = new
-                        {
-                            results = snippets,
-                            totalResults = snippets.Count
-                }
-            };
+                                {
+                                    results = snippets,
+                                    totalResults = snippets.Count
+                                };
 
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         private void LoadSnippets(string path, List<SnippetViewModel> snippets)
@@ -129,7 +126,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// </summary>
         /// <param name="viewModel">The ViewModel for the Template to save</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveTemplate(TemplateViewModel viewModel)
         {
