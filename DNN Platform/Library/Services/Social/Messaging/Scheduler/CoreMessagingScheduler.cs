@@ -693,14 +693,12 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 // Include the attachment in the email message if configured to do so
                 if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
                 {
-                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, message.Subject, message.Body, this.CreateAttachments(message.MessageID).ToList());
+                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body, CreateAttachments(message.MessageID).ToList());
                 }
                 else
                 {
-                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, message.Subject, message.Body);
+                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
                 }
-
-                Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);            
             }
 
             InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
