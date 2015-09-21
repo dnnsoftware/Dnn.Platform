@@ -1849,6 +1849,8 @@
     <Content Include="Resources\Shared\components\CodeEditor\AUTHORS" />
     <Content Include="Resources\Shared\components\CodeEditor\LICENSE" />
     <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.ls" />
+    <Content Include="Portals\_default\Content Templates\ViewMarkdown.cshtml" />
+    <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

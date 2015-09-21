@@ -22,6 +22,52 @@ namespace Dnn.Modules.DynamicContentManager.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
 
+        private static void AddTemplate(string fileName, int portalId, string contentTypeName, string templateName)
+        {
+            var folder = FolderManager.Instance.GetFolder(-1, "Content Templates/");
+            var file = new FileInfo
+                            {
+                                PortalId = portalId,
+                                FileName = fileName,
+                                Extension = "cshtml",
+                                FolderId = folder.FolderID,
+                                Folder = folder.FolderPath,
+                                StartDate = DateTime.Now,
+                                EndDate = Null.NullDate,
+                                EnablePublishPeriod = false,
+                                ContentItemID = Null.NullInteger
+                            };
+
+            //Save new File
+            try
+            {
+                //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
+                using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
+                {
+                    var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+                    var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                    file.FileId = FileManager.Instance.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
+                }
+
+                var dynamicContentType = DynamicContentTypeManager.Instance.GetContentTypes(portalId, false)
+                                        .SingleOrDefault(t => t.Name == contentTypeName && t.IsDynamic);
+                if (dynamicContentType != null)
+                {
+                    var template = new ContentTemplate(portalId)
+                                        {
+                                            Name = templateName,
+                                            TemplateFileId = file.FileId,
+                                            ContentTypeId = dynamicContentType.ContentTypeId
+                                        };
+                    ContentTemplateManager.Instance.AddContentTemplate(template);
+                }
+            }
+            catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
+            {
+                Logger.Error(ex.Message);
+            }
+        }
+
         public string UpgradeModule(string Version)
         {
             try
@@ -54,48 +100,9 @@ namespace Dnn.Modules.DynamicContentManager.Components
                         }
 
                         //Ensure Getting Started is registered
-                        var folder = FolderManager.Instance.GetFolder(-1, "Content Templates/");
-                        var fileName = "GettingStarted.cshtml";
-                        var file = new FileInfo
-                                        {
-                                            PortalId = -1,
-                                            FileName = fileName,
-                                            Extension = "cshtml",
-                                            FolderId = folder.FolderID,
-                                            Folder = folder.FolderPath,
-                                            StartDate = DateTime.Now,
-                                            EndDate = Null.NullDate,
-                                            EnablePublishPeriod = false,
-                                            ContentItemID = Null.NullInteger
-                                        };
-
-                        //Save new File
-                        try
-                        {
-                            //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
-                            using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
-                            {
-                                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                                file.FileId = FileManager.Instance.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
-                            }
-
-                            var htmlContentType = DynamicContentTypeManager.Instance.GetContentTypes(-1, false).SingleOrDefault(t => t.Name == "HTML" && t.IsDynamic);
-                            if (htmlContentType != null)
-                            {
-                                var template = new ContentTemplate(-1)
-                                {
-                                    Name = "Getting Started",
-                                    TemplateFileId = file.FileId,
-                                    ContentTypeId = htmlContentType.ContentTypeId
-                                };
-                                ContentTemplateManager.Instance.AddContentTemplate(template);
-                            }
-                        }
-                        catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
-                        {
-                            Logger.Error(ex.Message);
-                        }
+                        AddTemplate("GettingStarted.cshtml", -1, "HTML", "Getting Started");
+                        AddTemplate("ViewHTML.cshtml", -1, "HTML", "View HTML");
+                        AddTemplate("ViewMarkdown.cshtml", -1, "Markdown", "View Markdown");
 
 
                         break;
