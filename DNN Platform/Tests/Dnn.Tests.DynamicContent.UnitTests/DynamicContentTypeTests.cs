@@ -140,7 +140,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fields = contentType.Templates;
 
             //Assert
-            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(contentTypeId, portalId, true), Times.Once);
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplatesByContentType(contentTypeId), Times.Once);
         }
 
         [Test]
