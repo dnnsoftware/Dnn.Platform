@@ -483,7 +483,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private static void DeserializeTabUrls(XmlNode nodeTabUrl, TabUrlInfo objTabUrl)
         {
-            objTabUrl.SeqNum = XmlUtils.GetAttributeValueAsInteger(nodeTabUrl.CreateNavigator(), "seqNum", 0);
+            objTabUrl.SeqNum = XmlUtils.GetAttributeValueAsInteger(nodeTabUrl.CreateNavigator(), "SeqNum", 0);
             objTabUrl.Url = String.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url")) ? "/" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url") ;
             objTabUrl.QueryString = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "QueryString");
             objTabUrl.CultureCode = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "CultureCode");
