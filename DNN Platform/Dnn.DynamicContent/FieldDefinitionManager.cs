@@ -79,16 +79,14 @@ namespace Dnn.DynamicContent
             Delete(field);
 
             //Update field order of remaining fields
-            var sql = @"BEGIN
-                            UPDATE {objectQualifier}ContentTypes_FieldDefinitions
+            var sql = @"UPDATE {objectQualifier}ContentTypes_FieldDefinitions
                                 SET[Order] = [Order] - 1
                                     WHERE[Order] > @1
-                                    AND ContentTypeID = @0
-                        END";
+                                    AND ContentTypeID = @0";
 
-            using (var context = DotNetNuke.Data.DataContext.Instance())
+            using (DataContext)
             {
-                context.Execute(CommandType.Text, sql, field.ContentTypeId, field.Order);
+                DataContext.Execute(CommandType.Text, sql, field.ContentTypeId, field.Order);
             }
 
             ClearContentTypeCache(field);
@@ -156,9 +154,9 @@ namespace Dnn.DynamicContent
                                         AND ContentTypeId = @0
                             END";
 
-                using (var context = DotNetNuke.Data.DataContext.Instance())
+                using (DataContext)
                 {
-                    context.Execute(CommandType.Text, sql, contentTypeId, sourceIndex, targetIndex);
+                    DataContext.Execute(CommandType.Text, sql, contentTypeId, sourceIndex, targetIndex);
                 }
 
                 //Update item to be moved
