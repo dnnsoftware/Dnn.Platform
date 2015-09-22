@@ -655,10 +655,7 @@ namespace DotNetNuke.Common
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
-                    if (
-                        incrementalcount == 1)
-                    {
-                        return false;}
+                   
                     if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;
