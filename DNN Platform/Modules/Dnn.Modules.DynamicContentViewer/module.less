@@ -3,6 +3,7 @@
 @secondarybtn_backgroundColor: #e4e4e4;
 @secondarybtn_color: #333333;
 
+@quickSettings_marginBottom: 20px;
 @quickSettings_marginTop: 20px;
 @quickSettings_minHeight: 400px;
 
@@ -20,6 +21,8 @@
     margin-right: 10px;
     min-height: 150px;
     border-bottom: 1px solid @border_color;
+    overflow: auto;
+    padding-bottom: @quickSettings_marginBottom;
 }
 
 .dccEditContent .dccFooter {
@@ -62,4 +65,10 @@
     text-decoration: none;
     text-align: center;
     font-size: 13px;
+}
+
+
+.dccEditContent .dnnFormEditor {
+    width: 63%;
+    float: right;
 }

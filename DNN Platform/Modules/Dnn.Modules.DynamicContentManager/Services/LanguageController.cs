@@ -32,13 +32,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             var response = new
                             {
-                                success = true,
-                                data = new
-                                        {
-                                            results = languages,
-                                            defaultLanguage = PortalSettings.DefaultLanguage,
-                                            userLanguage = Thread.CurrentThread.CurrentUICulture.ToString()
-                                        }
+                                results = languages,
+                                defaultLanguage = PortalSettings.DefaultLanguage,
+                                userLanguage = Thread.CurrentThread.CurrentUICulture.ToString()
                             };
 
             return Request.CreateResponse(response);
