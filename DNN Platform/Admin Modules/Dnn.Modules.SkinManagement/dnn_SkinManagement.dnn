@@ -40,12 +40,6 @@
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-          <desktopModule>
-            <moduleName>SkinAttributes</moduleName>
-            <foldername>Admin/SkinManagement</foldername>
-            <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Theme Designer</friendlyName>
                 <moduleControls>
