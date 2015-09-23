@@ -165,26 +165,17 @@
   <data name="PasswordStrengthWeak.Text" xml:space="preserve">
     <value>weak</value>
   </data>
-  <data name="CriteriaOneUpperCaseLetter.Text" xml:space="preserve">
-    <value>One upper-case letter</value>
-  </data>
-  <data name="CriteriaOneLowerCaseLetter.Text" xml:space="preserve">
-    <value>One lower-case letter</value>
-  </data>
-  <data name="CriteriaSpecialChar.Text" xml:space="preserve">
-    <value>Special character (!,@,#,%)</value>
+  <data name="CriteriaValidationExpression.Text" xml:space="preserve">
+    <value>Validation Expression: {0}</value>
   </data>
   <data name="CriteriaAtLeastNSpecialChars.Text" xml:space="preserve">
-    <value>At least {0} special characters (!,@,#,%)</value>
-  </data>
-  <data name="CriteriaOneNumber.Text" xml:space="preserve">
-    <value>One number</value>
+    <value>At least {0} non-alphanumeric characters</value>
   </data>
   <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
     <value>At least {0} characters</value>
   </data>
   <data name="PasswordRulesHeadText.Text" xml:space="preserve">
-    <value>Password Rules:</value>
+    <value>Password Policy:</value>
   </data>
   <data name="PasswordRulesBodyText.Text" xml:space="preserve">
     <value>Contains at least {0} characters, 1 uppercase letter, 1 number and {1}.</value>
