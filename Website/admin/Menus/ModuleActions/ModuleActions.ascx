@@ -106,7 +106,8 @@
                                         top: -ulHeight,
                                         right: 0
                                     }).show('slide', { direction: 'down' }, 80, function () {
-                                        dnn.addIframeMask(ul[0]);
+                                    	dnn.addIframeMask(ul[0]);
+	                                    displayQuickSettings = false;
                                     });
                                 }
                                 else {
@@ -114,7 +115,8 @@
                                         top: 20,
                                         right: 0
                                     }).show('slide', { direction: 'up' }, 80, function () {
-                                        dnn.addIframeMask(ul[0]);
+                                    	dnn.addIframeMask(ul[0]);
+										displayQuickSettings = false;
                                     });
                                 }
                             }
