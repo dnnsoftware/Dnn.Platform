@@ -27,10 +27,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Upgrade;
+using Microsoft.SqlServer.Server;
 
 namespace Dnn.Modules.SkinManagement.Components
 {
@@ -44,8 +46,10 @@ namespace Dnn.Modules.SkinManagement.Components
         private const string THEME_NAME = "Themes";
         private const string THEME_DESIGNER_NAME = "Theme Designer";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinManagementController));
+
         /// <summary>
-        /// 
+        /// Runs routines to ensure the module is completely upgraded
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>
@@ -56,7 +60,6 @@ namespace Dnn.Modules.SkinManagement.Components
                 switch (version)
                 {
                     case "01.01.00":
-                        var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_NAME);
                         
                         if (moduleDefinition != null)
@@ -73,12 +76,7 @@ namespace Dnn.Modules.SkinManagement.Components
                                                     true);
 
                             // add the theme attributes module to the same admin page
-                            var themePage = TabController.Instance.GetTabByName(THEME_NAME, portalSettings.PortalId);
-                            if (themePage != null)
-                            {
-                                var attributeDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_DESIGNER_NAME);
-                                AddAttributeModule(portalSettings.PortalId, themePage, attributeDefinition);
-                            }
+                            AddAttributeModuleToPage();
                         }
 
                         // delete the Skins page
@@ -97,7 +95,7 @@ namespace Dnn.Modules.SkinManagement.Components
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return "Failed";
             }
         }
@@ -171,22 +169,29 @@ namespace Dnn.Modules.SkinManagement.Components
             installer.UnInstall(true);
         }
 
-        private void AddAttributeModule(int portalId, TabInfo themeTab, ModuleDefinitionInfo moduleDefinition)
+        private void AddAttributeModuleToPage()
         {
-            var objModule = new ModuleInfo();
-            
-            objModule.Initialize(portalId);
+            var portals = PortalController.Instance.GetPortals();
 
-            objModule.PortalID = portalId;
-            objModule.TabID = themeTab.TabID;
-            objModule.ModuleTitle = moduleDefinition.FriendlyName;
-            objModule.PaneName = Globals.glbDefaultPane; // ContentPane
-            objModule.ModuleDefID = moduleDefinition.ModuleDefID;
-            objModule.InheritViewPermissions = true;
-            objModule.AllTabs = false;
-            objModule.ModuleOrder = Null.NullInteger; // puts the module on the bottom
+            //Add Page to Admin Menu of all configured Portals
+            for (var index = 0; index <= portals.Count - 1; index++)
+            {
+                var portal = (PortalInfo)portals[index];
+                var themePage = TabController.Instance.GetTabByName(THEME_NAME, portal.PortalID);
 
-            ModuleController.Instance.AddModule(objModule);
+                var attributeDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_DESIGNER_NAME);
+
+                if (themePage == null || attributeDefinition == null) continue;
+
+                AddAttributeModule(themePage, attributeDefinition);
+            }
+        }
+
+        private void AddAttributeModule(TabInfo themeTab, ModuleDefinitionInfo moduleDefinition)
+        {
+            if (themeTab == null || moduleDefinition == null) return;
+
+            Upgrade.AddModuleToPage(themeTab, moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, string.Empty, true);
         }
     }
 }
