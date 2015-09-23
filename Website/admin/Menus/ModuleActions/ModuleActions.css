@@ -7,7 +7,7 @@
 div.actionMenu ul {
   z-index: 1000 !important;
 }
-div.actionMenu ul:hover {
+div.actionMenu ul:hover, div.actionMenu ul.showhover {
   z-index: 1003 !important;
 }
 div.actionMenu ul.dnn_mact {

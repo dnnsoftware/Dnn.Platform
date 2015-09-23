@@ -121,6 +121,8 @@
         }
 
         function closeMenu(ul) {
+            var $menuroot = $('#moduleActions-' + moduleId + ' ul.dnn_mact');
+            $menuroot.removeClass('showhover').data('displayQuickSettings', false);
             if (ul && ul.position()) {
                 if (ul.position().top > 0) {
                     ul.hide('slide', { direction: 'up' }, 80, function () {
@@ -315,6 +317,7 @@
 
             var $quickSettings = $("#moduleActions-" + moduleId + "-QuickSettings");
             $quickSettings.show();
+            root.addClass('showhover');
 
             $parent.append($quickSettings);
         }
@@ -371,6 +374,7 @@
                 }
                 if (supportsQuickSettings) {
                     buildQuickSettings(menuRoot, "Quick", "actionQuickSettings", "caret-down");
+                    menuRoot.data('displayQuickSettings', displayQuickSettings);
                 }
 
                 if (isShared) {
@@ -387,7 +391,7 @@
                 showMenu($(this).find("ul"));
             },
             out: function () {
-                if (!($(this).hasClass("actionQuickSettings") && displayQuickSettings)) {
+                if (!($(this).hasClass("actionQuickSettings") && $(this).data('displayQuickSettings'))) {
                     closeMenu($(this).find("ul"));
                 }
             },
@@ -423,6 +427,8 @@
         var $cancelButton = $container.find("a.secondarybtn");
 
         var closeMenu = function (ul) {
+            var $menuRoot = $('#moduleActions-' + moduleId + ' ul.dnn_mact');
+            $menuRoot.removeClass('showhover').data('displayQuickSettings', false);
             if (ul && ul.position()) {
                 if (ul.position().top > 0) {
                     ul.hide('slide', { direction: 'up' }, 80, function () {

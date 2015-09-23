@@ -23,5 +23,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         ModuleInstanceContext ModuleContext { get; set; }
 
         ActionResult ResultOfLastExecute { get; }
+
+        bool ValidateRequest { get; set; }
     }
 }

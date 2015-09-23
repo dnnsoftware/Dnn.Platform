@@ -82,6 +82,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
 
+                moduleController.ValidateRequest = false;
+
                 moduleController.DnnPage = context.DnnPage;
 
                 moduleController.ModuleContext = context.ModuleContext;
