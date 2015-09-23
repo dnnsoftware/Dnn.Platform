@@ -96,16 +96,8 @@ div.actionMenu ul.dnn_mact > li ul {  /* Styles for all sub levels */
     box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
-div.actionMenu ul.dnn_mact > li.actionQuickSettings ul {
-    width:auto;
-}
-
 div.actionMenu ul.dnn_mact > li > ul { /* styles specific to secondary level */
     right:0;
-}
-
-div.actionMenu ul.dnn_mact > li.actionQuickSettings ul {
-    width:auto;
 }
 
 div.actionMenu ul.dnn_mact > li > ul > li {
@@ -163,9 +155,11 @@ div.actionMenu ul.dnn_mact > li.actionMenuMove > ul li {
 }
 
 div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul {
+    width:auto;
     min-height: 250px;
     overflow: auto;
     cursor:default;
+    z-index: 1000;
 }
 
 div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsHeader{
