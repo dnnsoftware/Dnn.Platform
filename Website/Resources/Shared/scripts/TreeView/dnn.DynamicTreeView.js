@@ -696,11 +696,11 @@
         },
 
         getTreeWithItem: function (itemId, sortOrder, onGetTreeCallback) {
-            var onGetTreeHandler = $.proxy(this._onGetTree, this, onGetTreeCallback, "getTreeWithItem");
+            var onGetTreeHandler = $.proxy(this._onGetTree, this, onGetTreeCallback);
             this._callGet({ itemId: itemId, sortOrder: sortOrder }, onGetTreeHandler, this.options.getTreeWithNodeMethod);
         },
 
-        _onGetTree: function (onGetTreeCallback, callerToken, data, textStatus, jqXhr) {
+        _onGetTree: function (onGetTreeCallback, data, textStatus, jqXhr) {
             var rootNode = null;
             var castedRootNode = TreeNodeConverter.castNode(data.Tree);
             if (data.IgnoreRoot) {
@@ -716,10 +716,8 @@
                 }
             }
 
-            if (this.options.rootNodeName && callerToken !== "search") { //When a search is performed, a rootNode doesn't make sense
-                if (rootNode.children && rootNode.children.length > 0) { //To avoid errors when the node set has not result
-                    rootNode.children[0].data.name = this.options.rootNodeName;
-                }
+            if (this.options.rootNodeName) {
+                rootNode.children[0].data.name = this.options.rootNodeName;
             }
 
             onGetTreeCallback.apply(this, [rootNode]);
@@ -736,17 +734,17 @@
         },
 
         search: function(searchText, sortOrder, onSearchCallback) {
-            var onSearchHandler = $.proxy(this._onGetTree, this, onSearchCallback, "search");
+            var onSearchHandler = $.proxy(this._onGetTree, this, onSearchCallback);
             this._callGet({ searchText: searchText, sortOrder: sortOrder }, onSearchHandler, this.options.searchTreeMethod);
         },
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
-            var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback, "getTree");
+            var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback);
             this._callGet({ sortOrder: sortOrder }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
         },
 
         sortTree: function (sortOrder, rootNode, searchText, onSortTreeCallback) {
-            var onSortTreeHandler = $.proxy(this._onGetTree, this, onSortTreeCallback, "sortTree");
+            var onSortTreeHandler = $.proxy(this._onGetTree, this, onSortTreeCallback);
             this._callGet({ treeAsJson: JSON.stringify(TreeNodeConverter.toTreeOfIds(rootNode)), sortOrder: sortOrder, searchText: searchText }, onSortTreeHandler, this.options.sortTreeMethod);
         }
 
