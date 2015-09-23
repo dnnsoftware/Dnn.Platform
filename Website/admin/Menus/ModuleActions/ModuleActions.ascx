@@ -26,11 +26,12 @@
 <script type="text/javascript">
     /*globals jQuery, window */
     (function ($) {
+        var moduleId = <% = ModuleContext.ModuleId %>;
         var displayQuickSettings = <% = DisplayQuickSettings.ToString().ToLower() %>;
+        var supportsQuickSettings = <% = SupportsQuickSettings.ToString().ToLower() %>;
 
         function setUpActions() {
-            var moduleId = <% = ModuleContext.Configuration.ModuleID %>;
-            var tabId = <% = ModuleContext.Configuration.TabID %>;
+            var tabId = <% = ModuleContext.TabId %>;
 
             //Initialise the actions menu plugin
             $('#<%= actionButton.ClientID %>').dnnModuleActions({
@@ -54,7 +55,7 @@
                     confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
-                    supportsQuickSettings: <% = SupportsQuickSettings.ToString().ToLower() %>,
+                    supportsQuickSettings: supportsQuickSettings,
                     displayQuickSettings: displayQuickSettings,
                     isShared : <% = IsShared.ToString().ToLower() %>
                 }
@@ -64,7 +65,6 @@
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load
         var resizeThrottle;
-        var rootMenuWidth = (<% = SupportsQuickSettings.ToString().ToLower() %>) ? 85 : 65;
         $(window).resize(function () {
             if (resizeThrottle) {
                 clearTimeout(resizeThrottle);
@@ -78,47 +78,54 @@
                         var id = $this.attr('id');
                         if (id) {
                             var mId = id.split('-')[1];
-                            var container = $(".DnnModule-" + mId);
-                            var root = $('ul.dnn_mact', $this);
-                            var containerPosition = container.offset();
-                            var containerWidth = container.width();
+                            if (moduleId == mId) {
+                                var container = $(".DnnModule-" + mId);
+                                var root = $('ul.dnn_mact', $this);
+                                var containerPosition = container.offset();
+                                var containerWidth = container.width();
 
-                            root.css({
-                                position: "absolute",
-                                marginLeft: 0,
-                                marginTop: 0,
-                                top: containerPosition.top,
-                                left: containerPosition.left + containerWidth - rootMenuWidth
-                            });
+                                var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
 
-                            if (displayQuickSettings) {
-                                var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
-                                var $self = ul.parent();
-                                var windowHeight = $(window).height();
-                                var windowScroll = $(window).scrollTop();
-                                var thisTop = $self.offset().top;
-                                var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+                                root.css({
+                                    position: "absolute",
+                                    marginLeft: 0,
+                                    marginTop: 0,
+                                    top: containerPosition.top,
+                                    left: containerPosition.left + containerWidth - rootMenuWidth
+                                });
 
-                                var ulHeight = ul.height();
+                                if (displayQuickSettings) {
+                                    var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
+                                    var $self = ul.parent();
+                                    if ($self.length > 0) {
+                                        var windowHeight = $(window).height();
+                                        var windowScroll = $(window).scrollTop();
+                                        var thisTop = $self.offset().top;
+                                        var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
 
-                                if (!atViewPortTop) {
-                                    ul.css({
-                                        top: -ulHeight,
-                                        right: 0
-                                    }).show('slide', { direction: 'down' }, 80, function () {
-                                    	dnn.addIframeMask(ul[0]);
-	                                    displayQuickSettings = false;
-                                    });
+                                        var ulHeight = ul.height();
+
+                                        if (!atViewPortTop) {
+                                            ul.css({
+                                                top: -ulHeight,
+                                                right: 0
+                                            }).show('slide', { direction: 'down' }, 80, function () {
+                                                dnn.addIframeMask(ul[0]);
+                                                displayQuickSettings = false;
+                                            });
+                                        }
+                                        else {
+                                            ul.css({
+                                                top: 20,
+                                                right: 0
+                                            }).show('slide', { direction: 'up' }, 80, function () {
+                                                dnn.addIframeMask(ul[0]);
+                                                displayQuickSettings = false;
+                                            });
+                                        }
+                                    }
                                 }
-                                else {
-                                    ul.css({
-                                        top: 20,
-                                        right: 0
-                                    }).show('slide', { direction: 'up' }, 80, function () {
-                                    	dnn.addIframeMask(ul[0]);
-										displayQuickSettings = false;
-                                    });
-                                }
+                               
                             }
                         }
                     });
