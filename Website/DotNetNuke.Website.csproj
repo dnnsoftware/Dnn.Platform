@@ -1839,7 +1839,6 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.08.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.09.SqlDataProvider" />
     <Content Include="Resources\Shared\components\CKEditor\CHANGES.md" />
@@ -1858,6 +1857,7 @@
     <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.ls" />
     <Content Include="Portals\_default\Content Templates\ViewMarkdown.cshtml" />
     <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.10.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -4579,7 +4579,6 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49989/</IISUrl>
           <IISUrl>http://localhost:64275/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>

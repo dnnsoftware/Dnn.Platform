@@ -37,7 +37,7 @@ namespace Dnn.DynamicContent
         public int AddFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
-            Requires.PropertyNotNegative(field, "DataTypeId");
+            Requires.PropertyNotNegative(field, "FieldTypeId");
             Requires.PropertyNotNegative(field, "ContentTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
@@ -179,7 +179,7 @@ namespace Dnn.DynamicContent
         {
             //Argument Contract
             Requires.PropertyNotNegative(field, "ContentTypeId");
-            Requires.PropertyNotNegative(field, "DataTypeId");
+            Requires.PropertyNotNegative(field, "FieldTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
 

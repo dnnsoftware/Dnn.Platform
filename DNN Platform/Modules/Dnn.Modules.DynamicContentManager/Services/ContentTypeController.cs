@@ -152,7 +152,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 /*CreateEntity*/() => new FieldDefinition()
                                         {
                                             ContentTypeId = contentType.ContentTypeId,
-                                            DataTypeId = viewModel.DataTypeId,
+                                            FieldTypeId = viewModel.FieldTypeId,
+                                            IsReferenceType = viewModel.IsReferenceType,
                                             Label = defaultLabel,
                                             Name = defaultName,
                                             Description = defaultDescription,
@@ -168,7 +169,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                             contentField.Name = defaultName;
                                             contentField.Description = defaultDescription;
                                             contentField.Label = defaultLabel;
-                                            contentField.DataTypeId = viewModel.DataTypeId;
+                                            contentField.FieldTypeId = viewModel.FieldTypeId;
+                                            contentField.IsReferenceType = viewModel.IsReferenceType;
                                             FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
                                         },
 

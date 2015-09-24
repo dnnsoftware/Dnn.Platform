@@ -342,4 +342,10 @@
   <data name="TemplatesPageSize.Text" xml:space="preserve">
     <value>Templates per page</value>
   </data>
+  <data name="FieldType.Text" xml:space="preserve">
+    <value>Field Type</value>
+  </data>
+  <data name="IsContentType.Text" xml:space="preserve">
+    <value>Content Type?</value>
+  </data>
 </root>
