@@ -103,8 +103,6 @@ namespace Dnn.Modules.DynamicContentManager.Components
                         AddTemplate("GettingStarted.cshtml", -1, "HTML", "Getting Started");
                         AddTemplate("ViewHTML.cshtml", -1, "HTML", "View HTML");
                         AddTemplate("ViewMarkdown.cshtml", -1, "Markdown", "View Markdown");
-                        AddTemplate("EditHTML.cshtml", -1, "HTML", "Edit HTML");
-                        AddTemplate("EditMarkdown.cshtml", -1, "Markdown", "Edit Markdown");
 
                         break;
                 }
