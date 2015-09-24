@@ -716,9 +716,12 @@
                 }
             }
 
-            if (this.options.rootNodeName) {
-                rootNode.children[0].data.name = this.options.rootNodeName;
+            if (rootNode.children && rootNode.children.length > 0 && this.options.rootNodeName) {
+                if (rootNode.children[0].data.id === this.options.rootNodeId) { // Check if first node is the configured root node. Search or Sort could change that
+                    rootNode.children[0].data.name = this.options.rootNodeName;
+                }
             }
+
 
             onGetTreeCallback.apply(this, [rootNode]);
         },
