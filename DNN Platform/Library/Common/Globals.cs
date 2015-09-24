@@ -651,14 +651,11 @@ namespace DotNetNuke.Common
             //If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
-                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~","");
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
-                    if (
-                        incrementalcount == 1)
-                    {
-                        return false;}
+                   
                     if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;

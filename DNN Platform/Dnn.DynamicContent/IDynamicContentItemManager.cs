@@ -11,15 +11,13 @@ namespace Dnn.DynamicContent
     {
         int AddContentItem(DynamicContentItem dynamicContent);
 
-        DynamicContentItem CreateContentItem(int moduleId, DynamicContentType contentType);
+        DynamicContentItem CreateContentItem(int portalId, int tabId, int moduleId, DynamicContentType contentType);
 
-        DynamicContentItem CreateContentItem(int portalId, ContentItem contentItem);
+        DynamicContentItem CreateContentItem(ContentItem contentItem);
 
         void DeleteContentItem(DynamicContentItem dynamicContent);
 
-        IQueryable<DynamicContentItem> GetContentItems(int contentTypeId, int moduleId);
-
-        IPagedList<DynamicContentItem> GetContentItems(int contentTypeId, int moduleId, int pageIndex, int pageSize);
+        IQueryable<DynamicContentItem> GetContentItems(int moduleId, int contentTypeId);
 
         void UpdateContentItem(DynamicContentItem dynamicContent);
     }

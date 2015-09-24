@@ -56,7 +56,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -328,7 +327,7 @@ namespace DotNetNuke.Services.Upgrade
                                       Url = "http://www.dnnsoftware.com",
                                       Email = "support@dnnsoftware.com"
                                   };
-                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer" || desktopModuleName == "Dashboard")
+                if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer")
                 {
                     package.IsSystemPackage = true;
                 }
@@ -2534,6 +2533,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion623()
         {
+#pragma warning disable 618
             if (Host.jQueryUrl == "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
             {
                 HostController.Instance.Update("jQueryUrl", jQuery.DefaultHostedUrl);
@@ -2542,8 +2542,9 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.jQueryUIUrl == "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js")
             {
                 HostController.Instance.Update("jQueryUIUrl", jQuery.DefaultUIHostedUrl);
-            }
-        }
+			}
+#pragma warning restore 618
+		}
 
         private static void UpgradeToVersion624()
         {
@@ -3055,13 +3056,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 UninstallPackage("DarkKnightMobile", "Container"); //Container  
             }
-        }
-
-        private static void UpgradeToVersion750()
-        {
-            //Remove Admin Pages
-            RemoveAdminPages("//Admin//Newsletters");
-            RemoveAdminPages("//Admin//RecycleBin");
         }
 
         private static void ReIndexUserSearch()
@@ -3939,26 +3933,13 @@ namespace DotNetNuke.Services.Upgrade
             return adminUser;
         }
 
-        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
+            if (string.IsNullOrEmpty(currentCulture))
+                currentCulture = Localization.Localization.SystemLocale;
+
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Load Template
-            var installTemplate = new XmlDocument();
-            Upgrade.GetInstallTemplate(installTemplate);
-            //Parse the root node
-            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
-            String currentCulture = "";
-            if (rootNode != null)
-            {
-                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
-            }
-
-            if (String.IsNullOrEmpty(currentCulture))
-            {
-                currentCulture = Localization.Localization.SystemLocale;
-            }
-            currentCulture = currentCulture.ToLower();
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
@@ -3978,6 +3959,28 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return match;
+        }
+
+        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        {
+            //Load Template
+            var installTemplate = new XmlDocument();
+            Upgrade.GetInstallTemplate(installTemplate);
+            //Parse the root node
+            XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
+            String currentCulture = "";
+            if (rootNode != null)
+            {
+                currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
+            }
+
+            if (String.IsNullOrEmpty(currentCulture))
+            {
+                currentCulture = Localization.Localization.SystemLocale;
+            }
+            currentCulture = currentCulture.ToLower();
+
+            return FindBestTemplate(templateFileName, currentCulture);
         }
 
         public static string BuildUserTable(IDataReader dr, string header, string message)
@@ -4155,6 +4158,56 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return exceptions;
+        }
+
+
+        public static string DeleteFilesInterval(string providerPath, Version version, int interval, bool writeFeedback)
+        {
+            var intervalfile=GetStringVersion(version) + "." + interval.ToString("D2");
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + intervalfile);
+            string exceptions = "";
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + intervalfile);
+            }
+
+            try
+            {
+                string listFile = Globals.InstallMapPath + "Cleanup\\" + intervalfile + ".txt";
+
+                if (File.Exists(listFile))
+                {
+                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                // log the results
+                DnnInstallLogger.InstallLogError(exceptions);
+                try
+                {
+                    using (StreamWriter streamWriter = File.CreateText(providerPath + intervalfile + "_Config.log"))
+                    {
+                        streamWriter.WriteLine(exceptions);
+                        streamWriter.Close();
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+            }
+
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)));
+            }
+
+            return exceptions;
+         
         }
 
         ///-----------------------------------------------------------------------------
@@ -4960,7 +5013,7 @@ namespace DotNetNuke.Services.Upgrade
 						                packages.Remove(oldPackage.Key);
 										FileWrapper.Instance.Delete(oldPackage.Key);
 					                }
-					                catch (Exception ex)
+					                catch (Exception)
 					                {
 						                //do nothing here.
 					                }
@@ -5217,131 +5270,141 @@ namespace DotNetNuke.Services.Upgrade
             }
             try
             {
-                switch (version.ToString(3))
+                if (version.Revision == -1)
                 {
-                    case "3.2.3":
-                        UpgradeToVersion323();
-                        break;
-                    case "4.4.0":
-                        UpgradeToVersion440();
-                        break;
-                    case "4.7.0":
-                        UpgradeToVersion470();
-                        break;
-                    case "4.8.2":
-                        UpgradeToVersion482();
-                        break;
-                    case "5.0.0":
-                        UpgradeToVersion500();
-                        break;
-                    case "5.0.1":
-                        UpgradeToVersion501();
-                        break;
-                    case "5.1.0":
-                        UpgradeToVersion510();
-                        break;
-                    case "5.1.1":
-                        UpgradeToVersion511();
-                        break;
-                    case "5.1.3":
-                        UpgradeToVersion513();
-                        break;
-                    case "5.2.0":
-                        UpgradeToVersion520();
-                        break;
-                    case "5.2.1":
-                        UpgradeToVersion521();
-                        break;
-                    case "5.3.0":
-                        UpgradeToVersion530();
-                        break;
-                    case "5.4.0":
-                        UpgradeToVersion540();
-                        break;
-                    case "5.4.3":
-                        UpgradeToVersion543();
-                        break;
-                    case "5.5.0":
-                        UpgradeToVersion550();
-                        break;
-                    case "5.6.0":
-                        UpgradeToVersion560();
-                        break;
-                    case "5.6.2":
-                        UpgradeToVersion562();
-                        break;
-                    case "6.0.0":
-                        UpgradeToVersion600();
-                        break;
-                    case "6.0.1":
-                        UpgradeToVersion601();
-                        break;
-                    case "6.0.2":
-                        UpgradeToVersion602();
-                        break;
-                    case "6.1.0":
-                        UpgradeToVersion610();
-                        break;
-                    case "6.1.2":
-                        UpgradeToVersion612();
-                        break;
-                    case "6.1.3":
-                        UpgradeToVersion613();
-                        break;
-                    case "6.2.0":
-                        UpgradeToVersion620();
-                        break;
-                    case "6.2.1":
-                        UpgradeToVersion621();
-                        break;
-                    case "6.2.3":
-                        UpgradeToVersion623();
-                        break;
-                    case "6.2.4":
-                        UpgradeToVersion624();
-                        break;
-                    case "7.0.0":
-                        UpgradeToVersion700();
-                        break;
-                    case "7.1.0":
-                        UpgradeToVersion710();
-                        break;
-                    case "7.1.1":
-                        UpgradeToVersion711();
-                        break;
-                    case "7.1.2":
-                        UpgradeToVersion712();
-                        break;
-                    case "7.2.0":
-                        UpgradeToVersion720();
-                        break;
-                    case "7.2.1":
-                        UpgradeToVersion721();
-                        break;
-                    case "7.2.2":
-                        UpgradeToVersion722();
-                        break;
-                    case "7.3.0":
-                        UpgradeToVersion730();
-                        break;
-                    case "7.3.2":
-                        UpgradeToVersion732();
-                        break;
-                    case "7.3.3":
-                        UpgradeToVersion733();
-                        break;
-                    case "7.4.0":
-                        UpgradeToVersion740();
-                        break;
-					case "7.4.2":  
- 						UpgradeToVersion742();  
-                        break;  
-                    case "7.5.0":
-                        UpgradeToVersion750();
-                        break;
-                    case "8.0.0":
-                        UpgradeToVersion800();
-                        break;
+                    switch (version.ToString(3))
+                    {
+                        case "3.2.3":
+                            UpgradeToVersion323();
+                            break;
+                        case "4.4.0":
+                            UpgradeToVersion440();
+                            break;
+                        case "4.7.0":
+                            UpgradeToVersion470();
+                            break;
+                        case "4.8.2":
+                            UpgradeToVersion482();
+                            break;
+                        case "5.0.0":
+                            UpgradeToVersion500();
+                            break;
+                        case "5.0.1":
+                            UpgradeToVersion501();
+                            break;
+                        case "5.1.0":
+                            UpgradeToVersion510();
+                            break;
+                        case "5.1.1.0":
+                            UpgradeToVersion511();
+                            break;
+                        case "5.1.3":
+                            UpgradeToVersion513();
+                            break;
+                        case "5.2.0":
+                            UpgradeToVersion520();
+                            break;
+                        case "5.2.1":
+                            UpgradeToVersion521();
+                            break;
+                        case "5.3.0":
+                            UpgradeToVersion530();
+                            break;
+                        case "5.4.0":
+                            UpgradeToVersion540();
+                            break;
+                        case "5.4.3":
+                            UpgradeToVersion543();
+                            break;
+                        case "5.5.0":
+                            UpgradeToVersion550();
+                            break;
+                        case "5.6.0":
+                            UpgradeToVersion560();
+                            break;
+                        case "5.6.2":
+                            UpgradeToVersion562();
+                            break;
+                        case "6.0.0":
+                            UpgradeToVersion600();
+                            break;
+                        case "6.0.1":
+                            UpgradeToVersion601();
+                            break;
+                        case "6.0.2":
+                            UpgradeToVersion602();
+                            break;
+                        case "6.1.0":
+                            UpgradeToVersion610();
+                            break;
+                        case "6.1.2":
+                            UpgradeToVersion612();
+                            break;
+                        case "6.1.3":
+                            UpgradeToVersion613();
+                            break;
+                        case "6.2.0":
+                            UpgradeToVersion620();
+                            break;
+                        case "6.2.1":
+                            UpgradeToVersion621();
+                            break;
+                        case "6.2.3":
+                            UpgradeToVersion623();
+                            break;
+                        case "6.2.4":
+                            UpgradeToVersion624();
+                            break;
+                        case "7.0.0":
+                            UpgradeToVersion700();
+                            break;
+                        case "7.1.0":
+                            UpgradeToVersion710();
+                            break;
+                        case "7.1.1":
+                            UpgradeToVersion711();
+                            break;
+                        case "7.1.2":
+                            UpgradeToVersion712();
+                            break;
+                        case "7.2.0":
+                            UpgradeToVersion720();
+                            break;
+                        case "7.2.1":
+                            UpgradeToVersion721();
+                            break;
+                        case "7.2.2":
+                            UpgradeToVersion722();
+                            break;
+                        case "7.3.0":
+                            UpgradeToVersion730();
+                            break;
+                        case "7.3.2":
+                            UpgradeToVersion732();
+                            break;
+                        case "7.3.3":
+                            UpgradeToVersion733();
+                            break;
+                        case "7.4.0":
+                            UpgradeToVersion740();
+                            break;
+                        case "7.4.2":
+                            UpgradeToVersion742();
+                            break;
+                    }
+                }
+                else
+                {
+                    //Incremental
+                    switch (version.ToString(4))
+                    {
+                        case "8.0.0.6":
+                            UpgradeToVersion8006();
+                            break;
+                        case "8.0.0.7":
+                            UpgradeToVersion8007();
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -5380,18 +5443,34 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
-        private static void UpgradeToVersion800()
+        private static void UpgradeToVersion8006()
         {
-            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0")
-            //{
-            //    switch (iteration)
-            //    {
-            //        case "1":
-            //            UpgradeToVersion800Iteration1();
-            //            break;
-                    
-            //    }
-            //}
+            RemoveAdminPages("//Admin//Languages");
+            RemoveAdminPages("//Admin//Lists");
+            RemoveAdminPages("//Admin//LogViewer");
+            RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//Pages");
+            RemoveAdminPages("//Admin//RecycleBin");
+            RemoveAdminPages("//Admin//SiteLog");
+            RemoveAdminPages("//Admin//SiteWizard");
+            RemoveAdminPages("//Admin//Vendors");
+            RemoveHostPage("Lists");
+            RemoveHostPage("Vendors");
+
+            var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.Vendors");
+            PackageController.Instance.DeleteExtensionPackage(package);
+
+            package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
+            PackageController.Instance.DeleteExtensionPackage(package);
+        }
+
+        private static void UpgradeToVersion8007()
+        {
+            RemoveHostPage("Dashboard");
+            RemoveHostPage("SQL");
+            RemoveHostPage("Configuration Manager");
+
+            UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
 
         private static int MaxIncremental(Version version)
@@ -5626,7 +5705,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&name=" + packageName;
                 if (packageType.ToLowerInvariant() == "module")
                 {
-                    var moduleType = (from m in ModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
+                    var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
                     {
                         url += "&no=" + moduleType.Instances;
@@ -5740,6 +5819,7 @@ namespace DotNetNuke.Services.Upgrade
                     //update any associated config files
                     string strProviderPath = DataProvider.Instance().GetProviderPath();
                     UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
+                    DeleteFilesInterval(strProviderPath, version, version.Revision, writeFeedback);
 
                     // update the increment
                     Globals.UpdateDataBaseVersionIncrement(version, version.Revision);

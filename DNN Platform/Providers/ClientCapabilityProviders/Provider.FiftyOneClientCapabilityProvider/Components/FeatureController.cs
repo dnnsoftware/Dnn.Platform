@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -137,8 +137,8 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
             switch (version)
             {
                 case "06.01.05":
-                    PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == Constants.PackageName);
-                    IDictionary<int, TabInfo> moduleTabs = TabController.Instance.GetTabsByPackageID(-1, package.PackageID, false);
+                    PackageInfo package = PackageController.GetPackageByName(Constants.PackageName);
+                    IDictionary<int, TabInfo> moduleTabs = new TabController().GetTabsByPackageID(-1, package.PackageID, false);
 
                     if (moduleTabs.Count > 0)
                         return string.Empty;
@@ -154,7 +154,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
 
         private void RemoveWurflProvider()
         {
-            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name =="DotNetNuke.WURFLClientCapabilityProvider");
+            var package = PackageController.GetPackageByName("DotNetNuke.WURFLClientCapabilityProvider");
             if(package != null)
             {
                 var installer = new Installer(package, Globals.ApplicationMapPath);
@@ -226,7 +226,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
 
         }
 
-        private IDictionary<string, string> CreateMappedCapabilities()
+        private static IDictionary<string, string> CreateMappedCapabilities()
         {
             var mappingCapabilites = new Dictionary<string, string>();
             mappingCapabilites.Add("is_wireless_device", "IsMobile");

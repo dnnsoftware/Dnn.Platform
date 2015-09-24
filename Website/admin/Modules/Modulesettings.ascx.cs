@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -156,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     startDatePicker.SelectedDate = Module.StartDate;
                 }
-                if (!Null.IsNull(Module.EndDate))
+				if (!Null.IsNull(Module.EndDate) && Module.EndDate <= endDatePicker.MaxDate)
                 {
                     endDatePicker.SelectedDate = Module.EndDate;
                 }
@@ -320,7 +321,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             cmdUpdate.Click += OnUpdateClick;
             dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             //get ModuleId
             if ((Request.QueryString["ModuleId"] != null))

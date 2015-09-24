@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
@@ -61,8 +62,14 @@ namespace DesktopModules.Admin.RecycleBin
     {
         #region Protected Properties
 
+		/// <summary>
+		/// Deleted Tabs List.
+		/// </summary>
         protected List<TabInfo> DeletedTabs { get; private set; }
 
+		/// <summary>
+		/// Deleted Modules List.
+		/// </summary>
         protected List<ModuleInfo> DeletedModules { get; private set; }
 
         #endregion
@@ -239,7 +246,7 @@ namespace DesktopModules.Admin.RecycleBin
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDeleteModule.Click += OnModuleDeleteClick;
             cmdDeleteTab.Click += OnTabDeleteClick;
@@ -280,7 +287,7 @@ namespace DesktopModules.Admin.RecycleBin
 
         }
 
-		protected void OnEmptyBinClick(Object sender, EventArgs e)
+		private void OnEmptyBinClick(Object sender, EventArgs e)
 		{
             foreach(var module in DeletedModules)
             {
@@ -296,12 +303,12 @@ namespace DesktopModules.Admin.RecycleBin
 			BindData(true);
 		}
 
-        protected void OnModeIndexChanged(object sender, EventArgs e)
+		private void OnModeIndexChanged(object sender, EventArgs e)
         {
             BindData(true);
         }
 
-        protected void OnModuleDeleteClick(Object sender, EventArgs e)
+		private void OnModuleDeleteClick(Object sender, EventArgs e)
         {
             foreach (ListItem item in modulesListBox.Items)
             {
@@ -320,7 +327,7 @@ namespace DesktopModules.Admin.RecycleBin
             BindData(true);
         }
 
-        protected void OnModuleRestoreClick(Object sender, EventArgs e)
+		private void OnModuleRestoreClick(Object sender, EventArgs e)
 		{
 			foreach (ListItem item in modulesListBox.Items)
 			{
@@ -336,7 +343,7 @@ namespace DesktopModules.Admin.RecycleBin
 			BindData(true);
 		}
 
-        protected void OnTabDeleteClick(Object sender, EventArgs e)
+		private void OnTabDeleteClick(Object sender, EventArgs e)
         {
             foreach (ListItem item in tabsListBox.Items)
             {
@@ -359,7 +366,7 @@ namespace DesktopModules.Admin.RecycleBin
             BindData(true);
         }
 
-        protected void OnTabRestoreClick(Object sender, EventArgs e)
+		private void OnTabRestoreClick(Object sender, EventArgs e)
 		{
 			var errors = false;
 

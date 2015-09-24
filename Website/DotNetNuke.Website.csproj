@@ -38,6 +38,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,13 +59,58 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dnn.Modules.Lists, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Admin Modules\Dnn.Modules.Lists\bin\Dnn.Modules.Lists.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.HttpModules">
+      <HintPath>..\DNN Platform\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <HintPath>..\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Modules.CoreMessaging">
+      <HintPath>..\DNN Platform\Modules\CoreMessaging\bin\DotNetNuke.Modules.CoreMessaging.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>..\DNN Platform\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client">
+      <HintPath>..\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.DDRMenu, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\DNN Platform\Modules\DDRMenu\_dependencies\07.02.00\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.WebUtility">
+      <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="PetaPoco">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
@@ -82,11 +129,35 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -312,13 +383,6 @@
     </Compile>
     <Compile Include="admin\Security\SendPassword.ascx.designer.cs">
       <DependentUpon>SendPassword.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\Banner.ascx.designer.cs">
-      <DependentUpon>banner.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\BreadCrumb.ascx.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
@@ -593,110 +657,12 @@
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx.designer.cs">
-      <DependentUpon>BannerClickThrough.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\BannerOptions.ascx.designer.cs">
-      <DependentUpon>banneroptions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Banners\DisplayBanners.ascx.designer.cs">
-      <DependentUpon>displaybanners.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\Settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Console\ViewConsole.ascx.designer.cs">
-      <DependentUpon>ViewConsole.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.designer.cs">
       <DependentUpon>ContentList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Dashboard.ascx.designer.cs">
-      <DependentUpon>Dashboard.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx.designer.cs">
-      <DependentUpon>DashboardControls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Export.ascx.designer.cs">
-      <DependentUpon>Export.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx.designer.cs">
-      <DependentUpon>Database.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx.designer.cs">
-      <DependentUpon>Host.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx.designer.cs">
-      <DependentUpon>Modules.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx.designer.cs">
-      <DependentUpon>Portals.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx.designer.cs">
-      <DependentUpon>Server.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx.designer.cs">
-      <DependentUpon>Skins.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
       <DependentUpon>AvailableExtensions.ascx</DependentUpon>
@@ -887,111 +853,6 @@
     <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
       <DependentUpon>RequestFilters.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\CLControl.ascx.cs">
-      <DependentUpon>CLControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\CLControl.ascx.designer.cs">
-      <DependentUpon>CLControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EditLanguage.ascx.cs">
-      <DependentUpon>EditLanguage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EditLanguage.ascx.designer.cs">
-      <DependentUpon>EditLanguage.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx.cs">
-      <DependentUpon>EnableLocalizedContent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx.designer.cs">
-      <DependentUpon>EnableLocalizedContent.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditor.ascx.cs">
-      <DependentUpon>LanguageEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditor.ascx.designer.cs">
-      <DependentUpon>LanguageEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditorExt.ascx.cs">
-      <DependentUpon>languageeditorext.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEditorExt.ascx.designer.cs">
-      <DependentUpon>languageeditorext.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx.cs">
-      <DependentUpon>LanguageEnabler.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx.designer.cs">
-      <DependentUpon>LanguageEnabler.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx.cs">
-      <DependentUpon>LanguagePackWriter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx.designer.cs">
-      <DependentUpon>LanguagePackWriter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageSettings.ascx.cs">
-      <DependentUpon>LanguageSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LanguageSettings.ascx.designer.cs">
-      <DependentUpon>LanguageSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LocalizePages.ascx.cs">
-      <DependentUpon>LocalizePages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\LocalizePages.ascx.designer.cs">
-      <DependentUpon>LocalizePages.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\ResourceVerifier.ascx.cs">
-      <DependentUpon>resourceverifier.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\ResourceVerifier.ascx.designer.cs">
-      <DependentUpon>resourceverifier.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\TranslationStatus.ascx.cs">
-      <DependentUpon>TranslationStatus.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Languages\TranslationStatus.ascx.designer.cs">
-      <DependentUpon>TranslationStatus.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEditor.ascx.designer.cs">
-      <DependentUpon>listeditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Lists\ListEntries.ascx.designer.cs">
-      <DependentUpon>ListEntries.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\EditLogTypes.ascx.cs">
-      <DependentUpon>editlogtypes.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\EditLogTypes.ascx.designer.cs">
-      <DependentUpon>editlogtypes.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\LogViewer.ascx.cs">
-      <DependentUpon>logviewer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\LogViewer\LogViewer.ascx.designer.cs">
-      <DependentUpon>logviewer.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -999,33 +860,8 @@
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\template.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\templateInfo.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\_CONTROL_.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\templateJob.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateAPIController.cs" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\templateRouteMapper.cs" />
-    <Compile Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx.designer.cs">
-      <DependentUpon>CreateModule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx.designer.cs">
-      <DependentUpon>viewsource.ascx</DependentUpon>
-    </Compile>
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
       <DependentUpon>portals.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1053,13 +889,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
       <DependentUpon>template.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx.designer.cs">
-      <DependentUpon>ProfessionalPreview.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.cs">
       <DependentUpon>editschedule.ascx</DependentUpon>
@@ -1222,20 +1051,6 @@
     <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
       <DependentUpon>UserSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Sitemap\SitemapSettings.ascx.cs">
-      <DependentUpon>SitemapSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Sitemap\SitemapSettings.ascx.designer.cs">
-      <DependentUpon>SitemapSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SiteWizard\SiteWizard.ascx.cs">
-      <DependentUpon>sitewizard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SiteWizard\SiteWizard.ascx.designer.cs">
-      <DependentUpon>sitewizard.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.cs">
       <DependentUpon>Attributes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1249,76 +1064,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.designer.cs">
       <DependentUpon>editskins.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SQL\SQL.ascx.designer.cs">
-      <DependentUpon>sql.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\ManageTabs.ascx.designer.cs">
-      <DependentUpon>ManageTabs.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\TabLocalization.ascx.designer.cs">
-      <DependentUpon>TabLocalization.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Tabs\Tabs.ascx.designer.cs">
-      <DependentUpon>Tabs.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Affiliates.ascx.designer.cs">
-      <DependentUpon>affiliates.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Banners.ascx.designer.cs">
-      <DependentUpon>banners.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditAffiliate.ascx.designer.cs">
-      <DependentUpon>editaffiliate.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditBanner.ascx.designer.cs">
-      <DependentUpon>editbanner.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\EditVendors.ascx.designer.cs">
-      <DependentUpon>editvendors.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Vendors\Vendors.ascx.designer.cs">
-      <DependentUpon>vendors.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -1340,13 +1085,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx.designer.cs">
       <DependentUpon>WhatsNew.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx.designer.cs">
-      <DependentUpon>XmlMerge.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
@@ -1404,12 +1142,722 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OAUTHAuthorize.aspx.cs">
+      <DependentUpon>OAUTHAuthorize.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.designer.cs">
+      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\simplemde.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\spell-checker.css" />
+    <Content Include="Resources\Shared\components\SimpleMDE\spell-checker.js" />
+    <Content Include="Resources\Shared\components\SimpleMDE\typo.js" />
+    <Content Include="Resources\Shared\components\CKEditor\adapters\jquery.js" />
+    <Content Include="Resources\Shared\components\CKEditor\build-config.js" />
+    <Content Include="Resources\Shared\components\CKEditor\ckeditor.js" />
+    <Content Include="Resources\Shared\components\CKEditor\config.js" />
+    <Content Include="Resources\Shared\components\CKEditor\contents.css" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\af.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ar.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\bg.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\bn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\bs.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\cs.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\cy.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\da.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\de.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\el.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\en-au.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\en-ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\en-gb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\en.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\eo.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\es.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\et.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\eu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\fa.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\fi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\fo.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\fr-ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\fr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\gl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\gu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\he.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\hi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\hr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\hu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\id.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\is.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\it.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ja.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ka.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\km.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ko.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ku.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\lt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\lv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\mk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\mn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ms.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\nb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\nl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\no.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\pl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\pt-br.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\pt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ro.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ru.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\si.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sq.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sr-latn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\sv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\th.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\tr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\tt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\ug.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\uk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\vi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\zh-cn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\lang\zh.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\about\dialogs\about.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\clipboard\dialogs\paste.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\dialog\dialogDefinition.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\icons.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\icons_hidpi.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\image\dialogs\image.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\image\images\noimage.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\link\dialogs\anchor.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\link\dialogs\link.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\link\images\anchor.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\link\images\hidpi\anchor.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\magicline\images\icon.png" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\pastefromword\filter\default.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\scayt\dialogs\options.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\af.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\da.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\de.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\el.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\en.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\es.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\et.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\he.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\id.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\it.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\km.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\no.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\si.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\th.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\specialchar\dialogs\specialchar.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\tabletools\dialogs\tableCell.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\table\dialogs\table.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\dialogs\ciframe.html" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\dialogs\tmpFrameset.html" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\dialogs\wsc.css" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\dialogs\wsc.js" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\ajax.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\api.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\appendto.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\assets\inlineall\logo.png" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\assets\outputxhtml\outputxhtml.css" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\assets\sample.jpg" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\assets\uilanguages\languages.js" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\datafiltering.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\divreplace.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\index.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\inlineall.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\inlinebycode.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\inlinetextarea.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\jquery.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\dialog\assets\my_dialog.js" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\dialog\dialog.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\enterkey\enterkey.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\htmlwriter\assets\outputforflash\swfobject.js" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\htmlwriter\outputforflash.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\htmlwriter\outputhtml.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\magicline\magicline.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\toolbar\toolbar.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\wysiwygarea\fullpage.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\readonly.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\replacebyclass.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\replacebycode.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\sample.css" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\sample.js" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\tabindex.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\uicolor.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\uilanguages.html" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\xhtmlstyle.html" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\dialog.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\dialog_ie.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\dialog_ie7.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\dialog_ie8.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\dialog_iequirks.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor_gecko.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor_ie.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor_ie7.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor_ie8.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\editor_iequirks.css" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\icons.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\icons_hidpi.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\arrow.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\close.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\hidpi\close.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\hidpi\lock-open.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\hidpi\lock.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\hidpi\refresh.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\lock-open.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\lock.png" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\images\refresh.png" />
+    <Content Include="Resources\Shared\components\CKEditor\styles.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\comment\comment.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\comment\continuecomment.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\dialog\dialog.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\dialog\dialog.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\autorefresh.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\fullscreen.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\fullscreen.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\panel.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\placeholder.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\display\rulers.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\closebrackets.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\closetag.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\continuelist.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\matchbrackets.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\matchtags.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\trailingspace.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\brace-fold.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\comment-fold.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\foldcode.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\foldgutter.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\foldgutter.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\indent-fold.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\markdown-fold.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\xml-fold.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\anyword-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\css-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\html-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\javascript-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\pig-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\python-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\show-hint.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\show-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\sql-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\xml-hint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\coffeescript-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\css-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\html-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\javascript-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\json-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\lint.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\yaml-lint.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\dep\diff_match_patch.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\merge.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\merge.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\loadmode.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\multiplex.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\multiplex_test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\overlay.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\simple.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\colorize.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode-standalone.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode.node.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\scroll\annotatescrollbar.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\scroll\scrollpastend.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\scroll\simplescrollbars.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\scroll\simplescrollbars.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\search\match-highlighter.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\search\matchesonscrollbar.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\search\matchesonscrollbar.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\search\search.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\search\searchcursor.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\selection\active-line.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\selection\mark-selection.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\selection\selection-pointer.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\tern.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\tern.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\worker.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\addon\wrap\hardwrap.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\keymap\emacs.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\keymap\extra.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\keymap\sublime.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\keymap\vim.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\lib\codemirror.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\lib\codemirror.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\apl\apl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\apl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asciiarmor\asciiarmor.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asciiarmor\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asn.1\asn.1.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asn.1\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asterisk\asterisk.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\asterisk\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\brainfuck\brainfuck.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\brainfuck\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\clike.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\scala.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clojure\clojure.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\clojure\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cmake\cmake.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cmake\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cobol\cobol.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cobol\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\coffeescript\coffeescript.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\coffeescript\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\commonlisp\commonlisp.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\commonlisp\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\css.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\less.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\less_test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\scss.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\scss_test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\css\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cypher\cypher.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\cypher\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dart\dart.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dart\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\diff\diff.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\diff\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\django\django.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\django\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dockerfile\dockerfile.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dockerfile\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dtd\dtd.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dtd\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dylan\dylan.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\dylan\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\d\d.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\d\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ebnf\ebnf.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ebnf\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ecl\ecl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ecl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\eiffel\eiffel.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\eiffel\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\elm\elm.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\elm\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\erlang\erlang.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\erlang\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\factor\factor.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\factor\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\forth\forth.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\forth\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\fortran\fortran.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\fortran\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gas\gas.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gas\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\gfm.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gherkin\gherkin.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\gherkin\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\go\go.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\go\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\groovy\groovy.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\groovy\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\haml.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\handlebars\handlebars.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\handlebars\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haskell\haskell.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haskell\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haxe\haxe.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\haxe\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlembedded\htmlembedded.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlembedded\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlmixed\htmlmixed.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlmixed\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\http\http.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\http\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\idl\idl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\idl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\jade\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\jade\jade.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\javascript.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\json-ld.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\typescript.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\jinja2\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\jinja2\jinja2.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\julia\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\julia\julia.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\kotlin\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\kotlin\kotlin.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\less\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\less\less.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\lua\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\lua\lua.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\markdown.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mathematica\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mathematica\mathematica.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\meta.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mirc\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mirc\mirc.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mllike\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mllike\mllike.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\modelica\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\modelica\modelica.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mumps\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\mumps\mumps.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\nginx\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\nginx\nginx.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ntriples\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ntriples\ntriples.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ocaml\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ocaml\ocaml.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\octave\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\octave\octave.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pascal\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pascal\pascal.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pegjs\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pegjs\pegjs.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\perl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\perl\perl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\php\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\php\php.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\php\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pig\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\pig\pig.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\properties\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\properties\properties.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\puppet\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\puppet\puppet.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\python\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\python\python.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\q\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\q\q.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\changes\changes.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\changes\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\rpm.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\spec.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\spec.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rst\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rst\rst.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ruby\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ruby\ruby.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ruby\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rust\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rust\rust.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\rust\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\r\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\r\r.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sass\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sass\sass.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\scheme\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\scheme\scheme.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\shell\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\shell\shell.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\shell\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sieve\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sieve\sieve.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\slim\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\slim\slim.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\slim\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smalltalk\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smalltalk\smalltalk.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smartymixed\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smartymixed\smartymixed.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smarty\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\smarty\smarty.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\solr\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\solr\solr.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\soy\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\soy\soy.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sparql\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sparql\sparql.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\spreadsheet\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\spreadsheet\spreadsheet.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sql\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\sql\sql.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\stex.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\stylus\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\stylus\stylus.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\swift\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\swift\swift.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tcl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tcl\tcl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\textile\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\textile\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\textile\textile.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\tiddlywiki.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\tiddlywiki.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\tiki.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\tiki.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\toml\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\toml\toml.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tornado\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\tornado\tornado.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\troff\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\troff\troff.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ttcn-cfg\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ttcn-cfg\ttcn-cfg.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ttcn\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\ttcn\ttcn.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\turtle\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\turtle\turtle.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\twig\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\twig\twig.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vbscript\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vbscript\vbscript.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vb\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vb\vb.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\velocity\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\velocity\velocity.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\verilog\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\verilog\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\verilog\verilog.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vhdl\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\vhdl\vhdl.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xml\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xml\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xml\xml.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\test.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\xquery.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\yaml\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\yaml\yaml.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\z80\index.html" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\z80\z80.js" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\3024-day.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\3024-night.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\abcdef.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\ambiance-mobile.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\ambiance.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\base16-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\base16-light.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\blackboard.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\cobalt.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\colorforth.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\dnn-sql.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\dracula.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\eclipse.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\elegant.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\erlang-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\icecoder.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\lesser-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\liquibyte.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\material.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\mbo.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\mdn-like.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\midnight.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\monokai.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\neat.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\neo.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\night.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\paraiso-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\paraiso-light.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\pastel-on-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\rubyblue.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\seti.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\solarized.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\the-matrix.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\tomorrow-night-bright.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\tomorrow-night-eighties.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\ttcn.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\twilight.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\vibrant-ink.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\xq-dark.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\xq-light.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\yeti.css" />
+    <Content Include="Resources\Shared\components\CodeEditor\theme\zenburn.css" />
+    <Content Include="Resources\Shared\components\ProfileAutoComplete\dnn.AutoComplete.css" />
+    <Content Include="Resources\Shared\components\ProfileAutoComplete\dnn.ProfileAutoComplete.js" />
+    <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.css" />
+    <Content Include="Resources\Shared\components\TimePicker\jquery.timepicker.js" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_222222_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_454545_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_888888_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\jquery-ui.css" />
+    <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
+    <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
+    <Content Include="Resources\Shared\scripts\dnn.utility.js" />
+    <Content Include="OAUTHAuthorize.aspx" />
+    <Content Include="OAUTHLogin.aspx" />
+    <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="packages.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.04.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\07.04.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.05.SqlDataProvider" />
+    <Content Include="Portals\_default\Content Templates\GettingStarted.cshtml" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.06.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
+    <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.08.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.09.SqlDataProvider" />
+    <Content Include="Resources\Shared\components\CKEditor\CHANGES.md" />
+    <Content Include="Resources\Shared\components\CKEditor\LICENSE.md" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\scayt\LICENSE.md" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\scayt\README.md" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\LICENSE.md" />
+    <Content Include="Resources\Shared\components\CKEditor\plugins\wsc\README.md" />
+    <Content Include="Resources\Shared\components\CKEditor\README.md" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\assets\posteddata.php" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <Content Include="Resources\Shared\components\CKEditor\samples\sample_posteddata.php" />
+    <Content Include="Resources\Shared\components\CKEditor\skins\moono\readme.md" />
+    <Content Include="Resources\Shared\components\CodeEditor\AUTHORS" />
+    <Content Include="Resources\Shared\components\CodeEditor\LICENSE" />
+    <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.ls" />
+    <Content Include="Portals\_default\Content Templates\ViewMarkdown.cshtml" />
+    <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1421,15 +1869,12 @@
     <Content Include="403-3.gif" />
     <Content Include="admin\Containers\actionbutton.ascx" />
     <Content Include="admin\Containers\actionbutton.xml" />
-    <Content Include="admin\Containers\actions.ascx" />
     <Content Include="admin\Containers\dropdownactions.ascx" />
     <Content Include="admin\Containers\icon.ascx" />
     <Content Include="admin\Containers\Icon.xml" />
     <Content Include="admin\Containers\linkactions.ascx" />
     <Content Include="admin\Containers\linkactions.xml" />
     <Content Include="admin\Containers\printmodule.ascx" />
-    <Content Include="admin\Containers\solpartactions.ascx" />
-    <Content Include="admin\Containers\solpartactions.xml" />
     <Content Include="admin\Containers\title.ascx" />
     <Content Include="admin\Containers\Title.xml" />
     <Content Include="admin\Containers\Toggle.ascx" />
@@ -1647,7 +2092,9 @@
     <Content Include="admin\Menus\ModuleActions\images\Edit.png" />
     <Content Include="admin\Menus\ModuleActions\images\Move.png" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.ascx" />
-    <Content Include="admin\Menus\ModuleActions\ModuleActions.css" />
+    <Content Include="admin\Menus\ModuleActions\ModuleActions.css">
+      <DependentUpon>ModuleActions.less</DependentUpon>
+    </Content>
     <Content Include="admin\Menus\ModuleActions\ModuleActions.js" />
     <Content Include="admin\Modules\export.ascx" />
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />
@@ -1670,8 +2117,6 @@
     <Content Include="admin\Security\module.css" />
     <Content Include="admin\Security\PasswordReset.ascx" />
     <Content Include="admin\Security\SendPassword.ascx" />
-    <Content Include="admin\Skins\banner.ascx" />
-    <Content Include="admin\Skins\banner.xml" />
     <Content Include="admin\Skins\breadcrumb.ascx" />
     <Content Include="admin\Skins\BreadCrumb.xml" />
     <Content Include="admin\Skins\controlpanel.ascx" />
@@ -1704,7 +2149,6 @@
     <Content Include="admin\Skins\Login.xml" />
     <Content Include="admin\Skins\logo.ascx" />
     <Content Include="admin\Skins\Logo.xml" />
-    <Content Include="admin\Skins\menu.ascx" />
     <Content Include="admin\Skins\Meta.ascx" />
     <Content Include="admin\Skins\modulemessage.ascx" />
     <Content Include="admin\Skins\nav.ascx" />
@@ -1713,7 +2157,6 @@
     <Content Include="admin\Skins\Privacy.xml" />
     <Content Include="admin\Skins\search.ascx" />
     <Content Include="admin\Skins\Search.xml" />
-    <Content Include="admin\Skins\solpartmenu.ascx" />
     <Content Include="admin\Skins\Styles.ascx" />
     <Content Include="admin\Skins\tags.ascx" />
     <Content Include="admin\Skins\Tags.xml" />
@@ -1749,7 +2192,6 @@
     <Content Include="controls\sectionheadcontrol.ascx" />
     <Content Include="controls\skincontrol.ascx" />
     <Content Include="controls\skinthumbnailcontrol.ascx" />
-    <Content Include="controls\SolpartMenu\spmenu.js" />
     <Content Include="controls\texteditor.ascx" />
     <Content Include="controls\urlcontrol.ascx" />
     <Content Include="controls\urltrackingcontrol.ascx" />
@@ -1772,30 +2214,8 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\BannerClickThrough.aspx" />
-    <Content Include="DesktopModules\Admin\Banners\banneroptions.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\banners.png" />
-    <Content Include="DesktopModules\Admin\Banners\displaybanners.ascx" />
-    <Content Include="DesktopModules\Admin\Banners\module.css" />
-    <Content Include="DesktopModules\Admin\Banners\readme.txt" />
-    <Content Include="DesktopModules\Admin\Console\console.png" />
-    <Content Include="DesktopModules\Admin\Console\jquery.console.js" />
-    <Content Include="DesktopModules\Admin\Console\module.css" />
-    <Content Include="DesktopModules\Admin\Console\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\Console\ViewConsole.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
     <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\DashboardControls.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Dashboard_32X32.png" />
-    <Content Include="DesktopModules\Admin\Dashboard\Export.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\module.css" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Database.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Host.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Modules.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Portals.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Server.ascx" />
-    <Content Include="DesktopModules\Admin\Dashboard\Modules\Skins.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
@@ -1831,96 +2251,15 @@
     <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
     <Content Include="DesktopModules\Admin\HostSettings\module.css" />
     <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\CLControl.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\CLTools.css" />
-    <Content Include="DesktopModules\Admin\Languages\EditLanguage.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\EnableLocalizedContent.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\images\detachState.png" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\languageeditorext.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageEnabler.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguagePackWriter.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LanguageSettings.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\LocalizePages.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\module.css" />
-    <Content Include="DesktopModules\Admin\Languages\resourceverifier.ascx" />
-    <Content Include="DesktopModules\Admin\Languages\TranslationStatus.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\listeditor.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\ListEntries.ascx" />
-    <Content Include="DesktopModules\Admin\Lists\module.css" />
-    <Content Include="DesktopModules\Admin\LogViewer\editlogtypes.ascx" />
-    <Content Include="DesktopModules\Admin\LogViewer\logviewer.ascx" />
-    <Content Include="DesktopModules\Admin\LogViewer\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
     <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
     <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
     <Content Include="DesktopModules\Admin\MobilePreview\Scripts\PreviewEmulator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\CreateModule.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\icon.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\js\ModuleCreator.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\logo.png" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\readme.txt" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Class File\template.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\01.00.00.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\templateInfo.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\DAL2\uninstall.sql" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\_CONTROL_.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Scheduled Job\templateJob.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateController.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Web Service API\templateRouteMapper.vb" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\HTML Document\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\JavaScript\template.js" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.ascx" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Module - HTML\template.html" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\Module.css" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\Style Sheet\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\readme.txt" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\Templates\Web\XML Document\template.xml" />
-    <Content Include="DesktopModules\Admin\ModuleCreator\viewsource.ascx" />
     <Content Include="DesktopModules\Admin\Portals\module.css" />
     <Content Include="DesktopModules\Admin\Portals\portals.ascx" />
     <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
     <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
     <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\ProfessionalPreview.ascx" />
-    <Content Include="DesktopModules\Admin\ProfessionalPreview\professionalPreview.gif" />
     <Content Include="DesktopModules\Admin\Scheduler\editschedule.ascx" />
     <Content Include="DesktopModules\Admin\Scheduler\module.css" />
     <Content Include="DesktopModules\Admin\Scheduler\viewschedule.ascx" />
@@ -1955,84 +2294,11 @@
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
     <Content Include="DesktopModules\Admin\Security\users.ascx" />
     <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
-    <Content Include="DesktopModules\Admin\Sitemap\module.css" />
-    <Content Include="DesktopModules\Admin\Sitemap\SitemapSettings.ascx" />
-    <Content Include="DesktopModules\Admin\SiteWizard\module.css" />
-    <Content Include="DesktopModules\Admin\SiteWizard\sitewizard.ascx" />
     <Content Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx" />
     <Content Include="DesktopModules\Admin\Skins\editskins.ascx" />
     <Content Include="DesktopModules\Admin\Skins\module.css" />
     <Content Include="DesktopModules\Admin\Solutions\Solutions.ascx" />
     <Content Include="DesktopModules\Admin\Solutions\solutions.gif" />
-    <Content Include="DesktopModules\Admin\SQL\module.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\jquery.dataTables.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\css\TableTools.css" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\background.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\back_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\collection_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\copy_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\csv_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\favicon.ico" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\forward_enabled_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\pdf_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\print_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_asc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_both.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\sort_desc_disabled.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\images\xls_hover.png" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedColumns.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\FixedHeader.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\jquery.dataTables.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\TableTools.min.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\js\ZeroClipboard.js" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls.swf" />
-    <Content Include="DesktopModules\Admin\SQL\plugins\datatables\swf\copy_csv_xls_pdf.swf" />
-    <Content Include="DesktopModules\Admin\SQL\sql.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\ClientScripts\dnn.PageUrl.js" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Add.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Collapse.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Delete.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Disabled.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Down.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Edit.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Everyone.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Expand.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Hidden.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Home.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Portal.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_QuestionMark.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Redirect.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Secure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_Up.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_User.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserAdmin.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_UserSecure.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\Icon_View.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\more.png" />
-    <Content Include="DesktopModules\Admin\Tabs\images\update.png" />
-    <Content Include="DesktopModules\Admin\Tabs\ManageTabs.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\module.css" />
-    <Content Include="DesktopModules\Admin\Tabs\TabLocalization.ascx" />
-    <Content Include="DesktopModules\Admin\Tabs\Tabs.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\affiliates.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\banners.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editaffiliate.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editbanner.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\editvendors.ascx" />
-    <Content Include="DesktopModules\Admin\Vendors\module.css" />
-    <Content Include="DesktopModules\Admin\Vendors\vendors.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -2042,8 +2308,6 @@
     <Content Include="DesktopModules\Admin\ViewProfile\viewProfile.png" />
     <Content Include="DesktopModules\Admin\WhatsNew\module.css" />
     <Content Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx" />
-    <Content Include="DesktopModules\Admin\XmlMerge\module.css" />
-    <Content Include="DesktopModules\Admin\XmlMerge\XmlMerge.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
@@ -3373,7 +3637,7 @@
     <Content Include="images\xml.gif" />
     <Content Include="images\yellow-warning.gif" />
     <Content Include="images\yellow-warning_16px.gif" />
-    <Content Include="Install\App_LocalResources\Locales.xml" />
+    <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
     <Content Include="Install\Cleanup\03.00.08.txt" />
     <Content Include="Install\Cleanup\03.00.12.txt" />
@@ -3402,7 +3666,6 @@
     <Content Include="Install\Cleanup\07.03.01.txt" />
     <Content Include="Install\Cleanup\07.04.01.txt" />
     <Content Include="Install\Cleanup\07.04.02.txt" />
-    <Content Include="Install\Cleanup\08.00.00.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
@@ -3521,7 +3784,6 @@
     <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
     <Content Include="Licenses\Sharepoint Logging Library %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
-    <Content Include="Licenses\SolPartMenu %28Custom%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />
     <Content Include="Licenses\WatiN %28Apache%29.txt" />
@@ -3773,252 +4035,6 @@
     <Content Include="Resources\Search\Search.js" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.css" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\comment\comment.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\comment\continuecomment.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\dialog\dialog.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\dialog\dialog.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\display\fullscreen.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\display\fullscreen.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\display\placeholder.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\closebrackets.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\closetag.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\continuelist.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\matchbrackets.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\matchtags.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\edit\trailingspace.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\brace-fold.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\comment-fold.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\foldcode.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\foldgutter.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\indent-fold.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\fold\xml-fold.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\anyword-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\css-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\html-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\javascript-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\pig-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\python-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\show-hint.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\show-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\hint\xml-hint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\coffeescript-lint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\css-lint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\javascript-lint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\json-lint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\lint.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\lint\lint.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\dep\diff_match_patch.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\merge.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\merge\merge.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\loadmode.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\multiplex.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\multiplex_test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\mode\overlay.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\colorize.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode-standalone.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\runmode\runmode.node.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\scroll\scrollpastend.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\search\match-highlighter.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\search\search.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\search\searchcursor.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\selection\active-line.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\selection\mark-selection.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\tern.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\tern.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\addon\tern\worker.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\keymap\emacs.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\keymap\extra.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\keymap\vim.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\lib\codemirror.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\lib\codemirror.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\apl\apl.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\apl\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\asterisk\asterisk.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\asterisk\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\clike.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\clike\scala.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\clojure\clojure.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\clojure\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\cobol\cobol.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\cobol\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\coffeescript\coffeescript.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\coffeescript\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\commonlisp\commonlisp.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\commonlisp\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\css\css.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\css\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\css\scss.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\css\scss_test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\css\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\diff\diff.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\diff\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\dtd\dtd.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\dtd\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\d\d.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\d\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ecl\ecl.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ecl\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\erlang\erlang.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\erlang\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\fortran\fortran.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\fortran\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\gas\gas.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\gas\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\gfm.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\gfm\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\go\go.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\go\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\groovy\groovy.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\groovy\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\haml.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haml\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haskell\haskell.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haskell\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haxe\haxe.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\haxe\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlembedded\htmlembedded.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlembedded\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlmixed\htmlmixed.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\htmlmixed\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\http\http.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\http\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\jade\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\jade\jade.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\javascript.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\javascript\typescript.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\jinja2\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\jinja2\jinja2.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\less\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\less\less.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\lua\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\lua\lua.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\markdown.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\markdown\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\meta.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\mirc\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\mirc\mirc.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\nginx\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\nginx\nginx.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ntriples\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ntriples\ntriples.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ocaml\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ocaml\ocaml.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\octave\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\octave\octave.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\pascal\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\pascal\pascal.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\perl\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\perl\perl.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\php\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\php\php.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\pig\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\pig\pig.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\properties\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\properties\properties.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\python\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\python\python.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\q\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\q\q.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\changes\changes.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\changes\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\spec.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rpm\spec\spec.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rst\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rst\rst.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ruby\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\ruby\ruby.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rust\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\rust\rust.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\r\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\r\r.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sass\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sass\sass.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\scheme\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\scheme\scheme.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\shell\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\shell\shell.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sieve\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sieve\sieve.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smalltalk\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smalltalk\smalltalk.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smartymixed\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smartymixed\smartymixed.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smarty\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\smarty\smarty.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sparql\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sparql\sparql.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sql\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\sql\sql.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\stex.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\stex\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tcl\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tcl\tcl.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\tiddlywiki.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiddlywiki\tiddlywiki.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\tiki.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\tiki\tiki.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\toml\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\toml\toml.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\turtle\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\turtle\turtle.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\vbscript\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\vbscript\vbscript.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\vb\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\vb\vb.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\velocity\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\velocity\velocity.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\verilog\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\verilog\verilog.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\xml\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\xml\xml.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\test.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\xquery\xquery.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\yaml\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\yaml\yaml.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\z80\index.html" />
-    <Content Include="Resources\Shared\components\CodeEditor\mode\z80\z80.js" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\3024-day.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\3024-night.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\ambiance-mobile.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\ambiance.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\base16-dark.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\base16-light.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\blackboard.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\cobalt.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\dnn-sql.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\eclipse.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\elegant.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\erlang-dark.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\lesser-dark.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\midnight.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\monokai.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\neat.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\night.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\paraiso-dark.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\paraiso-light.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\rubyblue.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\solarized.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\the-matrix.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\tomorrow-night-eighties.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\twilight.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\vibrant-ink.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\xq-dark.css" />
-    <Content Include="Resources\Shared\components\CodeEditor\theme\xq-light.css" />
     <Content Include="Resources\Shared\components\ComposeMessage\ComposeMessage.css" />
     <Content Include="Resources\Shared\components\ComposeMessage\ComposeMessage.js" />
     <Content Include="Resources\Shared\components\ComposeMessage\Images\delete.png" />
@@ -4170,8 +4186,6 @@
     <EmbeddedResource Include="admin\Security\App_LocalResources\AccessDenied.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
     <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Banner.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\BreadCrumb.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
     <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
@@ -4210,23 +4224,11 @@
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Analytics\App_LocalResources\GoogleAnalyticsSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\BannerOptions.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Banners\App_LocalResources\DisplayBanners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Console\App_LocalResources\ViewConsole.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Dashboard.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\DashboardControls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\Export.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Database.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Host.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Modules.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Portals.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Server.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Dashboard\Modules\App_LocalResources\Skins.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
@@ -4246,47 +4248,18 @@
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\CLTools.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\EditLanguage.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\EnableLocalizedContent.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEditorExt.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageEnabler.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguagePackWriter.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LanguageSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\LocalizePages.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\ResourceVerifier.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Languages\App_LocalResources\TranslationStatus.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Lists\App_LocalResources\ListEntries.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\LogViewer\App_LocalResources\EditLogTypes.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\LogViewer\App_LocalResources\LogViewer.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\CreateModule.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ModuleCreator\App_LocalResources\ViewSource.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Inline Script\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - User Control\template.ascx.resx" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Settings - User Control\Settings.ascx.resx">
-      <DependentUpon>Settings.ascx.cs</DependentUpon>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Inline Script\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - User Control\template.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Settings - User Control\Settings.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ProfessionalPreview\App_LocalResources\ProfessionalPreview.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
@@ -4312,8 +4285,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Sitemap\App_LocalResources\SitemapSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SiteWizard\App_LocalResources\SiteWizard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\SkinDesigner\App_LocalResources\Attributes.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -4321,35 +4292,24 @@
     <None Include="DesktopModules\Admin\Solutions\App_LocalResources\Solutions.ascx.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="DesktopModules\Admin\SQL\App_LocalResources\SQL.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\ManageTabs.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\TabLocalization.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Tabs\App_LocalResources\Tabs.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Affiliates.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Banners.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditAffiliate.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditBanner.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\EditVendors.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Vendors\App_LocalResources\Vendors.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\WhatsNew\App_LocalResources\WhatsNew.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\XmlMerge\App_LocalResources\XmlMerge.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.es-ES.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.fr-FR.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.it-IT.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.nl-NL.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\Installwizard.aspx.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.de-DE.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.es-ES.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.fr-FR.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.it-IT.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.nl-NL.resx" />
-    <EmbeddedResource Include="Install\App_LocalResources\UpgradeWizard.aspx.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.es-ES.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.fr-FR.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.it-IT.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.nl-NL.resx" />
+    <None Include="Install\App_LocalResources\Installwizard.aspx.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.de-DE.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.es-ES.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.fr-FR.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.it-IT.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.nl-NL.resx" />
+    <None Include="Install\App_LocalResources\UpgradeWizard.aspx.resx" />
     <EmbeddedResource Include="Install\DotNetNuke.install.config.resources" />
     <EmbeddedResource Include="Portals\_default\Logs\LogConfig\CacheErrorTemplate.xml.resources" />
     <EmbeddedResource Include="Portals\_default\Logs\LogConfig\LogConfigTemplate.xml.resources" />
@@ -4381,17 +4341,12 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="controls\SolpartMenu\SPMenuCaps.config" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\C#\Module - Razor\_template.cshtml" />
-    <None Include="DesktopModules\Admin\ModuleCreator\Templates\VB\Module - Razor\_template.vbhtml" />
     <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="DesktopModules\Admin\Portals\portal.template.xsx">
       <DependentUpon>portal.template.xsd</DependentUpon>
     </None>
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\as3\lib\AlivePDF.swc" />
-    <None Include="DesktopModules\Admin\SQL\plugins\datatables\images\Sorting icons.psd" />
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
     <None Include="Install\Config\04.06.00.config" />
@@ -4571,14 +4526,12 @@
     <None Include="Providers\DataProviders\SqlDataProvider\07.03.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\07.03.04.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\07.04.00.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\07.09.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
     <None Include="release.config" />
     <None Include="Resources\Libraries\jQuery\01_09_01\jquery.min.map" />
-    <None Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.ls" />
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
     <None Include="Resources\Widgets\User\YourCompany\SampleWidget.dnn" />
     <None Include="Resources\Widgets\User\YourCompany\SampleWidget.zip" />
@@ -4645,6 +4598,9 @@
     <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
+    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
+      <Name>OAuth.AuthorizationServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -4662,7 +4618,8 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51164/</IISUrl>
+          <IISUrl>http://localhost:49989/</IISUrl>
+          <IISUrl>http://localhost:64275/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -4672,6 +4629,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

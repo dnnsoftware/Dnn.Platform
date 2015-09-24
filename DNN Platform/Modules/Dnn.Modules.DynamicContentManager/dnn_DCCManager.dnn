@@ -2,7 +2,7 @@
   <packages>
     <package name="Dnn.DynamicContentManager" type="Module" version="08.00.00" isSystem="true">
       <friendlyName>Dynamic Content Manager</friendlyName>
-      <description>DNN Dynamic Content Manage module</description>
+      <description>DNN Dynamic Content Manager module</description>
       <owner>
         <name>DNN</name>
         <organization>DNN Corp.</organization>

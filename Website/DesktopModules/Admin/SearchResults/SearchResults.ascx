@@ -118,9 +118,9 @@
             dnn.searchResult.moduleId = <%= ModuleId %>;
             dnn.searchResult.queryOptions = {
                 searchTerm: '<%= SearchTerm %>',
-                sortOption: 0,
-                pageIndex: 1,
-                pageSize: 15
+                sortOption: <%= SortOption %>,
+                pageIndex: <%= PageIndex %>,
+                pageSize: <%= PageSize %>
             };
 
             dnn.searchResult.init({

@@ -152,14 +152,26 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -172,6 +184,8 @@
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
+    <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -607,8 +621,6 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
     <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
@@ -982,25 +994,6 @@
     <Compile Include="Framework\UserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Modules\Console\Components\ConsoleController.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardControl.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\BackupInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DatabaseController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbFileInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\DataService.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\IDashboardData.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModuleInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModulesController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalsController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinsController.cs" />
     <Compile Include="Modules\HtmlEditorProvider.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1216,7 +1209,6 @@
     </Compile>
     <Compile Include="Services\Installer\Installers\ConfigInstaller.cs" />
     <Compile Include="Services\Installer\Installers\ContainerInstaller.cs" />
-    <Compile Include="Services\Installer\Installers\DashboardInstaller.cs" />
     <Compile Include="Services\Installer\Installers\FileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\InstallerFactory.cs" />
     <Compile Include="Services\Installer\Installers\LanguageInstaller.cs" />
@@ -1434,36 +1426,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
-    <Compile Include="Services\Vendors\AffiliateController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\AffiliateInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1498,6 +1460,7 @@
     <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
@@ -1525,13 +1488,11 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\Skins\Controls\SkinsEditControl.cs" />
-    <Compile Include="UI\Skins\Controls\SolPartMenu.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="UI\Skins\EventListeners\SkinEventArgs.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventType.cs" />
+    <Compile Include="UI\Skins\InstalledSkinInfo.cs" />
     <Compile Include="UI\Skins\ISkinControl.cs" />
     <Compile Include="UI\Skins\NavObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1697,9 +1658,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingInfo.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
-    <Compile Include="UI\WebControls\SolPartActions.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
     <None Include="Module.build">

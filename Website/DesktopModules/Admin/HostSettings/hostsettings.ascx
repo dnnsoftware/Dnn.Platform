@@ -360,6 +360,19 @@
                         </Items>
                     </dnn:dnncombobox>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plcboUnauthCacheability" controlname="cboUnauthCacheability" runat="server" />
+                    <dnn:dnncombobox id="cboUnauthCacheability" runat="server">
+                        <Items>
+                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
+                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
+                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
+                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        </Items>
+                    </dnn:dnncombobox>
+                </div>
             </fieldset>
             <h2 id="Panel-JQuery" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("JQuery")%></a></h2>
             <fieldset>
@@ -504,6 +517,26 @@
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
                 </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTitleBoost" runat="server" ResourceKey="lblTitleBoost" ControlName="txtTitleBoost" />
+                    <asp:TextBox runat="server" ID="txtTitleBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plTagBoost" runat="server" ResourceKey="lblTagBoost"  ControlName="txtTagBoost" />
+                    <asp:TextBox runat="server" ID="txtTagBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plContentBoost" runat="server" ResourceKey="lblContentBoost" ControlName="txtContentBoost"  />
+                    <asp:TextBox runat="server" ID="txtContentBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plDescriptionBoost" runat="server" ResourceKey="lblDescriptionBoost" ControlName="txtDescriptionBoost"  />
+                    <asp:TextBox runat="server" ID="txtDescriptionBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
+				<div class="dnnFormItem">
+                    <dnn:Label ID="plAuthorBoost" runat="server" ResourceKey="lblAuthorBoost" ControlName="txtAuthorBoost"  />
+                    <asp:TextBox runat="server" ID="txtAuthorBoost" CssClass="dnnSliderInput"></asp:TextBox>
+                </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchIndexPath" runat="server" resourcekey="lblSearchIndexPath" />
@@ -625,6 +658,10 @@
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plEnableOAuth" controlname="chkEnableOAuth" runat="server" />
+                    <asp:CheckBox ID="chkEnableOAuth" runat="server" />
                 </div>
             </fieldset>
         </div>
@@ -765,6 +802,11 @@
                     }
                 }
             }
+
+	        $('.dnnSliderInput').dnnSliderInput({
+	        	max: 50,
+				step: 5
+	        });
         }
 
         $(document).ready(function () {

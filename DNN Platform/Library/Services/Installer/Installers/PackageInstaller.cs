@@ -531,6 +531,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (foldernameNav != null) Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
                     break;
                 default:
+                    //copied from "Module" without the extra OR condition
+                    folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
+                    if (!String.IsNullOrEmpty(folderNameValue)) Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
             }
 

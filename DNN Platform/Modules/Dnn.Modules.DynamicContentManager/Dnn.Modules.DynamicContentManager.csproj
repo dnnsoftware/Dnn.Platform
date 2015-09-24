@@ -43,9 +43,8 @@
     <DocumentationFile>bin\Dnn.Modules.DynamicContentManager.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,9 +73,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Web\bin\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -103,19 +106,22 @@
     <Compile Include="Services\ViewModels\ContentFieldViewModel.cs" />
     <Compile Include="Services\ViewModels\ContentTypeViewModel.cs" />
     <Compile Include="Services\ViewModels\DataTypeViewModel.cs" />
+    <Compile Include="Services\ViewModels\MoveContentFieldViewModel.cs" />
+    <Compile Include="Services\ViewModels\SnippetViewModel.cs" />
     <Compile Include="Services\ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientScripts\contentTypes.js" />
     <Content Include="ClientScripts\dataTypes.js" />
+    <Content Include="ClientScripts\knockout-sortable.min.js" />
     <Content Include="ClientScripts\manager.js" />
-    <Content Include="ClientScripts\pager.js" />
     <Content Include="ClientScripts\settings.js" />
     <Content Include="ClientScripts\templates.js" />
-    <Content Include="ClientScripts\util.js" />
     <Content Include="license.txt" />
     <Content Include="Manager.html" />
-    <Content Include="module.css" />
+    <Content Include="module.css">
+      <DependentUpon>module.less</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="module.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -44,7 +44,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Modules;
@@ -227,29 +226,28 @@ namespace DotNetNuke.Framework
                     Exceptions.ProcessHttpException(Request);
                 }
             }
-            if (Request.IsAuthenticated)
+            string cacheability = Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
+
+            switch (cacheability)
             {
-                switch (Host.AuthenticatedCacheability)
-                {
-                    case "0":
-                        Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                        break;
-                    case "1":
-                        Response.Cache.SetCacheability(HttpCacheability.Private);
-                        break;
-                    case "2":
-                        Response.Cache.SetCacheability(HttpCacheability.Public);
-                        break;
-                    case "3":
-                        Response.Cache.SetCacheability(HttpCacheability.Server);
-                        break;
-                    case "4":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
-                        break;
-                    case "5":
-                        Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
-                        break;
-                }
+                case "0":
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    break;
+                case "1":
+                    Response.Cache.SetCacheability(HttpCacheability.Private);
+                    break;
+                case "2":
+                    Response.Cache.SetCacheability(HttpCacheability.Public);
+                    break;
+                case "3":
+                    Response.Cache.SetCacheability(HttpCacheability.Server);
+                    break;
+                case "4":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+                    break;
+                case "5":
+                    Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
+                    break;
             }
 
             //page comment
@@ -427,7 +425,7 @@ namespace DotNetNuke.Framework
             //register DNN SkinWidgets Inititialization scripts
             if (PortalSettings.EnableSkinWidgets & !UrlUtils.InPopUp())
             {
-                jQuery.RequestRegistration();
+				JavaScript.RequestRegistration(CommonJs.jQuery);
                 // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
                 ClientAPI.RegisterStartUpScript(Page, "initWidgets", string.Format("<script type=\"text/javascript\" src=\"{0}\" ></script>", ResolveUrl("~/Resources/Shared/scripts/initWidgets.js")));
             }
@@ -478,40 +476,6 @@ namespace DotNetNuke.Framework
             //Find the placeholder control and render the doctype
             skinDocType.Text = PortalSettings.ActiveTab.SkinDoctype;
             attributeList.Text = HtmlAttributeList;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>
-        /// - manage affiliates
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void ManageRequest()
-        {
-            //affiliate processing
-            int affiliateId = -1;
-            if (Request.QueryString["AffiliateId"] != null)
-            {
-                if (Regex.IsMatch(Request.QueryString["AffiliateId"], "^\\d+$"))
-                {
-                    affiliateId = Int32.Parse(Request.QueryString["AffiliateId"]);
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(affiliateId, 1, 0);
-
-                    //save the affiliateid for acquisitions
-                    if (Request.Cookies["AffiliateId"] == null) //do not overwrite
-                    {
-                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
-                        {
-                            Expires = DateTime.Now.AddYears(1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                        };
-                        Response.Cookies.Add(objCookie);
-                    }
-                }
-            }
         }
 
         private void ManageFavicon()
@@ -764,12 +728,6 @@ namespace DotNetNuke.Framework
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
-
-            //process the current request
-            if (!Globals.IsAdminControl())
-            {
-                ManageRequest();
-            }
 
             //Set the Head tags
             metaPanel.Visible = !UrlUtils.InPopUp();

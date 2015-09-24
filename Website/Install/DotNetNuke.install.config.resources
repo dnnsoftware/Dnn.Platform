@@ -24,6 +24,7 @@
   </license>
   <settings>
     <AuthenticatedCacheability>4</AuthenticatedCacheability>
+    <UnauthenticatedCacheability>4</UnauthenticatedCacheability>
     <AutoAccountUnlockDuration>10</AutoAccountUnlockDuration>
     <AutoAddPortalAlias>Y</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>

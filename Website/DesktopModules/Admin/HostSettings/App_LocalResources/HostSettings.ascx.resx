@@ -546,6 +546,12 @@
   <data name="plEnableHelp.Help" xml:space="preserve">
     <value>You can enable or disable the Online Help Action Menu for Modules.  If enabled, you will need to provide the Help URL for the module, in the Module Definitions, although this may have been provided by the developer of the module.</value>
   </data>
+  <data name="plcboUnauthCacheability.Text" xml:space="preserve">
+    <value>Unauthenticated Cacheability:</value>
+  </data>
+  <data name="plcboUnauthCacheability.Help" xml:space="preserve">
+    <value>Sets the Cache-Control HTTP header value for unauthenticated users.</value>
+  </data>
   <data name="plCacheability.Text" xml:space="preserve">
     <value>Authenticated Cacheability:</value>
   </data>
@@ -996,6 +1002,9 @@
   <data name="plAsyncTimeout.Text" xml:space="preserve">
     <value>Time Before Timeout:</value>
   </data>
+  <data name="plEnableOAuth.Text" xml:space="preserve">
+    <value>Enable OAuth Authorization:</value>
+  </data>
   <data name="plEnablePasswordHistory.Help" xml:space="preserve">
     <value>Sets whether a list of recently used passwords is maintained and checked to prevent re-use.</value>
   </data>
@@ -1222,5 +1231,35 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   </data>
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
     <value>Enable partial-word search (slow):</value>
+  </data>
+  <data name="lblAuthorBoost.Help" xml:space="preserve">
+    <value>Author boost value is associated with the author as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblAuthorBoost.Text" xml:space="preserve">
+    <value>Author Boost:</value>
+  </data>
+  <data name="lblContentBoost.Help" xml:space="preserve">
+    <value>Content boost value is associated with the content as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblContentBoost.Text" xml:space="preserve">
+    <value>Content Boost:</value>
+  </data>
+  <data name="lblDescriptionBoost.Help" xml:space="preserve">
+    <value>Description boost value is associated with the description as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblDescriptionBoost.Text" xml:space="preserve">
+    <value>Description Boost:</value>
+  </data>
+  <data name="lblTagBoost.Help" xml:space="preserve">
+    <value>Tag boost value is associated with the tag as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblTagBoost.Text" xml:space="preserve">
+    <value>Tag Boost:</value>
+  </data>
+  <data name="lblTitleBoost.Help" xml:space="preserve">
+    <value>Title boost value is associated with the title as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblTitleBoost.Text" xml:space="preserve">
+    <value>Title Boost:</value>
   </data>
 </root>

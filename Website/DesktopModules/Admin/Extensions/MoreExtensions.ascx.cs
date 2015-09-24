@@ -25,6 +25,7 @@ using System.Web.UI;
 
 using DotNetNuke.Common;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -39,7 +40,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            jQuery.RequestRegistration();
+			JavaScript.RequestRegistration(CommonJs.jQuery);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/jquery/jquery.tmpl.js");
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/json2.js");
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Extensions/Scripts/Gallery.js");

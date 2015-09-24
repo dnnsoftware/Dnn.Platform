@@ -1,23 +1,5 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
-// by DNN Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-#endregion
+﻿// Copyright (c) DNN Software. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
 using System.Globalization;
@@ -30,12 +12,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleApplication
     {
-        private const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         
         private bool _initialized;
         private readonly object _lock = new object();
@@ -49,13 +31,15 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public virtual IControllerFactory ControllerFactory { get; set; }
 
-        public virtual string DefaultActionName { get; set; }
+        public string DefaultActionName { get; set; }
 
-        public virtual string DefaultControllerName { get; set; }
+        public string DefaultControllerName { get; set; }
 
-        public virtual string FolderPath { get; set; }
+        public string[] DefaultNamespaces { get; set; }
 
-        public virtual string ModuleName { get; set; }
+        public string FolderPath { get; set; }
+
+        public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
 
@@ -97,6 +81,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 {
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
+
+                moduleController.ValidateRequest = false;
+
+                moduleController.DnnPage = context.DnnPage;
+
                 moduleController.ModuleContext = context.ModuleContext;
 
                 moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
@@ -148,7 +137,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                     });
         }
 
-        private static string NormalizeFolderPath(string path)
+        protected static string NormalizeFolderPath(string path)
         {
             // Remove leading and trailing slashes
             if (!String.IsNullOrEmpty(path))

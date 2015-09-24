@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
@@ -72,25 +73,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedNames = new List<ContentTypeLocalization>();
             string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-            return SaveEntity(dataTypeId, () => new DataType
-                                                        {
-                                                            Name = defaultName,
-                                                            UnderlyingDataType = viewModel.BaseType,
-                                                            PortalId = portalId
-                                                        },
+            return SaveEntity(dataTypeId,
+                /*CheckEntity*/ () => DataTypeManager.Instance.GetDataTypes(portalId, true).SingleOrDefault((t => t.Name == defaultName)),
 
-                                            dataType => DataTypeManager.Instance.AddDataType(dataType),
+                /*ErrorMsg*/    LocalizeString("DataTypeExists"),
 
-                                            () => DataTypeManager.Instance.GetDataType(dataTypeId, PortalSettings.PortalId, true),
+                /*CreateEntity*/() => new DataType
+                                            {
+                                                Name = defaultName,
+                                                UnderlyingDataType = viewModel.BaseType,
+                                                PortalId = portalId
+                                            },
 
-                                            dataType =>
-                                                            {
-                                                                dataType.Name = defaultName;
-                                                                dataType.UnderlyingDataType = viewModel.BaseType;
-                                                                DataTypeManager.Instance.UpdateDataType(dataType);
-                                                            },
+                /*AddEntity*/   dataType => DataTypeManager.Instance.AddDataType(dataType),
 
-                                            (id) => SaveContentLocalizations(localizedNames, DataTypeManager.NameKey, id, portalId));
+                /*GetEntity*/   () => DataTypeManager.Instance.GetDataType(dataTypeId, PortalSettings.PortalId, true),
+
+                /*UpdateEntity*/dataType =>
+                                            {
+                                                dataType.Name = defaultName;
+                                                dataType.UnderlyingDataType = viewModel.BaseType;
+                                                DataTypeManager.Instance.UpdateDataType(dataType);
+                                            },
+
+                /*SaveLocal*/   id => SaveContentLocalizations(localizedNames, DataTypeManager.NameKey, id, portalId));
         }
     }
 }

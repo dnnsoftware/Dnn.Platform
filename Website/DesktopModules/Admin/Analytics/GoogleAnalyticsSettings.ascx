@@ -6,7 +6,6 @@
         <div class="dnnFormItem">
             <dnn:label id="lblTrackingId" runat="server" controlname="txtTrackingId" />
             <asp:textbox id="txtTrackingId" runat="server" Width="280px" />
-            <asp:RequiredFieldValidator ID="valTrackingId" runat="server" CssClass="dnnFormMessage dnnFormError" ControlToValidate="txtTrackingId" Display="Dynamic" resourcekey="valTrackingId" />
         </div>
         <div class="dnnFormItem">
             <dnn:label id="lblUrlParameter" runat="server" controlname="txtUrlParameter" suffix=":" />

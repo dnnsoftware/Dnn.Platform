@@ -374,6 +374,7 @@ namespace DotNetNuke.Tests.Urls
                     tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
                 }
                 UpdateTab(tab);
+                CacheController.FlushPageIndexFromCache();
             }
 
             string deletedTabHandling = testFields.GetValue("DeletedTabHandling");

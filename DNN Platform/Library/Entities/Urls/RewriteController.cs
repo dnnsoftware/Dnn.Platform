@@ -182,19 +182,18 @@ namespace DotNetNuke.Entities.Urls
                         bool customTabAlias = false;
                         //check for culture-specific aliases
                         string culture = null;
-                        var primaryAliases =
-                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
-                                                         .Where(a => a.IsPrimary).ToList();
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
-                        if (!primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
+                        if (!portalAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
                         {
                             checkForCustomAlias = true;
                         }
                         else
                         {
                             //check for a specific culture for the alias
-                            culture = primaryAliases.GetCultureByPortalIdAndAlias(portal.PortalID, portalAlias.HTTPAlias);
+                            culture = portalAliases.GetCultureByPortalIdAndAlias(portal.PortalID, portalAlias.HTTPAlias);
                         }
                         if (checkForCustomAlias)
                         {
@@ -248,8 +247,8 @@ namespace DotNetNuke.Entities.Urls
                                 else
                                 {
                                     tabId = portal.HomeTabId;
-                                }                                
-                                if (culture == null)
+                                }
+                                if (string.IsNullOrEmpty(culture))
                                 {
                                     culture = portal.DefaultLanguage; //set culture to default if not found specifically
                                 }
@@ -1450,6 +1449,12 @@ namespace DotNetNuke.Entities.Urls
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+
+            //return false if AdminTabId is -1, it could happen when a portal is in the middle of importing
+            if (adminTab == null)
+            {
+                return false;
+            }
             
             string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin

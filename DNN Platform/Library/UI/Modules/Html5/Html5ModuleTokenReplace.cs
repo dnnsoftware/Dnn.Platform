@@ -38,6 +38,7 @@ namespace DotNetNuke.UI.Modules.Html5
             PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
             PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
             PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
+            PropertySource["request"] = new RequestPropertyAccess(page.Request);
         }
     }
 }

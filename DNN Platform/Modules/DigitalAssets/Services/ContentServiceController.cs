@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -134,7 +135,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
             var moduleId = Request.FindModuleId();
-            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 

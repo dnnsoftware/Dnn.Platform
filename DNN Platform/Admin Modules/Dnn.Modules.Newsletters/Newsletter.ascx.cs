@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
@@ -88,6 +89,10 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
         #region Protected Methods
 
+		/// <summary>
+		/// Get Initial Entries.
+		/// </summary>
+		/// <returns></returns>
         protected string GetInitialEntries()
         {
             int id;
@@ -126,7 +131,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             try
             {

@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -129,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
                 txtServers.Text = scheduleItem.Servers.Trim(',');
-                if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
+                if (Convert.ToInt32(txtRetryTimeLapse.Text) <= 0)
                 {
                     ddlRetryTimeLapseMeasurement.Visible = false;
                 }
@@ -201,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            Framework.jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;
@@ -367,19 +368,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     break;
             }
             return nextTime;
-        }
-
-        protected void VisibilityRetryTimeLapse(object sender, EventArgs e)
-        {
-
-            if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
-            {
-                ddlRetryTimeLapseMeasurement.Visible = false;
-            }
-            else
-            {
-                ddlRetryTimeLapseMeasurement.Visible = true;
-            }
         }
 
         #endregion

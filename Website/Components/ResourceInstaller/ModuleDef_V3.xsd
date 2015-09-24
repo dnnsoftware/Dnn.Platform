@@ -16,6 +16,8 @@
                                         <xs:element name="description" type="xs:string" />
                                         <xs:element name="version" type="versionNumber" />
                                         <xs:element name="businesscontrollerclass" type="xs:string" minOccurs="0" />
+										<xs:element name="adminpage" type="xs:string" minOccurs="0" />
+										<xs:element name="hostpage" type="xs:string" minOccurs="0" />
                                         <xs:element name="compatibleversions" type="xs:string" minOccurs="0" />
                                         <xs:element name="dependencies" type="xs:string" minOccurs="0" />
                                         <xs:element name="permissions" type="xs:string" minOccurs="0" />

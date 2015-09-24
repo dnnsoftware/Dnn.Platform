@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeleteItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Item?</value>
+    <value>Are you sure you wish to delete this item?</value>
   </data>
   <data name="DeletetUser.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This User?</value>
+    <value>Are you sure you wish to delete this user?</value>
   </data>
   <data name="UnregisterUser.Text" xml:space="preserve">
     <value>Are you sure you want to unregister? This will delete your user account.</value>
   </data>
   <data name="RemoveItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Remove This Item?</value>
+    <value>Are you sure you wish to remove this item?</value>
   </data>
   <data name="Calendar.Text" xml:space="preserve">
     <value>Calendar</value>
@@ -999,13 +999,13 @@
   <data name="PasswordResetFailed.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and which is long and complex enough to meet the sites password complexity requirements.</value>
   </data>
- <data name="PasswordInadequate.Text" xml:space="preserve">
+  <data name="PasswordInadequate.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which is long and complex enough to meet the sites password complexity requirements.</value>
   </data>
- <data name="PasswordBanned.Text" xml:space="preserve">
+  <data name="PasswordBanned.Text" xml:space="preserve">
     <value>Your new password was not accepted as it was banned or the same as your username.</value>
   </data>
- <data name="PasswordResetFailed_UserUndefined.Text" xml:space="preserve">
+  <data name="PasswordResetFailed_UserUndefined.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and username is correct.</value>
   </data>
   <data name="PasswordResetFailed_ResetLinkExpired.Text" xml:space="preserve">
@@ -1241,6 +1241,33 @@
   </data>
   <data name="MODULE_UnRegistered.Text" xml:space="preserve">
     <value>Module un-registered successfully - {0}</value>
+  </data>
+  <data name="MODULE_AdminPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageRemoved.Text" xml:space="preserve">
+    <value>Admin page {0} removed from portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageAdded.Text" xml:space="preserve">
+    <value>Admin page {0} added to portal {1}.</value>
+  </data>
+  <data name="MODULE_HostAdded.Text" xml:space="preserve">
+    <value>Module added Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageAdded.Text" xml:space="preserve">
+    <value>Host page {0} added.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageRemoved.Text" xml:space="preserve">
+    <value>Host page {0} removed.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Host page {0}.</value>
   </data>
   <data name="PACKAGE_NoLicense.Text" xml:space="preserve">
     <value>The license for this package is not currently included within the installation file, please check with the vendor for full license details.</value>
@@ -1943,5 +1970,8 @@
   </data>
   <data name="DefaultSaveDraftWorkflowName.Text" xml:space="preserve">
     <value>Save Draft</value>
+  </data>
+  <data name="QuickSettings.Text" xml:space="preserve">
+    <value>Quick Settings</value>
   </data>
 </root>

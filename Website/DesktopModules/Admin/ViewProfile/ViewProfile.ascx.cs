@@ -21,26 +21,20 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Social.Notifications;
 
@@ -172,7 +166,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 }
 
 			    var propertyAccess = new ProfilePropertyAccess(ProfileUser);
-                var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
                 StringBuilder sb = new StringBuilder();
                 bool propertyNotFound = false;
 

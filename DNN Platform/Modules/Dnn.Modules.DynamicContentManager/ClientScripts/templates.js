@@ -2,43 +2,65 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.templatesViewModel = function(config, rootViewModel){
+dcc.templatesViewModel = function (rootViewModel, config) {
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+    var ko = config.ko;
 
     self.rootViewModel = rootViewModel;
 
+    self.contentTypes = ko.observableArray([]);
+
     self.mode = config.mode;
+    self.isSystemUser = settings.isSystemUser;
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.templates_PagerFormat;
     self.pager_NoPagerFormat = resx.templates_NoPagerFormat;
+    // ReSharper disable once InconsistentNaming
     self.selectedTemplate = new dcc.templateViewModel(self, config);
 
-    var findTemplates =  function() {
+    var findTemplates = function () {
         self.pageIndex(0);
         self.getTemplates();
     };
 
-    self.addTemplate = function(){
+    var getContentTypes = function () {
+        var params = {
+            searchTerm: '',
+            pageIndex: 0,
+            pageSize: 1000
+        };
+
+        util.contentTypeService().getEntities("GetContentTypes",
+            params,
+            self.contentTypes,
+            function () {
+                // ReSharper disable once InconsistentNaming
+                return new dcc.contentTypeViewModel(self, config);
+            }
+            );
+    };
+
+    self.addTemplate = function () {
         self.mode("editTemplate");
         self.selectedTemplate.init();
         self.selectedTemplate.bindCodeEditor();
     };
 
-    self.editTemplate = function(data, e) {
+    self.editTemplate = function (data) {
         self.selectedTemplate.init();
         util.asyncParallel([
-            function(cb1){
+            function (cb1) {
                 self.getTemplate(data.templateId(), cb1);
             }
-        ], function() {
+        ], function () {
             self.mode("editTemplate");
         });
     };
@@ -47,124 +69,223 @@ dcc.templatesViewModel = function(config, rootViewModel){
         var params = {
             templateId: templateId
         };
-        util.templateService().getEntity(params, "GetTemplate", self.selectedTemplate,
-            function(){
+        util.templateService().getEntity("GetTemplate",
+            params,
+            self.selectedTemplate,
+            function () {
                 self.selectedTemplate.bindCodeEditor();
             }
-        );
+            );
 
-        if(typeof cb === 'function') cb();
+        if (typeof cb === 'function') cb();
     };
 
     self.getTemplates = function () {
+
+        getContentTypes();
+
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
 
-        util.templateService().getEntities(params,
-            "GetTemplates",
+        util.templateService().getEntities("GetTemplates",
+            params,
             self.results,
-            function() {
+            function () {
+                // ReSharper disable once InconsistentNaming
                 return new dcc.templateViewModel(self, config);
             },
             self.totalResults
-        );
+            );
     };
 
-    self.init = function() {
-        dcc.pager().init(self);
+    self.init = function () {
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
+        dnn.koPager().init(self, config);
         self.searchText.subscribe(function () {
             findTemplates();
         });
-
-        $rootElement.find("#templates-editView").css("display", "none")
+        self.pageSize.subscribe(function () {
+            findTemplates();
+        });
+        $rootElement.find("#templates-editView").css("display", "none");
     };
 
-    self.refresh = function(){
+    self.refresh = function () {
         self.getTemplates();
     };
 };
 
-dcc.templateViewModel = function(parentViewModel, config){
+dcc.templateViewModel = function (parentViewModel, config) {
     var self = this;
     var util = config.util;
     var resx = config.resx;
-    var settings = config.settings;
     var codeEditor = config.codeEditor;
+    var ko = config.ko;
+
+    var $rootElement = config.$rootElement;
+    var $contextMenu = $rootElement.find("#templateEditorContextMenu");
 
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
 
     self.canEdit = ko.observable(false);
+    self.canSelectGlobal = ko.observable(false);
     self.templateId = ko.observable(-1);
     self.localizedNames = ko.observableArray([]);
-    self.contentType = ko.observable('');
     self.contentTypeId = ko.observable(-1);
     self.filePath = ko.observable('');
     self.isSystem = ko.observable(false);
     self.content = ko.observable('');
     self.selected = ko.observable(false);
-    self.contentTypes = ko.observableArray([]);
+
+    self.contentTypes = parentViewModel.contentTypes;
+    self.codeSnippets = ko.observableArray([]);
+    self.contentFields = ko.observableArray([]);
+
+    self.isAddMode = ko.computed(function () {
+        return self.templateId() === -1;
+    });
 
     self.name = ko.computed({
         read: function () {
             return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames());
         },
-        write: function(value) {
+        write: function (value) {
             util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
         }
     });
 
-    self.name.subscribe(function(newValue) {
-        if(self.filePath() === ""){
-            self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
+    self.name.subscribe(function (newValue) {
+        if (self.filePath() === "" && newValue !== "") {
+            self.filePath("Content Templates/" + newValue.replace(/\s/g, "") + ".cshtml");
         }
     });
 
-    var getContentTypes = function() {
-        var params = {
-            searchTerm: '',
-            pageIndex: 0,
-            pageSize: 1000
-        };
+    var getContentFields = function () {
+        if (self.contentTypeId() !== "undefined" && self.contentTypeId() > 0 && self.contentTypeId() !== self.previousContentTypeId) {
+            var params = {
+                contentTypeId: self.contentTypeId()
+            };
 
-        util.contentTypeService().get("GetContentTypes", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+            util.contentTypeService().get("GetContentFields", params,
+                function (data) {
+                    if (typeof data !== "undefined" && data != null) {
+                        //Success
+                        self.contentFields.removeAll();
+                        for (var i = 0; i < data.results.length; i++) {
+                            var result = data.results[i];
+                            var localizedNames = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedNames, result.localizedNames);
+                            var localizedDescriptions = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedDescriptions, result.localizedDescriptions);
+                            var localizedLabels = ko.observableArray([]);
+                            util.loadLocalizedValues(localizedLabels, result.localizedLabels);
+                            self.contentFields.push({
+                                contentTypeId: result.contentTypeId,
+                                contentFieldId: result.contentFieldId,
+                                name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedNames()),
+                                label: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedDescriptions()),
+                                description: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedLabels())
+                            });
+                        }
+                    }
+                },
+
+                function () {
+                    //Failure
+                }
+                );
+
+            self.previousContentTypeId = self.contentTypeId();
+        }
+    };
+
+    self.contentTypeId.subscribe(function () {
+        var isSystemType = false;
+        var contentTypes = self.contentTypes();
+        var contentTypeId = self.contentTypeId();
+        for (var i = 0; i < contentTypes.length; i++) {
+            var contentType = contentTypes[i];
+            if (contentType.contentTypeId() === contentTypeId) {
+                isSystemType = contentType.isSystem();
+                break;
+            }
+        }
+        self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
+        self.isSystem(false);
+        getContentFields();
+    });
+
+    self.contentType = ko.computed(function () {
+        var value = "";
+        if (self.contentTypes !== undefined) {
+            var entity = util.getEntity(
+                self.contentTypes(),
+                function (contentType) {
+                    return (self.contentTypeId() === contentType.contentTypeId());
+                });
+            if (entity != null) {
+                value = entity.name;
+            }
+        }
+        return value;
+    });
+
+    var getCodeSnippets = function () {
+        var params = {};
+
+        util.templateService().get("GetSnippets", params,
+            function (data) {
+                if (typeof data !== "undefined" && data != null) {
                     //Success
-                    self.contentTypes.removeAll();
-                    for(var i = 0; i < data.data.results.length; i++){
-                        var result = data.data.results[i];
-                        var localizedValues = ko.observableArray([]);
-                        util.loadLocalizedValues(localizedValues, result.localizedNames);
-                        self.contentTypes.push({
-                            contentTypeId: result.contentTypeId,
-                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
+                    self.codeSnippets.removeAll();
+                    for (var i = 0; i < data.results.length; i++) {
+                        var result = data.results[i];
+                        self.codeSnippets.push({
+                            name: result.name,
+                            snippet: result.snippet
                         });
                     }
-                } else {
-                    //Error
                 }
             },
 
-            function(){
+            function () {
                 //Failure
             }
-        );
+            );
     };
 
-    self.bindCodeEditor = function() {
+    var validate = function () {
+        return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames());
+    };
+
+    self.bindCodeEditor = function () {
         codeEditor.setValue(self.content());
+
+        var target = document.querySelector('#templates-editView');
+        var refreshEditor = function () {
+            if (jQuery(target).css('display') !== 'none') {
+                codeEditor.refresh();
+            };
+        };
+        if (window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver) {
+            var observer = new MutationObserver(refreshEditor);
+            observer.observe(target, { attributes: true, attributeFilter: ["style"] });
+        }
+        else {
+            util.onVisible($rootElement.find(".CodeMirror"), 250, refreshEditor);
+        }
     };
 
-    self.cancel = function(){
+    self.cancel = function () {
         self.rootViewModel.closeEdit();
     };
 
-    self.deleteTemplate = function (data, e) {
-        util.confirm(resx.deleteTemplateConfirmMessage, resx.yes, resx.no, function() {
+    self.deleteTemplate = function (data) {
+        util.confirm(resx.deleteTemplateConfirmMessage, resx.yes, resx.no, function () {
             var params = {
                 templateId: data.templateId(),
                 name: data.name(),
@@ -174,69 +295,101 @@ dcc.templateViewModel = function(parentViewModel, config){
                 content: codeEditor.getValue()
             };
 
-            util.templateService().post("DeleteTemplate", params,
-                function(data){
+            util.templateService().delete("DeleteTemplate", params,
+                function () {
                     //Success
                     parentViewModel.refresh();
                 },
 
-                function(data){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
-            );
+                );
         });
     };
 
-    self.init = function(){
+    self.init = function () {
         self.canEdit(true);
         self.templateId(-1);
-        self.contentType("");
         self.contentTypeId(-1);
         self.filePath('');
-        self.isSystem(self.parentViewModel.isSystemUser);
+        self.isSystem(false);
         self.content('');
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
 
-        getContentTypes();
+        getCodeSnippets();
     };
 
-    self.load = function(data) {
+    self.insertField = function (data) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection("@Dnn.DisplayFor(\"" + data.name + "\")");
+        $contextMenu.hide();
+    };
+
+    self.inserSnippet = function (data) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection(data.snippet);
+        $contextMenu.hide();
+    };
+
+    self.load = function (data) {
         self.canEdit(data.canEdit);
         self.templateId(data.templateId);
-        self.contentType(data.contentType);
         self.contentTypeId(data.contentTypeId);
         self.isSystem(data.isSystem);
         self.filePath(data.filePath);
         self.content(data.content);
 
-        util.loadLocalizedValues(self.localizedNames, data.localizedNames)
-   };
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames);
+    };
 
-    self.saveTemplate = function(data, e) {
-        var jsObject = ko.toJS(data);
-        var params = {
-            templateId: jsObject.templateId,
-            localizedNames: jsObject.localizedNames,
-            contentTypeId: jsObject.contentTypeId,
-            isSystem: jsObject.isSystem,
-            filePath: jsObject.filePath,
-            content: codeEditor.getValue()
-        };
+    self.saveTemplate = function (data) {
+        if (!validate()) {
+            util.alert(resx.invalidTemplateMessage, resx.ok);
 
-        util.templateService().post("SaveTemplate", params,
-            function (data) {
-                //Success
+        }
+        else {
+            var jsObject = ko.toJS(data);
+            var params = {
+                templateId: jsObject.templateId,
+                localizedNames: jsObject.localizedNames,
+                contentTypeId: jsObject.contentTypeId,
+                isSystem: jsObject.isSystem,
+                filePath: jsObject.filePath,
+                content: codeEditor.getValue()
+            };
+
+            util.templateService().put("SaveTemplate", params,
+            function () {
                 self.cancel();
             },
-
-            function (data) {
+            function (xhr, status, err) {
                 //Failure
+                util.alert(status + ":" + err, resx.ok);
             }
-        )
+                );
+        }
     };
 
-    self.toggleSelected = function() {
+    self.toggleSelected = function () {
         self.selected(!self.selected());
     };
+
+    var $codeEditor = $rootElement.find(".CodeMirror");
+    $codeEditor.bind("contextmenu", function (event) {
+        event.preventDefault();
+
+        var cursorLocation = codeEditor.cursorCoords();
+
+        $contextMenu.show();
+        $contextMenu.offset({ top: cursorLocation.top, left: cursorLocation.left });
+
+        return false;
+    });
+
+    codeEditor.on("mousedown", function () {
+        $contextMenu.hide();
+    });
 }

@@ -1,0 +1,16 @@
+﻿@using Dnn.DynamicContent
+@using Dnn.Modules.DynamicContentViewer.Helpers
+
+@model DynamicContentItem
+
+@{
+    <div class="dnnForm">
+        @foreach (DynamicContentField field in Model.Fields.Values)
+        {
+        <div class="dnnFormItem">
+            @Dnn.LabelFor(field.Definition.Name)
+            @Dnn.EditorFor(field.Definition.Name)
+        </div>
+        }
+    </div>
+}

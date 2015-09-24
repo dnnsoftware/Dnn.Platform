@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Data;
 using System.Linq;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common;
@@ -41,6 +42,8 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
+            field.Order = Get(field.ContentTypeId).Count();
+
             Add(field);
 
             ClearContentTypeCache(field);
@@ -75,6 +78,17 @@ namespace Dnn.DynamicContent
         {
             Delete(field);
 
+            //Update field order of remaining fields
+            var sql = @"UPDATE {objectQualifier}ContentTypes_FieldDefinitions
+                                SET[Order] = [Order] - 1
+                                    WHERE[Order] > @1
+                                    AND ContentTypeID = @0";
+
+            using (DataContext)
+            {
+                DataContext.Execute(CommandType.Text, sql, field.ContentTypeId, field.Order);
+            }
+
             ClearContentTypeCache(field);
 
             //Delete any ValidationRules
@@ -108,8 +122,51 @@ namespace Dnn.DynamicContent
         /// <returns>field definition collection.</returns>
         public IQueryable<FieldDefinition> GetFieldDefinitions(int contentTypeId)
         {
-            return Get(contentTypeId).AsQueryable();
+            return Get(contentTypeId).OrderBy(f => f.Order).AsQueryable();
         }
+
+        /// <summary>
+        /// Move a Field Definition's position in the list
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the parent Content Type</param>
+        /// <param name="sourceIndex">The index (order) of the item being moved</param>
+        /// <param name="targetIndex">The target index (order) of the item being moved</param>
+        public void MoveFieldDefintion(int contentTypeId, int sourceIndex, int targetIndex)
+        {
+            //First get the item to be moved
+            var field = Get(contentTypeId).SingleOrDefault(f => f.Order == sourceIndex);
+
+            if (field != null)
+            {
+                //Next update all the intermediate fields
+                var sql = @"IF @1 > @2 -- Move other items down order
+                            BEGIN
+                                UPDATE {objectQualifier}ContentTypes_FieldDefinitions
+                                    SET[Order] = [Order] + 1
+                                        WHERE[Order] < @1 AND[Order] >= @2
+                                        AND ContentTypeID = @0
+                            END
+                        ELSE --Move other items up order
+                            BEGIN
+                                UPDATE {objectQualifier}ContentTypes_FieldDefinitions
+                                    SET[Order] = [Order] - 1
+                                        WHERE[Order] > @1 AND[Order] <= @2
+                                        AND ContentTypeId = @0
+                            END";
+
+                using (DataContext)
+                {
+                    DataContext.Execute(CommandType.Text, sql, contentTypeId, sourceIndex, targetIndex);
+                }
+
+                //Update item to be moved
+                field.Order = targetIndex;
+                UpdateFieldDefinition(field);
+
+                ClearContentTypeCache(field);
+            }
+        }
+
 
         /// <summary>
         /// Updates the field definition.

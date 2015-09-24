@@ -15,6 +15,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "minNumberOfSpecialChars")]
         public int MinNumberOfSpecialChars;
 
+        [DataMember(Name = "validationExpression")]
+        public string ValidationExpression;
+
         [DataMember(Name = "minLengthText")]
         public string MinLengthText;
 
@@ -42,20 +45,17 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "meterCss")]
         public string MeterCss;
 
-        [DataMember(Name = "criteriaOneUpperCaseLetterText")]
-        public string CriteriaOneUpperCaseLetterText;
+        [DataMember(Name = "criteriaAtLeastNSpecialChars")]
+        public string CriteriaAtLeastNSpecialCharsText;
 
-        [DataMember(Name = "criteriaOneLowerCaseLetterText")]
-        public string CriteriaOneLowerCaseLetterText;
-
-        [DataMember(Name = "criteriaSpecialCharText")]
-        public string CriteriaSpecialCharText;
-
-        [DataMember(Name = "criteriaOneNumberText")]
-        public string CriteriaOneNumberText;
-
-        [DataMember(Name = "criteriaAtLeastNCharsText")]
+        [DataMember(Name = "criteriaAtLeastNChars")]
         public string CriteriaAtLeastNCharsText;
+
+        [DataMember(Name = "criteriaValidationExpression")]
+        public string CriteriaValidationExpressionText;
+
+		[DataMember(Name = "passwordRulesHeadText")]
+		public string PasswordRulesHeadText;
 
         public DnnPaswordStrengthOptions()
         {
@@ -65,10 +65,11 @@ namespace DotNetNuke.Web.UI.WebControls
             FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
             StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
 
-            CriteriaOneUpperCaseLetterText = Utilities.GetLocalizedString("CriteriaOneUpperCaseLetter");
-            CriteriaOneLowerCaseLetterText = Utilities.GetLocalizedString("CriteriaOneLowerCaseLetter");
-            CriteriaOneNumberText = Utilities.GetLocalizedString("CriteriaOneNumber");
             CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+            CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
+            CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
+            
+			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
             WeakColor = "#ed1e24";
             FairColor = "#f6d50a";
@@ -87,13 +88,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             int portalId = (PortalController.Instance.GetCurrentPortalSettings()) != null ? (PortalController.Instance.GetCurrentPortalSettings().PortalId) : -1;
             var settings = new MembershipPasswordSettings(portalId);
+
             MinLength = settings.MinPasswordLength;
             CriteriaAtLeastNCharsText = string.Format(CriteriaAtLeastNCharsText, MinLength);
 
             MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
-            CriteriaSpecialCharText = MinNumberOfSpecialChars > 0 ?
-                string.Format(Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars"), MinNumberOfSpecialChars) :
-                Utilities.GetLocalizedString("CriteriaSpecialChar");
+            CriteriaAtLeastNSpecialCharsText = string.Format(CriteriaAtLeastNSpecialCharsText, MinNumberOfSpecialChars);
+
+            ValidationExpression = settings.ValidationExpression;
+            CriteriaValidationExpressionText = string.Format(CriteriaValidationExpressionText, ValidationExpression);
         }
     }
 }

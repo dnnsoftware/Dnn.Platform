@@ -22,15 +22,21 @@
 
 using System;
 using System.Web;
+using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
@@ -42,6 +48,7 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         #region Private Members
 
+	    private const int RedirectTimeout = 3000;
         private string _ipAddress;
 
         private string ResetToken
@@ -65,6 +72,14 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
             _ipAddress = Request.UserHostAddress;
 
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
                 Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
@@ -79,16 +94,13 @@ namespace DotNetNuke.Modules.Admin.Security
                 
             }
 
-            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+	        var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+			if (useEmailAsUserName)
             {
-                lblUsername.Text = Localization.GetString("Email", LocalResourceFile);
-                lblUsername.HelpText = Localization.GetString("Email.Help", LocalResourceFile);
                 valUsername.Text = Localization.GetString("Email.Required", LocalResourceFile);
             }
             else
             {
-                lblUsername.Text = Localization.GetString("Username", LocalResourceFile);
-                lblUsername.HelpText = Localization.GetString("Username.Help", LocalResourceFile);
                 valUsername.Text = Localization.GetString("Username.Required", LocalResourceFile);
             }
 
@@ -97,7 +109,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 lblInfo.Text = Localization.GetString("ForcedResetInfo", LocalResourceFile);
             }
 
-	        divQA.Visible = MembershipProviderConfig.RequiresQuestionAndAnswer;
+			txtUsername.Attributes.Add("data-default",useEmailAsUserName ? LocalizeString("Email") : LocalizeString("Username"));
+			txtPassword.Attributes.Add("data-default", LocalizeString("Password"));
+			txtConfirmPassword.Attributes.Add("data-default", LocalizeString("Confirm"));
+            txtAnswer.Attributes.Add("data-default", LocalizeString("Answer"));
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -105,10 +120,60 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnPreRender(e);
             if (!string.IsNullOrEmpty(lblHelp.Text) || !string.IsNullOrEmpty(lblInfo.Text))
                 resetMessages.Visible = true;
+
+			var options = new DnnPaswordStrengthOptions();
+			var optionsAsJsonString = Json.Serialize(options);
+			var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+				"password-strength", optionsAsJsonString, Environment.NewLine);
+
+			if (ScriptManager.GetCurrent(Page) != null)
+			{
+				// respect MS AJAX
+				ScriptManager.RegisterStartupScript(Page, GetType(), "PasswordStrength", script, true);
+			}
+			else
+			{
+				Page.ClientScript.RegisterStartupScript(GetType(), "PasswordStrength", script, true);
+			}
+
+			var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+			{
+				FirstElementSelector = ".password-strength",
+				SecondElementSelector = ".password-confirm",
+				ContainerSelector = ".dnnPasswordReset",
+				UnmatchedCssClass = "unmatched",
+				MatchedCssClass = "matched"
+			};
+
+			optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+			script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
+
+			if (ScriptManager.GetCurrent(Page) != null)
+			{
+				// respect MS AJAX
+				ScriptManager.RegisterStartupScript(Page, GetType(), "ConfirmPassword", script, true);
+			}
+			else
+			{
+				Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", script, true);
+			}
         }
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
         {
+            string username = txtUsername.Text;
+
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer && String.IsNullOrEmpty(txtAnswer.Text))
+            {
+                var user = UserController.GetUserByName(username);
+                if (user != null)
+                {
+                    lblQuestion.Text = user.Membership.PasswordQuestion;
+                }
+                divQA.Visible = true;
+                return;
+            }
+
             //1. Check New Password and Confirm are the same
             if (txtPassword.Text != txtConfirmPassword.Text)
             {
@@ -122,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (UserController.ValidatePassword(txtPassword.Text)==false)
             {
                 resetMessages.Visible = true;
-                var failed = Localization.GetString("PasswordInadequate");
+                var failed = Localization.GetString("PasswordResetFailed");
                 LogFailure(failed);
                 lblHelp.Text = failed;
                 return;    
@@ -137,15 +202,13 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
                 {
                     resetMessages.Visible = true;
-                    var failed = Localization.GetString("PasswordBanned");
+                    var failed = Localization.GetString("PasswordResetFailed");
                     LogFailure(failed);
                     lblHelp.Text = failed;
                     return;  
                 }
-
             }
 
-            string username = txtUsername.Text;
             if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
             {
                 var testUser = UserController.GetUserByEmail(PortalId, username); // one additonal call to db to see if an account with that email actually exists
@@ -155,7 +218,13 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
-            if (!UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, txtAnswer.Text, ResetToken, out errorMessage))
+            string answer = String.Empty;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                answer = txtAnswer.Text;
+            }
+
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, answer, ResetToken, out errorMessage) == false)
             {
                 resetMessages.Visible = true;
                 var failed = errorMessage;
@@ -230,7 +299,21 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
             }
-            Response.Redirect(redirectURL);
+
+			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+	        resetMessages.Visible = divPassword.Visible = false;
+
+			//redirect page after 5 seconds
+	        var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+			if (ScriptManager.GetCurrent(Page) != null)
+			{
+				// respect MS AJAX
+				ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
+			}
+			else
+			{
+				Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
+			}
         }
 
         private void LogSuccess()

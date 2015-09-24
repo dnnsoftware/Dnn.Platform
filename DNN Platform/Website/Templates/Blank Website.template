@@ -3523,94 +3523,6 @@
     </tab>
     <tab>
       <containersrc />
-      <description>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <iconfile>~/Icons/Sigma/Vendors_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Vendors_32X32_Standard.png</iconfilelarge>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Vendors</name>
-      <title>Vendors</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <moduleID>469</moduleID>
-              <title>Vendors</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile>~/Icons/Sigma/Vendors_32X32_Standard.png</iconfile>
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Vendors</definition>
-              <moduledefinition>Vendors</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
-    <tab>
-      <containersrc />
       <description>Send email messages to users, security roles and specific email addresses.</description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
@@ -4058,10 +3970,8 @@
       <iconfilelarge>~/Icons/Sigma/Tag_32X32_Standard.png</iconfilelarge>
       <issecure>false</issecure>
       <visible>true</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
+      <keywords></keywords>
+      <pageheadtext></pageheadtext>
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
       <sitemappriority>0.5</sitemappriority>
@@ -4838,6 +4748,89 @@
               </tabmodulesettings>
               <definition>SearchAdmin</definition>
               <moduledefinition>Search Admin</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab>
+      <containersrc />
+      <description>Manage the Dynamic Content Types for your Site.</description>
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <iconfile>~/Icons/Sigma/Tag_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Tag_32X32_Standard.png</iconfilelarge>
+      <issecure>false</issecure>
+      <visible>true</visible>
+      <keywords></keywords>
+      <pageheadtext></pageheadtext>
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>Dynamic Content Type Manager</name>
+      <title>Dynamic Content Type Manager</title>
+      <url type="Normal" />
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <title></title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod />
+              <alignment />
+              <color />
+              <border />
+              <iconfile>~/Icons/Sigma/Tag_32X32_Standard.png</iconfile>
+              <visibility>Maximized</visibility>
+              <containersrc />
+              <displaytitle>true</displaytitle>
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Dnn.DynamicContentManager</definition>
+              <moduledefinition>Dynamic Content Manager</moduledefinition>
             </module>
           </modules>
         </pane>

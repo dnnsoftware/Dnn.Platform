@@ -90,6 +90,14 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        public static string UnauthenticatedCacheability
+        {
+            get
+            {
+                return HostController.Instance.GetString("UnauthenticatedCacheability", "4");
+            }
+        }
+
         /// <summary>
         /// gets whether or not CDN has been enabled for all registered javascript libraries
         /// </summary>
@@ -554,6 +562,16 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetBoolean("EnableIPChecking", false);
+            }
+        }
+        /// <summary>
+        /// determines whether oauth authorization server support is enabled
+        /// </summary>
+        public static bool EnableOAuthAuthorization
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableOAuthAuthorization", false);
             }
         }
 

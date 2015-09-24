@@ -21,6 +21,7 @@
 
 using System;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Data;
@@ -56,10 +57,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         #region GetSubscriptionTypes method tests
         [Test]
-        [Ignore]
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
             // Arrange
+            var mockHostController = new Mock<IHostController>();
+            mockHostController
+                .Setup(c => c.GetString("PerformanceSetting"))
+                .Returns("0");
+            HostController.RegisterInstance(mockHostController.Object);
+
             mockDataService
                 .Setup(ds => ds.GetSubscriptionTypes())
                 .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())

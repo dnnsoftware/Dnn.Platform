@@ -251,20 +251,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem)
         {
-            SchedulingController.UpdateSchedule(scheduleItem.ScheduleID,
-                                    scheduleItem.TypeFullName,
-                                    scheduleItem.TimeLapse,
-                                    scheduleItem.TimeLapseMeasurement,
-                                    scheduleItem.RetryTimeLapse,
-                                    scheduleItem.RetryTimeLapseMeasurement,
-                                    scheduleItem.RetainHistoryNum,
-                                    scheduleItem.AttachToEvent,
-                                    scheduleItem.CatchUpEnabled,
-                                    scheduleItem.Enabled,
-                                    scheduleItem.ObjectDependencies,
-                                    scheduleItem.Servers,
-                                    scheduleItem.FriendlyName,
-                                    scheduleItem.ScheduleStartDate);
+            SchedulingController.UpdateSchedule(scheduleItem);
         }
 
         public override void UpdateSchedule(ScheduleItem scheduleItem)
@@ -272,20 +259,7 @@ namespace DotNetNuke.Services.Scheduling
             //Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
             //save item
-            SchedulingController.UpdateSchedule(scheduleItem.ScheduleID,
-                                                scheduleItem.TypeFullName,
-                                                scheduleItem.TimeLapse,
-                                                scheduleItem.TimeLapseMeasurement,
-                                                scheduleItem.RetryTimeLapse,
-                                                scheduleItem.RetryTimeLapseMeasurement,
-                                                scheduleItem.RetainHistoryNum,
-                                                scheduleItem.AttachToEvent,
-                                                scheduleItem.CatchUpEnabled,
-                                                scheduleItem.Enabled,
-                                                scheduleItem.ObjectDependencies,
-                                                scheduleItem.Servers,
-                                                scheduleItem.FriendlyName,
-                                                scheduleItem.ScheduleStartDate);
+            SchedulingController.UpdateSchedule(scheduleItem);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 

@@ -32,6 +32,7 @@ namespace Dnn.DynamicContent
             Label = String.Empty;
             Description = String.Empty;
             PortalId = portalId;
+            Order = -1;
         }
 
         public int ContentTypeId { get; set; }
@@ -58,6 +59,8 @@ namespace Dnn.DynamicContent
         public string Label { get; set; }
 
         public string Name { get; set; }
+
+        public int Order { get; set; }
 
         public int PortalId { get; set; }
 
