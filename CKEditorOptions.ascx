@@ -229,7 +229,7 @@
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <li class='ui-state-default ui-corner-all<%# DataBinder.Eval(Container.DataItem, "Button").ToString().Equals("-") ? " separator" : string.Empty%>'>
-                                    <img alt='<%# DataBinder.Eval(Container.DataItem, "Button").ToString()%>' class="itemIcon" src='<%# this.ResolveUrl(string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/icons/{0}", DataBinder.Eval(Container.DataItem, "Icon")))%>'/>&nbsp;
+                                    <img alt='<%# DataBinder.Eval(Container.DataItem, "Button").ToString()%>' class="itemIcon" src='<%# this.ResolveUrl(string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/icons/{0}", DataBinder.Eval(Container.DataItem, "Icon")))%>'/>&nbsp;
                                     <span class="item"><%# DataBinder.Eval(Container.DataItem, "Button").ToString()%></span>
                                 </li>
                             </ItemTemplate>
@@ -260,7 +260,7 @@
                                       <ItemTemplate>
                                           <li class='groupButton ui-state-default ui-corner-all<%# DataBinder.Eval(Container.DataItem, "Button").ToString().Equals("-") ? " separator" : string.Empty%><%# DataBinder.Eval(Container.DataItem, "Button").ToString().Equals("/") ? " rowBreak" : string.Empty%>'>
                                               <span class="ui-icon ui-icon-cancel" title='<%= DotNetNuke.Services.Localization.Localization.GetString("DeleteToolbarButton.Text", this.ResXFile, this.LangCode) %>'></span>
-                                              <img alt='<%# DataBinder.Eval(Container.DataItem, "Button").ToString()%>' class="itemIcon" src='<%# this.ResolveUrl(string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/icons/{0}", DataBinder.Eval(Container.DataItem, "Button").ToString().Equals("/") ? "PageBreak.png" : DataBinder.Eval(Container.DataItem, "Icon")))  %>'/>&nbsp;
+                                              <img alt='<%# DataBinder.Eval(Container.DataItem, "Button").ToString()%>' class="itemIcon" src='<%# this.ResolveUrl(string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/icons/{0}", DataBinder.Eval(Container.DataItem, "Button").ToString().Equals("/") ? "PageBreak.png" : DataBinder.Eval(Container.DataItem, "Icon")))  %>'/>&nbsp;
                                               <span class="item"><%# DataBinder.Eval(Container.DataItem, "Button").ToString()%></span>
                                           </li>
                                       </ItemTemplate>

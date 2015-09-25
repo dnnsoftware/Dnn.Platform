@@ -83,6 +83,11 @@ namespace DNNConnect.CKEditorProvider
         private List<ToolbarButton> listButtons;
 
         /// <summary>
+        ///   The list of all available toolbar buttons.
+        /// </summary>
+        private List<ToolbarButton> allListButtons;
+
+        /// <summary>
         ///   The module instance name
         /// </summary>
         private string moduleInstanceName;
@@ -440,8 +445,7 @@ namespace DNNConnect.CKEditorProvider
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
-                    !File.Exists(
-                        this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js")))
+                    !File.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"))
                 {
                     this.ddlBrowser.Items.RemoveAt(2);
                 }
@@ -1259,8 +1263,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.ddlSkin.Items.Clear();
 
-            DirectoryInfo objDir =
-                new DirectoryInfo(this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/skins")));
+            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/skins");
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
@@ -1272,21 +1275,22 @@ namespace DNNConnect.CKEditorProvider
             // CodeMirror Themes
             this.CodeMirrorTheme.Items.Clear();
 
-            var themesFolder =
-                new DirectoryInfo(
-                    this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/plugins/codemirror/theme")));
-
-            // add default theme
-            this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
-
-            foreach (
-                var skinItem in
-                    themesFolder.GetFiles("*.css").Select(
-                        themeCssFile =>
-                        themeCssFile.Name.Replace(themeCssFile.Extension, string.Empty)).Select(
-                            themeName => new ListItem { Text = themeName, Value = themeName }))
+            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/plugins/codemirror/theme"))
             {
-                this.CodeMirrorTheme.Items.Add(skinItem);
+                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/plugins/codemirror/theme");
+
+                // add default theme
+                this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
+
+                foreach (
+                    var skinItem in
+                        themesFolder.GetFiles("*.css").Select(
+                            themeCssFile =>
+                            themeCssFile.Name.Replace(themeCssFile.Extension, string.Empty)).Select(
+                                themeName => new ListItem { Text = themeName, Value = themeName }))
+                {
+                    this.CodeMirrorTheme.Items.Add(skinItem);
+                }
             }
         }
 
@@ -1299,7 +1303,7 @@ namespace DNNConnect.CKEditorProvider
             this.BrowserRootDir.Items.Clear();
             this.ExportDir.Items.Clear();
 
-            foreach (FolderInfo folder in FolderManager.Instance.GetFolders(this._portalSettings.PortalId))
+            foreach (var folder in FolderManager.Instance.GetFolders(this._portalSettings.PortalId))
             {
                 string text, value;
 
@@ -1314,7 +1318,7 @@ namespace DNNConnect.CKEditorProvider
                     value = folder.FolderID.ToString();
                 }
 
-                if (!FolderPermissionController.CanViewFolder(folder))
+                if (!FolderPermissionController.CanViewFolder(folder as FolderInfo))
                 {
                     continue;
                 }
@@ -1574,8 +1578,7 @@ namespace DNNConnect.CKEditorProvider
 
             this.iBAdd.Visible = true;
 
-            var toolbarEdit =
-                this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue));
+            var toolbarEdit = this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue));
 
             if (toolbarEdit != null)
             {
@@ -1679,9 +1682,9 @@ namespace DNNConnect.CKEditorProvider
             toolbarButtonsTable.Columns.Add(new DataColumn("Icon", typeof(string)));
             toolbarButtonsTable.Columns.Add(new DataColumn("Button", typeof(string)));
 
-            if (this.listButtons == null)
+            if (this.allListButtons == null)
             {
-                this.listButtons =
+                this.allListButtons =
                     ToolbarUtil.LoadToolBarButtons(
                         !string.IsNullOrEmpty(this.configFolder)
                             ? Path.Combine(this._portalSettings.HomeDirectoryMapPath, this.configFolder)
@@ -1690,16 +1693,8 @@ namespace DNNConnect.CKEditorProvider
 
             foreach (var button in this.toolbarSets.ToolbarGroups.Where(@group => @group.name.Equals(groupName)).SelectMany(@group => @group.items))
             {
-                if (this.listButtons == null)
-                {
-                    this.listButtons =
-                        ToolbarUtil.LoadToolBarButtons(
-                            !string.IsNullOrEmpty(this.configFolder)
-                                ? Path.Combine(this._portalSettings.HomeDirectoryMapPath, this.configFolder)
-                                : this._portalSettings.HomeDirectoryMapPath);
-                }
 
-                if (this.listButtons.Find(availButton => availButton.ToolbarName.Equals(button)) == null
+                if (this.allListButtons.Find(availButton => availButton.ToolbarName.Equals(button)) == null
                     && !button.Equals("/"))
                 {
                     continue;
@@ -1709,7 +1704,7 @@ namespace DNNConnect.CKEditorProvider
 
                 groupRow["Button"] = button;
 
-                var buttonItem = this.listButtons.Find(b => b.ToolbarName.Equals(button));
+                var buttonItem = this.allListButtons.Find(b => b.ToolbarName.Equals(button));
 
                 groupRow["Icon"] = buttonItem != null ? buttonItem.ToolbarIcon : button;
 
@@ -3251,7 +3246,7 @@ namespace DNNConnect.CKEditorProvider
                     "ShowNotificationBar('{0}','{1}','{2}');",
                     message,
                     type,
-                    this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/")),
+                    this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/")),
                 true);
         }
 
