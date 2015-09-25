@@ -8,7 +8,7 @@
         @foreach (DynamicContentField field in Model.Fields.Values)
         {
         <div class="dnnFormItem">
-            @Dnn.LabelFor(field.Definition.Name)
+            <div>@Dnn.LabelFor(field.Definition.Name)</div>
             @Dnn.EditorFor(field.Definition.Name)
         </div>
         }
