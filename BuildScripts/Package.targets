@@ -31,7 +31,7 @@
       <CssFiles Include="css\*.css;Browser\*.css" />
     </ItemGroup>
     <ItemGroup>
-      <JsFiles Include="js\*.js;Browser\js\*.js" />
+      <JsFiles Include="js\*.js;Browser\js\*.js;js\**\*.*" />
     </ItemGroup>
     <ItemGroup>
       <ImagesFiles Include="Browser\images\**\*.*" />
