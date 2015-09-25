@@ -153,6 +153,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (Exception ex)
             {
+                checkpointModified = false;
                 Exceptions.Exceptions.LogException(ex);
             }
 
