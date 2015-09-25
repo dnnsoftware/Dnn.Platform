@@ -22,6 +22,16 @@ namespace Dnn.Modules.DynamicContentViewer.Models
 #pragma warning restore 1591
 
         /// <summary>
+        /// Constructor for Settings object
+        /// </summary>
+        public Settings()
+        {
+            ContentTypeId = -1;
+            EditTemplateId = -1;
+            ViewTemplateId = -1;
+        }
+
+        /// <summary>
         /// The Id of the Content Type
         /// </summary>
         [JsonProperty("contentTypeId")]
