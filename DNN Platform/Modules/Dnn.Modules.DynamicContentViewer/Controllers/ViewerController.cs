@@ -89,7 +89,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
 
             if (contentItem != null)
             {
-                foreach (var field in contentItem.Fields.Values)
+                foreach (var field in contentItem.Content.Fields.Values)
                 {
                     switch (field.Definition.DataType.Name)
                     {

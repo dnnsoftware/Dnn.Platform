@@ -197,7 +197,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
         {
             var contentItem = GetContentItem(dnnHelper);
 
-            var contentField = contentItem.Fields[fieldName];
+            var contentField = contentItem.Content.Fields[fieldName];
 
             if (contentField == null)
             {
@@ -227,7 +227,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
         {
             var contentItem = GetContentItem(dnnHelper);
 
-            var contentField = contentItem.Fields[fieldName];
+            var contentField = contentItem.Content.Fields[fieldName];
 
             if (contentField == null)
             {

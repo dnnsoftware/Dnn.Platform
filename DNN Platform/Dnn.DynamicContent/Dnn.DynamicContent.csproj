@@ -69,6 +69,7 @@
     <Compile Include="DynamicContentField.cs" />
     <Compile Include="DynamicContentItem.cs" />
     <Compile Include="DynamicContentItemManager.cs" />
+    <Compile Include="DynamicContentPart.cs" />
     <Compile Include="DynamicContentType.cs" />
     <Compile Include="DynamicContentTypeManager.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />

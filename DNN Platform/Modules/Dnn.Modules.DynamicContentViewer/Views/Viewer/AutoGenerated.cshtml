@@ -5,7 +5,7 @@
 
 @{
     <div class="dnnForm">
-        @foreach (DynamicContentField field in Model.Fields.Values)
+        @foreach (DynamicContentField field in Model.Content.Fields.Values)
         {
         <div class="dnnFormItem">
             @Dnn.LabelFor(field.Definition.Name)
