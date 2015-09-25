@@ -335,7 +335,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
                 cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
                 cssFiles.Add("~" + _portalSettings.HomeDirectory + "portal.css");
-                cssFiles.Add("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/contents.css");
+                cssFiles.Add("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CkEditorContents.css");
 
                 var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(MapPathSecure(cssFile))).Select(Globals.ResolveUrl).ToList();
 
@@ -661,46 +661,6 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
-        /// Gets a value indicating whether Has Microsoft Ajax is installed.
-        /// </summary>
-        private static bool HasMsAjax
-        {
-            get
-            {
-                if (_hasMsAjax != null)
-                {
-                    return _hasMsAjax.Value;
-                }
-
-                _hasMsAjax = false;
-
-                var appAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (System.Reflection.Assembly asm in
-                    appAssemblies.Where(asm => asm.ManifestModule.Name == "System.Web.Extensions.dll"))
-                {
-                    try
-                    {
-                        var scriptManager = asm.GetType("System.Web.UI.ScriptManager");
-
-                        if (scriptManager != null)
-                        {
-                            _hasMsAjax = true;
-                        }
-                    }
-                    catch
-                    {
-                        _hasMsAjax = false;
-                    }
-
-                    break;
-                }
-
-                return _hasMsAjax.Value;
-            }
-        }
-
-        /// <summary>
         ///   Gets Name for the Current Resource file name
         /// </summary>
         private static string SResXFile
@@ -862,14 +822,14 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             base.OnPreRender(e);
 
-            if (HasMsAjax)
-            {
-                return;
-            }
+            //if (HasMsAjax)
+            //{
+            //    return;
+            //}
 
-            RegisterCKEditorLibrary();
+            //RegisterCKEditorLibrary();
 
-            GenerateEditorLoadScript();
+            //GenerateEditorLoadScript();
         }
 
         /// <summary>
@@ -1000,10 +960,10 @@ namespace DNNConnect.CKEditorProvider.Web
 
             LoadAllSettings();
 
-            if (!HasMsAjax)
-            {
-                return;
-            }
+            //if (!HasMsAjax)
+            //{
+            //    return;
+            //}
 
             RegisterCKEditorLibrary();
 
@@ -1179,26 +1139,12 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </param>
         private void RegisterStartupScript(string key, string script, bool addScriptTags)
         {
-            if (HasMsAjax)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), key, script, addScriptTags);
-            }
-            else
-            {
-                Page.ClientScript.RegisterStartupScript(GetType(), key, script, true);
-            }
+            ScriptManager.RegisterStartupScript(this, GetType(), key, script, addScriptTags);
         }
 
         private void RegisterScript(string key, string script, bool addScriptTags)
         {
-            if (HasMsAjax)
-            {
-                ScriptManager.RegisterClientScriptBlock(this, GetType(), key, script, addScriptTags);
-            }
-            else
-            {
-                Page.ClientScript.RegisterClientScriptBlock(GetType(), key, script, true);
-            }
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), key, script, addScriptTags);
         }
 
         /// <summary>
@@ -1209,14 +1155,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <param name="script">The script.</param>
         private void RegisterOnSubmitStatement(Type type, string key, string script)
         {
-            if (HasMsAjax)
-            {
-                ScriptManager.RegisterOnSubmitStatement(this, type, key, script);
-            }
-            else
-            {
-                Page.ClientScript.RegisterOnSubmitStatement(type, key, script);
-            }
+            ScriptManager.RegisterOnSubmitStatement(this, type, key, script);
         }
 
         /// <summary>
@@ -1302,9 +1241,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </summary>
         private void RegisterCKEditorLibrary()
         {
-            ClientResourceManager.RegisterStyleSheet(
-                Page,
-                Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/editor.css"));
+            ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/editor.css"));
 
             ClientScriptManager cs = Page.ClientScript;
 
@@ -1323,11 +1260,11 @@ namespace DNNConnect.CKEditorProvider.Web
                     this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
             }
 
-            if (File.Exists(Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/ckeditor.js"))
+            if (File.Exists(Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/ckeditor.js"));
+                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"));
             }
 
             if (
@@ -1376,8 +1313,8 @@ namespace DNNConnect.CKEditorProvider.Web
 
             var editorFixedId = ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
 
-            if (HasMsAjax)
-            {
+            //if (HasMsAjax)
+            //{
                 var postBackScript =
                     string.Format(
                         @"if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement(); CKEDITOR.instances.{0}.destroy(); }}",
@@ -1385,7 +1322,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 RegisterOnSubmitStatement(
                     GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
-            }
+            //}
 
             var editorScript = new StringBuilder();
 
