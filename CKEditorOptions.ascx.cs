@@ -3102,6 +3102,8 @@ namespace DNNConnect.CKEditorProvider
             }
 
             ShowNotification(Localization.GetString("lblInfo.Text", ResXFile, LangCode), "success");
+
+            BindOptionsData(true);
         }
 
         /// <summary>
