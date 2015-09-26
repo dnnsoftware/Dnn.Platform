@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -460,7 +460,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     }
                     else
                     {
-                        found = Utility.FindControl<T>(activeControl, id);
+                        found = FindControl<T>(activeControl, id);
 
                         if (found != null)
                         {
@@ -488,7 +488,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 var section =
                     HttpContext.Current.GetSection("system.web/httpRuntime") as
-                    System.Web.Configuration.HttpRuntimeSection;
+                    HttpRuntimeSection;
                 result = section.MaxRequestLength;
             }
             catch (Exception)

@@ -91,7 +91,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             Bitmap img = (Bitmap)Image.FromFile(context.Server.MapPath(imgSource));
 
             // Resize
-            Bitmap imageP = this.ResizeImage(img, Convert.ToInt32(pWidth), Convert.ToInt32(pHeight));
+            Bitmap imageP = ResizeImage(img, Convert.ToInt32(pWidth), Convert.ToInt32(pHeight));
 
             // Rotate if angle is not 0.00 or 360
             if (angle > 0.0F && angle < 360.00F)
@@ -285,7 +285,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         private Bitmap ResizeImage(Image img, int width, int height)
         {
-            Image.GetThumbnailImageAbort callback = this.GetThumbAbort;
+            Image.GetThumbnailImageAbort callback = GetThumbAbort;
             return (Bitmap)img.GetThumbnailImage(width, height, callback, IntPtr.Zero);
         }
 

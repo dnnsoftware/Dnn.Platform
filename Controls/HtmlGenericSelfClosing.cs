@@ -93,11 +93,11 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </param>
         protected override void Render(HtmlTextWriter writer)
         {
-            ICollection keys = this.Attributes.Keys;
+            ICollection keys = Attributes.Keys;
 
-            writer.WriteBeginTag(this.TagName);
+            writer.WriteBeginTag(TagName);
 
-            if (this.ID != string.Empty)
+            if (ID != string.Empty)
             {
                 // writer.WriteAttribute("id", base.UniqueID);
                 // writer.WriteAttribute("name", base.UniqueID);
@@ -105,7 +105,7 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             foreach (string key in keys)
             {
-                writer.WriteAttribute(key, this.Attributes[key]);
+                writer.WriteAttribute(key, Attributes[key]);
             }
 
             writer.Write(HtmlTextWriter.SelfClosingTagEnd + Environment.NewLine);

@@ -14,25 +14,21 @@ using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Serialization;
-
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Extensions;
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Extensions;
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
-using DotNetNuke.Framework.JavaScriptLibraries;
-
 
 namespace DNNConnect.CKEditorProvider.Web
 {
@@ -1083,11 +1079,11 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 var objFileInfo = FileManager.Instance.GetFile(fileId);
 
-                formattedUrl = this._portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
+                formattedUrl = _portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
             }
             else
             {
-                formattedUrl = this._portalSettings.HomeDirectory + inputUrl;
+                formattedUrl = _portalSettings.HomeDirectory + inputUrl;
             }
 
 

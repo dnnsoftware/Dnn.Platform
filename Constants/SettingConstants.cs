@@ -1,7 +1,7 @@
-﻿namespace DNNConnect.CKEditorProvider.Constants
-{
-    using System;
+﻿using System;
 
+namespace DNNConnect.CKEditorProvider.Constants
+{
     /// <summary>
     /// Provider Constants
     /// </summary>

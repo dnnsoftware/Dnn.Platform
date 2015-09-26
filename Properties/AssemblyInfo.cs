@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
 
 /*
 * CKEditor Provider for DNN

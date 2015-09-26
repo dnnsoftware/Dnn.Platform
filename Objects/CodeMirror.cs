@@ -1,9 +1,9 @@
 ﻿
+using System.ComponentModel;
+using System.Xml.Serialization;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System.ComponentModel;
-    using System.Xml.Serialization;
-
     /// <summary>
     /// CodeMirror Plugin Options
     /// </summary>
@@ -14,22 +14,22 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public CodeMirror()
         {
-            this.Theme = "default";
-            this.LineNumbers = true;
-            this.LineWrapping = true;
-            this.MatchBrackets = true;
-            this.AutoCloseTags = false;
-            this.EnableSearchTools = true;
-            this.EnableCodeFolding = true;
-            this.EnableCodeFormatting = true;
-            this.AutoFormatOnStart = false;
-            this.AutoFormatOnUncomment = true;
-            this.HighlightActiveLine = true;
-            this.HighlightMatches = true;
-            this.ShowTabs = false;
-            this.ShowFormatButton = true;
-            this.ShowCommentButton = true;
-            this.ShowUncommentButton = true;
+            Theme = "default";
+            LineNumbers = true;
+            LineWrapping = true;
+            MatchBrackets = true;
+            AutoCloseTags = false;
+            EnableSearchTools = true;
+            EnableCodeFolding = true;
+            EnableCodeFormatting = true;
+            AutoFormatOnStart = false;
+            AutoFormatOnUncomment = true;
+            HighlightActiveLine = true;
+            HighlightMatches = true;
+            ShowTabs = false;
+            ShowFormatButton = true;
+            ShowCommentButton = true;
+            ShowUncommentButton = true;
         }
 
         /// <summary>

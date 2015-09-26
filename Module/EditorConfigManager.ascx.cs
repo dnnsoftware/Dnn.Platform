@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
 
 namespace DNNConnect.CKEditorProvider.Module
 {
@@ -44,7 +38,7 @@ namespace DNNConnect.CKEditorProvider.Module
             get
             {
                 return
-                    this.ResolveUrl(
+                    ResolveUrl(
                         string.Format(
 							"~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx",
                             Localization.LocalResourceDirectory));
@@ -62,7 +56,7 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             base.OnInit(e);
         }
 
@@ -75,29 +69,29 @@ namespace DNNConnect.CKEditorProvider.Module
         {
             try
             {
-                this.EditorOptions =
+                EditorOptions =
                    (CKEditorOptions)
-                   this.Page.LoadControl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx");
+                   Page.LoadControl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx");
 
-                this.EditorOptions.IsHostMode = true;
+                EditorOptions.IsHostMode = true;
 
-                this.EditorOptions.CurrentPortalOnly = this.PortalOnly.Checked;
+                EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
-                this.EditorOptions.CurrentOrSelectedTabId = this.PortalSettings.ActiveTab.TabID;
-                this.EditorOptions.CurrentOrSelectedPortalId = this.PortalSettings.PortalId;
+                EditorOptions.CurrentOrSelectedTabId = PortalSettings.ActiveTab.TabID;
+                EditorOptions.CurrentOrSelectedPortalId = PortalSettings.PortalId;
 
-                this.EditorOptions.DefaultHostLoadMode = 0;
+                EditorOptions.DefaultHostLoadMode = 0;
 
-                this.EditorOptions.ID = "CKEditor_Options";
+                EditorOptions.ID = "CKEditor_Options";
 
-                this.OptionsPlaceHolder.Controls.Add(this.EditorOptions);
+                OptionsPlaceHolder.Controls.Add(EditorOptions);
 
                 if (Page.IsPostBack)
                 {
                     return;
                 }
 
-                this.SetLanguage();
+                SetLanguage();
             }
             catch (Exception exception)
             {
@@ -113,13 +107,13 @@ namespace DNNConnect.CKEditorProvider.Module
         {
             try
             {
-                if (!this.Page.IsPostBack)
+                if (!Page.IsPostBack)
                 {
-                    this.BindPortalTabsAndModulesTree();
+                    BindPortalTabsAndModulesTree();
                 }
 
-                this.PortalTabsAndModulesTree.SelectedNodeChanged += this.PortalTabsAndModulesTree_SelectedNodeChanged;
-                this.PortalOnly.CheckedChanged += this.PortalOnly_CheckedChanged;
+                PortalTabsAndModulesTree.SelectedNodeChanged += PortalTabsAndModulesTree_SelectedNodeChanged;
+                PortalOnly.CheckedChanged += PortalOnly_CheckedChanged;
             }
             catch (Exception exception)
             {
@@ -134,33 +128,33 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PortalOnly_CheckedChanged(object sender, EventArgs e)
         {
-            this.BindPortalTabsAndModulesTree();
+            BindPortalTabsAndModulesTree();
 
-            this.EditorOptions.Visible = true;
-            this.ModuleInstanceInfoPlaceHolder.Visible = false;
+            EditorOptions.Visible = true;
+            ModuleInstanceInfoPlaceHolder.Visible = false;
 
-            this.PortalTabsAndModulesTree.Nodes[0].Selected = true;
+            PortalTabsAndModulesTree.Nodes[0].Selected = true;
 
             ////
-            this.PortalTabsAndModulesTree.SelectedNode.ExpandAll();
+            PortalTabsAndModulesTree.SelectedNode.ExpandAll();
 
-            this.EditorOptions.IsHostMode = true;
+            EditorOptions.IsHostMode = true;
 
-            this.EditorOptions.CurrentPortalOnly = this.PortalOnly.Checked;
+            EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
             // Load Portal Settings for the selected Portal if exist
-            var portalId = this.PortalTabsAndModulesTree.SelectedValue.Substring(1);
-            var tabId = this.PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
+            var portalId = PortalTabsAndModulesTree.SelectedValue.Substring(1);
+            var tabId = PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
 
-            this.EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
-            this.EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
+            EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
+            EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
-            this.EditorOptions.DefaultHostLoadMode = 0;
+            EditorOptions.DefaultHostLoadMode = 0;
 
-            this.BindPortalTabsAndModulesTree();
+            BindPortalTabsAndModulesTree();
 
             // Load Settings
-            this.EditorOptions.BindOptionsData(true);
+            EditorOptions.BindOptionsData(true);
         }
 
         /// <summary>
@@ -170,70 +164,70 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PortalTabsAndModulesTree_SelectedNodeChanged(object sender, EventArgs e)
         {
-            if (this.PortalTabsAndModulesTree.SelectedNode == null)
+            if (PortalTabsAndModulesTree.SelectedNode == null)
             {
                 return;
             }
 
-            this.PortalTabsAndModulesTree.SelectedNode.ExpandAll();
+            PortalTabsAndModulesTree.SelectedNode.ExpandAll();
 
-            this.EditorOptions.IsHostMode = true;
+            EditorOptions.IsHostMode = true;
 
-            this.EditorOptions.CurrentPortalOnly = this.PortalOnly.Checked;
+            EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
-            if (this.PortalTabsAndModulesTree.SelectedNode == null)
+            if (PortalTabsAndModulesTree.SelectedNode == null)
             {
                 return;
             }
 
-            this.EditorOptions.IsHostMode = true;
+            EditorOptions.IsHostMode = true;
 
-            this.EditorOptions.CurrentPortalOnly = this.PortalOnly.Checked;
+            EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
-            if (this.PortalTabsAndModulesTree.SelectedValue.StartsWith("p"))
+            if (PortalTabsAndModulesTree.SelectedValue.StartsWith("p"))
             {
-                this.EditorOptions.Visible = true;
-                this.ModuleInstanceInfoPlaceHolder.Visible = false;
+                EditorOptions.Visible = true;
+                ModuleInstanceInfoPlaceHolder.Visible = false;
 
                 // Load Portal Settings for the selected Portal if exist
-                var portalId = this.PortalTabsAndModulesTree.SelectedValue.Substring(1);
-                var tabId = this.PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
+                var portalId = PortalTabsAndModulesTree.SelectedValue.Substring(1);
+                var tabId = PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
 
-                this.EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
-                this.EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
+                EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
+                EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
-                this.EditorOptions.DefaultHostLoadMode = 0;
+                EditorOptions.DefaultHostLoadMode = 0;
 
-                this.BindPortalTabsAndModulesTree();
+                BindPortalTabsAndModulesTree();
 
                 // Load Settings
-                this.EditorOptions.BindOptionsData(true);
+                EditorOptions.BindOptionsData(true);
             }
-            else if (this.PortalTabsAndModulesTree.SelectedValue.StartsWith("t"))
+            else if (PortalTabsAndModulesTree.SelectedValue.StartsWith("t"))
             {
-                this.EditorOptions.Visible = true;
-                this.ModuleInstanceInfoPlaceHolder.Visible = false;
+                EditorOptions.Visible = true;
+                ModuleInstanceInfoPlaceHolder.Visible = false;
 
                 // Load Tab Settings for the selected Tab if exist
-                var portalId = this.PortalTabsAndModulesTree.SelectedNode.Parent.Value.Substring(1);
-                var tabId = this.PortalTabsAndModulesTree.SelectedValue.Substring(1);
+                var portalId = PortalTabsAndModulesTree.SelectedNode.Parent.Value.Substring(1);
+                var tabId = PortalTabsAndModulesTree.SelectedValue.Substring(1);
 
-                this.EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
-                this.EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
+                EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
+                EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
-                this.EditorOptions.DefaultHostLoadMode = 1;
+                EditorOptions.DefaultHostLoadMode = 1;
 
-                this.BindPortalTabsAndModulesTree();
+                BindPortalTabsAndModulesTree();
 
                 // Load Settings
-                this.EditorOptions.BindOptionsData(true);
+                EditorOptions.BindOptionsData(true);
             }
-            else if (this.PortalTabsAndModulesTree.SelectedValue.StartsWith("m"))
+            else if (PortalTabsAndModulesTree.SelectedValue.StartsWith("m"))
             {
-                this.EditorOptions.Visible = false;
+                EditorOptions.Visible = false;
 
                 // Show Info Notice
-                this.ModuleInstanceInfoPlaceHolder.Visible = true;
+                ModuleInstanceInfoPlaceHolder.Visible = true;
             }
         }
 
@@ -242,24 +236,24 @@ namespace DNNConnect.CKEditorProvider.Module
         /// </summary>
         private void SetLanguage()
         {
-            this.ModuleHeader.Text = Localization.GetString("ModuleHeader.Text", this.ResXFile, this.LangCode);
-            this.PortalOnlyLabel.Text = Localization.GetString("PortalOnlyLabel.Text", this.ResXFile, this.LangCode);
-            this.PortalOnly.Text = Localization.GetString("PortalOnly.Text", this.ResXFile, this.LangCode);
-            this.PortalHasSettingLabel.Text = Localization.GetString(
-                "PortalHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PortalNoSettingLabel.Text = Localization.GetString(
-                "PortalNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PageHasSettingLabel.Text = Localization.GetString(
-                "PageHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PageNoSettingLabel.Text = Localization.GetString(
-                "PageNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.ModuleHasSettingLabel.Text = Localization.GetString(
-                "ModuleHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.ModuleNoSettingLabel.Text = Localization.GetString(
-                "ModuleNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.IconLegendLabel.Text = Localization.GetString(
-                "IconLegendLabel.Text", this.ResXFile, this.LangCode);
-            this.ModuleInstanceInfo.Text = Localization.GetString("ModuleError.Text", this.ResXFile, this.LangCode);
+            ModuleHeader.Text = Localization.GetString("ModuleHeader.Text", ResXFile, LangCode);
+            PortalOnlyLabel.Text = Localization.GetString("PortalOnlyLabel.Text", ResXFile, LangCode);
+            PortalOnly.Text = Localization.GetString("PortalOnly.Text", ResXFile, LangCode);
+            PortalHasSettingLabel.Text = Localization.GetString(
+                "PortalHasSettingLabel.Text", ResXFile, LangCode);
+            PortalNoSettingLabel.Text = Localization.GetString(
+                "PortalNoSettingLabel.Text", ResXFile, LangCode);
+            PageHasSettingLabel.Text = Localization.GetString(
+                "PageHasSettingLabel.Text", ResXFile, LangCode);
+            PageNoSettingLabel.Text = Localization.GetString(
+                "PageNoSettingLabel.Text", ResXFile, LangCode);
+            ModuleHasSettingLabel.Text = Localization.GetString(
+                "ModuleHasSettingLabel.Text", ResXFile, LangCode);
+            ModuleNoSettingLabel.Text = Localization.GetString(
+                "ModuleNoSettingLabel.Text", ResXFile, LangCode);
+            IconLegendLabel.Text = Localization.GetString(
+                "IconLegendLabel.Text", ResXFile, LangCode);
+            ModuleInstanceInfo.Text = Localization.GetString("ModuleError.Text", ResXFile, LangCode);
         }
 
         /// <summary>
@@ -267,26 +261,26 @@ namespace DNNConnect.CKEditorProvider.Module
         /// </summary>
         private void BindPortalTabsAndModulesTree()
         {
-            this.PortalTabsAndModulesTree.Nodes.Clear();
+            PortalTabsAndModulesTree.Nodes.Clear();
 
             var moduleController = new ModuleController();
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
 
-            if (this.PortalOnly.Checked)
+            if (PortalOnly.Checked)
             {
-                this.RenderPortalNode(
+                RenderPortalNode(
                     new PortalController().GetPortal(PortalSettings.PortalId), moduleController, settingsDictionary);
             }
             else
             {
                 foreach (PortalInfo portal in new PortalController().GetPortals())
                 {
-                    this.RenderPortalNode(portal, moduleController, settingsDictionary);
+                    RenderPortalNode(portal, moduleController, settingsDictionary);
                 }
             }
 
-            this.PortalTabsAndModulesTree.DataBind();
+            PortalTabsAndModulesTree.DataBind();
         }
 
         /// <summary>
@@ -310,15 +304,15 @@ namespace DNNConnect.CKEditorProvider.Module
                     portalSettingsExists
                         ? "../CKEditor/images/PortalHasSetting.png"
                         : "../CKEditor/images/PortalNoSetting.png",
-                Expanded = this.PortalOnly.Checked
+                Expanded = PortalOnly.Checked
             };
 
             foreach (var tabInfo in TabController.GetTabsByParent(-1, portal.PortalID))
             {
-                this.RenderTabNode(portalNode, tabInfo, moduleController, editorHostSettings);
+                RenderTabNode(portalNode, tabInfo, moduleController, editorHostSettings);
             }
 
-            this.PortalTabsAndModulesTree.Nodes.Add(portalNode);
+            PortalTabsAndModulesTree.Nodes.Add(portalNode);
         }
 
         /// <summary>
@@ -353,7 +347,7 @@ namespace DNNConnect.CKEditorProvider.Module
             {
                 foreach (var childTab in TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID))
                 {
-                    this.RenderTabNode(tabNode, childTab, moduleController, editorHostSettings);
+                    RenderTabNode(tabNode, childTab, moduleController, editorHostSettings);
                 }
             }
 

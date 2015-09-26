@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DNNConnect.CKEditorProvider.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Modules.HTMLEditorProvider;
-
-using DNNConnect.CKEditorProvider.Web;
 
 namespace DNNConnect.CKEditorProvider
 {
@@ -43,12 +41,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return this.additionalToolbars;
+                return additionalToolbars;
             }
 
             set
             {
-                this.additionalToolbars = value;
+                additionalToolbars = value;
             }
         }
 
@@ -64,12 +62,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return this.htmlEditorControl.Height;
+                return htmlEditorControl.Height;
             }
 
             set
             {
-                this.htmlEditorControl.Height = value;
+                htmlEditorControl.Height = value;
             }
         }
 
@@ -80,7 +78,7 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return this.htmlEditorControl;
+                return htmlEditorControl;
             }
         }
 
@@ -91,20 +89,20 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                if (this.rootImageDirectory == string.Empty)
+                if (rootImageDirectory == string.Empty)
                 {
                     // Remove the Application Path from the Home Directory
                     return Globals.ApplicationPath != string.Empty
-                               ? this.PortalSettings.HomeDirectory.Replace(Globals.ApplicationPath, string.Empty)
-                               : this.PortalSettings.HomeDirectory;
+                               ? PortalSettings.HomeDirectory.Replace(Globals.ApplicationPath, string.Empty)
+                               : PortalSettings.HomeDirectory;
                 }
 
-                return this.rootImageDirectory;
+                return rootImageDirectory;
             }
 
             set
             {
-                this.rootImageDirectory = value;
+                rootImageDirectory = value;
             }
         }
 
@@ -115,12 +113,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return this.htmlEditorControl.Value;
+                return htmlEditorControl.Value;
             }
 
             set
             {
-                this.htmlEditorControl.Value = value;
+                htmlEditorControl.Value = value;
             }
         }
 
@@ -131,12 +129,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return this.htmlEditorControl.Width;
+                return htmlEditorControl.Width;
             }
 
             set
             {
-                this.htmlEditorControl.Width = value;
+                htmlEditorControl.Width = value;
             }
         }
 
@@ -157,7 +155,7 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         public override void Initialize()
         {
-            this.htmlEditorControl = new EditorControl { ID = this.ControlID };
+            htmlEditorControl = new EditorControl { ID = ControlID };
         }
 
         #endregion

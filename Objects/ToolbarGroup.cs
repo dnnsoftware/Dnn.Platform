@@ -1,8 +1,8 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Toolbar Group Class
     /// </summary>
@@ -13,7 +13,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public ToolbarGroup()
         {
-            this.items = new List<string>();
+            items = new List<string>();
         }
 
         /// <summary>

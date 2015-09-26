@@ -1,8 +1,8 @@
 ﻿
+using System.IO;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System.IO;
-
     /// <summary>
     /// FileUploadStatus Class
     /// </summary>
@@ -26,7 +26,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="fileInfo">The file information.</param>
         public FilesUploadStatus(FileInfo fileInfo)
         {
-            this.SetValues(fileInfo.Name, (int)fileInfo.Length);
+            SetValues(fileInfo.Name, (int)fileInfo.Length);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="fileLength">Length of the file.</param>
         public FilesUploadStatus(string fileName, int fileLength)
         {
-            this.SetValues(fileName, fileLength);
+            SetValues(fileName, fileLength);
         }
 
         /// <summary>
@@ -126,11 +126,11 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="fileLength">Length of the file.</param>
         private void SetValues(string fileName, int fileLength)
         {
-            this.name = fileName;
-            this.type = "image/png";
-            this.size = fileLength;
-            this.progress = "1.0";
-            this.url = string.Format("{0}FileTransferHandler.ashx?f={1}", HandlerPath, fileName);
+            name = fileName;
+            type = "image/png";
+            size = fileLength;
+            progress = "1.0";
+            url = string.Format("{0}FileTransferHandler.ashx?f={1}", HandlerPath, fileName);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -34,7 +34,7 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </summary>
         protected UrlControl()
         {
-            this.PreRender += this.Page_PreRender;
+            PreRender += Page_PreRender;
         }
 
         #endregion
@@ -51,12 +51,12 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return this.ViewState["ReloadFiles"] == null || Convert.ToBoolean(this.ViewState["ReloadFiles"]);
+                return ViewState["ReloadFiles"] == null || Convert.ToBoolean(ViewState["ReloadFiles"]);
             }
 
             set
             {
-                this.ViewState["ReloadFiles"] = value;
+                ViewState["ReloadFiles"] = value;
             }
         }
 
@@ -67,14 +67,14 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return this.ViewState["FileFilter"] != null
-                           ? Convert.ToString(this.ViewState["FileFilter"])
+                return ViewState["FileFilter"] != null
+                           ? Convert.ToString(ViewState["FileFilter"])
                            : string.Empty;
             }
 
             set
             {
-                this.ViewState["FileFilter"] = value;
+                ViewState["FileFilter"] = value;
             }
         }
 
@@ -85,18 +85,18 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return string.IsNullOrEmpty(this._localResourceFile)
+                return string.IsNullOrEmpty(_localResourceFile)
                            ? string.Format(
                                "{0}/{1}/URLControl.ascx.resx",
-                               this.TemplateSourceDirectory.Replace(
+                               TemplateSourceDirectory.Replace(
                                    "Providers/HtmlEditorProviders/CKEditor", "controls"),
                                Localization.LocalResourceDirectory)
-                           : this._localResourceFile;
+                           : _localResourceFile;
             }
 
             set
             {
-                this._localResourceFile = value;
+                _localResourceFile = value;
             }
         }
 
@@ -107,7 +107,7 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
+                return Convert.ToString(ViewState["SkinControlWidth"]);
             }
 
             set
@@ -117,9 +117,9 @@ namespace DNNConnect.CKEditorProvider.Controls
                     return;
                 }
 
-                this.Folders.Width = Unit.Parse(value);
-                this.Files.Width = Unit.Parse(value);
-                this.ViewState["SkinControlWidth"] = value;
+                Folders.Width = Unit.Parse(value);
+                Files.Width = Unit.Parse(value);
+                ViewState["SkinControlWidth"] = value;
             }
         }
 
@@ -130,12 +130,12 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return Convert.ToInt32(this.ViewState["PortalId"]);
+                return Convert.ToInt32(ViewState["PortalId"]);
             }
 
             set
             {
-                this.ViewState["PortalId"] = value;
+                ViewState["PortalId"] = value;
             }
         }
 
@@ -147,13 +147,13 @@ namespace DNNConnect.CKEditorProvider.Controls
             get
             {
                 string url = string.Empty;
-                if (this.Files.SelectedItem == null)
+                if (Files.SelectedItem == null)
                 {
                     return url;
                 }
 
-                url = !string.IsNullOrEmpty(this.Files.SelectedItem.Value)
-                          ? string.Format("FileID={0}", this.Files.SelectedItem.Value)
+                url = !string.IsNullOrEmpty(Files.SelectedItem.Value)
+                          ? string.Format("FileID={0}", Files.SelectedItem.Value)
                           : string.Empty;
 
                 return url;
@@ -161,7 +161,7 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             set
             {
-                this.ViewState["Url"] = value;
+                ViewState["Url"] = value;
             }
         }
 
@@ -204,20 +204,20 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return this.folders;
+                return folders;
             }
 
             set
             {
-                if (this.folders != null)
+                if (folders != null)
                 {
-                    this.folders.SelectedIndexChanged -= this.Folders_SelectedIndexChanged;
+                    folders.SelectedIndexChanged -= Folders_SelectedIndexChanged;
                 }
 
-                this.folders = value;
-                if (this.folders != null)
+                folders = value;
+                if (folders != null)
                 {
-                    this.folders.SelectedIndexChanged += this.Folders_SelectedIndexChanged;
+                    folders.SelectedIndexChanged += Folders_SelectedIndexChanged;
                 }
             }
         }
@@ -231,22 +231,22 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </summary>
         public void BindData()
         {
-            this.LoadFolders();
+            LoadFolders();
 
-            this.Files.Items.Clear();
-            this.Files.DataSource = this.GetFileList(true);
-            this.Files.DataBind();
+            Files.Items.Clear();
+            Files.DataSource = GetFileList(true);
+            Files.DataBind();
 
-            this.ReloadFiles = false;
+            ReloadFiles = false;
 
-            var _url = Convert.ToString(this.ViewState["Url"]);
+            var _url = Convert.ToString(ViewState["Url"]);
 
             if (string.IsNullOrEmpty(_url))
             {
                 return;
             }
 
-            var _urltype = DotNetNuke.Common.Globals.GetURLType(_url).ToString("g").Substring(0, 1);
+            var _urltype = Globals.GetURLType(_url).ToString("g").Substring(0, 1);
 
             if (_urltype == "F")
             {
@@ -261,32 +261,32 @@ namespace DNNConnect.CKEditorProvider.Controls
                         var fileName = _url.Substring(_url.LastIndexOf("/", StringComparison.Ordinal) + 1);
                         var folderPath = _url.Replace(fileName, string.Empty);
 
-                        if (this.Folders.Items.FindByValue(folderPath) != null)
+                        if (Folders.Items.FindByValue(folderPath) != null)
                         {
-                            this.Folders.ClearSelection();
-                            this.Folders.Items.FindByValue(folderPath).Selected = true;
+                            Folders.ClearSelection();
+                            Folders.Items.FindByValue(folderPath).Selected = true;
                         }
-                        else if (this.Folders.Items.Count > 0)
+                        else if (Folders.Items.Count > 0)
                         {
-                            this.Folders.ClearSelection();
-                            this.Folders.Items[0].Selected = true;
+                            Folders.ClearSelection();
+                            Folders.Items[0].Selected = true;
                         }
 
                         // Reload files list
-                        this.Files.Items.Clear();
-                        this.Files.DataSource = this.GetFileList(true);
-                        this.Files.DataBind();
+                        Files.Items.Clear();
+                        Files.DataSource = GetFileList(true);
+                        Files.DataBind();
 
-                        if (this.Files.Items.FindByText(fileName) != null)
+                        if (Files.Items.FindByText(fileName) != null)
                         {
-                            this.Files.ClearSelection();
-                            this.Files.Items.FindByText(fileName).Selected = true;
+                            Files.ClearSelection();
+                            Files.Items.FindByText(fileName).Selected = true;
                         }
                     }
                 }
             }
 
-            this.ViewState["Url"] = _url;
+            ViewState["Url"] = _url;
         }
 
         /// <summary>
@@ -300,8 +300,8 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </returns>
         private ArrayList GetFileList(bool noneSpecified)
         {
-            return DotNetNuke.Common.Globals.GetFileList(
-                this.PortalId, this.FileFilter, noneSpecified, this.Folders.SelectedItem.Value, false);
+            return Globals.GetFileList(
+                PortalId, FileFilter, noneSpecified, Folders.SelectedItem.Value, false);
         }
 
         /// <summary>
@@ -309,9 +309,9 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </summary>
         private void LoadFolders()
         {
-            this.Folders.Items.Clear();
+            Folders.Items.Clear();
 
-            var foldersList = FolderManager.Instance.GetFolders(this.PortalId);
+            var foldersList = FolderManager.Instance.GetFolders(PortalId);
 
             foreach (ListItem folderItem in from FolderInfo folder in foldersList
                                             select
@@ -320,12 +320,12 @@ namespace DNNConnect.CKEditorProvider.Controls
                                                     Text =
                                                         folder.FolderPath == Null.NullString
                                                             ? Localization.GetString(
-                                                                "Root", this.LocalResourceFile)
+                                                                "Root", LocalResourceFile)
                                                             : folder.FolderPath,
                                                     Value = folder.FolderPath
                                                 })
             {
-                this.Folders.Items.Add(folderItem);
+                Folders.Items.Add(folderItem);
             }
         }
 
@@ -338,9 +338,9 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             try
             {
-                if (this.ReloadFiles)
+                if (ReloadFiles)
                 {
-                    this.BindData();
+                    BindData();
                 }
             }
             catch (Exception exc)
@@ -357,26 +357,26 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void Folders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Files.Items.Clear();
-            this.Files.DataSource = this.GetFileList(true);
-            this.Files.DataBind();
+            Files.Items.Clear();
+            Files.DataSource = GetFileList(true);
+            Files.DataBind();
 
-            if (this.Folders.SelectedIndex >= 0)
+            if (Folders.SelectedIndex >= 0)
             {
-                this.ViewState["LastFolderPath"] = this.Folders.SelectedValue;
+                ViewState["LastFolderPath"] = Folders.SelectedValue;
             }
             else
             {
-                this.ViewState["LastFolderPath"] = string.Empty;
+                ViewState["LastFolderPath"] = string.Empty;
             }
 
-            if (this.Files.SelectedIndex >= 0)
+            if (Files.SelectedIndex >= 0)
             {
-                this.ViewState["LastFileName"] = this.Files.SelectedValue;
+                ViewState["LastFileName"] = Files.SelectedValue;
             }
             else
             {
-                this.ViewState["LastFileName"] = string.Empty;
+                ViewState["LastFileName"] = string.Empty;
             }
         }
 

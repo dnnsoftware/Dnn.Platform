@@ -5,11 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-
 using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Objects;
+using DotNetNuke.Common;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {
@@ -668,7 +666,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             new ToolbarGroup { items = new List<string> { "Source" }, name = "document" });
 
                         toolbarSetStandard.ToolbarGroups.Add(
-                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak", });
+                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak" });
 
                         toolbarSetStandard.ToolbarGroups.Add(
                             new ToolbarGroup
@@ -738,7 +736,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "PasteFromWord",
                                                 "-",
                                                 "Undo",
-                                                "Redo",
+                                                "Redo"
                                             },
                                     name = "clipboard"
                                 });
@@ -768,7 +766,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                 });
 
                         toolbarSetFull.ToolbarGroups.Add(
-                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak", });
+                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak" });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup
@@ -813,13 +811,13 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Smiley",
                                                 "SpecialChar",
                                                 "PageBreak",
-                                                "Iframe",
+                                                "Iframe"
                                             },
                                     name = "insert"
                                 });
 
                         toolbarSetFull.ToolbarGroups.Add(
-                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak", });
+                            new ToolbarGroup { items = new List<string> { "/" }, name = "rowBreak" });
 
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup

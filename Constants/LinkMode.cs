@@ -24,6 +24,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Absolute Secured URL
         /// </summary>
-        AbsoluteSecuredURL = 3,
+        AbsoluteSecuredURL = 3
     }
 }

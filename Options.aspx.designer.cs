@@ -1,4 +1,7 @@
 ﻿
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
 namespace DNNConnect.CKEditorProvider {
     
     
@@ -11,7 +14,7 @@ namespace DNNConnect.CKEditorProvider {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder favicon;
+        protected PlaceHolder favicon;
         
         /// <summary>
         /// ckOptionsForm control.
@@ -20,7 +23,7 @@ namespace DNNConnect.CKEditorProvider {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm ckOptionsForm;
+        protected HtmlForm ckOptionsForm;
         
         /// <summary>
         /// phControls control.
@@ -29,6 +32,6 @@ namespace DNNConnect.CKEditorProvider {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phControls;
+        protected PlaceHolder phControls;
     }
 }

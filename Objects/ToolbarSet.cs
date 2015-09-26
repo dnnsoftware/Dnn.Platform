@@ -1,8 +1,8 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Toolbar Set Class
     /// </summary>
@@ -13,7 +13,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public ToolbarSet()
         {
-            this.ToolbarGroups = new List<ToolbarGroup>();
+            ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="name">The name.</param>
         public ToolbarSet(string name)
         {
-            this.Name = name;
-            this.ToolbarGroups = new List<ToolbarGroup>();
+            Name = name;
+            ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="priority">The priority.</param>
         public ToolbarSet(string name, int priority)
         {
-            this.Name = name;
-            this.Priority = priority;
-            this.ToolbarGroups = new List<ToolbarGroup>();
+            Name = name;
+            Priority = priority;
+            ToolbarGroups = new List<ToolbarGroup>();
         }
 
         /// <summary>

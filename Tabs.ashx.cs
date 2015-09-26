@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
-using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using Microsoft.JScript;
+using Globals = DotNetNuke.Common.Globals;
 
 namespace DNNConnect.CKEditorProvider
 {
@@ -32,7 +32,7 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
-            var portalId = this.PortalSettings.PortalId;
+            var portalId = PortalSettings.PortalId;
 
             // Generate Pages Array
             var pagesArray = new StringBuilder();
@@ -54,7 +54,7 @@ namespace DNNConnect.CKEditorProvider
 
                 tabUrl = Globals.ResolveUrl(Regex.Replace(tabUrl, domainName, "~", RegexOptions.IgnoreCase));
 
-                var tabName = Microsoft.JScript.GlobalObject.escape(tab.TabName);
+                var tabName = GlobalObject.escape(tab.TabName);
 
                 if (tab.Level.Equals(0))
                 {

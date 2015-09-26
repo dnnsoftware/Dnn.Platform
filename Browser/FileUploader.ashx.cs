@@ -4,12 +4,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Script.Serialization;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
-
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
+using DotNetNuke.Services.FileSystem;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
@@ -90,7 +87,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
-            this.HandleMethod(context);
+            HandleMethod(context);
         }
 
         /// <summary>
@@ -126,7 +123,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 case "POST":
                 case "PUT":
-                    this.UploadFile(context);
+                    UploadFile(context);
                     break;
 
                 case "OPTIONS":
@@ -148,9 +145,9 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             var statuses = new List<FilesUploadStatus>();
 
-            this.UploadWholeFile(context, statuses);
+            UploadWholeFile(context, statuses);
 
-            this.WriteJsonIframeSafe(context, statuses);
+            WriteJsonIframeSafe(context, statuses);
         }
 
         /// <summary>
@@ -193,11 +190,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                 var fileNameNoExtenstion = Path.GetFileNameWithoutExtension(fileName);
 
                 // Rename File if Exists
-                if (!this.OverrideFiles)
+                if (!OverrideFiles)
                 {
                     var counter = 0;
 
-                    while (File.Exists(Path.Combine(this.StorageFolder.PhysicalPath, fileName)))
+                    while (File.Exists(Path.Combine(StorageFolder.PhysicalPath, fileName)))
                     {
                         counter++;
                         fileName = string.Format(
@@ -208,7 +205,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     }
                 }
 
-                FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles);
+                FileManager.Instance.AddFile(StorageFolder, fileName, file.InputStream, OverrideFiles);
 
                 var fullName = Path.GetFileName(fileName);
                 statuses.Add(new FilesUploadStatus(fullName, file.ContentLength));
@@ -234,7 +231,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 context.Response.ContentType = "text/plain";
             }
 
-            var jsonObj = this.js.Serialize(statuses.ToArray());
+            var jsonObj = js.Serialize(statuses.ToArray());
             context.Response.Write(jsonObj);
         }
     }

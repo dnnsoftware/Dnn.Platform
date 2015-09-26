@@ -14,8 +14,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public WordCountConfig()
         {
-            this.ShowWordCount = true;
-            this.ShowCharCount = false;
+            ShowWordCount = true;
+            ShowCharCount = false;
             /*this.CharLimit = "unlimited";
             this.WordLimit = "unlimited";*/
         }

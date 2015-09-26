@@ -4,18 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
-
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Objects;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Objects;
-using System.Web;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {

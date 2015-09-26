@@ -7,6 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using DNNConnect.CKEditorProvider.Controls;
+
 namespace DNNConnect.CKEditorProvider.Browser {
     
     
@@ -19,7 +24,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl title;
+        protected HtmlGenericControl title;
         
         /// <summary>
         /// favicon control.
@@ -28,7 +33,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder favicon;
+        protected PlaceHolder favicon;
         
         /// <summary>
         /// fBrowser control.
@@ -37,7 +42,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm fBrowser;
+        protected HtmlForm fBrowser;
         
         /// <summary>
         /// scriptManager1 control.
@@ -46,7 +51,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager scriptManager1;
+        protected ScriptManager scriptManager1;
         
         /// <summary>
         /// lblModus control.
@@ -55,7 +60,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModus;
+        protected Label lblModus;
         
         /// <summary>
         /// BrowserMode control.
@@ -64,7 +69,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList BrowserMode;
+        protected RadioButtonList BrowserMode;
         
         /// <summary>
         /// panPageMode control.
@@ -73,7 +78,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panPageMode;
+        protected Panel panPageMode;
         
         /// <summary>
         /// lblChoosetab control.
@@ -82,7 +87,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblChoosetab;
+        protected Label lblChoosetab;
         
         /// <summary>
         /// dnntreeTabs control.
@@ -91,7 +96,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TreeView dnntreeTabs;
+        protected TreeView dnntreeTabs;
         
         /// <summary>
         /// ExtraTabOptions control.
@@ -100,7 +105,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ExtraTabOptions;
+        protected Label ExtraTabOptions;
         
         /// <summary>
         /// chkHumanFriendy control.
@@ -109,7 +114,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkHumanFriendy;
+        protected CheckBox chkHumanFriendy;
         
         /// <summary>
         /// LabelAnchor control.
@@ -118,7 +123,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelAnchor;
+        protected Label LabelAnchor;
         
         /// <summary>
         /// AnchorList control.
@@ -127,7 +132,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AnchorList;
+        protected DropDownList AnchorList;
         
         /// <summary>
         /// LanguageRow control.
@@ -136,7 +141,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow LanguageRow;
+        protected HtmlTableRow LanguageRow;
         
         /// <summary>
         /// LabelTabLanguage control.
@@ -145,7 +150,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelTabLanguage;
+        protected Label LabelTabLanguage;
         
         /// <summary>
         /// LanguageList control.
@@ -154,7 +159,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList LanguageList;
+        protected DropDownList LanguageList;
         
         /// <summary>
         /// panImageEdHead control.
@@ -163,7 +168,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panImageEdHead;
+        protected Panel panImageEdHead;
         
         /// <summary>
         /// lblResizeHeader control.
@@ -172,7 +177,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblResizeHeader;
+        protected Label lblResizeHeader;
         
         /// <summary>
         /// lblOtherTools control.
@@ -181,7 +186,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOtherTools;
+        protected Label lblOtherTools;
         
         /// <summary>
         /// cmdCrop control.
@@ -190,7 +195,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCrop;
+        protected Button cmdCrop;
         
         /// <summary>
         /// cmdZoom control.
@@ -199,7 +204,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdZoom;
+        protected Button cmdZoom;
         
         /// <summary>
         /// cmdRotate control.
@@ -208,7 +213,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdRotate;
+        protected Button cmdRotate;
         
         /// <summary>
         /// cmdResize2 control.
@@ -217,7 +222,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdResize2;
+        protected Button cmdResize2;
         
         /// <summary>
         /// panThumb control.
@@ -226,7 +231,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panThumb;
+        protected Panel panThumb;
         
         /// <summary>
         /// lblWidth control.
@@ -235,7 +240,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWidth;
+        protected Label lblWidth;
         
         /// <summary>
         /// txtWidth control.
@@ -244,7 +249,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWidth;
+        protected TextBox txtWidth;
         
         /// <summary>
         /// lblHeight control.
@@ -253,7 +258,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHeight;
+        protected Label lblHeight;
         
         /// <summary>
         /// txtHeight control.
@@ -262,7 +267,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHeight;
+        protected TextBox txtHeight;
         
         /// <summary>
         /// chkAspect control.
@@ -271,7 +276,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAspect;
+        protected CheckBox chkAspect;
         
         /// <summary>
         /// lblThumbName control.
@@ -280,7 +285,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblThumbName;
+        protected Label lblThumbName;
         
         /// <summary>
         /// txtThumbName control.
@@ -289,7 +294,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtThumbName;
+        protected TextBox txtThumbName;
         
         /// <summary>
         /// lblImgQuality control.
@@ -298,7 +303,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblImgQuality;
+        protected Label lblImgQuality;
         
         /// <summary>
         /// dDlQuality control.
@@ -307,7 +312,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dDlQuality;
+        protected DropDownList dDlQuality;
         
         /// <summary>
         /// cmdResizeNow control.
@@ -316,7 +321,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdResizeNow;
+        protected Button cmdResizeNow;
         
         /// <summary>
         /// cmdResizeCancel control.
@@ -325,7 +330,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdResizeCancel;
+        protected Button cmdResizeCancel;
         
         /// <summary>
         /// panImageEditor control.
@@ -334,7 +339,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panImageEditor;
+        protected Panel panImageEditor;
         
         /// <summary>
         /// lblCropImageName control.
@@ -343,7 +348,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCropImageName;
+        protected Label lblCropImageName;
         
         /// <summary>
         /// txtCropImageName control.
@@ -352,7 +357,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCropImageName;
+        protected TextBox txtCropImageName;
         
         /// <summary>
         /// cmdCropNow control.
@@ -361,7 +366,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCropNow;
+        protected Button cmdCropNow;
         
         /// <summary>
         /// cmdCropCancel control.
@@ -370,7 +375,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCropCancel;
+        protected Button cmdCropCancel;
         
         /// <summary>
         /// lblShowPreview control.
@@ -379,7 +384,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblShowPreview;
+        protected Label lblShowPreview;
         
         /// <summary>
         /// lblClearPreview control.
@@ -388,7 +393,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblClearPreview;
+        protected Label lblClearPreview;
         
         /// <summary>
         /// panImagePreview control.
@@ -397,7 +402,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panImagePreview;
+        protected Panel panImagePreview;
         
         /// <summary>
         /// lblOriginal control.
@@ -406,7 +411,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOriginal;
+        protected Label lblOriginal;
         
         /// <summary>
         /// lblPreview control.
@@ -415,7 +420,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPreview;
+        protected Label lblPreview;
         
         /// <summary>
         /// imgOriginal control.
@@ -424,7 +429,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgOriginal;
+        protected Image imgOriginal;
         
         /// <summary>
         /// lblCropInfo control.
@@ -433,7 +438,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCropInfo;
+        protected Label lblCropInfo;
         
         /// <summary>
         /// imgResized control.
@@ -442,7 +447,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgResized;
+        protected Image imgResized;
         
         /// <summary>
         /// panLinkMode control.
@@ -451,7 +456,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panLinkMode;
+        protected Panel panLinkMode;
         
         /// <summary>
         /// lblCurrent control.
@@ -460,7 +465,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrent;
+        protected Label lblCurrent;
         
         /// <summary>
         /// lblCurrentDir control.
@@ -469,7 +474,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrentDir;
+        protected Label lblCurrentDir;
         
         /// <summary>
         /// panUploadDiv control.
@@ -478,7 +483,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panUploadDiv;
+        protected Panel panUploadDiv;
         
         /// <summary>
         /// UploadTitle control.
@@ -487,7 +492,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label UploadTitle;
+        protected Label UploadTitle;
         
         /// <summary>
         /// AddFiles control.
@@ -496,7 +501,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label AddFiles;
+        protected Label AddFiles;
         
         /// <summary>
         /// OverrideFile control.
@@ -505,7 +510,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox OverrideFile;
+        protected CheckBox OverrideFile;
         
         /// <summary>
         /// MaximumUploadSizeInfo control.
@@ -514,7 +519,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MaximumUploadSizeInfo;
+        protected Label MaximumUploadSizeInfo;
         
         /// <summary>
         /// cmdUploadNow control.
@@ -523,7 +528,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdUploadNow;
+        protected Button cmdUploadNow;
         
         /// <summary>
         /// cmdUploadCancel control.
@@ -532,7 +537,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdUploadCancel;
+        protected Button cmdUploadCancel;
         
         /// <summary>
         /// panCreate control.
@@ -541,7 +546,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panCreate;
+        protected Panel panCreate;
         
         /// <summary>
         /// NewFolderTitle control.
@@ -550,7 +555,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label NewFolderTitle;
+        protected Label NewFolderTitle;
         
         /// <summary>
         /// lblNewFoldName control.
@@ -559,7 +564,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNewFoldName;
+        protected Label lblNewFoldName;
         
         /// <summary>
         /// tbFolderName control.
@@ -568,7 +573,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbFolderName;
+        protected TextBox tbFolderName;
         
         /// <summary>
         /// cmdCreateFolder control.
@@ -577,7 +582,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCreateFolder;
+        protected Button cmdCreateFolder;
         
         /// <summary>
         /// cmdCreateCancel control.
@@ -586,7 +591,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCreateCancel;
+        protected Button cmdCreateCancel;
         
         /// <summary>
         /// cmdCreate control.
@@ -595,7 +600,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCreate;
+        protected LinkButton cmdCreate;
         
         /// <summary>
         /// Syncronize control.
@@ -604,7 +609,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Syncronize;
+        protected LinkButton Syncronize;
         
         /// <summary>
         /// cmdUpload control.
@@ -613,7 +618,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdUpload;
+        protected LinkButton cmdUpload;
         
         /// <summary>
         /// cmdDownload control.
@@ -622,7 +627,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdDownload;
+        protected LinkButton cmdDownload;
         
         /// <summary>
         /// cmdDelete control.
@@ -631,7 +636,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
+        protected LinkButton cmdDelete;
         
         /// <summary>
         /// cmdResizer control.
@@ -640,7 +645,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdResizer;
+        protected LinkButton cmdResizer;
         
         /// <summary>
         /// lblSubDirs control.
@@ -649,7 +654,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSubDirs;
+        protected Label lblSubDirs;
         
         /// <summary>
         /// FoldersTree control.
@@ -658,7 +663,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TreeView FoldersTree;
+        protected TreeView FoldersTree;
         
         /// <summary>
         /// FileSpaceUsedLabel control.
@@ -667,7 +672,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FileSpaceUsedLabel;
+        protected Label FileSpaceUsedLabel;
         
         /// <summary>
         /// lblConFiles control.
@@ -676,7 +681,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblConFiles;
+        protected Label lblConFiles;
         
         /// <summary>
         /// SwitchDetailView control.
@@ -685,7 +690,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SwitchDetailView;
+        protected Label SwitchDetailView;
         
         /// <summary>
         /// SwitchListView control.
@@ -694,7 +699,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SwitchListView;
+        protected Label SwitchListView;
         
         /// <summary>
         /// SwitchIconsView control.
@@ -703,7 +708,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SwitchIconsView;
+        protected Label SwitchIconsView;
         
         /// <summary>
         /// SortAscending control.
@@ -712,7 +717,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SortAscending;
+        protected LinkButton SortAscending;
         
         /// <summary>
         /// SortDescending control.
@@ -721,7 +726,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SortDescending;
+        protected LinkButton SortDescending;
         
         /// <summary>
         /// ListViewState control.
@@ -730,7 +735,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField ListViewState;
+        protected HiddenField ListViewState;
         
         /// <summary>
         /// FilesList control.
@@ -739,7 +744,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater FilesList;
+        protected Repeater FilesList;
         
         /// <summary>
         /// PagerFileLinks control.
@@ -748,7 +753,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DNNConnect.CKEditorProvider.Controls.Pager PagerFileLinks;
+        protected Pager PagerFileLinks;
         
         /// <summary>
         /// panInfo control.
@@ -757,7 +762,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panInfo;
+        protected Panel panInfo;
         
         /// <summary>
         /// FileId control.
@@ -766,7 +771,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FileId;
+        protected Label FileId;
         
         /// <summary>
         /// lblFileName control.
@@ -775,7 +780,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFileName;
+        protected Label lblFileName;
         
         /// <summary>
         /// lblUrlType control.
@@ -784,7 +789,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUrlType;
+        protected Label lblUrlType;
         
         /// <summary>
         /// rblLinkType control.
@@ -793,7 +798,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblLinkType;
+        protected RadioButtonList rblLinkType;
         
         /// <summary>
         /// TrackClicks control.
@@ -802,7 +807,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox TrackClicks;
+        protected CheckBox TrackClicks;
         
         /// <summary>
         /// cmdClose control.
@@ -811,7 +816,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdClose;
+        protected Button cmdClose;
         
         /// <summary>
         /// cmdCancel control.
@@ -820,7 +825,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdCancel;
+        protected Button cmdCancel;
         
         /// <summary>
         /// panelLoading control.
@@ -829,7 +834,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panelLoading;
+        protected Panel panelLoading;
         
         /// <summary>
         /// Wait control.
@@ -838,7 +843,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Wait;
+        protected Label Wait;
         
         /// <summary>
         /// WaitMessage control.
@@ -847,6 +852,6 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label WaitMessage;
+        protected Label WaitMessage;
     }
 }

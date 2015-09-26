@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 using DNNConnect.CKEditorProvider.Objects;
 
 namespace DNNConnect.CKEditorProvider.Utilities

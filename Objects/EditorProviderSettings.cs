@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using DNNConnect.CKEditorProvider.Constants;
 
 namespace DNNConnect.CKEditorProvider.Objects
@@ -15,26 +14,26 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public EditorProviderSettings()
         {
-            this.OverrideFileOnUpload = false;
-            this.UseAnchorSelector = true;
-            this.FileListPageSize = 20;
-            this.FileListViewMode = FileListView.DetailView;
-            this.SettingMode = SettingsMode.Portal;
-            this.DefaultLinkMode = LinkMode.RelativeURL;
-            this.InjectSyntaxJs = true;
-            this.BrowserRootDirId = -1;
-            this.UploadDirId = -1;
-            this.ResizeHeight = -1;
-            this.ResizeWidth = -1;
-            this.BrowserRoles = "0;Administrators;";
-            this.Browser = "standard";
-            this.ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
-            this.UploadSizeRoles = new List<UploadSizeRoles>
+            OverrideFileOnUpload = false;
+            UseAnchorSelector = true;
+            FileListPageSize = 20;
+            FileListViewMode = FileListView.DetailView;
+            SettingMode = SettingsMode.Portal;
+            DefaultLinkMode = LinkMode.RelativeURL;
+            InjectSyntaxJs = true;
+            BrowserRootDirId = -1;
+            UploadDirId = -1;
+            ResizeHeight = -1;
+            ResizeWidth = -1;
+            BrowserRoles = "0;Administrators;";
+            Browser = "standard";
+            ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
+            UploadSizeRoles = new List<UploadSizeRoles>
                                        {
                                            new UploadSizeRoles { RoleId = 0, UploadFileLimit = -1 }
                                        };
 
-            this.Config = new EditorConfig();
+            Config = new EditorConfig();
         }
         #region Properties
 

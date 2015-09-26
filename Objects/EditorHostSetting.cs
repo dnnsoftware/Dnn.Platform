@@ -15,8 +15,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// <param name="settingValue">The setting value.</param>
         public EditorHostSetting(string settingName, string settingValue)
         {
-            this.Name = settingName;
-            this.Value = settingValue;
+            Name = settingName;
+            Value = settingValue;
         }
 
         /// <summary>

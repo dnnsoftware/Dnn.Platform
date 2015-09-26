@@ -5,7 +5,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
     public static class EditorController

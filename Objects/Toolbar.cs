@@ -1,8 +1,8 @@
 ﻿
+using System;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System;
-
     /// <summary>
     /// Toolbar Class
     /// </summary>
