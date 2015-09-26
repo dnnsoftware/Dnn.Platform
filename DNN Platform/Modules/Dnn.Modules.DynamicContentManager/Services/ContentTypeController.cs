@@ -1,10 +1,13 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
@@ -60,6 +63,27 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId),
                            contentField => new ContentFieldViewModel(contentField, PortalSettings));
+        }
+
+        /// <summary>
+        /// GetAllContentFields retrieves all the content fields including those of enclosed content types
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllContentFields(int contentTypeId)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var fields = new ArrayList();
+            ProcessFields(contentType, fields, String.Empty, String.Empty);
+
+            var response = new
+                            {
+                                results = fields
+                            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         /// <summary>
@@ -119,6 +143,44 @@ namespace Dnn.Modules.DynamicContentManager.Services
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
 
+        }
+
+        private void ProcessFields(DynamicContentType contentType, ArrayList fields, string prefix, string localizedPrefix)
+        {
+            var locale = Thread.CurrentThread.CurrentUICulture.ToString();
+
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                var key = String.Format(FieldDefinitionManager.NameKey, definition.FieldDefinitionId);
+                var fieldName = definition.Name;
+                var localizedName = (locale == PortalSettings.DefaultLanguage)
+                                        ? fieldName
+                                        : ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, locale, PortalSettings.PortalId);
+
+                if (definition.IsReferenceType)
+                {
+                    var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    newPrefix += "/";
+
+                    var newLocalizedPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    newLocalizedPrefix += "-";
+
+                    ProcessFields(definition.ContentType, fields, newPrefix, newLocalizedPrefix);
+                }
+                else
+                {
+
+                    var field = new
+                    {
+                        contentTypeId = contentType.ContentTypeId,
+                        contentFieldId = definition.FieldDefinitionId,
+                        name = prefix + fieldName,
+                        localizedName = localizedPrefix + localizedName
+                    };
+
+                    fields.Add(field);
+                }
+            }
         }
 
         /// <summary>

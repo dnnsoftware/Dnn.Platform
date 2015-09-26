@@ -170,25 +170,18 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 contentTypeId: self.contentTypeId()
             };
 
-            util.contentTypeService().get("GetContentFields", params,
+            util.contentTypeService().get("GetAllContentFields", params,
                 function (data) {
                     if (typeof data !== "undefined" && data != null) {
                         //Success
                         self.contentFields.removeAll();
                         for (var i = 0; i < data.results.length; i++) {
                             var result = data.results[i];
-                            var localizedNames = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedNames, result.localizedNames);
-                            var localizedDescriptions = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedDescriptions, result.localizedDescriptions);
-                            var localizedLabels = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedLabels, result.localizedLabels);
                             self.contentFields.push({
                                 contentTypeId: result.contentTypeId,
                                 contentFieldId: result.contentFieldId,
-                                name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedNames()),
-                                label: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedDescriptions()),
-                                description: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedLabels())
+                                localizedName: result.localizedName,
+                                name: result.name
                             });
                         }
                     }
@@ -197,7 +190,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 function () {
                     //Failure
                 }
-                );
+            );
 
             self.previousContentTypeId = self.contentTypeId();
         }

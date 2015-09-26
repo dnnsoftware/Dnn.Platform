@@ -129,6 +129,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
 
     self.refresh = function() {
         self.getContentTypes();
+        getAllContentTypes();
     }
 };
 

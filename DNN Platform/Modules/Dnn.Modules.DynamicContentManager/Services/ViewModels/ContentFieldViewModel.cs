@@ -22,7 +22,6 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
 
         }
 
-
         /// <summary>
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
