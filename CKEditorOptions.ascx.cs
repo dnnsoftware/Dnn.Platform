@@ -1651,6 +1651,7 @@ namespace DNNConnect.CKEditorProvider
                 this.rBlSetMode.SelectedIndexChanged += this.SetMode_SelectedIndexChanged;
 
                 this.ToolbarGroupsRepeater.ItemDataBound += this.ToolbarGroupsRepeater_ItemDataBound;
+                this.gvToolbars.RowDataBound += gvToolbars_RowDataBound;
 
                 this.RenderEditorConfigSettings();
             }
@@ -1658,6 +1659,27 @@ namespace DNNConnect.CKEditorProvider
             {
                 this.ShowNotification(ex.Message, "error");
             }
+        }
+
+        void gvToolbars_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            ListItemCollection licToolbars = new ListItemCollection();
+
+            foreach (var toolbarItem in this.listToolbars.Select(toolbarSet => new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name }))
+            {
+                licToolbars.Add(toolbarItem);
+            }
+
+
+            DropDownList ddLToolB = (DropDownList)e.Row.FindControl("ddlToolbars");
+
+            if (ddLToolB == null)
+            {
+                return;
+            }
+
+            ddLToolB.DataSource = licToolbars;
+            ddLToolB.DataBind();
         }
 
         /// <summary>
@@ -1736,19 +1758,6 @@ namespace DNNConnect.CKEditorProvider
             }
 
             this.HideAddToolbar();
-
-            for (int i = 0; i < this.gvToolbars.Rows.Count; i++)
-            {
-                DropDownList ddLToolB = (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
-
-                if (ddLToolB == null)
-                {
-                    continue;
-                }
-
-                ddLToolB.DataSource = licToolbars;
-                ddLToolB.DataBind();
-            }
 
             this.dDlCustomToolbars.DataSource = licToolbars;
             this.dDlCustomToolbars.DataBind();
