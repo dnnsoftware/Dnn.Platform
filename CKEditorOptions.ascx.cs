@@ -87,6 +87,8 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private List<ToolbarButton> allListButtons;
 
+        private EditorProviderSettings currentSettings;
+
         /// <summary>
         ///   The module instance name
         /// </summary>
@@ -866,64 +868,6 @@ namespace DNNConnect.CKEditorProvider
                 this.txtBlanktext.Text = importedSettings.BlankText;
             }
 
-            List<ToolbarRoles> imporToolbarRoles = importedSettings.ToolBarRoles;
-
-            // Load Toolbar Setting for Each Portal Role
-            foreach (ToolbarRoles objToolbRoles in imporToolbarRoles)
-            {
-                if (objToolbRoles.RoleId.Equals(-1))
-                {
-                    for (int i = 0; i < this.gvToolbars.Rows.Count; i++)
-                    {
-                        Label label = (Label)this.gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals("Unauthenticated Users"))
-                        {
-                            continue;
-                        }
-
-                        DropDownList ddLToolB =
-                            (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
-
-                        ddLToolB.ClearSelection();
-
-                        if (ddLToolB.Items.FindByValue(objToolbRoles.Toolbar) != null)
-                        {
-                            ddLToolB.SelectedValue = objToolbRoles.Toolbar;
-                        }
-                    }
-                }
-                else
-                {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(objToolbRoles.RoleId, this._portalSettings.PortalId);
-
-                    if (objRole == null)
-                    {
-                        continue;
-                    }
-
-                    for (int i = 0; i < this.gvToolbars.Rows.Count; i++)
-                    {
-                        Label label = (Label)this.gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals(objRole.RoleName))
-                        {
-                            continue;
-                        }
-
-                        DropDownList ddLToolB =
-                            (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
-
-                        ddLToolB.ClearSelection();
-
-                        if (ddLToolB.Items.FindByValue(objToolbRoles.Toolbar) != null)
-                        {
-                            ddLToolB.SelectedValue = objToolbRoles.Toolbar;
-                        }
-                    }
-                }
-            }
-
             var imporUploadSizeRoles = importedSettings.UploadSizeRoles;
 
             // Load Upload Size Setting for Each Portal Role
@@ -1665,8 +1609,11 @@ namespace DNNConnect.CKEditorProvider
         {
             ListItemCollection licToolbars = new ListItemCollection();
 
-            foreach (var toolbarItem in this.listToolbars.Select(toolbarSet => new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name }))
+            foreach (var toolbarSet in this.listToolbars)
             {
+                var toolbarItem = new ListItem {Text = toolbarSet.Name, Value = toolbarSet.Name};
+                
+
                 licToolbars.Add(toolbarItem);
             }
 
@@ -1680,6 +1627,39 @@ namespace DNNConnect.CKEditorProvider
 
             ddLToolB.DataSource = licToolbars;
             ddLToolB.DataBind();
+
+            Label label = (Label)e.Row.Cells[0].FindControl("lblRoleName");
+
+            if (label == null)
+            {
+                return;
+            }
+
+            var objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
+
+            if (objRole == null)
+            {
+                return;
+            }
+
+            if (currentSettings == null)
+            {
+                var settingsDictionary = EditorController.GetEditorHostSettings();
+                var pageKey = string.Format("DNNCKT#{0}#", this.CurrentOrSelectedTabId);
+                this.LoadSettings(SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, pageKey) ? 1 : 0);
+            }
+            
+            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRole.RoleID);
+
+            if (currentToolbarSettings != null)
+            {
+                ddLToolB.ClearSelection();
+
+                if (ddLToolB.Items.FindByValue(currentToolbarSettings.Toolbar) != null)
+                {
+                    ddLToolB.SelectedValue = currentToolbarSettings.Toolbar;
+                }
+            }
         }
 
         /// <summary>
@@ -1767,8 +1747,7 @@ namespace DNNConnect.CKEditorProvider
             var emptyToolbarSet = new ToolbarSet();
 
             // Empty Toolbar
-            emptyToolbarSet.ToolbarGroups.Add(
-                new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", this.ResXFile, this.LangCode) });
+            emptyToolbarSet.ToolbarGroups.Add(new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", this.ResXFile, this.LangCode) });
 
             this.FillToolbarGroupsRepeater(emptyToolbarSet, out excludeButtons);
 
@@ -1945,7 +1924,7 @@ namespace DNNConnect.CKEditorProvider
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
             var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
-            var currentSettings = SettingsUtil.GetDefaultSettings(
+            currentSettings = SettingsUtil.GetDefaultSettings(
                 this._portalSettings,
                 this._portalSettings.HomeDirectoryMapPath,
                 objProvider.Attributes["ck_configFolder"],
