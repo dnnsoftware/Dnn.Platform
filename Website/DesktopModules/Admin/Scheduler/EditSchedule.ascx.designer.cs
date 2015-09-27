@@ -157,15 +157,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler {
         protected global::System.Web.UI.WebControls.TextBox txtRetryTimeLapse;
         
         /// <summary>
-        /// RetryTimeLapseRequireValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RetryTimeLapseRequireValidator;
-        
-        /// <summary>
         /// RetryTimeLapseValidator control.
         /// </summary>
         /// <remarks>
