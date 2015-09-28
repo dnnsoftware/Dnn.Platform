@@ -162,7 +162,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                     var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
                     newPrefix += "/";
 
-                    var newLocalizedPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    var newLocalizedPrefix = (String.IsNullOrEmpty(localizedPrefix)) ? fieldName : localizedPrefix + fieldName;
                     newLocalizedPrefix += "-";
 
                     ProcessFields(definition.ContentType, fields, newPrefix, newLocalizedPrefix);
