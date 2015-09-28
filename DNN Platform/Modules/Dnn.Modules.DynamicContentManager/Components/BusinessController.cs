@@ -53,13 +53,19 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                         .SingleOrDefault(t => t.Name == contentTypeName && t.IsDynamic);
                 if (dynamicContentType != null)
                 {
-                    var template = new ContentTemplate(portalId)
+                    var template = ContentTemplateManager.Instance.GetContentTemplatesByContentType(dynamicContentType.ContentTypeId)
+                        .SingleOrDefault(t => t.Name == templateName);
+
+                    if (template == null)
+                    {
+                        template = new ContentTemplate(portalId)
                                         {
                                             Name = templateName,
                                             TemplateFileId = file.FileId,
                                             ContentTypeId = dynamicContentType.ContentTypeId
                                         };
-                    ContentTemplateManager.Instance.AddContentTemplate(template);
+                        ContentTemplateManager.Instance.AddContentTemplate(template);
+                    }
                 }
             }
             catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
@@ -68,13 +74,13 @@ namespace Dnn.Modules.DynamicContentManager.Components
             }
         }
 
-        public string UpgradeModule(string Version)
+        public string UpgradeModule(string version)
         {
             try
             {
-                switch (Version)
+                switch (version.ToLowerInvariant())
                 {
-                    case "08.00.00":
+                    case "install":
                         var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("Dnn.DynamicContentManager", Null.NullInteger);
 
                         if (desktopModule != null)
@@ -99,11 +105,16 @@ namespace Dnn.Modules.DynamicContentManager.Components
                             }
                         }
 
-                        //Ensure Getting Started is registered
+                        //Ensure Templates are registered
                         AddTemplate("GettingStarted.cshtml", -1, "HTML", "Getting Started");
                         AddTemplate("ViewHTML.cshtml", -1, "HTML", "View HTML");
                         AddTemplate("ViewMarkdown.cshtml", -1, "Markdown", "View Markdown");
-
+                        break;
+                    case "upgrade":
+                        //Ensure Templates are registered
+                        AddTemplate("GettingStarted.cshtml", -1, "HTML", "Getting Started");
+                        AddTemplate("ViewHTML.cshtml", -1, "HTML", "View HTML");
+                        AddTemplate("ViewMarkdown.cshtml", -1, "Markdown", "View Markdown");
                         break;
                 }
                 return "Success";
