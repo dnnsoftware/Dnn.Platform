@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             //Set Tab's position
             var positionTabId = Null.NullInteger;
-            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue))
+            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue) && cboPositionTab.Items.Count > 0)
             {
                 positionTabId = Int32.Parse(cboPositionTab.SelectedValue);
             }
@@ -943,12 +943,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     _tab = TabController.Instance.GetTab(Tab.TabID, Tab.PortalID, true);
 
 					//change the localized pages order to match original order.
-	                if (positionTabId > Null.NullInteger)
+	                if (positionTabId > Null.NullInteger && _tab.LocalizedTabs.Count > 1)
 	                {
-		                var positionTab = TabController.Instance.GetTab(positionTabId, Tab.PortalID);
+		                var positionTab = TabController.Instance.GetTab(positionTabId, _tab.PortalID);
 		                if (positionTab != null)
 		                {
-			                foreach (var localizedTab in Tab.LocalizedTabs.Values)
+			                foreach (var localizedTab in _tab.LocalizedTabs.Values)
 			                {
 				                var cultureCode = localizedTab.CultureCode;
 								if (positionTab.LocalizedTabs.ContainsKey(cultureCode))
