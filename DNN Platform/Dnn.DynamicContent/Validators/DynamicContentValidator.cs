@@ -21,7 +21,7 @@ namespace Dnn.DynamicContent.Validators
         {
             var failures = new List<ValidationFailure>();
 
-            foreach (var field in ContentItem.Fields.Values)
+            foreach (var field in ContentItem.Content.Fields.Values)
             {
                 var definition = field.Definition;
 

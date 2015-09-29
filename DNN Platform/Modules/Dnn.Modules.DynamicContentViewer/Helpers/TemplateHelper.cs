@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
@@ -97,6 +98,28 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             }
 
             return result;
+        }
+
+        private static DynamicContentField GetContentField(DynamicContentItem contentItem, string fieldName)
+        {
+            var fieldNames = fieldName.Split(new [] {'/'}, StringSplitOptions.None);
+
+            DynamicContentField field = null;
+            DynamicContentPart contentPart = contentItem.Content;
+            var count = fieldNames.Length;
+            for (int i = 0; i < count; i++)
+            {
+                field = contentPart.Fields[fieldNames[i]];
+                if (i < count - 1)
+                {
+                    contentPart = field.Value as DynamicContentPart;
+                    if (contentPart == null)
+                    {
+                        throw new InvalidOperationException("Field Value is not a Content Type");
+                    }
+                }
+            }
+            return field;
         }
 
         private static DynamicContentItem GetContentItem<TModel>(DnnHelper<TModel> dnnHelper)
@@ -197,7 +220,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
         {
             var contentItem = GetContentItem(dnnHelper);
 
-            var contentField = contentItem.Fields[fieldName];
+            var contentField = GetContentField(contentItem, fieldName);
 
             if (contentField == null)
             {
@@ -227,7 +250,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
         {
             var contentItem = GetContentItem(dnnHelper);
 
-            var contentField = contentItem.Fields[fieldName];
+            var contentField = GetContentField(contentItem, fieldName);
 
             if (contentField == null)
             {
@@ -237,7 +260,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             var dataType = contentField.Definition.DataType;
 
             var viewData = GetViewData(dnnHelper, contentField.Value, additionalViewData);
-            viewData["FieldName"] = contentField.Definition.Name;
+            viewData["FieldName"] = fieldName;
 
             Dictionary<string, ActionCacheItem> actionCache = GetActionCache(dnnHelper);
 

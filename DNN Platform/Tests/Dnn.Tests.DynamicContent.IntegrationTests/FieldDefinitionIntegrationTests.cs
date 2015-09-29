@@ -50,7 +50,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var definition = new FieldDefinition
             {
                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                 Name = "New_Type",
                 Label = "Label"
             };
@@ -74,7 +74,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = contentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -208,7 +208,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                             {
                                 FieldDefinitionId = definitionId,
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Definition",
                                 Label = "Label"
                             };
@@ -235,7 +235,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             {
                 FieldDefinitionId = definitionId,
                 ContentTypeId = contentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                 Name = "New_Definition",
                 Label = "Label"
             };
@@ -258,7 +258,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             for (int i = 1; i <= count; i++)
             {
-                list.Add(new FieldDefinition { FieldDefinitionId = i, ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId, DataTypeId = i, Name = String.Format("Type_{0}", i) });
+                list.Add(new FieldDefinition { FieldDefinitionId = i, ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId, FieldTypeId = i, Name = String.Format("Type_{0}", i) });
             }
             return list.AsQueryable();
         }

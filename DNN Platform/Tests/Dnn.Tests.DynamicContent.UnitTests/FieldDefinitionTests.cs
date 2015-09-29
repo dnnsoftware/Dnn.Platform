@@ -31,7 +31,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Assert
             Assert.AreEqual(-1, field.FieldDefinitionId);
             Assert.AreEqual(-1, field.ContentTypeId);
-            Assert.AreEqual(-1, field.DataTypeId);
+            Assert.AreEqual(-1, field.FieldTypeId);
             Assert.AreEqual(-1, field.PortalId);
             Assert.AreEqual(String.Empty, field.Name);
             Assert.AreEqual(String.Empty, field.Label);
@@ -50,7 +50,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Assert
             Assert.AreEqual(-1, field.FieldDefinitionId);
             Assert.AreEqual(-1, field.ContentTypeId);
-            Assert.AreEqual(-1, field.DataTypeId);
+            Assert.AreEqual(-1, field.FieldTypeId);
             Assert.AreEqual(Constants.CONTENT_ValidPortalId, field.PortalId);
             Assert.AreEqual(String.Empty, field.Name);
             Assert.AreEqual(String.Empty, field.Label);
@@ -93,7 +93,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var portalId = Constants.CONTENT_ValidPortalId;
             var datatTypeId = 2;
-            var field = new FieldDefinition(portalId) {DataTypeId = datatTypeId};
+            var field = new FieldDefinition(portalId) {FieldTypeId = datatTypeId};
             var mockDataTypeController = new Mock<IDataTypeManager>();
             mockDataTypeController.Setup(dt => dt.GetDataTypes(Constants.CONTENT_ValidPortalId, It.IsAny<bool>()))
                 .Returns(new List<DataType>() {new DataType() { DataTypeId = datatTypeId } }.AsQueryable());

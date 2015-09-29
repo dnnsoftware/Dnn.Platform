@@ -1,16 +1,38 @@
 ﻿@using Dnn.DynamicContent
 @using Dnn.Modules.DynamicContentViewer.Helpers
+@using DotNetNuke.UI.Utilities
 
 @model DynamicContentItem
 
-@{
-    <div class="dnnForm dnnFormVertical">
-        @foreach (DynamicContentField field in Model.Fields.Values)
+@helper RenderField(DynamicContentPart contentPart, string prefix)
+{
+    foreach (DynamicContentField field in contentPart.Fields.Values)
+    {
+        if (field.Definition.IsReferenceType)
         {
-        <div class="dnnFormItem">
-            <div>@Dnn.LabelFor(field.Definition.Name)</div>
-            @Dnn.EditorFor(field.Definition.Name)
-        </div>
+            var part = field.Value as DynamicContentPart;
+            if (part != null)
+            {
+                var newPrefix = (String.IsNullOrEmpty(prefix)) ? field.Definition.Name : prefix + field.Definition.Name;
+                newPrefix += "/";
+                <text>
+                    @RenderField(part, newPrefix);
+                </text>
+            }
         }
+        else
+        {
+            var fieldName = prefix + field.Definition.Name;
+                <div class="dnnFormItem">
+                    @Dnn.LabelFor(fieldName)
+                    @Dnn.EditorFor(fieldName)
+                </div>
+        }
+    }
+}
+
+@{
+    <div class="dnnForm">
+        @RenderField(Model.Content, String.Empty)
     </div>
 }

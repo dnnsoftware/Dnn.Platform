@@ -21,7 +21,7 @@ namespace Dnn.DynamicContent
 {
     public class DataTypeManager : ControllerBase<DataType, IDataTypeManager, DataTypeManager>, IDataTypeManager
     {
-        internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
+        internal const string FindWhereDataTypeSql = "WHERE FieldTypeId = @0";
         internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
         internal const string PortalScope = "PortalId";
         public const string NameKey = "DataType_{0}_Name";

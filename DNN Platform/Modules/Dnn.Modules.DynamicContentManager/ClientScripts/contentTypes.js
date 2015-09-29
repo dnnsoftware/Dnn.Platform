@@ -13,6 +13,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     self.rootViewModel = rootViewModel;
 
     self.dataTypes = ko.observableArray([]);
+    self.contentTypes = ko.observableArray([]);
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
@@ -29,6 +30,23 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     var findContentTypes =  function() {
         self.pageIndex(0);
         self.getContentTypes();
+    };
+
+    var getAllContentTypes = function () {
+        var params = {
+            searchTerm: '',
+            pageIndex: 0,
+            pageSize: 1000
+        };
+
+        util.contentTypeService().getEntities("GetContentTypes",
+            params,
+            self.contentTypes,
+            function () {
+                // ReSharper disable once InconsistentNaming
+                return new dcc.contentTypeViewModel(self, config);
+            }
+        );
     };
 
     var getDataTypes = function () {
@@ -106,10 +124,12 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         $rootElement.find("#contentTypes-editView").css("display", "none");
 
         getDataTypes();
+        getAllContentTypes();
     };
 
     self.refresh = function() {
         self.getContentTypes();
+        getAllContentTypes();
     }
 };
 
@@ -381,10 +401,13 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
 
     self.dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes;
 
+    self.contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes;
+
     self.mode = config.mode;
     self.contentTypeId = ko.observable(-1);
     self.contentFieldId = ko.observable(-1);
-    self.dataTypeId = ko.observable(-1);
+    self.fieldTypeId = ko.observable(-1);
+    self.isContentType = ko.observable(false);
     self.selected = ko.observable(false);
 
     self.localizedDescriptions = ko.observableArray([]);
@@ -430,15 +453,28 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         }
     });
 
-    self.dataType = ko.computed(function() {
+    self.fieldType = ko.computed(function () {
         var value = "";
-        if (self.dataTypes !== undefined) {
-            var entity = util.getEntity(self.dataTypes(),
-                function (dataType) {
-                    return (self.dataTypeId() === dataType.dataTypeId());
-                });
-            if (entity != null) {
-                value = entity.name;
+        var entity;
+        if (self.isContentType()) {
+            if (self.contentTypes !== undefined) {
+                entity = util.getEntity(self.contentTypes(),
+                    function (contentType) {
+                        return (self.fieldTypeId() === contentType.contentTypeId());
+                    });
+                if (entity != null) {
+                    value = entity.name;
+                }
+            }
+        } else {
+            if (self.dataTypes !== undefined) {
+                entity = util.getEntity(self.dataTypes(),
+                    function (dataType) {
+                        return (self.fieldTypeId() === dataType.dataTypeId());
+                    });
+                if (entity != null) {
+                    value = entity.name;
+                }
             }
         }
         return value;
@@ -463,7 +499,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 name: data.name(),
                 label: data.label(),
                 description: data.description(),
-                dataTypeId: data.dataTypeId()
+                fieldTypeId: data.fieldTypeId()
             };
 
             util.contentTypeService().post("DeleteContentField", params,
@@ -483,7 +519,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.init = function() {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
-        self.dataTypeId(-1);
+        self.fieldTypeId(-1);
+        self.isContentType(false);
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
@@ -493,7 +530,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.load = function(data) {
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
-        self.dataTypeId(data.dataTypeId);
+        self.fieldTypeId(data.fieldTypeId);
+        self.isContentType(data.isReferenceType);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
@@ -512,7 +550,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 localizedDescriptions: jsObject.localizedDescriptions,
                 localizedNames: jsObject.localizedNames,
                 localizedLabels: jsObject.localizedLabels,
-                dataTypeId: jsObject.dataTypeId
+                fieldTypeId: jsObject.fieldTypeId,
+                isReferenceType: jsObject.isContentType
             };
 
             util.contentTypeService().post("SaveContentField", params,
