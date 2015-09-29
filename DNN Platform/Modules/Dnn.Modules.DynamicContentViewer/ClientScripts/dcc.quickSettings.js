@@ -20,13 +20,15 @@ dcc.quickSettings = function ($, ko, options, resx) {
 
         viewModel.contentTypes = opts.contentTypes;
         viewModel.editTemplates = ko.observableArray([]);
+        viewModel.viewTemplates = ko.observableArray([]);
         viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
+        viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
         for (var i = 0; i < opts.templates.length; i++) {
             var result = opts.templates[i];
             var template = { name: result.name, value: result.value };
             viewModel.editTemplates.push(template);
+            viewModel.viewTemplates.push(template);
         }
-        viewModel.viewTemplates = ko.observableArray(opts.templates);
         viewModel.selectedTypeId = ko.observable(opts.selectedTypeId);
         viewModel.selectedViewTemplateId = ko.observable(opts.selectedViewTemplateId);
         viewModel.selectedEditTemplateId = ko.observable(opts.selectedEditTemplateId);
@@ -42,6 +44,7 @@ dcc.quickSettings = function ($, ko, options, resx) {
                     //Success
                     viewModel.editTemplates.removeAll();
                     viewModel.viewTemplates.removeAll();
+                    viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
                     viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
                     for (var i = 0; i < data.data.results.length; i++) {
                         var result = data.data.results[i];
