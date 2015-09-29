@@ -16,23 +16,23 @@
                 var newPrefix = (String.IsNullOrEmpty(prefix)) ? field.Definition.Name : prefix + field.Definition.Name;
                 newPrefix += "/";
                 <text>
-                    @RenderField(part, newPrefix);
+                    @RenderField(part, newPrefix)
                 </text>
             }
         }
         else
         {
             var fieldName = prefix + field.Definition.Name;
-                <div class="dnnFormItem">
-                    @Dnn.LabelFor(fieldName)
-                    @Dnn.EditorFor(fieldName)
-                </div>
+            <div class="dnnFormItem">
+                <div>@Dnn.LabelFor(fieldName)</div>
+                @Dnn.EditorFor(fieldName)
+            </div>
         }
     }
 }
 
 @{
-    <div class="dnnForm">
+    <div class="dnnForm dnnFormVertical">
         @RenderField(Model.Content, String.Empty)
     </div>
 }
