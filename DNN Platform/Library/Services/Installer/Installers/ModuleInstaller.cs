@@ -339,55 +339,8 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 _desktopModule.SupportedFeatures = 0;
             }
-            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
-            if (eventMessageNav != null)
-            {
-                _eventMessage = new EventMessage
-                                    {
-                                        Priority = MessagePriority.High,
-                                        ExpirationDate = DateTime.Now.AddYears(-1),
-                                        SentDate = DateTime.Now,
-                                        Body = "",
-                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
-                                    };
-                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
-                {
-                    var attribName = attributeNav.Name;
-                    var attribValue = attributeNav.Value;
-                    if (attribName == "upgradeVersionsList")
-                    {
-                        if (!String.IsNullOrEmpty(attribValue))
-                        {
-                            string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = ""; 
-                            foreach (string version in upgradeVersions)
-                            {
-                                Version upgradeVersion = null;
-                                try
-                                {
-                                    upgradeVersion = new Version(version);
-                                }
-                                catch (FormatException)
-                                {
-                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
-                                }
 
-                                if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
-                                {
-                                    attribValue += version + ",";                                    
-                                }
-                                else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
-                                {
-                                    attribValue += version + ",";
-                                }
-                            }
-                            attribValue = attribValue.TrimEnd(',');
-                        }
-                    }
-                   _eventMessage.Attributes.Add(attribName, attribValue);
-                }
-            }
+            _eventMessage = ReadEventMessageNode(manifestNav);
 			
             //Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))

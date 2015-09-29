@@ -49,7 +49,7 @@
 						<attributes>
 							<businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
 							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-							<upgradeVersionsList>08.00.00</upgradeVersionsList>
+							<upgradeVersionsList>Install,Upgrade</upgradeVersionsList>
 						</attributes>
 					</eventMessage>
         </component>

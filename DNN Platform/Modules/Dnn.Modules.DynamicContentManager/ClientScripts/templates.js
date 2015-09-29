@@ -288,7 +288,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 content: codeEditor.getValue()
             };
 
-            util.templateService().delete("DeleteTemplate", params,
+            util.templateService().post("DeleteTemplate", params,
                 function () {
                     //Success
                     parentViewModel.refresh();
@@ -354,7 +354,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 content: codeEditor.getValue()
             };
 
-            util.templateService().put("SaveTemplate", params,
+            util.templateService().post("SaveTemplate", params,
             function () {
                 self.cancel();
             },

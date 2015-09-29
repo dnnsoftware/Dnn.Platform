@@ -23,8 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -154,6 +155,80 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 return Package.InstallerInfo.PhysicalSitePath;
             }
+        }
+
+        public EventMessage ReadEventMessageNode(XPathNavigator manifestNav)
+        {
+            EventMessage eventMessage = null;
+
+            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
+            if (eventMessageNav != null)
+            {
+                eventMessage = new EventMessage
+                                    {
+                                        Priority = MessagePriority.High,
+                                        ExpirationDate = DateTime.Now.AddYears(-1),
+                                        SentDate = DateTime.Now,
+                                        Body = "",
+                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
+                                    };
+                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
+                {
+                    var attribName = attributeNav.Name;
+                    var attribValue = attributeNav.Value;
+                    if (attribName == "upgradeVersionsList")
+                    {
+                        if (!String.IsNullOrEmpty(attribValue))
+                        {
+                            string[] upgradeVersions = attribValue.Split(',');
+                            attribValue = "";
+                            foreach (string version in upgradeVersions)
+                            {
+                                switch (version.ToLowerInvariant())
+                                {
+                                    case "install":
+                                        if (Package.InstalledVersion == new Version(0, 0, 0))
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                    case "upgrade":
+                                        if (Package.InstalledVersion > new Version(0, 0, 0))
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                    default:
+                                        Version upgradeVersion = null;
+                                        try
+                                        {
+                                            upgradeVersion = new Version(version);
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                        }
+
+                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                }
+
+                            }
+                            attribValue = attribValue.TrimEnd(',');
+                        }
+                    }
+                    eventMessage.Attributes.Add(attribName, attribValue);
+                }
+            }
+            return eventMessage;
         }
 
         public bool Skipped { get; set; }
