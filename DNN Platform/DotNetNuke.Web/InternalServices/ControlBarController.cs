@@ -410,9 +410,9 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SwitchLanguage(SwitchLanguageDTO dto)
         {
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            try
             {
-                try
+                if (PortalSettings.AllowUserUICulture && PortalSettings.ContentLocalizationEnabled)
                 {
                     if ((!string.IsNullOrEmpty(dto.Language)))
                     {
@@ -424,18 +424,20 @@ namespace DotNetNuke.Web.InternalServices
                         return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
-                catch (System.Threading.ThreadAbortException)
-                {
-                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
+
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

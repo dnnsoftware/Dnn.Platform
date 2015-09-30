@@ -110,6 +110,7 @@
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
+                                    <% } %>
                                     <% if (ShowSwitchLanguagesPanel())
                                        { %>
                                     <li>
@@ -120,7 +121,7 @@
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
-                                    <% } %>
+                                    
                                     <% } %>
                                 </ul>
                             </dd>

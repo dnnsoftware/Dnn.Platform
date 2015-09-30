@@ -773,7 +773,11 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (IsValid)
 				{
-					CreateUser();
+                    if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    {
+                        CreateUser();
+                    }
+
 				}
 				else
 				{
