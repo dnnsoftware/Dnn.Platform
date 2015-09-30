@@ -185,12 +185,10 @@
             switch(viewModel.mode()){
                 case "editField":
                 case "editType":
-                    viewModel.mode("listTypes");
-                    viewModel.contentTypes.refresh();
+                    viewModel.contentTypes.closeEdit();
                     break;
                 case "editTemplate":
-                    viewModel.mode("listTemplates");
-                    viewModel.templates.refresh();
+                    viewModel.templates.closeEdit();
                     break;
             }
         };
