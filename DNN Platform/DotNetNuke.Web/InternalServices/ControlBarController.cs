@@ -418,15 +418,19 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                if ((!string.IsNullOrEmpty(dto.Language)))
+                if (PortalSettings.AllowUserUICulture && PortalSettings.ContentLocalizationEnabled)
                 {
-                    var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
-                    personalization.Profile["Usability:UICulture"] = dto.Language;
-                    personalization.IsModified = true;
-                    personalizationController.SaveProfile(personalization);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    if ((!string.IsNullOrEmpty(dto.Language)))
+                    {
+                        var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
+                        var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
+                        personalization.Profile["Usability:UICulture"] = dto.Language;
+                        personalization.IsModified = true;
+                        personalizationController.SaveProfile(personalization);
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    }
                 }
+                
             }
             catch (System.Threading.ThreadAbortException)
             {
