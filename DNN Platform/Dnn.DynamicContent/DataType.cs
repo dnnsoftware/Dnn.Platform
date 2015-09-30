@@ -16,7 +16,7 @@ namespace Dnn.DynamicContent
 {
     [Serializable]
     [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
+    [PrimaryKey("DataTypeID", "FieldTypeId")]
     [Cacheable(DataTypeManager.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
     [Scope(DataTypeManager.PortalScope)]
     public class DataType : BaseEntity

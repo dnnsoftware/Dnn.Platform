@@ -139,7 +139,7 @@
                             <tr>
                                 <th>[Resx:{key:"Name"}]</th>
                                 <th>[Resx:{key:"Label"}]</th>
-                                <th>[Resx:{key:"DataType"}]</th>
+                                <th>[Resx:{key:"FieldType"}]</th>
                                 <th width="100px">[Resx:{key:"Actions"}]</th>
                             </tr>
                             </thead>
@@ -152,7 +152,7 @@
                                     <span data-bind="text: label"></span>
                                 </td>
                                 <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                                    <span data-bind="text: dataType()"></span>
+                                    <span data-bind="text: fieldType()"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="fa fa-pencil"></i></a>
@@ -198,8 +198,18 @@
                                 <i class="fa fa-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedLabels())}"></i>
                             </div>
                             <div>
+                                <label>[Resx:{key:"IsContentType"}]</label>
+                                <div class="toggle">
+                                    <span><input type="checkbox" data-bind="checked: isContentType"></span>
+                                </div>
+                            </div>
+                            <div data-bind="visible: !isContentType()">
                                 <label>[Resx:{key:"DataType"}]</label>
-                                <select data-bind="value: dataTypeId, valueAllowUnset: false, options: dataTypes, optionsText: 'name', optionsValue: 'dataTypeId'"></select>
+                                <select data-bind="value: fieldTypeId, valueAllowUnset: true, options: dataTypes, optionsText: 'name', optionsValue: 'dataTypeId'"></select>
+                            </div>
+                            <div data-bind="visible: isContentType()">
+                                <label>[Resx:{key:"ContentType"}]</label>
+                                <select data-bind="value: fieldTypeId, valueAllowUnset: true, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
                             </div>
                         </div>
                         <div class="dccEditRow">
@@ -401,7 +411,7 @@
                                         <i class="fa fa-caret-right"></i>
                                     </div>
                                     <ul data-bind="foreach: contentFields">
-                                        <li data-bind="click: $parent.insertField"><div data-bind="text:name"></div></li>
+                                        <li data-bind="click: $parent.insertField"><div data-bind="text:localizedName"></div></li>
                                     </ul>
                                 </li>
                                 <li>
