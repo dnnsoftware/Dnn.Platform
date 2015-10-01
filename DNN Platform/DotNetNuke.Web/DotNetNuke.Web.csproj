@@ -579,10 +579,6 @@
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OAuth.AuthorizationServer.API\OAuth.AuthorizationServer.API.csproj">
-      <Project>{d1a7a2bf-04f8-48a3-a824-d20f2f987719}</Project>
-      <Name>OAuth.AuthorizationServer.API</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
       <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
       <Name>OAuth.AuthorizationServer.Core</Name>
