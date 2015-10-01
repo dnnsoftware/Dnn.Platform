@@ -46,13 +46,18 @@ namespace Dnn.DynamicContent
             }
         }
 
-        [IgnoreColumn]
-        public bool IsSystem { get { return (PortalId == -1); } }
-
         /// <summary>
         /// The Id of the <see cref="T:DotNetNuke.Entities.Content.DynamicContent.DynamicContentType"/> to which this <see cref="T:Dnn.DynamicContent.ContentTemplate"/> belongs
         /// </summary>
         public int ContentTypeId { get; set; }
+
+        /// <summary>
+        /// Flag indicating whether the template is an Edit template
+        /// </summary>
+        public bool IsEditTemplate { get; set; }
+
+        [IgnoreColumn]
+        public bool IsSystem { get { return (PortalId == -1); } }
 
         /// <summary>
         /// The name of this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>

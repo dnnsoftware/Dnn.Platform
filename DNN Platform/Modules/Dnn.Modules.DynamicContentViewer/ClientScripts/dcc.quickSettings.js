@@ -21,17 +21,27 @@ dcc.quickSettings = function ($, ko, options, resx) {
         viewModel.contentTypes = opts.contentTypes;
         viewModel.editTemplates = ko.observableArray([]);
         viewModel.viewTemplates = ko.observableArray([]);
-        viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
-        viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
-        for (var i = 0; i < opts.templates.length; i++) {
-            var result = opts.templates[i];
-            var template = { name: result.name, value: result.value };
-            viewModel.editTemplates.push(template);
-            viewModel.viewTemplates.push(template);
-        }
         viewModel.selectedTypeId = ko.observable(opts.selectedTypeId);
         viewModel.selectedViewTemplateId = ko.observable(opts.selectedViewTemplateId);
         viewModel.selectedEditTemplateId = ko.observable(opts.selectedEditTemplateId);
+
+        var refreshTemplates = function(templates) {
+            viewModel.editTemplates.removeAll();
+            viewModel.viewTemplates.removeAll();
+            viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
+            viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
+            for (var i = 0; i < templates.length; i++) {
+                var result = templates[i];
+                var template = { name: result.name, value: result.value };
+                if (result.isEdit) {
+                    viewModel.editTemplates.push(template);
+                } else {
+                    viewModel.viewTemplates.push(template);
+                }
+            }
+        }
+
+        refreshTemplates(opts.templates);
 
         var getTemplates = function (contentTypeId) {
             var params = {
@@ -40,24 +50,14 @@ dcc.quickSettings = function ($, ko, options, resx) {
 
             util.settingsService().get("GetTemplates", params,
             function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data !== null) {
                     //Success
-                    viewModel.editTemplates.removeAll();
-                    viewModel.viewTemplates.removeAll();
-                    viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
-                    viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var template = { name: result.name, value: result.value };
-                        viewModel.editTemplates.push(template);
-                        viewModel.viewTemplates.push(template);
-                    }
+                    refreshTemplates(data.results);
                 }
             },
             function () {
                 //Failure
-            }
-        );
+            });
         };
 
         var saveSettings = function () {

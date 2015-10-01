@@ -160,8 +160,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                                 ContentTypeId = viewModel.ContentTypeId,
                                                 Name = defaultName,
                                                 TemplateFileId = file.FileId,
-                                                PortalId = portalId
-
+                                                PortalId = portalId,
+                                                IsEditTemplate = viewModel.IsEditTemplate
                                             },
 
                 /*AddEntity*/   template => ContentTemplateManager.Instance.AddContentTemplate(template),
@@ -171,6 +171,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 /*UpdateEntity*/template =>
                                             {
                                                 template.Name = defaultName;
+                                                template.IsEditTemplate = viewModel.IsEditTemplate;
                                                 ContentTemplateManager.Instance.UpdateContentTemplate(template);
                                             },
 

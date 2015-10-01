@@ -37,6 +37,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
             IsSystem = template.IsSystem;
             CanEdit = !(IsSystem) || portalSettings.UserInfo.IsSuperUser;
             FilePath = template.TemplateFile.RelativePath;
+            IsEditTemplate = template.IsEditTemplate;
 
             using (var sw = new StreamReader(FileManager.Instance.GetFileContent(template.TemplateFile)))
             {
@@ -75,6 +76,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("filePath")]
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// A flag that determines if the template is an edit template
+        /// </summary>
+        [JsonProperty("isEditTemplate")]
+        public bool IsEditTemplate { get; set; }
 
         /// <summary>
         /// A flag indicating if the template is a system template
