@@ -345,8 +345,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = GetContentType(contentTypeId, portalId);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentTypes(portalId, true))
-                .Returns(new List<DynamicContentType>() { contentType }.AsQueryable());
+            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
+                .Returns(contentType);
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             var mockModuleController = new Mock<IModuleController>();
