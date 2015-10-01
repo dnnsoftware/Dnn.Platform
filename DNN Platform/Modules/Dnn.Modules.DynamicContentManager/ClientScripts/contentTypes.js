@@ -71,6 +71,11 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         self.selectedContentType.init();
     };
 
+    self.closeEdit = function () {
+        self.mode("listTypes");
+        self.refresh();
+    }
+
     self.editContentType = function(data) {
         util.asyncParallel([
             function(cb1){
