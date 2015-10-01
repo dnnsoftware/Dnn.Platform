@@ -1,0 +1,13 @@
+﻿@using Dnn.DynamicContent
+@using Dnn.Modules.DynamicContentViewer.Helpers
+
+@model DynamicContentItem
+
+@{
+    foreach (DynamicContentField field in Model.Fields.Values)
+    {
+        <div>
+            @Dnn.DisplayFor(field.Definition.Name)
+        </div>
+    }
+}
