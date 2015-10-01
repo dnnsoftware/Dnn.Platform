@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		internal string TemplatePath;
 		internal string TemplateVirtualPath;
 		internal string TemplateHeadPath;
+		internal readonly List<string> ScriptUrls = new List<string>();
 		internal readonly List<string> ScriptKeys = new List<string>();
 		internal readonly Dictionary<string, string> Scripts = new Dictionary<string, string>();
 		internal readonly List<string> StyleSheets = new List<string>();
@@ -86,12 +87,17 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 									var scriptPath = String.IsNullOrEmpty(scriptElt.InnerText.Trim())
 									                 	? ""
 									                 	: Globals.ResolveUrl(GetResolvedPath(scriptElt, resolver));
-									var key = String.IsNullOrEmpty(jsObject) ? scriptPath : jsObject;
+									if (String.IsNullOrEmpty(jsObject))
+									{
+										baseDef.ScriptUrls.Add(scriptPath);
+										continue;
+									}
+
 									var script = CreateScript(jsObject, scriptPath);
 									if (!String.IsNullOrEmpty(script))
 									{
-										baseDef.ScriptKeys.Add(key);
-										baseDef.Scripts.Add(key, script);
+										baseDef.ScriptKeys.Add(jsObject);
+										baseDef.Scripts.Add(jsObject, script);
 									}
 								}
 								break;
@@ -199,31 +205,22 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 				}
 			}
 
-			if (string.IsNullOrEmpty(jsObject))
+			if (jsObject == "DDRjQuery")
 			{
 				result = String.IsNullOrEmpty(scriptPath)
-				         	? ""
-				         	: String.Format(@"<script type=""text/javascript"" src=""{0}""></script>", scriptPath);
+					        ? @"<script type=""text/javascript"">DDRjQuery=window.DDRjQuery||jQuery;</script>"
+					        : String.Format(
+					         	@"<script type=""text/javascript"">if (!window.DDRjQuery) {{if (window.jQuery && (jQuery.fn.jquery>=""1.3"")) DDRjQuery=jQuery; else document.write(unescape('%3Cscript src=""{0}"" type=""text/javascript""%3E%3C/script%3E'));}}</script><script type=""text/javascript"">if (!window.DDRjQuery) DDRjQuery=jQuery.noConflict(true);</script>",
+					         	scriptPath);
 			}
 			else
 			{
-				if (jsObject == "DDRjQuery")
-				{
-					result = String.IsNullOrEmpty(scriptPath)
-					         	? @"<script type=""text/javascript"">DDRjQuery=window.DDRjQuery||jQuery;</script>"
-					         	: String.Format(
-					         		@"<script type=""text/javascript"">if (!window.DDRjQuery) {{if (window.jQuery && (jQuery.fn.jquery>=""1.3"")) DDRjQuery=jQuery; else document.write(unescape('%3Cscript src=""{0}"" type=""text/javascript""%3E%3C/script%3E'));}}</script><script type=""text/javascript"">if (!window.DDRjQuery) DDRjQuery=jQuery.noConflict(true);</script>",
-					         		scriptPath);
-				}
-				else
-				{
-					result = String.IsNullOrEmpty(scriptPath)
-					         	? ""
-					         	: String.Format(
-					         		@"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
-					         		GetObjectCheckScript(jsObject),
-					         		scriptPath);
-				}
+				result = String.IsNullOrEmpty(scriptPath)
+					        ? ""
+					        : String.Format(
+					         	@"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
+					         	GetObjectCheckScript(jsObject),
+					         	scriptPath);
 			}
 
 			return result;
@@ -298,6 +295,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			foreach (var stylesheet in StyleSheets)
 			{
 				ClientResourceManager.RegisterStyleSheet(page, stylesheet);
+			}
+
+			foreach (var scriptUrl in ScriptUrls)
+			{
+				ClientResourceManager.RegisterScript(page, scriptUrl);
 			}
 
 			foreach (var scriptKey in ScriptKeys)
