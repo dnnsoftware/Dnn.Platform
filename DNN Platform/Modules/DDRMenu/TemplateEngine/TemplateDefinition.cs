@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
@@ -293,21 +294,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		internal void PreRender()
 		{
 			var page = DNNContext.Current.Page;
-			var headControls = page.Header.Controls;
 
-			var contextItems = HttpContext.Current.Items;
 			foreach (var stylesheet in StyleSheets)
 			{
-				if (!contextItems.Contains(stylesheet))
-				{
-					var cssControl = new HtmlGenericControl("link");
-					cssControl.Attributes.Add("rel", "stylesheet");
-					cssControl.Attributes.Add("type", "text/css");
-					cssControl.Attributes.Add("href", stylesheet);
-					headControls.Add(cssControl);
-
-					contextItems.Add(stylesheet, true);
-				}
+				ClientResourceManager.RegisterStyleSheet(page, stylesheet);
 			}
 
 			foreach (var scriptKey in ScriptKeys)
