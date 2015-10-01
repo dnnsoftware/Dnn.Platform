@@ -185,6 +185,7 @@ namespace Dnn.Modules.Tabs
             }
             listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, false, Null.NullString, false, false, false, false, true);
             cboPositionTab.DataSource = listTabs;
+            cboPositionTab.SelectedIndex = Null.NullInteger;
             cboPositionTab.DataBind();
 
             if (parentTab != null && parentTab.IsSuperTab)
