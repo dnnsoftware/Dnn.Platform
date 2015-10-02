@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		internal string TemplatePath;
 		internal string TemplateVirtualPath;
 		internal string TemplateHeadPath;
+		internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
 		internal readonly List<string> ScriptUrls = new List<string>();
 		internal readonly List<string> ScriptKeys = new List<string>();
 		internal readonly Dictionary<string, string> Scripts = new Dictionary<string, string>();
@@ -89,6 +91,25 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 									                 	: Globals.ResolveUrl(GetResolvedPath(scriptElt, resolver));
 									if (String.IsNullOrEmpty(jsObject))
 									{
+										var jsLibraryName = scriptElt.GetAttribute("name");
+										if (!String.IsNullOrEmpty(jsLibraryName))
+										{
+											SpecificVersion specificityTemp;
+											SpecificVersion? specificity = null;
+											Version libraryVersion;
+											if (!Version.TryParse(scriptElt.GetAttribute("version"), out libraryVersion))
+											{
+												libraryVersion = null;
+											}
+											else if (Enum.TryParse(scriptElt.GetAttribute("specificVersion"), true, out specificityTemp))
+											{
+												specificity = specificityTemp;
+											}
+
+											baseDef.ScriptLibraries[jsLibraryName] = Tuple.Create(libraryVersion, specificity);
+											continue;
+										}
+
 										baseDef.ScriptUrls.Add(scriptPath);
 										continue;
 									}
@@ -300,6 +321,26 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			foreach (var scriptUrl in ScriptUrls)
 			{
 				ClientResourceManager.RegisterScript(page, scriptUrl);
+			}
+
+			foreach (var libraryInfo in ScriptLibraries)
+			{
+				var libraryName = libraryInfo.Key;
+				var parameters = libraryInfo.Value;
+				var libraryVersion = parameters.Item1;
+				var specificVersion = parameters.Item2;
+				if (libraryVersion == null)
+				{
+					JavaScript.RequestRegistration(libraryName);
+				}
+				else if (specificVersion == null)
+				{
+					JavaScript.RequestRegistration(libraryName, libraryVersion);
+				}
+				else
+				{
+					JavaScript.RequestRegistration(libraryName, libraryVersion, specificVersion.Value);
+				}
 			}
 
 			foreach (var scriptKey in ScriptKeys)
