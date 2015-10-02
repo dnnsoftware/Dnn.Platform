@@ -9,16 +9,16 @@ input[type="password"] {
   padding: 9px;
 }
 .dccContainer {
-  border: solid 1px #aaaaaa;
+  border: solid 1px #aaa;
   width: 950px;
 }
 .dccContainer .dccHeading {
   width: 950px;
   padding-top: 25px;
   padding-bottom: 10px;
-  border-bottom: solid 1px #aaaaaa;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 2px #aaaaaa;
+  border-bottom: solid 1px #aaa;
+  background-color: #fff;
+  box-shadow: 0px 2px 2px #aaa;
 }
 .dccContainer .dccHeading span {
   font-size: 28px;
@@ -33,8 +33,8 @@ input[type="password"] {
 .dccContainer .dccBody {
   margin: 20px;
   width: 910px;
-  background-color: #ffffff;
-  border: solid 1px #aaaaaa;
+  background-color: #fff;
+  border: solid 1px #aaa;
   border-radius: 4px;
 }
 .dccContainer .dccMenu {
@@ -47,7 +47,7 @@ input[type="password"] {
   width: 909px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  background-color: #eeeeee;
+  background-color: #eee;
   padding-left: 1px;
 }
 .dccContainer .dccMenu ul > li {
@@ -62,10 +62,10 @@ input[type="password"] {
   cursor: pointer;
 }
 .dccContainer .dccMenu ul > li.selected {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .dccContainer .dccMenu ul > li.selected {
-  background-color: #ffffff;
+  background-color: #fff;
   color: #0087c6;
 }
 .dccContainer .dccPanel {
@@ -73,11 +73,11 @@ input[type="password"] {
 }
 .dccContainer .dccSearchPanel {
   padding: 15px;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaa;
 }
 .dccContainer .dccSearchPanel > .dccSearchBox {
   padding: 8px;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   width: 250px;
   border-radius: 3px;
   margin-bottom: 0;
@@ -89,10 +89,10 @@ input[type="password"] {
 .dccContainer .dccTable {
   width: 100%;
   border-collapse: collapse;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaa;
 }
 .dccContainer .dccTable tr:nth-child(2n) {
-  background: #eeeeee;
+  background: #eee;
 }
 .dccContainer .dccTable tbody tr {
   transition: background 100ms linear;
@@ -101,8 +101,8 @@ input[type="password"] {
   background: #d9ecfa;
 }
 .dccContainer .dccTable th {
-  border-left: 1px solid #aaaaaa;
-  border-bottom: 1px solid #aaaaaa;
+  border-left: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
 }
 .dccContainer .dccTable th,
 .dccContainer .dccTable td {
@@ -116,30 +116,30 @@ input[type="password"] {
   border-left: none;
   text-align: left;
 }
-.dccContainer .dccTable .fa {
+.dccContainer .dccTable .dnni {
   font-size: 18px;
 }
 .dccContainer .dccTable tfoot {
-  border-top: 1px solid #aaaaaa;
+  border-top: 1px solid #aaa;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 5px;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr th i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
   display: none;
 }
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
@@ -148,12 +148,12 @@ input[type="password"] {
 .dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
 .dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td {
   background: #0087c6;
-  color: #ffffff;
+  color: #fff;
   border-color: #0087c6;
 }
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row td,
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row:hover td:last-child {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .dccContainer .dccTable .dccPager {
   width: 100%;
@@ -186,13 +186,13 @@ input[type="password"] {
 .dccContainer .dccTable .dccPager td a.next {
   background-position: center center;
   background-repeat: no-repeat;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   width: 25px;
   height: 25px;
   display: block;
   cursor: pointer;
   border-radius: 2px;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .dccContainer .dccTable .dccPager td a.prev {
   background-image: url('images/left.png');
@@ -256,16 +256,16 @@ input[type="password"] {
 .dccContainer .dccEditRow i {
   float: right;
 }
-.dccContainer i.fa-exclamation {
+.dccContainer i.dnni-exclamation {
   font-size: 18px;
   margin-left: 5px;
   color: transparent;
   display: block;
 }
-.dccContainer .dccError i.fa-exclamation {
-  color: #dd0000;
+.dccContainer .dccError i.dnni-exclamation {
+  color: #d00;
 }
-.dccContainer .dccWarning i.fa-exclamation {
+.dccContainer .dccWarning i.dnni-exclamation {
   color: #ff8c00;
 }
 .dccContainer div.dccEditRow > div.toggle {
@@ -340,8 +340,8 @@ input[type="password"] {
   text-align: center;
 }
 .dccContainer .dccButton {
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
   display: inline-block;
   padding: 8px;
   cursor: pointer;
@@ -349,7 +349,7 @@ input[type="password"] {
   border-radius: 3px;
   text-decoration: none;
   font-size: 13px;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   text-align: center;
   line-height: normal;
 }
@@ -359,7 +359,7 @@ input[type="password"] {
 }
 .dccContainer a.primarybtn {
   background: #0087c6;
-  color: #ffffff !important;
+  color: #fff !important;
   display: inline-block;
   padding: 9px 9px;
   cursor: pointer;
@@ -371,7 +371,7 @@ input[type="password"] {
 }
 .dccContainer a.secondarybtn {
   background: #e4e4e4;
-  color: #333333 !important;
+  color: #333 !important;
   display: inline-block;
   padding: 9px 9px;
   cursor: pointer;
@@ -434,7 +434,7 @@ input[type="password"] {
   margin-bottom: 10px;
   padding-top: 9px;
   padding-bottom: 9px;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #aaa;
   border-radius: 5px;
 }
 .dccContainer .dccSubSubPanel .dccSubHeading {
@@ -446,7 +446,7 @@ input[type="password"] {
   display: inline-block;
 }
 .dccContainer .dccSubSubPanel .dccTable {
-  border-top: solid 1px #aaaaaa;
+  border-top: solid 1px #aaa;
   border-bottom: none;
 }
 .dccContainer .dccSubHeading {
@@ -460,7 +460,7 @@ input[type="password"] {
 }
 .dccContainer div.CodeMirror {
   width: 862px;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #aaa;
   margin-top: 20px;
 }
 .dccContainer div.dccLanguageSelector {
@@ -482,10 +482,10 @@ input[type="password"] {
   position: relative;
   z-index: 5;
   list-style: none;
-  border: solid 1px #aaaaaa;
-  box-shadow: 5px 5px 5px #aaaaaa;
+  border: solid 1px #aaa;
+  box-shadow: 5px 5px 5px #aaa;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .dccContainer ul#templateEditorContextMenu li {
   position: relative;
@@ -511,10 +511,10 @@ input[type="password"] {
   list-style: none;
   position: absolute;
   left: -9999px;
-  border: solid 1px #aaaaaa;
-  box-shadow: 5px 5px 5px #aaaaaa;
+  border: solid 1px #aaa;
+  box-shadow: 5px 5px 5px #aaa;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .dccContainer ul#templateEditorContextMenu li:hover > ul {
   left: 100px;
