@@ -114,6 +114,21 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 										continue;
 									}
 
+									if (String.IsNullOrEmpty(scriptPath))
+									{
+										// support legacy named jsObjects that map to libraries
+										if (jsObject.Equals("jQuery"))
+										{
+										    DNNAbstract.RequestJQuery();
+										}
+										else if (jsObject.Equals("jQuery.ui"))
+										{
+											baseDef.ScriptLibraries[CommonJs.jQueryUI] = new Tuple<Version, SpecificVersion?>(null, null);
+										}
+
+										continue;
+									}
+
 									var script = CreateScript(jsObject, scriptPath);
 									if (!String.IsNullOrEmpty(script))
 									{
@@ -209,17 +224,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
 			if (String.IsNullOrEmpty(scriptPath))
 			{
-				var scheme = HttpContext.Current.Request.Url.Scheme;
 				switch (jsObject)
 				{
-					case "jQuery":
 					case "DDRjQuery":
-						scriptPath = DNNAbstract.RequestJQuery()
-						             	? ""
-						             	: (scheme + "://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
-						break;
-					case "jQuery.ui":
-						scriptPath = scheme + "://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js";
+						scriptPath = "";
 						break;
 					default:
 						throw new ApplicationException(String.Format("Can't deduce script path for JavaScript object '{0}'", jsObject));
