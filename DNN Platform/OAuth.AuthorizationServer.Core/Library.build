@@ -1,0 +1,36 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\Build</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\DNN.Platform\Website</WebsitePath>
+	<ModulePath>$(WebsitePath)\DesktopModules\DNNCorp\OAuth</ModulePath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>Dnn.OAuth</DNNFileName>
+    <PackageName>DNNOAuth</PackageName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\DNNCorp\OAuth</ModuleFolderName>
+  </PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\Build\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
+  </Target>
+
+    <Target Name="GetFiles">
+    <ItemGroup>
+      <ResourceFiles Include="App_LocalResources/*.resx" /> 
+      <UserControls Include="*.ascx" />      
+      <Resources Include="@(ResourceFiles);@(UserControls)"/>
+    </ItemGroup>
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModulePath)/App_LocalResources" />
+    <Copy SourceFiles="@(UserControls)" DestinationFolder="$(ModulePath)" />
+  </Target>
+  
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+  </Target>  
+</Project>

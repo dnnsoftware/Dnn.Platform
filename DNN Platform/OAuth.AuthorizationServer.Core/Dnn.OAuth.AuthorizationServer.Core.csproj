@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D1A7A2BF-04F8-48A3-A824-D20F2F987719}</ProjectGuid>
+    <ProjectGuid>{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OAuth.AuthorizationServer.API</RootNamespace>
-    <AssemblyName>OAuth.AuthorizationServer.API</AssemblyName>
+    <RootNamespace>Dnn.OAuth.AuthorizationServer.Core</RootNamespace>
+    <AssemblyName>Dnn.OAuth.AuthorizationServer.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,17 +43,9 @@
       <HintPath>..\Components\DotNetOpenAuth\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Website\bin\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,30 +53,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Data\Extensions\ScopeCollectionExtensions.cs" />
+    <Compile Include="Data\Model\Authorization.cs" />
+    <Compile Include="Data\Model\Client.cs" />
+    <Compile Include="Data\Model\Nonce.cs" />
+    <Compile Include="Data\Model\Resource.cs" />
+    <Compile Include="Data\Model\Scope.cs" />
+    <Compile Include="Data\Model\Settings.cs" />
+    <Compile Include="Data\Model\SymmetricCryptoKey.cs" />
+    <Compile Include="Data\Model\OAUTHUser.cs" />
+    <Compile Include="Data\Repositories\NonceRepository.cs" />
+    <Compile Include="Data\Repositories\SymmetricCryptoKeyRepository.cs" />
     <Compile Include="Models\AccountAuthorizeModel.cs" />
+    <Compile Include="OAUTHAuthorize.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAUTHLogin.aspx.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\AuthorizationServerHost.cs" />
+    <Compile Include="Server\AuthorizationServerSigningKeyManager.cs" />
+    <Compile Include="Server\OAUTHDataController.cs" />
+    <Compile Include="Utilities\EncodingUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\OAuth\Authorize.aspx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{3CD5F6B8-8360-4862-80B6-F402892DB7DD}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
-      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
-      <Name>OAuth.AuthorizationServer.Core</Name>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Attributes\" />
-    <Folder Include="Controllers\" />
+    <Content Include="license.txt" />
+    <Content Include="OAUTHAuthorize.aspx" />
+    <Content Include="OAUTHLogin.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="releaseNotes.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="Dnn.OAuth.dnn" />
+    <None Include="Library.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Build\" />
+  </ItemGroup>
+  <Import Project="Library.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

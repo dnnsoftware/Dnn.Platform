@@ -579,9 +579,9 @@
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+    <ProjectReference Include="..\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
       <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
-      <Name>OAuth.AuthorizationServer.Core</Name>
+      <Name>Dnn.OAuth.AuthorizationServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="Library.build" />

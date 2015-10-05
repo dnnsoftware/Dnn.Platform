@@ -292,7 +292,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.SiteWizard", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Languages", "DNN Platform\Admin Modules\Dnn.Modules.Languages\Dnn.Modules.Languages.csproj", "{E66B5763-2EAA-470D-84CB-A8FE1D21E864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer.Core", "DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj", "{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.OAuth.AuthorizationServer.Core", "DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj", "{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Console", "DNN Platform\Admin Modules\Dnn.Modules.Console\Dnn.Modules.Console.csproj", "{946F0EA1-6187-4878-A32F-B7BF70E13CE5}"
 EndProject
