@@ -35,6 +35,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
             IsReferenceType = definition.IsReferenceType;
             FieldType =  (IsReferenceType) ? definition.ContentType.Name : definition.DataType.Name;
             Order = definition.Order;
+            IsList = definition.IsList;
 
             LocalizedDescriptions = GetLocalizedValues(definition.Description, FieldDefinitionManager.DescriptionKey, ContentFieldId, definition.PortalId, portalSettings);
             LocalizedLabels = GetLocalizedValues(definition.Label, FieldDefinitionManager.LabelKey, ContentFieldId, definition.PortalId, portalSettings);
@@ -64,6 +65,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("fieldTypeId")]
         public int FieldTypeId { get; set; }
+
+        /// <summary>
+        /// Indicates whether the field type is a list
+        /// </summary>
+        [JsonProperty("isList")]
+        public bool IsList { get; set; }
 
         /// <summary>
         /// Indicates whether the field type is a referecne type

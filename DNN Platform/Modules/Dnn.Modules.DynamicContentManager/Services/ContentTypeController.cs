@@ -218,6 +218,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                             ContentTypeId = contentType.ContentTypeId,
                                             FieldTypeId = viewModel.FieldTypeId,
                                             IsReferenceType = viewModel.IsReferenceType,
+                                            IsList = viewModel.IsList,
                                             Label = defaultLabel,
                                             Name = defaultName,
                                             Description = defaultDescription,
@@ -235,6 +236,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                             contentField.Label = defaultLabel;
                                             contentField.FieldTypeId = viewModel.FieldTypeId;
                                             contentField.IsReferenceType = viewModel.IsReferenceType;
+                                            contentField.IsList = viewModel.IsList;
                                             FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
                                         },
 

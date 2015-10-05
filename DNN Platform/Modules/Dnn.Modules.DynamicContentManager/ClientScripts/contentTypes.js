@@ -409,6 +409,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.contentFieldId = ko.observable(-1);
     self.fieldTypeId = ko.observable("");
     self.selected = ko.observable(false);
+    self.isList = ko.observable(false);
 
     self.localizedDescriptions = ko.observableArray([]);
     self.localizedLabels = ko.observableArray([]);
@@ -502,7 +503,11 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 return (self.fieldTypeId() === fieldType.fieldTypeId);
             });
         if (entity != null) {
-            value = entity.fieldName;
+            if (self.isList()) {
+                value = resx.list + "<" + entity.fieldName + ">";
+            } else {
+                value = entity.fieldName;
+            }
         }
         return value;
     });
@@ -528,7 +533,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 label: data.label(),
                 description: data.description(),
                 fieldTypeId: data.fieldTypeId().substring(1),
-                isContentType: self.isContentType()
+                isList: data.isList()
         };
 
             util.contentTypeService().post("DeleteContentField", params,
@@ -549,6 +554,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
         self.fieldTypeId("");
+        self.isList(false);
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
@@ -560,6 +566,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
         self.fieldTypeId(fieldTypeId);
+        self.isList(data.isList);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
@@ -579,8 +586,9 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 localizedNames: jsObject.localizedNames,
                 localizedLabels: jsObject.localizedLabels,
                 fieldTypeId: jsObject.fieldTypeId.substring(1),
-                isReferenceType: jsObject.isContentType
-            };
+                isReferenceType: jsObject.isContentType,
+                isList: jsObject.isList
+        };
 
             util.contentTypeService().post("SaveContentField", params,
                 function() {

@@ -203,6 +203,10 @@
                                     <option data-bind="attr: { disabled: !enabled, value: fieldTypeId }, text: fieldName"></option>
                                 </select>
                             </div>
+                            <div class="toggle">
+                                <span><input type="checkbox" data-bind="checked: isList"></span>
+                                <span class="label">[Resx:{key:"IsList"}]</span>
+                            </div>
                         </div>
                         <div class="dccEditRow">
                             <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
@@ -494,7 +498,8 @@
             contentTypesPageSize: '[Resx:{key:"ContentTypesPageSize"}]',
             templatesPageSize: '[Resx:{key:"TemplatesPageSize"}]',
             insertField: '[Resx:{key:"InsertField"}]',
-            insertHelper: '[Resx:{key:"InsertHelper"}]'
+            insertHelper: '[Resx:{key:"InsertHelper"}]',
+            list: '[Resx:{key:"List"}]'
     };
 
         var settings = {
