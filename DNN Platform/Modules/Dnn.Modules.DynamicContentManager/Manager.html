@@ -397,24 +397,6 @@
                         <div>
                             <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
                             <ul id="templateEditorContextMenu" style="display:none">
-                                <li>
-                                    <div>
-                                        <span>[Resx:{key:"InsertField"}]</span>
-                                        <i class="fa fa-caret-right"></i>
-                                    </div>
-                                    <ul data-bind="foreach: contentFields">
-                                        <li data-bind="click: $parent.insertField"><div data-bind="text:localizedName"></div></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div>
-                                        <span>[Resx:{key:"InsertHelper"}]</span>
-                                        <i class="fa fa-caret-right"></i>
-                                    </div>
-                                    <ul data-bind="foreach: codeSnippets">
-                                        <li data-bind="click: $parent.inserSnippet"><div data-bind="text:name"></div></li>
-                                    </ul>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -510,8 +492,10 @@
             ok: '[Resx:{key:"Ok"}]',
             dataTypesPageSize: '[Resx:{key:"DataTypesPageSize"}]',
             contentTypesPageSize: '[Resx:{key:"ContentTypesPageSize"}]',
-            templatesPageSize: '[Resx:{key:"TemplatesPageSize"}]'
-        };
+            templatesPageSize: '[Resx:{key:"TemplatesPageSize"}]',
+            insertField: '[Resx:{key:"InsertField"}]',
+            insertHelper: '[Resx:{key:"InsertHelper"}]'
+    };
 
         var settings = {
             isSystemUser: isSystemUser,

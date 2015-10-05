@@ -75,12 +75,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
 
-            var fields = new ArrayList();
-            ProcessFields(contentType, fields, String.Empty, String.Empty);
-
             var response = new
                             {
-                                results = fields
+                                results = ProcessFields(contentType, String.Empty)
                             };
 
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -145,8 +142,10 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
         }
 
-        private void ProcessFields(DynamicContentType contentType, ArrayList fields, string prefix, string localizedPrefix)
+        private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
         {
+            var fields = new ArrayList();
+
             var locale = Thread.CurrentThread.CurrentUICulture.ToString();
 
             foreach (var definition in contentType.FieldDefinitions)
@@ -162,25 +161,28 @@ namespace Dnn.Modules.DynamicContentManager.Services
                     var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
                     newPrefix += "/";
 
-                    var newLocalizedPrefix = (String.IsNullOrEmpty(localizedPrefix)) ? fieldName : localizedPrefix + fieldName;
-                    newLocalizedPrefix += "-";
+                    var field = new
+                                {
+                                    name = localizedName,
+                                    fields = ProcessFields(definition.ContentType, newPrefix)
+                                };
 
-                    ProcessFields(definition.ContentType, fields, newPrefix, newLocalizedPrefix);
+                    fields.Add(field);
                 }
                 else
                 {
 
                     var field = new
-                    {
-                        contentTypeId = contentType.ContentTypeId,
-                        contentFieldId = definition.FieldDefinitionId,
-                        name = prefix + fieldName,
-                        localizedName = localizedPrefix + localizedName
-                    };
+                                {
+                                    fieldName = prefix + fieldName,
+                                    name = localizedName
+                                };
 
                     fields.Add(field);
                 }
             }
+
+            return fields;
         }
 
         /// <summary>

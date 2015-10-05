@@ -52,9 +52,11 @@ namespace DotNetNuke.UI.Modules.Html5
                 case "tabid":
                     return _moduleContext.TabId.ToString();
                 case "portalid":
-                    return _moduleContext.PortalId.ToString();
+                    return _moduleContext.Configuration.OwnerPortalID.ToString();
                 case "issuperuser":
                     return _moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                case "editmode":
+                    return _moduleContext.EditMode.ToString();
                 default:
                     if (_moduleContext.Settings.ContainsKey(propertyName))
                     {
