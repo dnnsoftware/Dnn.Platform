@@ -198,18 +198,10 @@
                                 <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedLabels())}"></i>
                             </div>
                             <div>
-                                <label>[Resx:{key:"IsContentType"}]</label>
-                                <div class="toggle">
-                                    <span><input type="checkbox" data-bind="checked: isContentType"></span>
-                                </div>
-                            </div>
-                            <div data-bind="visible: !isContentType()">
-                                <label>[Resx:{key:"DataType"}]</label>
-                                <select data-bind="value: fieldTypeId, valueAllowUnset: true, options: dataTypes, optionsText: 'name', optionsValue: 'dataTypeId'"></select>
-                            </div>
-                            <div data-bind="visible: isContentType()">
-                                <label>[Resx:{key:"ContentType"}]</label>
-                                <select data-bind="value: fieldTypeId, valueAllowUnset: true, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
+                                <label>[Resx:{key:"FieldType"}]</label>
+                                <select data-bind="value: fieldTypeId, foreach: fieldTypes">
+                                    <option data-bind="attr: { disabled: !enabled, value: fieldTypeId }, text: fieldName"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="dccEditRow">
@@ -399,6 +391,10 @@
                         <div>
                             <label>[Resx:{key:"TemplateFile"}]</label>
                             <input class="dccWide" type="text" data-bind="textInput: filePath, enable: canEdit">
+                        </div>
+                        <div class="toggle">
+                            <span><input type="checkbox" data-bind="checked: isEditTemplate"></span>
+                            <span class="label">[Resx:{key:"IsEditTemplate"}]</span>
                         </div>
                     </div>
                     <div class="dccEditRow">

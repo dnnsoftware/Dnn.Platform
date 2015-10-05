@@ -31,16 +31,12 @@ namespace Dnn.Modules.DynamicContentViewer.Services
             var templateList = ContentTemplateManager.Instance.GetContentTemplates(PortalSettings.PortalId, true)
                                                 .Where(t => t.ContentTypeId == contentTypeId);
             var templates = templateList
-                                .Select(t => new { name = t.Name, value = t.TemplateId })
+                                .Select(t => new { name = t.Name, value = t.TemplateId, isEdit = t.IsEditTemplate })
                                 .ToList();
 
             var response = new
                             {
-                                success = true,
-                                data = new
-                                        {
-                                            results = templates
-                                }
+                                results = templates
                             };
 
             return Request.CreateResponse(response);

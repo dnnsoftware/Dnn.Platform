@@ -285,6 +285,7 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div.toggle > span.label {
   padding-bottom: 15px;
   display: inline-block;
+  min-width: 100px;
 }
 .dccContainer .dnnCheckbox {
   display: inline-block;
@@ -519,4 +520,11 @@ input[type="password"] {
 .dccContainer ul#templateEditorContextMenu li:hover > ul {
   left: 100px;
   top: 5px;
+}
+.dccContainer div.dccEditRow select option {
+  padding-left: 20px;
+}
+.dccContainer div.dccEditRow select option:disabled {
+  color: #999;
+  padding-left: 0px;
 }
