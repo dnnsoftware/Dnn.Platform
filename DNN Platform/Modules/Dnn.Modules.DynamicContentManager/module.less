@@ -19,6 +19,7 @@
 @otherBtn_background_color: #fff;
 @otherBtn_color: #333;
 @boxShadow_color: #aaa;
+@disabledOption_color: #999;
 
 /*Units*/
 @width: 950px;
@@ -645,4 +646,13 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer ul#templateEditorContextMenu li:hover > ul {
     left: 100px;
     top: 5px
+}
+
+.dccContainer div.dccEditRow select option {
+    padding-left: 20px;
+}
+
+.dccContainer div.dccEditRow select option:disabled {
+    color: @disabledOption_color;
+    padding-left: 0px;
 }

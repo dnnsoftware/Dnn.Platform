@@ -521,3 +521,10 @@ input[type="password"] {
   left: 100px;
   top: 5px;
 }
+.dccContainer div.dccEditRow select option {
+  padding-left: 20px;
+}
+.dccContainer div.dccEditRow select option:disabled {
+  color: #999;
+  padding-left: 0px;
+}

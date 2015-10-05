@@ -404,15 +404,10 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.parentViewModel = parentViewModel;
     self.rootViewModel = parentViewModel.rootViewModel;
 
-    self.dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes;
-
-    self.contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes;
-
     self.mode = config.mode;
     self.contentTypeId = ko.observable(-1);
     self.contentFieldId = ko.observable(-1);
-    self.fieldTypeId = ko.observable(-1);
-    self.isContentType = ko.observable(false);
+    self.fieldTypeId = ko.observable("");
     self.selected = ko.observable(false);
 
     self.localizedDescriptions = ko.observableArray([]);
@@ -440,6 +435,10 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         return heading;
     });
 
+    self.isContentType = ko.computed(function() {
+        return self.fieldTypeId().substring(0, 1) === "C";
+    });
+
     self.label = ko.computed({
         read: function () {
             return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedLabels());
@@ -458,29 +457,52 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         }
     });
 
+    self.fieldTypes = ko.computed(function () {
+        var i, contentType, dataType;
+        var contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes();
+        var dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
+        var fieldTypes = [];
+
+        fieldTypes.push({
+            enabled: false,
+            fieldTypeId: "C0",
+            fieldName: resx.contentTypes
+        });
+        for (i = 0; i < contentTypes.length; i++) {
+            contentType = contentTypes[i];
+            if (contentType.contentTypeId() !== self.contentTypeId()) {
+                fieldTypes.push({
+                    enabled: true,
+                    fieldTypeId: "C" + contentType.contentTypeId(),
+                    fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), contentType.localizedNames())
+                });
+            }
+        }
+
+        fieldTypes.push({
+            enabled: false,
+            fieldTypeId: "D0",
+            fieldName: resx.dataTypes
+        });
+        for (i = 0; i < dataTypes.length; i++) {
+            dataType = dataTypes[i];
+            fieldTypes.push({
+                enabled: true,
+                fieldTypeId: "D" + dataType.dataTypeId(),
+                fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
+            });
+        }
+        return fieldTypes;
+    });
+
     self.fieldType = ko.computed(function () {
         var value = "";
-        var entity;
-        if (self.isContentType()) {
-            if (self.contentTypes !== undefined) {
-                entity = util.getEntity(self.contentTypes(),
-                    function (contentType) {
-                        return (self.fieldTypeId() === contentType.contentTypeId());
-                    });
-                if (entity != null) {
-                    value = entity.name;
-                }
-            }
-        } else {
-            if (self.dataTypes !== undefined) {
-                entity = util.getEntity(self.dataTypes(),
-                    function (dataType) {
-                        return (self.fieldTypeId() === dataType.dataTypeId());
-                    });
-                if (entity != null) {
-                    value = entity.name;
-                }
-            }
+        var entity = util.getEntity(self.fieldTypes(),
+            function (fieldType) {
+                return (self.fieldTypeId() === fieldType.fieldTypeId);
+            });
+        if (entity != null) {
+            value = entity.fieldName;
         }
         return value;
     });
@@ -497,15 +519,17 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     };
 
     self.deleteContentField = function (data) {
-        util.confirm(resx.deleteContentFieldConfirmMessage, resx.yes, resx.no, function() {
+        util.confirm(resx.deleteContentFieldConfirmMessage, resx.yes, resx.no, function () {
+
             var params = {
                 contentFieldId: data.contentFieldId(),
                 contentTypeId: data.contentTypeId(),
                 name: data.name(),
                 label: data.label(),
                 description: data.description(),
-                fieldTypeId: data.fieldTypeId()
-            };
+                fieldTypeId: data.fieldTypeId().substring(1),
+                isContentType: self.isContentType()
+        };
 
             util.contentTypeService().post("DeleteContentField", params,
                 function(){
@@ -524,19 +548,18 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.init = function() {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
-        self.fieldTypeId(-1);
-        self.isContentType(false);
+        self.fieldTypeId("");
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedDescriptions, self.rootViewModel.languages());
     };
 
-    self.load = function(data) {
+    self.load = function (data) {
+        var fieldTypeId = (data.isReferenceType) ? "C" + data.fieldTypeId : "D" + data.fieldTypeId;
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
-        self.fieldTypeId(data.fieldTypeId);
-        self.isContentType(data.isReferenceType);
+        self.fieldTypeId(fieldTypeId);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
@@ -555,7 +578,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 localizedDescriptions: jsObject.localizedDescriptions,
                 localizedNames: jsObject.localizedNames,
                 localizedLabels: jsObject.localizedLabels,
-                fieldTypeId: jsObject.fieldTypeId,
+                fieldTypeId: jsObject.fieldTypeId.substring(1),
                 isReferenceType: jsObject.isContentType
             };
 
