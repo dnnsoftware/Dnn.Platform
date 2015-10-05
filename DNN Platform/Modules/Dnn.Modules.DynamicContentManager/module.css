@@ -285,6 +285,7 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div.toggle > span.label {
   padding-bottom: 15px;
   display: inline-block;
+  min-width: 100px;
 }
 .dccContainer .dnnCheckbox {
   display: inline-block;
