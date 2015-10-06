@@ -17,7 +17,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetOpenAuth.OAuth2.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetOpenAuth.OAuth2.ResourceServer.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\OAuth.AuthorizationServer.Core.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.OAuth.AuthorizationServer.Core.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="..\..\packages\WebFormsMvp.1.4.1.0\lib\WebFormsMvp.dll" DestinationFolder="..\..\Website\bin\" />
   </Target>
 </Project>

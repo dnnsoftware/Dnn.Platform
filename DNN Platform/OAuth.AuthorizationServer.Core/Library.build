@@ -1,25 +1,21 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\Build</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\DNN.Platform\Website</WebsitePath>
-	<ModulePath>$(WebsitePath)\DesktopModules\DNNCorp\OAuth</ModulePath>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
-  <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>Dnn.OAuth</DNNFileName>
     <PackageName>DNNOAuth</PackageName>
-    <ModuleFolderName>$(WebsitePath)\DesktopModules\DNNCorp\OAuth</ModuleFolderName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\Dnn\OAuth</ModuleFolderName>
   </PropertyGroup>
-  <Import Project="$(MSBuildProjectDirectory)\Build\Package.Targets" />
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
   </Target>
-
-    <Target Name="GetFiles">
+  <Target Name="GetFiles">
     <ItemGroup>
-      <ResourceFiles Include="App_LocalResources/*.resx" /> 
-      <ASPXPages Include="*.aspx" />      
+      <ResourceFiles Include="App_LocalResources/*.resx" />
+      <ASPXPages Include="*.aspx" />
       <Resources Include="@(ResourceFiles);@(ASPXPages)"/>
     </ItemGroup>
   </Target>
@@ -27,10 +23,9 @@
     <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModulePath)/App_LocalResources" />
     <Copy SourceFiles="@(ASPXPages)" DestinationFolder="$(ModulePath)" />
   </Target>
-  
   <Target Name="CopyBin">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>  
+  </Target>
 </Project>
