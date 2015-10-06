@@ -19,13 +19,13 @@
     <Target Name="GetFiles">
     <ItemGroup>
       <ResourceFiles Include="App_LocalResources/*.resx" /> 
-      <UserControls Include="*.ascx" />      
-      <Resources Include="@(ResourceFiles);@(UserControls)"/>
+      <ASPXPages Include="*.aspx" />      
+      <Resources Include="@(ResourceFiles);@(ASPXPages)"/>
     </ItemGroup>
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModulePath)/App_LocalResources" />
-    <Copy SourceFiles="@(UserControls)" DestinationFolder="$(ModulePath)" />
+    <Copy SourceFiles="@(ASPXPages)" DestinationFolder="$(ModulePath)" />
   </Target>
   
   <Target Name="CopyBin">
