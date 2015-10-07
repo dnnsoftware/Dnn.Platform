@@ -25,25 +25,20 @@ using DNOA = DotNetOpenAuth.OAuth2;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    public class SimpleAccountAuthorizeModel2
-    {
-        public OAuth.AuthorizationServer.Core.Data.Model.Client Client { get; set; }
-        public EndUserAuthorizationRequest AuthorizationRequest { get; set; }
-    }
-
-    public class SimpleAccountAuthorizeModel3
-    {
-        public OAuth.AuthorizationServer.Core.Data.Model.Client Client { get; set; }
-        
-    }
-
-    public class SimpleAccountAuthorizeModel4
+   
+    /// <summary>
+    /// serialized account authorizaton request
+    /// </summary>
+    public class SimpleAccountAuthorizeModel
     {
         
         public EndUserAuthorizationRequest AuthorizationRequest { get; set; }
     }
 
-    // Exposed endpoint by which clients can request access to a resource via the OAuth2 protocol
+    /// <summary>
+    /// Exposed endpoint by which clients can request access to a resource via the OAuth2 protocol
+    /// </summary>
+ 
     public class OAuthController :  DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthController));
@@ -55,23 +50,33 @@ namespace DotNetNuke.Web.InternalServices
        // private readonly ResourceRepository _resourceRepository = new ResourceRepository();
       //  private readonly UserRepository _userRepository = new UserRepository();
 
-        // Provides authorization token to the client based on information in the request
-        // DotNetOpenAuth is doing all the heavy lifting here.  Request must contain all of the
-        // necessary info to grant a token
+   
+        /// <summary>
+        /// Provides authorization token to the client based on information in the request
+        /// DotNetOpenAuth is doing all the heavy lifting here.  Request must contain all of the
+        /// necessary info to grant a token
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
         //[HttpHeader("x-frame-options", "SAMEORIGIN")] // mitigates clickjacking - see https://github.com/DotNetOpenAuth/DotNetOpenAuth/blob/74b6b4efd2be2680e3067f716829b0c9385ceebe/samples/OAuth2ProtectedWebApi/Code/HttpHeaderAttribute.cs
+      
         public HttpResponseMessage Token()
         {
            // return _authorizationServer.HandleTokenRequest(Request).AsActionResult();
             return _authorizationServer.HandleTokenRequest(Request).AsHttpResponseMessage();
         }
-
-        // Prompts the user to authorize a client to access the user's private data.
-        // If user is not already authenticated by the resource, user will be redirected to login first and then
-        // come back here to authorize the client
+       
+       
+  
         //[ResourceAuthenticated, AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        /// <summary>
+        ///   Prompts the user to authorize a client to access the user's private data.
+        /// If user is not already authenticated by the resource, user will be redirected to login first and then
+        /// come back here to authorize the client
+        /// </summary>
+        /// <returns></returns>
         [OauthResourceAuthenticated]
         [HttpGet]
         [HttpPost]
@@ -135,7 +140,7 @@ namespace DotNetNuke.Web.InternalServices
             //c.Add(requestingClient);
             //requestingClient.Scopes
 
-            var model2 = new SimpleAccountAuthorizeModel4
+            var model2 = new SimpleAccountAuthorizeModel
             {
                 AuthorizationRequest = pendingRequest
             };
@@ -165,8 +170,12 @@ namespace DotNetNuke.Web.InternalServices
             return response;
         }
 
-        /// Processes the user's response as to whether to authorize a Client to access his/her private data.
+
         //[ResourceAuthenticated(Order = 1), HttpPost, ValidateAntiForgeryToken(Order = 2)]
+        /// <summary>
+        /// Processes the user's response as to whether to authorize a Client to access his/her private data.
+        /// </summary>
+        /// <returns></returns>
         [OauthResourceAuthenticated]
         [HttpPost]
         //public HttpResponseMessage ProcessAuthorization(bool isApproved)

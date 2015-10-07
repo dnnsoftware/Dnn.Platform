@@ -20,6 +20,26 @@
               <path>bin</path>
               <name>Dnn.OAuth.AuthorizationServer.Core.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetOpenAuth.Core.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetOpenAuth.OAuth2.AuthorizationServer.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetOpenAuth.OAuth2.ClientAuthorization.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetOpenAuth.OAuth2.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetOpenAuth.OAuth2.ResourceServer.dll</name>
+            </assembly>
           </assemblies>
         </component>
        
@@ -31,7 +51,31 @@
             </resourceFile>
           </resourceFiles>
         </component>
-        
+        <!--<component type="Config">
+          <config>
+            <configFile>config/siteurls.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/rewrite/rules/add[@name='oauthrewrite']" action="remove" />
+                  <node path="/rewrite/rules" action="update" key="name" collision="overwrite">
+                    <rule name="OAuthRewrite" stopProcessing="true">
+                      <match url="^ouathlogin.aspx$" ignoreCase="false" />
+                      <action type="Redirect" url="/desktopmodules/DNNCorp/OAuth/OAUTHLogin.aspx" redirectType="Permanent" />
+                    </rule>
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/rewrite/rules[@name='OAuthRewrite']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>-->
                        
       </components>
     </package>

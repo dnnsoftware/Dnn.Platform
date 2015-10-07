@@ -21,14 +21,23 @@ using DotNetNuke.Common;
 
 namespace DotNetNuke.Web.Api
 {
-    // This authorization attribute is applied to the authorization methods in our OAuthController
-    // to ensure the user has been authenticated by the resource being requested
+
+    /// <summary>
+    /// This authorization attribute is applied to the authorization methods in our OAuthController
+    /// to ensure the user has been authenticated by the resource being requested
+    /// </summary>
     public class OauthResourceAuthenticatedAttribute : AuthorizeAttribute, IOverrideDefaultAuthLevel
     {
         private readonly DNOA.AuthorizationServer _authorizationServer = new DNOA.AuthorizationServer(new AuthorizationServerHost());
        // private readonly ResourceRepository _resourceRepository = new ResourceRepository();
         private Resource _targetResource;
 
+        /// <summary>
+        /// retrieves querystring from HttpRequestMessage
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string GetQueryString(HttpRequestMessage request, string key)
         {
             // IEnumerable<KeyValuePair<string,string>> - right!
@@ -42,7 +51,12 @@ namespace DotNetNuke.Web.Api
 
             return match.Value;
         }
-
+        /// <summary>
+        /// retrieve cookies from HttpRequestMessage
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cookieName"></param>
+        /// <returns></returns>
         public static string GetCookie( HttpRequestMessage request, string cookieName)
         {
             CookieHeaderValue cookie = request.Headers.GetCookies(cookieName).FirstOrDefault();
@@ -51,6 +65,10 @@ namespace DotNetNuke.Web.Api
 
             return null;
         }
+        /// <summary>
+        /// handle unauthorized request
+        /// </summary>
+        /// <param name="actionContext"></param>
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
             string domainName = "http://" + Globals.GetDomainName(HttpContext.Current.Request) + _targetResource.AuthenticationUrl;
@@ -64,6 +82,11 @@ namespace DotNetNuke.Web.Api
         
         }
 
+        /// <summary>
+        /// check if request is authorized
+        /// </summary>
+        /// <param name="actionContext"></param>
+        /// <returns></returns>
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             HttpContext httpContext = HttpContext.Current;
