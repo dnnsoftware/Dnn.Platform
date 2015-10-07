@@ -56,16 +56,6 @@ namespace DotNetNuke.Entities.Profile
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ProfileController));
 
-        private static event EventHandler<ProfileEventArgs> ProfileUpdated;
-
-        static ProfileController()
-        {
-            foreach (var handlers in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
-            {
-                ProfileUpdated += handlers.Value.ProfileUpdated;
-            }
-        }
-
         #region Private Members
 
         private static readonly DataProvider _dataProvider = DataProvider.Instance();
@@ -527,12 +517,10 @@ namespace DotNetNuke.Entities.Profile
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
 
-            if (ProfileUpdated != null)
-            {
-                ProfileUpdated(null, new ProfileEventArgs { User = user, OldProfile = oldUser.Profile});
-            }
+            //Raise Profile updated event
+            EventManager.Instance.OnProfileUpdated(new ProfileEventArgs { User = user, OldProfile = oldUser.Profile });
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates a User's Profile
