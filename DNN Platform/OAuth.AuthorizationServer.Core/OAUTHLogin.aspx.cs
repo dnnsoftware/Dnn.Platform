@@ -16,9 +16,17 @@ using OAuth.AuthorizationServer.Core.Utilities;
 
 namespace DotNetNuke.Website
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class OAUTHLogin : System.Web.UI.Page
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Init(object sender, EventArgs e)
         {
             bool isAllowed = true;
@@ -60,6 +68,11 @@ namespace DotNetNuke.Website
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             cmdLogin.Click += cmdLogin_Click;

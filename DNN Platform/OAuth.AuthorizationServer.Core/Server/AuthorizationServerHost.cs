@@ -10,9 +10,12 @@ using OAuth.AuthorizationServer.Core.Data.Repositories;
 
 namespace OAuth.AuthorizationServer.Core.Server
 {
-    // Our implementation of the authorization server, which is passed to the ctor of the 
-    // DotNetOpenAuth AuthroizationServer class.  The DotNetOpenAuth impl calls methods in this
-    // class when it sees fit.
+   
+    /// <summary>
+    /// Our implementation of the authorization server, which is passed to the ctor of the 
+    /// DotNetOpenAuth AuthroizationServer class.  The DotNetOpenAuth impl calls methods in this
+    /// class when it sees fit.
+    /// </summary>
     public class AuthorizationServerHost : IAuthorizationServerHost
     {
         // Ideally, IOC these dependencies.  OK, ideally, refactor this a bit more, although
@@ -24,11 +27,22 @@ namespace OAuth.AuthorizationServer.Core.Server
         //private readonly AuthorizationRepository _authorizationRepository = new AuthorizationRepository();
         private readonly AuthorizationServerSigningKeyManager _tokenSigner = new AuthorizationServerSigningKeyManager();
 
+        /// <summary>
+        /// Get/Set CryptoKeyStore
+        /// </summary>
         public ICryptoKeyStore CryptoKeyStore { get { return _cryptoKeyRepository; } }
+        /// <summary>
+        /// Get/Set NonceStore
+        /// </summary>
         public INonceStore NonceStore { get { return _nonceRepository; } }
 
-        // Generate an access token, given parameters in request that tell use what scopes to include,
-        // and thus what resource's encryption key to use in addition to the authroization server key
+     
+        /// <summary>
+        /// Generate an access token, given parameters in request that tell use what scopes to include,
+        /// and thus what resource's encryption key to use in addition to the authroization server key
+        /// </summary>
+        /// <param name="accessTokenRequestMessage"></param>
+        /// <returns></returns>
         public AccessTokenResult CreateAccessToken(IAccessTokenRequest accessTokenRequestMessage)
         {
             var accessToken = new AuthorizationServerAccessToken {Lifetime = TimeSpan.FromMinutes(10)}; // could parameterize lifetime
@@ -42,7 +56,13 @@ namespace OAuth.AuthorizationServer.Core.Server
             return result;
         }
 
-        // Lookup client given an identifier
+       
+        /// <summary>
+        /// Lookup client given an identifier
+        /// </summary>
+        /// <param name="clientIdentifier"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public IClientDescription GetClient(string clientIdentifier)
         {
             //IClientDescription client = _clientRepository.GetById(clientIdentifier);
@@ -54,7 +74,12 @@ namespace OAuth.AuthorizationServer.Core.Server
             return client;
         }
 
-        // Determine whether the given authorization is still ok
+       
+        /// <summary>
+        /// Determine whether the given authorization is still ok
+        /// </summary>
+        /// <param name="authorization"></param>
+        /// <returns></returns>
         public bool IsAuthorizationValid(IAuthorizationDescription authorization)
         {
             // If db precision exceeds token time precision (which is common), the following query would
@@ -85,8 +110,13 @@ namespace OAuth.AuthorizationServer.Core.Server
             return authorization.Scope.IsSubsetOf(grantedScopes);
         }
 
-        // Used during client credentials flow.  Before we get here, the client and secret will already have been verified
-        // We're also ensuring the scopes requested are ok to give the client
+        
+        /// <summary>
+        /// Used during client credentials flow.  Before we get here, the client and secret will already have been verified
+        /// We're also ensuring the scopes requested are ok to give the client
+        /// </summary>
+        /// <param name="accessRequest"></param>
+        /// <returns></returns>
         public AutomatedAuthorizationCheckResponse CheckAuthorizeClientCredentialsGrant(IAccessTokenRequest accessRequest)
         {
             // Find the client
@@ -106,6 +136,14 @@ namespace OAuth.AuthorizationServer.Core.Server
             return new AutomatedAuthorizationCheckResponse(accessRequest, isApproved);
         }
 
+        /// <summary>
+        /// Not supporting this flow, as it's not normally a good idea to have user give their credentials directly to the client
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="accessRequest"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public AutomatedUserAuthorizationCheckResponse CheckAuthorizeResourceOwnerCredentialGrant(string userName, string password, IAccessTokenRequest accessRequest)
         {
             // Not supporting this flow, as it's not normally a good idea to have user give their credentials directly to the client

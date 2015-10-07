@@ -6,9 +6,16 @@ using DotNetNuke.Entities.Controllers;
 
 namespace OAuth.AuthorizationServer.Core.Server
 {
-    // Responsible for providing the authorization server key to use in signing the token
+    
+    /// <summary>
+    /// Responsible for providing the authorization server key to use in signing the token
+    /// </summary>
     public class AuthorizationServerSigningKeyManager
     {
+        /// <summary>
+        /// Get the RSA Signer 
+        /// </summary>
+        /// <returns></returns>
         public RSACryptoServiceProvider GetSigner()
         {
             var signer = new RSACryptoServiceProvider();

@@ -31,7 +31,9 @@ namespace DotNetNuke.Web.InternalServices
     /// </summary>
     public class SimpleAccountAuthorizeModel
     {
-        
+        /// <summary>
+        /// Gets/sets serialized AuthorizationRequest
+        /// </summary>
         public EndUserAuthorizationRequest AuthorizationRequest { get; set; }
     }
 
@@ -144,7 +146,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 AuthorizationRequest = pendingRequest
             };
-            bool tester = true;
+            
 
 
             HttpContext httpContext = HttpContext.Current;

@@ -10,8 +10,16 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using OAuth.AuthorizationServer.Core.Server;
 
+/// <summary>
+/// page used to authorize oauth requests
+/// </summary>
 public partial class OAUTHAuthorize : System.Web.UI.Page
 {
+    /// <summary>
+    /// initialize page
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void Page_Init(object sender, EventArgs e)
     {
         bool isAllowed = true;
@@ -53,30 +61,5 @@ public partial class OAUTHAuthorize : System.Web.UI.Page
 
     }
 
-    protected object GetOptionalState()
-    {
-
-        if (Request.QueryString["redirect_uri"] != null)
-        {
-            var state = Request.Url.ToString();
-            int iqs = state.IndexOf('?');
-            String querystring = null;
-            if (iqs == -1)
-            {
-                //String redirecturl = currurl + "?var1=1&var2=2+2%2f3&var1=3";
-                //Response.Redirect(redirecturl, true);
-            }
-            // If query string variables exist, put them in
-            // a string.
-            else if (iqs >= 0)
-            {
-                querystring = (iqs < state.Length - 1) ? state.Substring(iqs + 1) : String.Empty;
-            }
-
-            // Parse the query string variables into a NameValueCollection.
-            NameValueCollection qscoll = HttpUtility.ParseQueryString(querystring);
-            
-        }
-        return string.Empty;
-    }
+   
 }
