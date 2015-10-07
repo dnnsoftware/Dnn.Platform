@@ -4,7 +4,7 @@
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-    <Extension>zip</Extension>
+    <Extension>resources</Extension>
     <DNNFileName>Dnn.OAuth</DNNFileName>
     <PackageName>DNNOAuth</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\Dnn\OAuth</ModuleFolderName>
@@ -27,5 +27,6 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+	<Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetOpenAuth.Core.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>
