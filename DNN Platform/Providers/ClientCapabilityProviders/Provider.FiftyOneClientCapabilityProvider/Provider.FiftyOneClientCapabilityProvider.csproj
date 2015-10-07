@@ -16,17 +16,17 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <OutputPath>bin\Providers\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Providers\</OutputPath>
-    <DocumentationFile>bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.XML</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1591,0618</NoWarn>
   </PropertyGroup>
@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Administration.ascx.designer.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
@@ -91,6 +92,7 @@
     <Compile Include="Properties\RetailerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="08.00.00.txt" />
     <Content Include="Administration.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -101,6 +103,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="module.css" />
+    <Content Include="Provider.build" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
     <Content Include="Images\mobiledevicedet_16X16.png" />
@@ -121,32 +124,5 @@
     <None Include="App_LocalResources\Administration.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>FiftyOneClientCapabilityProvider</DNNFileName>
-    <PackageName>FiftyOneClientCapabilityProvider</PackageName>
-    <Providers>/Providers</Providers>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
-  </PropertyGroup>
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject;GetFiles;Package">
-  </Target>
-  <Target Name="GetFiles">
-    <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <LocalResourcesFiles Include="App_LocalResources\*.*" />
-      <ImagesFiles Include="Images\*.*" />
-      <ViewFiles Include="*.ascx" />
-      <CssFiles Include="*.css" />
-      <Resources Include="@(TextFiles);@(LocalResourcesFiles);@(ImagesFiles);@(ViewFiles);@(CssFiles)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="DebugProject">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin$(Providers)\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin$(Providers)\FiftyOne.Foundation.dll" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin$(Providers)\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin$(Providers)\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
-  </Target>
+  <Import Project="Provider.build" />
 </Project>
