@@ -36,8 +36,7 @@ namespace DotNetNuke.Common.Internal
             try
             {
                 //new ServicesRoutingManager().RegisterRoutes();
-                var instance = Activator.CreateInstance("DotNetNuke.Web",
-                                                        "DotNetNuke.Web.Api.Internal.ServicesRoutingManager");
+                var instance = Activator.CreateInstance("DotNetNuke.Web", "DotNetNuke.Web.Api.Internal.ServicesRoutingManager");
 
                 var method = instance.Unwrap().GetType().GetMethod("RegisterRoutes");
                 method.Invoke(instance.Unwrap(), new object[0]);

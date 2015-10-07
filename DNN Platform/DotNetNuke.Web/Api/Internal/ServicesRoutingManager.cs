@@ -217,8 +217,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         internal static bool IsValidServiceRouteMapper(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                   typeof (IServiceRouteMapper).IsAssignableFrom(t);
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof (IServiceRouteMapper).IsAssignableFrom(t);
         }
 
         private Route MapHttpRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
