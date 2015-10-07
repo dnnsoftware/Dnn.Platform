@@ -15,7 +15,7 @@
   <Target Name="GetFiles">
     <ItemGroup>
       <ResourceFiles Include="App_LocalResources/*.resx" />
-      <ASPXPages Include="*.aspx" />
+      <ASPXPages Include="*.aspx;*.aspx.cs" />
       <Resources Include="@(ResourceFiles);@(ASPXPages)"/>
     </ItemGroup>
   </Target>
