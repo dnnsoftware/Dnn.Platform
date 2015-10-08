@@ -5458,10 +5458,16 @@ namespace DotNetNuke.Services.Upgrade
             RemoveHostPage("Vendors");
 
             var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.Vendors");
-            PackageController.Instance.DeleteExtensionPackage(package);
+            if (package != null)
+            {
+                PackageController.Instance.DeleteExtensionPackage(package);
+            }
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
-            PackageController.Instance.DeleteExtensionPackage(package);
+            if (package != null)
+            {
+                PackageController.Instance.DeleteExtensionPackage(package);
+            }
         }
 
         private static void UpgradeToVersion8007()
