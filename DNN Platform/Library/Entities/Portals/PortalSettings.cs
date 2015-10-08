@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -134,7 +134,7 @@ namespace DotNetNuke.Entities.Portals
 		    BuildPortalSettings(tabId, portal);
 		}
 
-	    private void BuildPortalSettings(int tabId, PortalInfo portal)
+        private void BuildPortalSettings(int tabId, PortalInfo portal)
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 
@@ -143,11 +143,11 @@ namespace DotNetNuke.Entities.Portals
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
             var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
-	        var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
-	        if (items != null && items.Contains(key))
-	        {
-	            ActiveTab = items[key] as TabInfo;
-	        }
+            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
+            if (items != null && items.Contains(key))
+            {
+                ActiveTab = items[key] as TabInfo;
+            }
             else
             {
                 ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
