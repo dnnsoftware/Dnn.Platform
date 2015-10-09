@@ -531,6 +531,11 @@
 			            <div class="dnnFormItem" runat="server" id="OAuthSecret">
                         <dnn:label id="plOAuthSitesettingsSecret" runat="server" controlname="OAuthSitesettingsSecretLabel" />
                         <asp:Label runat="server" ID="OAuthSitesettingsSecretLabel" />
+                            <div class="dnnFormItem psPageStateWarning dnnClear">
+                        <asp:Label ID="plOAuthWarning" runat="server" CssClass="dnnFormMessage dnnFormWarning"
+                            resourcekey="plOAuthWarning" Visible="false" />
+                    </div>
+
                     </div>
                         <ul class="dnnActions dnnClear">
                             <li>
