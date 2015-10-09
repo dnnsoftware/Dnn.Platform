@@ -786,6 +786,9 @@
   <data name="plPsWarning.Text" xml:space="preserve">
     <value>Warning: Memory page state persistence can cause Ajax issues</value>
   </data>
+  <data name="plOAuthWarning.Text" xml:space="preserve">
+    <value>Warning: The OAuth library must be installed for OAuth server support to work</value>
+  </data>
   <data name="ModuleCacheProvider.Help" xml:space="preserve">
     <value>Select the default module caching provider.  This setting can be overridden by each individual module.</value>
   </data>

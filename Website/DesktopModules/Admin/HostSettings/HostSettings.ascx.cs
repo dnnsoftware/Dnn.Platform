@@ -51,6 +51,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -387,6 +388,14 @@ namespace DotNetNuke.Modules.Admin.Host
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             chkEnableOAuth.Checked = Entities.Host.Host.EnableOAuthAuthorization;
+            if (chkEnableOAuth.Checked)
+            {
+                var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DNNOAuth");
+                if (package == null)
+                {
+                    plOAuthWarning.Visible = true;
+                }
+            }
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();

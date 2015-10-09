@@ -662,6 +662,10 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plEnableOAuth" controlname="chkEnableOAuth" runat="server" />
                     <asp:CheckBox ID="chkEnableOAuth" runat="server" />
+                    <div class="dnnFormItem psPageStateWarning dnnClear">
+                        <asp:Label ID="plOAuthWarning" runat="server" CssClass="dnnFormMessage dnnFormWarning"
+                            resourcekey="plOAuthWarning" Visible="false" />
+                    </div>
                 </div>
             </fieldset>
         </div>
