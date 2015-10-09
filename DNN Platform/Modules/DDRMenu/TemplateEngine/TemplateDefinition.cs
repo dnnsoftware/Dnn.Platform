@@ -119,11 +119,16 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 										// support legacy named jsObjects that map to libraries
 										if (jsObject.Equals("jQuery"))
 										{
-										    DNNAbstract.RequestJQuery();
+											Version libraryVersion = null;
+											SpecificVersion? specificity = null;
+											baseDef.ScriptLibraries[CommonJs.jQuery] = Tuple.Create(libraryVersion, specificity);
+											baseDef.ScriptLibraries[CommonJs.jQueryMigrate] = Tuple.Create(libraryVersion, specificity);
 										}
 										else if (jsObject.Equals("jQuery.ui"))
 										{
-											baseDef.ScriptLibraries[CommonJs.jQueryUI] = new Tuple<Version, SpecificVersion?>(null, null);
+											Version libraryVersion = null;
+											SpecificVersion? specificity = null;
+											baseDef.ScriptLibraries[CommonJs.jQueryUI] = Tuple.Create(libraryVersion, specificity);
 										}
 
 										continue;
