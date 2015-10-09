@@ -808,7 +808,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (!String.IsNullOrEmpty(TempInstallFolder) && Directory.Exists(TempInstallFolder))
                 {
-                    Directory.Delete(TempInstallFolder, true);
+                    Globals.DeleteFolderRecursive(TempInstallFolder);
                 }
 				//Redirect to Definitions page
                 Response.Redirect(ReturnURL, true);
