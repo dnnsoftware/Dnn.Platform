@@ -20,8 +20,8 @@
     </ItemGroup>
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModulePath)/App_LocalResources" />
-    <Copy SourceFiles="@(ASPXPages)" DestinationFolder="$(ModulePath)" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModuleFolderName)/App_LocalResources" />
+    <Copy SourceFiles="@(ASPXPages)" DestinationFolder="$(ModuleFolderName)" />
   </Target>
   <Target Name="CopyBin">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
