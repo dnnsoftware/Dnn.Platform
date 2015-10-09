@@ -38,7 +38,8 @@
         var $module;
 
         var getModuleId = function ($mod) {
-            return $mod.find("a").first().attr("name");
+            var result = $mod.attr("class").match(/DnnModule-([0-9]+)/);
+            return (result && result.length === 2) ? result[1] : null;
         };
 
         var getModuleIndex = function (moduleId, $pane) {
