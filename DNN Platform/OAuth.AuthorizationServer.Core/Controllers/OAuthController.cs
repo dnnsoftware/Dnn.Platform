@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 
 using System.Web.UI.WebControls;
-//using DotNetNuke.Instrumentation;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Web.Api;
 
 using System.Net.Http.Formatting;
+using System.Web.Http;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth2;
 using DotNetOpenAuth.OAuth2.Messages;
-using OAuth.AuthorizationServer.API.Attributes;
+
 using OAuth.AuthorizationServer.API.Models;
 using OAuth.AuthorizationServer.Core.Data.Model;
 using OAuth.AuthorizationServer.Core.Data.Repositories;
@@ -21,12 +23,27 @@ using Authorization = OAuth.AuthorizationServer.Core.Data.Model.Authorization;
 using DNOA = DotNetOpenAuth.OAuth2;
 
 
-namespace OAuth.AuthorizationServer.API.Controllers
+namespace DotNetNuke.Web.InternalServices
 {
-    // Exposed endpoint by which clients can request access to a resource via the OAuth2 protocol
+   
+    /// <summary>
+    /// serialized account authorizaton request
+    /// </summary>
+    public class SimpleAccountAuthorizeModel
+    {
+        /// <summary>
+        /// Gets/sets serialized AuthorizationRequest
+        /// </summary>
+        public EndUserAuthorizationRequest AuthorizationRequest { get; set; }
+    }
+
+    /// <summary>
+    /// Exposed endpoint by which clients can request access to a resource via the OAuth2 protocol
+    /// </summary>
+ 
     public class OAuthController :  DnnApiController
     {
-       // private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthController));
 
         // Ideally, IOC these dependencies.  
         private readonly DNOA.AuthorizationServer _authorizationServer = new DNOA.AuthorizationServer(new AuthorizationServerHost());        
@@ -35,19 +52,36 @@ namespace OAuth.AuthorizationServer.API.Controllers
        // private readonly ResourceRepository _resourceRepository = new ResourceRepository();
       //  private readonly UserRepository _userRepository = new UserRepository();
 
-        // Provides authorization token to the client based on information in the request
-        // DotNetOpenAuth is doing all the heavy lifting here.  Request must contain all of the
-        // necessary info to grant a token
+   
+        /// <summary>
+        /// Provides authorization token to the client based on information in the request
+        /// DotNetOpenAuth is doing all the heavy lifting here.  Request must contain all of the
+        /// necessary info to grant a token
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        //[HttpHeader("x-frame-options", "SAMEORIGIN")] // mitigates clickjacking - see https://github.com/DotNetOpenAuth/DotNetOpenAuth/blob/74b6b4efd2be2680e3067f716829b0c9385ceebe/samples/OAuth2ProtectedWebApi/Code/HttpHeaderAttribute.cs
+      
         public HttpResponseMessage Token()
         {
            // return _authorizationServer.HandleTokenRequest(Request).AsActionResult();
             return _authorizationServer.HandleTokenRequest(Request).AsHttpResponseMessage();
         }
-
-        // Prompts the user to authorize a client to access the user's private data.
-        // If user is not already authenticated by the resource, user will be redirected to login first and then
-        // come back here to authorize the client
+       
+       
+  
         //[ResourceAuthenticated, AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        /// <summary>
+        ///   Prompts the user to authorize a client to access the user's private data.
+        /// If user is not already authenticated by the resource, user will be redirected to login first and then
+        /// come back here to authorize the client
+        /// </summary>
+        /// <returns></returns>
+        [OauthResourceAuthenticated]
+        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage Authorize()
         {
             // Have DotNetOpenAuth read the info we need out of the request
@@ -59,7 +93,7 @@ namespace OAuth.AuthorizationServer.API.Controllers
 
             // Make sure the client is one we recognize
             //Client requestingClient = _clientRepository.GetById(pendingRequest.ClientIdentifier);
-            Client requestingClient = OAUTHDataController.ClientRepositoryGetById(pendingRequest.ClientIdentifier);
+            OAuth.AuthorizationServer.Core.Data.Model.Client requestingClient = OAUTHDataController.ClientRepositoryGetById(pendingRequest.ClientIdentifier);
             
             if (requestingClient == null)
             {
@@ -69,28 +103,87 @@ namespace OAuth.AuthorizationServer.API.Controllers
             // Ensure client is allowed to use the requested scopes
             if (!pendingRequest.Scope.IsSubsetOf(requestingClient.SupportedScopes))
             {
-                throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest), "Invalid request");
+                //throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest), "Invalid request");
             }
 
-            // Consider auto-approving if safe, so user doesn't have to authorize repeatedly.  
-            // Leaving this step out for now            
+      
+            var test = requestingClient.Scopes.Where(x => pendingRequest.Scope.Contains(x.Identifier)).ToList();
 
-            // Show user the authorization page by which they can authorize this client to access their
-            // data within the resource determined by the requested scopes
+            var s = new Scope();
+            var c= new List<OAuth.AuthorizationServer.Core.Data.Model.Client>();
+            var r = new List<Resource>();
+            
+            c.Add(requestingClient);
+            r.Add(OAUTHDataController.ResourceRepositoryFindWithSupportedScopes(pendingRequest.Scope));
+            s.Identifier = "Resource1";
+            s.Clients = c;
+            s.Resources = r;
+            s.Description = "Read info from Resource1";
+            
+            var listscope = new List<Scope>();
+            listscope.Add(s);
             var model = new AccountAuthorizeModel
             {
                 Client = requestingClient,
-                Scopes = requestingClient.Scopes.Where(x => pendingRequest.Scope.Contains(x.Identifier)).ToList(),
+                Scopes = listscope,
                 AuthorizationRequest = pendingRequest
             };
-           return  Request.CreateResponse(HttpStatusCode.OK, model);
+            //List<Scope> Scopes=new List<Scope>();
+            //Scopes.Add(new Scope(Scopes);;
+            //var model = new AccountAuthorizeModel
+            //{
+            //    Client = requestingClient,
+            //    Scopes = new ,
+            //    AuthorizationRequest = pendingRequest
+            //};
+           //return  Request.CreateResponse(HttpStatusCode.OK, model);
+            //var s = new Scope();
+            //var c= new List<OAuth.AuthorizationServer.Core.Data.Model.Client>();
+            //c.Add(requestingClient);
+            //requestingClient.Scopes
+
+            var model2 = new SimpleAccountAuthorizeModel
+            {
+                AuthorizationRequest = pendingRequest
+            };
+            
+
+
+            HttpContext httpContext = HttpContext.Current;
+
+            var rt = httpContext.Request.QueryString["resource-authentication-token"];
+            //return Request.CreateResponse(HttpStatusCode.OK, tester);
             //return View(model);
+            var response = Request.CreateResponse(HttpStatusCode.Moved);
+            string uri = null;
+            string domainName = DotNetNuke.Common.Globals.GetDomainName(HttpContext.Current.Request) ;
+            string state = model.AuthorizationRequest.ClientState;
+            if (pendingRequest.ResponseType.ToString() == "AuthorizationCode")
+            {
+                uri = "http://" + domainName + "/oauthauthorize.aspx?client_id=" + pendingRequest.ClientIdentifier +"&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&scope=DNN-ALL&response_type=code&IsApproved=True&state=" + pendingRequest.ClientState.ToString();
+            }
+            else
+            {
+                uri = "http://" + domainName + "/oauthauthorize.aspx?scope=DNN-ALL&redirect_uri=" + httpContext.Request.QueryString["redirect_uri"] + "&response_type=token&client_id=" + pendingRequest.ClientIdentifier +"&resource-authentication-token=" + rt.ToString(); 
+            }
+            
+            response.Headers.Location = new Uri(uri);
+            
+            return response;
         }
 
-        /// Processes the user's response as to whether to authorize a Client to access his/her private data.
+
         //[ResourceAuthenticated(Order = 1), HttpPost, ValidateAntiForgeryToken(Order = 2)]
-        public HttpResponseMessage ProcessAuthorization(bool isApproved)
+        /// <summary>
+        /// Processes the user's response as to whether to authorize a Client to access his/her private data.
+        /// </summary>
+        /// <returns></returns>
+        [OauthResourceAuthenticated]
+        [HttpPost]
+        //public HttpResponseMessage ProcessAuthorization(bool isApproved)
+            public HttpResponseMessage ProcessAuthorization()
         {
+            bool isApproved = true;
             // Have DotNetOpenAuth read the info we need out of the request
             EndUserAuthorizationRequest pendingRequest = _authorizationServer.ReadAuthorizationRequest();
             if (pendingRequest == null)
@@ -100,7 +193,7 @@ namespace OAuth.AuthorizationServer.API.Controllers
 
             // Make sure the client is one we recognize
             //Client requestingClient = _clientRepository.GetById(pendingRequest.ClientIdentifier);
-            Client requestingClient = OAUTHDataController.ClientRepositoryGetById(pendingRequest.ClientIdentifier);
+            OAuth.AuthorizationServer.Core.Data.Model.Client requestingClient = OAUTHDataController.ClientRepositoryGetById(pendingRequest.ClientIdentifier);
             if (requestingClient == null)
             {
                 throw new HttpException(Convert.ToInt32(HttpStatusCode.BadRequest), "Invalid request");
@@ -122,6 +215,7 @@ namespace OAuth.AuthorizationServer.API.Controllers
             {
                 // Add user to our repository if this is their first time
                 //var requestingUser = _userRepository.GetById(User.Identity.Name);
+                //var requestingUser = OAUTHDataController.UserRepositoryGetById(User.Identity.Name);
                 var requestingUser = OAUTHDataController.UserRepositoryGetById(User.Identity.Name);
                 if (requestingUser == null)
                 {
@@ -155,6 +249,7 @@ namespace OAuth.AuthorizationServer.API.Controllers
                 OAUTHDataController.OAuthAuthorizationInsert(a);
                                                 
                 // Have DotNetOpenAuth generate an approval to send back to the client
+                //authRequest = _authorizationServer.PrepareApproveAuthorizationRequest(pendingRequest, User.Identity.Name);
                 authRequest = _authorizationServer.PrepareApproveAuthorizationRequest(pendingRequest, User.Identity.Name);
             }
             else
@@ -167,10 +262,22 @@ namespace OAuth.AuthorizationServer.API.Controllers
                 msg.Error = "User denied your request";
             }
 
-            // This will redirect to the client app using their defined callback, so they can handle
-            // the approval or rejection as they see fit
-            return _authorizationServer.Channel.PrepareResponse(authRequest).AsHttpResponseMessage();
+          
+            
+            var response = Request.CreateResponse(HttpStatusCode.Moved);
+
+            var deferred=_authorizationServer.Channel.PrepareResponse(authRequest).AsHttpResponseMessage();
+
+            response.Headers.Location = new Uri(deferred.Headers.Location.ToString());
+           // response.Headers.Location = new Uri(authRequest.Recipient.ToString());
+
+            
+            return response;
+
+            
+            //return _authorizationServer.Channel.PrepareResponse(authRequest).AsHttpResponseMessage();
         }
+
     }
 }
 

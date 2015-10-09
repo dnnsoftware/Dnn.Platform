@@ -5,7 +5,10 @@ using OAuth.AuthorizationServer.Core.Data.Model;
 
 namespace OAuth.AuthorizationServer.Core.Data.Repositories
 {
-    // Used by DotNetOpenAuth to track nonces
+   
+    /// <summary>
+    /// Used by DotNetOpenAuth to track nonces
+    /// </summary>
     public class NonceRepository :  INonceStore
     {
         //public NonceRepository()
@@ -57,6 +60,13 @@ namespace OAuth.AuthorizationServer.Core.Data.Repositories
         //        return false;
         //    }
         //}
+        /// <summary>
+        /// store the nonce value in the database
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="nonce"></param>
+        /// <param name="timestampUtc"></param>
+        /// <returns></returns>
         public bool StoreNonce(string context, string nonce, DateTime timestampUtc)
         {
             
