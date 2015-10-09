@@ -168,7 +168,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public int PortalId { get; }
+        public int PortalId { get; private set; }
 
         public bool IsDirty { get; private set; }
 
@@ -586,9 +586,9 @@ namespace DotNetNuke.Entities.Urls
             internal set { _sslClientRedirect = value; }
         }
 
-        public int TabId404 { get; }
+        public int TabId404 { get; private set; }
 
-        public int TabId500 { get; }
+        public int TabId500 { get; private set; }
 
         public string Url404
         {
