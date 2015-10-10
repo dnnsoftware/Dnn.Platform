@@ -212,19 +212,6 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        private static void CheckAndUpdatePortalSettingsForNewAlias(PortalSettings portalSettings, bool cultureSpecificAlias, string portalAlias)
-        {
-            if (cultureSpecificAlias && portalAlias != portalSettings.PortalAlias.HTTPAlias)
-            {
-                //was a change in alias, need to update the portalSettings with a new portal alias
-                PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalSettings.PortalId);
-                if (pa != null)
-                {
-                    portalSettings.PortalAlias = pa;
-                }
-            }
-        }
-
         private static string CheckForDebug(HttpRequest request)
         {
             string debugValue = "";
@@ -411,27 +398,22 @@ namespace DotNetNuke.Entities.Urls
 
         private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
-            Guid parentTraceId = Guid.Empty;
-            int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
+            var parentTraceId = Guid.Empty;
+            var portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
             bool cultureSpecificAlias;
             var localSettings = GetSettings(portalId);
 
             //Call GetFriendlyAlias to get the Alias part of the url
-            if (String.IsNullOrEmpty(portalAlias) && portalSettings != null)
+            if (string.IsNullOrEmpty(portalAlias) && portalSettings != null)
             {
                 portalAlias = portalSettings.PortalAlias.HTTPAlias;
             }
-            string friendlyPath = GetFriendlyAlias(path,
+            var friendlyPath = GetFriendlyAlias(path,
                                                     ref portalAlias,
                                                     portalId,
                                                     localSettings,
                                                     portalSettings,
                                                     out cultureSpecificAlias);
-
-            if (portalSettings != null)
-            {
-                CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
-            }
 
             if (tab == null && path == "~/" && String.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -443,38 +425,61 @@ namespace DotNetNuke.Entities.Urls
                 //Get friendly path gets the standard dnn-style friendly path 
                 friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, localSettings);
 
-                if (portalSettings == null)
+                PortalSettings portalSettigsForFriendlyUrl = null;
+                if (cultureSpecificAlias && tab != null && portalSettings != null && portalAlias != portalSettings.PortalAlias.HTTPAlias)
                 {
-                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
-
-                    portalSettings = new PortalSettings(tab.TabID, alias);
+                    // Gew new (culture specific) PortalAlias
+                    var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalSettings.PortalId);
+                    if (pa != null)
+                    {
+                        portalSettigsForFriendlyUrl = new PortalSettings(tab.TabID, pa);
+                    }
                 }
+
+                if (portalSettigsForFriendlyUrl == null)
+                {
+                    if (portalSettings == null)
+                    {
+                        var alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
+                        portalSettigsForFriendlyUrl = new PortalSettings(tab.TabID, alias);
+                    }
+                    else
+                    {
+                        portalSettigsForFriendlyUrl = portalSettings;
+                    }
+                }
+
                 //ImproveFriendlyUrl will attempt to remove tabid/nn and other information from the Url 
                 friendlyPath = ImproveFriendlyUrl(tab,
                                                     friendlyPath,
                                                     pageName,
-                                                    portalSettings,
+                                                    portalSettigsForFriendlyUrl,
                                                     false,
                                                     cultureSpecificAlias,
                                                     localSettings,
                                                     parentTraceId);
             }
+
             //set it to lower case if so allowed by settings
             friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
 
             // Replace http:// by https:// if SSL is enabled and site is marked as secure 
             // (i.e. requests to http://... will be redirected to https://...)
-            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
-                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            if (tab != null && tab.IsSecure &&
+                friendlyPath.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
             {
-                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
-                friendlyPath = regex.Replace(friendlyPath, "https://");
-
-                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
-                var sslUrl = portalSettings.SSLURL;
-                if (!string.IsNullOrEmpty(sslUrl))
+                if (portalSettings == null) portalSettings = new PortalSettings(tab.PortalID);
+                if (portalSettings.SSLEnabled)
                 {
-                    friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
+                    var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
+                    friendlyPath = regex.Replace(friendlyPath, "https://");
+
+                    // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                    var sslUrl = portalSettings.SSLURL;
+                    if (!string.IsNullOrEmpty(sslUrl))
+                    {
+                        friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
+                    }
                 }
             }
 
