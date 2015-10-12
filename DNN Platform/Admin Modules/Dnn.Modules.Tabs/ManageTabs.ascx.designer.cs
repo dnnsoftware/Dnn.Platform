@@ -550,7 +550,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected dynamic CLControl1;
+        protected global::System.Web.UI.UserControl CLControl1;
         
         /// <summary>
         /// cmdUpdateLocalization control.
@@ -676,7 +676,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
+        protected global::System.Web.UI.UserControl ctlIcon;
         
         /// <summary>
         /// plIconLarge control.
@@ -694,7 +694,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIconLarge;
+        protected global::System.Web.UI.UserControl ctlIconLarge;
         
         /// <summary>
         /// plSkin control.
@@ -1207,7 +1207,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlURL;
+        protected global::System.Web.UI.UserControl ctlURL;
         
         /// <summary>
         /// redirectRow control.
@@ -1270,6 +1270,6 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.UI.UserControls.ModuleAuditControl ctlAudit;
+        protected global::System.Web.UI.UserControl ctlAudit;
     }
 }
