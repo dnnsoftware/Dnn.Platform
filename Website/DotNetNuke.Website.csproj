@@ -2298,8 +2298,6 @@
     <Content Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx" />
     <Content Include="DesktopModules\Admin\Skins\editskins.ascx" />
     <Content Include="DesktopModules\Admin\Skins\module.css" />
-    <Content Include="DesktopModules\Admin\Solutions\Solutions.ascx" />
-    <Content Include="DesktopModules\Admin\Solutions\solutions.gif" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -4009,25 +4007,6 @@
     <Content Include="Resources\ControlPanel\ControlPanel.debug.js" />
     <Content Include="Resources\ControlPanel\ControlPanel.js" />
     <Content Include="Resources\Dashboard\jquery.dashboard.js" />
-    <Content Include="Resources\FeedBrowser\scripts\fallback.js" />
-    <Content Include="Resources\FeedBrowser\scripts\feedbrowser.js" />
-    <Content Include="Resources\FeedBrowser\scripts\templates.js" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\graphite.css" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\loading.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-bottom-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-left-curve.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-left.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-top-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\pointer.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\search.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\loading.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-bottom-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-left-curve.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-left.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-top-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\platinum.css" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\pointer.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\search.gif" />
     <Content Include="Resources\Libraries\jQuery-Migrate\01_02_01\jquery-migrate.js" />
     <Content Include="Resources\Libraries\jQuery-UI\01_10_03\jquery-ui.js" />
     <Content Include="Resources\Libraries\jQuery\01_09_01\jquery.js" />
@@ -4206,7 +4185,9 @@
     <EmbeddedResource Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
     <EmbeddedResource Include="App_GlobalResources\Exceptions.resx" />
     <EmbeddedResource Include="App_GlobalResources\FileUpload.resx" />
-    <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\SharedResources.resx" />
     <EmbeddedResource Include="App_GlobalResources\WebControls.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\Address.ascx.resx" />
@@ -4290,9 +4271,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Skins\App_LocalResources\EditSkins.ascx.resx" />
-    <None Include="DesktopModules\Admin\Solutions\App_LocalResources\Solutions.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />

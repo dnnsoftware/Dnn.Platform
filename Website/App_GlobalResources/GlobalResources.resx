@@ -246,9 +246,6 @@
   <data name="//Host//SuperuserAccounts.String" xml:space="preserve">
     <value>SuperUser Accounts</value>
   </data>
-  <data name="//Admin//Solutions.String" xml:space="preserve">
-    <value>Solutions Explorer</value>
-  </data>
   <data name="View.Permission" xml:space="preserve">
     <value>View Module</value>
   </data>

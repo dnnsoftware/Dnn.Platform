@@ -5468,6 +5468,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 PackageController.Instance.DeleteExtensionPackage(package);
             }
+
+            UninstallPackage("Solutions", "Module");
         }
 
         private static void UpgradeToVersion8007()
