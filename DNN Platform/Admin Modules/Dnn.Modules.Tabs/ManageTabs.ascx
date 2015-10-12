@@ -78,7 +78,7 @@
 				</div>    
 				<div  id="templateRow2" class="dnnFormItem" runat="server" visible="false">
 					<dnn:label id="plTemplate" runat="server" controlname="cboTemplate" />
-                    <dnn:DnnComboBox id="cboTemplate" runat="server" />
+                    <dnn:DnnComboBox id="cboTemplate" runat="server" ViewStateMode="Disabled" />
 				</div>    
 				<div class="dnnFormItem">
 					<dnn:Label ID="plMenu" runat="server" ResourceKey="Menu" Suffix="?" HelpKey="MenuHelp" ControlName="chkMenu" />
@@ -202,11 +202,11 @@
 				<div id="tabSkinSettings">
 					<div class="dnnFormItem">
 						<dnn:Label ID="plSkin" ControlName="pageSkinCombo" runat="server" />
-                        <dnn:DnnSkinComboBox ID="pageSkinCombo" runat="Server" />
+                        <dnn:DnnSkinComboBox ID="pageSkinCombo" runat="Server" ViewStateMode="Disabled" />
 					</div>
 					<div class="dnnFormItem">
 						<dnn:Label ID="plContainer" ControlName="pageContainerCombo" runat="server" />
-                        <dnn:DnnSkinComboBox ID="pageContainerCombo" runat="Server"  />
+                        <dnn:DnnSkinComboBox ID="pageContainerCombo" runat="Server" ViewStateMode="Disabled"  />
                     </div>
 					<div class="dnnFormItem">
 						<dnn:Label ID="plCustomStylesheet" ControlName="txtCustomStylesheet" runat="server" />
