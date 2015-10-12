@@ -1470,7 +1470,7 @@ namespace DotNetNuke.Entities.Host
         /// Gets the SMTP mode (portal|host)
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private static bool SMTPPortalEnabled
+        internal static bool SMTPPortalEnabled
         {
             get
             {

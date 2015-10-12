@@ -57,6 +57,33 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
             mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
 
+            //if the senderAddress is the email address of the Host then switch it smtpUsername if different
+            //if display name of senderAddress is empty, then use Host.HostTitle for it
+            if (mailMessage.Sender != null)
+            {
+                var senderAddress = mailMessage.Sender.Address;
+                var senderDisplayName = mailMessage.Sender.DisplayName;
+                var needUpdateSender = false;
+                if (smtpUsername.Contains("@") && senderAddress == Host.HostEmail &&
+                    !senderAddress.Equals(smtpUsername, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    senderAddress = smtpUsername;
+                    needUpdateSender = true;
+                }
+                if (string.IsNullOrEmpty(senderDisplayName))
+                {
+                    senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
+                    needUpdateSender = true;
+                }
+                if (needUpdateSender)
+                {
+                    mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
+                }
+            }
+            else if (smtpUsername.Contains("@"))
+            {
+                mailMessage.Sender = new MailAddress(smtpUsername, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
+            }
             //attachments
             foreach (var attachment in attachments)
             {
