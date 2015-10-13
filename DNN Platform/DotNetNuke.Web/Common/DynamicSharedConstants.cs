@@ -22,17 +22,30 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.Common
 {
-    public static class SharedConstants
+    public class DynamicSharedConstants
     {
-        public static readonly string RootFolder = null;
-        public static readonly string HostRootFolder = null;
-        public static readonly string Unspecified = null;
-
-        static SharedConstants()
+        public static string RootFolder
         {
-            RootFolder = Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
-            HostRootFolder = Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
-            Unspecified = "<" + Localization.GetString("None_Specified", Localization.SharedResourceFile) + ">";
+            get
+            {
+                return Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
+            }
+        }
+
+        public static string HostRootFolder
+        {
+            get
+            {
+                return Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
+            }
+        }
+
+        public static string Unspecified
+        {
+            get
+            {
+                return "<" + Localization.GetString("None_Specified", Localization.SharedResourceFile) + ">";
+            }
         }
     }
 }
