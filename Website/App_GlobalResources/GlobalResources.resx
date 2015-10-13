@@ -1011,9 +1011,6 @@ Thank you, we appreciate your support...
 [Portal:PortalName]
 </value>
   </data>
-  <data name="//Host//WhatsNew.String" xml:space="preserve">
-    <value>What's New</value>
-  </data>
   <data name="PurgeCacheUnsupported.Text" xml:space="preserve">
     <value>This Caching Provider does not require the PurgeCache feature.</value>
   </data>

@@ -1079,13 +1079,6 @@
     <Compile Include="DesktopModules\Admin\ViewProfile\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx.cs">
-      <DependentUpon>WhatsNew.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx.designer.cs">
-      <DependentUpon>WhatsNew.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\AuthenticationServices\DNN\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2307,8 +2300,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\ViewProfile\viewProfile.png" />
-    <Content Include="DesktopModules\Admin\WhatsNew\module.css" />
-    <Content Include="DesktopModules\Admin\WhatsNew\WhatsNew.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
@@ -4206,7 +4197,9 @@
     <EmbeddedResource Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
     <EmbeddedResource Include="App_GlobalResources\Exceptions.resx" />
     <EmbeddedResource Include="App_GlobalResources\FileUpload.resx" />
-    <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx" />
+    <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\SharedResources.resx" />
     <EmbeddedResource Include="App_GlobalResources\WebControls.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\Address.ascx.resx" />
@@ -4296,7 +4289,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\WhatsNew\App_LocalResources\WhatsNew.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
