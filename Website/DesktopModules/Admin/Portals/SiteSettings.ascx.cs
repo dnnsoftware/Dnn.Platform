@@ -332,7 +332,11 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
-            if(portalId != PortalId) activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
+            if (portalId != PortalId)
+            {
+                activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
+            }
+
             var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
             var portalsettings = new PortalSettings(portal);
 
