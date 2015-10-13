@@ -606,6 +606,7 @@ namespace DotNetNuke.Framework
 
             // DataBind common paths for the client resource loader
             ClientResourceLoader.DataBind();
+            ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(Page);
 
             //check for and read skin package level doctype
             SetSkinDoctype();
