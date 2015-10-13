@@ -932,7 +932,7 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         private void InitializeDropDownLists()
         {
-            var undefinedItem = new ListItem(SharedConstants.Unspecified, String.Empty);
+            var undefinedItem = new ListItem(DynamicSharedConstants.Unspecified, String.Empty);
             cboSplashTabId.UndefinedItem = undefinedItem;
             cboHomeTabId.UndefinedItem = undefinedItem;
             cboRegisterTabId.UndefinedItem = undefinedItem;
