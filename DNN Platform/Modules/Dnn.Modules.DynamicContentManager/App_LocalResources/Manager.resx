@@ -351,4 +351,10 @@
   <data name="IsEditTemplate.Text" xml:space="preserve">
     <value>Edit Template?</value>
   </data>
+    <data name="IsList.Text" xml:space="preserve">
+    <value>Is List?</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
 </root>

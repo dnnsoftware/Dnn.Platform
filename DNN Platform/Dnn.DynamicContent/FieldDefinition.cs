@@ -34,6 +34,8 @@ namespace Dnn.DynamicContent
             Description = String.Empty;
             PortalId = portalId;
             Order = -1;
+            IsReferenceType = false;
+            IsList = false;
         }
 
         [IgnoreColumn]
@@ -69,6 +71,8 @@ namespace Dnn.DynamicContent
         public string Description { get; set; }
 
         public int FieldDefinitionId { get; set; }
+
+        public bool IsList { get; set; }
 
         public bool IsReferenceType { get; set; }
 

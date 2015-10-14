@@ -82,6 +82,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 PortalID int NOT NULL,
                 FieldTypeID int NOT NULL,
                 IsReferenceType bit NOT NULL DEFAULT (0),
+                IsList bit NOT NULL DEFAULT (0),
 	            Name nvarchar(100) NOT NULL,
 	            Label nvarchar(100) NOT NULL,
 	            Description nvarchar(2000) NULL,
