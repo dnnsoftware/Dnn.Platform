@@ -116,7 +116,7 @@ input[type="password"] {
   border-left: none;
   text-align: left;
 }
-.dccContainer .dccTable .fa {
+.dccContainer .dccTable .dnni {
   font-size: 18px;
 }
 .dccContainer .dccTable tfoot {
@@ -124,22 +124,22 @@ input[type="password"] {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 5px;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr th i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-down {
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-up {
+.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
   display: none;
 }
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
@@ -256,16 +256,16 @@ input[type="password"] {
 .dccContainer .dccEditRow i {
   float: right;
 }
-.dccContainer i.fa-exclamation {
+.dccContainer i.dnni-exclamation {
   font-size: 18px;
   margin-left: 5px;
   color: transparent;
   display: block;
 }
-.dccContainer .dccError i.fa-exclamation {
+.dccContainer .dccError i.dnni-exclamation {
   color: #d00;
 }
-.dccContainer .dccWarning i.fa-exclamation {
+.dccContainer .dccWarning i.dnni-exclamation {
   color: #ff8c00;
 }
 .dccContainer div.dccEditRow > div.toggle {
@@ -285,6 +285,7 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div.toggle > span.label {
   padding-bottom: 15px;
   display: inline-block;
+  min-width: 100px;
 }
 .dccContainer .dnnCheckbox {
   display: inline-block;

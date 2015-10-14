@@ -1,7 +1,7 @@
-/*   DNN-7590 Create Fields of type List<ContentType> */
+/*   DNN-7609 DCC Admin - Add a flag to identify if a custom Template is an Edit template */
 /******************************************************************************************/
 
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}ContentTypes_FieldDefinitions' AND COLUMN_NAME = 'IsList')
-  ALTER TABLE [{objectQualifier}ContentTypes_FieldDefinitions] 
-	ADD IsList bit NOT NULL DEFAULT (0)
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}ContentTypes_Templates' AND COLUMN_NAME = 'IsEditTemplate')
+  ALTER TABLE [{objectQualifier}ContentTypes_Templates] 
+	ADD IsEditTemplate bit NOT NULL DEFAULT (0)
 GO

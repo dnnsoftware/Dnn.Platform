@@ -149,6 +149,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
     self.content = ko.observable('');
     self.selected = ko.observable(false);
     self.isEditMode = ko.observable(false);
+    self.isEditTemplate = ko.observable(false);
 
     self.contentTypes = parentViewModel.contentTypes;
     var codeSnippets = [];
@@ -388,8 +389,9 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 contentTypeId: data.contentTypeId(),
                 isSystem: data.isSystem(),
                 filePath: data.filePath(),
-                content: codeEditor.getValue()
-            };
+                content: codeEditor.getValue(),
+                isEditTemplate: data.isEditTemplate()
+        };
 
             util.templateService().post("DeleteTemplate", params,
                 function () {
@@ -411,6 +413,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
         self.contentTypeId(-1);
         self.filePath('');
         self.isSystem(false);
+        self.isEditTemplate(false);
         self.content('');
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
@@ -422,6 +425,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
         self.contentTypeId(data.contentTypeId);
         self.isSystem(data.isSystem);
         self.filePath(data.filePath);
+        self.isEditTemplate(data.isEditTemplate);
         self.content(data.content);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
@@ -440,7 +444,8 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 contentTypeId: jsObject.contentTypeId,
                 isSystem: jsObject.isSystem,
                 filePath: jsObject.filePath,
-                content: codeEditor.getValue()
+                content: codeEditor.getValue(),
+                isEditTemplate: jsObject.isEditTemplate
             };
 
             util.templateService().post("SaveTemplate", params,

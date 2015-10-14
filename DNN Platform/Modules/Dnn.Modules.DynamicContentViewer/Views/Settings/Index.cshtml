@@ -72,11 +72,11 @@
 
                                 if (i < Model.Templates.Count - 1)
                                 {
-                                    @:{ name: '@template.Name', value: @template.TemplateId },
+                                    @:{ name: '@template.Name', value: @template.TemplateId, isEdit: @template.IsEditTemplate.ToString().ToLowerInvariant() },
                                     }
                                 else
                                 {
-                                    @:{ name: '@template.Name', value: @template.TemplateId }
+                                    @:{ name: '@template.Name', value: @template.TemplateId, isEdit: @template.IsEditTemplate.ToString().ToLowerInvariant() }
                                 }
                             }
                         }

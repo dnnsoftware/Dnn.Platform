@@ -84,13 +84,12 @@
         
         <component type="Assembly">
           <assemblies>
-            <basePath>bin\Providers</basePath>
             <assembly>
-              <path>bin\Providers</path>
+              <path>bin</path>
               <name>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.dll</name>
             </assembly>
             <assembly>
-              <path>bin\Providers</path>
+              <path>bin</path>
               <name>FiftyOne.Foundation.dll</name>
             </assembly>
           </assemblies>
@@ -166,7 +165,7 @@
             </uninstall>
           </config>
         </component>
-        <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
+        <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
       </components>
     </package>
   </packages>

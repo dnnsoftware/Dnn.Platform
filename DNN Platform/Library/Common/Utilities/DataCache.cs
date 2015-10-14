@@ -195,6 +195,10 @@ namespace DotNetNuke.Common.Utilities
         public const int UserCacheTimeOut = 1;
         public const CacheItemPriority UserCachePriority = CacheItemPriority.Normal;
 
+        public const string UserPersonalizationCacheKey = "UserPersonalization|{0}|{1}";
+        public const int UserPersonalizationCacheTimeout = 5;
+        public const CacheItemPriority UserPersonalizationCachePriority = CacheItemPriority.Normal;
+
         public const string UserLookupCacheKey = "UserLookup|{0}";
         public const int UserLookupCacheTimeOut = 20;
         public const CacheItemPriority UserLookupCachePriority = CacheItemPriority.High;
@@ -457,6 +461,10 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(string.Format(UserCacheKey, PortalId, username));
         }
 
+        public static void ClearUserPersonalizationCache(int portalId, int userId)
+        {
+            RemoveCache(string.Format(UserPersonalizationCacheKey, portalId, userId));
+        }
 
 		public static void ClearPackagesCache(int portalId)
 		{

@@ -70,23 +70,6 @@ namespace DotNetNuke.Entities.Modules
         {
             return () => new ModuleController();
         }
-
-        private static event EventHandler<ModuleEventArgs> ModuleCreated;
-        private static event EventHandler<ModuleEventArgs> ModuleUpdated;
-        private static event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
-        private static event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
-
-        static ModuleController()
-        {
-            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
-            {
-                ModuleCreated += handlers.Value.ModuleCreated;
-                ModuleUpdated += handlers.Value.ModuleUpdated;
-                ModuleRemoved += handlers.Value.ModuleRemoved;
-                ModuleDeleted += handlers.Value.ModuleDeleted;
-            }
-        }
-
         #region Private Methods
 
         private static void AddContent(XmlNode nodeModule, ModuleInfo module)
@@ -174,8 +157,7 @@ namespace DotNetNuke.Entities.Modules
             //Save ModuleSettings
             UpdateModuleSettings(module);
 
-            if (ModuleCreated != null)
-                ModuleCreated(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleCreated(new ModuleEventArgs { Module = module });
         }
 
         private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
@@ -829,9 +811,9 @@ namespace DotNetNuke.Entities.Modules
                 {
                     UpdateTabModuleOrder(moduleInfo.TabID);
                     //ModuleRemove is only raised when doing a soft delete of the module
-                    if (softDelete && ModuleRemoved != null)
+                    if (softDelete)
                     { 
-                        ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                        EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
                     }
                 }
 
@@ -1205,8 +1187,10 @@ namespace DotNetNuke.Entities.Modules
                 ClearCache(tabId);
 
                 //ModuleRemove is only raised when doing a soft delete of the module
-                if (softDelete && ModuleRemoved != null)
-                    ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                if (softDelete)
+                {
+                    EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
+                }
             }
         }
 
@@ -1218,14 +1202,21 @@ namespace DotNetNuke.Entities.Modules
         {
             //Get the module
             ModuleInfo module = GetModule(moduleId, Null.NullInteger, true);
+
             //Delete Module
             dataProvider.DeleteModule(moduleId);
 
             //Remove the Content Item
+            IContentController contentController = Util.GetContentController();
             if (module != null && module.ContentItemId > Null.NullInteger)
             {
-                IContentController contentController = Util.GetContentController();
                 contentController.DeleteContentItem(module);
+            }
+
+            //Remove any child Content Items
+            foreach (var contentItem in contentController.GetContentItemsByModuleId(moduleId))
+            {
+                contentController.DeleteContentItem(contentItem);
             }
 
             //Log deletion
@@ -1240,8 +1231,7 @@ namespace DotNetNuke.Entities.Modules
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
-            if (ModuleDeleted != null)
-                ModuleDeleted(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleDeleted(new ModuleEventArgs { Module = module });
         }
 
         /// <summary>
@@ -1944,8 +1934,7 @@ namespace DotNetNuke.Entities.Modules
                 ClearCache(tabModule.TabID);
             }
 
-            if (ModuleUpdated != null)
-                ModuleUpdated(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleUpdated(new ModuleEventArgs { Module = module });
         }
         
         /// <summary>

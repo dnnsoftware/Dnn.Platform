@@ -231,7 +231,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
 
-        if(data.contentFields != null) {
+        if (data.contentFields != null) {
             self.fields().load(data.contentFields);
         }
     };
@@ -461,7 +461,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.fieldTypes = ko.computed(function () {
         var i, contentType, dataType;
         var contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes();
-        var dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
+        var dataTypes;
         var fieldTypes = [];
 
         fieldTypes.push({
@@ -480,18 +480,21 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             }
         }
 
-        fieldTypes.push({
-            enabled: false,
-            fieldTypeId: "D0",
-            fieldName: resx.dataTypes
-        });
-        for (i = 0; i < dataTypes.length; i++) {
-            dataType = dataTypes[i];
+        if (parentViewModel.parentViewModel.parentViewModel.dataTypes != null) {
+            dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
             fieldTypes.push({
-                enabled: true,
-                fieldTypeId: "D" + dataType.dataTypeId(),
-                fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
+                enabled: false,
+                fieldTypeId: "D0",
+                fieldName: resx.dataTypes
             });
+            for (i = 0; i < dataTypes.length; i++) {
+                dataType = dataTypes[i];
+                fieldTypes.push({
+                    enabled: true,
+                    fieldTypeId: "D" + dataType.dataTypeId(),
+                    fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
+                });
+            }
         }
         return fieldTypes;
     });

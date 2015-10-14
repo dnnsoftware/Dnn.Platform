@@ -88,19 +88,9 @@ namespace DotNetNuke.Entities.Portals
 
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
-        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
-
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
-        }
-
-        public PortalController()
-        {
-            foreach (var handlers in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
-            {
-                PortalCreated += handlers.Value.PortalCreated;
-            }
         }
 
         #region Private Methods
@@ -406,10 +396,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(exc);
                     }
 
-                    if (PortalCreated != null)
-                    {
-                        PortalCreated(this, new PortalCreatedEventArgs { PortalId = portalId});
-                    }
+                    EventManager.Instance.OnPortalCreated(new PortalCreatedEventArgs { PortalId = portalId });
                 }
                 else
                 {

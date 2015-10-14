@@ -3,11 +3,31 @@
 
 @model DynamicContentItem
 
-@{
-    foreach (DynamicContentField field in Model.Fields.Values)
+
+@helper RenderField(DynamicContentPart contentPart, string prefix)
+{
+    foreach (DynamicContentField field in contentPart.Fields.Values)
     {
-        <div>
-            @Dnn.DisplayFor(field.Definition.Name)
-        </div>
+        if (field.Definition.IsReferenceType)
+        {
+            var part = field.Value as DynamicContentPart;
+            if (part != null)
+            {
+                var newPrefix = (String.IsNullOrEmpty(prefix)) ? field.Definition.Name : prefix + field.Definition.Name;
+                newPrefix += "/";
+                <text>
+                    @RenderField(part, newPrefix)
+                </text>
+            }
+        }
+        else
+        {
+            var fieldName = prefix + field.Definition.Name;
+            <div>
+                @Dnn.DisplayFor(fieldName)
+            </div>
+        }
     }
 }
+
+@RenderField(Model.Content, String.Empty)

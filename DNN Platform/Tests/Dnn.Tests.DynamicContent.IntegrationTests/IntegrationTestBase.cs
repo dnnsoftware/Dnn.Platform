@@ -40,6 +40,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 PortalID int NOT NULL DEFAULT -1,
 			    [Name] [nvarchar](100) NOT NULL,
                 [TemplateFileID] [int] NOT NULL,
+	            IsEditTemplate bit NOT NULL DEFAULT 0,
                 CreatedByUserID int NOT NULL,
                 CreatedOnDate datetime NOT NULL DEFAULT getdate(),
                 LastModifiedByUserID int NOT NULL,
