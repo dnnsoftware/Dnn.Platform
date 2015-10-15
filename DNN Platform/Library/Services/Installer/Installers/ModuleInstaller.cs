@@ -131,10 +131,10 @@ namespace DotNetNuke.Services.Installer.Installers
                                 }
                                 if (noOtherTabModule)
                                 {
-                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
-                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
                         
