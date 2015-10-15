@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -75,6 +76,9 @@ namespace Dnn.Modules.Tabs
     {
         private TabInfo _tab;
         private string _strAction = "";
+
+        private dynamic contentLocalizationControl;
+        private const string ContentLocalizationControlPath = @"~/DesktopModules/Admin/Languages/CLControl.ascx";
 
         #region Protected Properties
 
@@ -234,6 +238,15 @@ namespace Dnn.Modules.Tabs
 
         }
 
+        private void LoadContentLocalizationControl()
+        {
+            if (File.Exists(Server.MapPath(ContentLocalizationControlPath)))
+            {
+                contentLocalizationControl = LoadControl(ContentLocalizationControlPath);
+                localizationControlRow.Controls.Add(contentLocalizationControl);
+            }
+        }
+
         protected void BindCLControl()
         {
             if (!localizationPanel.Visible)
@@ -247,7 +260,7 @@ namespace Dnn.Modules.Tabs
             AddMissing.Visible = false;
             if (String.IsNullOrEmpty(_tab.CultureCode))
             {
-                CLControl1.Visible = false;
+                contentLocalizationControl.Visible = false;
                 if (!(string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy"))
                 {
                     MakeTranslatable.Visible = true;
@@ -255,9 +268,9 @@ namespace Dnn.Modules.Tabs
             }
             else
             {
-                CLControl1.Visible = true;
-                CLControl1.enablePageEdit = true;
-                CLControl1.BindAll(_tab.TabID);
+                contentLocalizationControl.Visible = true;
+                contentLocalizationControl.enablePageEdit = true;
+                contentLocalizationControl.BindAll(_tab.TabID);
                 cmdUpdateLocalization.Visible = true;
 
                 // only show "Convert to neutral" if page has no child pages
@@ -487,7 +500,8 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ContentLocalizationEnabled 
                 && LocaleController.Instance.GetLocales(PortalId).Count > 1
                 && _tab.TabID != PortalSettings.AdminTabId
-                && _tab.ParentId != PortalSettings.AdminTabId)
+                && _tab.ParentId != PortalSettings.AdminTabId
+                && contentLocalizationControl != null)
             {
                 localizationTab.Visible = true;
                 localizationPanel.Visible = true;
@@ -1431,6 +1445,8 @@ namespace Dnn.Modules.Tabs
             PortalAliasCaption.Text = PortalAlias.HTTPAlias;
             PortalAliasCaption.ToolTip = PortalAlias.HTTPAlias;
             UrlContainer.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "um-page-url-container");
+
+            LoadContentLocalizationControl();
         }
 
         private void DisableHostAdminFunctions()
@@ -1963,7 +1979,10 @@ namespace Dnn.Modules.Tabs
 
         protected void cmdUpdateLocalization_Click(object sender, EventArgs e)
         {
-            CLControl1.SaveData();
+            if (contentLocalizationControl != null)
+            {
+                contentLocalizationControl.SaveData();
+            }
 
             var returnPath = Globals.NavigateURL();
 
