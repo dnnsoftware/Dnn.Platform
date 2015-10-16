@@ -126,5 +126,12 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string UserToken { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the Username
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string UserName { get; set; }
     }
 }

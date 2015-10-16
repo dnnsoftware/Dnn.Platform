@@ -26,10 +26,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration.Provider;
 using System.Data;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -49,7 +46,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 //DNN-4016
 using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -77,7 +73,6 @@ namespace DotNetNuke.Security.Membership
         #region Private Members
 
         private readonly DataProvider _dataProvider = DataProvider.Instance();
-        private readonly IEnumerable<string> _socialAuthProviders = new List<string>() { "Facebook", "Google", "Twitter", "LiveID" };
 
         #endregion
 
@@ -262,7 +257,7 @@ namespace DotNetNuke.Security.Membership
                                                           displayName,
                                                           updatePassword,
                                                           isApproved,
-                                                          UserController.Instance.GetCurrentUserInfo().UserID));
+                                                          UserController.GetCurrentUserInfo().UserID));
             }
             catch (Exception ex)
             {
@@ -515,6 +510,8 @@ namespace DotNetNuke.Security.Membership
                         PortalID = Null.SetNullInteger(dr["PortalID"]),
                         IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                         UserID = Null.SetNullInteger(dr["UserID"]),
+                        FirstName = Null.SetNullString(dr["FirstName"]),
+                        LastName = Null.SetNullString(dr["LastName"]),
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
                         LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                     };
@@ -529,14 +526,6 @@ namespace DotNetNuke.Security.Membership
                         if (schema.Select("ColumnName = 'VanityUrl'").Length > 0)
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
-                        }
-                        if (schema.Select("ColumnName = 'HmacAppId'").Length > 0)
-                        {
-                            user.HmacAppId = Null.SetNullString(dr["HmacAppId"]);
-                        }
-                        if (schema.Select("ColumnName = 'HmacAppSecret'").Length > 0)
-                        {
-                            user.HmacAppSecret = Null.SetNullString(dr["HmacAppSecret"]);
                         }
                     }
 
@@ -627,11 +616,9 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.GetUser(userName);
         }
 
-
-        private UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
+        public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
-            IDataReader dr = _dataProvider.GetUserByAuthToken(portalId, userToken, authType);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            UserInfo objUserInfo = FillUserInfo(portalId, _dataProvider.GetUserByAuthToken(portalId, userToken, authType), true);
             return objUserInfo;
         }
 
@@ -651,16 +638,7 @@ namespace DotNetNuke.Security.Membership
             {
                 membershipUser.IsApproved = user.Membership.Approved;
             }
-
-            try
-            {
-                System.Web.Security.Membership.UpdateUser(membershipUser);
-            }
-            catch (ProviderException ex)
-            {
-                throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
-            }
-
+            System.Web.Security.Membership.UpdateUser(membershipUser);
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
@@ -738,10 +716,11 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
             _dataProvider.ChangeUsername(userId, newUsername);
-            EventLogController.Instance.AddLog("userId",
+            var objEventLog = new EventLogController();
+            objEventLog.AddLog("userId",
                                userId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
+                               PortalController.GetCurrentPortalSettings(),
+                               UserController.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
             DataCache.ClearCache();
         }
@@ -1090,19 +1069,6 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             IDataReader dr = _dataProvider.GetUserByDisplayName(portalId, displayName);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
-            return objUserInfo;
-        }
-
-        /// <summary>
-        /// Get a user based on their HMAC AppId
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="appId">HMAC AppId</param>
-        /// <returns>The User as a UserInfo object</returns>
-        public override UserInfo GetUserByHmacAppId(int portalId, string appId)
-        {
-            IDataReader dr = _dataProvider.GetUserByHmacAppId(appId);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
@@ -1475,7 +1441,9 @@ namespace DotNetNuke.Security.Membership
                 else
                 {
                     //Next try the Database
-                    onlineUser = CBO.FillObject<OnlineUserInfo>(_dataProvider.GetOnlineUser(user.UserID));
+                    onlineUser =
+                        (OnlineUserInfo)
+                        CBO.FillObject(_dataProvider.GetOnlineUser(user.UserID), typeof(OnlineUserInfo));
                     if (onlineUser != null)
                     {
                         isOnline = true;
@@ -1541,12 +1509,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="user"></param>
         public override bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
-            return ResetAndChangePassword(user, newPassword, string.Empty);
-        }
-
-        public override bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
-        {
-            if (RequiresQuestionAndAnswer && string.IsNullOrEmpty(answer))
+            if (RequiresQuestionAndAnswer)
             {
                 return false;
             }
@@ -1554,7 +1517,7 @@ namespace DotNetNuke.Security.Membership
             //Get AspNet MembershipUser
             MembershipUser aspnetUser = GetMembershipUser(user);
 
-            string resetPassword = ResetPassword(user, answer);
+            string resetPassword = ResetPassword(user, String.Empty);
             return aspnetUser.ChangePassword(resetPassword, newPassword);
         }
 
@@ -1655,9 +1618,7 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.Instance.GetCurrentUserInfo().UserID,
-                                     user.HmacAppId,
-                                     user.HmacAppSecret);
+                                     UserController.GetCurrentUserInfo().UserID);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);
@@ -1723,7 +1684,7 @@ namespace DotNetNuke.Security.Membership
             //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
                                 ? GetUserByUserName(portalId, username)
-                                : GetUserByAuthToken(portalId, username, authType);
+                                : GetUserByAuthToken(portalId, verificationCode, authType);
             if (user != null && !user.IsDeleted)
             {
                 //Get AspNet MembershipUser
@@ -1749,35 +1710,16 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
-
-                    //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
-                    if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
+                    //Check Verification code
+                    var ps = new PortalSecurity();
+                    if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
                     {
-                        if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
-                            (int)Globals.PortalRegistrationType.PublicRegistration)
-                        {
-                            user.Membership.Approved = true;
-                            UserController.UpdateUser(portalId, user);
-                            UserController.ApproveUser(user);
-                        }
-                        else
-                        {
-                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
-                        }
+                        UserController.ApproveUser(user);
                     }
                     else
                     {
-                        var ps = new PortalSecurity();
-                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
-                        {
-                            UserController.ApproveUser(user);
-                        }
-                        else
-                        {
-                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
-                        }
+                        loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
                     }
-
                 }
 
                 //Verify User Credentials
