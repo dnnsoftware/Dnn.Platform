@@ -368,6 +368,16 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
+        public void can_get_value_containing_comma_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "question", "what, is it?" } };
+
+            var value = collection.GetValue<string>("question");
+
+            Expect(value, Is.EqualTo("what, is it?"));
+        }
+
+        [Test]
         public void can_get_multiple_values_from_namevaluecollection()
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" }, };
