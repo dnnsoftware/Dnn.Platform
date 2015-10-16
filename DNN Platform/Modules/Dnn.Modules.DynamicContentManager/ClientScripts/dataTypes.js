@@ -209,7 +209,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     self.init = function() {
         self.dataTypeId(-1);
-        self.canEdit(false);
+        self.canEdit(true);
         self.baseType(0);
         self.isSystem(false);
 

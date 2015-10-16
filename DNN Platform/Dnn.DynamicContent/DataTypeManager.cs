@@ -15,6 +15,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent
@@ -67,6 +68,11 @@ namespace Dnn.DynamicContent
             Requires.NotNull(dataType);
             Requires.PropertyNotNull(dataType, "DataTypeId");
             Requires.PropertyNotNegative(dataType, "DataTypeId");
+
+            if (dataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                throw new SecurityException("Global Data Types can only delete by host user");
+            }
 
             using (DataContext)
             {
@@ -163,6 +169,11 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNull(dataType, "DataTypeId");
             Requires.PropertyNotNegative(dataType, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
+
+            if (dataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                throw new SecurityException("Global Data Types can only update by host user");
+            }
 
             dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             dataType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();

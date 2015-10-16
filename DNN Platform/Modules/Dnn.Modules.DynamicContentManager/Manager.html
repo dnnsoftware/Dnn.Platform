@@ -280,9 +280,9 @@
                                 </div>
 
                                 <div class="buttons">
-                                    <a class="secondarybtn" id="dataTypes-deleteButton" data-bind="click: deleteDataType, visible: !isAddMode()">[Resx:{key:"Delete"}]</a>
+                                    <a class="secondarybtn" id="dataTypes-deleteButton" data-bind="click: deleteDataType, visible: !isAddMode() && canEdit()">[Resx:{key:"Delete"}]</a>
                                     <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
-                                    <a class="primarybtn" data-bind="click: saveDataType">[Resx:{key:"Save"}]</a>
+                                    <a class="primarybtn" data-bind="click: saveDataType, visible: canEdit()">[Resx:{key:"Save"}]</a>
                                 </div>
 
                                 <div class="clear"></div>
