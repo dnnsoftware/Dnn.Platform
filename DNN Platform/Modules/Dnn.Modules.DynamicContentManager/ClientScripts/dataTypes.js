@@ -60,6 +60,8 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.editDataType = function(data, e){
+		$rootElement.find('a.dccButton').fadeIn(0);
+		
         var row = $rootElement.find(e.target);
 
         if(row.is("tr") === false){
