@@ -1202,21 +1202,14 @@ namespace DotNetNuke.Entities.Modules
         {
             //Get the module
             ModuleInfo module = GetModule(moduleId, Null.NullInteger, true);
-
             //Delete Module
             dataProvider.DeleteModule(moduleId);
 
             //Remove the Content Item
-            IContentController contentController = Util.GetContentController();
             if (module != null && module.ContentItemId > Null.NullInteger)
             {
+                IContentController contentController = Util.GetContentController();
                 contentController.DeleteContentItem(module);
-            }
-
-            //Remove any child Content Items
-            foreach (var contentItem in contentController.GetContentItemsByModuleId(moduleId))
-            {
-                contentController.DeleteContentItem(contentItem);
             }
 
             //Log deletion
