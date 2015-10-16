@@ -214,7 +214,6 @@ input[type="password"] {
 }
 .dccContainer div.dccEditForm {
   padding: 15px;
-  min-height: 135px;
 }
 .dccContainer .dccTable div.dccEditForm {
   border-bottom: 2px solid #0087c6;
