@@ -1114,13 +1114,6 @@
     <Compile Include="Install\Install.aspx.designer.cs">
       <DependentUpon>install.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Install\InstallWizard.aspx.cs">
-      <DependentUpon>InstallWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Install\InstallWizard.aspx.designer.cs">
-      <DependentUpon>InstallWizard.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3675,7 +3668,6 @@
     <Content Include="Install\Install.htm" />
     <Content Include="Install\Install.template.htm" />
     <Content Include="Install\installbg.gif" />
-    <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Install\JavaScriptLibrary\PlaceHolder.txt" />
     <Content Include="Install\Language\PlaceHolder.txt" />
     <Content Include="Install\Module\PlaceHolder.txt" />
