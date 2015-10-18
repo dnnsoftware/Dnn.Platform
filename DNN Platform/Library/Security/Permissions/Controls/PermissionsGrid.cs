@@ -99,6 +99,14 @@ namespace DotNetNuke.Security.Permissions.Controls
                 return allUsersRoleId;                
             }            
         }
+        private int nothingRoleId = Int32.Parse(Globals.glbRoleNothing);
+        private int NothingRoleId
+        {
+            get
+            {
+                return nothingRoleId;
+            }
+        }
         #endregion
 
         #region Protected Properties
@@ -646,12 +654,13 @@ namespace DotNetNuke.Security.Permissions.Controls
                 groupRoles.Add(new RoleInfo { RoleID = UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });                                
                 groupRoles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });            
             }
-            
+
+            cboSelectRole.Items.Add(new ListItem(Localization.GetString("AllRoles"), Globals.glbRoleNothing));
             foreach (var role in groupRoles.OrderBy( r => r.RoleName))
             {
                 cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
             }            
-            int[] defaultRoleIds = {AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId};            
+            int[] defaultRoleIds = {AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId, NothingRoleId};            
             var itemToSelect = cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
             if (itemToSelect != null)
             {
@@ -1286,26 +1295,44 @@ namespace DotNetNuke.Security.Permissions.Controls
         void AddRole(object sender, EventArgs e)
         {
             UpdatePermissions();
-            int selectedRoleId;
-            if (!Int32.TryParse(roleField.Value, out selectedRoleId))
-            {
-                //Role not selected
-                SetErrorMessage("InvalidRoleId");
-                return;
-            }
 
-            //verify role         
-            var role = GetSelectedRole(selectedRoleId);
-            if (role != null)
+            if (roleField.Value == Globals.glbRoleNothing)
             {
-                AddPermission(_permissions, role);
+                foreach (var value in cboSelectRole.Items.Cast<ListItem>().Select(i => i.Value))
+                {
+                    int roleId;
+                    if (value == Globals.glbRoleNothing || !int.TryParse(value, out roleId)) continue;
+                    var role = GetSelectedRole(roleId);
+                    if (role != null)
+                    {
+                        AddPermission(_permissions, role);
+                    }
+                }
                 BindData();
             }
             else
             {
-                //role does not exist
-                SetErrorMessage("RoleNotFound");
-            }            
+                int selectedRoleId;
+                if (!Int32.TryParse(roleField.Value, out selectedRoleId))
+                {
+                    //Role not selected
+                    SetErrorMessage("InvalidRoleId");
+                    return;
+                }
+
+                //verify role         
+                var role = GetSelectedRole(selectedRoleId);
+                if (role != null)
+                {
+                    AddPermission(_permissions, role);
+                    BindData();
+                }
+                else
+                {
+                    //role does not exist
+                    SetErrorMessage("RoleNotFound");
+                }
+            }
         }
 
         private RoleInfo GetSelectedRole(int selectedRoleId)
