@@ -94,6 +94,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\BusinessController.cs" />
+    <Compile Include="Components\FontPropertyAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BaseController.cs" />
     <Compile Include="Services\ContentTypeController.cs" />
