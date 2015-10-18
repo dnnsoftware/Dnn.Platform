@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.ControlBar" Codebehind="ControlBar.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Security.Permissions" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <!--SEO NOINDEX-->
 <asp:Panel ID="ControlPanel" runat="server">
     <div id="ControlBar">

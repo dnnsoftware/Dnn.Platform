@@ -1,6 +1,7 @@
 <%@ Control Language="C#" Inherits="Dnn.Modules.Languages.LanguageEnabler" AutoEventWireup="false" Explicit="True" Codebehind="LanguageEnabler.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Src="~/DesktopModules/Admin/Languages/CLControl.ascx" TagName="CLControl" %>
 

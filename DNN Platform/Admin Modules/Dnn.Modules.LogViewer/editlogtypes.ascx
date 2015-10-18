@@ -1,5 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.LogViewer.EditLogTypes" Codebehind="EditLogTypes.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <div class="dnnForm dnnEditLogTypes" id="dnnEditLogTypes">

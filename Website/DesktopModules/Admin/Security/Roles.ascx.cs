@@ -245,7 +245,7 @@ namespace DesktopModules.Admin.Security
 
         void cmdAddRole_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("RoleGroupID", Request.QueryString["RoleGroupID"]), true);
+            Response.Redirect(EditUrl("RoleGroupID", Request.QueryString["RoleGroupID"]));
         }
 
         protected override void OnLoad(EventArgs e)

@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Languages.LanguagePackWriter" Codebehind="LanguagePackWriter.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <div class="dnnForm dnnLanguagePackWriter dnnClear" id="dnnLanguagePackWriter">
