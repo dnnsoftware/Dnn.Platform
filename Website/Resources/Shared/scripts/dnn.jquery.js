@@ -42,7 +42,8 @@
             });
 
             if (window.location.hash && window.location.hash != '#') {
-                $('a[href="' + window.location.hash + '"]', $wrap).trigger('click');
+                var substr = window.location.hash.substr(0, 50);
+                $('a[href="' + encodeURI(substr) + '"]', $wrap).trigger('click');
             }
 
             // page validation integration - select tab that contain tripped validators

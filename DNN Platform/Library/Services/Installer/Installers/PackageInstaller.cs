@@ -237,90 +237,6 @@ namespace DotNetNuke.Services.Installer.Installers
             return strText;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ValidateVersion method checks whether the package is already installed
-        /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private void ValidateVersion(string strVersion)
-        {
-            if (string.IsNullOrEmpty(strVersion))
-            {
-                IsValid = false;
-                return;
-            }
-            Package.Version = new Version(strVersion);
-            if (_installedPackage != null)
-            {
-                Package.InstalledVersion = _installedPackage.Version;
-                Package.InstallerInfo.PackageID = _installedPackage.PackageID;
-
-                if (Package.InstalledVersion > Package.Version)
-                {
-                    Log.AddFailure(Util.INSTALL_Version + " - " + Package.InstalledVersion.ToString(3));
-                    IsValid = false;
-                }
-                else if (Package.InstalledVersion == Package.Version)
-                {
-                    Package.InstallerInfo.Installed = true;
-                    Package.InstallerInfo.PortalID = _installedPackage.PortalID;
-                }
-            }
-        }
-
-        private void ReadEventMessageNode(XPathNavigator manifestNav)
-        {
-            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
-            if (eventMessageNav != null)
-            {
-                _eventMessage = new EventMessage();
-                _eventMessage.Priority = MessagePriority.High;
-                _eventMessage.ExpirationDate = DateTime.Now.AddYears(-1);
-                _eventMessage.SentDate = DateTime.Now;
-                _eventMessage.Body = "";
-                _eventMessage.ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing);
-                _eventMessage.ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing);
-                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
-                {
-                    var attribName = attributeNav.Name;
-                    var attribValue = attributeNav.Value;
-                    if (attribName == "upgradeVersionsList")
-                    {
-                        if (!String.IsNullOrEmpty(attribValue))
-                        {
-                            string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = ""; foreach (string version in upgradeVersions)
-                            {
-                                Version upgradeVersion = null;
-                                try
-                                {
-                                    upgradeVersion = new Version(version);
-                                }
-                                catch (FormatException)
-                                {
-                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
-                                }
-
-                                if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion && Globals.Status == Globals.UpgradeStatus.Upgrade) //To allow when upgrading to an upper version
-                                {
-                                    attribValue += version + ",";
-                                }
-                                else if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install || Globals.Status == Globals.UpgradeStatus.None)) //To allow when fresh installing or installresources
-                                {
-                                    attribValue += version + ",";                                    
-                                }
-                            }
-                            attribValue = attribValue.TrimEnd(',');
-                        }
-                    }
-                   _eventMessage.Attributes.Add(attribName, attribValue);
-                }
-            }
-        }
-
 		#endregion
 
 	    #region Public Methods
@@ -537,7 +453,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
             }
 
-            ReadEventMessageNode(manifestNav);
+            _eventMessage = ReadEventMessageNode(manifestNav);
 
             //Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");

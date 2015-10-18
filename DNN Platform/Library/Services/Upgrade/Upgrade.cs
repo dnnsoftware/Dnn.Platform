@@ -5166,21 +5166,6 @@ namespace DotNetNuke.Services.Upgrade
                                                   EventLogController.EventLogType.HOST_ALERT);
                     }
                     break;
-                case "4.5":
-                    if (!IsNETFrameworkCurrent("4.5"))
-                    {
-                        //Upgrade to .NET 4.0
-                        string upgradeFile = string.Format("{0}\\Config\\Net45.config", Globals.InstallMapPath);
-                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.5 Upgrade");
-                        EventLogController.Instance.AddLog("UpgradeNet",
-                                                  string.IsNullOrEmpty(strMessage)
-                                                      ? "Upgraded Site to .NET 4.5"
-                                                      : string.Format("Upgrade to .NET 4.5 failed. Error reported during attempt to update:{0}", strMessage),
-                                                  PortalController.Instance.GetCurrentPortalSettings(),
-                                                  UserController.Instance.GetCurrentUserInfo().UserID,
-                                                  EventLogController.EventLogType.HOST_ALERT);
-                    }
-                    break;
             }
         }
 
@@ -5458,10 +5443,16 @@ namespace DotNetNuke.Services.Upgrade
             RemoveHostPage("Vendors");
 
             var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.Vendors");
-            PackageController.Instance.DeleteExtensionPackage(package);
+            if (package != null)
+            {
+                PackageController.Instance.DeleteExtensionPackage(package);
+            }
 
             package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
-            PackageController.Instance.DeleteExtensionPackage(package);
+            if (package != null)
+            {
+                PackageController.Instance.DeleteExtensionPackage(package);
+            }
         }
 
         private static void UpgradeToVersion8007()

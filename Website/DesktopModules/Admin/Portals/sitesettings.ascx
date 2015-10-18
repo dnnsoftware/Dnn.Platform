@@ -114,10 +114,6 @@
                         <dnn:label id="plFavIcon" runat="server" controlname="ctlFavIcon" />
                         <dnn:FilePickerUploader ID="ctlFavIcon" runat="server" Required="True" FileFilter="ico" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:label id="plSkinWidgestEnabled" runat="server" controlname="chkSkinWidgestEnabled" />
-                        <asp:CheckBox ID="chkSkinWidgestEnabled" runat="server" />
-                    </div>
                     <div id="siteSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalSkin" controlname="portalSkinCombo" runat="server" />
@@ -531,6 +527,11 @@
 			            <div class="dnnFormItem" runat="server" id="OAuthSecret">
                         <dnn:label id="plOAuthSitesettingsSecret" runat="server" controlname="OAuthSitesettingsSecretLabel" />
                         <asp:Label runat="server" ID="OAuthSitesettingsSecretLabel" />
+                            <div class="dnnFormItem psPageStateWarning dnnClear">
+                        <asp:Label ID="plOAuthWarning" runat="server" CssClass="dnnFormMessage dnnFormWarning"
+                            resourcekey="plOAuthWarning" Visible="false" />
+                    </div>
+
                     </div>
                         <ul class="dnnActions dnnClear">
                             <li>

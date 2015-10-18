@@ -152,9 +152,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                             ModuleId = moduleId,
                                             TabId = tabId
                                         };
-            dynamicContent.Fields["FieldName1"].Value = 1;
-            dynamicContent.Fields["FieldName2"].Value = true;
-            dynamicContent.Fields["FieldName3"].Value = "abc";
+            dynamicContent.Content.Fields["FieldName1"].Value = 1;
+            dynamicContent.Content.Fields["FieldName2"].Value = true;
+            dynamicContent.Content.Fields["FieldName3"].Value = "abc";
 
 
             ContentItem contentItem = null;
@@ -256,12 +256,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreSame(contentType, dynamicContent.ContentType);
-            Assert.AreEqual(contentType.FieldDefinitions.Count, dynamicContent.Fields.Count);
+            Assert.AreEqual(contentType.FieldDefinitions.Count, dynamicContent.Content.Fields.Count);
             Assert.AreEqual(portalId, dynamicContent.PortalId);
             Assert.AreEqual(moduleId, dynamicContent.ModuleId);
             foreach (var field in contentType.FieldDefinitions)
             {
-                Assert.AreSame(field, dynamicContent.Fields[field.Name].Definition);
+                Assert.AreSame(field, dynamicContent.Content.Fields[field.Name].Definition);
             }
         }
 
@@ -345,8 +345,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = GetContentType(contentTypeId, portalId);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentTypes(portalId, true))
-                .Returns(new List<DynamicContentType>() { contentType }.AsQueryable());
+            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
+                .Returns(contentType);
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             var mockModuleController = new Mock<IModuleController>();
@@ -370,12 +370,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(contentTypeId, dynamicContent.ContentType.ContentTypeId);
-            Assert.AreEqual(contentType.FieldDefinitions.Count, dynamicContent.Fields.Count);
+            Assert.AreEqual(contentType.FieldDefinitions.Count, dynamicContent.Content.Fields.Count);
             Assert.AreEqual(portalId, dynamicContent.PortalId);
             Assert.AreEqual(moduleId, dynamicContent.ModuleId);
             foreach (var field in contentType.FieldDefinitions)
             {
-                Assert.AreSame(field, dynamicContent.Fields[field.Name].Definition);
+                Assert.AreSame(field, dynamicContent.Content.Fields[field.Name].Definition);
             }
         }
 
@@ -530,6 +530,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dynamicContent = new DynamicContentItem(Constants.PORTAL_ValidPortalId, GetContentType(contentTypeId, portalId))
                                         {
                                             ModuleId = Constants.MODULE_ValidId,
+                                            TabId = Constants.TAB_ValidId,
                                             ContentItemId = Constants.CONTENT_ValidContentItemId
                                         };
 
@@ -571,9 +572,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                             ContentItemId = contentItemId
                                         };
 
-            dynamicContent.Fields["FieldName1"].Value = 1;
-            dynamicContent.Fields["FieldName2"].Value = true;
-            dynamicContent.Fields["FieldName3"].Value = "abc";
+            dynamicContent.Content.Fields["FieldName1"].Value = 1;
+            dynamicContent.Content.Fields["FieldName2"].Value = true;
+            dynamicContent.Content.Fields["FieldName3"].Value = "abc";
 
 
             ContentItem contentItem = null;

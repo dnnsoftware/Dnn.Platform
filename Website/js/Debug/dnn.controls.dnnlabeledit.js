@@ -175,7 +175,7 @@ dnn.controls.DNNLabelEdit.prototype =
     {
         this.initToolbar();
         if (this.toolbar)
-            this.toolbar.show(true);
+            this.toolbar.show(false);
     },
 
     mouseMove: function(e)

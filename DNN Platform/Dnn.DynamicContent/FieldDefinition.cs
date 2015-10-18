@@ -18,6 +18,7 @@ namespace Dnn.DynamicContent
     [Scope(FieldDefinitionManager.FieldDefinitionScope)]
     public class FieldDefinition
     {
+        private DynamicContentType _contentType;
         private DataType _dataType;
         private IList<ValidationRule> _validationRules;
 
@@ -27,26 +28,41 @@ namespace Dnn.DynamicContent
         {
             FieldDefinitionId = -1;
             ContentTypeId = -1;
-            DataTypeId = -1;
+            FieldTypeId = -1;
             Name = String.Empty;
             Label = String.Empty;
             Description = String.Empty;
             PortalId = portalId;
             Order = -1;
+            IsReferenceType = false;
+            IsList = false;
+        }
+
+        [IgnoreColumn]
+        public DynamicContentType ContentType
+        {
+            get
+            {
+                if (_contentType == null && IsReferenceType)
+                {
+                    _contentType = DynamicContentTypeManager.Instance.GetContentType(FieldTypeId, PortalId, true);
+                }
+                return _contentType;
+            }
         }
 
         public int ContentTypeId { get; set; }
 
-        public int DataTypeId { get; set; }
+        public int FieldTypeId { get; set; }
 
         [IgnoreColumn]
         public DataType DataType
         {
             get
             {
-                if (_dataType == null)
+                if (_dataType == null && !IsReferenceType)
                 {
-                    _dataType = DataTypeManager.Instance.GetDataTypes(PortalId, true).SingleOrDefault(dt => dt.DataTypeId == DataTypeId);
+                    _dataType = DataTypeManager.Instance.GetDataTypes(PortalId, true).SingleOrDefault(dt => dt.DataTypeId == FieldTypeId);
                 }
                 return _dataType;
             }
@@ -55,6 +71,10 @@ namespace Dnn.DynamicContent
         public string Description { get; set; }
 
         public int FieldDefinitionId { get; set; }
+
+        public bool IsList { get; set; }
+
+        public bool IsReferenceType { get; set; }
 
         public string Label { get; set; }
 

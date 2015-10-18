@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OAuth.AuthorizationServer.Core")]
+[assembly: AssemblyTitle("Dnn.OAuth.AuthorizationServer.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("OAuth.AuthorizationServer.Core")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCompany("DNN")]
+[assembly: AssemblyProduct("Dnn.OAuth.AuthorizationServer.Core")]
+[assembly: AssemblyCopyright("Copyright © DNN 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

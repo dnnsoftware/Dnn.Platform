@@ -77,7 +77,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -95,7 +95,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -113,7 +113,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = string.Empty,
                                         Label = "Label"
                                     };
@@ -131,7 +131,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = string.Empty
                             };
@@ -149,7 +149,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                 {
                                     ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                     Name = "New_Type",
                                     Label = "Label"
                                 };
@@ -174,7 +174,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
             {
                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                 Name = "New_Type",
                 Label = "Label"
             };
@@ -198,7 +198,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
             {
                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                 Name = "New_Type",
                 Label = "Label"
             };
@@ -222,7 +222,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -253,7 +253,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var definition = new FieldDefinition
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -406,7 +406,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                     {
                                         FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                         ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -425,7 +425,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                         FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
                                     };
@@ -443,7 +443,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = string.Empty,
                                 Label = "Label"
                             };
@@ -462,7 +462,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                         FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = string.Empty
                                     };
@@ -481,7 +481,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
                                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = "Label"
                             };
@@ -499,7 +499,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = "Label"
                             };
@@ -521,7 +521,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                 {
                                     ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                     FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                     Name = "New_Type",
                                     Label = "Label"
                                 };
@@ -550,7 +550,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                 {
                                     ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                     FieldDefinitionId = fieldDefinitionId,
-                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                     Name = "New_Type",
                                     Label = "Label"
                                 };
@@ -581,7 +581,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = "Label"
                             };
@@ -605,7 +605,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             for (int i = 1; i <= count; i++)
             {
-                list.Add(new FieldDefinition() { DataTypeId = i, Name = String.Format("Name_{0}", i) });
+                list.Add(new FieldDefinition() { FieldTypeId = i, Name = String.Format("Name_{0}", i) });
             }
 
             return list;

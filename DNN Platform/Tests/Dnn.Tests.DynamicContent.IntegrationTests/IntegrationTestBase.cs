@@ -40,6 +40,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 PortalID int NOT NULL DEFAULT -1,
 			    [Name] [nvarchar](100) NOT NULL,
                 [TemplateFileID] [int] NOT NULL,
+	            IsEditTemplate bit NOT NULL DEFAULT 0,
                 CreatedByUserID int NOT NULL,
                 CreatedOnDate datetime NOT NULL DEFAULT getdate(),
                 LastModifiedByUserID int NOT NULL,
@@ -79,7 +80,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 	            FieldDefinitionID int IDENTITY(1,1) NOT NULL,
                 ContentTypeID int NOT NULL,
                 PortalID int NOT NULL,
-                DataTypeID int NOT NULL,
+                FieldTypeID int NOT NULL,
+                IsReferenceType bit NOT NULL DEFAULT (0),
+                IsList bit NOT NULL DEFAULT (0),
 	            Name nvarchar(100) NOT NULL,
 	            Label nvarchar(100) NOT NULL,
 	            Description nvarchar(2000) NULL,
@@ -94,7 +97,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                                             VALUES ('{0}', '{1}')";
 
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
-                                                            (ContentTypeID, PortalID, DataTypeID, Name, Label, Description, [Order]) 
+                                                            (ContentTypeID, PortalID, FieldTypeID, Name, Label, Description, [Order]) 
                                                             VALUES ({0}, {1}, {2}, '{3}', '{4}', '{5}', {6})";
 
         private const string InsertContentTypeSql = @"INSERT INTO ContentTypes 

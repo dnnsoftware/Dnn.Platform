@@ -13,7 +13,7 @@ else
 
 function __dnn_ClientAPIEnabled()
 {
-	return typeof(dnn) != 'undefined';
+    return typeof(dnn) != 'undefined' && typeof (dnn.dom) != 'undefined';
 }
 
 function __dnn_Page_OnLoad()

@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -24,26 +24,15 @@
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.UI.Skins;
 
 #endregion
 
@@ -145,7 +134,7 @@ namespace DotNetNuke.Entities.Portals
 		    BuildPortalSettings(tabId, portal);
 		}
 
-	    private void BuildPortalSettings(int tabId, PortalInfo portal)
+        private void BuildPortalSettings(int tabId, PortalInfo portal)
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 
@@ -153,7 +142,20 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-            ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
+            if (items != null && items.Contains(key))
+            {
+                ActiveTab = items[key] as TabInfo;
+            }
+            else
+            {
+                ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+                if (items != null && ActiveTab != null)
+                {
+                    items[key] = ActiveTab;
+                }
+            }
         }
 
         #endregion

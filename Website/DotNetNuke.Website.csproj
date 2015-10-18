@@ -1839,7 +1839,6 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.eot" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.ttf" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.woff" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.07.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.08.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.09.SqlDataProvider" />
     <Content Include="Resources\Shared\components\CKEditor\CHANGES.md" />
@@ -1858,6 +1857,8 @@
     <Content Include="Resources\Shared\components\CodeEditor\mode\livescript\livescript.ls" />
     <Content Include="Portals\_default\Content Templates\ViewMarkdown.cshtml" />
     <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.10.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -4071,7 +4072,6 @@
     <Content Include="Resources\Shared\components\UserFileManager\Templates\Default.html" />
     <Content Include="Resources\Shared\components\UserFileManager\UserFileManager.css" />
     <Content Include="Resources\Shared\components\UserFileManager\UserFileManager.js" />
-    <Content Include="Resources\Shared\scripts\Ajax Readme.txt" />
     <Content Include="Resources\Shared\scripts\dnn.controlBar.js" />
     <Content Include="Resources\Shared\scripts\dnn.DataStructures.js" />
     <Content Include="Resources\Shared\scripts\dnn.DataStructures.Tests.js" />
@@ -4085,10 +4085,8 @@
     <Content Include="Resources\Shared\scripts\dnn.PasswordStrength.js" />
     <Content Include="Resources\Shared\scripts\dnn.searchBox.js" />
     <Content Include="Resources\Shared\scripts\dnn.WebResourceUrl.js" />
-    <Content Include="Resources\Shared\scripts\DotNetNukeAjaxShared.js" />
     <Content Include="Resources\Shared\scripts\init.js" />
     <Content Include="Resources\Shared\scripts\initTooltips.js" />
-    <Content Include="Resources\Shared\scripts\initWidgets.js" />
     <Content Include="Resources\Shared\scripts\jquery.history.js" />
     <Content Include="Resources\Shared\scripts\jquery\dnn.jScrollbar.css" />
     <Content Include="Resources\Shared\scripts\jquery\dnn.jScrollbar.js" />
@@ -4107,14 +4105,9 @@
     <Content Include="Resources\Shared\scripts\json2.js" />
     <Content Include="Resources\Shared\scripts\knockout.js" />
     <Content Include="Resources\Shared\scripts\knockout.mapping.js" />
-    <Content Include="Resources\Shared\scripts\MSAJAX\MicrosoftAjax.js" />
-    <Content Include="Resources\Shared\scripts\MSAJAX\MicrosoftAjaxTimer.js" />
-    <Content Include="Resources\Shared\scripts\MSAJAX\MicrosoftAjaxWebForms.js" />
-    <Content Include="Resources\Shared\scripts\MSAJAX\v1.0.61025.0.txt" />
     <Content Include="Resources\Shared\scripts\slides.min.jquery.js" />
     <Content Include="Resources\Shared\scripts\TreeView\dnn.DynamicTreeView.js" />
     <Content Include="Resources\Shared\scripts\TreeView\dnn.TreeView.js" />
-    <Content Include="Resources\Shared\scripts\widgets.js" />
     <Content Include="Resources\Shared\stylesheets\dnn-layouts.css" />
     <Content Include="Resources\Shared\stylesheets\dnn-roundedcorners.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.dragDrop.css" />
@@ -4599,8 +4592,9 @@
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
     <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
       <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
-      <Name>OAuth.AuthorizationServer.Core</Name>
+      <Name>Dnn.OAuth.AuthorizationServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -4618,7 +4612,6 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49989/</IISUrl>
           <IISUrl>http://localhost:64275/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>

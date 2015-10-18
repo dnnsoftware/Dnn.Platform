@@ -7,40 +7,70 @@ using OAuth.AuthorizationServer.Core.Data.Extensions;
 
 namespace OAuth.AuthorizationServer.Core.Data.Model
 {
-    // Represents a client (external app) that is recognized by the authorization server
+   
+    /// <summary>
+    /// Represents a client (external app) that is recognized by the authorization server
+    /// </summary>
     public class Client : IClientDescription
     {
+        /// <summary>
+        /// constructor for Client - adds lists for Authorizations and Scopes
+        /// </summary>
         public Client()
         {
             Authorizations = new List<Authorization>();
             Scopes = new List<Scope>();
         }
     
-        // Identifier, used in requests from client
+        
+        /// <summary>
+        /// Identifier, used in requests from client
+        /// </summary>
         public string Id { get; set; }
 
-        // Secret used to verify client
+        
+        /// <summary>
+        /// Secret used to verify client
+        /// </summary>
         public string ClientSecret { get; set; }
 
-        // Optional, if specified enforces a match during the code/implicit flows
-        // Matching logic is in IsCallbackAllowed method below
+      
+        /// <summary>
+        /// Optional, if specified enforces a match during the code/implicit flows
+        /// Matching logic is in IsCallbackAllowed method below
+        /// </summary>
         public string Callback { get; set; } 
 
-        // Display name of client, used when user authorizes the client
+        
+        /// <summary>
+        /// Display name of client, used when user authorizes the client
+        /// </summary>
         public string Name { get; set; }
 
-        // Internally used by DotNetOpenAuth
+     
+        /// <summary>
+        /// Gets/Sets ClientType (Internally used by DotNetOpenAuth)
+        /// </summary>
         public int ClientType { get; set; }
 
-        // Scopes this client is allowed to use
+ 
+        /// <summary>
+        /// Gets/Sets Scopes this client is allowed to use
+        /// </summary>
         public virtual ICollection<Scope> Scopes { get; set; }
 
-        // Authorizations in force for this client
+        
+        /// <summary>
+        /// Gets/Sets Authorizations in force for this client
+        /// </summary>
         public virtual ICollection<Authorization> Authorizations { get; set; }
 
         // Helper to correspond with how scopes are represented in DotNetOpenAuth
         private HashSet<string> _supportedScopes;
-       
+
+        /// <summary>
+        /// Gets/Sets SupportedScopes
+        /// </summary>
         public HashSet<string> SupportedScopes
         {
             get

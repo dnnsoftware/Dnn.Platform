@@ -50,12 +50,20 @@ dcc.templatesViewModel = function (rootViewModel, config) {
 
     self.addTemplate = function () {
         self.mode("editTemplate");
+        self.selectedTemplate.isEditMode(true);
         self.selectedTemplate.init();
         self.selectedTemplate.bindCodeEditor();
     };
 
+    self.closeEdit = function() {
+        self.mode("listTemplates");
+        self.selectedTemplate.isEditMode(false);
+        self.refresh();
+    }
+
     self.editTemplate = function (data) {
         self.selectedTemplate.init();
+        self.selectedTemplate.isEditMode(true);
         util.asyncParallel([
             function (cb1) {
                 self.getTemplate(data.templateId(), cb1);
@@ -75,7 +83,7 @@ dcc.templatesViewModel = function (rootViewModel, config) {
             function () {
                 self.selectedTemplate.bindCodeEditor();
             }
-            );
+        );
 
         if (typeof cb === 'function') cb();
     };
@@ -140,10 +148,11 @@ dcc.templateViewModel = function (parentViewModel, config) {
     self.isSystem = ko.observable(false);
     self.content = ko.observable('');
     self.selected = ko.observable(false);
+    self.isEditMode = ko.observable(false);
+    self.isEditTemplate = ko.observable(false);
 
     self.contentTypes = parentViewModel.contentTypes;
-    self.codeSnippets = ko.observableArray([]);
-    self.contentFields = ko.observableArray([]);
+    var codeSnippets = [];
 
     self.isAddMode = ko.computed(function () {
         return self.templateId() === -1;
@@ -164,46 +173,154 @@ dcc.templateViewModel = function (parentViewModel, config) {
         }
     });
 
-    var getContentFields = function () {
+    var getCodeSnippets = function (onSuccess) {
+        if (codeSnippets.length === 0) {
+            var params = {};
+
+            util.templateService().get("GetSnippets", params,
+                function(data) {
+                    if (typeof data !== "undefined" && data != null) {
+                        //Success
+                        codeSnippets.splice(0, codeSnippets.length);
+                        for (var i = 0; i < data.results.length; i++) {
+                            var result = data.results[i];
+                            codeSnippets.push({
+                                name: result.name,
+                                snippet: result.snippet
+                            });
+                        }
+                    }
+                    if (typeof onSuccess === 'function') onSuccess();
+                },
+                function() {
+                    //Failure
+                }
+            );
+        } else {
+            if (typeof onSuccess === 'function') onSuccess();
+        }
+    };
+
+    var $element = function (element, props) {
+        var $e = $(document.createElement(element));
+        props && $e.attr(props);
+        return $e;
+    };
+
+    var insertField = function (event) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection("@Dnn.DisplayFor(\"" + event.data.field + "\")");
+        $contextMenu.hide();
+    };
+
+    var insertSnippet = function (event) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection(event.data.snippet);
+        $contextMenu.hide();
+    };
+
+    var getContentFields = function (onSuccess) {
         if (self.contentTypeId() !== "undefined" && self.contentTypeId() > 0 && self.contentTypeId() !== self.previousContentTypeId) {
             var params = {
                 contentTypeId: self.contentTypeId()
             };
 
-            util.contentTypeService().get("GetContentFields", params,
+            util.contentTypeService().get("GetAllContentFields", params,
                 function (data) {
                     if (typeof data !== "undefined" && data != null) {
                         //Success
-                        self.contentFields.removeAll();
-                        for (var i = 0; i < data.results.length; i++) {
-                            var result = data.results[i];
-                            var localizedNames = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedNames, result.localizedNames);
-                            var localizedDescriptions = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedDescriptions, result.localizedDescriptions);
-                            var localizedLabels = ko.observableArray([]);
-                            util.loadLocalizedValues(localizedLabels, result.localizedLabels);
-                            self.contentFields.push({
-                                contentTypeId: result.contentTypeId,
-                                contentFieldId: result.contentFieldId,
-                                name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedNames()),
-                                label: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedDescriptions()),
-                                description: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedLabels())
-                            });
-                        }
+                        if (typeof onSuccess === 'function') onSuccess(data.results);
                     }
                 },
 
                 function () {
                     //Failure
                 }
-                );
+            );
 
             self.previousContentTypeId = self.contentTypeId();
         }
     };
 
-    self.contentTypeId.subscribe(function () {
+    var configureSubMenu = function(fields) {
+        var $contentFields = $element("ul");
+        var field, name, childFields;
+        for (var i = 0; i < fields.length; i++) {
+            if (fields[i].fields === undefined) {
+                field = fields[i].fieldName;
+                name = fields[i].name;
+                $contentFields.append(
+                    $element("li").append(
+                        $element("div").append(
+                            $element("span").text(name)
+                        )
+                    ).on("click", { field: field }, insertField)
+                );
+            } else {
+                childFields = fields[i].fields;
+                name = fields[i].name;
+                $contentFields.append(
+                    $element("li").append(
+                        $element("div").append(
+                            $element("span").text(name),
+                            $element("i", { "class": "fa fa-caret-right" })
+                        ),
+                        configureSubMenu(childFields)
+                    )
+                );
+            }
+        }
+
+        return $contentFields;
+    }
+
+    var configureContextMenu = function () {
+        if (self.isEditMode()) {
+            //remove exisiting context menu items
+            $contextMenu.children().remove();
+
+            //Build Framework
+            $contextMenu.append(
+                $element("li", { "class": "contentField" }).append(
+                    $element("div").append(
+                        $element("span").text(resx.insertField),
+                        $element("i", { "class": "fa fa-caret-right" })
+                    )
+                ),
+                $element("li", { "class": "codeSnippet" }).append(
+                    $element("div").append(
+                        $element("span").text(resx.insertHelper),
+                        $element("i", { "class": "fa fa-caret-right" })
+                    )
+                )
+            );
+
+            //Add content Fields
+            getContentFields(function(data) {
+                $contextMenu.find(".contentField").append(configureSubMenu(data));
+            });
+
+            //Add code snippets
+            getCodeSnippets(function() {
+                var $codeSnippets = $element("ul");
+                for (var i = 0; i < codeSnippets.length; i++) {
+                    var snippet = codeSnippets[i].snippet;
+                    var name = codeSnippets[i].name;
+                    $codeSnippets.append(
+                        $element("li").append(
+                            $element("div").text(name)
+                        ).on("click", { snippet: snippet }, insertSnippet)
+                    );
+                }
+                $contextMenu.find(".codeSnippet").append($codeSnippets);
+            });
+        }
+    }
+
+    self.contentTypeId.subscribe(function (newValue) {
+        if (newValue === undefined) {
+            return;
+        }
         var isSystemType = false;
         var contentTypes = self.contentTypes();
         var contentTypeId = self.contentTypeId();
@@ -214,9 +331,11 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 break;
             }
         }
+
         self.canSelectGlobal(self.parentViewModel.isSystemUser && self.isAddMode() && isSystemType);
         self.isSystem(false);
-        getContentFields();
+
+        configureContextMenu();
     });
 
     self.contentType = ko.computed(function () {
@@ -234,39 +353,17 @@ dcc.templateViewModel = function (parentViewModel, config) {
         return value;
     });
 
-    var getCodeSnippets = function () {
-        var params = {};
-
-        util.templateService().get("GetSnippets", params,
-            function (data) {
-                if (typeof data !== "undefined" && data != null) {
-                    //Success
-                    self.codeSnippets.removeAll();
-                    for (var i = 0; i < data.results.length; i++) {
-                        var result = data.results[i];
-                        self.codeSnippets.push({
-                            name: result.name,
-                            snippet: result.snippet
-                        });
-                    }
-                }
-            },
-
-            function () {
-                //Failure
-            }
-            );
-    };
-
     var validate = function () {
         return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames());
     };
 
     self.bindCodeEditor = function () {
+        configureContextMenu();
         codeEditor.setValue(self.content());
 
         var target = document.querySelector('#templates-editView');
         var refreshEditor = function () {
+            // ReSharper disable once UseOfImplicitGlobalInFunctionScope
             if (jQuery(target).css('display') !== 'none') {
                 codeEditor.refresh();
             };
@@ -292,10 +389,11 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 contentTypeId: data.contentTypeId(),
                 isSystem: data.isSystem(),
                 filePath: data.filePath(),
-                content: codeEditor.getValue()
-            };
+                content: codeEditor.getValue(),
+                isEditTemplate: data.isEditTemplate()
+        };
 
-            util.templateService().delete("DeleteTemplate", params,
+            util.templateService().post("DeleteTemplate", params,
                 function () {
                     //Success
                     parentViewModel.refresh();
@@ -315,23 +413,10 @@ dcc.templateViewModel = function (parentViewModel, config) {
         self.contentTypeId(-1);
         self.filePath('');
         self.isSystem(false);
+        self.isEditTemplate(false);
         self.content('');
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
-
-        getCodeSnippets();
-    };
-
-    self.insertField = function (data) {
-        var doc = codeEditor.doc;
-        doc.replaceSelection("@Dnn.DisplayFor(\"" + data.name + "\")");
-        $contextMenu.hide();
-    };
-
-    self.inserSnippet = function (data) {
-        var doc = codeEditor.doc;
-        doc.replaceSelection(data.snippet);
-        $contextMenu.hide();
     };
 
     self.load = function (data) {
@@ -340,6 +425,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
         self.contentTypeId(data.contentTypeId);
         self.isSystem(data.isSystem);
         self.filePath(data.filePath);
+        self.isEditTemplate(data.isEditTemplate);
         self.content(data.content);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
@@ -358,10 +444,11 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 contentTypeId: jsObject.contentTypeId,
                 isSystem: jsObject.isSystem,
                 filePath: jsObject.filePath,
-                content: codeEditor.getValue()
+                content: codeEditor.getValue(),
+                isEditTemplate: jsObject.isEditTemplate
             };
 
-            util.templateService().put("SaveTemplate", params,
+            util.templateService().post("SaveTemplate", params,
             function () {
                 self.cancel();
             },

@@ -10,9 +10,16 @@ using OAuth.AuthorizationServer.Core.Data.Model;
 
 namespace OAuth.AuthorizationServer.Core.Server
 {
+    /// <summary>
+    /// class to integrate with DNN's data store
+    /// </summary>
     public static class OAUTHDataController
     {
 
+        /// <summary>
+        /// Get the OAUTH settings
+        /// </summary>
+        /// <returns></returns>
         public static Settings GetSettings()
         {
 
@@ -20,6 +27,12 @@ namespace OAuth.AuthorizationServer.Core.Server
 
         }
 
+        /// <summary>
+        /// Insert oauth settings
+        /// </summary>
+        /// <param name="authorizationServerPrivateKey"></param>
+        /// <param name="resourceServerDecryptionKey"></param>
+        /// <param name="authorizationServerVerificationKey"></param>
         public static void InsertSettings(string authorizationServerPrivateKey, string resourceServerDecryptionKey, string authorizationServerVerificationKey)
         {
 
@@ -28,6 +41,11 @@ namespace OAuth.AuthorizationServer.Core.Server
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Client ClientRepositoryGetById(string id)
         {
 
@@ -35,6 +53,11 @@ namespace OAuth.AuthorizationServer.Core.Server
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static OAUTHUser UserRepositoryGetById(string id)
         {
 
@@ -42,6 +65,10 @@ namespace OAuth.AuthorizationServer.Core.Server
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
         public static void OAuthUserInsert(OAUTHUser user)
         {
 
@@ -49,6 +76,14 @@ namespace OAuth.AuthorizationServer.Core.Server
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="callback"></param>
+        /// <param name="name"></param>
+        /// <param name="clientType"></param>
         public static void ClientInsert(string clientId,string clientSecret,string callback,string name,int clientType)
         {
 
@@ -56,6 +91,10 @@ namespace OAuth.AuthorizationServer.Core.Server
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
         public static void DeleteClient(string clientId)
         {
 
@@ -64,6 +103,10 @@ namespace OAuth.AuthorizationServer.Core.Server
         }
         
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="auth"></param>
         public static void OAuthAuthorizationInsert(Authorization auth)
         {
 
@@ -72,6 +115,11 @@ namespace OAuth.AuthorizationServer.Core.Server
         }
         
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scopes"></param>
+        /// <returns></returns>
         public static Resource ResourceRepositoryFindWithSupportedScopes(HashSet<string> scopes)
         {
             //stub scopes as not using
@@ -79,6 +127,13 @@ namespace OAuth.AuthorizationServer.Core.Server
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientIdentifier"></param>
+        /// <param name="userIdentifier"></param>
+        /// <param name="afterUtc"></param>
+        /// <returns></returns>
         public static IEnumerable<Authorization> AuthorizationRepositoryFindCurrent(string clientIdentifier, string userIdentifier, DateTime afterUtc)
         {
             //stub scopes as not using

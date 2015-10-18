@@ -185,6 +185,7 @@ namespace Dnn.Modules.Tabs
             }
             listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, false, Null.NullString, false, false, false, false, true);
             cboPositionTab.DataSource = listTabs;
+            cboPositionTab.SelectedIndex = Null.NullInteger;
             cboPositionTab.DataBind();
 
             if (parentTab != null && parentTab.IsSuperTab)
@@ -787,7 +788,7 @@ namespace Dnn.Modules.Tabs
 
             //Set Tab's position
             var positionTabId = Null.NullInteger;
-            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue))
+            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue) && cboPositionTab.Items.Count > 0)
             {
                 positionTabId = Int32.Parse(cboPositionTab.SelectedValue);
             }
@@ -927,13 +928,13 @@ namespace Dnn.Modules.Tabs
                     //Refresh tab
                     _tab = TabController.Instance.GetTab(Tab.TabID, Tab.PortalID, true);
 
-					//change the localized pages order to match original order.
-	                if (positionTabId > Null.NullInteger)
-	                {
-		                var positionTab = TabController.Instance.GetTab(positionTabId, Tab.PortalID);
+                    //change the localized pages order to match original order.
+                    if (positionTabId > Null.NullInteger && _tab.LocalizedTabs.Count > 1)
+                    {
+                        var positionTab = TabController.Instance.GetTab(positionTabId, _tab.PortalID);
 		                if (positionTab != null)
 		                {
-			                foreach (var localizedTab in Tab.LocalizedTabs.Values)
+			                foreach (var localizedTab in _tab.LocalizedTabs.Values)
 			                {
 				                var cultureCode = localizedTab.CultureCode;
 								if (positionTab.LocalizedTabs.ContainsKey(cultureCode))

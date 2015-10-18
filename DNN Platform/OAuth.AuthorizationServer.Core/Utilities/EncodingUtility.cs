@@ -5,13 +5,28 @@ using System.Web;
 
 namespace OAuth.AuthorizationServer.Core.Utilities
 {
+    /// <summary>
+    /// oauth encoding utility class
+    /// </summary>
     public class EncodingUtility
     {
+        /// <summary>
+        /// url encode and ensure tamperproof string 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public static string Encode(string value, string Key)
         {
             return  HttpUtility.UrlEncode(TamperProofStringEncode(value, Key));
         }
 
+        /// <summary>
+        /// urldecode and tamperproof string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public static string Decode(string value, string Key)
         {
             return TamperProofStringDecode(HttpUtility.UrlDecode(value), Key);

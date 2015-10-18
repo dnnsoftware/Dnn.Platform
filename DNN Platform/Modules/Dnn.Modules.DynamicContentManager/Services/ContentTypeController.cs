@@ -1,10 +1,13 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
@@ -60,6 +63,24 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId),
                            contentField => new ContentFieldViewModel(contentField, PortalSettings));
+        }
+
+        /// <summary>
+        /// GetAllContentFields retrieves all the content fields including those of enclosed content types
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllContentFields(int contentTypeId)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var response = new
+                            {
+                                results = ProcessFields(contentType, String.Empty)
+                            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         /// <summary>
@@ -121,6 +142,49 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
         }
 
+        private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
+        {
+            var fields = new ArrayList();
+
+            var locale = Thread.CurrentThread.CurrentUICulture.ToString();
+
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                var key = String.Format(FieldDefinitionManager.NameKey, definition.FieldDefinitionId);
+                var fieldName = definition.Name;
+                var localizedName = (locale == PortalSettings.DefaultLanguage)
+                                        ? fieldName
+                                        : ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, locale, PortalSettings.PortalId);
+
+                if (definition.IsReferenceType)
+                {
+                    var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    newPrefix += "/";
+
+                    var field = new
+                                {
+                                    name = localizedName,
+                                    fields = ProcessFields(definition.ContentType, newPrefix)
+                                };
+
+                    fields.Add(field);
+                }
+                else
+                {
+
+                    var field = new
+                                {
+                                    fieldName = prefix + fieldName,
+                                    name = localizedName
+                                };
+
+                    fields.Add(field);
+                }
+            }
+
+            return fields;
+        }
+
         /// <summary>
         /// SaveContentField saves the content field
         /// </summary>
@@ -152,7 +216,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 /*CreateEntity*/() => new FieldDefinition()
                                         {
                                             ContentTypeId = contentType.ContentTypeId,
-                                            DataTypeId = viewModel.DataTypeId,
+                                            FieldTypeId = viewModel.FieldTypeId,
+                                            IsReferenceType = viewModel.IsReferenceType,
+                                            IsList = viewModel.IsList,
                                             Label = defaultLabel,
                                             Name = defaultName,
                                             Description = defaultDescription,
@@ -168,7 +234,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                             contentField.Name = defaultName;
                                             contentField.Description = defaultDescription;
                                             contentField.Label = defaultLabel;
-                                            contentField.DataTypeId = viewModel.DataTypeId;
+                                            contentField.FieldTypeId = viewModel.FieldTypeId;
+                                            contentField.IsReferenceType = viewModel.IsReferenceType;
+                                            contentField.IsList = viewModel.IsList;
                                             FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
                                         },
 
