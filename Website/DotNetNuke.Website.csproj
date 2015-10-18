@@ -4591,7 +4591,7 @@
     <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
-    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\OAuth.AuthorizationServer.Core.csproj">
+    </ProjectReference>
     <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
       <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
       <Name>Dnn.OAuth.AuthorizationServer.Core</Name>
