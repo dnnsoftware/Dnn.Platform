@@ -20,9 +20,7 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentManager</moduleName>
             <foldername>Dnn/DynamicContentManager</foldername>
-            <businessControllerClass>
-              Dnn.Modules.DynamicContentManager.Components.BusinessController
-            </businessControllerClass>
+            <businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
