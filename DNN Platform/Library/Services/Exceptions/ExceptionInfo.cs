@@ -23,8 +23,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Web.UI.WebControls;
 using System.Xml;
-using ClientDependency.Core;
 
 #endregion
 
@@ -47,9 +47,7 @@ namespace DotNetNuke.Services.Exceptions
 				InnerMessage = e.InnerException.Message;
 				InnerStackTrace = e.InnerException.StackTrace;
 			}
-
-            //only calculate the hash based on messages and the strack trace
-            ExceptionHash = string.Concat(e.Message.ToLower(), e.StackTrace == null ? string.Empty : e.StackTrace.ToLower(), InnerMessage == null ? string.Empty : InnerMessage.ToLower(), InnerStackTrace == null ? string.Empty : InnerStackTrace.ToLower()).GenerateHash();
+			ExceptionHash = e.Hash();
 		}
 		#endregion
 
