@@ -147,6 +147,7 @@ input[type="password"] {
 }
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
   background: #0087c6;
+  cursor: pointer;
 }
 .dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
 .dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td {
