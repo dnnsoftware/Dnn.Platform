@@ -4,19 +4,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent
 {
@@ -43,12 +38,19 @@ namespace Dnn.DynamicContent
         /// <returns>data type id.</returns>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be added by Super Users</exception>
         public int AddDataType(DataType dataType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (dataType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new GlobalDataTypeSecurityException();
+            }
+
+            dataType.CreatedByUserId = currentUser.UserID;
             dataType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(dataType);
@@ -62,6 +64,7 @@ namespace Dnn.DynamicContent
         /// <param name="dataType">The data type to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be deleted by Super Users</exception>
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract
@@ -71,7 +74,7 @@ namespace Dnn.DynamicContent
 
             if (dataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
-                throw new SecurityException("Global Data Types can only delete by host user");
+                throw new GlobalDataTypeSecurityException();
             }
 
             using (DataContext)
@@ -162,6 +165,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be modified by Super Users</exception>
         public void UpdateDataType(DataType dataType, bool overrideWarning = false)
         {
             //Argument Contract
@@ -170,12 +174,14 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(dataType, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            if (dataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+
+            if (dataType.IsSystem && !currentUser.IsSuperUser)
             {
-                throw new SecurityException("Global Data Types can only update by host user");
+                throw new GlobalDataTypeSecurityException();
             }
 
-            dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            dataType.LastModifiedByUserId = currentUser.UserID;
             dataType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             using (DataContext)

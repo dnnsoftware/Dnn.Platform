@@ -474,4 +474,7 @@
   <data name="UpdateUserMembershipFailed.Text" xml:space="preserve">
     <value>Asp.net membership update user failed. Possible Reason(s): you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.</value>
   </data>
+  <data name="GlobalDataTypesSecurityException.Text" xml:space="preserve">
+    <value>Global Data Types can only be created, modified or deleted by Super Users</value>
+  </data>
 </root>
