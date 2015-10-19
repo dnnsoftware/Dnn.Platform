@@ -30,7 +30,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         public HttpResponseMessage DeleteDataType(DataTypeViewModel viewModel)
         {
              return DeleteEntity(() => DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true),
-                                 dataType =>DataTypeManager.Instance.DeleteDataType(dataType));
+                                 dataType => DataTypeManager.Instance.DeleteDataType(dataType));
         }
 
         /// <summary>
