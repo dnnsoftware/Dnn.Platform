@@ -110,8 +110,8 @@ input[type="password"] {
   text-align: center;
   height: 20px;
 }
-.dccContainer .dccTable td {
-	padding-left: 11px;
+#data-types-panel .dccTable td:last-child {
+    padding-left: 11px;
 }
 .dccContainer .dccTable th:first-child,
 .dccContainer .dccTable td:first-child {
