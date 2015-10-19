@@ -190,6 +190,11 @@
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsStore.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleScopedSettings.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalScopedSettings.cs" />
+    <Compile Include="Entities\Modules\Settings\StringBasedSettings.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleScopedSettings.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
