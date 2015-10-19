@@ -13,7 +13,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     self.rootViewModel = rootViewModel;
 
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);

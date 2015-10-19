@@ -17,7 +17,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);
