@@ -4,21 +4,25 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Web.UI;
+using System.Collections.Generic;
 using Dnn.DynamicContent;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Tokens;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Upgrade;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Entities.Modules.Definitions;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 #pragma warning disable 1591
 
 namespace Dnn.Modules.DynamicContentManager.Components
 {
-    public class BusinessController : IUpgradeable
+    public class BusinessController : IUpgradeable, ICustomTokenProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
 
@@ -125,6 +129,14 @@ namespace Dnn.Modules.DynamicContentManager.Components
 
                 return "Failed";
             }
+        }
+
+        public IDictionary<string, IPropertyAccess> GetTokens(Page page, ModuleInstanceContext moduleContext)
+        {
+            var tokens = new Dictionary<string, IPropertyAccess>();
+
+            tokens["icon"] = new FontPropertyAccess();
+            return tokens;
         }
     }
 }

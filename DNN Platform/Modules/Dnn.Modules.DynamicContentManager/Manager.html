@@ -22,7 +22,7 @@
 <div id="DCCmanager-[ModuleContext:ModuleId]" class="dccContainer">
     <div class="dccHeading">
         <span>[Resx:{key:"DCC_Admin"}]</span>
-        <a class="dccIcon" data-bind="visible: $root.showCloseIcon(), click: closeEdit"><i class="dnni dnni-home"></i></a>
+        <a class="dccIcon" data-bind="visible: $root.showCloseIcon(), click: closeEdit"><i class="[Icon:home]"></i></a>
     </div>
     <div class="dccBody">
         <div class="dccMenu">
@@ -68,11 +68,11 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: created"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="dnni dnni-check" data-bind="visible: isSystem"></i></td>
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                            <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="dnni dnni-search"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="dnni dnni-pencil"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="dnni dnni-trash-o"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="[Icon:search]"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:pencil]"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="[Icon:trash-o]"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -108,7 +108,7 @@
                         <div data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                             <label>[Resx:{key:"Name"}]</label>
                             <input type="text" data-bind="value: name, enable: canEdit" />
-                            <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
+                            <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                         </div>
                         <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
                             <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
@@ -119,7 +119,7 @@
                         <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
                             <label>[Resx:{key:"Description"}]</label>
                             <textarea class="dccTextArea" type="text" data-bind="value: description, enable: canEdit"></textarea>
-                            <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
+                            <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
                         </div>
                     </div>
 
@@ -155,9 +155,9 @@
                                     <span data-bind="text: fieldType()"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="dnni dnni-pencil"></i></a>
-                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="dnni dnni-trash-o"></i></a>
-                                    <a class="dccIcon dccMove" data-bind="visible: selected() && $parent.parentViewModel.canEdit() && $parent.contentFields().length > 1"><i class="dnni dnni-arrows"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="[Icon:pencil]"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="[Icon:trash-o]"></i></a>
+                                    <a class="dccIcon dccMove" data-bind="visible: selected() && $parent.parentViewModel.canEdit() && $parent.contentFields().length > 1"><i class="[Icon:arrows]"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -190,12 +190,12 @@
                             <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                                 <label>[Resx:{key:"Name"}]</label>
                                 <input type="text" data-bind="value: name">
-                                <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
+                                <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                             </div>
                             <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedLabels())">
                                 <label>[Resx:{key:"Label"}]</label>
                                 <input type="text" data-bind="value: label">
-                                <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedLabels())}"></i>
+                                <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedLabels())}"></i>
                             </div>
                             <div>
                                 <label>[Resx:{key:"FieldType"}]</label>
@@ -212,7 +212,7 @@
                             <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
                                 <label>[Resx:{key:"Description"}]</label>
                                 <textarea  class="dccTextArea" type="text" data-bind="value: description"></textarea>
-                                <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
+                                <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
                             </div>
                         </div>
 
@@ -241,7 +241,7 @@
                         <th>[Resx:{key:"Created"}]</th>
                         <th>[Resx:{key:"System"}]</th>
                         <th width="20px">
-                            <i class="dnni dnni-caret-down"></i>
+                            <i class="[Icon:caret-down]"></i>
                         </th>
                     </tr>
                     </thead>
@@ -250,12 +250,12 @@
                         <td data-bind="text: name"></td>
                         <td data-bind="text: created"></td>
                         <td>
-                            <i class="dnni dnni-check-square-o" data-bind="visible: isSystem"></i>
-                            <i class="dnni dnni-square-o" data-bind="visible: !isSystem"></i>
+                            <i class="[Icon:check-square-o]" data-bind="visible: isSystem"></i>
+                            <i class="[Icon:square-o]" data-bind="visible: !isSystem"></i>
                         </td>
                         <td>
-                            <i class="dnni dnni-caret-down"></i>
-                            <i class="dnni dnni-caret-up"></i>
+                            <i class="[Icon:caret-down]"></i>
+                            <i class="[Icon:caret-up"></i>
                         </td>
                     </tr>
                     </tbody>
@@ -267,7 +267,7 @@
                                     <div data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                                         <label>[Resx:{key:"Name"}]</label>
                                         <input type="text" data-bind="value: name, enable: !isSystem() || parentViewModel.isSystemUser" />
-                                        <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
+                                        <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                                     </div>
                                     <div>
                                         <label>[Resx:{key:"BaseType"}]</label>
@@ -340,11 +340,11 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: contentType()"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="dnni dnni-check" data-bind="visible: isSystem"></i></td>
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                            <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="dnni dnni-search"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="dnni dnni-pencil"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="dnni dnni-trash-o"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="[Icon:search]"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:pencil]"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="[Icon:trash-o]"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -380,7 +380,7 @@
                         <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                             <label>[Resx:{key:"Name"}]</label>
                             <input type="text" data-bind="value: name, enable: canEdit" />
-                            <i class="dnni dnni-exclamation" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
+                            <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                         </div>
                         <div>
                             <label>[Resx:{key:"ContentType"}]</label>
