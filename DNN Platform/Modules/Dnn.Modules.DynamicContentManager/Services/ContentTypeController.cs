@@ -209,7 +209,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             return SaveEntity(contentFieldId,
                 /*CheckEntity*/ () => FieldDefinitionManager.Instance.GetFieldDefinitions(viewModel.ContentTypeId)
-                                                .SingleOrDefault((t => t.Name == defaultName)),
+                                                .SingleOrDefault((t => t.Name.Equals(defaultName, StringComparison.InvariantCultureIgnoreCase))),
 
                 /*ErrorMsg*/    LocalizeString("ContentFieldExists"),
 
@@ -269,7 +269,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
             return SaveEntity(contentTypeId,
 
                 /*CheckEntity*/ () => DynamicContentTypeManager.Instance.GetContentTypes(portalId, true)
-                                                .SingleOrDefault((t => t.Name == defaultName)),
+                                                .SingleOrDefault((t => t.Name.Equals(defaultName, StringComparison.InvariantCultureIgnoreCase))),
 
                 /*ErrorMsg*/    LocalizeString("ContentTypeExists"),
 
