@@ -19,50 +19,19 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Web.Http;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Web.Api
 {
-    public abstract class DnnApiController : ApiController
+    /// <summary>
+    /// Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework
+    /// </summary>
+    public enum HttpStatusCodeAdditions
     {
-        private readonly Lazy<ModuleInfo> _activeModule;
-
-        protected DnnApiController()
-        {
-            _activeModule = new Lazy<ModuleInfo>(InitModuleInfo);
-        }
-
-        private ModuleInfo InitModuleInfo()
-        {
-            return Request.FindModuleInfo();
-        }
-
         /// <summary>
-        /// PortalSettings for the current portal
+        /// Equivalent to HTTP Status 422. Unprocessable Entity status code means the server understands the content type of the request entity (hence a
+        /// 415 (Unsupported Media Type) status code is inappropriate), and the syntax of the request entity is correct (thus a 400 (Bad Request)
+        /// status code is inappropriate) but was unable to process the contained instructions.
+        /// <see cref="http://tools.ietf.org/html/rfc4918" />
         /// </summary>
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
-        /// <summary>
-        /// UserInfo for the current user
-        /// </summary>
-        public UserInfo UserInfo { get { return PortalSettings.UserInfo; } }
-
-        /// <summary>
-        /// ModuleInfo for the current module
-        /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
-        /// </summary>
-        public ModuleInfo ActiveModule { 
-            get { return _activeModule.Value; } 
-        }
+        UnprocessableEntity = 422
     }
 }

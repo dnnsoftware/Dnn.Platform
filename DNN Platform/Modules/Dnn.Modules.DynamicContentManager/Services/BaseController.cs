@@ -191,8 +191,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
             saveLocalizations(id);
 
             var response = (isSuccess) 
-                                ? Request.CreateResponse(HttpStatusCode.OK, new { id }) 
-                                : Request.CreateErrorResponse((HttpStatusCode) UnprocessableEntity, errorMessage);
+                                ? Request.CreateResponse(HttpStatusCode.OK, new { id })
+                                : Request.CreateErrorResponse((HttpStatusCode) HttpStatusCodeAdditions.UnprocessableEntity, errorMessage);
 
             return response;
         }
