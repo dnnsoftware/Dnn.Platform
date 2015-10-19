@@ -42,7 +42,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     self.addDataType = function(event, ui){
         var tbody = $rootElement.find("#dataTypes-addbody");
 
-        $(ui.target).fadeOut(0);
+        $(ui.target).fadeOut(200);
         util.asyncParallel([
             function(cb1){
                 self.selectedDataType.init();
@@ -60,7 +60,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.editDataType = function(data, e){
-		$rootElement.find('a.dccButton').fadeIn(0);
+		$rootElement.find('a.dccButton').fadeIn(200);
 		
         var row = $rootElement.find(e.target);
 
@@ -173,7 +173,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     var collapseDetailRow = function(cb) {
         $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
-        $rootElement.find('a.dccButton').fadeIn(0);
+        $rootElement.find('a.dccButton').fadeIn(200);
         $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
             $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             if(typeof cb === 'function') cb();
