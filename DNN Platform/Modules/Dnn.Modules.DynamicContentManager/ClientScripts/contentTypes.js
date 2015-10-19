@@ -206,8 +206,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 },
 
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         });
@@ -261,8 +260,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                     }
                 },
                 function (xhr, status, err) {
-                    //Error
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         }
@@ -341,8 +339,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             },
 
             function (xhr, status, err) {
-                //Failure
-                util.alert(status + ":" + err, resx.ok);
+                util.handleServiceError(xhr, status, err);
             }
         );
 
@@ -546,8 +543,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 },
 
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         });
@@ -598,8 +594,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                     self.cancel();
                 },
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         }

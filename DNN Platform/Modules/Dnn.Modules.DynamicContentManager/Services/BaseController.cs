@@ -192,7 +192,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             var response = (isSuccess) 
                                 ? Request.CreateResponse(HttpStatusCode.OK, new { id }) 
-                                : Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMessage);
+                                : Request.CreateErrorResponse((HttpStatusCode) UnprocessableEntity, errorMessage);
 
             return response;
         }

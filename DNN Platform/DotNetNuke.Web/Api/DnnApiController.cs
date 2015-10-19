@@ -29,6 +29,8 @@ namespace DotNetNuke.Web.Api
 {
     public abstract class DnnApiController : ApiController
     {
+        protected const int UnprocessableEntity = 422;
+
         private readonly Lazy<ModuleInfo> _activeModule;
 
         protected DnnApiController()

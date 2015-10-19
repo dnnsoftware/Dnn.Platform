@@ -80,6 +80,17 @@
             return util.sf;
         };
 
+        util.handleServiceError = function (xhr, status, err) {
+            if (xhr && xhr.responseText) {
+                var json = JSON.parse(xhr.responseText);
+                if (json && json.Message) {
+                    util.alert(json.Message, resx.ok);
+                    return;
+                }
+            }
+            util.alert(status + ":" + err, resx.ok);
+        };
+
         var config = {
             settings: settings,
             resx: resx,
