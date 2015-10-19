@@ -3,10 +3,10 @@
 
 using System;
 using System.Data.SqlTypes;
-using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace Dnn.DynamicContent
 {
+    [Serializable]
     public abstract class BaseEntity
     {
         protected BaseEntity()
