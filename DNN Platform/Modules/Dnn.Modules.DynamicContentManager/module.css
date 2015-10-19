@@ -124,6 +124,9 @@ input[type="password"] {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 5px;
 }
+.dccContainer #data-types-panel .dccEditForm {
+    padding-bottom: 39px;
+}
 .dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
   display: none;
 }
@@ -211,7 +214,6 @@ input[type="password"] {
 }
 .dccContainer div.dccEditForm {
   padding: 15px;
-  min-height: 135px;
 }
 .dccContainer .dccTable div.dccEditForm {
   border-bottom: 2px solid #0087c6;
@@ -471,12 +473,15 @@ input[type="password"] {
   display: inline-block;
 }
 .dccContainer div.dccLanguageSelector span {
-  font-size: 16px;
+      font-size: 100%;
+    display: inline;
 }
 .dccContainer div.dccLanguageSelector select {
   margin-bottom: 0px;
-  padding: 2px 5px 5px 5px;
-  font-size: 15px;
+  padding: 5px;
+  font-size: 100%;
+  width: 72%;
+  display: inline;
 }
 .dccContainer ul#templateEditorContextMenu {
   float: left;

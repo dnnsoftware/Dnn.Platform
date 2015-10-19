@@ -49,10 +49,10 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     };
 
     self.addTemplate = function () {
-        self.mode("editTemplate");
-        self.selectedTemplate.isEditMode(true);
         self.selectedTemplate.init();
+        self.selectedTemplate.isEditMode(true);
         self.selectedTemplate.bindCodeEditor();
+        self.mode("editTemplate");
     };
 
     self.closeEdit = function() {
