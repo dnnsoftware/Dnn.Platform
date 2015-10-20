@@ -885,7 +885,6 @@ namespace DotNetNuke.Security.Membership
                     {
                         //DNN-4016
                         //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
-                        if (ValidateUser(user.Username, user.Membership.Password))
                         {
                             //check if user exists for the portal specified
                             objVerifyUser = GetUserByUserName(user.PortalID, user.Username);
@@ -1721,7 +1720,7 @@ namespace DotNetNuke.Security.Membership
             //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
                                 ? GetUserByUserName(portalId, username)
-                                : GetUserByAuthToken(portalId, verificationCode, authType);
+                                : GetUserByAuthToken(portalId, username, authType);
             if (user != null && !user.IsDeleted)
             {
                 //Get AspNet MembershipUser
@@ -1747,16 +1746,16 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
-                    var ps = new PortalSecurity();
-                    if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
-                    {
-                        UserController.ApproveUser(user);
+                        var ps = new PortalSecurity();
+                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                        {
+                            UserController.ApproveUser(user);
+                        }
+                        else
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        }
                     }
-                    else
-                    {
-                        loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
-                    }
-                }
 
                 //Verify User Credentials
                 bool bValid = false;
