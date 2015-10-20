@@ -295,15 +295,18 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.addContentField = function() {
         self.mode("editField");
         self.selectedContentField.init();
+		$("#contentFields-editView").find("select > option:eq(1)").prop("selected", true);
     }
 
     self.editContentField = function(data) {
+		var fieldTypeId = self.selectedContentField.fieldTypeId();
         util.asyncParallel([
             function(cb1){
                 self.getContentField(self.parentViewModel.contentTypeId, data.contentFieldId(), cb1);
             }
         ], function() {
             self.mode("editField");
+			$("#contentFields-editView").find("select > option[value='" + fieldTypeId + "']").prop("selected", true);
         });
     };
 
