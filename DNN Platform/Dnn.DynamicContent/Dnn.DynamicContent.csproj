@@ -73,6 +73,8 @@
     <Compile Include="DynamicContentType.cs" />
     <Compile Include="DynamicContentTypeManager.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />
+    <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
+    <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
     <Compile Include="Exceptions\InvalidValidationTypeException.cs" />
     <Compile Include="Exceptions\InvalidValidatorException.cs" />
