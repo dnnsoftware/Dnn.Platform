@@ -70,7 +70,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
         if(row.hasClass('in-edit-row')){
             row.removeClass('in-edit-row');
-            $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(600, 'linear', function(){
                 $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             });
             return;
@@ -85,13 +85,13 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
                 self.getDataType(data.dataTypeId(), cb1);
             },
             function(cb2){
-                $rootElement.find('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(200, 'linear', function(){
                     cb2();
                 });
             }
         ], function() {
             $rootElement.find('#dataTypes-editrow').insertAfter(row);
-            $rootElement.find('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideDown(400, 'linear');
         });
     };
 
