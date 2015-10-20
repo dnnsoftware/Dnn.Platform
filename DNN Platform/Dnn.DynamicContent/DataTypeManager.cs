@@ -38,7 +38,7 @@ namespace Dnn.DynamicContent
         /// <returns>data type id.</returns>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
-        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be added by Super Users</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be added by Super Users</exception>
         public int AddDataType(DataType dataType)
         {
             //Argument Contract
@@ -47,7 +47,7 @@ namespace Dnn.DynamicContent
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             if (dataType.IsSystem && !currentUser.IsSuperUser)
             {
-                throw new GlobalDataTypeSecurityException();
+                throw new SystemDataTypeSecurityException();
             }
 
             dataType.CreatedByUserId = currentUser.UserID;
@@ -64,7 +64,7 @@ namespace Dnn.DynamicContent
         /// <param name="dataType">The data type to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
-        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be deleted by Super Users</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract
@@ -72,9 +72,16 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNull(dataType, "DataTypeId");
             Requires.PropertyNotNegative(dataType, "DataTypeId");
 
-            if (dataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
+            if (storedDataType == null)
             {
-                throw new GlobalDataTypeSecurityException();
+                // TODO: add DataTypeDoesNotExistException here
+                return;
+            }
+
+            if (storedDataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                throw new SystemDataTypeSecurityException();
             }
 
             using (DataContext)
@@ -165,7 +172,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
-        /// <exception cref="GlobalDataTypeSecurityException">global data types can only be modified by Super Users</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be modified by Super Users</exception>
         public void UpdateDataType(DataType dataType, bool overrideWarning = false)
         {
             //Argument Contract
@@ -174,11 +181,18 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(dataType, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
 
-            if (dataType.IsSystem && !currentUser.IsSuperUser)
+            var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
+            if (storedDataType == null)
             {
-                throw new GlobalDataTypeSecurityException();
+                // TODO: add DataTypeDoesNotExistException here
+                return;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedDataType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemDataTypeSecurityException();
             }
 
             dataType.LastModifiedByUserId = currentUser.UserID;

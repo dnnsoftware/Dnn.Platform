@@ -79,7 +79,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
         
         [Test]
-        public void AddDataType_Throws_GlobalDataTypeSecurityException_When_GloabalDataTypeIsAddedByANonSuperUser()
+        public void AddDataType_Throws_SystemDataTypeSecurityException_When_SystemDataTypeIsAddedByANonSuperUser()
         {
             //Arrange
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
@@ -95,7 +95,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var act = new TestDelegate(() => dataTypeController.AddDataType(dataType));
 
             // Assert
-            Assert.Throws<GlobalDataTypeSecurityException>(act);
+            Assert.Throws<SystemDataTypeSecurityException>(act);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void DeleteDataType_Throws_GlobalDataTypeSecurityException_WhenGlobalDataTypeIsDeletedByNonSuperUser()
+        public void DeleteDataType_Throws_SystemDataTypeSecurityException_WhenSystemDataTypeIsDeletedByNonSuperUser()
         {
             //Arrange
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
@@ -208,12 +208,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId, 
                 PortalId = Null.NullInteger // Portal -1 means global data type
             };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             var act = new TestDelegate(() => dataTypeController.DeleteDataType(dataType));
 
             // Assert
-            Assert.Throws<GlobalDataTypeSecurityException>(act);
+            Assert.Throws<SystemDataTypeSecurityException>(act);
+            _mockDataTypeRepository.VerifyAll();
         }
         
         [Test]
@@ -224,12 +226,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dataType = GetValidDataType();
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new []{dataType});
 
             //Act
             dataTypeController.DeleteDataType(dataType);
 
             //Assert
             _mockFieldDefinitionRepository.Verify(r => r.Find(DataTypeManager.FindWhereDataTypeSql, dataType.DataTypeId));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -240,6 +244,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
             _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, dataType.DataTypeId))
                 .Returns(new List<FieldDefinition>());
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
@@ -250,6 +255,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Delete(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -260,10 +266,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
             _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, dataType.DataTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() });
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
 
             //Act, Assert
             Assert.Throws<DataTypeInUseException>(() => dataTypeController.DeleteDataType(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
         #endregion
 
@@ -572,7 +580,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
         
         [Test]
-        public void UpdateDataType_Throws_GlobalDataTypeSecurityException_WhenGlobalDataTypeIsUpdatedByNonSuperUser()
+        public void UpdateDataType_Throws_SystemDataTypeSecurityException_WhenSystemDataTypeIsUpdatedByNonSuperUser()
         {
             //Arrange
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
@@ -583,12 +591,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 Name = "New_Name",
                 PortalId = Null.NullInteger // Portal -1 means global data type
             };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             var act = new TestDelegate(() => dataTypeController.UpdateDataType(dataType));
 
             // Assert
-            Assert.Throws<GlobalDataTypeSecurityException>(act);
+            Assert.Throws<SystemDataTypeSecurityException>(act);
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -596,14 +606,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
-
             var dataType = GetValidDataType();
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             dataTypeController.UpdateDataType(dataType);
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Update(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -625,12 +636,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                 Name = "New_Name",
                                 PortalId = 0
                             };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             dataTypeController.UpdateDataType(dataType);
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Update(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -653,9 +666,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                     Name = "New_Name",
                                     PortalId = 0
                                 };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act, Assert
             Assert.Throws<DataTypeInUseException>(() => dataTypeController.UpdateDataType(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -678,12 +693,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                         Name = "New_Name",
                                         PortalId = 0
                                     };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             dataTypeController.UpdateDataType(dataType, true);
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Update(dataType));
+            _mockDataTypeRepository.VerifyAll();
         }
 
         [Test]
@@ -711,12 +728,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                     Name = "New_Name",
                                     PortalId = 0
                                 };
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new[] { dataType });
 
             //Act
             dataTypeController.UpdateDataType(dataType);
 
             //Assert
             Assert.AreEqual(userId, dataType.LastModifiedByUserId);
+            _mockDataTypeRepository.VerifyAll();
         }
         #endregion
 

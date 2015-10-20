@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using System.Web.Caching;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Services.FileSystem;
 // ReSharper disable ConvertPropertyToExpressionBody
@@ -56,8 +57,17 @@ namespace Dnn.DynamicContent
         /// </summary>
         public bool IsEditTemplate { get; set; }
 
+        /// <summary>
+        /// True if the content template is defined to be available for all portals, false otherwise
+        /// </summary>
         [IgnoreColumn]
-        public bool IsSystem { get { return (PortalId == -1); } }
+        public bool IsSystem
+        {
+            get
+            {
+                return PortalId == Null.NullInteger;
+            }
+        }
 
         /// <summary>
         /// The name of this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>

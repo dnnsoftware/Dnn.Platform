@@ -6,13 +6,13 @@ using System.Security;
 namespace Dnn.DynamicContent.Exceptions
 {
     /// <summary>
-    /// Global Data Type can be created, modified or deleted only by super users
+    /// Global Content Type can be created, modified or deleted only by super users
     /// </summary>
-    public class GlobalDataTypeSecurityException : SecurityException
+    public class SystemContentTypeSecurityException : SecurityException
     {
-        public GlobalDataTypeSecurityException()
+        public SystemContentTypeSecurityException()
             : base(string.Format(
-            DotNetNuke.Services.Localization.Localization.GetString("GlobalDataTypesSecurityException", 
+            DotNetNuke.Services.Localization.Localization.GetString("SystemContentTypesSecurityException", 
             DotNetNuke.Services.Localization.Localization.ExceptionsResourceFile)))
         {
         }
