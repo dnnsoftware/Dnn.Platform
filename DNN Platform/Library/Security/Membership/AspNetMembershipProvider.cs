@@ -869,44 +869,8 @@ namespace DotNetNuke.Security.Membership
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
             UserCreateStatus createStatus = ValidateForProfanity(user);
+            EventLogController aLog = new EventLogController();
             string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
-
-            //DNN-4016
-            //the username exists, first we check to see if this is an OAUTH user
-            bool isOAuthUser = false;
-
-            if (String.IsNullOrEmpty(service) || service.Equals("DNN"))
-            {
-                isOAuthUser = false;
-            }
-            else
-            {
-                try
-                {
-                    UserAuthenticationInfo authUser = AuthenticationController.GetUserAuthentication(user.UserID);
-
-                    // Check that the OAuth service currently being used for login is the same as was previously used (this should always be true if user authenticated to userid)
-                    if (authUser == null || authUser.AuthenticationType.Equals(service, StringComparison.OrdinalIgnoreCase))
-                    {
-                        isOAuthUser = true;
-                        //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-	                    if (!string.IsNullOrEmpty(user.Email))
-	                    {
-		                    user.Username = service + "-" + user.Email;
-	                    }
-                    }
-                    else
-                    {
-                        createStatus = UserCreateStatus.DuplicateEmail;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    createStatus = UserCreateStatus.UnexpectedError;
-                    EventLogController.Instance.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
-                }
-            }
 
             if (createStatus == UserCreateStatus.AddUser)
             {
@@ -923,7 +887,6 @@ namespace DotNetNuke.Security.Membership
                     {
                         //DNN-4016
                         //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
-                        if (isOAuthUser || ValidateUser(user.Username, user.Membership.Password))
                         {
                             //check if user exists for the portal specified
                             objVerifyUser = GetUserByUserName(user.PortalID, user.Username);
