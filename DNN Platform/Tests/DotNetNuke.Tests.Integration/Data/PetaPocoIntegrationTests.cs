@@ -23,7 +23,6 @@
 
 #region Usings
 
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -32,7 +31,6 @@ using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Tests.Data.Fakes;
 using DotNetNuke.Tests.Data.Models;
 using DotNetNuke.Tests.Utilities;
 
@@ -100,6 +98,39 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
+        public void PetaPoco_Add_Inserts_Item_Using_FluentMapper()
+        {
+            //Arrange
+            DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
+
+            var dog = new Dog
+                            {
+                                Age = Constants.PETAPOCO_InsertDogAge,
+                                Name = Constants.PETAPOCO_InsertDogName
+                            };
+
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            {
+                dataContext.AddFluentMapper<Dog>()
+                    .TableName(Constants.PETAPOCO_DogTableName)
+                    .PrimaryKey("ID")
+                    .Property(d => d.ID, "ID")
+                    .Property(d => d.Age, "Age")
+                    .Property(d => d.Name, "Name");
+
+                IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
+
+                //Act
+                dogRepository.Insert(dog);
+            }
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+                                                      Constants.PETAPOCO_DogTableName);
+            Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
+        }
+
+        [Test]
         public void PetaPoco_Delete_Deletes_Item()
         {
             //Arrange
@@ -114,6 +145,40 @@ namespace DotNetNuke.Tests.Data
 
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
             {
+                IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
+
+                //Act
+                dogRepository.Delete(dog);
+            }
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+                                                      Constants.PETAPOCO_DogTableName);
+            Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
+        }
+
+        [Test]
+        public void PetaPoco_Delete_Deletes_Item_Using_FluentMapper()
+        {
+            //Arrange
+            DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
+
+            var dog = new Dog
+                            {
+                                ID = Constants.PETAPOCO_DeleteDogId,
+                                Age = Constants.PETAPOCO_DeleteDogAge,
+                                Name = Constants.PETAPOCO_DeleteDogName
+                            };
+
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            {
+                dataContext.AddFluentMapper<Dog>()
+                   .TableName(Constants.PETAPOCO_DogTableName)
+                   .PrimaryKey("ID")
+                   .Property(d => d.ID, "ID")
+                   .Property(d => d.Age, "Age")
+                   .Property(d => d.Name, "Name");
+
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
                 //Act
@@ -236,6 +301,34 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
+        public void PetaPoco_GetById_Returns_Single_Item_Using_FluentMapper()
+        {
+            //Arrange
+            DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
+
+            Dog dog;
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            {
+                dataContext.AddFluentMapper<Dog>()
+                  .TableName(Constants.PETAPOCO_DogTableName)
+                  .PrimaryKey("ID")
+                  .Property(d => d.ID, "ID")
+                  .Property(d => d.Age, "Age")
+                  .Property(d => d.Name, "Name");
+
+                IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
+
+                //Act
+                dog = dogRepository.GetById(Constants.PETAPOCO_ValidDogId);
+            }
+
+            //Assert
+            Assert.IsInstanceOf<Dog>(dog);
+            Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
+            Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
+        }
+
+        [Test]
         public void PetaPoco_Update_Updates_Item()
         {
             //Arrange
@@ -272,6 +365,49 @@ namespace DotNetNuke.Tests.Data
             }
         }
 
+        [Test]
+        public void PetaPoco_Update_Updates_Item_Using_FluentMapper()
+        {
+            //Arrange
+            DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
+
+            var dog = new Dog
+                            {
+                                ID = Constants.PETAPOCO_UpdateDogId,
+                                Age = Constants.PETAPOCO_UpdateDogAge,
+                                Name = Constants.PETAPOCO_UpdateDogName
+                            };
+
+            //Act
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            {
+                dataContext.AddFluentMapper<Dog>()
+                  .TableName(Constants.PETAPOCO_DogTableName)
+                  .PrimaryKey("ID")
+                  .Property(d => d.ID, "ID")
+                  .Property(d => d.Age, "Age")
+                  .Property(d => d.Name, "Name");
+
+                IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
+
+                //Act
+                dogRepository.Update(dog);
+            }
+
+            //Assert
+            DataTable table = DataUtil.GetTable(Constants.PETAPOCO_DatabaseName, Constants.PETAPOCO_DogTableName);
+
+            Assert.AreEqual(Constants.PETAPOCO_RecordCount, table.Rows.Count);
+
+            foreach (DataRow row in table.Rows)
+            {
+                if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
+                {
+                    Assert.AreEqual(row["Age"], Constants.PETAPOCO_UpdateDogAge);
+                    Assert.AreEqual(row["Name"], Constants.PETAPOCO_UpdateDogName);
+                }
+            }
+        }
         [Test]
         public void PetaPoco_Update_Overload_Updates_Item()
         {
