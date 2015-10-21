@@ -577,6 +577,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.saveContentField = function(data) {
         if(!validate()) {
             util.alert(resx.invalidContentFieldMessage, resx.ok);
+        }  else if (self.fieldTypeId() === "C0" || self.fieldTypeId() === "D0") {
+            util.alert(resx.invalidContentFieldType, resx.ok);
         }
         else {
             var jsObject = ko.toJS(data);
