@@ -379,8 +379,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
             var errorMessage = JSON.parse(xhr.responseText).Message;
             if (errorMessage) {
                 return errorMessage;
-            } 
-            return err;            
+            }
         }
         return err;
     };

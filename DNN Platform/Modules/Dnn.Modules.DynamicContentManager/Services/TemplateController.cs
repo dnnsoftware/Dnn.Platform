@@ -130,12 +130,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveTemplate(TemplateViewModel viewModel)
         {
-            var templateStream = new MemoryStream(Encoding.UTF8.GetBytes(viewModel.Content ?? ""));
+            
             var portalId = (viewModel.IsSystem) ? -1 : PortalSettings.PortalId;
             IFileInfo file;
             try
             {
-                file = CreateTemplateFile(viewModel, portalId, templateStream);
+                file = CreateTemplateFile(viewModel, portalId);
 
                 if (file == null)
                 {
@@ -182,20 +182,22 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 /*SaveLocal*/   id => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
         }
 
-        private IFileInfo CreateTemplateFile(TemplateViewModel viewModel, int portalId, MemoryStream templateStream)
+        private IFileInfo CreateTemplateFile(TemplateViewModel viewModel, int portalId)
         {
-            var folderPath = viewModel.FilePath.Substring(0, viewModel.FilePath.LastIndexOf("/", StringComparison.Ordinal));
+            using (var templateStream = new MemoryStream(Encoding.UTF8.GetBytes(viewModel.Content ?? "")))
+            {
+                var folderPath = viewModel.FilePath.Substring(0, viewModel.FilePath.LastIndexOf("/", StringComparison.Ordinal));
 
-            var fileName = Path.GetFileName(viewModel.FilePath);
+                var fileName = Path.GetFileName(viewModel.FilePath);
+                
+                var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
+                             FolderManager.Instance.AddFolder(portalId, folderPath);
 
+                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
 
-            var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
-                         FolderManager.Instance.AddFolder(portalId, folderPath);
-
-            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-
-            return FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType,
-                PortalSettings.UserId);            
+                return FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType,
+                    PortalSettings.UserId);                
+            }            
         }
     }
 }
