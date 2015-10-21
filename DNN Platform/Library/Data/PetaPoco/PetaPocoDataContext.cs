@@ -47,18 +47,23 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         public PetaPocoDataContext(string connectionStringName)
-            : this(connectionStringName, String.Empty)
+            : this(connectionStringName, String.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
         public PetaPocoDataContext(string connectionStringName, string tablePrefix)
+            : this(connectionStringName, tablePrefix, new Dictionary<Type, IMapper>())
+        {
+        }
+
+        public PetaPocoDataContext(string connectionStringName, string tablePrefix, Dictionary<Type, IMapper> mappers)
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
             _database = new Database(connectionStringName);
             _mapper = new PetaPocoMapper(tablePrefix);
             TablePrefix = tablePrefix;
-            FluentMappers = new Dictionary<Type, IMapper>();
+            FluentMappers = mappers;
         }
 
         #endregion

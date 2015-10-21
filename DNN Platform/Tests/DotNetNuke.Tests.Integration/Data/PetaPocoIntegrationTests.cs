@@ -23,6 +23,7 @@
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -35,6 +36,7 @@ using DotNetNuke.Tests.Data.Models;
 using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
+using PetaPoco;
 
 #endregion
 
@@ -43,6 +45,8 @@ namespace DotNetNuke.Tests.Data
     [TestFixture]
     public class PetaPocoIntegrationTests
     {
+        private Dictionary<Type, IMapper> _mappers;
+
         // ReSharper disable InconsistentNaming
         #region Setup/Teardown
 
@@ -59,6 +63,21 @@ namespace DotNetNuke.Tests.Data
                 {"objectQualifier", ""},
                 {"databaseOwner", "dbo."}
             });
+
+            var dogMapper = new FluentMapper<Dog>("")
+                    .TableName(Constants.PETAPOCO_DogTableName)
+                    .PrimaryKey("ID")
+                    .Property(d => d.ID, "ID")
+                    .Property(d => d.Age, "Age")
+                    .Property(d => d.Name, "Name");
+
+            var catMapper = new FluentMapper<Cat>("")
+                    .TableName(Constants.PETAPOCO_DogTableName)
+                    .Property(d => d.Age, "Age")
+                    .Property(d => d.Name, "Name");
+
+            _mappers = new Dictionary<Type, IMapper> {{typeof (Dog), dogMapper}};
+            _mappers = new Dictionary<Type, IMapper> { { typeof(Cat), catMapper } };
         }
 
         [TearDown]
@@ -109,15 +128,8 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_InsertDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
             {
-                dataContext.AddFluentMapper<Dog>()
-                    .TableName(Constants.PETAPOCO_DogTableName)
-                    .PrimaryKey("ID")
-                    .Property(d => d.ID, "ID")
-                    .Property(d => d.Age, "Age")
-                    .Property(d => d.Name, "Name");
-
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
                 //Act
@@ -170,15 +182,8 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_DeleteDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
             {
-                dataContext.AddFluentMapper<Dog>()
-                   .TableName(Constants.PETAPOCO_DogTableName)
-                   .PrimaryKey("ID")
-                   .Property(d => d.ID, "ID")
-                   .Property(d => d.Age, "Age")
-                   .Property(d => d.Name, "Name");
-
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
                 //Act
@@ -307,15 +312,8 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             Dog dog;
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
             {
-                dataContext.AddFluentMapper<Dog>()
-                  .TableName(Constants.PETAPOCO_DogTableName)
-                  .PrimaryKey("ID")
-                  .Property(d => d.ID, "ID")
-                  .Property(d => d.Age, "Age")
-                  .Property(d => d.Name, "Name");
-
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
                 //Act
@@ -379,15 +377,8 @@ namespace DotNetNuke.Tests.Data
                             };
 
             //Act
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
             {
-                dataContext.AddFluentMapper<Dog>()
-                  .TableName(Constants.PETAPOCO_DogTableName)
-                  .PrimaryKey("ID")
-                  .Property(d => d.ID, "ID")
-                  .Property(d => d.Age, "Age")
-                  .Property(d => d.Name, "Name");
-
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
                 //Act
