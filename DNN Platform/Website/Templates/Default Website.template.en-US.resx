@@ -204,9 +204,6 @@
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -562,9 +559,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -665,9 +659,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -765,9 +756,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -807,21 +795,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
     <value>My Profile</value>
-  </data>
-  <data name="Tab.Newsletters.Content.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Description.Text" xml:space="preserve">
-    <value>Send email messages to users, security roles and specific email addresses.</value>
-  </data>
-  <data name="Tab.Newsletters.Name.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
   </data>
   <data name="Tab.PageManagement.Content.Text" xml:space="preserve">
     <value>Page Management</value>
