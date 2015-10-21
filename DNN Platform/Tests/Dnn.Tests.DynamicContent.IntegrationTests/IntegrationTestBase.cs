@@ -159,6 +159,19 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             LogController.ClearInstance();
         }
 
+        protected void SetUpContentTypes(int count, int portalId)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int isDynamic = 0;
+                if (i % 2 == 0)
+                {
+                    isDynamic = 1;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isDynamic, CreatedByUserId, LastModifiedByUserId));
+            }
+        }
+
         protected void SetUpContentTypes(int count)
         {
             for (int i = 0; i < count; i++)
