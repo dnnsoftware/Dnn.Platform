@@ -73,7 +73,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
 
     self.closeEdit = function () {
         self.mode("listTypes");
-        self.refresh();
+        self.refresh(true);
     }
 
     self.editContentType = function(data) {
@@ -132,9 +132,11 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         getAllContentTypes();
     };
 
-    self.refresh = function() {
+    self.refresh = function(refreshContentTypesFieldType) {
         self.getContentTypes();
-        getAllContentTypes();
+        if (refreshContentTypesFieldType) {
+            getAllContentTypes();
+        }
     }
 };
 
