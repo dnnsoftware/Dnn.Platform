@@ -358,6 +358,6 @@
     <value>List</value>
   </data>
   <data name="InvalidCharsMessage.Text" xml:space="preserve">
-    <value>The file name contains invalid characters. Try to avoid the usage of |&amp;;$%@"&lt;&gt;()+,</value>
+    <value>The template file name contains invalid characters. Please, do not use the following characters |"&lt;&gt;</value>
   </data>
 </root>

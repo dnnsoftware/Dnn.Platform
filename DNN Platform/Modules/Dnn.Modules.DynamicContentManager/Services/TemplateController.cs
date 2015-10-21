@@ -175,6 +175,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                             {
                                                 template.Name = defaultName;
                                                 template.IsEditTemplate = viewModel.IsEditTemplate;
+                                                template.TemplateFileId = file.FileId;
                                                 ContentTemplateManager.Instance.UpdateContentTemplate(template);
                                             },
 

@@ -132,8 +132,8 @@ dcc.templateViewModel = function (parentViewModel, config) {
     var resx = config.resx;
     var codeEditor = config.codeEditor;
     var ko = config.ko;
-    var invalidCharsRegEx = /[|&;$%@"<>()+,]/g;
-    var replacementCharsRegEx = /[\s|&;$%@"<>/()+,]/g;
+    var invalidCharsRegEx = /[|"<>]/g;
+    var replacementCharsRegEx = /[\s|"<>/]/g;
     var $rootElement = config.$rootElement;
     var $contextMenu = $rootElement.find("#templateEditorContextMenu");
 
