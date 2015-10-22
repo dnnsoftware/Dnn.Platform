@@ -360,4 +360,7 @@
   <data name="InvalidCharsMessage.Text" xml:space="preserve">
     <value>The template file name contains invalid characters. Please, do not use the following characters |"&lt;&gt;</value>
   </data>
+  <data name="ContentFieldTranslationExists.Text" xml:space="preserve">
+    <value>A Content Field with the translated name for language '{0}' already exists.  Please try again with a different name.</value>
+  </data>
 </root>
