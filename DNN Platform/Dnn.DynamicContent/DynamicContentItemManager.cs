@@ -4,49 +4,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
 
 namespace Dnn.DynamicContent
 {
     public class DynamicContentItemManager : ServiceLocator<IDynamicContentItemManager, DynamicContentItemManager>, IDynamicContentItemManager
     {
-        #region Fields
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DynamicContentItemManager));
-
-        private Queue<SearchDocument> SearchDocumentsQueue;
-        private readonly int MaxIndexingThreads;
-        private int threadsCount = 0;
-
-        #endregion
-
         protected override Func<IDynamicContentItemManager> GetFactory()
         {
             return () => new DynamicContentItemManager();
         }
-
-        #region Constructors
-
-        public DynamicContentItemManager()
-        {
-            SearchDocumentsQueue = new Queue<SearchDocument>();
-            MaxIndexingThreads = Environment.ProcessorCount;
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public int AddContentItem(DynamicContentItem dynamicContent)
         {
@@ -64,11 +35,7 @@ namespace Dnn.DynamicContent
                                         ContentKey = String.Empty
                                     };
 
-            contentItem.ContentItemId = ContentController.Instance.AddContentItem(contentItem);
-
-            SaveSearchDocument(dynamicContent, contentItem);
-
-            return contentItem.ContentItemId;
+            return ContentController.Instance.AddContentItem(contentItem);
         }
 
         public DynamicContentItem CreateContentItem(int portalId, int tabId, int moduleId, DynamicContentType contentType)
@@ -110,8 +77,6 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(dynamicContent, "ContentItemId");
 
             ContentController.Instance.DeleteContentItem(dynamicContent.ContentItemId);
-
-            DeleteSearchDocument(dynamicContent);
         }
 
         public DynamicContentItem GetContentItem(int contentItemId)
@@ -163,130 +128,6 @@ namespace Dnn.DynamicContent
                                 };
 
             ContentController.Instance.UpdateContentItem(contentItem);
-
-            SaveSearchDocument(dynamicContent, contentItem);
         }
-
-        #endregion
-
-        #region Private Methods
-
-        private void SaveSearchDocument(DynamicContentItem dynamicContent, ContentItem contentItem)
-        {
-            var searchDoc = GenerateSearchDocument(dynamicContent, contentItem);
-            if (searchDoc == null)
-            {
-                return;
-            }
-
-            if (threadsCount >= MaxIndexingThreads)
-            {
-                lock (SearchDocumentsQueue)
-                {
-                    SearchDocumentsQueue.Enqueue(searchDoc);
-                }
-            }
-            else
-            {
-                threadsCount++;
-                var processThread = new Thread(() => SaveSearchDocumentThread(searchDoc)) { IsBackground = true };
-                processThread.Start();
-            }
-        }
-
-        private void SaveSearchDocumentThread(SearchDocument searchDoc)
-        {
-            try
-            {
-                InternalSearchController.Instance.AddSearchDocument(searchDoc);
-
-                while (SearchDocumentsQueue.Count > 0)
-                {
-                    lock (SearchDocumentsQueue)
-                    {
-                        searchDoc = SearchDocumentsQueue.Dequeue();
-                    }
-                    InternalSearchController.Instance.AddSearchDocument(searchDoc);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-            finally
-            {
-                threadsCount--;
-            }
-        } 
-
-        private void DeleteSearchDocument(DynamicContentItem dynamicContent)
-        {
-            var searchDoc = new SearchDocument
-            {
-                UniqueKey = dynamicContent.ContentItemId.ToString("D"),
-                ModuleId = dynamicContent.ModuleId,
-                TabId = dynamicContent.TabId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
-            };
-
-            InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
-        }
-
-        private SearchDocument GenerateSearchDocument(DynamicContentItem dynamicContent, ContentItem contentItem)
-        {
-            var moduleInfo = ModuleController.Instance.GetModule(contentItem.ModuleID, contentItem.TabID, false);
-            if (moduleInfo == null)
-            {
-                return null;
-            }
-
-            var searchDoc = new SearchDocument
-            {
-                UniqueKey = contentItem.ContentItemId.ToString("D"),
-                PortalId = dynamicContent.PortalId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
-                Title = moduleInfo.ModuleTitle,
-                Description = string.Empty,
-                Body = GenerateSearchContent(dynamicContent),
-                ModuleId = contentItem.ModuleID,
-                ModuleDefId = moduleInfo.ModuleDefID,
-                TabId = contentItem.TabID,
-                ModifiedTimeUtc = DateTime.UtcNow
-            };
-
-            if (contentItem.Terms != null && contentItem.Terms.Count > 0)
-            {
-                searchDoc.Tags = CollectHierarchicalTags(contentItem.Terms);
-            }
-
-            return searchDoc;
-        }
-
-        private string GenerateSearchContent(DynamicContentItem dynamicContent)
-        {
-            var contents = (from f in dynamicContent.Content.Fields.Values select f.Value).ToArray();
-            return string.Join(" ", contents);
-        }
-
-        private List<string> CollectHierarchicalTags(List<Term> terms)
-        {
-            Func<List<Term>, List<string>, List<string>> collectTagsFunc = null;
-            collectTagsFunc = (ts, tags) =>
-            {
-                if (ts != null && ts.Count > 0)
-                {
-                    foreach (var t in ts)
-                    {
-                        tags.Add(t.Name);
-                        tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
-                    }
-                }
-                return tags;
-            };
-
-            return collectTagsFunc(terms, new List<string>());
-        }
-
-        #endregion
     }
 }

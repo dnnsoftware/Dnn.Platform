@@ -93,10 +93,6 @@
       <Project>{7c0de7d8-3f9c-4f69-873b-8b0eb800348f}</Project>
       <Name>Dnn.DynamicContent</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Tests.Core\DotNetNuke.Tests.Core.csproj">
-      <Project>{bca9ac2a-1df7-4697-8836-452e13e7cafa}</Project>
-      <Name>DotNetNuke.Tests.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
