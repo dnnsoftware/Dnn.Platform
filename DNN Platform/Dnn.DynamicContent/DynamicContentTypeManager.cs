@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Data;
 using System.Linq;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
@@ -10,6 +11,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
 {
@@ -76,6 +78,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="SystemContentTypeSecurityException">system content types can only be deleted by Super Users</exception>
+        /// <exception cref="ContentTypeInUseException">Content Type is in use by other component</exception>
         public void DeleteContentType(DynamicContentType contentType)
         {
             Requires.NotNull(contentType);
@@ -93,7 +96,11 @@ namespace Dnn.DynamicContent
             {
                 throw new SystemContentTypeSecurityException();
             }
-
+            if (IsInUse(contentType.ContentTypeId))
+            {
+                throw new ContentTypeInUseException(contentType); ;
+            }
+            
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
             {
@@ -112,6 +119,33 @@ namespace Dnn.DynamicContent
 
             Delete(contentType);
         }
+
+        private bool IsInUse(int contentTypeId)
+        {
+            using (DataContext)
+            {
+                //Check Content Items
+                var contentItemsCount = DataContext.ExecuteScalar<int>(CommandType.Text, @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentItems
+                                                        WHERE ContentTypeID = "+contentTypeId);
+                if (contentItemsCount > 0)
+                {
+                    return true; //There is at least one ContentItem using this Content Type
+                }
+
+                //Check Content Type references
+                var contentTypeReferencesCount = DataContext.ExecuteScalar<int>(CommandType.Text, @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentTypes_FieldDefinitions
+                                                        WHERE IsReferenceType = 1 AND FieldTypeID = " + contentTypeId);
+                if (contentTypeReferencesCount > 0)
+                {
+                    return true; //There is at least one Content Type referencing this Content Type
+                }
+            }
+            return false;
+        }
+
+
 
         /// <summary>
         /// GetContentType retrieves a dynamic content type for a portal, optionally including system types

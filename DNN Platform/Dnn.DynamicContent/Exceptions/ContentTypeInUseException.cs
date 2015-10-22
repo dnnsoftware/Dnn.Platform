@@ -5,11 +5,11 @@ using DnnLocalization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
-    public class DataTypeInUseException : EntityInUseException
+    public class ContentTypeInUseException : EntityInUseException
     {
-        public DataTypeInUseException(DataType dataType)
-            : base(DnnLocalization.GetString("DataType",
-                DnnLocalization.SharedResourceFile), dataType.DataTypeId)            
+        public ContentTypeInUseException(DynamicContentType dataType)
+            : base(DnnLocalization.GetString("ContentType",
+                DnnLocalization.SharedResourceFile), dataType.ContentTypeId)            
         {
         }
     }

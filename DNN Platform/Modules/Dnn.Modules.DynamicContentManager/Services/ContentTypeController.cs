@@ -10,11 +10,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
 using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -48,8 +49,16 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentType(ContentTypeViewModel viewModel)
         {
-            return DeleteEntity(() => DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true),
+            try
+            {
+                return DeleteEntity(() => DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true),
                                 contentType => DynamicContentTypeManager.Instance.DeleteContentType(contentType));
+            }
+            catch (ContentTypeInUseException ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse((HttpStatusCode)HttpStatusCodeAdditions.UnprocessableEntity, ex.Message);
+            }            
         }
 
         /// <summary>

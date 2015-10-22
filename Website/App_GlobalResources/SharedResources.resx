@@ -1974,4 +1974,10 @@
   <data name="QuickSettings.Text" xml:space="preserve">
     <value>Quick Settings</value>
   </data>
+  <data name="ContentType.Text" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
+  <data name="DataType.Text" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
 </root>
