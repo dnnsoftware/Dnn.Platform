@@ -132,6 +132,11 @@
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Website\DotNetNuke.Website.csproj">
+      <Project>{7f680294-37da-4901-a19b-af09794f73d7}</Project>
+      <Name>DotNetNuke.Website</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
@@ -143,6 +148,11 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dnn.Modules.Languages\Dnn.Modules.Languages.csproj">
+      <Project>{e66b5763-2eaa-470d-84cb-a8fe1d21e864}</Project>
+      <Name>Dnn.Modules.Languages</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +183,8 @@
           <DevelopmentServerPort>24372</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:24372/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:64275/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
