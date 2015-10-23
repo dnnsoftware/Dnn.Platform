@@ -68,11 +68,12 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: created"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
-                        <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check-square-o]" data-bind="visible: isSystem"></i></td>
+                        <td class="dccActions" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:pencil]"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="[Icon:trash-o]"></i></a>
+                            <a class="dccIcon dccRemove" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="[Icon:remove]"></i></a>
+                            <div class="dccIcon dccExpand" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:caret-down]"></i></div>
                         </td>
                     </tr>
                     </tbody>
@@ -82,11 +83,11 @@
                             <table class="dccPager">
                                 <tr>
                                     <td>
-                                        <span data-bind="text: rootViewModel.resx.contentTypesPageSize"></span>
-                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                        <div data-bind="html: pagerItemsDescription"></div>
                                     </td>
                                     <td>
-                                        <div data-bind="html: pagerItemsDescription"></div>
+                                        <span data-bind="text: rootViewModel.resx.dataTypesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
                                     </td>
                                     <td>
                                         <ul class="right pager" data-bind="visible: pagerVisible">
@@ -104,22 +105,24 @@
             </div>
             <div id="contentTypes-editView" class="dccSubPanel" data-bind="visible: mode() == 'editType', with: selectedContentType">
                 <div class="dccEditForm">
-                    <div class="dccEditRow">
+                    <div class="dccEditRow name">
                         <div data-bind="css: rootViewModel.fieldStatus(localizedNames())">
                             <label>[Resx:{key:"Name"}]</label>
                             <input type="text" data-bind="value: name, enable: canEdit" />
                             <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
                         </div>
-                        <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
-                            <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
-                            <span class="label">[Resx:{key:"SystemType"}]</span>
-                        </div>
                     </div>
-                    <div class="dccEditRow">
+                    <div class="dccEditRow description">
                         <div data-bind="css: rootViewModel.fieldStatus(localizedDescriptions())">
                             <label>[Resx:{key:"Description"}]</label>
                             <textarea class="dccTextArea" type="text" data-bind="value: description, enable: canEdit"></textarea>
                             <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedDescriptions())}"></i>
+                        </div>
+                    </div>
+                    <div class="dccEditRow globalToggle">
+                        <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
+                            <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
+                            <span class="label">[Resx:{key:"SystemType"}]</span>
                         </div>
                     </div>
 
@@ -156,7 +159,7 @@
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="[Icon:pencil]"></i></a>
-                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="[Icon:trash-o]"></i></a>
+                                    <a class="dccIcon dccRemove" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="[Icon:remove]"></i></a>
                                     <a class="dccIcon dccMove" data-bind="visible: selected() && $parent.parentViewModel.canEdit() && $parent.contentFields().length > 1"><i class="[Icon:arrows]"></i></a>
                                 </td>
                             </tr>
@@ -296,11 +299,11 @@
                             <table class="dccPager">
                                 <tr>
                                     <td>
-                                        <span data-bind="text: rootViewModel.resx.dataTypesPageSize"></span>
-                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                        <div data-bind="html: pagerItemsDescription"></div>
                                     </td>
                                     <td>
-                                        <div data-bind="html: pagerItemsDescription"></div>
+                                        <span data-bind="text: rootViewModel.resx.dataTypesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
                                     </td>
                                     <td>
                                         <ul class="right pager" data-bind="visible: pagerVisible">
@@ -340,11 +343,12 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: contentType()"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
-                        <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check-square-o]" data-bind="visible: isSystem"></i></td>
+                        <td class="dccActions" width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:pencil]"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="[Icon:trash-o]"></i></a>
+                            <a class="dccIcon dccRemove" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="[Icon:remove]"></i></a>
+                            <div class="dccIcon dccExpand" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:caret-down]"></i></div>
                         </td>
                     </tr>
                     </tbody>
@@ -354,11 +358,11 @@
                             <table class="dccPager">
                                 <tr>
                                     <td>
-                                        <span data-bind="text: rootViewModel.resx.templatesPageSize"></span>
-                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
+                                        <div data-bind="html: pagerItemsDescription"></div>
                                     </td>
                                     <td>
-                                        <div data-bind="html: pagerItemsDescription"></div>
+                                        <span data-bind="text: rootViewModel.resx.templatesPageSize"></span>
+                                        <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
                                     </td>
                                     <td>
                                         <ul class="right pager" data-bind="visible: pagerVisible">
