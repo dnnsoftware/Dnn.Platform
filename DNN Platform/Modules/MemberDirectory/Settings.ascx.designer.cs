@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl itemTemplateLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl itemTemplateLabel;
         
         /// <summary>
         /// itemTemplate control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl alternateItemTemplateLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl alternateItemTemplateLabel;
         
         /// <summary>
         /// alternateItemTemplate control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl enablePopUpLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl enablePopUpLabel;
         
         /// <summary>
         /// enablePopUp control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl popUpTemplateLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl popUpTemplateLabel;
         
         /// <summary>
         /// popUpTemplate control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl filterBySelectorLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl filterBySelectorLabel;
         
         /// <summary>
         /// filterBySelector control.
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl sortFieldListLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl sortFieldListLabel;
         
         /// <summary>
         /// sortFieldList control.
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl sortOrderListLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl sortOrderListLabel;
         
         /// <summary>
         /// sortOrderList control.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl ExcludeHostUsersLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl ExcludeHostUsersLabel;
         
         /// <summary>
         /// ExcludeHostUsersCheckBox control.
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl displaySearchLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl displaySearchLabel;
         
         /// <summary>
         /// displaySearchList control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl searchField1Label;
+        protected global::DotNetNuke.UI.UserControls.LabelControl searchField1Label;
         
         /// <summary>
         /// searchField1List control.
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl searchField2Label;
+        protected global::DotNetNuke.UI.UserControls.LabelControl searchField2Label;
         
         /// <summary>
         /// searchField2List control.
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl searchField3Label;
+        protected global::DotNetNuke.UI.UserControls.LabelControl searchField3Label;
         
         /// <summary>
         /// searchField3List control.
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl searchField4Label;
+        protected global::DotNetNuke.UI.UserControls.LabelControl searchField4Label;
         
         /// <summary>
         /// searchField4List control.
@@ -289,7 +289,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl disablePagerLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl disablePagerLabel;
         
         /// <summary>
         /// disablePager control.
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.MemberDirectory {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl pageSizeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl pageSizeLabel;
         
         /// <summary>
         /// pageSize control.

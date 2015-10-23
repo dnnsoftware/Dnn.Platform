@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FileNameLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FileNameLabel;
         
         /// <summary>
         /// FileNameInput control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FileAttributesLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FileAttributesLabel;
         
         /// <summary>
         /// FileAttributeArchiveCheckBox control.

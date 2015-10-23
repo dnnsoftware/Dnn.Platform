@@ -37,7 +37,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plListParent;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plListParent;
         
         /// <summary>
         /// lblListParent control.
@@ -55,7 +55,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plListName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plListName;
         
         /// <summary>
         /// lblListName control.
@@ -73,7 +73,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEntryCount;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryCount;
         
         /// <summary>
         /// lblEntryCount control.
@@ -145,7 +145,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plParentKey;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plParentKey;
         
         /// <summary>
         /// txtParentKey control.
@@ -172,7 +172,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEntryName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryName;
         
         /// <summary>
         /// txtEntryName control.
@@ -217,7 +217,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSelectList;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSelectList;
         
         /// <summary>
         /// ddlSelectList control.
@@ -244,7 +244,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSelectParent;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSelectParent;
         
         /// <summary>
         /// ddlSelectParent control.
@@ -262,7 +262,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEntryText;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryText;
         
         /// <summary>
         /// txtEntryText control.
@@ -289,7 +289,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEntryValue;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEntryValue;
         
         /// <summary>
         /// txtEntryValue control.
@@ -325,7 +325,7 @@ namespace Dnn.Modules.Lists {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEnableSortOrder;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEnableSortOrder;
         
         /// <summary>
         /// chkEnableSortOrder control.

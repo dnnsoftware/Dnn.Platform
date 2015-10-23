@@ -19,7 +19,7 @@ namespace Dnn.Modules.Sql {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblSavedQuery;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSavedQuery;
         
         /// <summary>
         /// ddlSavedQuery control.
@@ -64,7 +64,7 @@ namespace Dnn.Modules.Sql {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plConnection;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plConnection;
         
         /// <summary>
         /// ddlConnection control.
@@ -118,7 +118,7 @@ namespace Dnn.Modules.Sql {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl errorLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl errorLabel;
         
         /// <summary>
         /// txtError control.
@@ -163,7 +163,7 @@ namespace Dnn.Modules.Sql {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblName;
         
         /// <summary>
         /// txtName control.

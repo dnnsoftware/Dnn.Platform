@@ -19,7 +19,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lbLocale;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lbLocale;
         
         /// <summary>
         /// cboLanguage control.
@@ -37,7 +37,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblType;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblType;
         
         /// <summary>
         /// rbPackType control.
@@ -91,7 +91,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblName;
         
         /// <summary>
         /// Label2 control.
@@ -154,7 +154,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl dshBasic;
+        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshBasic;
         
         /// <summary>
         /// divLog control.

@@ -64,7 +64,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plIsActive;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plIsActive;
         
         /// <summary>
         /// chkIsActive control.
@@ -82,7 +82,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plLogTypeKey;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plLogTypeKey;
         
         /// <summary>
         /// cboLogTypeKey control.
@@ -100,7 +100,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plLogTypePortalID;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plLogTypePortalID;
         
         /// <summary>
         /// cboLogTypePortalID control.
@@ -118,7 +118,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plKeepMostRecent;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plKeepMostRecent;
         
         /// <summary>
         /// cboKeepMostRecent control.
@@ -136,7 +136,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEmailNotificationStatus;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEmailNotificationStatus;
         
         /// <summary>
         /// chkEmailNotificationStatus control.
@@ -154,7 +154,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plThreshold;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plThreshold;
         
         /// <summary>
         /// cboThreshold control.
@@ -199,7 +199,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plMailFromAddress;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plMailFromAddress;
         
         /// <summary>
         /// txtMailFromAddress control.
@@ -217,7 +217,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plMailToAddress;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plMailToAddress;
         
         /// <summary>
         /// txtMailToAddress control.

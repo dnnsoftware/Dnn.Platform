@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plCurrentWorkflowState;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plCurrentWorkflowState;
         
         /// <summary>
         /// lblCurrentWorkflowState control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plActionOnSave;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plActionOnSave;
         
         /// <summary>
         /// chkPublish control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plPreviewVersion;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plPreviewVersion;
         
         /// <summary>
         /// lblPreviewVersion control.
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plPreviewWorkflowInUse;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plPreviewWorkflowInUse;
         
         /// <summary>
         /// lblPreviewWorkflowInUse control.
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plPreviewWorkflowState;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plPreviewWorkflowState;
         
         /// <summary>
         /// lblPreviewWorkflowState control.
@@ -343,7 +343,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plMaxVersions;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plMaxVersions;
         
         /// <summary>
         /// lblMaxVersions control.

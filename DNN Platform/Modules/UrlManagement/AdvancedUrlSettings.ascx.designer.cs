@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.UrlManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl moduleProvidersLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl moduleProvidersLabel;
         
         /// <summary>
         /// providersGrid control.

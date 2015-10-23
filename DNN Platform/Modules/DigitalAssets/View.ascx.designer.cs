@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl ParentFolderLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl ParentFolderLabel;
         
         /// <summary>
         /// FolderNameLabel control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderNameLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FolderNameLabel;
         
         /// <summary>
         /// FolderNameTextBox control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderTypeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FolderTypeLabel;
         
         /// <summary>
         /// FolderTypeComboBox control.
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl MappedPathLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl MappedPathLabel;
         
         /// <summary>
         /// MappedPathTextBox control.

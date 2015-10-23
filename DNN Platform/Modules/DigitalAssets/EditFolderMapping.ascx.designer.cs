@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl NameLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl NameLabel;
         
         /// <summary>
         /// NameTextbox control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderProviderLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FolderProviderLabel;
         
         /// <summary>
         /// FolderProvidersComboBox control.

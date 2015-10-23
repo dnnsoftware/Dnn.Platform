@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl scriptsLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl scriptsLabel;
         
         /// <summary>
         /// scriptList control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSource;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSource;
         
         /// <summary>
         /// txtSource control.
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl currentScriptLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl currentScriptLabel;
         
         /// <summary>
         /// isCurrentScript control.

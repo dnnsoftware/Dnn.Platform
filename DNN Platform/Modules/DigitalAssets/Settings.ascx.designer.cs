@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl DefaultFolderTypeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl DefaultFolderTypeLabel;
         
         /// <summary>
         /// DefaultFolderTypeComboBox control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl ModeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl ModeLabel;
         
         /// <summary>
         /// ModeComboBox control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl ViewConditionLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl ViewConditionLabel;
         
         /// <summary>
         /// FilterOptionsRadioButtonsList control.

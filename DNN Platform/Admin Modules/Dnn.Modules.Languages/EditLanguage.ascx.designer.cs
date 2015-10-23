@@ -19,7 +19,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl languageLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl languageLabel;
         
         /// <summary>
         /// languageLanguageLabel control.
@@ -46,7 +46,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl fallBackLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl fallBackLabel;
         
         /// <summary>
         /// fallbackLanguageLabel control.
@@ -82,7 +82,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl translatorsLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl translatorsLabel;
         
         /// <summary>
         /// translatorRoles control.

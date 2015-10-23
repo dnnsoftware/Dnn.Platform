@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblSubscriptions;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSubscriptions;
         
         /// <summary>
         /// lblNotificationFreq control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblNotificationFreq;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblNotificationFreq;
         
         /// <summary>
         /// lblMessageFreq control.
@@ -46,6 +46,6 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblMessageFreq;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblMessageFreq;
     }
 }

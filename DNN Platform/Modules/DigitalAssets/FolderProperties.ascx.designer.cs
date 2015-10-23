@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderInfoPreviewPanel;
+        protected global::DotNetNuke.Modules.DigitalAssets.PreviewPanelControl FolderInfoPreviewPanel;
         
         /// <summary>
         /// FolderNameLabel control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderNameLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FolderNameLabel;
         
         /// <summary>
         /// FolderNameInput control.
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FolderTypeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl FolderTypeLabel;
         
         /// <summary>
         /// FolderTypeLiteral control.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblCopyPerm;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCopyPerm;
         
         /// <summary>
         /// cmdCopyPerm control.

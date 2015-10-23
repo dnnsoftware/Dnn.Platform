@@ -28,6 +28,6 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl FieldsControl;
+        protected global::DotNetNuke.Modules.DigitalAssets.PreviewFieldsControl FieldsControl;
     }
 }

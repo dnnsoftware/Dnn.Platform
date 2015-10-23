@@ -46,7 +46,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblTemplateMessage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblTemplateMessage;
         
         /// <summary>
         /// chkTemplate control.
@@ -64,7 +64,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblTemplateList;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblTemplateList;
         
         /// <summary>
         /// lstTemplate control.
@@ -91,7 +91,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblMergeModule;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblMergeModule;
         
         /// <summary>
         /// optMerge control.
@@ -127,7 +127,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalSkin;
+        protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalSkin;
         
         /// <summary>
         /// wizContainer control.
@@ -154,7 +154,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalContainer;
+        protected global::DotNetNuke.UI.Skins.SkinThumbNailControl ctlPortalContainer;
         
         /// <summary>
         /// wizDetails control.
@@ -172,7 +172,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblPortalName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblPortalName;
         
         /// <summary>
         /// txtPortalName control.
@@ -190,7 +190,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblDescription;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -208,7 +208,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblKeyWords;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblKeyWords;
         
         /// <summary>
         /// txtKeyWords control.
@@ -226,7 +226,7 @@ namespace Dnn.Modules.SiteWizard {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblLogo;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblLogo;
         
         /// <summary>
         /// ctlLogo control.

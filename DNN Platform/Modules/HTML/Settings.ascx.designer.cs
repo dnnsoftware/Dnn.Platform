@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plReplaceTokens;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plReplaceTokens;
         
         /// <summary>
         /// chkReplaceTokens control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plDecorate;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plDecorate;
         
         /// <summary>
         /// cbDecorate control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSearchDescLength;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSearchDescLength;
         
         /// <summary>
         /// txtSearchDescLength control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plWorkflow;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plWorkflow;
         
         /// <summary>
         /// cboWorkflow control.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plApplyTo;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plApplyTo;
         
         /// <summary>
         /// rblApplyTo control.

@@ -19,7 +19,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl Label1;
+        protected global::DotNetNuke.UI.UserControls.LabelControl Label1;
         
         /// <summary>
         /// modeList control.
@@ -46,7 +46,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblParentTab;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblParentTab;
         
         /// <summary>
         /// ParentTab control.
@@ -73,7 +73,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblIncludeParent;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeParent;
         
         /// <summary>
         /// IncludeParent control.
@@ -100,7 +100,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl tabsLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl tabsLabel;
         
         /// <summary>
         /// tabs control.
@@ -118,7 +118,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblDefaultSize;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDefaultSize;
         
         /// <summary>
         /// DefaultSize control.
@@ -136,7 +136,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblAllowResize;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowResize;
         
         /// <summary>
         /// AllowResize control.
@@ -154,7 +154,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblDefaultView;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDefaultView;
         
         /// <summary>
         /// DefaultView control.
@@ -172,7 +172,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblAllowViewChange;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowViewChange;
         
         /// <summary>
         /// AllowViewChange control.
@@ -190,7 +190,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblShowTooltip;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblShowTooltip;
         
         /// <summary>
         /// ShowTooltip control.
@@ -208,7 +208,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblOrderTabsByHierarchy;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblOrderTabsByHierarchy;
         
         /// <summary>
         /// OrderTabsByHierarchy control.
@@ -226,7 +226,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblIncludeHiddenPages;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeHiddenPages;
         
         /// <summary>
         /// IncludeHiddenPages control.
@@ -244,7 +244,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblConsoleWidth;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblConsoleWidth;
         
         /// <summary>
         /// ConsoleWidth control.

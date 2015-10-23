@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl scriptsLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl scriptsLabel;
         
         /// <summary>
         /// scriptList control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plFolder;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plFolder;
         
         /// <summary>
         /// txtFolder control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plName;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plName;
         
         /// <summary>
         /// txtName control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plDescription;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plAddPage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plAddPage;
         
         /// <summary>
         /// chkAddPage control.

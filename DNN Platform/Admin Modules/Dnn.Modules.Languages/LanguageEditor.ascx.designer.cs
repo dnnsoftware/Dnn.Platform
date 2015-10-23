@@ -19,7 +19,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plResources;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plResources;
         
         /// <summary>
         /// resourceFiles control.
@@ -46,7 +46,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plMode;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plMode;
         
         /// <summary>
         /// rbMode control.
@@ -64,7 +64,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl highlightLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl highlightLabel;
         
         /// <summary>
         /// chkHighlight control.
@@ -82,7 +82,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEditingLanguage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEditingLanguage;
         
         /// <summary>
         /// languageLabel control.
@@ -100,7 +100,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plFolder;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plFolder;
         
         /// <summary>
         /// lblFolder control.
@@ -118,7 +118,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSelected;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSelected;
         
         /// <summary>
         /// lblResourceFile control.

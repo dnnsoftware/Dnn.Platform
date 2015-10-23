@@ -19,7 +19,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblSiteMap;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSiteMap;
         
         /// <summary>
         /// lnkSiteMapUrl control.
@@ -55,7 +55,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblLevelPriority;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblLevelPriority;
         
         /// <summary>
         /// chkLevelPriority control.
@@ -73,7 +73,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblMinPagePriority;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblMinPagePriority;
         
         /// <summary>
         /// txtMinPagePriority control.
@@ -100,7 +100,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblIncludeHidden;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeHidden;
         
         /// <summary>
         /// chkIncludeHidden control.
@@ -127,7 +127,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblExcludePriority;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblExcludePriority;
         
         /// <summary>
         /// txtExcludePriority control.
@@ -154,7 +154,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblCache;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCache;
         
         /// <summary>
         /// cmbDaysToCache control.
@@ -190,7 +190,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblSearchEngine;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSearchEngine;
         
         /// <summary>
         /// cboSearchEngine control.
@@ -217,7 +217,7 @@ namespace Dnn.Modules.Sitemap {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl lblVerification;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblVerification;
         
         /// <summary>
         /// txtVerification control.

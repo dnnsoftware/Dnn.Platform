@@ -19,7 +19,7 @@ namespace Dnn.Modules.XmlMerge {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plConfig;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plConfig;
         
         /// <summary>
         /// ddlConfig control.
@@ -55,7 +55,7 @@ namespace Dnn.Modules.XmlMerge {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plScript;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plScript;
         
         /// <summary>
         /// uplScript control.

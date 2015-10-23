@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.UrlManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plUseFriendlyUrls;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plUseFriendlyUrls;
         
         /// <summary>
         /// chkUseFriendlyUrls control.
@@ -55,6 +55,6 @@ namespace DotNetNuke.Modules.UrlManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl friendlyUrls;
+        protected global::DotNetNuke.Modules.Admin.Host.FriendlyUrls friendlyUrls;
     }
 }
