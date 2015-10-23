@@ -69,6 +69,7 @@
     <Compile Include="ContentTemplateTests.cs" />
     <Compile Include="DataTypeManagerTests.cs" />
     <Compile Include="DataTypeTests.cs" />
+    <Compile Include="DynamicContentSearchManagerTests.cs" />
     <Compile Include="DynamicContentItemManagerTests.cs" />
     <Compile Include="DynamicContentItemTests.cs" />
     <Compile Include="DynamicContentTypeManagerTests.cs" />

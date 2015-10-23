@@ -10,6 +10,7 @@ using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Models;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
@@ -205,7 +206,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 var contentType = DynamicContentTypeManager.Instance.GetContentTypes(PortalSettings.PortalId, true).SingleOrDefault(ct => ct.Name == "HTML");
                 contentItem = DynamicContentItemManager.Instance.CreateContentItem(PortalSettings.PortalId, ActivePage.TabID, ActiveModule.ModuleID, contentType);
             }
-
+            
             ViewData["Template"] = templateName;
 
             return View(contentItem);

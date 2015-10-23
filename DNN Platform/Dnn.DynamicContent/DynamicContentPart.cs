@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Dnn.DynamicContent.Exceptions;
 using Newtonsoft.Json.Linq;
 
@@ -142,6 +144,16 @@ namespace Dnn.DynamicContent
                             );
 
             return jObject;
+        }
+
+        public string GetStringValue()
+        {
+            var values = new List<string>();
+            foreach (var field in Fields)
+            {               
+                values.Add(field.Value.GetStringValue());
+            }
+            return string.Join(",", values);
         }
     }
 }
