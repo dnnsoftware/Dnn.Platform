@@ -19,7 +19,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plPortalID;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plPortalID;
         
         /// <summary>
         /// ddlPortalid control.
@@ -37,7 +37,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plLogType;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plLogType;
         
         /// <summary>
         /// ddlLogType control.
@@ -55,7 +55,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plRecordsPage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plRecordsPage;
         
         /// <summary>
         /// ddlRecordsPerPage control.
@@ -199,7 +199,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plEmailAddress;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEmailAddress;
         
         /// <summary>
         /// txtEmailAddress control.
@@ -217,7 +217,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSubject;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSubject;
         
         /// <summary>
         /// txtSubject control.
@@ -235,7 +235,7 @@ namespace Dnn.Modules.LogViewer {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plMessage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plMessage;
         
         /// <summary>
         /// txtMessage control.

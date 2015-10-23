@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl fileTypeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl fileTypeLabel;
         
         /// <summary>
         /// scriptFileType control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.RazorHost {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl fileNameLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl fileNameLabel;
         
         /// <summary>
         /// fileName control.

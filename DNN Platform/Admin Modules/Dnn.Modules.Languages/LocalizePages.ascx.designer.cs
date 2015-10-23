@@ -28,7 +28,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl siteDefaultLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl siteDefaultLabel;
         
         /// <summary>
         /// defaultLanguageLabel control.
@@ -46,7 +46,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl PagesToLocalizeLabel;
+        protected global::DotNetNuke.UI.UserControls.LabelControl PagesToLocalizeLabel;
         
         /// <summary>
         /// PagesToLocalize control.

@@ -19,7 +19,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plFile;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
         
         /// <summary>
         /// cboFile control.
@@ -37,7 +37,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plSource;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plSource;
         
         /// <summary>
         /// lblPath control.
@@ -100,7 +100,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plLanguage;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plLanguage;
         
         /// <summary>
         /// optLanguage control.
@@ -118,7 +118,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plTemplate;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plTemplate;
         
         /// <summary>
         /// cboTemplate control.
@@ -136,7 +136,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plControl;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plControl;
         
         /// <summary>
         /// txtControl control.
@@ -154,7 +154,7 @@ namespace Dnn.Module.ModuleCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plType;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plType;
         
         /// <summary>
         /// cboType control.

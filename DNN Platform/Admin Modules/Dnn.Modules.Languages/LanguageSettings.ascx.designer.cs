@@ -19,7 +19,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plUsePaging;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plUsePaging;
         
         /// <summary>
         /// chkUsePaging control.
@@ -37,7 +37,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plPageSize;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plPageSize;
         
         /// <summary>
         /// txtPageSize control.
@@ -73,7 +73,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plShowLanguages;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plShowLanguages;
         
         /// <summary>
         /// chkShowLanguages control.
@@ -91,7 +91,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl plShowSettings;
+        protected global::DotNetNuke.UI.UserControls.LabelControl plShowSettings;
         
         /// <summary>
         /// chkShowSettings control.

@@ -40,6 +40,15 @@ namespace DotNetNuke.Modules.Groups {
         protected global::System.Web.UI.WebControls.LinkButton btnSearch;
         
         /// <summary>
+        /// reqSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqSearch;
+        
+        /// <summary>
         /// ctlGroupList control.
         /// </summary>
         /// <remarks>

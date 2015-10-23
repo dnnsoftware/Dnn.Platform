@@ -7,30 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-
-namespace DotNetNuke.Modules.RazorHost
-{
-
-	public partial class Settings
-	{
-
-		///<summary>
-		///scriptListLabel control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.UserControl scriptListLabel;
-
-		///<summary>
-		///scriptList control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.DropDownList scriptList;
-	}
+namespace DotNetNuke.Modules.RazorHost {
+    
+    
+    public partial class Settings {
+        
+        /// <summary>
+        /// scriptListLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl scriptListLabel;
+        
+        /// <summary>
+        /// scriptList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList scriptList;
+    }
 }
