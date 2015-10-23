@@ -119,6 +119,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Helpers\DefaultEditorTemplates.cs" />
     <Compile Include="Helpers\DnnDisplayExtensions.cs" />
     <Compile Include="Helpers\DnnEditorExtensions.cs" />
