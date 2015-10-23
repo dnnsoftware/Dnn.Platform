@@ -22,7 +22,7 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                      <adminPage>Recycle Bin</adminPage>
+                      <adminPage>RecycleBin</adminPage>
                       <tabIconFile>~/Icons/Sigma/Trash_16X16_Standard.png</tabIconFile>
                       <tabIconFileLarge>~/Icons/Sigma/Trash_16X16_Standard.png</tabIconFileLarge>
                       <tabDescription>Send email messages to users, security roles and specific email addresses.</tabDescription>

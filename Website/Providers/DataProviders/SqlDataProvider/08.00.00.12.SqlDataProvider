@@ -5,3 +5,7 @@ IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{obj
   ALTER TABLE [{objectQualifier}ContentTypes_FieldDefinitions] 
 	ADD IsList bit NOT NULL DEFAULT (0)
 GO
+
+/***** DNN-7694: update admin page value for admin modules *****/
+UPDATE {databaseOwner}[{objectQualifier}DesktopModules] SET AdminPage = 'GoogleAnalytics' WHERE FriendlyName = 'Google Analytics'
+GO
