@@ -134,14 +134,11 @@ namespace Dnn.DynamicContent
 
                     if (definition.IsList)
                     {
+                        field = new DynamicContentField(definition);
                         var jArray = jField["value"] as JArray;
                         if (jArray != null)
                         {
-                            field = new DynamicContentField(definition)
-                            {
-                                Value = jArray.Select(jObject => FromJson(definition, jObject as JObject))
-                                                                .ToList()
-                            };
+                            field.Value = jArray.Select(jObject => FromJson(definition, jObject as JObject)).ToList();
                         }
                     }
                     else
