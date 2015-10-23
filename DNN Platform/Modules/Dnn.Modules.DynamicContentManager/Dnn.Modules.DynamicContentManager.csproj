@@ -44,13 +44,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>

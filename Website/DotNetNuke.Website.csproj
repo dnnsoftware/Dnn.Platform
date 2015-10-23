@@ -60,38 +60,47 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Dnn.Modules.Lists, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Dnn.Modules.Lists">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Admin Modules\Dnn.Modules.Lists\bin\Dnn.Modules.Lists.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.HttpModules">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Modules.CoreMessaging">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Modules\CoreMessaging\bin\DotNetNuke.Modules.CoreMessaging.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.DDRMenu, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.DDRMenu">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
-      <HintPath>..\DNN Platform\Modules\DDRMenu\_dependencies\07.02.00\DotNetNuke.WebControls.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DNN Platform\Controls\DotNetNuk.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
