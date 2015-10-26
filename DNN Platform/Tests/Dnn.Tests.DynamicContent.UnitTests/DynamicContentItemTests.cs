@@ -719,7 +719,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void FromJson_Throws_If_Cant_Match_Field_From_Json_With_FieldDefinitions()
+        public void FromJson_DoesNotThrow_If_Cant_Match_Field_From_Json_With_FieldDefinitions()
         {
             //Arrange
             var contentTypeId = CONTENTTYPE_Simple;
@@ -744,8 +744,60 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
             DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
-            //Act, Assert
-            Assert.Throws<JsonInvalidFieldException>(() => dynamicContent.FromJson(SimpleContentTypeJson.ToString()));
+            //Act
+            var act = new TestDelegate(() => dynamicContent.FromJson(SimpleContentTypeJson.ToString()));
+            
+            // Assert
+            Assert.DoesNotThrow(act);
+        }
+
+        [Test]
+        public void FromJson_Set_DefaultValues_If_Cant_Match_Field_From_Json_With_FieldDefinitions()
+        {
+            //Arrange
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            var dynamicContent = new DynamicContentItem(portalId);
+
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new []
+                {
+                    new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer},
+                    new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean },
+                    new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String }
+                }.AsQueryable());
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
+            
+            var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
+                        .Returns(new DynamicContentType { ContentTypeId = contentTypeId });
+            DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
+
+            //Act
+            dynamicContent.FromJson((new JObject(
+                            new JProperty("contentTypeId", CONTENTTYPE_Simple),
+                            new JProperty("content",
+                                new JObject(
+                                    new JProperty("field",
+                                            new JArray(
+                                            new JObject(
+                                                new JProperty("name", "NotDefinedFieldName"),
+                                                new JProperty("value", 1)
+                                                )
+                                        )
+                                )
+                            )))).ToString());
+
+            // Assert
+            Assert.AreEqual(0, dynamicContent.Content.Fields["FieldName1"].Value);
+            Assert.AreEqual(false, dynamicContent.Content.Fields["FieldName2"].Value);
+            Assert.AreEqual(string.Empty, dynamicContent.Content.Fields["FieldName3"].Value);
+            Assert.IsFalse(dynamicContent.Content.Fields.ContainsKey("NotDefinedFieldName"));
         }
 
         [Test]
