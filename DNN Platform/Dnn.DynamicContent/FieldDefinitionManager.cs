@@ -4,6 +4,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
@@ -18,6 +19,8 @@ namespace Dnn.DynamicContent
         public const string LabelKey = "ContentField_{0}_Label";
         public const string NameKey = "ContentField_{0}_Name";
 
+        private IFieldDefinitionChecker _fieldDefinitionChecker;
+
         protected override Func<IFieldDefinitionManager> GetFactory()
         {
             return () => new FieldDefinitionManager();
@@ -25,7 +28,10 @@ namespace Dnn.DynamicContent
 
         public FieldDefinitionManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public FieldDefinitionManager(IDataContext dataContext) : base(dataContext) { }
+        public FieldDefinitionManager(IDataContext dataContext) : base(dataContext)
+        {
+            _fieldDefinitionChecker = FieldDefinitionChecker.Instance;
+        }
 
         /// <summary>
         /// Adds a new field definition for use with Structured(Dynamic) Content Types.
@@ -34,6 +40,8 @@ namespace Dnn.DynamicContent
         /// <returns>field definition id.</returns>
         /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        /// <exception cref="Dnn.DynamicContent.Exceptions.InvalidEntityException">The field object is not valid (Inexisting content type, dead loop definition, 
+        /// duplicate field names in the same content type, etc.).</exception>
         public int AddFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
@@ -43,6 +51,12 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
             field.Order = Get(field.ContentTypeId).Count();
+
+            string errorMessage;
+            if (!_fieldDefinitionChecker.IsValid(field, out errorMessage))
+            {
+                throw new InvalidEntityException(errorMessage);
+            }
 
             Add(field);
 
@@ -175,6 +189,8 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">field definition id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        /// <exception cref="Dnn.DynamicContent.Exceptions.InvalidEntityException">The field object is not valid (Inexisting content type, dead loop definition, 
+        /// duplicate field names in the same content type, etc.).</exception>
         public void UpdateFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
@@ -182,6 +198,12 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(field, "FieldTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
+
+            string errorMessage;
+            if (!_fieldDefinitionChecker.IsValid(field, out errorMessage))
+            {
+                throw new InvalidEntityException(errorMessage);
+            }
 
             Update(field);
 

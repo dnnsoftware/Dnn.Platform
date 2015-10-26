@@ -11,6 +11,7 @@ using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Services.Attributes;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
@@ -25,6 +26,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DccExceptionFilter]
     public class ContentTypeController : BaseController
     {
         /// <summary>
