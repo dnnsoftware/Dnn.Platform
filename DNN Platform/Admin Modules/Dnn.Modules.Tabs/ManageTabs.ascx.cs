@@ -240,11 +240,16 @@ namespace Dnn.Modules.Tabs
 
         private void LoadContentLocalizationControl()
         {
-            if (File.Exists(Server.MapPath(ContentLocalizationControlPath)))
+            if (IsLanguageModuleInstalled())
             {
                 contentLocalizationControl = LoadControl(ContentLocalizationControlPath);
                 localizationControlRow.Controls.Add(contentLocalizationControl);
             }
+        }
+
+        private bool IsLanguageModuleInstalled()
+        {
+            return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
         }
 
         protected void BindCLControl()

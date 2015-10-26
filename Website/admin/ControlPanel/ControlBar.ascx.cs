@@ -757,6 +757,11 @@ namespace DotNetNuke.UI.ControlPanels
             return true;
         }
 
+        protected bool IsLanguageModuleInstalled()
+        {
+            return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
+        }
+
         #endregion
 
         #region Private Methods

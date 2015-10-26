@@ -262,7 +262,7 @@
 
                         <li><a href="<%= BuildToolUrl("PageTemplate", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageTemplate.Text") %></a></li>
-                            <% if (PortalSettings.ContentLocalizationEnabled && DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null)
+                            <% if (PortalSettings.ContentLocalizationEnabled && IsLanguageModuleInstalled())
                                { %>
                         <li><a href="<%= BuildToolUrl("PageLocalization", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageLocalization.Text") %></a></li>
