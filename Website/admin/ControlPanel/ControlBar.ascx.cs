@@ -60,6 +60,21 @@ namespace DotNetNuke.UI.ControlPanels
 {
     public partial class ControlBar : ControlPanelBase
     {
+        private readonly IList<string> _adminCommonTabs = new List<string> { "Site Settings", 
+                                                                            "Security Roles", 
+                                                                            "User Accounts", 
+                                                                            "File Management" };
+
+        private readonly IList<string> _hostCommonTabs = new List<string> { "Host Settings",
+                                                                            "Site Management",
+                                                                            "File Management",
+                                                                            "Extensions",
+                                                                            "Dashboard",
+                                                                            "Health Monitoring",
+                                                                            "Technical Support",
+                                                                            "Knowledge Base",
+                                                                            "Software and Documentation" };
+
         protected DnnFileUpload FileUploader;
 
         protected string CurrentUICulture { get; set; }
@@ -1047,22 +1062,13 @@ namespace DotNetNuke.UI.ControlPanels
 
             foreach (var tabInfo in _hostTabs)
             {
-                switch (tabInfo.TabName)
+                if (IsCommonTab(tabInfo, true))
                 {
-                    case "Host Settings":
-                    case "Site Management":
-                    case "File Management":
-                    case "Extensions":
-                    case "Dashboard":
-                    case "Health Monitoring":
-                    case "Technical Support":
-                    case "Knowledge Base":
-                    case "Software and Documentation":
-                        _hostBaseTabs.Add(tabInfo);
-                        break;
-                    default:
-                        _hostAdvancedTabs.Add(tabInfo);
-                        break;
+                    _hostBaseTabs.Add(tabInfo);
+                }
+                else
+                {
+                    _hostAdvancedTabs.Add(tabInfo);
                 }
             }
         }
@@ -1077,23 +1083,28 @@ namespace DotNetNuke.UI.ControlPanels
 
             foreach (var tabInfo in _adminTabs)
             {
-                switch (tabInfo.TabName)
+                if (IsCommonTab(tabInfo))
                 {
-                    case "Site Settings":
-                    case "Pages":
-                    case "Security Roles":
-                    case "User Accounts":
-                    case "File Management":
-                    case "Recycle Bin":
-                    case "Log Viewer":
-                        _adminBaseTabs.Add(tabInfo);
-                        break;
-                    default:
-                        _adminAdvancedTabs.Add(tabInfo);
-                        break;
+                    _adminBaseTabs.Add(tabInfo);
+                }
+                else
+                {
+                    _adminAdvancedTabs.Add(tabInfo);
                 }
             }
 
+        }
+
+        private bool IsCommonTab(TabInfo tab, bool isHost = false)
+        {
+            if (tab.TabSettings.ContainsKey("ControlBar_CommonTab") &&
+                tab.TabSettings["ControlBar_CommonTab"].ToString() == "Y")
+            {
+                return true;
+            }
+
+
+            return isHost ? _hostCommonTabs.Contains(tab.TabName) : _adminCommonTabs.Contains(tab.TabName);
         }
 
         #endregion
