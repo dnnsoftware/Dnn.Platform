@@ -25,17 +25,11 @@ namespace Dnn.DynamicContent
             _contentController = ContentController.Instance;
         }
 
-        public SearchDocument GetSearchDocument(DynamicContentItem dynamicContent)
+        public SearchDocument GetSearchDocument(ModuleInfo moduleInfo, DynamicContentItem dynamicContent)
         {
             Requires.NotNull(dynamicContent);
             Requires.NotNegative("Content Item Id", dynamicContent.ContentItemId);
-
-            var moduleInfo = ModuleController.Instance.GetModule(dynamicContent.ModuleId, dynamicContent.TabId, false);
-            if (moduleInfo == null)
-            {
-                return null;
-            }
-
+            
             var searchDoc = new SearchDocument
             {
                 UniqueKey = dynamicContent.ContentItemId.ToString("D"),

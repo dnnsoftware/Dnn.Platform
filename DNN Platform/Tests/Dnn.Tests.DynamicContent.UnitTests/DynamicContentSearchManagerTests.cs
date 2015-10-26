@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using Dnn.DynamicContent;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
@@ -12,9 +11,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace Dnn.Tests.DynamicContent.UnitTests
@@ -22,30 +19,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     [TestFixture]
     public class DynamicContentSearchManagerTests
     {
-        private readonly JObject _testSimpleContentItem = new JObject(
-                        new JProperty("contentTypeId", Constants.CONTENTTYPE_ValidContentTypeId),
-                        new JProperty("content",
-                            new JObject(
-                                new JProperty("field",
-                                      new JArray(
-                                        new JObject(
-                                            new JProperty("name", "FieldName1"),
-                                            new JProperty("value", 1)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName2"),
-                                            new JProperty("value", true)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName3"),
-                                            new JProperty("value", "abc")
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                    );
-
         #region members
         //Mocks
         private Mock<IContentController> _mockContentController;
@@ -106,8 +79,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
             //Act
-            var result = _searchManager.GetSearchDocument(dynamicContentItem);
+            var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
             Assert.AreEqual(String.Join(",",1.ToString(),true.ToString(),"Some text"),result.Body);
@@ -135,8 +114,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
             //Act
-            var result = _searchManager.GetSearchDocument(dynamicContentItem);
+            var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
             Assert.AreEqual(String.Join(",", 1.ToString(), true.ToString(), "Some text", 2.ToString(), false.ToString(), "Other text"), result.Body);
@@ -146,9 +131,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetSearchDocument_ShouldThrowException_WhenContentItemIsNull()
         {
             //Arrange
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
             Action delegateFunction = () =>
             {
-                _searchManager.GetSearchDocument(null);
+                _searchManager.GetSearchDocument(moduleInfo, null);
             };
 
             //Act
@@ -176,10 +167,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
 
             Action delegateFunction = () =>
             {
-                _searchManager.GetSearchDocument(dynamicContentItem);
+                _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
             };
 
             //Act
