@@ -94,6 +94,7 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     self.editTemplate = function (data, e) {
         self.selectedTemplate.init();
         self.selectedTemplate.isEditMode(true);
+        $rootElement.find('a.dccButton').fadeIn(200);
 
         var row = $rootElement.find(e.target);
 
