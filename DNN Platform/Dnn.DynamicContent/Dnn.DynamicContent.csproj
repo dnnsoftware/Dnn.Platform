@@ -80,6 +80,7 @@
     <Compile Include="Exceptions\ItemDoesNotExistException.cs" />
     <Compile Include="Exceptions\ContentTypeInUseException.cs" />
     <Compile Include="Exceptions\EntityInUseException.cs" />
+    <Compile Include="Exceptions\InvalidEntityException.cs" />
     <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
     <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
@@ -89,11 +90,13 @@
     <Compile Include="Exceptions\JsonInvalidFieldException.cs" />
     <Compile Include="Exceptions\JsonMissingContentException.cs" />
     <Compile Include="FieldDefinition.cs" />
+    <Compile Include="FieldDefinitionChecker.cs" />
     <Compile Include="FieldDefinitionManager.cs" />
     <Compile Include="IContentTemplateManager.cs" />
     <Compile Include="IDataTypeManager.cs" />
     <Compile Include="IDynamicContentItemManager.cs" />
     <Compile Include="IDynamicContentTypeManager.cs" />
+    <Compile Include="IFieldDefinitionChecker.cs" />
     <Compile Include="IFieldDefinitionManager.cs" />
     <Compile Include="IValidationRuleManager.cs" />
     <Compile Include="IValidatorTypeManager.cs" />
