@@ -1,5 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.ControlBar" Codebehind="ControlBar.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Security.Permissions" %>
+<%@ Import Namespace="DotNetNuke.Entities.Modules" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <!--SEO NOINDEX-->
 <asp:Panel ID="ControlPanel" runat="server">
@@ -261,7 +262,7 @@
 
                         <li><a href="<%= BuildToolUrl("PageTemplate", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageTemplate.Text") %></a></li>
-                            <% if (PortalSettings.ContentLocalizationEnabled)
+                            <% if (PortalSettings.ContentLocalizationEnabled && IsLanguageModuleInstalled())
                                { %>
                         <li><a href="<%= BuildToolUrl("PageLocalization", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageLocalization.Text") %></a></li>
