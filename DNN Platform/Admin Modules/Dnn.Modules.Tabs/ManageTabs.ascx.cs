@@ -663,6 +663,7 @@ namespace Dnn.Modules.Tabs
         ///   Checks if parent tab will cause a circular reference
         /// </summary>
         /// <param name = "intTabId">Tabid</param>
+        /// <param name="portalId"></param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>

@@ -38,17 +38,6 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             return TemplateHelper.TemplateFor(dnnHelper, fieldName, templateName, htmlFieldName, DataBoundControlMode.ReadOnly, null);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dnnHelper"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="templateName"></param>
-        /// <param name="htmlFieldName"></param>
-        /// <param name="additionalViewData"></param>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <returns></returns>
         public static MvcHtmlString DisplayFor<TModel>(this DnnHelper<TModel> dnnHelper, string fieldName, string templateName, string htmlFieldName, object additionalViewData)
         {
             return TemplateHelper.TemplateFor(dnnHelper, fieldName, templateName, htmlFieldName, DataBoundControlMode.ReadOnly, additionalViewData);

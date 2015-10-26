@@ -117,6 +117,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.PreviewProfileManagement", "DNN Platform\Tests\DotNetNuke.Tests.PreviewProfileManagement\DotNetNuke.Tests.PreviewProfileManagement.csproj", "{D305E5DC-584F-43CB-B3ED-4CB5E7ED0B9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject

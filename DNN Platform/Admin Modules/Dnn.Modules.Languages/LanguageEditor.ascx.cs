@@ -413,6 +413,7 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Returns the resource file name for a given resource and language
         /// </summary>
+        /// <param name="language"></param>
         /// <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
         /// <returns>Localized File Name</returns>
         /// <remarks>
@@ -501,7 +502,6 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Loads suported locales and shows default values
         /// </summary>
-        /// <param name = "sender"></param>
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>

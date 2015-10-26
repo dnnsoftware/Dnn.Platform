@@ -358,7 +358,6 @@ namespace Dnn.Modules.LogViewer
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

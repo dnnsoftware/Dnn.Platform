@@ -33,12 +33,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Data">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Utilities">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
