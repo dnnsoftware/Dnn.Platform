@@ -23,10 +23,12 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
-            <adminPage>Site Wizard</adminPage>
-            <tabIconFile>~/Icons/Sigma/Wizard_16X16_Standard.png</tabIconFile>
-            <tabIconFileLarge>~/Icons/Sigma/Wizard_32X32_Standard.png</tabIconFileLarge>
-            <tabDescription>Configure portal settings, page design and apply a site template using a step-by-step wizard.</tabDescription>
+                        <page type="Admin" common="false">
+                            <name>SiteWizard</name>
+                            <icon>~/Icons/Sigma/Wizard_16X16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/Wizard_32X32_Standard.png</largeIcon>
+                            <description>Configure portal settings, page design and apply a site template using a step-by-step wizard.</description>
+                        </page>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Site Wizard</friendlyName>

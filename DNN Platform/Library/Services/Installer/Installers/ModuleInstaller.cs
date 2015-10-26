@@ -131,10 +131,10 @@ namespace DotNetNuke.Services.Installer.Installers
                                 }
                                 if (noOtherTabModule)
                                 {
-                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
-                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
                         
@@ -225,22 +225,28 @@ namespace DotNetNuke.Services.Installer.Installers
                     TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portal.PortalID);
                     ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
                     TabInfo newAdminPage = null;
-                    if ((portalAdmin == null ))
+                    if (portalAdmin == null && _desktopModule.Page != null)
                     {
                         newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
-                                                                             _desktopModule.TabDescription,
-                                                                             _desktopModule.TabIconFile,
-                                                                             _desktopModule.TabIconFileLarge,
+                                                                             _desktopModule.Page.Description,
+                                                                             _desktopModule.Page.Icon,
+                                                                             _desktopModule.Page.LargeIcon,
                                                                              true);
+
+                        if (_desktopModule.Page.IsCommon)
+                        {
+                            TabController.Instance.UpdateTabSetting(newAdminPage.TabID, "ControlBar_CommonTab", "Y");
+                        }
+
                         Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
                     }
-                    
-                    if (moduleDefinition != null)
+
+                    if (moduleDefinition != null && _desktopModule.Page != null)
                     {
                         Upgrade.Upgrade.AddModuleToPage(newAdminPage,
                        moduleDefinition.ModuleDefID,
-                       _desktopModule.TabDescription,
-                       _desktopModule.TabIconFile,
+                       _desktopModule.Page.Description,
+                       _desktopModule.Page.Icon,
                        true);
                         Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
                     }
@@ -250,7 +256,7 @@ namespace DotNetNuke.Services.Installer.Installers
                
             }
             //Add host items
-            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
+            if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
             {
                 string tabPath = "//Host//" + _desktopModule.AdminPage;
                 var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
@@ -259,8 +265,9 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (newHostPage == null)
                 {
                     newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
-                        _desktopModule.TabDescription,
-                        _desktopModule.TabIconFile, _desktopModule.TabIconFileLarge,
+                        _desktopModule.Page.Description,
+                        _desktopModule.Page.Icon, 
+                        _desktopModule.Page.LargeIcon,
                         true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
                 }
@@ -269,8 +276,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 //Add Module To Page
                     Upgrade.Upgrade.AddModuleToPage(newHostPage,
                         moduleDefinition.ModuleDefID,
-                        _desktopModule.TabDescription,
-                        _desktopModule.TabIconFile,
+                        _desktopModule.Page.Description,
+                        _desktopModule.Page.Icon,
                         true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));
                 }

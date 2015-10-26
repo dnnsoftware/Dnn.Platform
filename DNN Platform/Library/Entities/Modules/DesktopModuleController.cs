@@ -526,28 +526,33 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (!desktopModule.IsPremium)
                 {
-                    if (!String.IsNullOrEmpty(desktopModule.AdminPage))
+                    if (desktopModule.Page != null && !string.IsNullOrEmpty(desktopModule.AdminPage))
                     {
                         string tabPath = "//Admin//" + desktopModule.AdminPage;
                         var tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
                         TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portalId);
                         ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(desktopModule.FriendlyName);
                         TabInfo newAdminPage = null;
-                        if ((portalAdmin == null))
+                        if (portalAdmin == null)
                         {
                             newAdminPage = Upgrade.AddAdminPage(PortalController.Instance.GetPortal(portalId), desktopModule.AdminPage,
-                                                                                 desktopModule.TabDescription,
-                                                                                 desktopModule.TabIconFile,
-                                                                                 desktopModule.TabIconFileLarge,
+                                                                                 desktopModule.Page.Description,
+                                                                                 desktopModule.Page.Icon,
+                                                                                 desktopModule.Page.LargeIcon,
                                                                                  true);
+
+                            if (desktopModule.Page.IsCommon)
+                            {
+                                TabController.Instance.UpdateTabSetting(newAdminPage.TabID, "ControlBar_CommonTab", "Y");
+                            }
                         }
                         if (moduleDefinition != null)
                         {
                             Upgrade.AddModuleToPage(newAdminPage,
-                           moduleDefinition.ModuleDefID,
-                           desktopModule.TabDescription,
-                           desktopModule.TabIconFile,
-                           true);
+                                moduleDefinition.ModuleDefID,
+                                desktopModule.Page.Description,
+                                desktopModule.Page.Icon,
+                                true);
                         }
                     }
 

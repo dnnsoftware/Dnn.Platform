@@ -32,3 +32,8 @@ END TRY
 BEGIN CATCH
 
 END CATCH
+GO
+
+/***** DNN-7694: update admin page value for admin modules *****/
+UPDATE {databaseOwner}[{objectQualifier}DesktopModules] SET AdminPage = 'GoogleAnalytics' WHERE FriendlyName = 'Google Analytics'
+GO
