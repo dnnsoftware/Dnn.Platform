@@ -321,11 +321,14 @@
             </div>
         </div>
         <div class="dccPanel" id="content-templates-panel" style="display:none;" data-bind="with: templates">
-            <div id="templates-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTemplates'">
+            <div id="templates-listView" class="dccSubPanel">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findTemplate}" />
                     <a class="dccButton right" data-bind="click: addTemplate">[Resx:{key:"AddTemplate"}]</a>
                 </div>
+                <table class="dccTable" id="createTemplate">
+                    <tbody id='templates-addbody' class="edit-body"></tbody>
+                </table>
                 <table class="dccTable">
                     <thead>
                     <tr>
@@ -348,9 +351,56 @@
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:pencil]"></i></a>
                             <a class="dccIcon dccRemove" data-bind="visible: selected() && canEdit(), click: deleteTemplate"><i class="[Icon:remove]"></i></a>
-                            <div class="dccIcon dccExpand" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:caret-down]"></i></div>
+                            <div class="dccIcon dccExpand" data-bind="visible: canEdit(), click: $parent.editTemplate">
+                                <i class="[Icon:caret-down]"></i>
+                                <i class="[Icon:caret-up]"></i>
+                            </div>
                         </td>
                     </tr>
+                    </tbody>
+                    <tbody id="templates-editbody" class="edit-body">
+                        <tr class="edit-row" id="templates-editrow">
+                            <td colspan="4">
+                                <div id="templates-editView" data-bind="with: selectedTemplate">
+                                    <div class="dccEditForm">
+                                        <div class="dccEditRow">
+                                            <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
+                                                <label>[Resx:{key:"Name"}]</label>
+                                                <input type="text" data-bind="value: name, enable: canEdit" />
+                                                <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
+                                            </div>
+                                            <div>
+                                                <label>[Resx:{key:"ContentType"}]</label>
+                                                <select data-bind="enable: canEdit, value: contentTypeId, valueAllowUnset: false, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
+                                            </div>
+                                            <div class="toggle" data-bind="css: { disabled: !canSelectGlobal() }">
+                                                <span><input type="checkbox" data-bind="checked: isSystem, enable: canSelectGlobal()"></span>
+                                                <span class="label">[Resx:{key:"SystemTemplate"}]</span>
+                                            </div>
+                                        </div>
+                                        <div class="dccEditRow">
+                                            <div>
+                                                <label>[Resx:{key:"TemplateFile"}]</label>
+                                                <input class="dccWide" type="text" data-bind="textInput: filePath, enable: canEdit">
+                                            </div>
+                                            <div class="toggle">
+                                                <span><input type="checkbox" data-bind="checked: isEditTemplate"></span>
+                                                <span class="label">[Resx:{key:"IsEditTemplate"}]</span>
+                                            </div>
+                                        </div>
+                                        <div class="dccEditRow">
+                                                <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
+                                                <ul id="templateEditorContextMenu" style="display:none"></ul>
+                                        </div>
+
+                                        <div class="buttons">
+                                            <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
+                                            <a class="primarybtn" data-bind="visible: canEdit, click: saveTemplate">[Resx:{key:"Save"}]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                     <tfoot>
                     <tr>
@@ -377,47 +427,6 @@
                     </tr>
                     </tfoot>
                 </table>
-            </div>
-            <div id="templates-editView" class="dccSubPanel" data-bind="visible: mode() == 'editTemplate', with: selectedTemplate">
-                <div class="dccEditForm">
-                    <div class="dccEditRow">
-                        <div class="dccExtraMargin" data-bind="css: rootViewModel.fieldStatus(localizedNames())">
-                            <label>[Resx:{key:"Name"}]</label>
-                            <input type="text" data-bind="value: name, enable: canEdit" />
-                            <i class="[Icon:exclamation]" data-bind="attr: { title: rootViewModel.fieldMessage(localizedNames())}"></i>
-                        </div>
-                        <div>
-                            <label>[Resx:{key:"ContentType"}]</label>
-                            <select data-bind="enable: canEdit, value: contentTypeId, valueAllowUnset: false, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
-                        </div>
-                        <div class="toggle" data-bind="css: { disabled: !canSelectGlobal() }">
-                            <span><input type="checkbox" data-bind="checked: isSystem, enable: canSelectGlobal()"></span>
-                            <span class="label">[Resx:{key:"SystemTemplate"}]</span>
-                        </div>
-                    </div>
-                    <div class="dccEditRow">
-                        <div>
-                            <label>[Resx:{key:"TemplateFile"}]</label>
-                            <input class="dccWide" type="text" data-bind="textInput: filePath, enable: canEdit">
-                        </div>
-                        <div class="toggle">
-                            <span><input type="checkbox" data-bind="checked: isEditTemplate"></span>
-                            <span class="label">[Resx:{key:"IsEditTemplate"}]</span>
-                        </div>
-                    </div>
-                    <div class="dccEditRow">
-                        <div>
-                            <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
-                            <ul id="templateEditorContextMenu" style="display:none">
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="buttons">
-                        <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
-                        <a class="primarybtn" data-bind="visible: canEdit, click: saveTemplate">[Resx:{key:"Save"}]</a>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="dccPanel" id="settings-panel" style="display:none;">

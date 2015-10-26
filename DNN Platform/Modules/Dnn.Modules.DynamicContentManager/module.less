@@ -187,6 +187,25 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     background: @grid_hover_background_color;
 }
 
+.dccContainer .dccTable > tbody > tr#templates-editrow {
+    background: transparent;
+    width: 909px;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow:hover {
+    background: transparent;
+}
+
+.dccContainer #templates-listView .dccTable tbody tr td > div.dccExpand {
+    background: transparent;
+}
+
+.dccContainer #templates-listView .dccTable tbody tr:hover div.dccExpand {
+  background: @grid_hover_dropdown_background_color;
+}
+
+.dccContainer .dccTable > tbody > tr#templates-editrow div.dccEditRow > div.CodeMirror {
+    margin-right: 0px;
+}
 
 .dccContainer .dccTable th, .dccContainer .dccTable td {
     padding: 5px 9px;
@@ -224,27 +243,27 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
+.dccContainer .dccTable tbody tr th i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr:hover td i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr td i.dnni-caret-up {
     display: none;
 }
 
@@ -285,8 +304,8 @@ padding: 9px 5px 5px 5px;
     cursor: pointer;
 }
 
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td{
+.dccContainer .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer .dccTable > tbody > tr.in-edit-row:hover > td{
     background: @grid_hover_dropdown_background_color;
     border-color: @grid_hover_dropdown_background_color;
 }

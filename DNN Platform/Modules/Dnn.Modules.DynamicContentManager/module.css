@@ -125,6 +125,22 @@ input[type="password"] {
 .dccContainer .dccTable > tbody > tr:hover {
   background: rgba(2, 139, 255, 0.15);
 }
+.dccContainer .dccTable > tbody > tr#templates-editrow {
+    background: transparent;
+    width: 909px;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow:hover {
+    background: transparent;
+}
+.dccContainer #templates-listView .dccTable tbody tr td > div.dccExpand {
+    background: transparent;
+}
+.dccContainer #templates-listView .dccTable tbody tr:hover div.dccExpand {
+  background: #bedef7;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow div.dccEditRow > div.CodeMirror {
+    margin-right: 0px;
+}
 .dccContainer .dccTable th,
 .dccContainer .dccTable td {
   padding: 5px 9px;
@@ -157,22 +173,22 @@ input[type="password"] {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 5px;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
+.dccContainer .dccTable tbody tr th i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr:hover td i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr td i.dnni-caret-up {
   display: none;
 }
 .dccContainer .dccTable tbody tr td.dccActions {
@@ -206,8 +222,8 @@ input[type="password"] {
   background: #bedef7;
   cursor: pointer;
 }
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td {
+.dccContainer .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer .dccTable > tbody > tr.in-edit-row:hover > td {
   background: #bedef7;
   border-color: #bedef7;
 }

@@ -48,28 +48,84 @@ dcc.templatesViewModel = function (rootViewModel, config) {
             );
     };
 
-    self.addTemplate = function () {
-        self.selectedTemplate.init();
-        self.selectedTemplate.isEditMode(true);
-        self.selectedTemplate.bindCodeEditor();
-        self.mode("editTemplate");
+    self.addTemplate = function (event, ui) {
+        var tbody = $rootElement.find("#templates-addbody");
+
+        $(ui.target).fadeOut(200);
+        util.asyncParallel([
+            function (cb1) {
+                self.selectedTemplate.init();
+                self.selectedTemplate.isEditMode(true);
+                self.selectedTemplate.bindCodeEditor();
+                self.mode("editTemplate");
+                cb1();
+            },
+            function (cb2) {
+                $rootElement.find('#templates-editrow > td > div').slideUp(200, 'linear', function () {
+                    cb2();
+                });
+            }
+        ], function () {
+            $rootElement.find('#templates-editrow').appendTo(tbody);
+            $rootElement.find('#templates-editrow > td > div').slideDown(400, 'linear');
+        });
     };
 
-    self.closeEdit = function() {
+    var collapseDetailRow = function (cb) {
+        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
+        $rootElement.find('a.dccButton').fadeIn(200);
+
+        $rootElement.find('#templates-editrow > td > div').stop(true, false).slideUp(600, 'linear', function () {
+            $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            if (typeof cb === 'function') cb();
+        });
+    };
+
+    self.closeEdit = function () {
         self.mode("listTemplates");
+        collapseDetailRow(function() {
+            self.refresh();
+        });
         self.selectedTemplate.isEditMode(false);
-        self.refresh();
     }
 
-    self.editTemplate = function (data) {
+
+
+    self.editTemplate = function (data, e) {
         self.selectedTemplate.init();
         self.selectedTemplate.isEditMode(true);
+
+        var row = $rootElement.find(e.target);
+
+        if (row.is("tr") === false) {
+            row = row.closest('tr');
+        }
+
+        if (row.hasClass('in-edit-row')) {
+            row.removeClass('in-edit-row');
+            $rootElement.find('#templates-editrow > td > div').stop(true, false).slideUp(600, 'linear', function () {
+                $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            });
+            return;
+        }
+
+        var tbody = row.parent();
+        $rootElement.find('tr', tbody).removeClass('in-edit-row');
+        row.addClass('in-edit-row');
+
         util.asyncParallel([
             function (cb1) {
                 self.getTemplate(data.templateId(), cb1);
+            },
+            function (cb2) {
+                $rootElement.find('#templates-editrow > td > div').stop(true, false).slideUp(200, 'linear', function () {
+                    cb2();
+                });
             }
         ], function () {
             self.mode("editTemplate");
+            $rootElement.find('#templates-editrow').insertAfter(row);
+            $rootElement.find('#templates-editrow > td > div').stop(true, false).slideDown(400, 'linear');
         });
     };
 
