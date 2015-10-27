@@ -76,6 +76,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="SystemContentTypeSecurityException">system content types can only be deleted by Super Users</exception>
+        /// <exception cref="DynamicContentTypeDoesNotExistException">requested content type by ContentTypeId and PortalId does not exist</exception>
         public void DeleteContentType(DynamicContentType contentType)
         {
             Requires.NotNull(contentType);
@@ -84,8 +85,7 @@ namespace Dnn.DynamicContent
             var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
             if (storedContentType == null)
             {
-                // TODO: add ContentTypeDoesNotExistException here
-                return;
+                throw new DynamicContentTypeDoesNotExistException();
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -182,6 +182,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         /// <exception cref="SystemContentTypeSecurityException">system content types can only be modified by Super Users</exception>
+        /// <exception cref="DynamicContentTypeDoesNotExistException">requested content type by ContentTypeId and PortalId does not exist</exception>
         public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
@@ -191,8 +192,7 @@ namespace Dnn.DynamicContent
             var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
             if (storedContentType == null)
             {
-                // TODO: add ContentTypeDoesNotExistException here
-                return;
+                throw new DynamicContentTypeDoesNotExistException();
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();

@@ -217,7 +217,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.Throws<SystemDataTypeSecurityException>(act);
             _mockDataTypeRepository.VerifyAll();
         }
-        
+
+        [Test]
+        public void DeleteDataType_Throws_DataTypeDoesNotExistException_When_DataType_Does_Not_Exist()
+        {
+            // Arrange
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            var dataType = GetValidDataType();
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new DataType[0]);
+
+            // Act / Assert
+            var act = new TestDelegate(() => dataTypeController.DeleteDataType(dataType));
+
+            Assert.Throws<DataTypeDoesNotExistException>(act);
+            _mockDataTypeRepository.VerifyAll();
+        }
+
         [Test]
         public void DeleteDataType_Calls_FieldDefinition_Repository_Find_On_Valid_DataTypeId()
         {
@@ -737,6 +753,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(userId, dataType.LastModifiedByUserId);
             _mockDataTypeRepository.VerifyAll();
         }
+
+
+        [Test]
+        public void UpdateDataType_Throws_DataTypeDoesNotExistException_When__DataType_Does_Not_Exist()
+        {
+            // Arrange
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            var dataType = GetValidDataType();
+            _mockDataTypeRepository.Setup(r => r.Get(dataType.PortalId)).Returns(new DataType[0]);
+
+
+            // Act / Assert
+            Assert.Throws<DataTypeDoesNotExistException>(() => dataTypeController.UpdateDataType(dataType));
+            _mockDataTypeRepository.VerifyAll();
+        }
+
         #endregion
 
         private DataType GetValidDataType()

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
@@ -205,15 +206,19 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void DeleteContentTemplate_Throws_On_Negative_TemplateId()
+        public void DeleteContentTemplate_Throws_ContentTemplateDoesNotExistExceptionn_When_Template_Does_Not_Exist()
         {
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate { TemplateId = Null.NullInteger };
+            var contentTemplate = GetValidContentTemplates(1, Constants.CONTENTTYPE_ValidContentTypeId).First();
 
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => contentTemplateController.DeleteContentTemplate(contentTemplate));
+            _mockContentTemplateRepository.Setup(r => r.Get(contentTemplate.PortalId))
+                .Returns(GetValidContentTemplates(0, 0));
+
+            // Act / Assert
+            Assert.Throws<ContentTemplateDoesNotExistException>(() => contentTemplateController.DeleteContentTemplate(contentTemplate));
+            _mockContentTemplateRepository.VerifyAll();
         }
 
         [Test]
@@ -221,15 +226,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
-            var contentTemplate = new ContentTemplate { TemplateId = Constants.CONTENTTYPE_ValidContentTemplateId };
+            var contentTemplates = GetValidContentTemplates(1, Constants.CONTENTTYPE_ValidContentTemplateId);
+            var contentTemplate = contentTemplates.First();
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
+            _mockContentTemplateRepository.Setup(r => r.Get(contentTemplate.PortalId))
+                .Returns(contentTemplates);
 
             //Act
             contentTemplateController.DeleteContentTemplate(contentTemplate);
 
             //Assert
             _mockContentTemplateRepository.Verify(r => r.Delete(contentTemplate));
+            _mockContentTemplateRepository.VerifyAll();
         }
 
         [Test]
@@ -239,12 +249,16 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var portalId = Constants.PORTAL_ValidPortalId;
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
+            _mockContentTemplateRepository.Setup(r => r.Get(portalId))
+                .Returns(GetValidContentTemplates(0, 0));
+
             //Act
             // ReSharper disable once UnusedVariable
             var contentTemplates = contentTemplateController.GetContentTemplates(portalId);
 
             //Assert
             _mockContentTemplateRepository.Verify(r => r.Get(portalId));
+            _mockContentTemplateRepository.VerifyAll();
         }
 
         [Test]
@@ -548,12 +562,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate()
-                                        {
-                                            Name = "Name",
-                                            TemplateId = Constants.CONTENTTYPE_UpdateContentTemplateId,
-                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
-                                        };
+            var contentTemplates = GetValidContentTemplates(1, Constants.CONTENTTYPE_ValidContentTemplateId);
+            var contentTemplate = contentTemplates.First();
+
+            _mockContentTemplateRepository.Setup(r => r.Get(contentTemplate.PortalId))
+                .Returns(contentTemplates);
 
             //Act
             contentTemplateController.UpdateContentTemplate(contentTemplate);
@@ -573,19 +586,33 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo { UserID = userId });
             UserController.SetTestableInstance(mockUserController.Object);
 
+            var contentTemplates = GetValidContentTemplates(1, Constants.CONTENTTYPE_ValidContentTemplateId);
+            var contentTemplate = contentTemplates.First();
 
-            var contentTemplate = new ContentTemplate()
-            {
-                Name = "Name",
-                TemplateId = Constants.CONTENTTYPE_UpdateContentTemplateId,
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
-            };
+            _mockContentTemplateRepository.Setup(r => r.Get(contentTemplate.PortalId))
+                .Returns(contentTemplates);
 
             //Act
             contentTemplateController.UpdateContentTemplate(contentTemplate);
 
             //Assert
             Assert.AreEqual(userId, contentTemplate.LastModifiedByUserId);
+        }
+
+        [Test]
+        public void UpdateContentTemplate_Throws_ContentTemplateDoesNotExistExceptionn_When_Template_Does_Not_Exist()
+        {
+            //Arrange
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
+
+            var contentTemplate = GetValidContentTemplates(1, Constants.CONTENTTYPE_ValidContentTypeId).First();
+
+            _mockContentTemplateRepository.Setup(r => r.Get(contentTemplate.PortalId))
+                .Returns(GetValidContentTemplates(0, 0));
+
+            // Act / Assert
+            Assert.Throws<ContentTemplateDoesNotExistException>(() => contentTemplateController.UpdateContentTemplate(contentTemplate));
+            _mockContentTemplateRepository.VerifyAll();
         }
 
         private List<ContentTemplate> GetValidContentTemplates(int count, int contentTypeId)

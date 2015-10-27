@@ -329,6 +329,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void DeleteContentType_Throws_ContentTypeDoesNotExistException_When_Type_Does_Not_Exsist()
+        {
+            // Arrange
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            var contentType = GetValidContentType();
+            _mockContentTypeRepository.Setup(r => r.Get(contentType.PortalId)).Returns(new DynamicContentType[0]);
+
+            // Act / Assert            
+            Assert.Throws<DynamicContentTypeDoesNotExistException>(() => contentTypeController.DeleteContentType(contentType));
+            _mockContentTypeRepository.VerifyAll();
+        }
+
+        [Test]
         public void DeleteContentType_Calls_Repository_Delete_On_Valid_ContentTypeId()
         {
             //Arrange
@@ -781,6 +795,21 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(userId, contentType.LastModifiedByUserId);
             _mockContentTypeRepository.VerifyAll();
         }
+
+        [Test]
+        public void UpdateContentType_Throws_ContentTypeDoesNotExistExecption_When_Type_Does_Not_Exist()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+            
+            var contentType = GetValidUpdateContentType();
+            _mockContentTypeRepository.Setup(r => r.Get(contentType.PortalId)).Returns(new DynamicContentType[0]);
+
+            //Act / Assert
+            Assert.Throws<DynamicContentTypeDoesNotExistException>(() => contentTypeController.UpdateContentType(contentType));
+            _mockContentTypeRepository.VerifyAll();
+        }
+
         #endregion
 
         private DynamicContentType GetValidContentType()

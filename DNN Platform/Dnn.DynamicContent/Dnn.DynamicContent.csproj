@@ -63,8 +63,10 @@
     <Compile Include="Common\DateUtilitiesManager.cs" />
     <Compile Include="Common\IDateUtilitiesManager.cs" />
     <Compile Include="ContentTemplate.cs" />
+    <Compile Include="Exceptions\ContentTemplateDoesNotExistException.cs" />
     <Compile Include="ContentTemplateManager.cs" />
     <Compile Include="DataType.cs" />
+    <Compile Include="Exceptions\DataTypeDoesNotExistException.cs" />
     <Compile Include="DataTypeManager.cs" />
     <Compile Include="DynamicContentField.cs" />
     <Compile Include="DynamicContentItem.cs" />
@@ -72,7 +74,10 @@
     <Compile Include="DynamicContentPart.cs" />
     <Compile Include="DynamicContentType.cs" />
     <Compile Include="DynamicContentTypeManager.cs" />
+    <Compile Include="Exceptions\DynamicContentTypeDoesNotExistException.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />
+    <Compile Include="Exceptions\FieldDefinitionDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ItemDoesNotExistException.cs" />
     <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
     <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
