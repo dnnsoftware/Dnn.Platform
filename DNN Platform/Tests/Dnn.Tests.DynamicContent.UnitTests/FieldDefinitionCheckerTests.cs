@@ -44,8 +44,29 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void Cannot_CreateFieldDefinition_WithNonExistingDynamicContentType()
         {
             //Arrange
-            var baseFieldDefinition = new FieldDefinitionBuilder().WithName("TestField").WithIsReferenceType(true).Build();
+            var baseFieldDefinition = new FieldDefinitionBuilder().WithName("TestField").Build();
             _mockDynamicContentTypeManager.Setup(m => m.GetContentType(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => null);
+
+            //Act 
+            string errorMessage;
+            var isValid = FieldDefinitionChecker.Instance.IsValid(baseFieldDefinition, out errorMessage);
+
+            //Assert
+            Assert.IsFalse(isValid, "The field definition with an inexisting dynamic content type is valid");
+            Assert.AreEqual("The content type to which the field definition belongs is not valid.", errorMessage, "Error message is not the expected one");
+            _mockRepository.VerifyAll();
+        }
+
+
+        [Test]
+        public void Cannot_CreateFieldDefinition_OfTypeOfANonExistingDynamicContentType()
+        {
+            //Arrange
+            var baseFieldDefinition = new FieldDefinitionBuilder().WithName("TestField").WithIsReferenceType(true).WithFieldTypeId(0).Build();
+            _mockDynamicContentTypeManager.Setup(m => m.GetContentType(It.IsInRange(1, int.MaxValue, Range.Inclusive), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => new DynamicContentTypeBuilder().Build());
+            _mockDynamicContentTypeManager.Setup(m => m.GetContentType(0, It.IsAny<int>(), It.IsAny<bool>())).
                 Returns(() => null);
 
             //Act 
@@ -57,7 +78,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual("The specified content type is not valid.", errorMessage, "Error message is not the expected one");
             _mockRepository.VerifyAll();
         }
-
 
         [Test]
         [TestCase(0)]
