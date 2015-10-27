@@ -48,7 +48,7 @@ namespace Dnn.DynamicContent
         /// <param name="contentTypeId">The Id of the parent Content Type</param>
         /// <param name="sourceIndex">The index (order) of the item being moved</param>
         /// <param name="targetIndex">The target index (order) of the item being moved</param>
-        void MoveFieldDefintion(int contentTypeId, int sourceIndex, int targetIndex);
+        void MoveFieldDefinition(int contentTypeId, int sourceIndex, int targetIndex);
 
         /// <summary>
         /// Updates the field definition.

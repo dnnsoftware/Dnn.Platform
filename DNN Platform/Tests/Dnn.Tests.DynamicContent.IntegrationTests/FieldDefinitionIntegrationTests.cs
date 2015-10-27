@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
-using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
@@ -22,6 +21,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     {
         private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionManager.FieldDefinitionCacheKey);
         private Mock<IDynamicContentTypeManager> _mockContentTypeController;
+        private Mock<IContentTypeLocalizationManager> _mockContentTypeLocalizationManager;
 
         [SetUp]
         public void SetUp()
@@ -30,7 +30,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpValidationRules(RecordCount);
 
             _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            _mockContentTypeController.Setup(m => m.GetContentType(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => new DynamicContentType());
             DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
+
+            _mockContentTypeLocalizationManager = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(_mockContentTypeLocalizationManager.Object);
         }
 
         [TearDown]
