@@ -113,7 +113,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MoveContentField(MoveContentFieldViewModel viewModel)
         {
-            FieldDefinitionManager.Instance.MoveFieldDefintion(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
+            FieldDefinitionManager.Instance.MoveFieldDefinition(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
 
             return Request.CreateResponse(HttpStatusCode.OK, new {});
         }

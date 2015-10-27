@@ -98,6 +98,8 @@
     <Compile Include="Localization\IContentTypeLocalizationManager.cs" />
     <Compile Include="Localization\ObectType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\FieldDefinitionRepository.cs" />
+    <Compile Include="Repositories\IFieldDefinitionRepository.cs" />
     <Compile Include="UnderlyingDataType.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="ValidationRuleManager.cs" />
