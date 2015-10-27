@@ -6,7 +6,7 @@ using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
 {
-    class FieldDefinitionChecker : ServiceLocator<IFieldDefinitionChecker, FieldDefinitionChecker>, IFieldDefinitionChecker
+    internal class FieldDefinitionChecker : ServiceLocator<IFieldDefinitionChecker, FieldDefinitionChecker>, IFieldDefinitionChecker
     {
         protected override Func<IFieldDefinitionChecker> GetFactory()
         {

@@ -5,7 +5,7 @@ using System;
 
 namespace Dnn.DynamicContent.Exceptions
 {
-    public class InvalidEntityException: Exception
+    public class InvalidEntityException : InvalidOperationException
     {
         public InvalidEntityException(Type entityType)
             : base(string.Format(DotNetNuke.Services.Localization.Localization.GetString("EntityIsNotValid"), entityType.FullName))
