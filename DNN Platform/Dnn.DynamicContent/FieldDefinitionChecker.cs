@@ -15,7 +15,13 @@ namespace Dnn.DynamicContent
 
         public bool IsValid(FieldDefinition fieldDefinition, out string errorMessage)
         {
-            //TODO: check that the content type exists
+            if (!DynamicContentTypeExists(fieldDefinition.ContentTypeId, fieldDefinition.PortalId))
+            {
+                errorMessage = DotNetNuke.Services.Localization.Localization.GetExceptionMessage("ContentTypesDoesNotExist", "The specified content type is not valid.");
+                return false;
+            }
+
+
             if (DeadLoopInFieldDefinition(fieldDefinition, fieldDefinition))
             {
                 errorMessage = String.Format(DotNetNuke.Services.Localization.Localization.GetExceptionMessage("FieldDefinitionInvalidDeadLoop",
@@ -27,7 +33,12 @@ namespace Dnn.DynamicContent
             return true;
         }
 
-        private bool DeadLoopInFieldDefinition(FieldDefinition fieldDefinition, FieldDefinition baseFieldDefinition)
+        private static bool DynamicContentTypeExists(int contentTypeId, int portalId)
+        {
+            return DynamicContentTypeManager.Instance.GetContentType(contentTypeId, portalId, true) != null;
+        }
+
+        private static bool DeadLoopInFieldDefinition(FieldDefinition fieldDefinition, FieldDefinition baseFieldDefinition)
         {
             if (fieldDefinition.IsReferenceType)
             {
