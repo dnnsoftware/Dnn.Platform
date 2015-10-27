@@ -1,3 +1,8 @@
+-- DNN-7813: update PortalID, if moving cross portal:
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
     @FileId					Int,
     @VersionGuid			UniqueIdentifier,	
