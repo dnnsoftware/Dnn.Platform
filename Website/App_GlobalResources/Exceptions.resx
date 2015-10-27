@@ -486,4 +486,7 @@
   <data name="FieldDefinitionInvalidDeadLoop.Text" xml:space="preserve">
     <value>It is not posible to create the field with name {0} because it would create a dead loop definition.</value>
   </data>
+  <data name="ContentTypesDoesNotExist.Text" xml:space="preserve">
+    <value>The specified content type is not valid.</value>
+  </data>
 </root>

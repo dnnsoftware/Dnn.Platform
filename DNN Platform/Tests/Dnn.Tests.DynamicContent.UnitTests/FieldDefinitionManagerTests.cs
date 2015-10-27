@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Tests.DynamicContent.UnitTests.Builders;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Cache;
@@ -46,6 +47,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             ValidationRuleManager.SetTestableInstance(_mockValidationRuleController.Object);
 
             _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            _mockContentTypeController.Setup(m => m.GetContentType(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => new DynamicContentTypeBuilder().Build());
             DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
         }
 

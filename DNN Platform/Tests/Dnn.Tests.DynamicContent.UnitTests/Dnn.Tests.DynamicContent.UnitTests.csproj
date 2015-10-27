@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\DynamicContentTypeBuilder.cs" />
     <Compile Include="Builders\FieldDefinitionBuilder.cs" />
     <Compile Include="ContentTemplateManagerTests.cs" />
     <Compile Include="ContentTemplateTests.cs" />
