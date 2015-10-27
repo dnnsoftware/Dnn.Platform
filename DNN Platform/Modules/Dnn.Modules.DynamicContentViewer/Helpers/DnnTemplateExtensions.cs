@@ -6,20 +6,30 @@ using DotNetNuke.Web.Mvc.Helpers;
 
 namespace Dnn.Modules.DynamicContentViewer.Helpers
 {
+    /// <summary>
+    /// A class which provides extension methods to get template.
+    /// </summary>
     public static class DnnTemplateExtensions
     {
+        /// <summary>
+        /// Get Template.
+        /// </summary>
+        /// <typeparam name="TModel">Model Type.</typeparam>
+        /// <param name="dnnHelper">Helper Instance.</param>
+        /// <param name="templateName">Template Name.</param>
+        /// <returns></returns>
         public static MvcHtmlString TemplateFor<TModel>(this DnnHelper<TModel> dnnHelper, string templateName)
         {
             return TemplateHelper.TemplateFor(dnnHelper, templateName, null);
         }
 
         /// <summary>
-        /// 
+        /// Get Template.
         /// </summary>
-        /// <param name="dnnHelper"></param>
-        /// <param name="templateName"></param>
-        /// <param name="additionalViewData"></param>
-        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TModel">Model Type.</typeparam>
+        /// <param name="dnnHelper">Helper Instance.</param>
+        /// <param name="templateName">Template Name.</param>
+        /// <param name="additionalViewData">Additional View Data.</param>
         /// <returns></returns>
         public static MvcHtmlString TemplateFor<TModel>(this DnnHelper<TModel> dnnHelper, string templateName, object additionalViewData)
         {

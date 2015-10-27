@@ -7,11 +7,11 @@
 <head>
     <meta name="revisit-after" content="1 days" />
     <meta name="robots" content="noindex,nofollow" />
-    <title runat="server" id="Title">DNN OAUTH Login</title>
+    <title runat="server" id="Title1">DNN OAUTH Login</title>
     <link id="DefaultStylesheet" runat="server" rel="stylesheet" type="text/css" href="~/Portals/_default/default.css" />
 </head>
 <body>
-    <form id="Form" runat="server">
+    <form id="Form1" runat="server">
       <div class="oauthLogin">
             <h2>DNN OAUTH Login</h2>
             

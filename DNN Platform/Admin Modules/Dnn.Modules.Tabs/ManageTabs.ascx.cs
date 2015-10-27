@@ -643,18 +643,19 @@ namespace Dnn.Modules.Tabs
         /// <summary>
         ///   Checks if parent tab will cause a circular reference
         /// </summary>
-        /// <param name = "intTabId">Tabid</param>
+        /// <param name = "tabId">Tab id.</param>
+        /// <param name = "portalId">portal id.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
         /// <history>
         ///   [VMasanas]	28/11/2004	Created
         /// </history>
-        private bool IsCircularReference(int intTabId, int portalId)
+        private bool IsCircularReference(int tabId, int portalId)
         {
-            if (intTabId != -1)
+            if (tabId != -1)
             {
-                var tabInfo = TabController.Instance.GetTab(intTabId, portalId, false);
+                var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
 
                 if (tabInfo.Level == 0)
                 {
@@ -665,11 +666,11 @@ namespace Dnn.Modules.Tabs
             return false;
         }
 
-        private List<ModuleInfo> LoadTabModules(int TabID)
+        private List<ModuleInfo> LoadTabModules(int tabId)
         {
             var moduleList = new List<ModuleInfo>();
 
-            foreach (var m in ModuleController.Instance.GetTabModules(TabID).Values)
+            foreach (var m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 if (TabPermissionController.CanAddContentToPage() && !m.IsDeleted && !m.AllTabs)
                 {

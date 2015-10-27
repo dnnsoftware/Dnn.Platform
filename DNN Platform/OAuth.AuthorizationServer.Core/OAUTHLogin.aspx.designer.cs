@@ -13,13 +13,13 @@ namespace DotNetNuke.Website {
     public partial class OAUTHLogin {
         
         /// <summary>
-        /// Title control.
+        /// Title1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Title;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Title1;
         
         /// <summary>
         /// DefaultStylesheet control.
@@ -31,13 +31,13 @@ namespace DotNetNuke.Website {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DefaultStylesheet;
         
         /// <summary>
-        /// Form control.
+        /// Form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm Form1;
         
         /// <summary>
         /// txtUsername control.

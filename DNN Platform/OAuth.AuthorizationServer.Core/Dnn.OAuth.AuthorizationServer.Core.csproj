@@ -119,7 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
-    <Content Include="OAUTHAuthorize.aspx" />
+    <Content Include="OAUTHAuthorize.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="OAUTHLogin.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
