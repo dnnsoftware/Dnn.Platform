@@ -1123,13 +1123,6 @@
     <Compile Include="Install\Install.aspx.designer.cs">
       <DependentUpon>install.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Install\InstallWizard.aspx.cs">
-      <DependentUpon>InstallWizard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Install\InstallWizard.aspx.designer.cs">
-      <DependentUpon>InstallWizard.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3685,7 +3678,6 @@
     <Content Include="Install\Install.htm" />
     <Content Include="Install\Install.template.htm" />
     <Content Include="Install\installbg.gif" />
-    <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Install\JavaScriptLibrary\PlaceHolder.txt" />
     <Content Include="Install\Language\PlaceHolder.txt" />
     <Content Include="Install\Module\PlaceHolder.txt" />
@@ -4562,6 +4554,46 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DNN Platform\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
+      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
+      <Name>DotNetNuke.Web.Deprecated</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
+      <Name>DotNetNuke.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\HttpModules\DotNetNuke.HttpModules.csproj">
+      <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
+      <Name>DotNetNuke.HttpModules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\Modules\CoreMessaging\DotNetNuke.Modules.CoreMessaging.csproj">
+      <Project>{5deab0d5-0f54-44c9-a167-f48264a04b3d}</Project>
+      <Name>DotNetNuke.Modules.CoreMessaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
+      <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
+      <Name>DotNetNuke.Modules.DDRMenu</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
       <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
       <Name>Dnn.OAuth.AuthorizationServer.Core</Name>

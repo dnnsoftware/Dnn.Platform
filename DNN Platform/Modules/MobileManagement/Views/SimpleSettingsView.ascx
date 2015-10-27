@@ -2,6 +2,7 @@
 	Inherits="DotNetNuke.Modules.MobileManagement.SimpleSettingsView" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <div class="dnnForm  dnnClear" id="dnnMobileManagement">
 	<h2 id="dnnSimpleSettings" class="dnnFormSectionHead">
 		<%=LocalizeString("SimpleSettings")%></h2>

@@ -207,15 +207,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 			}
 		}
 
-		public override string EditControlClientId
-		{
-			get
-			{
-				EnsureChildControls();
-				return _dateControl.DateInput.ClientID;
-			}
-		}
-
 		#endregion
 
 		#region Private Properties

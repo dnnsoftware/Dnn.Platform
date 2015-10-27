@@ -118,6 +118,11 @@
     <Content Include="App_LocalResources\SharedResources.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
+      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
+      <Name>DotNetNuke.Web.Deprecated</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8da31b98-5e8e-4243-8967-d4cf7dc622cb}</Project>
       <Name>DotNetNuke.Web</Name>
