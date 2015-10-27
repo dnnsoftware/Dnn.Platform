@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services.Attributes
@@ -12,7 +13,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.Attributes
     /// <summary>
     /// Custom exception filter attribute for the services of the Dynamic Content Manager module
     /// </summary>
-    public class DccExceptionFilterAttribute : DnnExceptionFilterAttribute
+    public class DccExceptionFilterAttribute : ExceptionFilterAttribute
     {
         /// <summary>
         /// This method overrides the base to change the response status code from
@@ -26,13 +27,19 @@ namespace Dnn.Modules.DynamicContentManager.Services.Attributes
                 return;
 
             base.OnException(actionExecutedContext);
+
             if (ex is TimeoutException)
             {
                 actionExecutedContext.Response.StatusCode = HttpStatusCode.RequestTimeout;
             }
-            else
+            else if (ex is InvalidOperationException)
             { 
                 actionExecutedContext.Response = actionExecutedContext.Request.CreateErrorResponse((HttpStatusCode)HttpStatusCodeAdditions.UnprocessableEntity, ex.Message);
+            }
+            else
+            {
+                actionExecutedContext.Response.StatusCode = HttpStatusCode.InternalServerError;
+                Exceptions.LogException(ex);
             }
         }
     }

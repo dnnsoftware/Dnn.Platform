@@ -3,7 +3,7 @@
 
 namespace Dnn.DynamicContent
 {
-    interface IFieldDefinitionChecker
+    internal interface IFieldDefinitionChecker
     {
         bool IsValid(FieldDefinition fieldDefinition, out string errorMessage);
     }
