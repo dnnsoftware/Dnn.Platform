@@ -89,7 +89,37 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
-            Assert.AreEqual(String.Join(",",1.ToString(),true.ToString(),"Some text"),result.Body);
+            Assert.AreEqual(String.Join(", ",1.ToString(),true.ToString(),"Some text"),result.Body);
+        }
+
+        [Test]
+        public void GetSearchDocument_ShouldGenerateValidKeywords_WhenContentItemIsSimple()
+        {
+            //Arrange
+            var fieldContents = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>("FieldName1", 1),
+                new KeyValuePair<string, object>("FieldName2", true),
+                new KeyValuePair<string, object>("FieldName3", "Some text")
+            };
+
+            var dynamicContentItem = GetSimpleDynamicContentItem(fieldContents);
+
+            _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
+
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
+            //Act
+            var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
+
+            //Assert
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName1", 1.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName2", true.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName3", "Some text")));
         }
 
         [Test]
@@ -110,7 +140,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 new KeyValuePair<string, object>("FieldName6", "Other text")
             };
 
-            var dynamicContentItem = GetComplexDynamicContentItem(fieldContents, subFieldContents);
+            var dynamicContentItem = GetComplexDynamicContentItem(fieldContents, "ComplexFieldName1", subFieldContents);
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
@@ -124,7 +154,48 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
-            Assert.AreEqual(String.Join(",", 1.ToString(), true.ToString(), "Some text", 2.ToString(), false.ToString(), "Other text"), result.Body);
+            Assert.AreEqual(String.Join(", ", 1.ToString(), true.ToString(), "Some text", 2.ToString(), false.ToString(), "Other text"), result.Body);
+        }
+
+        [Test]
+        public void GetSearchDocument_ShouldGenerateValidKeywords_WhenContentItemIsComplex()
+        {
+            //Arrange
+            var fieldContents = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>("FieldName1", 1),
+                new KeyValuePair<string, object>("FieldName2", true),
+                new KeyValuePair<string, object>("FieldName3", "Some text")
+            };
+
+            var subFieldContents = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>("FieldName4", 2),
+                new KeyValuePair<string, object>("FieldName5", false),
+                new KeyValuePair<string, object>("FieldName6", "Other text")
+            };
+
+            var dynamicContentItem = GetComplexDynamicContentItem(fieldContents, "ComplexFieldName1", subFieldContents);
+
+            _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
+
+            var moduleInfo = new ModuleInfo()
+            {
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
+            //Act
+            var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
+
+            //Assert
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName1",1.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName2", true.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName3", "Some text")));
+
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName4", 2.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName5", false.ToString())));
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName6", "Other text")));
         }
 
         [Test]
@@ -150,48 +221,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.Throws<ArgumentNullException>(testDelegation);
         }
 
-        [Test]
-        public void GetSearchDocument_ShouldThrowException_WhenContentItemIdIsNegative()
-        {
-            //Arrange
-
-            var fieldContents = new List<KeyValuePair<string, object>>()
-            {
-                new KeyValuePair<string, object>("FieldName1", 1),
-                new KeyValuePair<string, object>("FieldName2", true),
-                new KeyValuePair<string, object>("FieldName3", "Some text")
-            };
-
-            var dynamicContentItem = GetSimpleDynamicContentItem(fieldContents);
-            dynamicContentItem.ContentItemId = Null.NullInteger;
-
-            _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
-
-            var moduleInfo = new ModuleInfo()
-            {
-                ModuleID = Constants.MODULE_ValidId,
-                TabID = Constants.TAB_ValidId
-            };
-
-            Action delegateFunction = () =>
-            {
-                _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
-            };
-
-            //Act
-            var testDelegation = new TestDelegate(delegateFunction);
-
-
-            //Assert
-            Assert.Throws<ArgumentOutOfRangeException>(testDelegation);
-        }
-
-        private DynamicContentItem GetComplexDynamicContentItem(List<KeyValuePair<string, object>> fieldContents,
+        private DynamicContentItem GetComplexDynamicContentItem(List<KeyValuePair<string, object>> fieldContents, string complexFieldName,
             List<KeyValuePair<string, object>> secondFieldContents)
         {
             var secondaryContentItem = GetSimpleDynamicContentItem(secondFieldContents);
             var primaryContentItem = GetSimpleDynamicContentItem(fieldContents);
-            primaryContentItem.Content.Fields.Add("ComplexFieldName", new DynamicContentField(new FieldDefinition()
+            primaryContentItem.Content.Fields.Add(complexFieldName, new DynamicContentField(new FieldDefinition()
                                                                                                 {
                                                                                                     IsReferenceType = true
                                                                                                 })
@@ -205,10 +240,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
         private DynamicContentItem GetSimpleDynamicContentItem( List<KeyValuePair<string, object>> fieldContents)
         {
-            var moduleId = Constants.MODULE_ValidId;
-            var tabId = Constants.TAB_ValidId;
-            var portalId = Constants.PORTAL_ValidPortalId;
-            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            const int moduleId = Constants.MODULE_ValidId;
+            const int tabId = Constants.TAB_ValidId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
 
             _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());

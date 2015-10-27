@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
@@ -25,26 +26,26 @@ namespace Dnn.DynamicContent
             _contentController = ContentController.Instance;
         }
 
-        public SearchDocument GetSearchDocument(ModuleInfo moduleInfo, DynamicContentItem dynamicContent)
+        public SearchDocument GetSearchDocument(ModuleInfo moduleInfo, DynamicContentItem dynamicContentItem)
         {
-            Requires.NotNull(dynamicContent);
-            Requires.NotNegative("Content Item Id", dynamicContent.ContentItemId);
+            Requires.NotNull(dynamicContentItem);
             
             var searchDoc = new SearchDocument
             {
-                UniqueKey = dynamicContent.ContentItemId.ToString("D"),
-                PortalId = dynamicContent.PortalId,
+                UniqueKey = dynamicContentItem.ContentItemId.ToString("D"),
+                PortalId = dynamicContentItem.PortalId,
                 SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
                 Title = moduleInfo.ModuleTitle,
                 Description = string.Empty,
-                Body = GenerateSearchContent(dynamicContent),
-                ModuleId = dynamicContent.ModuleId,
+                Body = GenerateSearchContent(dynamicContentItem),
+                ModuleId = dynamicContentItem.ModuleId,
                 ModuleDefId = moduleInfo.ModuleDefID,
-                TabId = dynamicContent.TabId,
+                TabId = dynamicContentItem.TabId,
                 ModifiedTimeUtc = DateTime.UtcNow
             };
 
-            var contentItem = _contentController.GetContentItem(dynamicContent.ContentItemId);
+            searchDoc = PopulateSearchDocument(searchDoc, dynamicContentItem);
+            var contentItem = _contentController.GetContentItem(dynamicContentItem.ContentItemId);
 
             if (contentItem.Terms != null && contentItem.Terms.Count > 0)
             {
@@ -54,10 +55,43 @@ namespace Dnn.DynamicContent
             return searchDoc;        
         }
 
+        private SearchDocument PopulateSearchDocument(SearchDocument searchDoc, DynamicContentItem dynamicContentItem)
+        {
+            foreach (var dynamicContentField in dynamicContentItem.Content.Fields)
+            {
+                if (dynamicContentField.Value.Definition.IsReferenceType)
+                {
+                    var value = dynamicContentField.Value.Value as DynamicContentPart;
+                    PopulateComplexField(searchDoc, dynamicContentField.Key, value);
+                }
+                else
+                {
+                    searchDoc.Keywords.Add(dynamicContentField.Key, dynamicContentField.Value.GetStringValue());
+                }
+            }
+            return searchDoc;
+        }
+
+        private void PopulateComplexField(SearchDocument searchDoc, string parentFieldName, DynamicContentPart fieldValue)
+        {
+            foreach (var dynamicContentField in fieldValue.Fields)
+            {
+                if (dynamicContentField.Value.Definition.IsReferenceType)
+                {
+                    var value = dynamicContentField.Value.Value as DynamicContentPart;
+                    PopulateComplexField(searchDoc, parentFieldName+"/"+dynamicContentField.Key, value);
+                }
+                else
+                {
+                    searchDoc.Keywords.Add(parentFieldName+"/"+dynamicContentField.Key, dynamicContentField.Value.GetStringValue());
+                }
+            }
+        }
+
         private string GenerateSearchContent(DynamicContentItem dynamicContent)
         {
             var containedValues = dynamicContent.Content.Fields.Values.Select(f => f.GetStringValue());
-            return string.Join(",", containedValues);
+            return string.Join(", ", containedValues);
         }
 
         private List<string> CollectHierarchicalTags(List<Term> terms)

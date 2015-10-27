@@ -4,8 +4,10 @@
 using System;
 using System.Collections.Generic;
 using Dnn.DynamicContent;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
 
 namespace Dnn.Modules.DynamicContentViewer.Components
@@ -19,6 +21,7 @@ namespace Dnn.Modules.DynamicContentViewer.Components
 
         private readonly IDynamicContentViewerManager _dynamicContentViewerManager;
         private readonly IDynamicContentSearchManager _dynamicContentSearchManager;
+        private readonly IContentController _contentController;
         #endregion
 
         /// <summary>
@@ -27,24 +30,43 @@ namespace Dnn.Modules.DynamicContentViewer.Components
         public BusinessController()
         {
             _dynamicContentViewerManager = DynamicContentViewerManager.Instance;
+            _dynamicContentSearchManager = DynamicContentSearchManager.Instance;
+            _contentController = ContentController.Instance;
         }
+
+        /// <summary>
+        /// Implements the ModuleSearchable method
+        /// </summary>
+        /// <returns>A list of SearchDocument. One SearchDocument per DynamicContentItem</returns>
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            var dynamicContentItem = _dynamicContentViewerManager.GetContentItem(moduleInfo);
-            if (dynamicContentItem == null)
+            try
             {
+                var conteTypeId = _dynamicContentViewerManager.GetContentTypeId(moduleInfo);
+                if (conteTypeId <= Null.NullInteger)
+                {
+                    return new List<SearchDocument>();                    
+                }
+
+                var dynamicContentItem = _dynamicContentViewerManager.GetContentItem(moduleInfo);
+                
+                var contentItem = _contentController.GetContentItem(dynamicContentItem.ContentItemId);
+                if (contentItem.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&
+                    contentItem.LastModifiedOnDate.ToUniversalTime() < DateTime.UtcNow)
+                {
+                    return new[]
+                    {
+                        _dynamicContentSearchManager.GetSearchDocument(moduleInfo, dynamicContentItem)
+                    };
+                }
                 return new List<SearchDocument>();
             }
-
-            var contentItem = ContentController.Instance.GetContentItem(dynamicContentItem.ContentItemId);
-            if (contentItem.LastModifiedOnDate > beginDateUtc)
+            catch (Exception ex)
             {
-                return new[]
-                {
-                    _dynamicContentSearchManager.GetSearchDocument(moduleInfo, dynamicContentItem)
-                };
+                Exceptions.LogException(ex);
+                return new List<SearchDocument>();
             }
-            return new List<SearchDocument>();
+            
         }
     }
 }

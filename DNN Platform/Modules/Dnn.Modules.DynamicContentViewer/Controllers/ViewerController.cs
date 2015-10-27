@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Components;
-using Dnn.Modules.DynamicContentViewer.Models;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;

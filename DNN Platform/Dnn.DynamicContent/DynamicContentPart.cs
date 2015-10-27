@@ -153,7 +153,7 @@ namespace Dnn.DynamicContent
             {               
                 values.Add(field.Value.GetStringValue());
             }
-            return string.Join(",", values);
+            return string.Join(", ", values);
         }
     }
 }

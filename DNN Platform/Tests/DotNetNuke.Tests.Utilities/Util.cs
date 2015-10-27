@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             Type type = typeof(TInstance);
 
-            BindingFlags privateBindings = BindingFlags.NonPublic | BindingFlags.Instance;
+            BindingFlags privateBindings = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
 
             // retrive private field from class
             FieldInfo field = type.GetField(fieldName, privateBindings);
