@@ -17,10 +17,15 @@ namespace Dnn.DynamicContent
         {
             if (!DynamicContentTypeExists(fieldDefinition.ContentTypeId, fieldDefinition.PortalId))
             {
-                errorMessage = DotNetNuke.Services.Localization.Localization.GetExceptionMessage("ContentTypesDoesNotExist", "The specified content type is not valid.");
+                errorMessage = DotNetNuke.Services.Localization.Localization.GetExceptionMessage("ContentTypeFieldDefinitionDoesNotExist", "The content type to which the field definition belongs is not valid.");
                 return false;
             }
 
+            if (fieldDefinition.IsReferenceType && !DynamicContentTypeExists(fieldDefinition.FieldTypeId, fieldDefinition.PortalId))
+            {
+                errorMessage = DotNetNuke.Services.Localization.Localization.GetExceptionMessage("ContentTypeDoesNotExist", "The specified content type is not valid.");
+                return false;
+            }
 
             if (DeadLoopInFieldDefinition(fieldDefinition, fieldDefinition))
             {
