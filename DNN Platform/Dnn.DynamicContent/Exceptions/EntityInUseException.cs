@@ -6,6 +6,9 @@ using DnnLocalization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// Base Exception used when an entity is in use
+    /// </summary>
     public class EntityInUseException : InvalidOperationException
     {
         public EntityInUseException(string entityName, int entityId)

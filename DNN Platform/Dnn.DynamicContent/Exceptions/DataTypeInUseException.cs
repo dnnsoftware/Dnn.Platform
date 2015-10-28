@@ -5,6 +5,9 @@ using DnnLocalization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// Exception thrown when a DataType is in use and it is tried to be deleted
+    /// </summary>
     public class DataTypeInUseException : EntityInUseException
     {
         public DataTypeInUseException(DataType dataType)
