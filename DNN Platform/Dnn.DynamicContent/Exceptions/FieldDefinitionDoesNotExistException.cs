@@ -4,7 +4,7 @@
 namespace Dnn.DynamicContent.Exceptions
 {
     /// <summary>
-    /// Trown when a required FieldDefinition does not exists
+    /// Thrown when a required FieldDefinition does not exists
     /// </summary>
     public class FieldDefinitionDoesNotExistException : ItemDoesNotExistException
     {

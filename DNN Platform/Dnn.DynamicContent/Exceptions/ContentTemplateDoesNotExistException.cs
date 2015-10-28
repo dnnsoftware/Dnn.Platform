@@ -4,7 +4,7 @@
 namespace Dnn.DynamicContent.Exceptions
 {
     /// <summary>
-    /// Trown when a required ContentTemplate does not exists
+    /// Thrown when a required ContentTemplate does not exists
     /// </summary>
     public class ContentTemplateDoesNotExistException : ItemDoesNotExistException
     {
