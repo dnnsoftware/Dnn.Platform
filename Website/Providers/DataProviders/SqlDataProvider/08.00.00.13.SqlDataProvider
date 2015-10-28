@@ -37,3 +37,11 @@ GO
 /***** DNN-7694: update admin page value for admin modules *****/
 UPDATE {databaseOwner}[{objectQualifier}DesktopModules] SET AdminPage = 'GoogleAnalytics' WHERE FriendlyName = 'Google Analytics'
 GO
+
+/***** DNN-7761: update the date/datetime control to new type. *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateEditControl, DotNetNuke.Web.Deprecated'
+	WHERE ListName = 'DataType' AND Value = 'Date'
+
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateTimeEditControl, DotNetNuke.Web.Deprecated'
+	WHERE ListName = 'DataType' AND Value = 'DateTime'
+GO

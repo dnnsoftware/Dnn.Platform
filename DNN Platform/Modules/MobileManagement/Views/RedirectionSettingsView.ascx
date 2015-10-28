@@ -2,6 +2,7 @@
 	Inherits="DotNetNuke.Modules.MobileManagement.RedirectionSettingsView" EnableViewState="true" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <div class="dnnForm  dnnClear" id="dnnMobileManagement">
 	<h2 id="dnnRedirectionSettings" class="dnnFormSectionHead">
 		<%=LocalizeString("RedirectionSettings")%></h2>

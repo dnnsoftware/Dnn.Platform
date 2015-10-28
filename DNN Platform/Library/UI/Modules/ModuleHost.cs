@@ -385,18 +385,15 @@ namespace DotNetNuke.UI.Modules
             InjectModuleContent(updatePanel);
 
             //create image for update progress control
-			var image = new Image
-                            {
-                                ImageUrl = "~/images/progressbar.gif", //hardcoded
-                                AlternateText = "ProgressBar"
-                            };
+            var progressTemplate = "<div class=\"dnnLoading dnnPanelLoading\"></div>";
 
             //inject updateprogress into the panel
             var updateProgress = new UpdateProgress
                                      {
                                          AssociatedUpdatePanelID = updatePanel.ID, 
-                                         ID = updatePanel.ID + "_Prog", 
-                                         ProgressTemplate = new LiteralTemplate(image)
+                                         ID = updatePanel.ID + "_Prog",
+
+                                         ProgressTemplate = new LiteralTemplate(progressTemplate)
                                      };
             Controls.Add(updateProgress);
         }
