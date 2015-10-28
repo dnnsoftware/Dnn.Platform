@@ -90,7 +90,16 @@ input[type="password"] {
   width: 100%;
   border-collapse: collapse;
   border-bottom: 1px solid #aaa;
+  table-layout: fixed;
+  white-space: nowrap;
 }
+
+.dccContainer .dccTable .ellipsis-overflow{
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+}
+
 .dccContainer .dccTable tr:nth-child(2n) {
   background: #eee;
 }
