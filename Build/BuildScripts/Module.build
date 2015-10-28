@@ -23,8 +23,9 @@
       <SharedScripts Include="Scripts/Shared/*.*" />
       <Templates Include="Templates/*.htm" />
       <DataFiles Include="Resources/*.xml" />
+      <Fonts Include="Fonts/*.woff; Fonts/*.ttf; Fonts/*.eot; Fonts/*.svg" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);@(ControlResourceFiles);
-                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig)" />
+                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews);@(MVCConfig);@(Fonts)" />
       <ContentTemplates Include="Content Templates/*/*.cshtml;Content Templates/*.cshtml" />
     </ItemGroup>
   </Target>
@@ -54,5 +55,6 @@
     <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)/Views/%(RecursiveDir)" />
     <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)/Views" />
     <Copy SourceFiles="@(ContentTemplates)" DestinationFolder="$(WebsitePath)/Portals/_default/Content Templates/%(RecursiveDir)" />
+    <Copy SourceFiles="@(Fonts)" DestinationFolder="$(ModuleFolderName)/Fonts" />
   </Target> 
 </Project>
