@@ -3,6 +3,9 @@
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// Trown when a required ContentType does not exists
+    /// </summary>
     class DynamicContentTypeDoesNotExistException : ItemDoesNotExistException
     {
     }

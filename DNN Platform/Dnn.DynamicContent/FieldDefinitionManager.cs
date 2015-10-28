@@ -202,7 +202,7 @@ namespace Dnn.DynamicContent
 
             if (storedField.PortalId != field.PortalId)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("PortalId cannot be modified");
             }
 
             Update(field);

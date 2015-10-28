@@ -5,8 +5,10 @@ using System;
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// Thrown when a required item does not exists
+    /// </summary>
     public abstract class ItemDoesNotExistException : Exception
     {
-
     }
 }

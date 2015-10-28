@@ -3,6 +3,9 @@
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// Trown when a required DataType does not exists
+    /// </summary>
     public class DataTypeDoesNotExistException : ItemDoesNotExistException
     {
     }

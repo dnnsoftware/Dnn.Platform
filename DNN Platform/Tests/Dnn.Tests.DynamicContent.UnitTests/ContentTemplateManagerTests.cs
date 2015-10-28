@@ -206,7 +206,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void DeleteContentTemplate_Throws_ContentTemplateDoesNotExistExceptionn_When_Template_Does_Not_Exist()
+        public void DeleteContentTemplate_Throws_ContentTemplateDoesNotExistException_When_Template_Does_Not_Exist()
         {
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
@@ -600,7 +600,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void UpdateContentTemplate_Throws_ContentTemplateDoesNotExistExceptionn_When_Template_Does_Not_Exist()
+        public void UpdateContentTemplate_Throws_ContentTemplateDoesNotExistException_When_Template_Does_Not_Exist()
         {
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
