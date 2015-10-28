@@ -66,6 +66,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
         /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
+        /// <exception cref="DataTypeInUseException">Data Type is in use by other component</exception>
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract

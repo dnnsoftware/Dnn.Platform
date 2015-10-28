@@ -447,8 +447,8 @@
   <data name="SitemapUrlGenerationError.Text" xml:space="preserve">
     <value>URL sitemap generation for page '{0} - {1}' caused an exception: {2}</value>
   </data>
-  <data name="DataTypeInUse.Text" xml:space="preserve">
-    <value>The Data Type with Id {0} is in use, so it cannot be deleted.</value>
+  <data name="DynamicContentEntityInUse.Text" xml:space="preserve">
+    <value>The {0} with Id {1} is in use, so it cannot be deleted.</value>
   </data>
   <data name="PropertyCannotBeEmpty.Text" xml:space="preserve">
     <value>The property '{1}' in object '{0}' cannot be empty (count = 0).</value>

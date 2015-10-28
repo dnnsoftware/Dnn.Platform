@@ -78,6 +78,8 @@
     <Compile Include="Exceptions\CreateValidatorException.cs" />
     <Compile Include="Exceptions\FieldDefinitionDoesNotExistException.cs" />
     <Compile Include="Exceptions\ItemDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ContentTypeInUseException.cs" />
+    <Compile Include="Exceptions\EntityInUseException.cs" />
     <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
     <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
@@ -11,7 +12,6 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
@@ -26,13 +26,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         private Mock<IRepository<DynamicContentType>> _mockContentTypeRepository;
         private Mock<IFieldDefinitionManager> _mockFieldDefinitionController;
         private Mock<IContentTemplateManager> _mockContentTemplateController;
-        private Mock<CachingProvider> _mockCache;
+        private Mock<IUserController> _mockUserController;
         
         [SetUp]
         public void SetUp()
         {
             //Register MockCachingProvider
-            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
 
             _mockDataContext = new Mock<IDataContext>();
@@ -45,6 +44,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(new List<FieldDefinition>().AsQueryable());
             FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
 
+            _mockUserController = new Mock<IUserController>();
+            UserController.SetTestableInstance(_mockUserController.Object);
+            _mockUserController.Setup(mu => mu.GetCurrentUserInfo()).Returns(new UserInfo()
+            {
+                IsSuperUser = false
+            });
+            
             _mockContentTemplateController = new Mock<IContentTemplateManager>();
             _mockContentTemplateController.Setup(vr => vr.GetContentTemplates(It.IsAny<int>(), false))
                 .Returns(new List<ContentTemplate>().AsQueryable());
@@ -292,6 +298,72 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.DeleteContentType(null));
+        }
+
+        [Test]
+        public void DeleteContentType_ThrowsException_WhenContentTypeIsInUseByOtherContentType()
+        {
+            //Arrange
+            var selectContentTypeInUseByOtherContentType = @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentTypes_FieldDefinitions
+                                                        WHERE IsReferenceType = 1 AND FieldTypeID = " +
+                                                                 Constants.CONTENTTYPE_ValidContentTypeId;
+
+            _mockDataContext.Setup(dc => dc.ExecuteScalar<int>(It.IsAny<CommandType>(), It.IsAny<string>() )).Returns(0);
+            _mockDataContext.Setup(dc => dc.ExecuteScalar<int>(It.IsAny<CommandType>(), selectContentTypeInUseByOtherContentType)).Returns(1);
+
+            _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+
+            _mockUserController.Setup(mu => mu.GetCurrentUserInfo()).Returns(new UserInfo()
+            {
+                IsSuperUser = true
+            });
+
+            var contentType = new DynamicContentType
+            {
+                Name = Constants.CONTENTTYPE_ValidContentType,
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                PortalId = Constants.PORTAL_ValidPortalId
+            };
+
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            //Act, Arrange
+            Assert.Throws<ContentTypeInUseException>(() => contentTypeController.DeleteContentType(contentType));
+        }
+
+        [Test]
+        public void DeleteContentType_ThrowsException_WhenContentTypeIsInUseByContentItems()
+        {
+            //Arrange
+            var selectContentTypeInUseByContentItems = @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentItems
+                                                        WHERE ContentTypeID = " +
+                                                              Constants.CONTENTTYPE_ValidContentTypeId;
+
+            _mockDataContext.Setup(dc => dc.ExecuteScalar<int>(It.IsAny<CommandType>(), It.IsAny<string>() )).Returns(0);
+            _mockDataContext.Setup(dc => dc.ExecuteScalar<int>(It.IsAny<CommandType>(), selectContentTypeInUseByContentItems)).Returns(1);
+
+            _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+
+            _mockUserController.Setup(mu => mu.GetCurrentUserInfo()).Returns(new UserInfo()
+            {
+                IsSuperUser = true
+            });
+
+            var contentType = new DynamicContentType
+            {
+                Name = Constants.CONTENTTYPE_ValidContentType,
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                PortalId = Constants.PORTAL_ValidPortalId
+            };
+
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            //Act, Arrange
+            Assert.Throws<ContentTypeInUseException>(() => contentTypeController.DeleteContentType(contentType));
         }
 
         [Test]

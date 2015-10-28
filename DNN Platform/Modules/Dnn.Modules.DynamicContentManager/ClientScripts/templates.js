@@ -373,17 +373,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
             validationErrorMessage: ''
         };
     };
-
-    var getErrorMessage = function(xhr, err) {
-        if (xhr.responseText) {
-            var errorMessage = JSON.parse(xhr.responseText).Message;
-            if (errorMessage) {
-                return errorMessage;
-            }
-        }
-        return err;
-    };
-
+    
     self.bindCodeEditor = function () {
         configureContextMenu();
         codeEditor.setValue(self.content());
@@ -482,7 +472,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
                 },
                 function (xhr, status, err) {
                     //Failure
-                    util.alert(getErrorMessage(xhr, err), resx.ok);                
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         }
