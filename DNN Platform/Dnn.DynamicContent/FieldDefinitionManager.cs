@@ -4,6 +4,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
@@ -73,9 +74,17 @@ namespace Dnn.DynamicContent
         /// </summary>
         /// <param name="field">The field definitione to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        /// <exception cref="FieldDefinitionDoesNotExistException">requested data type by FieldDefinitionId and PortalId does not exist</exception>
         public void DeleteFieldDefinition(FieldDefinition field)
         {
+            Requires.NotNull(field);
+
+            var storedField = GetFieldDefinition(field.FieldDefinitionId, field.ContentTypeId);
+            if (storedField == null)
+            {
+                throw new FieldDefinitionDoesNotExistException();
+            }
+
             Delete(field);
 
             //Update field order of remaining fields
@@ -175,6 +184,8 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">field definition id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        /// <exception cref="FieldDefinitionDoesNotExistException">requested data type by FieldDefinitionId and PortalId does not exist</exception>
+        /// <exception cref="InvalidOperationException">portal id is different than the stored portal id</exception>
         public void UpdateFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
@@ -182,6 +193,17 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(field, "FieldTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
+
+            var storedField = GetFieldDefinition(field.FieldDefinitionId, field.ContentTypeId);
+            if (storedField == null)
+            {
+                throw new FieldDefinitionDoesNotExistException();
+            }
+
+            if (storedField.PortalId != field.PortalId)
+            {
+                throw new InvalidOperationException("PortalId cannot be modified");
+            }
 
             Update(field);
 

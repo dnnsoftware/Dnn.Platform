@@ -65,6 +65,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract
@@ -75,8 +76,7 @@ namespace Dnn.DynamicContent
             var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
             if (storedDataType == null)
             {
-                // TODO: add DataTypeDoesNotExistException here
-                return;
+                throw new DataTypeDoesNotExistException();
             }
 
             if (storedDataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -173,6 +173,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
         /// <exception cref="SystemDataTypeSecurityException">system data types can only be modified by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         public void UpdateDataType(DataType dataType, bool overrideWarning = false)
         {
             //Argument Contract
@@ -185,8 +186,7 @@ namespace Dnn.DynamicContent
             var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
             if (storedDataType == null)
             {
-                // TODO: add DataTypeDoesNotExistException here
-                return;
+                throw new DataTypeDoesNotExistException();
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();

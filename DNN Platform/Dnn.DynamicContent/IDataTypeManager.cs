@@ -22,6 +22,7 @@ namespace Dnn.DynamicContent
         /// </summary>
         /// <param name="dataType">The data type to delete.</param>
         /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         void DeleteDataType(DataType dataType);
 
         /// <summary>
@@ -64,6 +65,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
         /// <exception cref="SystemDataTypeSecurityException">system data types can only be modified by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         void UpdateDataType(DataType dataType, bool overrideWarning = false);
     }
 }
