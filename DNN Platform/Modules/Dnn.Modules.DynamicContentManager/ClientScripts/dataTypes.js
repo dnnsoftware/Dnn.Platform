@@ -107,6 +107,10 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.getDataTypes = function () {
+        $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
+        $rootElement.find('#dataTypes-editrow > td > div').hide();
+        $rootElement.find('a.dccButton').fadeIn(200);
+		
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
@@ -124,7 +128,6 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.init = function() {
-        $rootElement.find('#dataTypes-editrow > td > div').hide();
         // ReSharper disable once UseOfImplicitGlobalInFunctionScope
         dnn.koPager().init(self, config);
 

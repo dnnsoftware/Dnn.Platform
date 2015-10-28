@@ -68,7 +68,7 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: created"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check-square-o]" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:pencil]"></i></a>
@@ -340,7 +340,7 @@
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: contentType()"></span>
                         </td>
-                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check]" data-bind="visible: isSystem"></i></td>
+                        <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="[Icon:check-square-o]" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="[Icon:pencil]"></i></a>
