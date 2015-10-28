@@ -21,24 +21,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                         new JProperty("contentTypeId", Constants.CONTENTTYPE_ValidContentTypeId),
                         new JProperty("content",
                             new JObject(
-                                new JProperty("field",
-                                      new JArray(
-                                        new JObject(
-                                            new JProperty("name", "FieldName1"),
-                                            new JProperty("value", 1)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName2"),
-                                            new JProperty("value", true)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName3"),
-                                            new JProperty("value", "abc")
-                                            )
-                                        )
-                                    )
-                                )
+                                new JProperty("FieldName1", 1),
+                                new JProperty("FieldName2", true),
+                                new JProperty("FieldName3", "abc")
                             )
+                        )
                     );
 
         [TearDown]

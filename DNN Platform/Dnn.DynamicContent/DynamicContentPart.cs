@@ -30,7 +30,7 @@ namespace Dnn.DynamicContent
 
         public int PortalId { get; set; }
 
-        private DynamicContentField FromJson(FieldDefinition definition, JObject jObject)
+        private DynamicContentField FromJson(FieldDefinition definition, JToken jToken)
         {
             DynamicContentField field;
 
@@ -39,18 +39,11 @@ namespace Dnn.DynamicContent
                 field = new DynamicContentField(definition);
                 var part = new DynamicContentPart(PortalId, definition.ContentType);
                 field.Value = part;
-                if(jObject["value"] == null)
-                {
-                    field.FromJson(jObject);
-                }
-                else
-                {
-                    field.FromJson(jObject["value"] as JObject);
-                }
+                field.FromJson(jToken);
             }
             else
             {
-                var stringValue = jObject["value"].Value<string>() ?? String.Empty;
+                var stringValue = jToken.Value<string>() ?? String.Empty;
                 switch (definition.DataType.UnderlyingDataType)
                 {
 
@@ -110,19 +103,13 @@ namespace Dnn.DynamicContent
             return field;
         }
 
-        public void FromJson(JObject jContent)
+        public void FromJson(JToken jContent)
         {
-            var jFields = jContent["field"] as JArray;
             Fields = new Dictionary<string, DynamicContentField>();
-
-            if (jFields == null)
-            {
-                return;
-            }
 
             foreach (var fieldDefinition in ContentType.FieldDefinitions)
             {
-                var jField = FindJFieldByName(jFields, fieldDefinition.Name);
+                var jField = jContent[fieldDefinition.Name];
 
                 DynamicContentField field;
                 
@@ -131,7 +118,7 @@ namespace Dnn.DynamicContent
                     if (fieldDefinition.IsList)
                     {
                         field = new DynamicContentField(fieldDefinition);
-                        var jArray = jField["value"] as JArray;
+                        var jArray = jField as JArray;
                         if (jArray != null)
                         {
                             field.Value = jArray.Select(jObject => FromJson(fieldDefinition, jObject as JObject)).ToList();
@@ -139,42 +126,24 @@ namespace Dnn.DynamicContent
                     }
                     else
                     {
-                        field = FromJson(fieldDefinition, jField as JObject);
+                        field = FromJson(fieldDefinition, jField);
                     }
                 }
                 else
-                {
-                    field = FromJson(fieldDefinition, new JObject(
-                                            new JProperty("name", fieldDefinition.Name),
-                                            new JProperty("value", null)
-                                        ));
+                {                    
+                    field = FromJson(fieldDefinition, new JValue((object)null));
                 }
                 
                 Fields.Add(fieldDefinition.Name, field);
             }
         }
 
-        private static JToken FindJFieldByName(JArray jFields, string name)
-        {
-            return jFields.SingleOrDefault(
-                j => j["name"].Value<string>().Equals(name, StringComparison.InvariantCultureIgnoreCase));
-        }
-
         public JObject ToJson()
         {
-            var jObject = new JObject(
-                                new JProperty("field",
-                                    new JArray(
-                                        from f in Fields.Values
-                                        select new JObject(
-                                            new JProperty("name", f.Definition.Name),
-                                            new JProperty("value", ToJson(f))
-                                        )
-                                    )
-                                )
-                            );
-
-            return jObject;
+            return new JObject(
+                            from f in Fields.Values
+                            select new JProperty(f.Definition.Name, ToJson(f))
+                        );
         }
 
         private object ToJson(DynamicContentField field)
@@ -201,15 +170,10 @@ namespace Dnn.DynamicContent
                     var list = field.Value as List<DynamicContentField>;
                     if (list != null)
                     {
-                        var array = new JArray();
-                        foreach (var item in list)
-                        {
-                            array.Add(new JObject(
-                                            new JProperty("name", item.Definition.Name),
-                                            new JProperty("value", ToJson(item))
-                                        ));
-                        }
-                        value = array;
+                        value = new JObject(
+                                        from item in list
+                                        select new JProperty(item.Definition.Name, ToJson(item))
+                                    );                        
                     }
                 }
             }

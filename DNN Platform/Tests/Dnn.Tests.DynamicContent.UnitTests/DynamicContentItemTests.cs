@@ -26,145 +26,63 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         private const int DATATYPE_Boolean = 3;
 
         private static readonly JObject SimpleContentTypeJson = new JObject(
-                                new JProperty("contentTypeId", CONTENTTYPE_Simple),
-                                new JProperty("content",
-                                    new JObject(
-                                        new JProperty("field",
-                                              new JArray(
-                                                new JObject(
-                                                    new JProperty("name", "FieldName1"),
-                                                    new JProperty("value", 1)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName2"),
-                                                    new JProperty("value", true)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName3"),
-                                                    new JProperty("value", "abc")
-                                                    )
-                                                )
-                                            )
+                                    new JProperty("contentTypeId", CONTENTTYPE_Simple),
+                                    new JProperty("content",
+                                        new JObject(                                                                                    
+                                            new JProperty("FieldName1", 1),                                                
+                                            new JProperty("FieldName2", true),                                                
+                                            new JProperty("FieldName3", "abc")                                                    
                                         )
                                     )
-                            );
+                                );
 
         private static readonly JObject ChildContentTypeJson = new JObject(
-                            new JProperty("field",
-                                    new JArray(
-                                    new JObject(
-                                        new JProperty("name", "FieldName1"),
-                                        new JProperty("value", 1)
-                                        ),
-                                    new JObject(
-                                        new JProperty("name", "FieldName2"),
-                                        new JProperty("value", true)
-                                        ),
-                                    new JObject(
-                                        new JProperty("name", "FieldName3"),
-                                        new JProperty("value", "abc")
-                                        )
-                                    )
-                                )
-                            );
+                                        new JProperty("FieldName1", 1),
+                                        new JProperty("FieldName2", true),
+                                        new JProperty("FieldName3", "abc")
+                                );
 
         private static readonly JObject ComplexContentTypeJson = new JObject(
-                                new JProperty("contentTypeId", CONTENTTYPE_Complex),
-                                new JProperty("content",
-                                    new JObject(
-                                        new JProperty("field",
-                                              new JArray(
-                                                new JObject(
-                                                    new JProperty("name", "FieldName1"),
-                                                    new JProperty("value", 1)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName2"),
-                                                    new JProperty("value", true)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName3"),
-                                                    new JProperty("value", "abc")
-                                                    ),
-                                                 new JObject(
-                                                    new JProperty("name", "FieldName4"),
-                                                    new JProperty("value", ChildContentTypeJson)
-                                                    )
-                                                )
-                                           )
+                                    new JProperty("contentTypeId", CONTENTTYPE_Complex),
+                                    new JProperty("content",
+                                        new JObject(
+                                            new JProperty("FieldName1", 1),
+                                            new JProperty("FieldName2", true),
+                                            new JProperty("FieldName3", "abc"),
+                                            new JProperty("FieldName4", ChildContentTypeJson)
                                         )
                                     )
-                            );
+                                );
 
         private static readonly JObject ListContentTypeJson = new JObject(
                                 new JProperty("contentTypeId", CONTENTTYPE_ListContent),
                                 new JProperty("content",
                                     new JObject(
-                                        new JProperty("field",
-                                              new JArray(
-                                                new JObject(
-                                                    new JProperty("name", "FieldName1"),
-                                                    new JProperty("value", 1)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName2"),
-                                                    new JProperty("value", true)
-                                                    ),
-                                                new JObject(
-                                                    new JProperty("name", "FieldName3"),
-                                                    new JProperty("value", "abc")
-                                                    ),
-                                                 new JObject(
-                                                    new JProperty("name", "FieldName4"),
-                                                    new JProperty("value", new JArray(
-                                                        ChildContentTypeJson, 
-                                                        ChildContentTypeJson, 
-                                                        ChildContentTypeJson))
-                                                    )
-                                                )
-                                           )
+                                        new JProperty("FieldName1", 1),
+                                        new JProperty("FieldName2", true),
+                                        new JProperty("FieldName3", "abc"),
+                                        new JProperty("FieldName4", new JArray(
+                                            ChildContentTypeJson,
+                                            ChildContentTypeJson,
+                                            ChildContentTypeJson)
                                         )
                                     )
+                                )
                             );
 
         private static readonly JObject ListDataTypeJson = new JObject(
                         new JProperty("contentTypeId", CONTENTTYPE_ListData),
                         new JProperty("content",
                             new JObject(
-                                new JProperty("field",
-                                      new JArray(
-                                        new JObject(
-                                            new JProperty("name", "FieldName1"),
-                                            new JProperty("value", 1)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName2"),
-                                            new JProperty("value", true)
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName3"),
-                                            new JProperty("value", "abc")
-                                            ),
-                                        new JObject(
-                                            new JProperty("name", "FieldName4"),
-                                            new JProperty("value", 
-                                                new JArray(
-                                                    new JObject(
-                                                        new JProperty("name", "FieldName5"),
-                                                            new JProperty("value", 2)
-                                                    ),
-                                                    new JObject(
-                                                        new JProperty("name", "FieldName5"),
-                                                            new JProperty("value", 3)
-                                                    ),
-                                                    new JObject(
-                                                        new JProperty("name", "FieldName5"),
-                                                            new JProperty("value", 4)
-                                                    )
-                                                )
-                                            )
-                                        )
-                                   )
+                                new JProperty("FieldName1", 1),
+                                new JProperty("FieldName2", true),
+                                new JProperty("FieldName3", "abc"),
+                                new JProperty("FieldName4",
+                                    new JObject(
+                                        new JProperty("FieldName5", 2),
+                                        new JProperty("FieldName6", 3),
+                                        new JProperty("FieldName7", 4)
+                                    )
                                 )
                             )
                         )
@@ -351,6 +269,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                         .Returns(GetSimpleContentType(contentTypeId, portalId));
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
+
             //Act
             dynamicContent.FromJson(testJson.ToString());
 
@@ -424,6 +346,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
                         .Returns(GetSimpleContentType(contentTypeId, portalId));
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
+
+            var mockDataTypeManager = new Mock<IDataTypeManager>();
+            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
             //Act
             dynamicContent.FromJson(testJson.ToString());
@@ -670,7 +596,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(1, part.Fields["FieldName1"].Value);
             Assert.AreEqual(true, part.Fields["FieldName2"].Value);
             Assert.AreEqual("abc", part.Fields["FieldName3"].Value);
-
         }
 
         [Test]
@@ -783,15 +708,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                             new JProperty("contentTypeId", CONTENTTYPE_Simple),
                             new JProperty("content",
                                 new JObject(
-                                    new JProperty("field",
-                                            new JArray(
-                                            new JObject(
-                                                new JProperty("name", "NotDefinedFieldName"),
-                                                new JProperty("value", 1)
-                                                )
-                                        )
+                                        new JProperty("NotDefinedFieldName", 1)
                                 )
-                            )))).ToString());
+                            ))).ToString());
 
             // Assert
             Assert.AreEqual(0, dynamicContent.Content.Fields["FieldName1"].Value);
@@ -891,7 +810,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             childPart.Fields["FieldName2"].Value = true;
             childPart.Fields["FieldName3"].Value = "abc";
 
-            var list = new List<DynamicContentPart> {childPart, childPart, childPart};
+            var list = new List<DynamicContentPart> { childPart, childPart, childPart };
             dynamicContent.Content.Fields["FieldName4"].Value = list;
 
             //Act
@@ -924,14 +843,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             dynamicContent.Content.Fields["FieldName1"].Value = 1;
             dynamicContent.Content.Fields["FieldName2"].Value = true;
             dynamicContent.Content.Fields["FieldName3"].Value = "abc";
-
-            var list = new List<DynamicContentField>();
-            for (int i = 2; i < 5; i++)
-            {
-                list.Add(new DynamicContentField(new FieldDefinition(portalId) {Name = "FieldName5"}) { Value = i });
-            }
-            dynamicContent.Content.Fields["FieldName4"].Value = list;
-
+            dynamicContent.Content.Fields["FieldName4"].Value = new List<DynamicContentField>() 
+                {
+                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName5" }) { Value = 2 },
+                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName6" }) { Value = 3 },
+                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName7" }) { Value = 4 },
+                };
+            
             //Act
             var json = dynamicContent.ToJson();
 
