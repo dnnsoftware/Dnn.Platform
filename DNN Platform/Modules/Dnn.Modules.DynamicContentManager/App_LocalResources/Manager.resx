@@ -315,9 +315,6 @@
   <data name="InvalidContentFieldMessage.Text" xml:space="preserve">
     <value>You must provide values for all fields for the default language.</value>
   </data>
-  <data name="InvalidContentFieldType.Text" xml:space="preserve">
-    <value>The Field Type you have selected is invalid. Please select a different field type.</value>
-  </data>
   <data name="InvalidDataTypeMessage.Text" xml:space="preserve">
     <value>You must provide a value for the Data Type name in the default language</value>
   </data>
