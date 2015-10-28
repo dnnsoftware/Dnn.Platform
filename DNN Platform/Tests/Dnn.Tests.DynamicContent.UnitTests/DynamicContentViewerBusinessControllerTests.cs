@@ -3,11 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Reflection;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Components;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
@@ -82,7 +81,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(dynamicContentItem);
 
             var contentItem = new ContentItem();
-            SetPrivateProperty<ContentItem, DateTime>(contentItem, "LastModifiedOnDate", DateTime.UtcNow.AddHours(-1));
+            SetPrivateProperty(contentItem, "LastModifiedOnDate", DateTime.UtcNow.AddHours(-1));
             
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(contentItem);
 
@@ -103,13 +102,76 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(1, result.Count);
         }
 
+        [Test]
+        public void GetModifiedSearchDocuments_ShouldNotReturnAnySearchDocument_WhenContentItemHasNotBeenModified()
+        {
+            //Arrange
+            var fieldContents = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>("FieldName1", 1),
+                new KeyValuePair<string, object>("FieldName2", true),
+                new KeyValuePair<string, object>("FieldName3", "Some text")
+            };
+
+            var dynamicContentItem = GetSimpleDynamicContentItem(fieldContents);
+
+            _mockDynamicContentViewerManager.Setup(vm => vm.GetContentTypeId(It.IsAny<ModuleInfo>()))
+                .Returns(Constants.CONTENTTYPE_ValidContentTypeId);
+            _mockDynamicContentViewerManager.Setup(vm => vm.GetContentItem(It.IsAny<ModuleInfo>()))
+                .Returns(dynamicContentItem);
+
+            var contentItem = new ContentItem();
+            
+            //The LastModifiedDate will be lesser than Indexing date
+            SetPrivateProperty(contentItem, "LastModifiedOnDate", DateTime.UtcNow.AddDays(-5));
+
+            _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(contentItem);
+
+            _mockDynamicContentSearchManager.Setup(
+                sm => sm.GetSearchDocument(It.IsAny<ModuleInfo>(), dynamicContentItem)).Returns(new SearchDocument());
+
+            var moduleInfo = new ModuleInfo()
+            {
+                PortalID = Constants.PORTAL_ValidPortalId,
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
+            //Act
+            var result = _businessController.GetModifiedSearchDocuments(moduleInfo, DateTime.UtcNow.AddDays(-1));
+
+            //Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public void GetModifiedSearchDocuments_ShouldNotReturnAnySearchDocument_WhenModuleHasNotContentItem()
+        {
+            //Arrange
+            _mockDynamicContentViewerManager.Setup(vm => vm.GetContentTypeId(It.IsAny<ModuleInfo>()))
+                .Returns(Null.NullInteger);
+            
+            var moduleInfo = new ModuleInfo()
+            {
+                PortalID = Constants.PORTAL_ValidPortalId,
+                ModuleID = Constants.MODULE_ValidId,
+                TabID = Constants.TAB_ValidId
+            };
+
+            //Act
+            var result = _businessController.GetModifiedSearchDocuments(moduleInfo, DateTime.UtcNow.AddDays(-1));
+
+            //Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
         private void SetPrivateProperty<TInstance, TField>(TInstance instance, string fieldName, TField value)
         {
             Type type = typeof(TInstance);
 
-           // retrive private field from class
-            PropertyInfo propertyInfo = type.GetProperty(fieldName);
-            PropertyInfo declaringPropertyInfo = propertyInfo.DeclaringType.GetProperty(fieldName);
+            var propertyInfo = type.GetProperty(fieldName);
+            //We access to the DeclaringType in order to ensure Get and Set
+            var declaringPropertyInfo = propertyInfo.DeclaringType.GetProperty(fieldName);
 
             declaringPropertyInfo.SetValue(instance, value);
         }
