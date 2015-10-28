@@ -1,9 +1,9 @@
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'dbo.[dnn_AddException]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE dbo.dnn_AddException
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddException]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
 GO
 
-CREATE PROCEDURE dbo.dnn_AddException
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddException
 	@ExceptionHash varchar(100),
 	@Message nvarchar(500),
 	@StackTrace nvarchar(max),
@@ -13,8 +13,8 @@ CREATE PROCEDURE dbo.dnn_AddException
 AS
 
 BEGIN TRY
-	IF NOT EXISTS (SELECT * FROM dbo.[dnn_Exceptions] WHERE ExceptionHash=@ExceptionHash)
-	INSERT INTO dbo.[dnn_Exceptions]
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Exceptions] WHERE ExceptionHash=@ExceptionHash)
+	INSERT INTO {databaseOwner}[{objectQualifier}Exceptions]
 		(ExceptionHash,
 		[Message],
 		StackTrace,
