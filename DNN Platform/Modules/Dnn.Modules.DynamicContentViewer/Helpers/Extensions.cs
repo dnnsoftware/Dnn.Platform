@@ -5,8 +5,16 @@ using System.Text;
 
 namespace Dnn.Modules.DynamicContentViewer.Helpers
 {
+    /// <summary>
+    /// Extension Class.
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Convert bytes to hex.
+        /// </summary>
+        /// <param name="hex">the bytes value.</param>
+        /// <returns></returns>
         public static string ToHexString(this byte[] hex)
         {
             if (hex == null)
