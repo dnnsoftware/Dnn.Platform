@@ -82,6 +82,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 PortalID int NOT NULL,
                 FieldTypeID int NOT NULL,
                 IsReferenceType bit NOT NULL DEFAULT (0),
+                IsList bit NOT NULL DEFAULT (0),
 	            Name nvarchar(100) NOT NULL,
 	            Label nvarchar(100) NOT NULL,
 	            Description nvarchar(2000) NULL,
@@ -156,6 +157,19 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             DataUtil.DeleteDatabase(DatabaseName);
             LogController.ClearInstance();
+        }
+
+        protected void SetUpContentTypes(int count, int portalId)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int isDynamic = 0;
+                if (i % 2 == 0)
+                {
+                    isDynamic = 1;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isDynamic, CreatedByUserId, LastModifiedByUserId));
+            }
         }
 
         protected void SetUpContentTypes(int count)

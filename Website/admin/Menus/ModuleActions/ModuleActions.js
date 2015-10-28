@@ -171,7 +171,7 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "'></a><ul></ul>");
+            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "' /></a><ul></ul>");
             var parent = root.find("li." + rootClass + " > ul");
 
             return parent;
@@ -397,6 +397,11 @@
             },
             timeout: 400,
             interval: 200
+        });
+
+        var $container = $('#moduleActions-' + moduleId + '-QuickSettings');
+        $container.find('select').mouseout(function(e) {
+            e.stopPropagation();
         });
 
         return $self;

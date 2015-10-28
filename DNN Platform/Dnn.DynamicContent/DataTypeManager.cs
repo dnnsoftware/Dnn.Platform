@@ -4,18 +4,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent
 {
@@ -42,12 +38,19 @@ namespace Dnn.DynamicContent
         /// <returns>data type id.</returns>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be added by Super Users</exception>
         public int AddDataType(DataType dataType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (dataType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemDataTypeSecurityException();
+            }
+
+            dataType.CreatedByUserId = currentUser.UserID;
             dataType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(dataType);
@@ -61,12 +64,25 @@ namespace Dnn.DynamicContent
         /// <param name="dataType">The data type to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract
             Requires.NotNull(dataType);
             Requires.PropertyNotNull(dataType, "DataTypeId");
             Requires.PropertyNotNegative(dataType, "DataTypeId");
+
+            var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
+            if (storedDataType == null)
+            {
+                // TODO: add DataTypeDoesNotExistException here
+                return;
+            }
+
+            if (storedDataType.IsSystem && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                throw new SystemDataTypeSecurityException();
+            }
 
             using (DataContext)
             {
@@ -156,6 +172,7 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be modified by Super Users</exception>
         public void UpdateDataType(DataType dataType, bool overrideWarning = false)
         {
             //Argument Contract
@@ -164,7 +181,21 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(dataType, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+            var storedDataType = GetDataType(dataType.DataTypeId, dataType.PortalId, true);
+            if (storedDataType == null)
+            {
+                // TODO: add DataTypeDoesNotExistException here
+                return;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedDataType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemDataTypeSecurityException();
+            }
+
+            dataType.LastModifiedByUserId = currentUser.UserID;
             dataType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             using (DataContext)

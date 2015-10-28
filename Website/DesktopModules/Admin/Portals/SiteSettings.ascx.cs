@@ -332,6 +332,11 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
+            if (portalId != PortalId)
+            {
+                activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
+            }
+
             var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
             var portalsettings = new PortalSettings(portal);
 
@@ -350,7 +355,6 @@ namespace DesktopModules.Admin.Portals
                 ctlBackground.FilePath = portal.BackgroundFile;
                 ctlBackground.FileFilter = Globals.glbImageFileTypes;
                 ctlFavIcon.FilePath = new FavIcon(portal.PortalID).GetSettingPath();
-                chkSkinWidgestEnabled.Checked = PortalController.GetPortalSettingAsBoolean("EnableSkinWidgets", portalId, true);
 
                 BindSkins(portal);
 
@@ -1460,7 +1464,6 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.MinifyCssKey, chkMinifyCss.Checked.ToString(CultureInfo.InvariantCulture), false);
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.MinifyJsKey, chkMinifyJs.Checked.ToString(CultureInfo.InvariantCulture), false);
 
-                    PortalController.UpdatePortalSetting(_portalId, "EnableSkinWidgets", chkSkinWidgestEnabled.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminSkin", editSkinCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalSkin", portalSkinCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false, SelectedCultureCode);

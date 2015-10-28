@@ -68,10 +68,16 @@ namespace Dnn.DynamicContent
         public bool IsDynamic { get; set; }
 
         /// <summary>
-        /// A flag that indicates whether the Content Type is a system type
+        /// A flag that indicates whether the Content Type is a global type available cross all portals
         /// </summary>
         [IgnoreColumn]
-        public bool IsSystem { get { return (PortalId == -1); } }
+        public bool IsSystem 
+        {
+            get
+            {
+                return PortalId == Null.NullInteger;
+            } 
+        }
 
         /// <summary>
         /// Gets or sets the name of the ContentType.

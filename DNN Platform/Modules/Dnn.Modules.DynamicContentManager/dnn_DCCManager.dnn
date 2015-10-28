@@ -20,7 +20,7 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentManager</moduleName>
             <foldername>Dnn/DynamicContentManager</foldername>
-            <businessControllerClass/>
+            <businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
@@ -43,15 +43,15 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-        	<eventMessage>
-						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-						<processorCommand>UpgradeModule</processorCommand>
-						<attributes>
-							<businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
-							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-							<upgradeVersionsList>Install,Upgrade</upgradeVersionsList>
-						</attributes>
-					</eventMessage>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>Install,Upgrade</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>

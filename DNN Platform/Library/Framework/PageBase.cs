@@ -334,8 +334,6 @@ namespace DotNetNuke.Framework
             //    jQuery.RegisterHoverIntent(Page);
             //}
 
-            JavaScript.Register(Page);
-
             if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);

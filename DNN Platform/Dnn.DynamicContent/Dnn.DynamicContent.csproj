@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
       <Private>False</Private>
@@ -74,6 +74,8 @@
     <Compile Include="DynamicContentType.cs" />
     <Compile Include="DynamicContentTypeManager.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />
+    <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
+    <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
     <Compile Include="Exceptions\InvalidValidationTypeException.cs" />
     <Compile Include="Exceptions\InvalidValidatorException.cs" />

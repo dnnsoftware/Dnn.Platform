@@ -13,7 +13,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     self.rootViewModel = rootViewModel;
 
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);
@@ -39,9 +39,10 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         self.getDataTypes();
     };
 
-    self.addDataType = function(){
+    self.addDataType = function(event, ui){
         var tbody = $rootElement.find("#dataTypes-addbody");
 
+        $(ui.target).fadeOut(200);
         util.asyncParallel([
             function(cb1){
                 self.selectedDataType.init();
@@ -59,6 +60,8 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.editDataType = function(data, e){
+		$rootElement.find('a.dccButton').fadeIn(200);
+		
         var row = $rootElement.find(e.target);
 
         if(row.is("tr") === false){
@@ -67,7 +70,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
         if(row.hasClass('in-edit-row')){
             row.removeClass('in-edit-row');
-            $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(600, 'linear', function(){
                 $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             });
             return;
@@ -82,13 +85,13 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
                 self.getDataType(data.dataTypeId(), cb1);
             },
             function(cb2){
-                $rootElement.find('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(200, 'linear', function(){
                     cb2();
                 });
             }
         ], function() {
             $rootElement.find('#dataTypes-editrow').insertAfter(row);
-            $rootElement.find('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideDown(400, 'linear');
         });
     };
 
@@ -170,6 +173,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     var collapseDetailRow = function(cb) {
         $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
+        $rootElement.find('a.dccButton').fadeIn(200);
         $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
             $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             if(typeof cb === 'function') cb();
@@ -209,7 +213,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     self.init = function() {
         self.dataTypeId(-1);
-        self.canEdit(false);
+        self.canEdit(true);
         self.baseType(0);
         self.isSystem(false);
 

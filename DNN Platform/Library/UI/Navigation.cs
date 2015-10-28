@@ -611,7 +611,6 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
-            int i;
             var objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();

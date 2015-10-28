@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
@@ -35,12 +35,19 @@ namespace Dnn.DynamicContent
         /// <returns>content type id.</returns>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be added by Super Users</exception>
         public int AddContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
 
-            contentType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (contentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
+
+            contentType.CreatedByUserId = currentUser.UserID;
             contentType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(contentType);
@@ -68,10 +75,24 @@ namespace Dnn.DynamicContent
         /// <param name="contentType">Type of the content.</param>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be deleted by Super Users</exception>
         public void DeleteContentType(DynamicContentType contentType)
         {
             Requires.NotNull(contentType);
             Requires.PropertyNotNegative(contentType, "ContentTypeId");
+            
+            var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
+            if (storedContentType == null)
+            {
+                // TODO: add ContentTypeDoesNotExistException here
+                return;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedContentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
 
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
@@ -160,12 +181,27 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be modified by Super Users</exception>
         public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
+            Requires.PropertyNotNegative(contentType, "ContentTypeId");
+            
+            var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
+            if (storedContentType == null)
+            {
+                // TODO: add ContentTypeDoesNotExistException here
+                return;
+            }
 
-            contentType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedContentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
+
+            contentType.LastModifiedByUserId = currentUser.UserID;
             contentType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Update(contentType);

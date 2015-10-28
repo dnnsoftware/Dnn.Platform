@@ -163,16 +163,7 @@ namespace DotNetNuke.Services.UserProfile
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(1));
             context.Response.Cache.SetMaxAge(new TimeSpan(0, 1, 0));
             context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
-
-	        try
-	        {
-				context.Response.End();
-	        }
-			catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
-			{
-
-			}
-            
+            context.ApplicationInstance.CompleteRequest();
         }
 
         //whether current user has permission to view target user's photo.

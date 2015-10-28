@@ -17,7 +17,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);
@@ -73,7 +73,7 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
 
     self.closeEdit = function () {
         self.mode("listTypes");
-        self.refresh();
+        self.refresh(true);
     }
 
     self.editContentType = function(data) {
@@ -132,9 +132,11 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         getAllContentTypes();
     };
 
-    self.refresh = function() {
+    self.refresh = function(refreshContentTypesFieldType) {
         self.getContentTypes();
-        getAllContentTypes();
+        if (refreshContentTypesFieldType) {
+            getAllContentTypes();
+        }
     }
 };
 
@@ -206,8 +208,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 },
 
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         });
@@ -261,8 +262,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                     }
                 },
                 function (xhr, status, err) {
-                    //Error
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         }
@@ -341,8 +341,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             },
 
             function (xhr, status, err) {
-                //Failure
-                util.alert(status + ":" + err, resx.ok);
+                util.handleServiceError(xhr, status, err);
             }
         );
 
@@ -409,6 +408,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.contentFieldId = ko.observable(-1);
     self.fieldTypeId = ko.observable("");
     self.selected = ko.observable(false);
+    self.isList = ko.observable(false);
 
     self.localizedDescriptions = ko.observableArray([]);
     self.localizedLabels = ko.observableArray([]);
@@ -505,7 +505,11 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 return (self.fieldTypeId() === fieldType.fieldTypeId);
             });
         if (entity != null) {
-            value = entity.fieldName;
+            if (self.isList()) {
+                value = resx.list + "<" + entity.fieldName + ">";
+            } else {
+                value = entity.fieldName;
+            }
         }
         return value;
     });
@@ -531,7 +535,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 label: data.label(),
                 description: data.description(),
                 fieldTypeId: data.fieldTypeId().substring(1),
-                isContentType: self.isContentType()
+                isList: data.isList()
         };
 
             util.contentTypeService().post("DeleteContentField", params,
@@ -541,8 +545,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 },
 
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         });
@@ -552,6 +555,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
         self.fieldTypeId("");
+        self.isList(false);
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
         util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
@@ -563,6 +567,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
         self.fieldTypeId(fieldTypeId);
+        self.isList(data.isList);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
         util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
@@ -582,16 +587,16 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 localizedNames: jsObject.localizedNames,
                 localizedLabels: jsObject.localizedLabels,
                 fieldTypeId: jsObject.fieldTypeId.substring(1),
-                isReferenceType: jsObject.isContentType
-            };
+                isReferenceType: jsObject.isContentType,
+                isList: jsObject.isList
+        };
 
             util.contentTypeService().post("SaveContentField", params,
                 function() {
                     self.cancel();
                 },
                 function (xhr, status, err) {
-                    //Failure
-                    util.alert(status + ":" + err, resx.ok);
+                    util.handleServiceError(xhr, status, err);
                 }
             );
         }

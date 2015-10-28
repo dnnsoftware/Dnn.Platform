@@ -16,7 +16,7 @@ dcc.templatesViewModel = function (rootViewModel, config) {
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
     self.pageSize = ko.observable(settings.pageSize);
@@ -49,10 +49,10 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     };
 
     self.addTemplate = function () {
-        self.mode("editTemplate");
-        self.selectedTemplate.isEditMode(true);
         self.selectedTemplate.init();
+        self.selectedTemplate.isEditMode(true);
         self.selectedTemplate.bindCodeEditor();
+        self.mode("editTemplate");
     };
 
     self.closeEdit = function() {
@@ -132,7 +132,8 @@ dcc.templateViewModel = function (parentViewModel, config) {
     var resx = config.resx;
     var codeEditor = config.codeEditor;
     var ko = config.ko;
-
+    var invalidCharsRegEx = /[|"<>]/g;
+    var replacementCharsRegEx = /[\s|"<>/]/g;
     var $rootElement = config.$rootElement;
     var $contextMenu = $rootElement.find("#templateEditorContextMenu");
 
@@ -169,7 +170,7 @@ dcc.templateViewModel = function (parentViewModel, config) {
 
     self.name.subscribe(function (newValue) {
         if (self.filePath() === "" && newValue !== "") {
-            self.filePath("Content Templates/" + newValue.replace(/\s/g, "") + ".cshtml");
+            self.filePath("Content Templates/" + newValue.replace(replacementCharsRegEx, "") + ".cshtml");
         }
     });
 
@@ -353,8 +354,34 @@ dcc.templateViewModel = function (parentViewModel, config) {
         return value;
     });
 
-    var validate = function () {
-        return util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames());
+    var validate = function (data) {
+        var jsObject = ko.toJS(data);
+        if (invalidCharsRegEx.test(jsObject.filePath)) {
+            return {
+                isValid: false,
+                validationErrorMessage: resx.invalidCharsMessage
+            }; //File path contains invalid characters
+        }
+        if (!util.hasDefaultValue(self.rootViewModel.defaultLanguage, self.localizedNames())) {
+            return {
+                isValid: false,
+                validationErrorMessage: resx.invalidTemplateMessage
+            };
+        }
+        return {
+            isValid: true,
+            validationErrorMessage: ''
+        };
+    };
+
+    var getErrorMessage = function(xhr, err) {
+        if (xhr.responseText) {
+            var errorMessage = JSON.parse(xhr.responseText).Message;
+            if (errorMessage) {
+                return errorMessage;
+            }
+        }
+        return err;
     };
 
     self.bindCodeEditor = function () {
@@ -432,8 +459,9 @@ dcc.templateViewModel = function (parentViewModel, config) {
     };
 
     self.saveTemplate = function (data) {
-        if (!validate()) {
-            util.alert(resx.invalidTemplateMessage, resx.ok);
+        var validationData = validate(data);
+        if (!validationData.isValid) {
+            util.alert(validationData.validationErrorMessage, resx.ok);
 
         }
         else {
@@ -449,14 +477,14 @@ dcc.templateViewModel = function (parentViewModel, config) {
             };
 
             util.templateService().post("SaveTemplate", params,
-            function () {
-                self.cancel();
-            },
-            function (xhr, status, err) {
-                //Failure
-                util.alert(status + ":" + err, resx.ok);
-            }
-                );
+                function () {
+                    self.cancel();
+                },
+                function (xhr, status, err) {
+                    //Failure
+                    util.alert(getErrorMessage(xhr, err), resx.ok);                
+                }
+            );
         }
     };
 

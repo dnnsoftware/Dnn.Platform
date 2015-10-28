@@ -117,6 +117,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.PreviewProfileManagement", "DNN Platform\Tests\DotNetNuke.Tests.PreviewProfileManagement\DotNetNuke.Tests.PreviewProfileManagement.csproj", "{D305E5DC-584F-43CB-B3ED-4CB5E7ED0B9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
@@ -303,6 +307,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.ModuleCreator", "DNN Platform\Admin Modules\Dnn.Modules.ModuleCreator\Dnn.Modules.ModuleCreator.csproj", "{BD519B8A-169C-4328-BF67-62CD278435BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Dashboard", "DNN Platform\Admin Modules\Dnn.Modules.Dashboard\Dnn.Modules.Dashboard.csproj", "{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Deprecated", "DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj", "{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -658,6 +664,14 @@ Global
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.ActiveCfg = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.Build.0 = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.ActiveCfg = Release|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.Build.0 = Release|x86
 		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -820,5 +834,8 @@ Global
 		{6542F074-9C02-421F-9A75-F7496D7D04D5} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{BD519B8A-169C-4328-BF67-62CD278435BC} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3} = {53587796-3981-4E25-A8BA-29E62901C003}
+		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05} = {53587796-3981-4E25-A8BA-29E62901C003}
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 	EndGlobalSection
 EndGlobal
