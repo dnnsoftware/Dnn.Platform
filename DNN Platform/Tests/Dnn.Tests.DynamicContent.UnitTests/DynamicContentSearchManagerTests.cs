@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
@@ -117,6 +116,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ContentType", Constants.CONTENTTYPE_ValidContentTypeId.ToString())));
+
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName1", 1.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName2", true.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName3", "Some text")));
@@ -189,6 +190,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var result = _searchManager.GetSearchDocument(moduleInfo, dynamicContentItem);
 
             //Assert
+            Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ContentType", Constants.CONTENTTYPE_ValidContentTypeId.ToString())));
+
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName1",1.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName2", true.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName3", "Some text")));
@@ -228,7 +231,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var primaryContentItem = GetSimpleDynamicContentItem(fieldContents);
             primaryContentItem.Content.Fields.Add(complexFieldName, new DynamicContentField(new FieldDefinition()
                                                                                                 {
-                                                                                                    IsReferenceType = true
+                                                                                                    IsReferenceType = true,
+                                                                                                    Name = complexFieldName
                                                                                                 })
                                                                         {
                                                                             Value = secondaryContentItem.Content

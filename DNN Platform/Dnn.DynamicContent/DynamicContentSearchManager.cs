@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
@@ -57,16 +56,17 @@ namespace Dnn.DynamicContent
 
         private SearchDocument PopulateSearchDocument(SearchDocument searchDoc, DynamicContentItem dynamicContentItem)
         {
-            foreach (var dynamicContentField in dynamicContentItem.Content.Fields)
+            searchDoc.Keywords.Add("ContentType", dynamicContentItem.ContentType.ContentTypeId.ToString());
+            foreach (var dynamicContentField in dynamicContentItem.Content.Fields.Values)
             {
-                if (dynamicContentField.Value.Definition.IsReferenceType)
+                if (dynamicContentField.Definition.IsReferenceType)
                 {
-                    var value = dynamicContentField.Value.Value as DynamicContentPart;
-                    PopulateComplexField(searchDoc, dynamicContentField.Key, value);
+                    var value = dynamicContentField.Value as DynamicContentPart;
+                    PopulateComplexField(searchDoc, dynamicContentField.Definition.Name, value);
                 }
                 else
                 {
-                    searchDoc.Keywords.Add(dynamicContentField.Key, dynamicContentField.Value.GetStringValue());
+                    searchDoc.Keywords.Add(dynamicContentField.Definition.Name, dynamicContentField.GetStringValue());
                 }
             }
             return searchDoc;
@@ -74,16 +74,16 @@ namespace Dnn.DynamicContent
 
         private void PopulateComplexField(SearchDocument searchDoc, string parentFieldName, DynamicContentPart fieldValue)
         {
-            foreach (var dynamicContentField in fieldValue.Fields)
+            foreach (var dynamicContentField in fieldValue.Fields.Values)
             {
-                if (dynamicContentField.Value.Definition.IsReferenceType)
+                if (dynamicContentField.Definition.IsReferenceType)
                 {
-                    var value = dynamicContentField.Value.Value as DynamicContentPart;
-                    PopulateComplexField(searchDoc, parentFieldName+"/"+dynamicContentField.Key, value);
+                    var value = dynamicContentField.Value as DynamicContentPart;
+                    PopulateComplexField(searchDoc, parentFieldName+"/"+dynamicContentField.Definition.Name, value);
                 }
                 else
                 {
-                    searchDoc.Keywords.Add(parentFieldName+"/"+dynamicContentField.Key, dynamicContentField.Value.GetStringValue());
+                    searchDoc.Keywords.Add(parentFieldName+"/"+dynamicContentField.Definition.Name, dynamicContentField.GetStringValue());
                 }
             }
         }
