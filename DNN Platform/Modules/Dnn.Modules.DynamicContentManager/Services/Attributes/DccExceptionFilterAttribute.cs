@@ -16,8 +16,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.Attributes
     public class DccExceptionFilterAttribute : ExceptionFilterAttribute
     {
         /// <summary>
-        /// This method overrides the base to change the response status code from
-        /// "500 HttpStatusCode.InternalServerError" to "422 HttpStatusCode.UnprocessableEntity"
+        /// This method overrides the base to change the response status code and body depending of the type of the exception that is thrown
         /// </summary>
         /// <param name="actionExecutedContext"></param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)

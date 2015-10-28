@@ -3,7 +3,6 @@
 
 using Dnn.DynamicContent;
 using Dnn.Tests.DynamicContent.UnitTests.Builders;
-using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -26,8 +25,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockRepository = new MockRepository(MockBehavior.Default);
 
             // Setup Mock
-            _mockFieldDefinitionManager = MockComponentProvider.CreateNew<IFieldDefinitionManager>();
-            _mockDynamicContentTypeManager = MockComponentProvider.CreateNew<IDynamicContentTypeManager>();
+            _mockFieldDefinitionManager = _mockRepository.Create<IFieldDefinitionManager>();
+            _mockDynamicContentTypeManager = _mockRepository.Create<IDynamicContentTypeManager>();
             FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionManager.Object);
             DynamicContentTypeManager.SetTestableInstance(_mockDynamicContentTypeManager.Object);
         }
@@ -35,13 +34,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         [TearDown]
         public void TearDown()
         {
-            MockComponentProvider.ResetContainer();
             FieldDefinitionManager.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
         }
 
         [Test]
-        public void Cannot_CreateFieldDefinition_WithNonExistingDynamicContentType()
+        public void IsValid_Returns_False_If_NonExistingDynamicContentType()
         {
             //Arrange
             var baseFieldDefinition = new FieldDefinitionBuilder().WithName("TestField").Build();
@@ -60,7 +58,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
 
         [Test]
-        public void Cannot_CreateFieldDefinition_OfTypeOfANonExistingDynamicContentType()
+        public void IsValid_Returns_False_If_TypeOfANonExistingDynamicContentType()
         {
             //Arrange
             var baseFieldDefinition = new FieldDefinitionBuilder().WithName("TestField").WithIsReferenceType(true).WithFieldTypeId(0).Build();
@@ -91,7 +89,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         [TestCase(8)]
         [TestCase(9)]
         [TestCase(10)]
-        public void Cannot_CreateFieldDefinition_WithCircularReference(int depthLevel)
+        public void IsValid_Returns_False_If_FieldDefinition_WithCircularReference(int depthLevel)
         {
             //Arrange
             var listFieldDefinitions = new List<FieldDefinition>();
