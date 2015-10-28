@@ -5,6 +5,9 @@ using System;
 
 namespace Dnn.DynamicContent.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when an entity definition is not valid and therefore cannot be created or updated
+    /// </summary>
     public class InvalidEntityException : InvalidOperationException
     {
         public InvalidEntityException(Type entityType)

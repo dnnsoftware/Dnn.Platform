@@ -31,8 +31,8 @@ namespace Dnn.DynamicContent.Repositories
                 fieldRepository.Delete(field);
 
                 const string sql = @"UPDATE {objectQualifier}ContentTypes_FieldDefinitions
-                                    SET[Order] = [Order] - 1
-                                    WHERE[Order] > @1
+                                    SET [Order] = [Order] - 1
+                                    WHERE [Order] > @1
                                     AND ContentTypeID = @0";
                 DataContext.Execute(CommandType.Text, sql, field.ContentTypeId, field.Order);
                 
@@ -46,15 +46,15 @@ namespace Dnn.DynamicContent.Repositories
             const string sql = @"IF @1 > @2 -- Move other items down order
                             BEGIN
                                 UPDATE {objectQualifier}ContentTypes_FieldDefinitions
-                                    SET[Order] = [Order] + 1
-                                        WHERE[Order] < @1 AND[Order] >= @2
+                                    SET [Order] = [Order] + 1
+                                        WHERE [Order] < @1 AND[Order] >= @2
                                         AND ContentTypeID = @0
                             END
                         ELSE --Move other items up order
                             BEGIN
                                 UPDATE {objectQualifier}ContentTypes_FieldDefinitions
-                                    SET[Order] = [Order] - 1
-                                        WHERE[Order] > @1 AND[Order] <= @2
+                                    SET [Order] = [Order] - 1
+                                        WHERE [Order] > @1 AND[Order] <= @2
                                         AND ContentTypeId = @0
                             END";
 
