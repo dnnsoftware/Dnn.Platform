@@ -48,28 +48,99 @@ dcc.templatesViewModel = function (rootViewModel, config) {
             );
     };
 
-    self.addTemplate = function () {
-        self.selectedTemplate.init();
-        self.selectedTemplate.isEditMode(true);
-        self.selectedTemplate.bindCodeEditor();
-        self.mode("editTemplate");
-    };
-
-    self.closeEdit = function() {
-        self.mode("listTemplates");
-        self.selectedTemplate.isEditMode(false);
-        self.refresh();
+    function slideToggle(element, direction, duration, callback) {
+        var elemToToggle = $rootElement.find(element);
+        if (direction === 'up') {
+            elemToToggle.stop(true, false).slideUp(duration, 'linear', function() { callback(); });
+        } else {
+            elemToToggle.stop(true, false).slideDown(duration, 'linear', function () { callback(); });
+        }
     }
 
-    self.editTemplate = function (data) {
+    function collapseDetailRow(callback) {
+        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
+
+        slideToggle('#templates-editrow > td > div', 'up', 400, function() {
+            $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            if (typeof callback === 'function') callback();
+        });
+    };
+
+    function findRow(e) {
+        var row = $rootElement.find(e.target);
+
+        if (row.is("tr") === false) {
+            row = row.closest('tr');
+        }
+
+        if (row.hasClass('in-edit-row')) {
+            row.removeClass('in-edit-row');
+            slideToggle('#templates-editrow > td > div', 'up', 600, function () {
+                $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+            });
+            return null;
+        }
+
+        var tbody = row.parent();
+        $rootElement.find('tr', tbody).removeClass('in-edit-row');
+        row.addClass('in-edit-row');
+
+        return row;
+    }
+
+
+    self.addTemplate = function (event, ui) {
+        var tbody = $rootElement.find("#templates-addbody");
+        $(ui.target).fadeOut(200);
+
+        util.asyncParallel([
+            function (callback) {
+                self.selectedTemplate.init();
+                self.selectedTemplate.isEditMode(true);
+                self.selectedTemplate.bindCodeEditor();
+                self.mode("editTemplate");
+                callback();
+            },
+            function (callback) {
+                collapseDetailRow(callback);
+            }
+        ], function () {
+            $rootElement.find('#templates-editrow').appendTo(tbody);
+            slideToggle('#templates-editrow > td > div', 'down', 400);
+        });
+    };
+
+    self.closeEdit = function () {
+        self.mode("listTemplates");
+        collapseDetailRow(function() {
+            self.refresh();
+        });
+        self.selectedTemplate.isEditMode(false);
+    }
+
+    self.editTemplate = function (data, e) {
         self.selectedTemplate.init();
         self.selectedTemplate.isEditMode(true);
+
+        $rootElement.find('a.dccButton').fadeIn(200);
+
+        var row = findRow(e);
+
+        if (row === null) return;
+        
         util.asyncParallel([
-            function (cb1) {
-                self.getTemplate(data.templateId(), cb1);
+            function (callback) {
+                self.getTemplate(data.templateId(), callback);
+            },
+            function (callback) {
+                $rootElement.find('#templates-editrow > td > div').stop(true, false).slideUp(200, 'linear', function () {
+                    callback();
+                });
             }
         ], function () {
             self.mode("editTemplate");
+            $rootElement.find('#templates-editrow').insertAfter(row);
+            slideToggle('#templates-editrow > td > div', 'down', 400);
         });
     };
 
@@ -88,7 +159,14 @@ dcc.templatesViewModel = function (rootViewModel, config) {
         if (typeof cb === 'function') cb();
     };
 
+    function reAppendEditRow() {
+        $rootElement.find('#templates-editrow').appendTo('#templates-editbody');
+        $rootElement.find('#templates-editrow > td > div').hide();
+        $rootElement.find('a.dccButton').fadeIn(200);
+    }
+
     self.getTemplates = function () {
+        reAppendEditRow();
 
         getContentTypes();
 
