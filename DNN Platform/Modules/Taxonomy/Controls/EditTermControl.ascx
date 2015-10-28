@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditTermControl.ascx.cs" Inherits="DotNetNuke.Modules.Taxonomy.Views.Controls.EditTermControl" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <div class="dnnForm dnnEditTermControl dnnClear">
     <div class="dnnFormItem">
         <div class="dnnLabel">
