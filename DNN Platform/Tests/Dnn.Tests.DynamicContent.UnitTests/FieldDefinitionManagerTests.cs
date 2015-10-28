@@ -31,6 +31,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         private IFieldDefinitionRepository _fieldDefinitionRepositoryMockedDataContext;
         private Mock<IContentTypeLocalizationManager> _mockContentTypeLocalizationManager;
         private Mock<ILocaleController> _mockLocaleController;
+        private Mock<IFieldDefinitionChecker> _fieldDefinitionChecker;
 
         // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
@@ -67,6 +68,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockLocaleController = new Mock<ILocaleController>();
             _mockLocaleController.Setup(m => m.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+
+            string errorMessage;
+            _fieldDefinitionChecker = new Mock<IFieldDefinitionChecker>();
+            _fieldDefinitionChecker.Setup(m => m.IsValid(It.IsAny<FieldDefinition>(), out errorMessage))
+                .Returns(() => true);
+            FieldDefinitionChecker.SetTestableInstance(_fieldDefinitionChecker.Object);
         }
 
         [TearDown]

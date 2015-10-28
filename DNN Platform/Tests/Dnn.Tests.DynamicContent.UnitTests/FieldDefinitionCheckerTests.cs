@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent.Repositories;
 
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
@@ -15,7 +16,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     {
 
         private MockRepository _mockRepository;
-        private Mock<IFieldDefinitionManager> _mockFieldDefinitionManager;
+        private Mock<IFieldDefinitionRepository> _mockFieldDefinitionRepository;
         private Mock<IDynamicContentTypeManager> _mockDynamicContentTypeManager;
 
         [SetUp]
@@ -25,16 +26,16 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockRepository = new MockRepository(MockBehavior.Default);
 
             // Setup Mock
-            _mockFieldDefinitionManager = _mockRepository.Create<IFieldDefinitionManager>();
+            _mockFieldDefinitionRepository = _mockRepository.Create<IFieldDefinitionRepository>();
             _mockDynamicContentTypeManager = _mockRepository.Create<IDynamicContentTypeManager>();
-            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionManager.Object);
+            FieldDefinitionRepository.SetTestableInstance(_mockFieldDefinitionRepository.Object);
             DynamicContentTypeManager.SetTestableInstance(_mockDynamicContentTypeManager.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
-            FieldDefinitionManager.ClearInstance();
+            FieldDefinitionRepository.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
         }
 
@@ -48,7 +49,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Act 
             string errorMessage;
-            var isValid = FieldDefinitionChecker.Instance.IsValid(baseFieldDefinition, out errorMessage);
+            var isValid = new FieldDefinitionChecker().IsValid(baseFieldDefinition, out errorMessage);
 
             //Assert
             Assert.IsFalse(isValid, "The field definition with an inexisting dynamic content type is valid");
@@ -69,7 +70,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Act 
             string errorMessage;
-            var isValid = FieldDefinitionChecker.Instance.IsValid(baseFieldDefinition, out errorMessage);
+            var isValid = new FieldDefinitionChecker().IsValid(baseFieldDefinition, out errorMessage);
 
             //Assert
             Assert.IsFalse(isValid, "The field definition with an inexisting dynamic content type is valid");
@@ -114,7 +115,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionCounter = listFieldDefinitions.Count - 1;
             if (depthLevel > 0)
             {
-                _mockFieldDefinitionManager.Setup(m => m.GetFieldDefinitions(It.IsAny<int>()))
+                _mockFieldDefinitionRepository.Setup(m => m.Get(It.IsAny<int>()))
                     .Returns(() => new List<FieldDefinition> {listFieldDefinitions[fieldDefinitionCounter]}.AsQueryable())
                     .Callback(() => fieldDefinitionCounter--);
             }
@@ -124,7 +125,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Act 
             string errorMessage;
-            var isValid = FieldDefinitionChecker.Instance.IsValid(baseFieldDefinition, out errorMessage);
+            var isValid = new FieldDefinitionChecker().IsValid(baseFieldDefinition, out errorMessage);
 
             //Assert
             Assert.IsFalse(isValid, "The field definition containing a dead loop is valid");
