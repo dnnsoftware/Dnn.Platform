@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Linq;
+using Dnn.DynamicContent.Repositories;
 using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
@@ -11,6 +13,15 @@ namespace Dnn.DynamicContent
         protected override Func<IFieldDefinitionChecker> GetFactory()
         {
             return () => new FieldDefinitionChecker();
+        }
+
+        private readonly IDynamicContentTypeManager _dynamicContentTypeManager;
+        private readonly IFieldDefinitionRepository _fieldDefinitionRepository;
+
+        public FieldDefinitionChecker()
+        {
+            _dynamicContentTypeManager = DynamicContentTypeManager.Instance;
+            _fieldDefinitionRepository = FieldDefinitionRepository.Instance;
         }
 
         public bool IsValid(FieldDefinition fieldDefinition, out string errorMessage)
@@ -38,12 +49,12 @@ namespace Dnn.DynamicContent
             return true;
         }
 
-        private static bool DynamicContentTypeExists(int contentTypeId, int portalId)
+        private bool DynamicContentTypeExists(int contentTypeId, int portalId)
         {
-            return DynamicContentTypeManager.Instance.GetContentType(contentTypeId, portalId, true) != null;
+            return _dynamicContentTypeManager.GetContentType(contentTypeId, portalId, true) != null;
         }
 
-        private static bool DeadLoopInFieldDefinition(FieldDefinition fieldDefinition, FieldDefinition baseFieldDefinition)
+        private bool DeadLoopInFieldDefinition(FieldDefinition fieldDefinition, FieldDefinition baseFieldDefinition)
         {
             if (fieldDefinition.IsReferenceType)
             {
@@ -52,7 +63,7 @@ namespace Dnn.DynamicContent
                     return true;
                 }
 
-                foreach (var contentTypeField in FieldDefinitionManager.Instance.GetFieldDefinitions(fieldDefinition.FieldTypeId))
+                foreach (var contentTypeField in _fieldDefinitionRepository.Get(fieldDefinition.FieldTypeId).OrderBy(f => f.Order).AsQueryable())
                 {
                     if (DeadLoopInFieldDefinition(contentTypeField, baseFieldDefinition))
                     {

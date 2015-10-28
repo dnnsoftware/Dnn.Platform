@@ -22,6 +22,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionManager.FieldDefinitionCacheKey);
         private Mock<IDynamicContentTypeManager> _mockContentTypeController;
         private Mock<IContentTypeLocalizationManager> _mockContentTypeLocalizationManager;
+        private Mock<IFieldDefinitionChecker> _fieldDefinitionChecker;
 
         [SetUp]
         public void SetUp()
@@ -36,6 +37,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             _mockContentTypeLocalizationManager = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(_mockContentTypeLocalizationManager.Object);
+
+            string errorMessage;
+            _fieldDefinitionChecker = new Mock<IFieldDefinitionChecker>();
+            _fieldDefinitionChecker.Setup(m => m.IsValid(It.IsAny<FieldDefinition>(), out errorMessage))
+                .Returns(() => true);
+            FieldDefinitionChecker.SetTestableInstance(_fieldDefinitionChecker.Object);
         }
 
         [TearDown]

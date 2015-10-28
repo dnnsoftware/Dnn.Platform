@@ -29,7 +29,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void SetUp()
         {
             _mockRepository = new MockRepository(MockBehavior.Default);
-            
+
             _mockValidationRuleController = _mockRepository.Create<IValidationRuleManager>();
             ValidationRuleManager.SetTestableInstance(_mockValidationRuleController.Object);
 
@@ -71,12 +71,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = string.Empty,
-                                        Label = "Label"
-                                    };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = string.Empty,
+                Label = "Label"
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -89,12 +89,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
-                            {
-                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                Name = "New_Type",
-                                Label = string.Empty
-                            };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = string.Empty
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -107,12 +107,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
-                                {
-                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                    Name = "New_Type",
-                                    Label = "Label"
-                                };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -180,15 +180,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             var validationRuleCount = 5;
-            for(int i = 0; i < validationRuleCount; i++)
+            for (int i = 0; i < validationRuleCount; i++)
             {
                 definition.ValidationRules.Add(new ValidationRule());
             }
@@ -211,12 +211,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             var validationRuleCount = 5;
             for (int i = 0; i < validationRuleCount; i++)
@@ -259,7 +259,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
-                .Returns(new [] {definition});
+                .Returns(new[] { definition });
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
@@ -275,10 +275,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
-                                    {
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
-                                    };
+            {
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+            };
             var validationRuleCount = Constants.CONTENTTYPE_ValidValidationRuleCount;
             for (int i = 0; i < validationRuleCount; i++)
             {
@@ -359,13 +359,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
-                            {
-                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                Name = string.Empty,
-                                Label = "Label"
-                            };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = string.Empty,
+                Label = "Label"
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.UpdateFieldDefinition(field));
@@ -378,13 +378,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = string.Empty
-                                    };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = string.Empty
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.UpdateFieldDefinition(field));
@@ -397,13 +397,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
-                            {
-                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                Name = "New_Type",
-                                Label = "Label"
-                            };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
                 .Returns(new[] { field });
@@ -423,13 +423,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
-                                {
-                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                    FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                    Name = "New_Type",
-                                    Label = "Label"
-                                };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             var validationRuleCount = 5;
             for (int i = 0; i < validationRuleCount; i++)
@@ -456,13 +456,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var field = new FieldDefinition
-                                {
-                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                    FieldDefinitionId = fieldDefinitionId,
-                                    FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                    Name = "New_Type",
-                                    Label = "Label"
-                                };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = fieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
             _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
                 .Returns(new[] { field });
@@ -492,13 +492,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
-                            {
-                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                Name = "New_Type",
-                                Label = "Label"
-                            };
+            {
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
 
 
             _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
@@ -507,7 +507,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var validationRuleCount = 5;
             for (int i = 0; i < validationRuleCount; i++)
             {
-                field.ValidationRules.Add(new ValidationRule() {ValidationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId});
+                field.ValidationRules.Add(new ValidationRule() { ValidationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId });
             }
 
             //Act
