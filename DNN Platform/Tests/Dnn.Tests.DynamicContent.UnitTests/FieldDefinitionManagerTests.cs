@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
-using DotNetNuke.Common.Utilities;
+using Dnn.DynamicContent.Repositories;
+using Dnn.Tests.DynamicContent.UnitTests.Builders;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
@@ -22,9 +24,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     public class FieldDefinitionManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
-        private Mock<IRepository<FieldDefinition>> _mockFieldDefinitionRepository;
+        private Mock<IRepository<FieldDefinition>> _mockFieldDefinitionDataContext;
+        private Mock<IRepository<ContentTypeLocalization>> _mockContentTypeLocalizationDataContext;
         private Mock<IValidationRuleManager>  _mockValidationRuleController;
         private Mock<IDynamicContentTypeManager> _mockContentTypeController;
+        private IFieldDefinitionRepository _fieldDefinitionRepositoryMockedDataContext;
+        private Mock<IContentTypeLocalizationManager> _mockContentTypeLocalizationManager;
+        private Mock<ILocaleController> _mockLocaleController;
+
         // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
 
@@ -37,8 +44,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockDataContext = new Mock<IDataContext>();
 
-            _mockFieldDefinitionRepository = new Mock<IRepository<FieldDefinition>>();
-            _mockDataContext.Setup(dc => dc.GetRepository<FieldDefinition>()).Returns(_mockFieldDefinitionRepository.Object);
+            _mockFieldDefinitionDataContext = new Mock<IRepository<FieldDefinition>>();
+            _mockContentTypeLocalizationDataContext = new Mock<IRepository<ContentTypeLocalization>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<FieldDefinition>()).Returns(_mockFieldDefinitionDataContext.Object);
+            _mockDataContext.Setup(dc => dc.GetRepository<ContentTypeLocalization>()).Returns(_mockContentTypeLocalizationDataContext.Object);
 
             _mockValidationRuleController = new Mock<IValidationRuleManager>();
             _mockValidationRuleController.Setup(vr => vr.GetValidationRules(It.IsAny<int>()))
@@ -46,7 +55,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             ValidationRuleManager.SetTestableInstance(_mockValidationRuleController.Object);
 
             _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            _mockContentTypeController.Setup(m => m.GetContentType(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => new DynamicContentTypeBuilder().Build());
             DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
+
+            _fieldDefinitionRepositoryMockedDataContext = new FieldDefinitionRepository(_mockDataContext.Object);
+            FieldDefinitionRepository.SetTestableInstance(_fieldDefinitionRepositoryMockedDataContext);
+
+            _mockContentTypeLocalizationManager = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(_mockContentTypeLocalizationManager.Object);
+
+            _mockLocaleController = new Mock<ILocaleController>();
+            _mockLocaleController.Setup(m => m.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
         }
 
         [TearDown]
@@ -62,53 +82,17 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddFieldDefinition_Throws_On_Null_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => fieldDefinitionController.AddFieldDefinition(null));
         }
 
         [Test]
-        public void AddFieldDefinition_Throws_On_Negative_ContentTypeId_Property()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
-
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.AddFieldDefinition(definition));
-        }
-
-        [Test]
-        public void AddFieldDefinition_Throws_On_Negative_DataTypeId_Property()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
-
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.AddFieldDefinition(definition));
-        }
-
-        [Test]
         public void AddFieldDefinition_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
                                     {
@@ -126,7 +110,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddFieldDefinition_Throws_On_Empty_Label_Property()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
                             {
@@ -144,7 +128,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddFieldDefinition_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
                                 {
@@ -159,17 +143,17 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             int fieldDefinitionId = fieldDefinitionController.AddFieldDefinition(definition);
 
             //Assert
-            _mockFieldDefinitionRepository.Verify(rep => rep.Insert(definition));
+            _mockFieldDefinitionDataContext.Verify(rep => rep.Insert(definition));
         }
 
         [Test]
         public void AddFieldDefinition_Returns_ValidId_On_Valid_FieldDefinition()
         {
             //Arrange
-            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+            _mockFieldDefinitionDataContext.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
                             .Callback((FieldDefinition df) => df.FieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId);
 
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
             {
@@ -190,10 +174,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddFieldDefinition_Sets_ValidId_On_Valid_FieldDefinition()
         {
             //Arrange
-            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+            _mockFieldDefinitionDataContext.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
                             .Callback((FieldDefinition dt) => dt.FieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId);
 
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
             {
@@ -214,10 +198,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddFieldDefinition_Adds_New_ValidationRules_On_Valid_FieldDefinition()
         {
             //Arrange
-            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+            _mockFieldDefinitionDataContext.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
                             .Callback((FieldDefinition dt) => dt.FieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId);
 
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
                                     {
@@ -245,10 +229,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var fieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId;
-            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+            _mockFieldDefinitionDataContext.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
                             .Callback((FieldDefinition dt) => dt.FieldDefinitionId = fieldDefinitionId);
 
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var definition = new FieldDefinition
                                     {
@@ -278,49 +262,34 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteFieldDefinition_Throws_On_Null_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => fieldDefinitionController.DeleteFieldDefinition(null));
         }
 
         [Test]
-        public void DeleteFieldDefinition_Throws_On_Negative_FieldDefinitionId()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var definition = new FieldDefinition { FieldDefinitionId = Null.NullInteger };
-
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.DeleteFieldDefinition(definition));
-        }
-
-        [Test]
         public void DeleteFieldDefinition_Calls_Repository_Delete_On_Valid_FieldDefinitionId()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId
             };
 
-            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
-            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
-
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
 
             //Assert
-            _mockFieldDefinitionRepository.Verify(r => r.Delete(definition));
+            _mockFieldDefinitionDataContext.Verify(r => r.Delete(definition));
         }
 
         [Test]
         public void DeleteFieldDefinition_Deletes_ValidatioRules_On_Valid_FieldDefinitionId()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
                                     {
                                         FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId
@@ -330,9 +299,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 definition.ValidationRules.Add(new ValidationRule());
             }
-
-            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
-            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
@@ -345,23 +311,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetFieldDefinitions_Overload_Calls_Repository_Get()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act
             // ReSharper disable once UnusedVariable
             var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
 
             //Assert
-            _mockFieldDefinitionRepository.Verify(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId));
+            _mockFieldDefinitionDataContext.Verify(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId));
         }
 
         [Test]
         public void GetFieldDefinitions_Overload_Returns_Empty_List_Of_FieldDefinitions_If_No_FieldDefinitions()
         {
             //Arrange
-            _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
+            _mockFieldDefinitionDataContext.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
                 .Returns(new List<FieldDefinition>());
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act
             var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
@@ -375,9 +341,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetFieldDefinitions_Overload_Returns_List_Of_FieldDefinitions()
         {
             //Arrange
-            _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
+            _mockFieldDefinitionDataContext.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
                 .Returns(GetValidFieldDefinitions(Constants.CONTENTTYPE_ValidFieldDefinitionCount));
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act
             var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
@@ -390,55 +356,17 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateFieldDefinition_Throws_On_Null_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => fieldDefinitionController.UpdateFieldDefinition(null));
         }
 
         [Test]
-        public void UpdateFieldDefinition_Throws_On_Negative_ContentTypeId_Property()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var definition = new FieldDefinition
-                                    {
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                                        FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
-
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.UpdateFieldDefinition(definition));
-        }
-
-        [Test]
-        public void UpdateFieldDefinition_Throws_On_Negative_DataTypeId_Property()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var definition = new FieldDefinition
-                                    {
-                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                        FieldTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
-                                        Name = "New_Type",
-                                        Label = "Label"
-                                    };
-
-            //Act, Arrange
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.UpdateFieldDefinition(definition));
-        }
-
-        [Test]
         public void UpdateFieldDefinition_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
                             {
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
@@ -456,7 +384,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateFieldDefinition_Throws_On_Empty_Label_Property()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
                                     {
@@ -472,28 +400,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void UpdateFieldDefinition_Throws_On_Negative_FieldDefinitionId()
-        {
-            //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
-            var field = new FieldDefinition
-                            {
-                                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                                Name = "New_Type",
-                                Label = "Label"
-                            };
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.UpdateFieldDefinition(field));
-        }
-
-        [Test]
         public void UpdateFieldDefinition_Calls_Repository_Update()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
                             {
@@ -508,14 +418,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             fieldDefinitionController.UpdateFieldDefinition(field);
 
             //Assert
-            _mockFieldDefinitionRepository.Verify(r => r.Update(field));
+            _mockFieldDefinitionDataContext.Verify(r => r.Update(field));
         }
 
         [Test]
         public void UpdateFieldDefinition_Adds_New_ValidationRules_On_Valid_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
                                 {
@@ -543,7 +453,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateFieldDefinition_Sets_FieldDefinitionId_Property_Of_New_ValidationRules_On_Valid_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var field = new FieldDefinition
@@ -575,7 +485,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateFieldDefinition_Updates_Existing_ValidationRules_On_Valid_FieldDefinition()
         {
             //Arrange
-            var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             var field = new FieldDefinition
                             {
