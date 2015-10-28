@@ -258,27 +258,27 @@ dnn.controlBar.init = function (settings) {
             type: 'GET',
             data: 'category=' + category + '&loadingStartIndex=' + currentIndex + '&loadingPageSize=' + pageSize + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
-            success: function (d) {
+            success: function (moduleList) {
             	setTimeout(function () {
 					var containerId = '#ControlBar_ModuleListHolder_NewModule';
-                    if (d && d.length) {                        
+                    if (moduleList && moduleList.length) {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
                         dnn.controlBar.forceLoadingPane = false;
                         dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);                        
                         
-                        if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
+                        if ((dnn.controlBar.isFirstModuleLoadingPage() && moduleList.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && moduleList.length < dnn.controlBar.moduleLoadingSize)) {
                             dnn.controlBar.allModulesLoaded = true;
                         }
 
                         if (dnn.controlBar.isFirstModuleLoadingPage()
-                                && d.length > dnn.controlBar.moduleLoadingInitialPageSize
-                                && (d.length - dnn.controlBar.moduleLoadingInitialPageSize) % dnn.controlBar.moduleLoadingSize != 0) {
+                                && moduleList.length > dnn.controlBar.moduleLoadingInitialPageSize
+                                && (moduleList.length - dnn.controlBar.moduleLoadingInitialPageSize) % dnn.controlBar.moduleLoadingSize != 0) {
                                 dnn.controlBar.allModulesLoaded = true;
                         }
 
-                        dnn.controlBar.renderModuleList(containerId, d);
-                        if (dnn.controlBar.isFirstModuleLoadingPage() && d.length > dnn.controlBar.moduleLoadingInitialPageSize) {
-                            var pageCount = d.length - dnn.controlBar.moduleLoadingInitialPageSize;
+                        dnn.controlBar.renderModuleList(containerId, moduleList);
+                        if (dnn.controlBar.isFirstModuleLoadingPage() && moduleList.length > dnn.controlBar.moduleLoadingInitialPageSize) {
+                            var pageCount = moduleList.length - dnn.controlBar.moduleLoadingInitialPageSize;
                             if (pageCount % dnn.controlBar.moduleLoadingSize == 0) {
                                 dnn.controlBar.moduleLoadingPageIndex = parseInt(pageCount / dnn.controlBar.moduleLoadingSize) + 1;
                             } else {
@@ -295,8 +295,8 @@ dnn.controlBar.init = function (settings) {
                             dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);
                             dnn.controlBar.allModulesLoaded = true;
 
-							if (d) { //call renderModuleList to re-calculate the list position even ajax request return no data.
-								dnn.controlBar.renderModuleList(containerId, d);
+							if (moduleList) { //call renderModuleList to re-calculate the list position even ajax request return no data.
+								dnn.controlBar.renderModuleList(containerId, moduleList);
 							}
                         } else {
                             dnn.controlBar.setLoadingModulesMessage(String.format(settings.loadingModulesOnNoDefaultCategoryMessage, dnn.controlBar.getSelectedCategory()));
