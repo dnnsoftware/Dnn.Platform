@@ -137,8 +137,8 @@
                         <table class="dccTable">
                             <thead>
                             <tr>
-                                <th>[Resx:{key:"Name"}]</th>
-                                <th>[Resx:{key:"Label"}]</th>
+                                <th width="300px">[Resx:{key:"Name"}]</th>
+                                <th width="300px">[Resx:{key:"Label"}]</th>
                                 <th>[Resx:{key:"FieldType"}]</th>
                                 <th width="100px">[Resx:{key:"Actions"}]</th>
                             </tr>
@@ -146,10 +146,20 @@
                             <tbody data-bind="sortable: { data: contentFields(), afterMove: moveContentField, options: { helper: fixHelper, cursor: 'move', containment: 'parent', tolerance: 'pointer', scroll: true, scrollSensitivity: 60, handle: '.dccMove'} }">
                             <tr>
                                 <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                                    <span data-bind="text: name"></span>
+                                    <span data-bind="text: name" class="ellipsis-overflow"></span>
+                                    <div class="dnnTooltip" style="position: absolute; right: -29%; top: -48px;">
+                                        <div class="dnnFormHelpContent dnnClear" style="visibility: hidden; width: auto;">
+                                            <span class="bottomArrow" data-bind="text: name"></span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                                    <span data-bind="text: label"></span>
+                                    <span data-bind="text: label" class="ellipsis-overflow"></span>
+                                    <div class="dnnTooltip" style="position: absolute; right: -29%; top: -48px;">
+                                        <div class="dnnFormHelpContent dnnClear" style="visibility: hidden; width: auto;">
+                                            <span class="bottomArrow" data-bind="text: label"></span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <span data-bind="text: fieldType()"></span>
