@@ -46,12 +46,8 @@ namespace Dnn.DynamicContent
                 var stringValue = jToken.Value<string>() ?? String.Empty;
                 switch (definition.DataType.UnderlyingDataType)
                 {
-
                     case UnderlyingDataType.Boolean:
-                        Boolean boolResult;
-                        field = Boolean.TryParse(stringValue, out boolResult)
-                                ? new DynamicContentField(definition) { Value = boolResult }
-                                : new DynamicContentField(definition) { Value = false };
+                        field = new DynamicContentField(definition) { Value = jToken.Value<bool?>() ?? false };
                         break;
                     case UnderlyingDataType.Bytes:
                         field = (String.IsNullOrEmpty(stringValue))
@@ -65,10 +61,7 @@ namespace Dnn.DynamicContent
                                 : new DynamicContentField(definition) { Value = new DateTime(2000, 1, 1) };
                         break;
                     case UnderlyingDataType.Float:
-                        Double dblResult;
-                        field = Double.TryParse(stringValue, out dblResult)
-                                ? new DynamicContentField(definition) { Value = dblResult }
-                                : new DynamicContentField(definition) { Value = 0.0 };
+                        field = new DynamicContentField(definition) { Value = jToken.Value<double?>() ?? 0 };
                         break;
                     case UnderlyingDataType.Guid:
                         Guid guidResult;
@@ -77,10 +70,7 @@ namespace Dnn.DynamicContent
                                 : new DynamicContentField(definition) { Value = Guid.NewGuid() };
                         break;
                     case UnderlyingDataType.Integer:
-                        Int32 intResult;
-                        field = Int32.TryParse(stringValue, out intResult)
-                                ? new DynamicContentField(definition) { Value = intResult }
-                                : new DynamicContentField(definition) { Value = 0 };
+                        field = new DynamicContentField(definition) { Value = jToken.Value<int?>() ?? 0 };
                         break;
                     case UnderlyingDataType.TimeSpan:
                         TimeSpan timeSpanResult;
@@ -121,7 +111,7 @@ namespace Dnn.DynamicContent
                         var jArray = jField as JArray;
                         if (jArray != null)
                         {
-                            field.Value = jArray.Select(jObject => FromJson(fieldDefinition, jObject as JObject)).ToList();
+                            field.Value = jArray.Select(jObject => FromJson(fieldDefinition, jObject)).ToList();
                         }
                     }
                     else
@@ -148,41 +138,20 @@ namespace Dnn.DynamicContent
 
         private object ToJson(DynamicContentField field)
         {
-            object value = null;
-
             if (field.Definition.IsList)
             {
                 if (field.Definition.IsReferenceType)
                 {
                     var list = field.Value as List<DynamicContentPart>;
-                    if (list != null)
-                    {
-                        var array = new JArray();
-                        foreach (var item in list)
-                        {
-                            array.Add(item.ToJson());
-                        }
-                        value = array;
-                    }
+
+                    return list == null ? null 
+                        : new JArray(from item in list select item.ToJson());
                 }
-                else
-                {
-                    var list = field.Value as List<DynamicContentField>;
-                    if (list != null)
-                    {
-                        value = new JObject(
-                                        from item in list
-                                        select new JProperty(item.Definition.Name, ToJson(item))
-                                    );                        
-                    }
-                }
+
+                return new JArray(field.Value);
             }
-            else
-            {
-                value = field.Definition.IsReferenceType ? field.ToJson() : field.Value;
-            }
-            
-            return value;
+
+            return field.Definition.IsReferenceType ? field.ToJson() : field.Value;
         }
     }
 }

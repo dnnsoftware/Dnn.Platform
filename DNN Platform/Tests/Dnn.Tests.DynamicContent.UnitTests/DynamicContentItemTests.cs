@@ -77,13 +77,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                 new JProperty("FieldName1", 1),
                                 new JProperty("FieldName2", true),
                                 new JProperty("FieldName3", "abc"),
-                                new JProperty("FieldName4",
-                                    new JObject(
-                                        new JProperty("FieldName5", 2),
-                                        new JProperty("FieldName6", 3),
-                                        new JProperty("FieldName7", 4)
-                                    )
-                                )
+                                new JProperty("FieldName4", new JArray(2,3,4))
                             )
                         )
                     );
@@ -355,7 +349,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             dynamicContent.FromJson(testJson.ToString());
 
             //Assert
-            Assert.AreEqual(0, dynamicContent.Content.Fields.Count);
+            Assert.AreEqual(3, dynamicContent.Content.Fields.Count);
+            Assert.AreEqual(0, dynamicContent.Content.Fields["FieldName1"].Value);
+            Assert.AreEqual(false, dynamicContent.Content.Fields["FieldName2"].Value);
+            Assert.AreEqual("", dynamicContent.Content.Fields["FieldName3"].Value);
         }
 
         [Test]
@@ -843,12 +840,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             dynamicContent.Content.Fields["FieldName1"].Value = 1;
             dynamicContent.Content.Fields["FieldName2"].Value = true;
             dynamicContent.Content.Fields["FieldName3"].Value = "abc";
-            dynamicContent.Content.Fields["FieldName4"].Value = new List<DynamicContentField>() 
-                {
-                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName5" }) { Value = 2 },
-                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName6" }) { Value = 3 },
-                    new DynamicContentField(new FieldDefinition(portalId) { Name = "FieldName7" }) { Value = 4 },
-                };
+            dynamicContent.Content.Fields["FieldName4"].Value = new [] { 2, 3, 4 };
             
             //Act
             var json = dynamicContent.ToJson();
