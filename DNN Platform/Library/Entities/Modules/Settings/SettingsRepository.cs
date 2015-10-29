@@ -11,35 +11,112 @@ using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Entities.Modules.Settings
 {
-    public class ModuleSettingPersister<TType>
-        where TType : new()
+    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
     {
-        public const string CachePrefix = "ModuleSettingsPersister_";
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleSettingPersister{TType}"/> class.
-        /// </summary>
-        public ModuleSettingPersister()
-        {
-            this.Mapping = this.LoadMapping();
-        }
-
-        #endregion
-
         #region Properties
 
         private IList<ParameterMapping> Mapping { get; set; }
 
         #endregion
 
-        public TType Load(ModuleInfo ctlModule)
+        public SettingsRepository()
         {
-            var settings = new TType();
+            this.Mapping = this.LoadMapping();
+        }
+
+        public T GetSettings(ModuleInfo moduleContext)
+        {
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
+                                                       Load,
+                                                       true);
+        }
+
+        public void SaveSettings(ModuleInfo moduleContext, T settings)
+        {
+            Requires.NotNull("settings", settings);
+            Requires.NotNull("ctlModule", moduleContext);
+
+            var controller = new ModuleController();
+            this.Mapping.ForEach(mapping =>
+            {
+                var attribute = mapping.Attribute;
+                var property = mapping.Property;
+
+                if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
+                {
+                    var settingValue = property.GetValue(settings, null);
+                    if (settingValue != null)
+                    {
+                        if (attribute is ModuleSettingAttribute)
+                        {
+                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.ParameterName, settingValue.ToString());
+                        }
+                        else if (attribute is TabModuleSettingAttribute)
+                        {
+                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.ParameterName, settingValue.ToString());
+                        }
+                        else if (attribute is PortalSettingAttribute)
+                        {
+                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.ParameterName, settingValue.ToString());
+                        }
+                    }
+                }
+            });
+            DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
+        }
+
+        #region Mappings
+        protected IList<ParameterMapping> LoadMapping()
+        {
+            var cacheKey = this.MappingCacheKey;
+            var mapping = CachingProvider.Instance().GetItem(cacheKey) as IList<ParameterMapping>;
+            if (mapping == null)
+            {
+                mapping = this.CreateMapping();
+                // HARDCODED: 2 hour expiration. 
+                // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
+                CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
+            }
+
+            return mapping;
+        }
+
+        public const string CachePrefix = "ModuleSettingsPersister_";
+        protected virtual string MappingCacheKey
+        {
+            get
+            {
+                var type = typeof(T);
+                return SettingsRepository<T>.CachePrefix + type.FullName.Replace(".", "_");
+            }
+        }
+
+        protected virtual IList<ParameterMapping> CreateMapping()
+        {
+            var mapping = new List<ParameterMapping>();
+            var type = typeof(T);
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty);
+
+            properties.ForEach(property =>
+            {
+                // In .NET Framework 4.5.x the call below can be replaced by property.GetCustomAttributes<BaseParameterAttribute>(true);
+                var attributes = property.GetCustomAttributes(typeof(ParameterAttributeBase), true).OfType<ParameterAttributeBase>();
+                attributes.ForEach(attribute => mapping.Add(new ParameterMapping(attribute, property)));
+            });
+
+            return mapping;
+        }
+        #endregion
+
+        #region Loading
+        private T Load(CacheItemArgs args)
+        {
+            var ctlModule = (ModuleInfo)args.ParamList[0];
+            var settings = new T();
 
             this.Mapping.ForEach(mapping =>
             {
@@ -77,89 +154,19 @@ namespace DotNetNuke.Entities.Modules.Settings
             return settings;
         }
 
-        public void Save(TType settings, ModuleInfo ctlModule)
+        private string CacheKey(int moduleId)
         {
-            Requires.NotNull("settings", settings);
-            Requires.NotNull("ctlModule", ctlModule);
-
-            var controller = new ModuleController();
-            this.Mapping.ForEach(mapping =>
-            {
-                var attribute = mapping.Attribute;
-                var property = mapping.Property;
-
-                if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
-                {
-                    var settingValue = property.GetValue(settings, null);
-                    if (settingValue != null)
-                    {
-                        if (attribute is ModuleSettingAttribute)
-                        {
-                            controller.UpdateModuleSetting(ctlModule.ModuleID, mapping.ParameterName, settingValue.ToString());
-                        }
-                        else if (attribute is TabModuleSettingAttribute)
-                        {
-                            controller.UpdateTabModuleSetting(ctlModule.TabModuleID, mapping.ParameterName, settingValue.ToString());
-                        }
-                        else if (attribute is PortalSettingAttribute)
-                        {
-                            PortalController.UpdatePortalSetting(ctlModule.PortalID, mapping.ParameterName, settingValue.ToString());
-                        }
-                    }
-                }
-            });
+            return string.Format("SettingsModule{0}", moduleId);
         }
 
-        #region Helpers
-
-        protected IList<ParameterMapping> LoadMapping()
-        {
-            var cacheKey = this.CacheKey;
-            var mapping = CachingProvider.Instance().GetItem(cacheKey) as IList<ParameterMapping>;
-            if (mapping == null)
-            {
-                mapping = this.CreateMapping();
-                // HARDCODED: 2 hour expiration. 
-                // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
-                CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
-            }
-
-            return mapping;
-        }
-
-        protected virtual string CacheKey
-        {
-            get
-            {
-                var type = typeof(TType);
-                return ModuleSettingPersister<TType>.CachePrefix + type.FullName.Replace(".", "_");
-            }
-        }
-
-        protected virtual IList<ParameterMapping> CreateMapping()
-        {
-            var mapping = new List<ParameterMapping>();
-            var type = typeof(TType);
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty);
-
-            properties.ForEach(property =>
-            {
-                // In .NET Framework 4.5.x the call below can be replaced by property.GetCustomAttributes<BaseParameterAttribute>(true);
-                var attributes = property.GetCustomAttributes(typeof(ParameterAttributeBase), true).OfType<ParameterAttributeBase>();
-                attributes.ForEach(attribute => mapping.Add(new ParameterMapping(attribute, property)));
-            });
-
-            return mapping;
-        }
-
-        /// <summary>
+                /// <summary>
         /// Writes the property.
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>
         /// <exception cref="System.InvalidCastException"></exception>
-        private void WriteProperty(TType settings, PropertyInfo property, object propertyValue)
+        private void WriteProperty(T settings, PropertyInfo property, object propertyValue)
         {
             try
             {
@@ -216,7 +223,9 @@ namespace DotNetNuke.Entities.Modules.Settings
                                                              property.PropertyType), exception);
             }
         }
-
         #endregion
+
+
+
     }
 }

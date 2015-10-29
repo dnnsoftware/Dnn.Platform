@@ -194,11 +194,12 @@
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Entities\Modules\Settings\DnnSettingAttributeBase.cs" />
     <Compile Include="Entities\Modules\Settings\IParameterGrouping.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
-    <Compile Include="Entities\Modules\Settings\ModuleSettingPersister.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
     <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
