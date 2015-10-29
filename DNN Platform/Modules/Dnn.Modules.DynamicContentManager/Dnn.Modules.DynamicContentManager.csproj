@@ -150,12 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />
-    <Content Include="Fonts\ProximaNova-Reg-webfont.ttf" />
-    <Content Include="Fonts\ProximaNova-Reg-webfont.woff" />
-    <Content Include="Fonts\ProximaNova-Sbold-webfont.ttf" />
-    <Content Include="Fonts\ProximaNova-Sbold-webfont.woff" />
-    <Content Include="Fonts\ProximaNovaCond-Sbold-webfont.ttf" />
-    <Content Include="Fonts\ProximaNovaCond-Sbold-webfont.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
