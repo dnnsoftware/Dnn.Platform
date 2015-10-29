@@ -14,7 +14,7 @@ using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
-namespace Dnn.Tests.DynamicContent.UnitTests
+namespace Dnn.Tests.DynamicContentViewer.UnitTests
 {
     [TestFixture]
     public class DynamicContentViewerBusinessControllerTests
