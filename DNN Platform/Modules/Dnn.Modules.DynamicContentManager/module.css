@@ -97,6 +97,13 @@ input[type="password"] {
   width: 100%;
   border-collapse: collapse;
   border-bottom: 1px solid #dddddd;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+.dccContainer .dccTable .ellipsis-overflow {
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
 }
 .dccContainer .dccTable tr:nth-child(2n) {
   background: rgba(0, 0, 0, 0.04);
@@ -140,6 +147,9 @@ input[type="password"] {
   font-size: 11px;
   letter-spacing: 1px;
   font-weight: normal;
+}
+#data-types-panel .dccTable td:last-child {
+  padding-left: 11px;
 }
 .dccContainer .dccTable th:first-child,
 .dccContainer .dccTable td:first-child {
@@ -199,6 +209,9 @@ input[type="password"] {
   padding-left: 11px;
   text-align: center;
   box-sizing: border-box;
+}
+.dccContainer #data-types-panel .dccTable tr > td:last-child {
+  padding-left: 14px;
 }
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
   background: #bedef7;
@@ -371,6 +384,7 @@ input[type="password"] {
   background-color: #ccc;
   margin: 0;
   cursor: pointer;
+  position: relative;
   -webkit-transition: background 100ms linear;
   -moz-transition: background 100ms linear;
   -o-transition: background 100ms linear;
@@ -391,7 +405,7 @@ input[type="password"] {
   border-radius: 11px;
   background-color: #fff;
   border: 2px solid #b5b5b5;
-  position: relative;
+  position: absolute;
   top: -2px;
   left: 0px;
   -webkit-box-sizing: border-box;

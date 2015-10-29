@@ -49,10 +49,6 @@
         viewModel.mode("listTemplates");
     };
 
-    var selectSettings = function (data, e) {
-        menuClick(e.target, settings.settingsPanel);
-    };
-
     var init = function(element) {
         $rootElement = $(element);
 
@@ -148,7 +144,6 @@
         viewModel.selectContentTypes = selectContentTypes;
         viewModel.selectDataTypes = selectDataTypes;
         viewModel.selectTemplates = selectTemplates;
-        viewModel.selectSettings = selectSettings;
 
         viewModel.pageSizeOptions = ko.observableArray([
                                 { text: 10, value: 10 },

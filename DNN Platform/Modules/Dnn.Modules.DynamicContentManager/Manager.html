@@ -36,9 +36,6 @@
                 <li id="contentTemplates-menu" data-bind="click: selectTemplates">
                     <div>[Resx:{key:"Templates"}]</div>
                 </li>
-                <li id="settings-menu" data-bind="click: selectSettings">
-                    <div>[Resx:{key:"Settings"}]</div>
-                </li>
             </ul>
             <div class="dccLanguageSelector" data-bind="visible: $root.isLocalized">
                 <span  data-bind="text: $root.resx.language"></span>
@@ -73,7 +70,6 @@
                             <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="[Icon:search]"></i></a>
                             <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:pencil]"></i></a>
                             <a class="dccIcon dccRemove" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="[Icon:remove]"></i></a>
-                            <div class="dccIcon dccExpand" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="[Icon:caret-down]"></i></div>
                         </td>
                     </tr>
                     </tbody>
@@ -86,7 +82,7 @@
                                         <div data-bind="html: pagerItemsDescription"></div>
                                     </td>
                                     <td>
-                                        <span data-bind="text: rootViewModel.resx.dataTypesPageSize"></span>
+                                        <span data-bind="text: rootViewModel.resx.contentTypesPageSize"></span>
                                         <select data-bind="value: pageSize, valueAllowUnset: false, options: rootViewModel.pageSizeOptions, optionsText: 'text', optionsValue: 'value'"></select>
                                     </td>
                                     <td>
@@ -255,7 +251,7 @@
                         <th>[Resx:{key:"DataType"}]</th>
                         <th>[Resx:{key:"Created"}]</th>
                         <th>[Resx:{key:"System"}]</th>
-                        <th width="20px">
+                        <th width="35px">
                             <i class="[Icon:caret-down]"></i>
                         </th>
                     </tr>

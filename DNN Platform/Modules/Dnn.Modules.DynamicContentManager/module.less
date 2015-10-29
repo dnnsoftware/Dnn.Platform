@@ -287,6 +287,10 @@ padding: 9px 5px 5px 5px;
     box-sizing: border-box;
 }
 
+.dccContainer #data-types-panel .dccTable tr > td:last-child{
+    padding-left:14px;
+}
+
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
     background: @grid_hover_dropdown_background_color;
     cursor: pointer;
@@ -494,6 +498,7 @@ padding: 9px 5px 5px 5px;
     background-color: #ccc;
     margin: 0;
     cursor: pointer;
+    position: relative;
     -webkit-transition: background 100ms linear;
     -moz-transition: background 100ms linear;
     -o-transition: background 100ms linear;
@@ -517,7 +522,7 @@ padding: 9px 5px 5px 5px;
     border-radius: 11px;
     background-color: #fff;
     border: 2px solid #b5b5b5;
-    position: relative;
+    position: absolute;
     top: -2px;
     left: 0px;
     -webkit-box-sizing: border-box;

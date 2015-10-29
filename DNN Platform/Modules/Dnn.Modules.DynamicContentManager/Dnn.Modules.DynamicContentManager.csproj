@@ -127,6 +127,9 @@
     <Content Include="module.css">
       <DependentUpon>module.less</DependentUpon>
     </Content>
+    <Content Include="module.min.css">
+      <DependentUpon>module.css</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <Content Include="module.css.map">
+      <DependentUpon>module.css</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
