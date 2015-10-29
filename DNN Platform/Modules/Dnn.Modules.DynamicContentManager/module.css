@@ -148,9 +148,6 @@ input[type="password"] {
   letter-spacing: 1px;
   font-weight: normal;
 }
-#data-types-panel .dccTable td:last-child {
-  padding-left: 11px;
-}
 .dccContainer .dccTable th:first-child,
 .dccContainer .dccTable td:first-child {
   padding: 8px 5px 7px 15px;
@@ -204,6 +201,9 @@ input[type="password"] {
   text-align: center;
   cursor: pointer;
 }
+.dccContainer .dccTable tbody tr:hover div.dccExpand {
+  background: #bedef7;
+}
 .dccContainer #data-types-panel .dccTable tr > th:last-child,
 .dccContainer #data-types-panel .dccTable tr > td:last-child {
   padding-left: 11px;
@@ -225,6 +225,7 @@ input[type="password"] {
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row td,
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row:hover td:last-child {
   background-color: #fafafa;
+  padding-left: 0;
 }
 .dccContainer .dccTable .dccPager {
   width: 100%;
@@ -239,6 +240,7 @@ input[type="password"] {
 }
 .dccContainer .dccTable .dccPager td select {
   margin-bottom: 1px;
+  background: #ffffff;
 }
 .dccContainer .dccTable .dccPager td div {
   margin-bottom: 0px;
@@ -302,6 +304,15 @@ input[type="password"] {
 .dccContainer div.globalToggle {
   width: 27%;
 }
+.dccContainer div.name {
+  width: 33%;
+}
+.dccContainer div.description {
+  width: 40%;
+}
+.dccContainer div.globalToggle {
+  width: 27%;
+}
 .dccContainer div.dccEditRow > div {
   float: left;
   max-width: 100%;
@@ -320,6 +331,9 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div > textarea {
   height: 35px;
   width: 842px;
+}
+.dccContainer #content-types-panel #contentTypes-editView div.dccEditRow > div > textarea {
+  max-width: 320px;
 }
 .dccContainer div.dccEditRow > div > input,
 .dccContainer div.dccEditRow > div > textarea,
@@ -560,17 +574,25 @@ input[type="password"] {
 }
 .dccContainer div.dccLanguageSelector {
   position: absolute;
-  top: 6px;
+  top: 5px;
   left: 635px;
   display: inline-block;
 }
 .dccContainer div.dccLanguageSelector span {
-  font-size: 16px;
+  font-size: 100%;
+  display: inline;
+  font-family: inherit;
+  font-weight: bold;
 }
 .dccContainer div.dccLanguageSelector select {
-  margin-bottom: 0px;
-  padding: 2px 5px 5px 5px;
-  font-size: 15px;
+  margin-bottom: 0;
+  margin-left: 5px;
+  padding: 5px;
+  background-color: #ffffff;
+  font-size: 100%;
+  width: 72%;
+  display: inline;
+  font-family: inherit;
 }
 .dccContainer ul#templateEditorContextMenu {
   float: left;

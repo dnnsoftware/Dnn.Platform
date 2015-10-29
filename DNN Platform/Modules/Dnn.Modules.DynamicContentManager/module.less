@@ -1,4 +1,4 @@
-﻿/*Colors*/
+/*Colors*/
 @border_color: #ddd;
 @panel_background_color: #FAFAFA;
 @tab_background_color: #eee;
@@ -13,6 +13,7 @@
 @fa_warning_color: #ff8c00;
 @dnni_error_color: #d00;
 @dnni_warning_color: #ff8c00;
+
 @main_font: inherit;
 @main_font_bold: inherit;
 @title_font: inherit;
@@ -149,8 +150,8 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     width: 100%;
     border-collapse: collapse;
     border-bottom: 1px solid @border_color;
-	table-layout: fixed;
-	white-space: nowrap;
+    table-layout: fixed;
+    white-space: nowrap;
 }
 
 .dccContainer .dccTable .ellipsis-overflow{
@@ -208,10 +209,6 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     font-size: 11px;
     letter-spacing: 1px;
     font-weight: normal;
-}
-
-#data-types-panel .dccTable td:last-child{
-	padding-left: 11px;
 }
 
 .dccContainer .dccTable th:first-child, .dccContainer .dccTable td:first-child{
@@ -280,15 +277,21 @@ padding: 9px 5px 5px 5px;
     cursor: pointer;
 }
 
+.dccContainer .dccTable tbody tr:hover div.dccExpand{
+    background:@grid_hover_dropdown_background_color;
+
+}
+
 .dccContainer #data-types-panel .dccTable tr > th:last-child,
-.dccContainer #data-types-panel .dccTable tr > td:last-child {
+.dccContainer #data-types-panel .dccTable tr > td:last-child
+{
     padding-left: 11px;
     text-align:center;
     box-sizing: border-box;
 }
 
 .dccContainer #data-types-panel .dccTable tr > td:last-child{
-    padding-left:14px;
+    padding-left: 14px;
 }
 
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
@@ -305,6 +308,7 @@ padding: 9px 5px 5px 5px;
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row td,
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row:hover td:last-child{
     background-color: @panel_background_color;
+    padding-left: 0;
 }
 
 //Pager
@@ -325,6 +329,7 @@ padding: 9px 5px 5px 5px;
 
 .dccContainer .dccTable .dccPager td select {
     margin-bottom: 1px;
+    background: @selectedTab_background_color;
 }
 
 .dccContainer .dccTable .dccPager td div {
@@ -401,6 +406,18 @@ padding: 9px 5px 5px 5px;
     width: 27%;
 }
 
+.dccContainer div.name{
+    width: 33%;
+}
+
+.dccContainer div.description{
+    width: 40%;
+}
+
+.dccContainer div.globalToggle{
+    width: 27%;
+}
+
 .dccContainer div.dccEditRow > div {
     float: left;
     max-width: 100%;
@@ -423,6 +440,10 @@ padding: 9px 5px 5px 5px;
 .dccContainer div.dccEditRow > div > textarea{
     height: 35px;
     width: @panel_innerWidth - 20;
+}
+
+.dccContainer #content-types-panel #contentTypes-editView div.dccEditRow > div > textarea{
+    max-width: 320px;
 }
 
 .dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
@@ -699,19 +720,27 @@ padding: 9px 5px 5px 5px;
 
 .dccContainer div.dccLanguageSelector{
     position: absolute;
-    top: 6px;
+    top: 5px;
     left: @languageSelector_position;
     display: inline-block;
 }
 
 .dccContainer div.dccLanguageSelector span{
-    font-size: 16px;
+    font-size: 100%;
+    display: inline;
+    font-family: @main_font;
+    font-weight: bold;
 }
 
 .dccContainer div.dccLanguageSelector select{
-    margin-bottom: 0px;
-    padding: 2px 5px 5px 5px;
-    font-size:15px;
+    margin-bottom: 0;
+    margin-left: 5px;
+    padding: 5px;
+    background-color: @selectedTab_background_color;
+    font-size: 100%;
+    width: 72%;
+    display: inline;
+    font-family: @main_font_bold;
 }
 .dccContainer ul#templateEditorContextMenu {
     float: left;
