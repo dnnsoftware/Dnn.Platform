@@ -58,8 +58,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void TearDown()
         {
             DynamicContentTypeManager.ClearInstance();
-            DynamicContentItemManager.ClearInstance();
             ContentController.ClearInstance();
+            DynamicContentSearchManager.ClearInstance();
+            FieldDefinitionManager.ClearInstance();
+            DynamicContentViewerManager.ClearInstance();
         }
 
         [Test]

@@ -61,6 +61,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             ContentController.ClearInstance();
             FieldDefinitionManager.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
+            ModuleController.ClearInstance();
+            SearchHelper.ClearInstance();
         }
 
         [Test]
@@ -210,14 +212,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
             };
-
-            Action delegateFunction = () =>
-            {
-                _searchManager.GetSearchDocument(moduleInfo, null);
-            };
-
+            
             //Act
-            var testDelegation = new TestDelegate(delegateFunction);
+            var testDelegation = new TestDelegate(() => _searchManager.GetSearchDocument(moduleInfo, null));
             
 
             //Assert

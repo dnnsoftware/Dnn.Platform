@@ -13,7 +13,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace Dnn.Modules.DynamicContentViewer.Components
 {
     /// <summary>
-    /// Module Business controller. It overwrites ModuleSearchBase methods
+    /// Module Business controller class. It implements ModuleSearchBase abstract class
     /// </summary>
     public class BusinessController: ModuleSearchBase
     {
@@ -24,9 +24,6 @@ namespace Dnn.Modules.DynamicContentViewer.Components
         private readonly IContentController _contentController;
         #endregion
 
-        /// <summary>
-        /// BusinessController Constructor
-        /// </summary>
         public BusinessController()
         {
             _dynamicContentViewerManager = DynamicContentViewerManager.Instance;
