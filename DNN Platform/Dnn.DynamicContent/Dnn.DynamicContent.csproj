@@ -86,7 +86,7 @@
     <Compile Include="FieldDefinitionManager.cs" />
     <Compile Include="IContentTemplateManager.cs" />
     <Compile Include="IDataTypeManager.cs" />
-    <Compile Include="IDynamicContentISearchManager.cs" />
+    <Compile Include="IDynamicContentSearchManager.cs" />
     <Compile Include="IDynamicContentItemManager.cs" />
     <Compile Include="IDynamicContentTypeManager.cs" />
     <Compile Include="IFieldDefinitionManager.cs" />
