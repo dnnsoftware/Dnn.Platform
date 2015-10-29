@@ -1,16 +1,21 @@
 ﻿/*Colors*/
-@border_color: #aaa;
-@panel_background_color: #fff;
+@border_color: #ddd;
+@panel_background_color: #FAFAFA;
 @tab_background_color: #eee;
 @selectedTab_background_color: #fff;
 @selectedTab_color:  #0087c6;
 @header_background_color: #fff;
-@grid_alt_background_color: #eee;
-@grid_hover_background_color: #d9ecfa;
-@grid_hover_dropdown_background_color: #0087c6;
+@grid_alt_background_color: rgba(0,0,0,0.04);
+@grid_hover_background_color: rgba(2,139,255,0.15);
+@grid_hover_dropdown_background_color: #bedef7;
 @contextMenu_hover_background_color: #d9ecfa;
 @fa_error_color: #d00;
 @fa_warning_color: #ff8c00;
+@dnni_error_color: #d00;
+@dnni_warning_color: #ff8c00;
+@main_font: inherit;
+@main_font_bold: inherit;
+@title_font: inherit;
 
 @primaryBtn_background_color: #0087c6;
 @primaryBtn_color: #fff;
@@ -20,6 +25,7 @@
 @otherBtn_color: #333;
 @boxShadow_color: #aaa;
 @disabledOption_color: #999;
+@title_color: #777;
 
 /*Units*/
 @width: 950px;
@@ -44,15 +50,18 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer{
     border: solid 1px @border_color;
     width: @width;
+    background: @panel_background_color;
+    font-family: @main_font;
 }
 
 .dccContainer .dccHeading{
     width: @width;
-    padding-top: 25px;
-    padding-bottom: 10px;
+    padding-top: 40px;
     border-bottom: solid 1px @border_color;
     background-color: @header_background_color;
-    box-shadow: 0px 2px 2px @boxShadow_color;
+    font-family: @main_font_bold;
+    font-size: 28px;
+    height: 60px;
 }
 
 .dccContainer .dccHeading span{
@@ -70,19 +79,21 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer .dccBody {
     margin: @panel_OuterMargin;
     width: @panel_width;
-    background-color: @panel_background_color;
+    background-color: @selectedTab_background_color;
     border: solid 1px @border_color;
     border-radius: 4px;
+    font-family: @main_font;
 }
 
 .dccContainer .dccMenu {
     position: relative;
+    margin-bottom: -6px;
 }
 
 .dccContainer .dccMenu ul {
     display: inline-block;
-    margin-left: 0px;
-    margin-bottom: 0px;
+    margin: 0;
+    padding: 0;
     width: @panel_width - 1;
     border-top-left-radius: @border_radius;
     border-top-right-radius: @border_radius;
@@ -101,10 +112,8 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     width: @tab_width;
     padding: 12px @panel_InnerMargin 10px @panel_InnerMargin;
     cursor: pointer;
-}
-
-.dccContainer .dccMenu ul > li.selected {
-    background-color: @selectedTab_background_color;
+    font-weight: bold;
+    font-family: @main_font;
 }
 
 .dccContainer .dccMenu ul > li.selected {
@@ -119,6 +128,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer .dccSearchPanel{
     padding: @panel_InnerMargin;
     border-bottom: 1px solid @border_color;
+    background: @selectedTab_background_color;
 }
 
 .dccContainer  .dccSearchPanel>.dccSearchBox{
@@ -129,8 +139,10 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     margin-bottom: 0;
     display: inline-block;
     background-image: url(images/search.png);
+    background-color: @selectedTab_background_color;
     background-repeat: no-repeat;
     background-position: 240px 8px;
+    font-family:@main_font;
 }
 
 .dccContainer .dccTable{
@@ -152,22 +164,50 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 .dccContainer .dccTable tbody tr {
-    transition: background 100ms linear;;
+    transition: background 100ms linear;
 }
 
 .dccContainer .dccTable > tbody > tr:hover {
     background: @grid_hover_background_color;
 }
 
-.dccContainer .dccTable th{
-    border-left: 1px solid @border_color;
-    border-bottom: 1px solid @border_color;
+.dccContainer .dccTable > tbody > tr#templates-editrow {
+    background: transparent;
+    width: 909px;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow:hover {
+    background: transparent;
+}
+
+.dccContainer #templates-listView .dccTable tbody tr td > div.dccExpand {
+    background: transparent;
+}
+
+.dccContainer #templates-listView .dccTable tbody tr:hover div.dccExpand {
+  background: @grid_hover_dropdown_background_color;
+}
+
+.dccContainer .dccTable > tbody > tr#templates-editrow div.dccEditRow > div.CodeMirror {
+    margin-right: 0px;
 }
 
 .dccContainer .dccTable th, .dccContainer .dccTable td {
-    padding: 8px 5px 7px 5px;
-    text-align: center;
+    padding: 5px 9px;
+    text-align: left;
     height: 20px;
+    font-family: @main_font;
+}
+
+.dccContainer .dccTable th{
+    border-left: 1px solid @border_color;
+    border-bottom: 1px solid @border_color;
+    background: @selectedTab_background_color;
+    font-family: @title_font;
+    color: @title_color;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: normal;
 }
 
 #data-types-panel .dccTable td:last-child{
@@ -191,39 +231,70 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr th i.dnni-caret-down {
+.dccContainer .dccTable tbody tr th i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr:hover td i.dnni-caret-down {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
     display: inherit;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
     display: none;
 }
 
-.dccContainer #data-types-panel .dccTable tbody tr td i.dnni-caret-up {
+.dccContainer .dccTable tbody tr td i.dnni-caret-up {
     display: none;
+}
+
+.dccContainer .dccTable tbody tr td.dccActions{
+    padding: 0;
+    position: relative;
+}
+
+.dccContainer .dccTable tbody tr td > a {
+    height: 35px;
+}
+
+.dccContainer .dccTable tbody tr td > a:first-child{
+    padding: 0 5px 0 10px;
+}
+
+.dccContainer .dccTable tbody tr td > div.dccExpand{
+padding: 9px 5px 5px 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: @grid_hover_dropdown_background_color;
+    width: 26px;
+    height: 21px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dccContainer #data-types-panel .dccTable tr > th:last-child,
+.dccContainer #data-types-panel .dccTable tr > td:last-child {
+    padding-left: 11px;
+    text-align:center;
+    box-sizing: border-box;
 }
 
 .dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
     background: @grid_hover_dropdown_background_color;
-	cursor: pointer;
+    cursor: pointer;
 }
 
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row > td,
-.dccContainer #data-types-panel .dccTable > tbody > tr.in-edit-row:hover > td{
+.dccContainer .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer .dccTable > tbody > tr.in-edit-row:hover > td{
     background: @grid_hover_dropdown_background_color;
-    color: @panel_background_color;
     border-color: @grid_hover_dropdown_background_color;
 }
 
@@ -242,6 +313,10 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
     padding: 0px;
     height: 40px;
     width: 33%;
+}
+
+.dccContainer .dccTable .dccPager td:nth-child(2){
+        text-align: center;
 }
 
 .dccContainer .dccTable .dccPager td select {
@@ -299,7 +374,6 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditForm {
     padding: @panel_InnerMargin;
-    min-height: 135px;
 }
 
 .dccContainer .dccTable div.dccEditForm {
@@ -309,15 +383,27 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer div.dccEditRow {
     float: left;
     position: relative;
-    width: 100%;
+}
+
+.dccContainer div.name{
+    width: 33%;
+}
+
+.dccContainer div.description{
+    width: 40%;
+}
+
+.dccContainer div.globalToggle{
+    width: 27%;
 }
 
 .dccContainer div.dccEditRow > div {
     float: left;
+    max-width: 100%;
 }
 
 .dccContainer div.dccEditRow > div.dccExtraMargin {
-    margin-right: 25px;
+    margin-right: 24px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div {
@@ -327,6 +413,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer div.dccEditRow > div > label{
     display:block;
     cursor: default;
+    text-align: left;
 }
 
 .dccContainer div.dccEditRow > div > textarea{
@@ -336,6 +423,10 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
     margin-bottom: 10px;
+    background: @selectedTab_background_color;
+    border: 1px solid @border_color;
+    border-radius: 3px;
+    max-width: 100%;
 }
 
 .dccContainer div.dccEditRow > div > input{
@@ -454,6 +545,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 }
 
 .dccContainer .dccButton {
+    font-family: @main_font;
     background: @otherBtn_background_color;
     color: @otherBtn_color;
     display: inline-block;
@@ -470,6 +562,7 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 
 .dccContainer div.dccEditForm > div > a.primarybtn, .dccContainer div.dccEditForm > div > a.secondarybtn {
     margin-left: 5px;
+    font-family: @main_font;
 }
 
 .dccContainer a.primarybtn {
@@ -551,6 +644,11 @@ input[type="text"], select, textarea, input[type="email"], input[type="search"],
 .dccContainer a.dccIcon {
     padding: 0px 5px 0px 5px;
     cursor: pointer;
+}
+
+.dccContainer a.dccRemove .dnni{
+    font-size: 13px;
+    padding-top: 3px;
 }
 
 .dccContainer .dccSubSubPanel {
