@@ -47,6 +47,22 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 LastModifiedOnDate datetime NOT NULL DEFAULT getdate()
             )";
 
+        private const string CreateContentItemsTableSql = @"
+           CREATE TABLE ContentItems(
+	        [ContentItemID] [int] IDENTITY(1,1) NOT NULL,
+	        [Content] nvarchar (4000) NULL,
+	        [ContentTypeID] [int] NOT NULL,
+	        [TabID] [int] NOT NULL,
+	        [ModuleID] [int] NOT NULL,
+	        [ContentKey] nvarchar (250) NULL,
+	        [Indexed] [bit] NOT NULL,
+	        [CreatedByUserID] [int] NULL,
+	        [CreatedOnDate] [datetime] NULL,
+	        [LastModifiedByUserID] [int] NULL,
+	        [LastModifiedOnDate] [datetime] NULL,
+	        [StateID] [int] NULL
+        )";
+
         private const string CreateValidatorTypeTableSql = @"
             CREATE TABLE ContentTypes_ValidatorTypes(
 	            ValidatorTypeID int IDENTITY(1,1) NOT NULL,
@@ -151,6 +167,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTemplateTableSql);
+            DataUtil.ExecuteNonQuery(DatabaseName, CreateContentItemsTableSql);
         }
 
         public void TearDownInternal()
