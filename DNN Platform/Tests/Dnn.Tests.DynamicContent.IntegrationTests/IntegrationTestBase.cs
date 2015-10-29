@@ -191,7 +191,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
+                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, 1, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
             }
         }
 

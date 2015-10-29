@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Services.Cache;
@@ -107,7 +108,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
                                     {
-                                        FieldDefinitionId = definitionId
+                                        FieldDefinitionId = definitionId,
+                                        ContentTypeId = 1
                                     };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
@@ -131,7 +133,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
                                     {
-                                        FieldDefinitionId = definitionId
+                                        FieldDefinitionId = definitionId,
+                                        ContentTypeId = 1
                                     };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
@@ -172,7 +175,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void GetFieldDefinitions_Returns_Records_For_ContentType_From_Database_If_Cache_Is_Null()
         {
             //Arrange
-            var contentTypeId = 5;
+            var contentTypeId = 1;
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
@@ -181,7 +184,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
 
             //Assert
-            Assert.AreEqual(1, fields.Count());
+            Assert.AreEqual(RecordCount, fields.Count());
             foreach (var field in fields)
             {
                 Assert.AreEqual(contentTypeId, field.ContentTypeId);
@@ -218,6 +221,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
                             {
+                                PortalId = PortalId,
                                 FieldDefinitionId = definitionId,
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                 FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
@@ -245,6 +249,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
             {
+                PortalId = PortalId,
                 FieldDefinitionId = definitionId,
                 ContentTypeId = contentTypeId,
                 FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
