@@ -27,19 +27,20 @@ namespace Dnn.DynamicContent
 
         public SearchDocument GetSearchDocument(ModuleInfo moduleInfo, DynamicContentItem dynamicContentItem)
         {
+            Requires.NotNull(moduleInfo);
             Requires.NotNull(dynamicContentItem);
             
             var searchDoc = new SearchDocument
             {
-                UniqueKey = dynamicContentItem.ContentItemId.ToString("D"),
-                PortalId = dynamicContentItem.PortalId,
+                UniqueKey = string.Format("Module{0}-DynamicContentItem{1}", moduleInfo.ModuleID, dynamicContentItem.ContentItemId),
+                PortalId = moduleInfo.PortalID,
                 SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
                 Title = moduleInfo.ModuleTitle,
                 Description = string.Empty,
                 Body = GenerateSearchContent(dynamicContentItem),
-                ModuleId = dynamicContentItem.ModuleId,
+                ModuleId = moduleInfo.ModuleID,
                 ModuleDefId = moduleInfo.ModuleDefID,
-                TabId = dynamicContentItem.TabId,
+                TabId = moduleInfo.TabID,
                 ModifiedTimeUtc = DateTime.UtcNow
             };
 
