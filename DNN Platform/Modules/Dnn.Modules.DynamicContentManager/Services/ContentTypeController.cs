@@ -20,6 +20,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 
 namespace Dnn.Modules.DynamicContentManager.Services
 {
@@ -150,10 +151,16 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentTypes(string searchTerm, int pageIndex, int pageSize)
         {
+            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(PortalSettings.UserId, PortalSettings.PortalId);
+            personalization.Profile["DCCContentTypePageSize:" + PortalSettings.PortalId] = pageSize;
+            personalization.IsModified = true;
+            personalizationController.SaveProfile(personalization);
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
-
         }
+
+        
 
         private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
         {
