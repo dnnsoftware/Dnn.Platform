@@ -1,22 +1,4 @@
-﻿@font-face {
-  font-family: 'proxima_nova';
-  src: url('fonts/ProximaNova-Reg-webfont.woff') format('woff'), url('fonts/ProximaNova-Reg-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'proxima_nova_semibold';
-  src: url('fonts/ProximaNova-Sbold-webfont.woff') format('woff'), url('fonts/ProximaNova-Sbold-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'proxima_nova_c_semibold';
-  src: url('fonts/ProximaNovaCond-Sbold-webfont.woff') format('woff'), url('fonts/ProximaNovaCond-Sbold-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-/*Colors*/
+﻿/*Colors*/
 /*Units*/
 input[type="text"],
 select,
@@ -30,14 +12,14 @@ input[type="password"] {
   border: solid 1px #dddddd;
   width: 950px;
   background: #fafafa;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer .dccHeading {
   width: 950px;
   padding-top: 40px;
   border-bottom: solid 1px #dddddd;
   background-color: #ffffff;
-  font-family: proxima_nova_semibold;
+  font-family: inherit;
   font-size: 28px;
   height: 60px;
 }
@@ -57,7 +39,7 @@ input[type="password"] {
   background-color: #ffffff;
   border: solid 1px #dddddd;
   border-radius: 4px;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer .dccMenu {
   position: relative;
@@ -84,7 +66,7 @@ input[type="password"] {
   padding: 12px 15px 10px 15px;
   cursor: pointer;
   font-weight: bold;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer .dccMenu ul > li.selected {
   background-color: #ffffff;
@@ -109,7 +91,7 @@ input[type="password"] {
   background-color: #ffffff;
   background-repeat: no-repeat;
   background-position: 240px 8px;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer .dccTable {
   width: 100%;
@@ -126,33 +108,33 @@ input[type="password"] {
   background: rgba(2, 139, 255, 0.15);
 }
 .dccContainer .dccTable > tbody > tr#templates-editrow {
-    background: transparent;
-    width: 909px;
+  background: transparent;
+  width: 909px;
 }
 .dccContainer .dccTable > tbody > tr#templates-editrow:hover {
-    background: transparent;
+  background: transparent;
 }
 .dccContainer #templates-listView .dccTable tbody tr td > div.dccExpand {
-    background: transparent;
+  background: transparent;
 }
 .dccContainer #templates-listView .dccTable tbody tr:hover div.dccExpand {
   background: #bedef7;
 }
 .dccContainer .dccTable > tbody > tr#templates-editrow div.dccEditRow > div.CodeMirror {
-    margin-right: 0px;
+  margin-right: 0px;
 }
 .dccContainer .dccTable th,
 .dccContainer .dccTable td {
   padding: 5px 9px;
   text-align: left;
   height: 20px;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer .dccTable th {
   border-left: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
   background: #ffffff;
-  font-family: proxima_nova_c_semibold;
+  font-family: inherit;
   color: #777777;
   text-transform: uppercase;
   font-size: 11px;
@@ -433,7 +415,7 @@ input[type="password"] {
   text-align: center;
 }
 .dccContainer .dccButton {
-  font-family: proxima_nova;
+  font-family: inherit;
   background: #ffffff;
   color: #333333;
   display: inline-block;
@@ -450,7 +432,7 @@ input[type="password"] {
 .dccContainer div.dccEditForm > div > a.primarybtn,
 .dccContainer div.dccEditForm > div > a.secondarybtn {
   margin-left: 5px;
-  font-family: proxima_nova;
+  font-family: inherit;
 }
 .dccContainer a.primarybtn {
   background: #0087c6;
