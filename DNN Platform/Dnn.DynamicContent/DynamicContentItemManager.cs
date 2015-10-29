@@ -96,6 +96,7 @@ namespace Dnn.DynamicContent
         public IQueryable<DynamicContentItem> GetContentItems(int moduleId, int contentTypeId)
         {
             Requires.NotNegative("moduleId", moduleId);
+            Requires.NotNegative("contentTypeId", contentTypeId);
 
             var contentItems = ContentController.Instance.GetContentItemsByModuleId(moduleId) .Where(c => c.ContentTypeId == contentTypeId);
             var dynamicContentItems = new List<DynamicContentItem>();
