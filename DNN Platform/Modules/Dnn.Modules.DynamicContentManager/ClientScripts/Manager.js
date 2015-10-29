@@ -100,6 +100,10 @@
             codeEditor: codeEditor,
             ko: ko
         };
+        var conf = cf.init();
+        var sf = util.sf;
+        var persis = persistent.init(conf, sf);
+        util.persistent = persis;
 
         //Build the ViewModel
         viewModel.resx = resx;
