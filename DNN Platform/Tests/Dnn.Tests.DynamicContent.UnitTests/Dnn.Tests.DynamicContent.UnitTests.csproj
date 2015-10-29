@@ -73,7 +73,6 @@
     <Compile Include="ContentTemplateTests.cs" />
     <Compile Include="DataTypeManagerTests.cs" />
     <Compile Include="DataTypeTests.cs" />
-    <Compile Include="DynamicContentSearchManagerTests.cs" />
     <Compile Include="DynamicContentItemManagerTests.cs" />
     <Compile Include="DynamicContentItemTests.cs" />
     <Compile Include="DynamicContentTypeManagerTests.cs" />
@@ -98,10 +97,6 @@
     <ProjectReference Include="..\..\Dnn.DynamicContent\Dnn.DynamicContent.csproj">
       <Project>{7c0de7d8-3f9c-4f69-873b-8b0eb800348f}</Project>
       <Name>Dnn.DynamicContent</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Modules\Dnn.Modules.DynamicContentViewer\Dnn.Modules.DynamicContentViewer.csproj">
-      <Project>{3b984d43-33be-4918-a7b3-84729f4cec92}</Project>
-      <Name>Dnn.Modules.DynamicContentViewer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -70,7 +70,6 @@
     <Compile Include="DataTypeManager.cs" />
     <Compile Include="DynamicContentField.cs" />
     <Compile Include="DynamicContentItem.cs" />
-    <Compile Include="DynamicContentSearchManager.cs" />
     <Compile Include="DynamicContentItemManager.cs" />
     <Compile Include="DynamicContentPart.cs" />
     <Compile Include="DynamicContentType.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="FieldDefinitionManager.cs" />
     <Compile Include="IContentTemplateManager.cs" />
     <Compile Include="IDataTypeManager.cs" />
-    <Compile Include="IDynamicContentSearchManager.cs" />
     <Compile Include="IDynamicContentItemManager.cs" />
     <Compile Include="IDynamicContentTypeManager.cs" />
     <Compile Include="IFieldDefinitionChecker.cs" />
