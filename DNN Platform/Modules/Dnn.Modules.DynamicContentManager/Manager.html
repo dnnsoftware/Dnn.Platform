@@ -201,7 +201,7 @@
                                 <label>[Resx:{key:"FieldType"}]</label>
 								<select data-bind="value: fieldTypeId, foreach: availableFields">
                                     <optgroup data-bind="attr: {label: fieldName}, foreach: fieldOptions">
-                                        <option data-bind="attr: { disabled: !enabled, value: fieldTypeId }, text: fieldName"></option>
+                                        <option data-bind="attr: { value: fieldTypeId }, text: fieldName"></option>
                                     </optgroup>
                                 </select>
                             </div>

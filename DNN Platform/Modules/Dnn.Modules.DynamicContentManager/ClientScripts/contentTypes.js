@@ -462,7 +462,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         for (i = 0; i < dataTypes.length; i++) {
             dataType = dataTypes[i];
             arr.push({
-                enabled: true,
                 fieldTypeId: "D" + dataType.dataTypeId(),
                 fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
             });
@@ -475,7 +474,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             contentType = contentTypes[i];
             if (contentType.contentTypeId() !== self.contentTypeId()) {
                 arr.push({
-                    enabled: true,
                     fieldTypeId: "C" + contentType.contentTypeId(),
                     fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), contentType.localizedNames())
                 });
@@ -508,8 +506,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         populateContentTypes(contentOptions, contentTypes);
 
         availableFields.push({
-            enabled: false,
-            fieldTypeId: "C0",
             fieldName: resx.contentTypes,
             fieldOptions: contentOptions
         });
@@ -518,8 +514,6 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
             populateDataTypes(dataTypeOptions, dataTypes);
             availableFields.push({
-                enabled: false,
-                fieldTypeId: "D0",
                 fieldName: resx.dataTypes,
                 fieldOptions: dataTypeOptions
             });
