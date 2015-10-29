@@ -212,8 +212,10 @@
                             </div>
                             <div>
                                 <label>[Resx:{key:"FieldType"}]</label>
-                                <select data-bind="value: fieldTypeId, foreach: fieldTypes">
-                                    <option data-bind="attr: { disabled: !enabled, value: fieldTypeId }, text: fieldName"></option>
+								<select data-bind="value: fieldTypeId, foreach: availableFields">
+                                    <optgroup data-bind="attr: {label: fieldName}, foreach: fieldOptions">
+                                        <option data-bind="attr: { value: fieldTypeId }, text: fieldName"></option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div class="toggle">
@@ -512,7 +514,7 @@
             deleteDataTypeConfirmMessage: '[Resx:{key:"DeleteDataTypeConfirmMessage"}]',
             saveContentTypeMessage: '[Resx:{key:"SaveContentTypeMessage"}]',
             invalidContentTypeMessage: '[Resx:{key:"InvalidContentTypeMessage"}]',
-            invalidContentFieldMessage: '[Resx:{key:"InvalidContentFieldMessage"}]',
+            invalidContentFieldMessage: '[Resx:{key:"InvalidContentFieldMessage"}]',			
             invalidDataTypeMessage: '[Resx:{key:"InvalidDataTypeMessage"}]',
             invalidTemplateMessage: '[Resx:{key:"InvalidTemplateMessage"}]',
             invalidCharsMessage: '[Resx:{key:"InvalidCharsMessage"}]',
