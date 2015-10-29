@@ -2,12 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.CodeDom;
 using System.Linq;
-using System.Net.Http.Formatting;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
-using Dnn.Modules.DynamicContentViewer.Models;
+using Dnn.Modules.DynamicContentViewer.Components;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
@@ -25,6 +23,18 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// </summary>
     public class ViewerController : DnnController
     {
+        #region Members
+
+        private readonly IDynamicContentViewerManager _dynamicContentViewerManager;
+        #endregion
+
+        /// <summary>
+        /// ViewerController Constructor
+        /// </summary>
+        public ViewerController()
+        {
+            _dynamicContentViewerManager = DynamicContentViewerManager.Instance;
+        }
         /// <summary>
         /// The Edit Action will render the Content associated with this module using an Edit template
         /// </summary>
@@ -33,11 +43,10 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         public ActionResult Edit()
         {
             string templateName;
-            var templateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_EditTemplateId, -1);
-            ContentTemplate template = null;
+            var templateId = _dynamicContentViewerManager.GetEditTemplateId(ActiveModule);
             if (templateId > -1)
             {
-                template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
+                var template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
                 templateName = GetTemplateName(template);
             }
             else
@@ -47,7 +56,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
 
             ViewData["Template"] = templateName;
 
-            return View(GetContentItem());
+            return View(_dynamicContentViewerManager.GetContentItem(ActiveModule));
         }
 
         /// <summary>
@@ -60,28 +69,18 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(FormCollection collection)
         {
-            DynamicContentItem contentItem = GetContentItem();
-
-            if (contentItem != null)
+            var contentItem = _dynamicContentViewerManager.GetContentItem(ActiveModule);
+            if (contentItem == null)
             {
-                ProcessFields(contentItem.Content, collection, String.Empty);
-                DynamicContentItemManager.Instance.UpdateContentItem(contentItem);
+                return RedirectToDefaultRoute();
             }
+
+            ProcessFields(contentItem.Content, collection, String.Empty);
+            _dynamicContentViewerManager.UpdateContentItem(contentItem);
 
             return RedirectToDefaultRoute();
         }
 
-        private DynamicContentItem GetContentItem()
-        {
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
-            DynamicContentItem contentItem = null;
-            if (contentTypeId > -1)
-            {
-                contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
-            }
-
-            return contentItem;
-        }
 
         /// <summary>
         /// GetIndexActions returns the DNN Module Actions associated with the Index MVC Action/View
@@ -91,7 +90,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         {
             var actions = new ModuleActionCollection();
 
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
+            var contentTypeId = _dynamicContentViewerManager.GetContentTypeId(ActiveModule);
 
             if (contentTypeId > -1)
             {
@@ -125,19 +124,6 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
             return actions;
         }
 
-        private DynamicContentItem GetOrCreateContentItem(int contentTypeId)
-        {
-            var contentItem = DynamicContentItemManager.Instance.GetContentItems(ActiveModule.ModuleID, contentTypeId).SingleOrDefault();
-
-            if (contentItem == null)
-            {
-                var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
-                contentItem = DynamicContentItemManager.Instance.CreateContentItem(PortalSettings.PortalId, ActivePage.TabID, ActiveModule.ModuleID, contentType);
-                DynamicContentItemManager.Instance.AddContentItem(contentItem);
-            }
-            return contentItem;
-        }
-
         private string GetTemplateName(ContentTemplate template)
         {
             string templateName = String.Empty;
@@ -169,9 +155,9 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         public ActionResult Index()
         {
             string templateName;
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
-            var templateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ViewTemplateId, -1);
-            ContentTemplate template = null;
+            var contentTypeId = _dynamicContentViewerManager.GetContentTypeId(ActiveModule);
+            var templateId = _dynamicContentViewerManager.GetViewTemplateId(ActiveModule);
+            ContentTemplate template;
             if (templateId > -1)
             {
                 template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
@@ -195,17 +181,9 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
                 return View("GettingStarted");
             }
 
-            DynamicContentItem contentItem = null;
-            if (contentTypeId > -1)
-            {
-                contentItem = GetOrCreateContentItem(contentTypeId);
-            }
-            else
-            {
-                var contentType = DynamicContentTypeManager.Instance.GetContentTypes(PortalSettings.PortalId, true).SingleOrDefault(ct => ct.Name == "HTML");
-                contentItem = DynamicContentItemManager.Instance.CreateContentItem(PortalSettings.PortalId, ActivePage.TabID, ActiveModule.ModuleID, contentType);
-            }
-
+            var contentItem = contentTypeId > -1 ? _dynamicContentViewerManager.GetOrCreateContentItem(ActiveModule, contentTypeId) 
+                : _dynamicContentViewerManager.CreateDefaultContentItem(ActiveModule);
+            
             ViewData["Template"] = templateName;
 
             return View(contentItem);
