@@ -37,6 +37,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
 using Telerik.Web.UI;
+using DotNetNuke.Modules.Html.Components;
 
 #endregion
 
@@ -50,7 +51,7 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     /// <history>
     /// </history>
-    public partial class EditHtml : PortalModuleBase
+    public partial class EditHtml : HtmlModuleBase
     {
 
         #region Private Members
@@ -97,17 +98,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                var userID = -1;
-                if ((Settings["Content_LockedBy"]) != null)
-                {
-                    userID = int.Parse(Settings["Content_LockedBy"].ToString());
-                }
-
+                var userID = Settings.LockedBy;
                 return userID;
             }
             set
             {
-                Settings["Content_LockedBy"] = value;
+                Settings.LockedBy = value;
             }
         }
 
