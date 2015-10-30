@@ -51,9 +51,9 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     function slideToggle(element, direction, duration, callback) {
         var elemToToggle = $rootElement.find(element);
         if (direction === 'up') {
-            elemToToggle.stop(true, false).slideUp(duration, 'linear', function() { callback(); });
+            elemToToggle.stop(true, false).slideUp(duration, 'linear', function () { if (typeof callback === 'function') { callback();} });
         } else {
-            elemToToggle.stop(true, false).slideDown(duration, 'linear', function () { callback(); });
+            elemToToggle.stop(true, false).slideDown(duration, 'linear', function () { if (typeof callback === 'function') { callback();} });
         }
     }
 
