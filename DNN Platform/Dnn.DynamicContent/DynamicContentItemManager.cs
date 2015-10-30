@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
@@ -59,7 +58,10 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(contentItem, "ModuleID");
 
             var module = ModuleController.Instance.GetModule(contentItem.ModuleID, contentItem.TabID, false);
-            var dynamicContentItem = new DynamicContentItem(module.PortalID)
+
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentItem.ContentTypeId, module.PortalID, true);
+
+            var dynamicContentItem = new DynamicContentItem(module.PortalID, contentType)
                                             {
                                                 ContentItemId = contentItem.ContentItemId,
                                                 ModuleId = contentItem.ModuleID,

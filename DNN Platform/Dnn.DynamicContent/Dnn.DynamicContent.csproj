@@ -85,7 +85,6 @@
     <Compile Include="Exceptions\InvalidValidatorException.cs" />
     <Compile Include="Exceptions\JsonContentTypeInvalidException.cs" />
     <Compile Include="Exceptions\JsonInvalidFieldException.cs" />
-    <Compile Include="Exceptions\JsonMissingContentException.cs" />
     <Compile Include="FieldDefinition.cs" />
     <Compile Include="FieldDefinitionManager.cs" />
     <Compile Include="IContentTemplateManager.cs" />

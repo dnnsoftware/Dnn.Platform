@@ -18,15 +18,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     public class DynamicContentItemManagerTests
     {
         private readonly JObject _testJson = new JObject(
-                        new JProperty("contentTypeId", Constants.CONTENTTYPE_ValidContentTypeId),
-                        new JProperty("content",
-                            new JObject(
                                 new JProperty("FieldName1", 1),
                                 new JProperty("FieldName2", true),
                                 new JProperty("FieldName3", "abc")
-                            )
-                        )
-                    );
+                            );
 
         [TearDown]
         public void TearDown()
@@ -47,14 +42,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void AddContentItem_Throws_On_Null_ContentType_Property_Of_ContentItem()
-        {
-            //Arrange
-            var controller = new DynamicContentItemManager();
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId);
-
-            //Act, Assert
-            Assert.Throws<ArgumentNullException>(() => controller.AddContentItem(contentItem));
+        public void DynamicContentItem_Constructor_Throws_On_Null_ContentType_Property_Of_ContentItem()
+        {            
+            Assert.Throws<ArgumentNullException>(() => new DynamicContentItem(Constants.PORTAL_ValidPortalId, null));
         }
 
         [Test]
@@ -298,20 +288,37 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void CreateContentItem_Overload_Throws_On_Null_Or_Empty_Content()
         {
             //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
             var controller = new DynamicContentItemManager();
-            ContentItem contentItem = new ContentItem
-                                            {
-                                                ModuleID = Constants.MODULE_ValidId,
-                                                TabID = Constants.TAB_ValidId
-                                            };
+            var contentItem = new ContentItem
+                                    {
+                                        ModuleID = Constants.MODULE_ValidId,
+                                        TabID = Constants.TAB_ValidId,
+                                        ContentTypeId = contentTypeId
+                                    };
+
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var mockModuleController = new Mock<IModuleController>();
             mockModuleController.Setup(c => c.GetModule(Constants.MODULE_ValidId, Constants.TAB_ValidId, false))
-                .Returns(new ModuleInfo() {PortalID = Constants.PORTAL_ValidPortalId});
+                .Returns(new ModuleInfo() {PortalID = portalId});
             ModuleController.SetTestableInstance(mockModuleController.Object);
+
+            var contentType = GetContentType(contentTypeId, portalId);
+            var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, false))
+                .Returns(contentType);
+            DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             //Act, Assert
             Assert.Throws<ArgumentException>(() => controller.CreateContentItem(contentItem));
+            mockFieldDefinitionController.VerifyAll();
+            mockModuleController.VerifyAll();
+            mockContentTypeController.VerifyAll();
         }
 
         [Test]
@@ -332,7 +339,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = GetContentType(contentTypeId, portalId);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
+            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, false))
                 .Returns(contentType);
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
@@ -350,7 +357,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                 .AsQueryable());
             DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
 
-            var contentItem = new ContentItem { Content = _testJson.ToString(), ModuleID = moduleId, TabID = tabId };
+            var contentItem = new ContentItem { Content = _testJson.ToString(), ModuleID = moduleId, TabID = tabId, ContentTypeId = contentTypeId };
 
             //Act
             var dynamicContent = controller.CreateContentItem(contentItem);
@@ -381,7 +388,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var controller = new DynamicContentItemManager();
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId);
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
 
             //Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.DeleteContentItem(contentItem));
@@ -393,7 +400,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentItemId = Constants.CONTENT_ValidContentItemId;
             var controller = new DynamicContentItemManager();
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId) {ContentItemId = contentItemId};
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId)) { ContentItemId = contentItemId };
 
             var mockContentController = new Mock<IContentController>();
             ContentController.SetTestableInstance(mockContentController.Object);
@@ -423,24 +430,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var controller = new DynamicContentItemManager();
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId);
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
 
             //Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.UpdateContentItem(contentItem));
-        }
-
-        [Test]
-        public void UpdateContentItem_Throws_On_Null_ContentType_Property_Of_ContentItem()
-        {
-            //Arrange
-            var controller = new DynamicContentItemManager();
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId)
-                                    {
-                                        ContentItemId = Constants.CONTENT_ValidContentItemId
-                                    };
-
-            //Act, Assert
-            Assert.Throws<ArgumentNullException>(() => controller.UpdateContentItem(contentItem));
         }
 
         [Test]
