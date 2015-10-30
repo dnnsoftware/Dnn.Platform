@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add host items
             if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
             {
-                string tabPath = "//Host//" + _desktopModule.AdminPage;
+                string tabPath = "//Host//" + _desktopModule.HostPage;
                 var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
                 ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
                 TabInfo newHostPage = TabController.Instance.GetTab(tabID, Null.NullInteger);
@@ -269,8 +269,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         _desktopModule.Page.Icon, 
                         _desktopModule.Page.LargeIcon,
                         true);
-                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
+                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.HostPage));
                 }
+
+                if (_desktopModule.Page.IsCommon)
+                {
+                    TabController.Instance.UpdateTabSetting(newHostPage.TabID, "ControlBar_CommonTab", "Y");
+                }
+
                 if (moduleDefinition != null)
                 {
                 //Add Module To Page
@@ -279,7 +285,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         _desktopModule.Page.Description,
                         _desktopModule.Page.Icon,
                         true);
-                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));
+                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.HostPage));
                 }
             }
         }
