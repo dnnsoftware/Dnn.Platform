@@ -318,14 +318,20 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             var savedField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
 
-            savedField.Name = defaultName;
-            savedField.Description = defaultDescription;
-            savedField.Label = defaultLabel;
-            savedField.FieldTypeId = viewModel.FieldTypeId;
-            savedField.IsReferenceType = viewModel.IsReferenceType;
-            savedField.IsList = viewModel.IsList;
-
-            FieldDefinitionManager.Instance.UpdateFieldDefinition(savedField);
+            FieldDefinitionManager.Instance.UpdateFieldDefinition(
+                new FieldDefinition
+                {
+                    FieldDefinitionId = savedField.FieldDefinitionId,
+                    ContentTypeId = savedField.ContentTypeId,
+                    PortalId = savedField.PortalId,
+                    Name = defaultName,
+                    Description = defaultDescription,
+                    Label = defaultLabel,
+                    FieldTypeId = viewModel.FieldTypeId,
+                    IsReferenceType = viewModel.IsReferenceType,
+                    IsList = viewModel.IsList,
+                    Order = savedField.Order
+                });
         }
 
         private void SaveFieldLocalizations(int portalId, int contentFieldId, List<ContentTypeLocalization> localizedNames,
