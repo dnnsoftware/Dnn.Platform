@@ -316,6 +316,10 @@ namespace DotNetNuke.Entities.Portals
                         foreach (Locale newPortalLocale in newPortalLocales.AllValues)
                         {
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
+                            if (portalSettings.ContentLocalizationEnabled)
+                            {
+                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                            }
                         }
                     }
 
