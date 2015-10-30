@@ -261,7 +261,7 @@ dnn.controlBar.init = function (settings) {
             success: function (moduleList) {
             	setTimeout(function () {
 					var containerId = '#ControlBar_ModuleListHolder_NewModule';
-                    if (moduleList && moduleList.length) {                        
+                    if (moduleList) {                        
                         dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
                         dnn.controlBar.forceLoadingPane = false;
                         dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);                        
