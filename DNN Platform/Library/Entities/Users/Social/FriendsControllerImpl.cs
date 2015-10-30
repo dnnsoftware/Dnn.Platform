@@ -92,6 +92,15 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
+            //Check if the friendship has been requested first by target user
+            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(targetUser,
+                initiatingUser);
+            if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
+            {
+                RelationshipController.Instance.AcceptUserRelationship(targetUserRelationship.UserRelationshipId);
+                return;
+            }
+
             var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser, 
                                         RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
