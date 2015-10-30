@@ -98,7 +98,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
             {
                 RelationshipController.Instance.AcceptUserRelationship(targetUserRelationship.UserRelationshipId);
-                EventManager.Instance.OnFriendshipRequested(new RelationshipEventArgs(targetUserRelationship, initiatingUser.PortalID));
                 return;
             }
 
