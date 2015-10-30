@@ -463,7 +463,11 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-    var __userSettings = { "pageSize": 25 };
+    var __userSettings = {
+        "contentTypePageSize": "[pagesize:ContentType]",
+        "dataTypePageSize": "[pagesize:DataType]",
+        "templatePageSize": "[pagesize:Template]"
+    };
     var moduleId = parseInt("[ModuleContext:ModuleId]");
     var str = "[ModuleContext:IsSuperUser]";
     var isSystemUser = (str.toLowerCase() === "true");

@@ -131,6 +131,10 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
             findContentTypes();
         });
 
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.contentTypePageSize);
+
         $rootElement.find("#contentTypes-editView").css("display", "none");
 
         getDataTypes();

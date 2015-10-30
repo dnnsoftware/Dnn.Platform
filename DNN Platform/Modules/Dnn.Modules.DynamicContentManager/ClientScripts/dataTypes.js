@@ -137,6 +137,10 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         self.pageSize.subscribe(function () {
             findDataTypes();
         });
+
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.dataTypePageSize);
     };
 
     self.refresh = function() {

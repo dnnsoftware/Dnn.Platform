@@ -12,6 +12,7 @@ using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.Attributes;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
@@ -151,11 +152,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentTypes(string searchTerm, int pageIndex, int pageSize)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(PortalSettings.UserId, PortalSettings.PortalId);
-            personalization.Profile["DCCContentTypePageSize:" + PortalSettings.PortalId] = pageSize;
-            personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + PortalSettings.PortalId + ActiveModule.ModuleID) ?? GetDefaultSettings();
+            settings.ContentTypePageSize = pageSize;
+            UpdateUserDccSettings(settings, ActiveModule.ModuleID);
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
         }

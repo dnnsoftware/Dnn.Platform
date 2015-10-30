@@ -7,8 +7,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -55,6 +57,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetDataTypes(string searchTerm, int pageIndex, int pageSize)
         {
+            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + PortalSettings.PortalId + ActiveModule.ModuleID) ?? GetDefaultSettings();
+            settings.DataTypePageSize = pageSize;            
+            UpdateUserDccSettings(settings, ActiveModule.ModuleID);
             return GetPage(() => DataTypeManager.Instance.GetDataTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                            dataType => new DataTypeViewModel(dataType, PortalSettings));
         }

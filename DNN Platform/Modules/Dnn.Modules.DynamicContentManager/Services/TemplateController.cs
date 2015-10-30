@@ -12,12 +12,14 @@ using System.Web.Http;
 using System.Xml.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Common;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -117,6 +119,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetTemplates(string searchTerm, int pageIndex, int pageSize)
         {
+            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + PortalSettings.PortalId + ActiveModule.ModuleID) ?? GetDefaultSettings();
+            settings.TemplatePageSize = pageSize;
+            UpdateUserDccSettings(settings, ActiveModule.ModuleID);
             return GetPage(() => ContentTemplateManager.Instance.GetContentTemplates(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                            template => new TemplateViewModel(template, PortalSettings));
         }

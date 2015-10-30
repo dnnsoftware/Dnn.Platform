@@ -175,6 +175,9 @@ dcc.templatesViewModel = function (rootViewModel, config) {
         self.pageSize.subscribe(function () {
             findTemplates();
         });
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.templatePageSize);
         $rootElement.find("#templates-editView").css("display", "none");
     };
 
