@@ -67,8 +67,7 @@ namespace DotNetNuke.Web.Api.Internal
         private static bool TabIsInPortal(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
-
-            return tab != null;
+            return tab != null && tab.PortalID == portalId;
         }
 
         private static void ValidateTabAndModuleContext(HttpRequestMessage request, int portalId, out int tabId)
