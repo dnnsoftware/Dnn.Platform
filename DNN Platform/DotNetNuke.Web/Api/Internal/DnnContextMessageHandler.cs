@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -55,7 +56,42 @@ namespace DotNetNuke.Web.Api.Internal
             var domainName = TestableGlobals.Instance.GetDomainName(request.RequestUri);
             var alias = PortalAliasController.Instance.GetPortalAlias(domainName);
 
-            int tabId;
+            int tabId = request.FindTabId();
+            if(tabId != Null.NullInteger)
+            {
+                //check to see if the portal exists on the same portal as detecte
+                //by the alias. This can be wrong if the calling portal is a child
+                //portal
+                var tab = TabController.Instance.GetTab(tabId, -1);
+                if (tab != null)
+                {
+                    if (tab.PortalID != alias.PortalID)
+                    {
+                        //the portal we got from the alias isn't correct. 
+                        //let check to see we have alias for the child
+                        //that would do this, if so lets just correct the
+                        //portal alias otherwise we can have authenication
+                        //issues see Bug7858
+
+                        var childPortalAlias = PortalAliasController
+                                                        .Instance
+                                                        .GetPortalAliasesByPortalId(tab.PortalID);
+
+                        //check we have something which starts with the domainName as a doublecheck
+                        if(childPortalAlias.Any(a => a.HTTPAlias.Contains(domainName)))
+                        {
+                            //we do have a match so lets based on the partial match and the fact
+                            //the tabId object is telling us that this is the correct portalId lets
+                            //just use that
+                            alias = childPortalAlias.First();
+                        }
+                    }
+                }
+
+            }
+
+
+
             ValidateTabAndModuleContext(request, alias.PortalID, out tabId);
 
             var portalSettings = new PortalSettings(tabId, alias);
