@@ -1859,6 +1859,8 @@
     <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.10.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

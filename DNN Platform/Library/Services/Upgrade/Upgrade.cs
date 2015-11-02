@@ -5404,8 +5404,8 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.7":
                             UpgradeToVersion8007();
                             break;
-                        case "8.0.0.13":
-                            UpgradeToVersion80013();
+                        case "8.0.0.14":
+                            UpgradeToVersion80014();
                             break;
                     }
                 }
@@ -5482,7 +5482,7 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
         }
 
-        private static void UpgradeToVersion80013()
+        private static void UpgradeToVersion80014()
         {
             UninstallPackage("Solutions", "Module");
         }
