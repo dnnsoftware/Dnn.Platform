@@ -5389,6 +5389,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.7":
                             UpgradeToVersion8007();
                             break;
+                        case "8.0.0.13":
+                            UpgradeToVersion80013();
+                            break;
                     }
                 }
             }
@@ -5462,6 +5465,11 @@ namespace DotNetNuke.Services.Upgrade
             RemoveHostPage("Configuration Manager");
 
             UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
+        }
+
+        private static void UpgradeToVersion80013()
+        {
+            UninstallPackage("DotNetNuke.Newsletters", "Module");
         }
 
         private static int MaxIncremental(Version version)
