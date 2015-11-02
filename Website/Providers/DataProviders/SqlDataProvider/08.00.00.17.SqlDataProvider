@@ -35,7 +35,7 @@ BEGIN
 			M.[LastModifiedByUserID],
 			M.[LastModifiedOnDate],
             M.[Context],
-			ROW_NUMBER() OVER(ORDER BY M.MessageId asc) AS RowNumber
+			ROW_NUMBER() OVER(ORDER BY M.MessageId DESC) AS RowNumber
 		FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] AS M
 			JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR 
 				ON (M.MessageID = MR.MessageID)
