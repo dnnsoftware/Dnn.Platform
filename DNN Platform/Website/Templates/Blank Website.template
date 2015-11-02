@@ -355,17 +355,6 @@
       <portalDesktopModulePermissions />
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>Solutions</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>Dashboard</friendlyname>
       <portalDesktopModulePermissions />
     </portalDesktopModule>

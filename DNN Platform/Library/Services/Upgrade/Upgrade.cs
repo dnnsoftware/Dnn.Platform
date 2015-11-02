@@ -5392,6 +5392,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.13":
                             UpgradeToVersion80013();
                             break;
+                        case "8.0.0.16":
+                            UpgradeToVersion80016();
+                            break;
                     }
                 }
             }
@@ -5470,6 +5473,11 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion80013()
         {
             UninstallPackage("DotNetNuke.Newsletters", "Module");
+        }
+
+        private static void UpgradeToVersion80016()
+        {
+            UninstallPackage("Solutions", "Module");
         }
 
         private static int MaxIncremental(Version version)

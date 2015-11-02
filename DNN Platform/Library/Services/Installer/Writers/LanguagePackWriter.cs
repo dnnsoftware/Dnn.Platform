@@ -223,9 +223,6 @@ namespace DotNetNuke.Services.Installer.Writers
                                     case "requestfilters.ascx":
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
                                         break;
-                                    case "solutions.ascx":
-                                        filePath = "DesktopModules\\Admin\\Solutions\\App_LocalResources";
-                                        break;
                                 }
                                 break;
                             case "lists":
