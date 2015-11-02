@@ -122,10 +122,12 @@
     <Compile Include="Services\ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientScripts\config.js" />
     <Content Include="ClientScripts\contentTypes.js" />
     <Content Include="ClientScripts\dataTypes.js" />
     <Content Include="ClientScripts\knockout-sortable.min.js" />
     <Content Include="ClientScripts\manager.js" />
+    <Content Include="ClientScripts\persistent.js" />
     <Content Include="ClientScripts\settings.js" />
     <Content Include="ClientScripts\templates.js" />
     <Content Include="license.txt" />

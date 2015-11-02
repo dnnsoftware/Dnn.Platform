@@ -30,7 +30,8 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     var findContentTypes = function() {
         var persistentObj = util.persistent;
         var persistentData = persistentObj.load();
-        if (persistentData.pageSize !== self.pageSize()) {
+        if (persistentData.contentTypePageSize != self.pageSize()) {
+            persistentData.contentTypePageSize = self.pageSize();
             persistentObj.save(persistentData);
         }
         self.pageIndex(0);
