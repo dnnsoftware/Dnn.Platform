@@ -40,8 +40,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
         [Test]
         public void Constructor_Sets_ContentItem_Property()
         {
-            //Arrange
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId);
+            //Arrange            
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
 
             //Act
             var validator = new DynamicContentValidator(contentItem);
