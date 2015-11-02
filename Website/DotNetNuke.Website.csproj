@@ -1856,7 +1856,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
