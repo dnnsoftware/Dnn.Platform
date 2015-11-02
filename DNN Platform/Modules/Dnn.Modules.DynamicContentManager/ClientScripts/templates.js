@@ -29,6 +29,12 @@ dcc.templatesViewModel = function (rootViewModel, config) {
     var findTemplates = function () {
         self.pageIndex(0);
         self.getTemplates();
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.templatePageSize != self.pageSize()) {
+            persistentData.templatePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
     };
 
     var getContentTypes = function () {
