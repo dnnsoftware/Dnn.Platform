@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Analytics {
+namespace Dnn.Modules.GoogleAnalytics {
     
     
     public partial class GoogleAnalyticsSettings {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Analytics {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblTrackingId;
+        protected global::System.Web.UI.UserControl lblTrackingId;
         
         /// <summary>
         /// txtTrackingId control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Admin.Analytics {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblUrlParameter;
+        protected global::System.Web.UI.UserControl lblUrlParameter;
         
         /// <summary>
         /// txtUrlParameter control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Analytics {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblTrackForAdmin;
+        protected global::System.Web.UI.UserControl lblTrackForAdmin;
         
         /// <summary>
         /// chkTrackForAdmin control.
