@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
-using Dnn.DynamicContent.Exceptions;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Tests.Utilities;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -62,6 +62,26 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                                             new JProperty("FieldName4", new JArray(2,3,4))
                                         );
 
+        private MockRepository _mockRepository;
+        private Mock<IFieldDefinitionManager> _mockFieldDefinitionManager;
+        private Mock<IDynamicContentTypeManager> _mockContentTypeManager;
+        private Mock<IDataTypeManager> _mockDataTypeManager;
+
+        [SetUp]
+        public void Setup()
+        {
+            _mockRepository = new MockRepository(MockBehavior.Default);
+
+            _mockFieldDefinitionManager = _mockRepository.Create<IFieldDefinitionManager>();
+            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionManager.Object);
+
+            _mockContentTypeManager = _mockRepository.Create<IDynamicContentTypeManager>();
+            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeManager.Object);
+
+            _mockDataTypeManager = _mockRepository.Create<IDataTypeManager>();
+            DataTypeManager.SetTestableInstance(_mockDataTypeManager.Object);
+        }
+
         [TearDown]
         public void TearDown()
         {
@@ -70,18 +90,24 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             DataTypeManager.ClearInstance();
         }
 
+        #region Constructor Tests
         [Test]
         public void Constructor_Throws_On_Negative_PortalId()
         {
-            //Act, Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => new DynamicContentItem(-1, new DynamicContentType(Constants.PORTAL_ValidPortalId)));
+            // Act
+            var act =
+                new TestDelegate(
+                    () => new DynamicContentItem(-1, new DynamicContentType(Constants.PORTAL_ValidPortalId)));
+
+            // Assert
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
 
         [Test]
         public void Constructor_Sets_PortalId()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
             //Act
             var dynamicContent = new DynamicContentItem(portalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
@@ -106,23 +132,24 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         [Test]
         public void Constructor_Overload_Throws_On_Null_ContentType()
         {
-            //Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new DynamicContentItem(Constants.PORTAL_ValidPortalId, null));
+            // Act
+            var act = new TestDelegate(() => new DynamicContentItem(Constants.PORTAL_ValidPortalId, null));
+
+            // Assert
+            Assert.Throws<ArgumentNullException>(act);
         }
 
         [Test]
         public void Constructor_Overload_Sets_Default_Properties()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
+            var contentType = new DynamicContentType { ContentTypeId = contentTypeId, PortalId = portalId };
 
             //Act
             var content = new DynamicContentItem(portalId, contentType);
@@ -130,20 +157,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Assert
             Assert.AreEqual(-1, content.ModuleId);
             Assert.AreEqual(-1, content.ContentItemId);
-            mockFieldDefinitionController.VerifyAll();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void Constructor_Overload_Sets_ContentType()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var contentType = new DynamicContentType() {ContentTypeId = contentTypeId, PortalId = portalId};
 
@@ -152,20 +177,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreSame(contentType, dynamicContent.ContentType);
-            mockFieldDefinitionController.VerifyAll();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void Constructor_Overload_Sets_Fields()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var contentType = GetSimpleContentType(contentTypeId, portalId);
 
@@ -174,20 +197,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(contentType.FieldDefinitions.Count, dynamicContent.Content.Fields.Count);
-            mockFieldDefinitionController.VerifyAll();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void Constructor_Overload_Sets_FieldDefinition_PropertyOf_Fields()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var contentType = GetSimpleContentType(contentTypeId, portalId);
 
@@ -199,52 +220,49 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 Assert.AreSame(fieldDefinition, dynamicContent.Content.Fields[fieldDefinition.Name].Definition);
             }
-            mockFieldDefinitionController.VerifyAll();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void Constructor_Overload_Throws_On_Negative_PortalId()
         {
-            //Act, Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => new DynamicContentItem(-1, new DynamicContentType()));
+            //Act
+            var act = new TestDelegate(() => new DynamicContentItem(-1, new DynamicContentType()));
+
+            // Assert
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
+        #endregion
 
-
+        #region FromJson Tests
         [Test]
         public void FromJson_Throws_If_No_Content()
         {
             //Arrange
-            var contentTypeId = 234;
-            var testJson = "";
+            const string testJson = "";
 
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
             var dynamicContent = new DynamicContentItem(portalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
+            
+            //Act
+            var act = new TestDelegate(() => dynamicContent.FromJson(testJson));
 
-            var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
-                        .Returns(new DynamicContentType() {ContentTypeId = contentTypeId});
-            DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
-
-            //Act, Assert
-            Assert.Throws<ArgumentException>(() => dynamicContent.FromJson(testJson));
+            // Assert
+            Assert.Throws<ArgumentException>(act);
         }
 
         [Test]
         public void FromJson_Creates_Empty_Fields_Property_If_No_Fields()
         {
             //Arrange
-            var contentTypeId = 234;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = 234;
+            const int portalId = Constants.PORTAL_ValidPortalId;
             var testJson = new JObject();
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
-            var mockDataTypeManager = new Mock<IDataTypeManager>();
-            mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
-            DataTypeManager.SetTestableInstance(mockDataTypeManager.Object);
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetSimpleContentType(contentTypeId, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -257,18 +275,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(0, dynamicContent.Content.Fields["FieldName1"].Value);
             Assert.AreEqual(false, dynamicContent.Content.Fields["FieldName2"].Value);
             Assert.AreEqual("", dynamicContent.Content.Fields["FieldName3"].Value);
-
-            mockFieldDefinitionController.VerifyAll();
-            mockDataTypeManager.VerifyAll();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Reads_Fields_From_Json_And_Sets_Fields_For_SimpleType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpSimpleType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetSimpleContentType(CONTENTTYPE_Simple, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -278,16 +298,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(3, dynamicContent.Content.Fields.Count);
-            VerifyAllSimpleType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Reads_Fields_From_Json_And_Sets_Fields_For_ComplexType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Complex;
 
-            SetUpComplexType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetComplexContentType(CONTENTTYPE_Complex, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -297,16 +324,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(4, dynamicContent.Content.Fields.Count);
-            VerifyAllComplexType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Reads_Fields_From_Json_And_Sets_Fields_For_ListContentType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListContent;
 
-            SetUpListContentType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListContentType(CONTENTTYPE_ListContent, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -316,16 +350,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(4, dynamicContent.Content.Fields.Count);
-            VerifyAllListContentType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Reads_Fields_From_Json_And_Sets_Fields_For_ListDataType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpListDataType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListData;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListDataType(CONTENTTYPE_ListData, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -335,16 +373,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(4, dynamicContent.Content.Fields.Count);
-            VerifyAllListDataType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_With_FieldDefinitions_For_SimpleType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpSimpleType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetSimpleContentType(CONTENTTYPE_Simple, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -356,18 +398,24 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName1"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName2"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName3"));
-            VerifyAllSimpleType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_With_FieldDefinitions_For_ComplexType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Complex;
 
-            SetUpComplexType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
 
-            var contentTypeId = CONTENTTYPE_Complex;
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
+
             var contentType = GetComplexContentType(contentTypeId, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
 
@@ -379,16 +427,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName2"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName3"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName4"));
-            VerifyAllComplexType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_With_FieldDefinitions_For_ListContentType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListContent;
 
-            SetUpListContentType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListContentType(CONTENTTYPE_ListContent, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -401,16 +456,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName2"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName3"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName4"));
-            VerifyAllListContentType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_With_FieldDefinitions_For_ListDataType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpListDataType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListData;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListDataType(CONTENTTYPE_ListData, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -423,17 +482,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName2"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName3"));
             Assert.IsTrue(dynamicContent.Content.Fields.ContainsKey("FieldName4"));
-
-            VerifyAllListDataType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_SimpleType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpSimpleType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
             
             var contentType = GetSimpleContentType(CONTENTTYPE_Simple, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -445,17 +507,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(1, dynamicContent.Content.Fields["FieldName1"].Value);
             Assert.AreEqual(true, dynamicContent.Content.Fields["FieldName2"].Value);
             Assert.AreEqual("abc", dynamicContent.Content.Fields["FieldName3"].Value);
-            VerifyAllSimpleType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ComplexType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            var contentTypeId = CONTENTTYPE_Complex;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Complex;
 
-            SetUpComplexType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetComplexContentType(contentTypeId, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -468,16 +536,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(true, dynamicContent.Content.Fields["FieldName2"].Value);
             Assert.AreEqual("abc", dynamicContent.Content.Fields["FieldName3"].Value);
             Assert.IsInstanceOf<DynamicContentPart>(dynamicContent.Content.Fields["FieldName4"].Value);            
-            VerifyAllComplexType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ListContentType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListContent;
 
-            SetUpListContentType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListContentType(CONTENTTYPE_ListContent, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -495,17 +570,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 Assert.IsInstanceOf<DynamicContentPart>(field.Value);
             }
-
-            VerifyAllListContentType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ListDataType()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
-            
-            SetUpListDataType(portalId);
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListData;
+
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListDataType(CONTENTTYPE_ListData, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -519,16 +597,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual("abc", dynamicContent.Content.Fields["FieldName3"].Value);
             var list = dynamicContent.Content.Fields["FieldName4"].Value as List<DynamicContentField>;
             Assert.IsNotNull(list);
-            VerifyAllListDataType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ComplexType_SubFields()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Complex;
 
-            SetUpComplexType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetComplexContentType(CONTENTTYPE_Complex, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -542,16 +627,24 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(1, part.Fields["FieldName1"].Value);
             Assert.AreEqual(true, part.Fields["FieldName2"].Value);
             Assert.AreEqual("abc", part.Fields["FieldName3"].Value);
-            VerifyAllComplexType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ListContentType_SubFields()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListContent;
 
-            SetUpListContentType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>()))
+                .Returns(GetDataTypes().AsQueryable());
+
+            _mockContentTypeManager.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
+                .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
 
             var contentType = GetListContentType(CONTENTTYPE_ListContent, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -570,17 +663,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 Assert.AreEqual(true, part.Fields["FieldName2"].Value);
                 Assert.AreEqual("abc", part.Fields["FieldName3"].Value);
             }
-
-            VerifyAllListContentType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void FromJson_Matches_Fields_From_Json_And_Sets_Value_For_ListDataType_SubFields()
         {
             //Arrange
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListData;
 
-            SetUpListDataType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetListDataType(CONTENTTYPE_ListData, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -594,7 +690,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(2, list[0].Value);
             Assert.AreEqual(3, list[1].Value);
             Assert.AreEqual(4, list[2].Value);
-            VerifyAllListDataType();
+            _mockRepository.VerifyAll();
         }
 
         [Test]
@@ -626,10 +722,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void FromJson_Set_DefaultValues_If_Cant_Match_Field_From_Json_With_FieldDefinitions()
         {
             //Arrange
-            const int contentTypeId = CONTENTTYPE_Simple;
             const int portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
 
-            SetUpSimpleType(portalId);
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+
+            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
 
             var contentType = GetSimpleContentType(CONTENTTYPE_Simple, portalId);
             var dynamicContent = new DynamicContentItem(portalId, contentType);
@@ -642,20 +741,20 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(false, dynamicContent.Content.Fields["FieldName2"].Value);
             Assert.AreEqual(string.Empty, dynamicContent.Content.Fields["FieldName3"].Value);
             Assert.IsFalse(dynamicContent.Content.Fields.ContainsKey("NotDefinedFieldName"));
-            VerifyAllSimpleType();
+            _mockRepository.VerifyAll();
         }
+        #endregion
 
+        #region ToJson Tests
         [Test]
         public void ToJson_Generates_Json_String_For_SimpleType()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Simple;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var contentType = GetSimpleContentType(contentTypeId, portalId);
 
@@ -669,19 +768,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Asert
             Assert.AreEqual(SimpleContentTypeJson.ToString(), json);
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void ToJson_Generates_Json_String_For_ComplexType()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_Complex;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_Complex;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var contentType = GetComplexContentType(contentTypeId, portalId);
             var childType = GetSimpleContentType(CONTENTTYPE_Child, portalId);
@@ -702,26 +800,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Asert
             Assert.AreEqual(ComplexContentTypeJson.ToString(), json);
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void ToJson_Generates_Json_String_For_ListContentType()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_ListContent;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListContent;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
-
-            var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
-                        .Returns(GetComplexContentType(contentTypeId, portalId));
-            mockContentTypeController.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
-                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
-            DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             var contentType = GetListContentType(contentTypeId, portalId);
             var childType = GetSimpleContentType(CONTENTTYPE_Child, portalId);
@@ -744,26 +834,22 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Asert
             Assert.AreEqual(ListContentTypeJson.ToString(), json);
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void ToJson_Generates_Json_String_For_ListDataType()
         {
             //Arrange
-            var contentTypeId = CONTENTTYPE_ListData;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int contentTypeId = CONTENTTYPE_ListData;
+            const int portalId = Constants.PORTAL_ValidPortalId;
 
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
+            _mockFieldDefinitionManager.Setup(f => f.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
-
-            var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
-                        .Returns(GetListDataType(contentTypeId, portalId));
-            DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
             var contentType = GetListDataType(contentTypeId, portalId);
+            _mockContentTypeManager.Setup(c => c.GetContentType(contentTypeId, portalId, true))
+                        .Returns(contentType);
 
             var dynamicContent = new DynamicContentItem(portalId, contentType);
             dynamicContent.Content.Fields["FieldName1"].Value = 1;
@@ -777,169 +863,63 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Asert
             Assert.AreEqual(ListDataTypeJson.ToString(), json);
         }
+        #endregion
 
-        private DynamicContentType GetComplexContentType(int contentTypeId, int portalId)
+        private static DynamicContentType GetComplexContentType(int contentTypeId, int portalId)
         {
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
+            var contentType = new DynamicContentType { ContentTypeId = contentTypeId, PortalId = portalId };
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = CONTENTTYPE_Child, IsReferenceType = true });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = CONTENTTYPE_Child, IsReferenceType = true });
 
             return contentType;
         }
 
-        private DynamicContentType GetListContentType(int contentTypeId, int portalId)
+        private static DynamicContentType GetListContentType(int contentTypeId, int portalId)
         {
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
+            var contentType = new DynamicContentType { ContentTypeId = contentTypeId, PortalId = portalId };
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = CONTENTTYPE_Child, IsReferenceType = true, IsList = true });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = CONTENTTYPE_Child, IsReferenceType = true, IsList = true });
 
             return contentType;
         }
 
-        private DynamicContentType GetListDataType(int contentTypeId, int portalId)
+        private static DynamicContentType GetListDataType(int contentTypeId, int portalId)
         {
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
+            var contentType = new DynamicContentType { ContentTypeId = contentTypeId, PortalId = portalId };
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false, IsList = true });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName4", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false, IsList = true });
 
             return contentType;
         }
 
-        private DynamicContentType GetSimpleContentType(int contentTypeId, int portalId)
+        private static DynamicContentType GetSimpleContentType(int contentTypeId, int portalId)
         {
-            var contentType = new DynamicContentType() {ContentTypeId = contentTypeId, PortalId = portalId};
+            var contentType = new DynamicContentType {ContentTypeId = contentTypeId, PortalId = portalId};
 
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
-            contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName1", PortalId = portalId, FieldTypeId = DATATYPE_Integer, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName2", PortalId = portalId, FieldTypeId = DATATYPE_Boolean, IsReferenceType = false });
+            contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = "FieldName3", PortalId = portalId, FieldTypeId = DATATYPE_String, IsReferenceType = false });
 
             return contentType;
         }
 
-        private List<DataType> GetDataTypes()
+        private static IEnumerable<DataType> GetDataTypes()
         {
-            var dataTypes = new List<DataType>();
-
-            dataTypes.Add(new DataType { DataTypeId = DATATYPE_Integer, UnderlyingDataType = UnderlyingDataType.Integer});
-            dataTypes.Add(new DataType { DataTypeId = DATATYPE_String, UnderlyingDataType = UnderlyingDataType.String });
-            dataTypes.Add(new DataType { DataTypeId = DATATYPE_Boolean, UnderlyingDataType = UnderlyingDataType.Boolean });
-
-            return dataTypes;
-        }
-
-        private Mock<IFieldDefinitionManager> _mockFieldDefinitionController;
-        private Mock<IDynamicContentTypeManager> _mockContentTypeController;
-        private Mock<IDataTypeManager> _mockDataTypeManager;
-
-        private void SetUpComplexType(int portalId)
-        {
-            var contentTypeId = CONTENTTYPE_Complex;
-
-            _mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            _mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
-                .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
-
-            _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            _mockContentTypeController.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
-                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
-            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
-
-            _mockDataTypeManager = new Mock<IDataTypeManager>();
-            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
-            DataTypeManager.SetTestableInstance(_mockDataTypeManager.Object);
-        }
-
-        private void VerifyAllComplexType()
-        {
-            _mockFieldDefinitionController.VerifyAll();
-            _mockContentTypeController.VerifyAll();
-            _mockDataTypeManager.VerifyAll();
-        }
-
-        private void SetUpListContentType(int portalId)
-        {
-            //Arrange
-            var contentTypeId = CONTENTTYPE_ListContent;
-
-            _mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            _mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
-                .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
-
-            _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            //_mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
-            //            .Returns(GetListContentType(contentTypeId, portalId));
-            _mockContentTypeController.Setup(c => c.GetContentType(CONTENTTYPE_Child, portalId, true))
-                        .Returns(GetSimpleContentType(CONTENTTYPE_Child, portalId));
-            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
-
-            _mockDataTypeManager = new Mock<IDataTypeManager>();
-            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
-            DataTypeManager.SetTestableInstance(_mockDataTypeManager.Object);
-        }
-
-        private void VerifyAllListContentType()
-        {
-            _mockFieldDefinitionController.VerifyAll();
-            _mockContentTypeController.VerifyAll();
-            _mockDataTypeManager.VerifyAll();
-        }
-
-        private void SetUpListDataType(int portalId)
-        {
-            var contentTypeId = CONTENTTYPE_ListData;
-
-            _mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            _mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
-                .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
-
-            _mockDataTypeManager = new Mock<IDataTypeManager>();
-            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
-            DataTypeManager.SetTestableInstance(_mockDataTypeManager.Object);
-        }
-
-        private void VerifyAllListDataType()
-        {
-            _mockFieldDefinitionController.VerifyAll();
-            _mockDataTypeManager.VerifyAll();
-        }
-
-        private void SetUpSimpleType(int portalId)
-        {
-            //Arrange
-            var contentTypeId = CONTENTTYPE_Simple;
-
-            _mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
-            _mockFieldDefinitionController.Setup(f => f.GetFieldDefinitions(contentTypeId))
-                .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
-
-            //_mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            //_mockContentTypeController.Setup(c => c.GetContentType(contentTypeId, portalId, true))
-            //            .Returns(GetSimpleContentType(contentTypeId, portalId));
-            //DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
-
-            _mockDataTypeManager = new Mock<IDataTypeManager>();
-            _mockDataTypeManager.Setup(d => d.GetDataTypes(portalId, It.IsAny<bool>())).Returns(GetDataTypes().AsQueryable());
-            DataTypeManager.SetTestableInstance(_mockDataTypeManager.Object);
-        }
-
-        private void VerifyAllSimpleType()
-        {
-            _mockFieldDefinitionController.VerifyAll();
-            //_mockContentTypeController.VerifyAll();
-            _mockDataTypeManager.VerifyAll();
+            return new List<DataType>
+            {
+                new DataType {DataTypeId = DATATYPE_Integer, UnderlyingDataType = UnderlyingDataType.Integer},
+                new DataType {DataTypeId = DATATYPE_String, UnderlyingDataType = UnderlyingDataType.String},
+                new DataType {DataTypeId = DATATYPE_Boolean, UnderlyingDataType = UnderlyingDataType.Boolean}
+            };
         }
     }
 }
