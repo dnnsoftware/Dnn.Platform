@@ -638,13 +638,6 @@
     <Compile Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.designer.cs">
       <DependentUpon>SmtpServerSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx.cs">
-      <DependentUpon>GoogleAnalyticsSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx.designer.cs">
-      <DependentUpon>GoogleAnalyticsSettings.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Authentication.ascx.cs">
       <DependentUpon>Authentication.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2207,7 +2200,6 @@
     <Content Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx" />
     <Content Include="DesktopModules\Admin\AdvancedSettings\module.css" />
     <Content Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx" />
-    <Content Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\Authentication.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\authentication.png" />
     <Content Include="DesktopModules\Admin\Authentication\Images\socialLoginbuttons-icons.png" />
@@ -4195,7 +4187,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\AdvancedSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\LanguagePacks.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Analytics\App_LocalResources\GoogleAnalyticsSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
       <SubType>Designer</SubType>

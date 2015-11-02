@@ -5478,6 +5478,9 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion80016()
         {
             UninstallPackage("Solutions", "Module");
+            
+            RemoveAdminPages("//Admin//GoogleAnalytics");
+            UninstallPackage("DotNetNuke.Google Analytics", "Module");
         }
 
         private static int MaxIncremental(Version version)

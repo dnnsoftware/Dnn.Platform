@@ -21,7 +21,6 @@
 #region Usings
 
 using System;
-
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Analytics.Config;
 using DotNetNuke.Services.Exceptions;
@@ -30,7 +29,7 @@ using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Analytics
+namespace Dnn.Modules.GoogleAnalytics
 {
     
     public partial class GoogleAnalyticsSettings : PortalModuleBase
@@ -101,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Analytics
                 setting.SettingValue = chkTrackForAdmin.Checked.ToString().ToLowerInvariant();
                 config.Settings.Add(setting);
                 AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Updated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Updated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception exc)
             {

@@ -1,9 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.SQL" type="Module" version="08.00.00">
-            <friendlyName>SQL</friendlyName>
-            <description>The Super User can execute SQL statements against the database.</description>
-            <iconFile>~/Icons/Sigma/Sql_32x32_Standard.png</iconFile>
+        <package name="DotNetNuke.Google Analytics" type="Module" version="08.00.00">
+            <friendlyName>Google Analytics</friendlyName>
+            <description>Configure Site Google Analytics settings.</description>
+            <iconFile>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconFile>
             <owner>
                 <name>DNN</name>
                 <organization>DNN Corp.</organization>
@@ -16,31 +16,31 @@
             <components>
                 <component type="Module">
                     <desktopModule>
-                        <moduleName>SQL</moduleName>
-                        <foldername>Admin/SQL</foldername>
-                        <businessControllerClass>Dnn.Modules.Sql.Components.BusinessController</businessControllerClass>
+                        <moduleName>GoogleAnalytics</moduleName>
+                        <foldername>Admin/GoogleAnalytics</foldername>
+                        <businessControllerClass>Dnn.Modules.GoogleAnalytics.Components.BusinessController</businessControllerClass>
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Host" common="false">
-                            <name>SQL</name>
-                            <icon>~/Icons/Sigma/Sql_16x16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Sql_32x32_Standard.png</largeIcon>
-                            <description>Execute SQL queries against the database.</description>
+                        <page type="Admin" common="false">
+                            <name>GoogleAnalytics</name>
+                            <icon>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</largeIcon>
+                            <description>Configure Site Google Analytics settings.</description>
                         </page>
                         <moduleDefinitions>
                             <moduleDefinition>
-                                <friendlyName>SQL</friendlyName>
+                                <friendlyName>Google Analytics</friendlyName>
                                 <moduleControls>
                                     <moduleControl>
                                         <controlKey />
-                                        <controlSrc>DesktopModules/Admin/SQL/SQL.ascx</controlSrc>
-                                        <controlTitle></controlTitle>
-                                        <controlType>View</controlType>
+                                        <controlSrc>DesktopModules/Admin/Analytics/GoogleAnalyticsSettings.ascx</controlSrc>
+                                        <controlTitle>Google Analytics</controlTitle>
+                                        <controlType>Admin</controlType>
                                         <iconFile></iconFile>
-                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Host Console/SQL/About the SQL Page.html</helpUrl>
+                                        <helpUrl></helpUrl>
                                         <viewOrder>0</viewOrder>
-                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <supportsPartialRendering>True</supportsPartialRendering>
                                         <supportsPopUps>True</supportsPopUps>
                                     </moduleControl>
                                 </moduleControls>
@@ -51,7 +51,7 @@
                         <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
                         <processorCommand>UpgradeModule</processorCommand>
                         <attributes>
-                            <businessControllerClass>Dnn.Modules.Sql.Components.BusinessController</businessControllerClass>
+                            <businessControllerClass>Dnn.Modules.GoogleAnalytics.Components.BusinessController</businessControllerClass>
                             <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
                             <upgradeVersionsList>08.00.00</upgradeVersionsList>
                         </attributes>
@@ -61,13 +61,13 @@
                     <assemblies>
                         <assembly>
                             <path>bin</path>
-                            <name>Dnn.Modules.Sql.dll</name>
+                            <name>Dnn.Modules.GoogleAnalytics.dll</name>
                         </assembly>
                     </assemblies>
                 </component>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/Admin/Sql</basePath>
+                        <basePath>DesktopModules/Admin/Analytics</basePath>
                         <resourceFile>
                             <name>Resources.zip</name>
                         </resourceFile>
@@ -76,7 +76,7 @@
                 <component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
                 <component type="File">
                     <files>
-                        <basePath>DesktopModules\Admin\Sql</basePath>
+                        <basePath>DesktopModules\Admin\Analytics</basePath>
                         <file>
                             <name>08.00.00.txt</name>
                         </file>
