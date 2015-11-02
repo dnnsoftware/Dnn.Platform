@@ -1,14 +1,7 @@
 ﻿using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Web;
-using Dnn.Modules.DynamicContentManager.Components.Entities;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Personalization;
+using DotNetNuke.Common.Utilities;
 
 namespace Dnn.Modules.DynamicContentManager.Components
 {
@@ -32,12 +25,9 @@ namespace Dnn.Modules.DynamicContentManager.Components
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            //var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            //var personalization = personalizationController.LoadProfile(_userId, _portalId);
-            //string profileData = Convert.ToString(personalization.Profile["DCCContentTypePageSize:" + _portalId]);
-            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + _portalId + _moduleId);
+            var settings = SettingsManager.Instance.Get(_portalId, _moduleId);
 
-            var pageSize = "10";
+            string pageSize = Null.NullString;
 
             switch (propertyName)
             {
@@ -51,7 +41,7 @@ namespace Dnn.Modules.DynamicContentManager.Components
                     pageSize = settings.TemplatePageSize.ToString();
                     break;
                 default:
-                    pageSize = "10";
+                    propertyNotFound = true;
                     break;
             }
 

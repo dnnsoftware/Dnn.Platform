@@ -59,33 +59,6 @@ namespace Dnn.Modules.DynamicContentManager.Services
             return Request.CreateResponse(getViewModel(getEntity()));
         }
 
-        protected DCCSettings GetDefaultSettings()
-        {
-            return new DCCSettings
-            {
-                ContentTypePageSize = 10, //TODO Set Default AnalyticPeriod
-                DataTypePageSize = 10,
-                TemplatePageSize = 10
-            };
-        }
-
-        protected void UpdateUserDccSettings(DCCSettings setting, int moduleId)
-        {
-            try
-            {
-                var personalizationController = new PersonalizationController();
-                var personalization = personalizationController.LoadProfile(PortalSettings.UserId,
-                    PortalSettings.PortalId);
-                Personalization.SetProfile(personalization, "DCC", "UserSettings" + PortalSettings.PortalId + moduleId, setting);
-                personalizationController.SaveProfile(personalization);
-            }
-            catch (Exception e)
-            {
-                DotNetNuke.Services.Log.EventLog.EventLogController.Instance.AddLog("Personalization Save Failed",
-                    "Failed to load/save personalization data.", PortalSettings, -1, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.ADMIN_ALERT);
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>

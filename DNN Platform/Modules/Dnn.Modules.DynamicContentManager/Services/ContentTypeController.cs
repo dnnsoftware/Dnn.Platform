@@ -152,9 +152,6 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentTypes(string searchTerm, int pageIndex, int pageSize)
         {
-            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + PortalSettings.PortalId + ActiveModule.ModuleID) ?? GetDefaultSettings();
-            settings.ContentTypePageSize = pageSize;
-            UpdateUserDccSettings(settings, ActiveModule.ModuleID);
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
         }

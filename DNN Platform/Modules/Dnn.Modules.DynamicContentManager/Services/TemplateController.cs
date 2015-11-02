@@ -119,9 +119,6 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetTemplates(string searchTerm, int pageIndex, int pageSize)
         {
-            var settings = (DCCSettings)Personalization.GetProfile("DCC", "UserSettings" + PortalSettings.PortalId + ActiveModule.ModuleID) ?? GetDefaultSettings();
-            settings.TemplatePageSize = pageSize;
-            UpdateUserDccSettings(settings, ActiveModule.ModuleID);
             return GetPage(() => ContentTemplateManager.Instance.GetContentTemplates(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                            template => new TemplateViewModel(template, PortalSettings));
         }
