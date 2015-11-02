@@ -2385,6 +2385,11 @@ namespace DotNetNuke.Data
                                       hmacAppSecret);
 		}
 
+	    public virtual void UpdateUserLastIpAddress(int userId, string lastIpAddress)
+	    {
+	        ExecuteNonQuery("UpdateUserLastIpAddress", userId, lastIpAddress);
+	    }
+
 		#endregion
 
 		#region UserRole Methods
