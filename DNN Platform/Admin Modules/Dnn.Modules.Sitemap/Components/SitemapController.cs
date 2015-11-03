@@ -43,20 +43,6 @@ namespace Dnn.Modules.Sitemap.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Sitemap");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Add Module to Admin Page for all Portals
-                        //    Upgrade.AddAdminPages("Search Engine SiteMap",
-                        //                            "Configure the sitemap for submission to common search engines.",
-                        //                            "~/Icons/Sigma/Sitemap_16X16_Standard.png",
-                        //                            "~/Icons/Sigma/Sitemap_32X32_Standard.png",
-                        //                            true,
-                        //                            moduleDefinition.ModuleDefID,
-                        //                            "Search Engine SiteMap",
-                        //                            "~/Icons/Sigma/Sitemap_32X32_Standard.png",
-                        //                            true);
-                        //}
                         break;
                 }
                 return "Success";

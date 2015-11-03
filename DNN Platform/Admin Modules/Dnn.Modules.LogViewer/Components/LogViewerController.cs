@@ -43,20 +43,6 @@ namespace Dnn.Modules.LogViewer.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Log Viewer");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Add Module to Admin Page for all Portals
-                        //    Upgrade.AddAdminPages("Log Viewer",
-                        //                            "View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.",
-                        //                            "~/Icons/Sigma/ViewStats_16X16_Standard.png",
-                        //                            "~/Icons/Sigma/ViewStats_32X32_Standard.png",
-                        //                            true,
-                        //                            moduleDefinition.ModuleDefID,
-                        //                            "Log Viewer",
-                        //                            "~/Icons/Sigma/ViewStats_32X32_Standard.png",
-                        //                            true);
-                        //}
                         break;
                 }
                 return "Success";
