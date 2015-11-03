@@ -43,20 +43,6 @@ namespace Dnn.Modules.Lists.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Lists");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Add Module to Admin Page for all Portals
-                        //    Upgrade.AddAdminPages("Lists",
-                        //                            "Manage common lists",
-                        //                            "~/Icons/Sigma/Lists_16X16_Standard.png",
-                        //                            "~/Icons/Sigma/Lists_32X32_Standard.png",
-                        //                            true,
-                        //                            moduleDefinition.ModuleDefID,
-                        //                            "Lists",
-                        //                            "~/Icons/Sigma/Lists_32X32_Standard.png",
-                        //                            true);
-                        //}
                         break;
                 }
                 return "Success";
