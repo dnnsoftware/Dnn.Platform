@@ -277,8 +277,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void UpdateDataType_Throws_If_DataType_Used()
         {
             //Arrange
-            var dataTypeId = 2;
-            var portalId = Constants.PORTAL_ValidPortalId;
+            const int dataTypeId = 2;
+            const int portalId = Constants.PORTAL_ValidPortalId;
             SetUpDataTypes(RecordCount, portalId);
             SetUpFieldDefinitions(5);
 
@@ -291,7 +291,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var mockContentController = new Mock<IContentController>();
             ContentController.SetTestableInstance(mockContentController.Object);
-            mockContentController.Setup(c => c.GetContentItemsByContentType(dataTypeId))
+            mockContentController.Setup(c => c.GetContentItemsByContentType(Constants.CONTENTTYPE_ValidContentTypeId))
                 .Returns(new List<ContentItem>() { new ContentItem() }.AsQueryable());
 
             //Act, Assert
