@@ -32,7 +32,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications.Data;
 
@@ -54,6 +53,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
+	    private const string ToastsCacheKey = "GetToasts_{0}";
 
         #endregion
 
@@ -250,16 +250,23 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual void DeleteNotification(int notificationId)
         {
+            var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
+            foreach (var recipient in recipients)
+            {
+                DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
+            }
             _dataService.DeleteNotification(notificationId);
         }
 
         public int DeleteUserNotifications(UserInfo user)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, user.UserID));
             return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
         }
 
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             InternalMessagingController.Instance.DeleteMessageRecipient(notificationId, userId);
             var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
             if (recipients.Count == 0)
@@ -373,6 +380,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             _dataService.MarkReadyForToast(notification.NotificationID, userId);
         }
 
@@ -383,11 +391,17 @@ namespace DotNetNuke.Services.Social.Notifications
 
 		public IList<Notification> GetToasts(UserInfo userInfo)
 		{
-			var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
-
-			foreach (var message in toasts)
+			var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
+			var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
+			if (toasts == null)
 			{
-				_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+				toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+				foreach (var message in toasts)
+				{
+					_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+				}
+
+				DataCache.SetCache(cacheKey, toasts);
 			}
 
 			return toasts;
