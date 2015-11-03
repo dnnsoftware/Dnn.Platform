@@ -32,7 +32,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications.Data;
 
@@ -251,16 +250,23 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual void DeleteNotification(int notificationId)
         {
+            var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
+            foreach (var recipient in recipients)
+            {
+                DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
+            }
             _dataService.DeleteNotification(notificationId);
         }
 
         public int DeleteUserNotifications(UserInfo user)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, user.UserID));
             return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
         }
 
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             InternalMessagingController.Instance.DeleteMessageRecipient(notificationId, userId);
             var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
             if (recipients.Count == 0)
@@ -374,8 +380,8 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             _dataService.MarkReadyForToast(notification.NotificationID, userId);
-			DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
         }
 
 		public void MarkToastSent(int notificationId, int userId)
