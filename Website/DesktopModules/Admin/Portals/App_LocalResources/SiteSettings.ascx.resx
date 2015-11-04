@@ -328,7 +328,7 @@
     <value>Inline Editor Enabled?</value>
   </data>
   <data name="plInlineEditor.Help" xml:space="preserve">
-    <value>Select this option if you wish for inline editing to be enabled on your site.</value>
+    <value>Select this option to enable inline editing on your site.</value>
   </data>
   <data name="plControlPanelMode.Text" xml:space="preserve">
     <value>Control Panel Mode:</value>
@@ -673,13 +673,13 @@
     <value>Throttling Interval in Minutes:</value>
   </data>
   <data name="plMsgThrottlingInterval.Help" xml:space="preserve">
-    <value>Number of minutes after which a User can send the next message. Zero indicates no restrictions. Not applies to Site Administrators or Host</value>
+    <value>Enter the number of minutes after which a user can send the next message. Zero indicates no restrictions. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plMsgRecipientLimit.Text" xml:space="preserve">
     <value>Recipient Limit:</value>
   </data>
   <data name="plMsgRecipientLimit.Help" xml:space="preserve">
-    <value>Maximum number of Recipients allowed in To field. Message to a Role is considered as a single Recipient .</value>
+    <value>Maximum number of Recipients allowed in To field. Message to a Role is considered as a single Recipient.</value>
   </data>
   <data name="plMsgProfanityFilters.Text" xml:space="preserve">
     <value>Enable Profanity Filters:</value>
@@ -697,7 +697,7 @@
     <value>Allow Attachments:</value>
   </data>
   <data name="plMsgAllowAttachments.Help" xml:space="preserve">
-    <value>Select if attachments are allowed or not.</value>
+    <value>Choose whether attachments are allowed or not.</value>
   </data>
   <data name="plIncludeAttachments.Text" xml:space="preserve">
     <value>Include Attachments:</value>
@@ -1300,7 +1300,7 @@ The host-level settings are currently set as follows:
     <value>Cachebust resource URIs</value>
   </data>
   <data name="plDisablePrivateMessage.Help" xml:space="preserve">
-    <value>When this option is set, regular users can't send message to specific user or group anymore.</value>
+    <value>Select to prevent users from sending messages to specific users or groups. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plDisablePrivateMessage.Text" xml:space="preserve">
     <value>Disable Private Message</value>
