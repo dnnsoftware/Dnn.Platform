@@ -37,6 +37,12 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     var findDataTypes =  function() {
         self.pageIndex(0);
         self.getDataTypes();
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.dataTypePageSize != self.pageSize()) {
+            persistentData.dataTypePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
     };
 
     self.addDataType = function(event, ui){
@@ -137,6 +143,10 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         self.pageSize.subscribe(function () {
             findDataTypes();
         });
+
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.dataTypePageSize);
     };
 
     self.refresh = function() {

@@ -96,6 +96,10 @@
             codeEditor: codeEditor,
             ko: ko
         };
+        var conf = dnn.modules.dynamicContentManager.cf.init();
+        var sf = util.sf;
+        var persis = dnn.modules.dynamicContentManager.persistent.init(conf, sf);
+        util.persistent = persis;
 
         //Build the ViewModel
         viewModel.resx = resx;

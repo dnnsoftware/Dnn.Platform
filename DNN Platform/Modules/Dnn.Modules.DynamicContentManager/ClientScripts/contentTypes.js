@@ -27,7 +27,13 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     // ReSharper disable once InconsistentNaming
     self.selectedContentType = new dcc.contentTypeViewModel(self, config);
 
-    var findContentTypes =  function() {
+    var findContentTypes = function() {
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.contentTypePageSize != self.pageSize()) {
+            persistentData.contentTypePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
         self.pageIndex(0);
         self.getContentTypes();
     };
@@ -125,6 +131,10 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         self.pageSize.subscribe(function () {
             findContentTypes();
         });
+
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.contentTypePageSize);
 
         $rootElement.find("#contentTypes-editView").css("display", "none");
 

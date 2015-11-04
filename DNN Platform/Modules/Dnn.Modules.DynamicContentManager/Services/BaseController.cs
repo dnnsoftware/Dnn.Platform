@@ -7,8 +7,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using DotNetNuke.Collections;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services

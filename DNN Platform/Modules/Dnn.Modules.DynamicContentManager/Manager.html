@@ -1,5 +1,7 @@
 ﻿[JavaScript:{ jsname: "Knockout" }]
 [JavaScript:{ jsname: "Knockout.Mapping" }]
+[JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/config.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/persistent.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/knockout-sortable.min.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/manager.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/contentTypes.js"}]
@@ -453,6 +455,11 @@
 </div>
 
 <script language="javascript" type="text/javascript">
+    var __userSettings = {
+        "contentTypePageSize": "[pagesize:ContentType]",
+        "dataTypePageSize": "[pagesize:DataType]",
+        "templatePageSize": "[pagesize:Template]"
+    };
     var moduleId = parseInt("[ModuleContext:ModuleId]");
     var str = "[ModuleContext:IsSuperUser]";
     var isSystemUser = (str.toLowerCase() === "true");

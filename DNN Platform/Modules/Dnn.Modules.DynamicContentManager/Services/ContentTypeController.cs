@@ -12,6 +12,7 @@ using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.Attributes;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
@@ -20,6 +21,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 
 namespace Dnn.Modules.DynamicContentManager.Services
 {
@@ -152,8 +154,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
-
         }
+
+        
 
         private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
         {
