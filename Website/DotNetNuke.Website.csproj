@@ -1053,20 +1053,6 @@
     <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
       <DependentUpon>UserSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.cs">
-      <DependentUpon>Attributes.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.designer.cs">
-      <DependentUpon>Attributes.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.cs">
-      <DependentUpon>editskins.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.designer.cs">
-      <DependentUpon>editskins.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2289,9 +2275,6 @@
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
     <Content Include="DesktopModules\Admin\Security\users.ascx" />
     <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
-    <Content Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx" />
-    <Content Include="DesktopModules\Admin\Skins\editskins.ascx" />
-    <Content Include="DesktopModules\Admin\Skins\module.css" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -4249,10 +4232,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SkinDesigner\App_LocalResources\Attributes.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DesktopModules\Admin\Skins\App_LocalResources\EditSkins.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
