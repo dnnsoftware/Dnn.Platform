@@ -100,9 +100,9 @@
             codeEditor: codeEditor,
             ko: ko
         };
-        var conf = cf.init();
+        var conf = dnn.modules.dynamicContentManager.cf.init();
         var sf = util.sf;
-        var persis = persistent.init(conf, sf);
+        var persis = dnn.modules.dynamicContentManager.persistent.init(conf, sf);
         util.persistent = persis;
 
         //Build the ViewModel

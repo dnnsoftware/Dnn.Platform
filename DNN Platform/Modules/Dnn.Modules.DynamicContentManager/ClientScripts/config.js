@@ -1,9 +1,15 @@
-﻿var cf = {
-    init: function() {
-        var userSettings = window.parent['__userSettings'];
+﻿dnn = dnn || {};
+dnn.modules = dnn.modules || {};
+dnn.modules.dynamicContentManager = dnn.modules.dynamicContentManager || {};
 
-        return {
-            userSettings: userSettings
-        };
-    }
-};
+dnn.modules.dynamicContentManager.cf = (function () {
+    return {
+        init: function() {
+            var userSettings = window.parent['__userSettings'];
+
+            return {
+                userSettings: userSettings
+            };
+        }
+    };
+}());
