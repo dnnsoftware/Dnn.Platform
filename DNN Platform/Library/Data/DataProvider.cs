@@ -3366,7 +3366,7 @@ namespace DotNetNuke.Data
 
 		public virtual void AddLog(string logGUID, string logTypeKey, int logUserID, string logUserName, int logPortalID,
 								   string logPortalName, DateTime logCreateDate, string logServerName,
-							string logProperties, int logConfigID, ExceptionInfo exception)
+							string logProperties, int logConfigID, ExceptionInfo exception, bool notificationActive)
 		{
             int logEventID;
             if (exception != null)
@@ -3396,7 +3396,8 @@ namespace DotNetNuke.Data
                         logServerName,
                         logProperties,
                         logConfigID,
-                        GetNull(exception.ExceptionHash));
+                        GetNull(exception.ExceptionHash),
+                        notificationActive);
                 }
                 catch (SqlException)
                 {
@@ -3442,7 +3443,9 @@ namespace DotNetNuke.Data
                                                 logCreateDate,
                                                 logServerName,
                                                 logProperties,
-                                                logConfigID);
+                                                logConfigID,
+                                                DBNull.Value,
+                                                notificationActive);
             }
 		}
 
