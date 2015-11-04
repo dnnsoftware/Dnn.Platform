@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.Themes" type="Module" version="01.01.00">
+    <package name="Dnn.Themes" type="Module" version="08.00.00">
       <friendlyName>Themes</friendlyName>
       <description>The Theme Management module provides an interface for managing the installed themes, and how they're applied to your site.</description>
       <iconFile>~/Icons/Sigma/Skins_32X32_Standard.png</iconFile>
@@ -62,7 +62,7 @@
             <attributes>
               <businessControllerClass>Dnn.Modules.SkinManagement.Components.SkinManagementController</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>01.01.00</upgradeVersionsList>
+              <upgradeVersionsList>08.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -82,7 +82,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
-        <component type="Cleanup" version="01.01.00" fileName ="01.01.00.txt" />
+        <component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
       </components>
     </package>
   </packages>

@@ -57,7 +57,7 @@ namespace Dnn.Modules.SkinManagement.Components
             {
                 switch (version)
                 {
-                    case "01.01.00":
+                    case "08.00.00":
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_NAME);
                         
                         if (moduleDefinition != null)
