@@ -28,6 +28,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Dnn.Modules.SkinManagement.XML</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,7 +81,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="01.01.00.txt" />
+    <Content Include="08.00.00.txt" />
     <Content Include="editskins.ascx" />
     <Content Include="license.txt" />
     <Content Include="Module.build" />
@@ -99,6 +101,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
+      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
+      <Name>DotNetNuke.Web.Deprecated</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
