@@ -18,11 +18,13 @@ namespace Dnn.DynamicContent
     {
         #region Members
         private readonly IContentController _contentController;
+        private readonly ISearchHelper _searchHelper;
         #endregion
 
         public DynamicContentSearchManager()
         {
             _contentController = ContentController.Instance;
+            _searchHelper = SearchHelper.Instance;
         }
 
         public SearchDocument GetSearchDocument(ModuleInfo moduleInfo, DynamicContentItem dynamicContentItem)
@@ -34,7 +36,7 @@ namespace Dnn.DynamicContent
             {
                 UniqueKey = string.Format("Module{0}-DynamicContentItem{1}", moduleInfo.ModuleID, dynamicContentItem.ContentItemId),
                 PortalId = moduleInfo.PortalID,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+                SearchTypeId = _searchHelper.GetSearchTypeByName("module").SearchTypeId,
                 Title = moduleInfo.ModuleTitle,
                 Description = string.Empty,
                 Body = GenerateSearchContent(dynamicContentItem),

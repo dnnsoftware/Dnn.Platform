@@ -17,6 +17,7 @@ namespace Dnn.Modules.DynamicContentViewer.Models
     {
 #pragma warning disable 1591
         public const string DCC_ContentTypeId = "DCC_ContentTypeId";
+        public const string DCC_ContentItemId = "DCC_ContentItemId";
         public const string DCC_EditTemplateId = "DCC_EditTemplateId";
         public const string DCC_ViewTemplateId = "DCC_ViewTemplateId";
 #pragma warning restore 1591

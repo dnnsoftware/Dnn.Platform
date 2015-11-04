@@ -16,8 +16,6 @@ namespace Dnn.DynamicContent
 
             PortalId = portalId;
 
-            ModuleId = -1;
-            TabId = -1;
             ContentItemId = -1;
 
             ContentType = contentType;
@@ -29,10 +27,6 @@ namespace Dnn.DynamicContent
         public DynamicContentPart Content { get; set; }
 
         public DynamicContentType ContentType { get; private set; }
-
-        public int ModuleId { get; set; }
-
-        public int TabId { get; set; }
 
         public int PortalId { get; set; }
 

@@ -125,7 +125,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var content = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
 
             //Assert
-            Assert.AreEqual(-1, content.ModuleId);
             Assert.AreEqual(-1, content.ContentItemId);
         }
 
@@ -155,7 +154,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var content = new DynamicContentItem(portalId, contentType);
 
             //Assert
-            Assert.AreEqual(-1, content.ModuleId);
             Assert.AreEqual(-1, content.ContentItemId);
             _mockRepository.VerifyAll();
         }

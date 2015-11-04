@@ -18,54 +18,52 @@ namespace Dnn.DynamicContent
             return () => new DynamicContentItemManager();
         }
 
+        private readonly IContentController _contentController;
+        private readonly IDynamicContentTypeManager _dynamicContentTypeManager;
+
+        public DynamicContentItemManager()
+        {
+            _contentController = ContentController.Instance;
+            _dynamicContentTypeManager = DynamicContentTypeManager.Instance;
+        }
+
         public int AddContentItem(DynamicContentItem dynamicContent)
         {
             Requires.NotNull(dynamicContent);
             Requires.PropertyNotNull(dynamicContent, "ContentType");
             Requires.PropertyNotNegative(dynamicContent.ContentType, "ContentTypeId");
-            Requires.PropertyNotNegative(dynamicContent, "ModuleId");
 
             var contentItem = new ContentItem
                                     {
                                         ContentTypeId = dynamicContent.ContentType.ContentTypeId,
                                         Content = dynamicContent.ToJson(),
-                                        ModuleID = dynamicContent.ModuleId,
-                                        TabID = dynamicContent.TabId,
                                         ContentKey = String.Empty
                                     };
 
-            return ContentController.Instance.AddContentItem(contentItem);
+            return _contentController.AddContentItem(contentItem);
         }
 
-        public DynamicContentItem CreateContentItem(int portalId, int tabId, int moduleId, DynamicContentType contentType)
+        public DynamicContentItem CreateContentItem(DynamicContentType contentType, int portalId)
         {
-            Requires.NotNegative("portalId", portalId);
-            Requires.NotNegative("moduleId", moduleId);
-            Requires.NotNegative("tabId", tabId);
             Requires.NotNull("contentType", contentType);
+            Requires.NotNegative("portalId", portalId);
 
             if (contentType.FieldDefinitions.Count == 0)
             {
                 throw new InvalidOperationException("The content type has no fields defined.");
             }
-            return new DynamicContentItem(portalId, contentType) { ModuleId = moduleId, TabId = tabId };
+            return new DynamicContentItem(portalId, contentType);
         }
 
-        public DynamicContentItem CreateContentItem(ContentItem contentItem)
+        public DynamicContentItem CreateContentItem(ContentItem contentItem, int portalId)
         {
             Requires.NotNull("contentItem", contentItem);
-            Requires.PropertyNotNegative(contentItem, "TabID");
-            Requires.PropertyNotNegative(contentItem, "ModuleID");
 
-            var module = ModuleController.Instance.GetModule(contentItem.ModuleID, contentItem.TabID, false);
+            var contentType = _dynamicContentTypeManager.GetContentType(portalId, contentItem.ContentTypeId, true);
 
-            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentItem.ContentTypeId, module.PortalID, true);
-
-            var dynamicContentItem = new DynamicContentItem(module.PortalID, contentType)
+            var dynamicContentItem = new DynamicContentItem(contentType.PortalId, contentType)
                                             {
-                                                ContentItemId = contentItem.ContentItemId,
-                                                ModuleId = contentItem.ModuleID,
-                                                TabId = contentItem.TabID
+                                                ContentItemId = contentItem.ContentItemId
                                             };
 
             dynamicContentItem.FromJson(contentItem.Content);
@@ -78,35 +76,21 @@ namespace Dnn.DynamicContent
             Requires.NotNull(dynamicContent);
             Requires.PropertyNotNegative(dynamicContent, "ContentItemId");
 
-            ContentController.Instance.DeleteContentItem(dynamicContent.ContentItemId);
+            _contentController.DeleteContentItem(dynamicContent.ContentItemId);
         }
 
-        public DynamicContentItem GetContentItem(int contentItemId)
+        public DynamicContentItem GetContentItem(int contentItemId, int portalId)
         {
             Requires.NotNegative("contentItemId", contentItemId);
 
-            var contentItem = ContentController.Instance.GetContentItem(contentItemId);
+            var contentItem = _contentController.GetContentItem(contentItemId);
             DynamicContentItem dynamicContentItem = null;
             if (contentItem != null)
             {
-                dynamicContentItem = CreateContentItem(contentItem);
+                dynamicContentItem = CreateContentItem(contentItem, portalId);
             }
 
             return dynamicContentItem;
-        }
-
-        public IQueryable<DynamicContentItem> GetContentItems(int moduleId, int contentTypeId)
-        {
-            Requires.NotNegative("moduleId", moduleId);
-
-            var contentItems = ContentController.Instance.GetContentItemsByModuleId(moduleId) .Where(c => c.ContentTypeId == contentTypeId);
-            var dynamicContentItems = new List<DynamicContentItem>();
-            foreach (var contentItem in contentItems)
-            {
-                dynamicContentItems.Add(CreateContentItem(contentItem));
-            }
-
-            return dynamicContentItems.AsQueryable();
         }
 
         public void UpdateContentItem(DynamicContentItem dynamicContent)
@@ -115,20 +99,16 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNegative(dynamicContent, "ContentItemId");
             Requires.PropertyNotNull(dynamicContent, "ContentType");
             Requires.PropertyNotNegative(dynamicContent.ContentType, "ContentTypeId");
-            Requires.PropertyNotNegative(dynamicContent, "ModuleId");
-            Requires.PropertyNotNegative(dynamicContent, "TabId");
 
             var contentItem = new ContentItem
                                 {
                                     ContentItemId = dynamicContent.ContentItemId,
                                     ContentTypeId = dynamicContent.ContentType.ContentTypeId,
                                     Content = dynamicContent.ToJson(),
-                                    ModuleID = dynamicContent.ModuleId,
-                                    TabID = dynamicContent.TabId,
                                     ContentKey = String.Empty
                                 };
 
-            ContentController.Instance.UpdateContentItem(contentItem);
+            _contentController.UpdateContentItem(contentItem);
         }
     }
 }
