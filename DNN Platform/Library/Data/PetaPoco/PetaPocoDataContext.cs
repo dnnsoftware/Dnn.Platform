@@ -47,19 +47,30 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         public PetaPocoDataContext(string connectionStringName)
-            : this(connectionStringName, String.Empty)
+            : this(connectionStringName, String.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
         public PetaPocoDataContext(string connectionStringName, string tablePrefix)
+            : this(connectionStringName, tablePrefix, new Dictionary<Type, IMapper>())
+        {
+        }
+
+        public PetaPocoDataContext(string connectionStringName, string tablePrefix, Dictionary<Type, IMapper> mappers)
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
             _database = new Database(connectionStringName);
             _mapper = new PetaPocoMapper(tablePrefix);
+            TablePrefix = tablePrefix;
+            FluentMappers = mappers;
         }
 
         #endregion
+
+        public Dictionary<Type, IMapper> FluentMappers { get; private set; }
+
+        public string TablePrefix { get; private set; }
 
         #region Implementation of IDataContext
 
@@ -123,7 +134,24 @@ namespace DotNetNuke.Data.PetaPoco
 
         public IRepository<T> GetRepository<T>() where T : class
         {
-            return new PetaPocoRepository<T>(_database, _mapper);
+            PetaPocoRepository<T> rep = null;
+
+            //Determine whether to use a Fluent Mapper
+            if (FluentMappers.ContainsKey(typeof (T)))
+            {
+                var fluentMapper = FluentMappers[typeof(T)] as FluentMapper<T>;
+                if (fluentMapper != null)
+                {
+                    rep = new PetaPocoRepository<T>(_database, fluentMapper);
+                    rep.Initialize(fluentMapper.CacheKey, fluentMapper.CacheTimeOut, fluentMapper.CachePriority, fluentMapper.Scope);
+                }
+            }
+            else
+            {
+                rep = new PetaPocoRepository<T>(_database, _mapper);
+            }
+
+            return rep;
         }
 
         public void RollbackTransaction()
