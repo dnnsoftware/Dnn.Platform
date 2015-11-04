@@ -43,6 +43,12 @@ namespace Dnn.Modules.Tabs.Components
                 switch (version)
                 {
                     case "08.00.00":
+                        var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Tabs");
+                        if (moduleDefinition != null)
+                        {
+                            new ModuleDefinitionController().DeleteModuleDefinition(moduleDefinition.ModuleDefID);
+                        }
+
                         break;
                 }
                 return "Success";
