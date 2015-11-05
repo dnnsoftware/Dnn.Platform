@@ -461,19 +461,23 @@
             }
         }
 
-        var throwErrorWhenInvalidPromise = function checkPromiseHandler(promise) {
+        var throwErrorWhenInvalidPromise = function checkPromiseHandler(promise, callbackName) {
             if (!promise || typeof promise !== 'object') {
-                throw "The 'onCancel' callback should return a promise.";
+                throw "The '"+callbackName+"' callback should return a promise.";
             }
 
             if (typeof promise.done !== 'function') {
-                throw "The 'onCancel' callback should return a promise with a valid 'done' function.";
+                throw "The '" + callbackName + "' callback should return a promise with a valid 'done' function.";
             }
         };
 
         $cancelButton.click(function () {
+            if (typeof onCancel !== "function") {
+                throw "The 'onCancel' callback must be a function";
+            }
+
             var promise = onCancel.call(this);
-            throwErrorWhenInvalidPromise(promise);
+            throwErrorWhenInvalidPromise(promise, "onCancel");
             
             promise.done(
                 function() {
@@ -483,8 +487,12 @@
         });
 
         $saveButton.click(function () {
+            if (typeof onSave !== "function") {
+                throw "The 'onSave' callback must be a function";
+            }
+
             var promise = onSave.call(this);
-            throwErrorWhenInvalidPromise(promise);
+            throwErrorWhenInvalidPromise(promise, "onSave");
 
             promise.done(
                 function () {
