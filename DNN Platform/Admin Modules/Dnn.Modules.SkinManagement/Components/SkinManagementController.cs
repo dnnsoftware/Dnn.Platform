@@ -58,25 +58,6 @@ namespace Dnn.Modules.SkinManagement.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(THEME_NAME);
-                        
-                        if (moduleDefinition != null)
-                        {
-                            //Add Module to Admin Page for all Portals
-                            Upgrade.AddAdminPages(THEME_NAME,
-                                                    "Manage the installed themes, and how they're applied on the site.",
-                                                    "~/Icons/Sigma/Skins_16X16_Standard.png",
-                                                    "~/Icons/Sigma/Skins_32X32_Standard.png",
-                                                    true,
-                                                    moduleDefinition.ModuleDefID,
-                                                    THEME_NAME,
-                                                    "~/Icons/Sigma/Skins_32X32_Standard.png",
-                                                    true);
-
-                            // add the theme attributes module to the same admin page
-                            AddAttributeModuleToPage();
-                        }
-
                         // delete the Skins page
                         DeleteSkinsPage();
 
