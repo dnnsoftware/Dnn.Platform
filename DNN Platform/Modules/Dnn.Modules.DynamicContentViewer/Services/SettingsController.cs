@@ -6,9 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Models;
+using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
-using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentViewer.Services
@@ -20,6 +21,15 @@ namespace Dnn.Modules.DynamicContentViewer.Services
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class SettingsController : DnnApiController
     {
+        private readonly IContentTemplateManager _contentTemplateManager;
+        private readonly IModuleController _moduleController;
+
+        public SettingsController()
+        {
+            _contentTemplateManager = ContentTemplateManager.Instance;
+            _moduleController = ModuleController.Instance;
+        }
+
         /// <summary>
         /// GetTemplates retrieves the Templates for a ContentType
         /// </summary>
@@ -28,7 +38,7 @@ namespace Dnn.Modules.DynamicContentViewer.Services
         [HttpGet]
         public HttpResponseMessage GetTemplates(int contentTypeId)
         {
-            var templateList = ContentTemplateManager.Instance.GetContentTemplates(PortalSettings.PortalId, true)
+            var templateList = _contentTemplateManager.GetContentTemplates(PortalSettings.PortalId, true)
                                                 .Where(t => t.ContentTypeId == contentTypeId);
             var templates = templateList
                                 .Select(t => new { name = t.Name, value = t.TemplateId, isEdit = t.IsEditTemplate })
@@ -51,9 +61,13 @@ namespace Dnn.Modules.DynamicContentViewer.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveSettings(Settings settings)
         {
-            ModuleController.Instance.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_ContentTypeId, settings.ContentTypeId.ToString());
-            ModuleController.Instance.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_EditTemplateId, settings.EditTemplateId.ToString());
-            ModuleController.Instance.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_ViewTemplateId, settings.ViewTemplateId.ToString());
+            if (HasContentTypeChanged(settings))
+            {
+                _moduleController.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_ContentItemId, Null.NullInteger.ToString());
+                _moduleController.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_ContentTypeId, settings.ContentTypeId.ToString());
+            }
+            _moduleController.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_EditTemplateId, settings.EditTemplateId.ToString());
+            _moduleController.UpdateModuleSetting(ActiveModule.ModuleID, Settings.DCC_ViewTemplateId, settings.ViewTemplateId.ToString());
 
             var response = new
                             {
@@ -61,6 +75,11 @@ namespace Dnn.Modules.DynamicContentViewer.Services
                             };
 
             return Request.CreateResponse(response);
+        }
+
+        private bool HasContentTypeChanged(Settings settings)
+        {
+            return ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1) != settings.ContentTypeId;
         }
     }
 }

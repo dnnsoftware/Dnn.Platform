@@ -39,13 +39,11 @@ namespace Dnn.Modules.DynamicContentViewer.Components
         {
             try
             {
-                var conteTypeId = _dynamicContentViewerManager.GetContentTypeId(moduleInfo);
-                if (conteTypeId <= Null.NullInteger)
-                {
-                    return new List<SearchDocument>();                    
-                }
-
                 var dynamicContentItem = _dynamicContentViewerManager.GetContentItem(moduleInfo);
+                if (dynamicContentItem == null)
+                {
+                    return new List<SearchDocument>();     
+                }
                 
                 var contentItem = _contentController.GetContentItem(dynamicContentItem.ContentItemId);
                 if (contentItem.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&

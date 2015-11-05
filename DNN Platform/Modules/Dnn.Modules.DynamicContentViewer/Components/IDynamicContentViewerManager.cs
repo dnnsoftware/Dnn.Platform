@@ -31,6 +31,13 @@ namespace Dnn.Modules.DynamicContentViewer.Components
         int GetContentTypeId(ModuleInfo moduleInfo);
 
         /// <summary>
+        /// Get the Content Item Id associated to the viewer module
+        /// </summary>
+        /// <param name="moduleInfo">Module related with the setting</param>
+        /// <returns>Id of the Content Item</returns>
+        int GetContentItemId(ModuleInfo moduleInfo);
+
+        /// <summary>
         /// Get the setting View Template Id configured by the module
         /// </summary>
         /// <param name="moduleInfo">Module related with the setting</param>

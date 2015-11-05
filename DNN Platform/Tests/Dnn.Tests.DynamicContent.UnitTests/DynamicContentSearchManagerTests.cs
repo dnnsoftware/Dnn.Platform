@@ -18,41 +18,31 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     [TestFixture]
     public class DynamicContentSearchManagerTests
     {
-        #region members
         //Mocks
+        private MockRepository _mockRepository;
         private Mock<IContentController> _mockContentController;
         private Mock<IFieldDefinitionManager> _mockFieldDefinitionManager;
-        private Mock<IDynamicContentTypeManager> _mockDynamicContentTypeManager;
-        private Mock<IModuleController> _mockModuleController;
         private Mock<ISearchHelper> _mockSearchHelper;
 
         //Testing
-        private IDynamicContentSearchManager _searchManager;
-        #endregion
+        private DynamicContentSearchManager _searchManager;
 
         [SetUp]
         public void Setup()
         {
-            _mockModuleController = new Mock<IModuleController>();
-            _mockModuleController.Setup(m => m.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
-                .Returns(new ModuleInfo());
-            ModuleController.SetTestableInstance(_mockModuleController.Object);
+            _mockRepository = new MockRepository(MockBehavior.Default);
 
-            _mockSearchHelper = new Mock<ISearchHelper>();
-            _mockSearchHelper.Setup(s => s.GetSearchTypeByName(It.IsAny<string>())).Returns(new SearchType());
+            _mockSearchHelper = _mockRepository.Create<ISearchHelper>();
+            _mockSearchHelper.Setup(s => s.GetSearchTypeByName("module")).Returns(new SearchType());
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
 
-            _mockContentController = new Mock<IContentController>();
+            _mockContentController = _mockRepository.Create<IContentController>();
             ContentController.SetTestableInstance(_mockContentController.Object);
 
-            _mockFieldDefinitionManager = new Mock<IFieldDefinitionManager>();
+            _mockFieldDefinitionManager = _mockRepository.Create<IFieldDefinitionManager>();
             FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionManager.Object);
-
-            _mockDynamicContentTypeManager = new Mock<IDynamicContentTypeManager>();
-            DynamicContentTypeManager.SetTestableInstance(_mockDynamicContentTypeManager.Object);
-
-            _searchManager = DynamicContentSearchManager.Instance;
-
+            
+            _searchManager = new DynamicContentSearchManager();
         }
 
         [TearDown]
@@ -60,7 +50,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             ContentController.ClearInstance();
             FieldDefinitionManager.ClearInstance();
-            DynamicContentTypeManager.ClearInstance();
             ModuleController.ClearInstance();
             SearchHelper.ClearInstance();
         }
@@ -69,7 +58,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetSearchDocument_ShouldGenerateValidBody_WhenContentItemIsSimple()
         {
             //Arrange
-            var fieldContents = new List<KeyValuePair<string, object>>()
+            var fieldContents = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("FieldName1", 1),
                 new KeyValuePair<string, object>("FieldName2", true),
@@ -80,7 +69,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
-            var moduleInfo = new ModuleInfo()
+            var moduleInfo = new ModuleInfo
             {
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
@@ -91,13 +80,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(String.Join(", ",1.ToString(),true.ToString(),"Some text"),result.Body);
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSearchDocument_ShouldGenerateValidKeywords_WhenContentItemIsSimple()
         {
             //Arrange
-            var fieldContents = new List<KeyValuePair<string, object>>()
+            var fieldContents = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("FieldName1", 1),
                 new KeyValuePair<string, object>("FieldName2", true),
@@ -108,7 +98,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
-            var moduleInfo = new ModuleInfo()
+            var moduleInfo = new ModuleInfo
             {
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
@@ -123,13 +113,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName1", 1.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName2", true.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("FieldName3", "Some text")));
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSearchDocument_ShouldGenerateValidBody_WhenContentItemIsComplex()
         {
             //Arrange
-            var fieldContents = new List<KeyValuePair<string, object>>()
+            var fieldContents = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("FieldName1", 1),
                 new KeyValuePair<string, object>("FieldName2", true),
@@ -147,7 +138,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
-            var moduleInfo = new ModuleInfo()
+            var moduleInfo = new ModuleInfo
             {
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
@@ -158,20 +149,21 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             Assert.AreEqual(String.Join(", ", 1.ToString(), true.ToString(), "Some text", 2.ToString(), false.ToString(), "Other text"), result.Body);
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSearchDocument_ShouldGenerateValidKeywords_WhenContentItemIsComplex()
         {
             //Arrange
-            var fieldContents = new List<KeyValuePair<string, object>>()
+            var fieldContents = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("FieldName1", 1),
                 new KeyValuePair<string, object>("FieldName2", true),
                 new KeyValuePair<string, object>("FieldName3", "Some text")
             };
 
-            var subFieldContents = new List<KeyValuePair<string, object>>()
+            var subFieldContents = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("FieldName4", 2),
                 new KeyValuePair<string, object>("FieldName5", false),
@@ -182,7 +174,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentController.Setup(c => c.GetContentItem(It.IsAny<int>())).Returns(new ContentItem());
 
-            var moduleInfo = new ModuleInfo()
+            var moduleInfo = new ModuleInfo
             {
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
@@ -201,13 +193,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName4", 2.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName5", false.ToString())));
             Assert.IsTrue(result.Keywords.Contains(new KeyValuePair<string, string>("ComplexFieldName1/FieldName6", "Other text")));
+            _mockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSearchDocument_ShouldThrowException_WhenContentItemIsNull()
         {
             //Arrange
-            var moduleInfo = new ModuleInfo()
+            var moduleInfo = new ModuleInfo
             {
                 ModuleID = Constants.MODULE_ValidId,
                 TabID = Constants.TAB_ValidId
@@ -216,7 +209,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Act
             var testDelegation = new TestDelegate(() => _searchManager.GetSearchDocument(moduleInfo, null));
             
-
             //Assert
             Assert.Throws<ArgumentNullException>(testDelegation);
         }
@@ -241,8 +233,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
         private DynamicContentItem GetSimpleDynamicContentItem( List<KeyValuePair<string, object>> fieldContents)
         {
-            const int moduleId = Constants.MODULE_ValidId;
-            const int tabId = Constants.TAB_ValidId;
             const int portalId = Constants.PORTAL_ValidPortalId;
             const int contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
 
@@ -251,14 +241,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var fieldNames = fieldContents.Select(f => f.Key).ToArray();
             var dynamicContentType = GetContentType(contentTypeId, portalId, fieldNames);
-            _mockDynamicContentTypeManager.Setup(c => c.GetContentTypes(portalId, false))
-                .Returns(new List<DynamicContentType>() { dynamicContentType }.AsQueryable());
             
             var dynamicContent = new DynamicContentItem(portalId, dynamicContentType)
             {
-                ContentItemId = Constants.CONTENT_ValidContentItemId,
-                ModuleId = moduleId,
-                TabId = tabId
+                ContentItemId = Constants.CONTENT_ValidContentItemId
             };
 
             foreach (var fieldContent in fieldContents)
@@ -271,11 +257,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
         private DynamicContentType GetContentType(int contentTypeId, int portalId, string[] fieldNames)
         {
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
+            var contentType = new DynamicContentType { ContentTypeId = contentTypeId, PortalId = portalId };
 
             foreach (var fieldName in fieldNames)
             {
-                contentType.FieldDefinitions.Add(new FieldDefinition() { ContentTypeId = contentTypeId, Name = fieldName, PortalId = portalId });    
+                contentType.FieldDefinitions.Add(new FieldDefinition { ContentTypeId = contentTypeId, Name = fieldName, PortalId = portalId });    
             }
             
             return contentType;
