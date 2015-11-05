@@ -2,11 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
@@ -40,7 +37,8 @@ namespace Dnn.DynamicContent
                                         ContentKey = String.Empty
                                     };
 
-            return _contentController.AddContentItem(contentItem);
+            dynamicContent.ContentItemId = _contentController.AddContentItem(contentItem);
+            return dynamicContent.ContentItemId;
         }
 
         public DynamicContentItem CreateContentItem(DynamicContentType contentType, int portalId)
@@ -59,9 +57,9 @@ namespace Dnn.DynamicContent
         {
             Requires.NotNull("contentItem", contentItem);
 
-            var contentType = _dynamicContentTypeManager.GetContentType(portalId, contentItem.ContentTypeId, true);
+            var contentType = _dynamicContentTypeManager.GetContentType(contentItem.ContentTypeId, portalId, true);
 
-            var dynamicContentItem = new DynamicContentItem(contentType.PortalId, contentType)
+            var dynamicContentItem = new DynamicContentItem(portalId, contentType)
                                             {
                                                 ContentItemId = contentItem.ContentItemId
                                             };
