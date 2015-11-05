@@ -419,6 +419,20 @@
         supportsQuickSettings: false
     };
 
+    /*
+    * Creates a new quick setting object.
+    *
+    * @method dnnQuickSettings
+    * @param {Object} options Options needed to create a new quick settings.
+    * @param {int} options.moduleId Module identifier associated to the quick setting.
+    * @param {function} options.onSave A callback function that will executed when save button is clicked. This function MUST
+    *                           returns a promise (see https://api.jquery.com/category/deferred-object/) in order the quick module 
+    *                           object is allowed to close menu once the save callback action has finished.
+    * @param {function} options.onCancel A callback function that will executed when cancel button is clicked. This function MUST
+    *                           returns a promise (see https://api.jquery.com/category/deferred-object/) in order the quick module 
+    *                           object is allowed to close menu once the cancel callback action has finished.
+    * @return {Object} Returnsa quick setting object.
+    */
     $.fn.dnnQuickSettings = function(options) {
         var opts = $.extend({}, $.fn.dnnQuickSettings.defaultOptions, options);
         var onCancel = opts.onCancel;
@@ -447,14 +461,44 @@
             }
         }
 
+        var throwErrorWhenInvalidPromise = function checkPromiseHandler(promise, callbackName) {
+            if (!promise || typeof promise !== 'object') {
+                throw "The '"+callbackName+"' callback should return a promise.";
+            }
+
+            if (typeof promise.done !== 'function') {
+                throw "The '" + callbackName + "' callback should return a promise with a valid 'done' function.";
+            }
+        };
+
         $cancelButton.click(function () {
-            onCancel.call(this);
-            closeMenu($container.parent());
+            if (typeof onCancel !== "function") {
+                throw "The 'onCancel' callback must be a function";
+            }
+
+            var promise = onCancel.call(this);
+            throwErrorWhenInvalidPromise(promise, "onCancel");
+            
+            promise.done(
+                function() {
+                    closeMenu($container.parent());
+                }
+            );
         });
 
         $saveButton.click(function () {
-            onSave.call(this);
-            closeMenu($container.parent());
+            if (typeof onSave !== "function") {
+                throw "The 'onSave' callback must be a function";
+            }
+
+            var promise = onSave.call(this);
+            throwErrorWhenInvalidPromise(promise, "onSave");
+
+            promise.done(
+                function () {
+                    closeMenu($container.parent());
+                }
+            );
         });
 
         return $self;
@@ -462,7 +506,15 @@
 
     $.fn.dnnQuickSettings.defaultOptions = {
         moduleId: -1,
-        onCancel: function () { },
-        onSave: function () { }
+        onCancel: function () {
+            var deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
+        },
+        onSave: function() {
+            var deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
+        }
     };
 })(jQuery);

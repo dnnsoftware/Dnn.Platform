@@ -61,6 +61,9 @@ dcc.quickSettings = function ($, ko, options, resx) {
         };
 
         var saveSettings = function () {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
+
             var params = {
                 contentTypeId: viewModel.selectedTypeId(),
                 viewTemplateId: viewModel.selectedViewTemplateId(),
@@ -71,16 +74,20 @@ dcc.quickSettings = function ($, ko, options, resx) {
                 function (data) {
                     if (data.success === true) {
                         $(opts.container).load(opts.url + " " + opts.container + " .dccViewContent");
+                        deferred.resolve();
                     } else {
                         //Error
                         util.alert(data.message, resx.ok);
+                        deferred.reject();
                     }
                 },
                 function () {
                     //Failure
+                    deferred.reject();
                 }
             );
 
+            return promise;
         };
 
         viewModel.selectedTypeId.subscribe(function (newValue) {
