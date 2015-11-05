@@ -461,8 +461,21 @@
             }
         }
 
+        var throwErrorWhenInvalidPromise = function checkPromiseHandler(promise) {
+            if (!promise || typeof promise !== 'object') {
+                throw "The 'onCancel' callback should return a promise.";
+            }
+
+            if (typeof promise.done !== 'function') {
+                throw "The 'onCancel' callback should return a promise with a valid 'done' function.";
+            }
+        };
+
         $cancelButton.click(function () {
-            onCancel.call(this).done(
+            var promise = onCancel.call(this);
+            throwErrorWhenInvalidPromise(promise);
+            
+            promise.done(
                 function() {
                     closeMenu($container.parent());
                 }
@@ -470,7 +483,10 @@
         });
 
         $saveButton.click(function () {
-            onSave.call(this).done(
+            var promise = onSave.call(this);
+            throwErrorWhenInvalidPromise(promise);
+
+            promise.done(
                 function () {
                     closeMenu($container.parent());
                 }
@@ -484,23 +500,13 @@
         moduleId: -1,
         onCancel: function () {
             var deferred = $.Deferred();
-            var promise = deferred.promise();
-
-            setTimeout(function() {
-                deferred.resolve();
-            }, 0);
-
-            return promise;
+            deferred.resolve();
+            return deferred.promise();
         },
         onSave: function() {
             var deferred = $.Deferred();
-            var promise = deferred.promise();
-
-            setTimeout(function () {
-                deferred.resolve();
-            }, 0);
-
-            return promise;
+            deferred.resolve();
+            return deferred.promise();
         }
     };
 })(jQuery);
