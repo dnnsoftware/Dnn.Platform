@@ -218,21 +218,21 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 LogTypeKey = logInfo.LogTypeKey,
                                                 LogTypeFriendlyName = logInfo.LogTypeKey,
                                                 LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                                                LogTypeCSSClass = "GeneralAdminOperation"
-
+                                                LogTypeCSSClass = "GeneralAdminOperation",
+                                                LogTypeDescription = string.Empty
                                             };
                         AddLogType(logType);
 
                         var logTypeConfigInfo = new LogTypeConfigInfo()
                                             {
                                                 LogTypeKey =  logInfo.LogTypeKey,
-                                                LogTypePortalID = logInfo.LogPortalID.ToString(),
+                                                LogTypePortalID = "*",
                                                 LoggingIsActive = false,
                                                 KeepMostRecent = "-1",
                                                 EmailNotificationIsActive = false,
-                                                NotificationThreshold = 0,
-                                                NotificationThresholdTime = 0,
-                                                NotificationThresholdTimeType = 0,
+                                                NotificationThreshold = 1,
+                                                NotificationThresholdTime = 1,
+                                                NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                                                 MailFromAddress = String.Empty,
                                                 MailToAddress = String.Empty
                                             };
