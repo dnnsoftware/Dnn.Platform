@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
 
                     bool createdNewPage = false, addedNewModule = false;
-                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, "//Admin//" + _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
 
                     if (createdNewPage)
                     {

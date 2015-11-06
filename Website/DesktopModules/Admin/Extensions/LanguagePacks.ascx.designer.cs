@@ -7,19 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Extensions {
+namespace DotNetNuke.Website.DesktopModules.Admin.Extensions {
     
     
-    public partial class AvailableExtensions {
-        
-        /// <summary>
-        /// languagePacks control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Website.DesktopModules.Admin.Extensions.LanguagePacks languagePacks;
+    public partial class LanguagePacks {
         
         /// <summary>
         /// extensionTypeRepeater control.

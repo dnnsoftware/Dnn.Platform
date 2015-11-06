@@ -5481,6 +5481,9 @@ namespace DotNetNuke.Services.Upgrade
             
             RemoveAdminPages("//Admin//GoogleAnalytics");
             UninstallPackage("DotNetNuke.Google Analytics", "Module");
+
+            RemoveAdminPages("//Admin//AdvancedSettings");
+            UninstallPackage("DotNetNuke.AdvancedSettings", "Module");
         }
 
         private static int MaxIncremental(Version version)
