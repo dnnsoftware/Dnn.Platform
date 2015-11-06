@@ -10,12 +10,12 @@
     .searchInputContainer a.dnnSearchBoxClearText {
         display: block !important;
         position: absolute !important;
-        right: -15px !important;
+        right: 10px !important;
         width: 16px !important;
         height: 16px !important;
         background: none !important;
         cursor: pointer;
-        margin: 5px 0 7px 0;
+        margin: 7px 0 7px 0;
         z-index: 20;
     }
 
