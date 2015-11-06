@@ -23,6 +23,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
@@ -113,7 +114,7 @@ namespace DotNetNuke.Services.Search
                 PortalId = tab.PortalID,
                 CultureCode = tab.CultureCode,
                 ModifiedTimeUtc = tab.LastModifiedOnDate,
-                Body = tab.PageHeadText,
+                Body = string.Empty,
                 Description = tab.Description
             };
 
