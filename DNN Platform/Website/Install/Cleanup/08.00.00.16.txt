@@ -43,3 +43,12 @@ DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.cs
 DesktopModules\Admin\AdvancedSettings\AdvancedSettings.gif
 DesktopModules\Admin\AdvancedSettings\module.css
 DesktopModules\Admin\AdvancedSettings\
+
+'remove content list files
+DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx
+DesktopModules\Admin\ContentList\App_LocalResources\
+DesktopModules\Admin\ContentList\ContentList.ascx
+DesktopModules\Admin\ContentList\ContentList.ascx.cs
+DesktopModules\Admin\ContentList\contentList
+DesktopModules\Admin\ContentList\
+

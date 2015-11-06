@@ -5484,6 +5484,8 @@ namespace DotNetNuke.Services.Upgrade
 
             RemoveAdminPages("//Admin//AdvancedSettings");
             UninstallPackage("DotNetNuke.AdvancedSettings", "Module");
+            
+            UninstallPackage("DotNetNuke.ContentList", "Module");
         }
 
         private static int MaxIncremental(Version version)
