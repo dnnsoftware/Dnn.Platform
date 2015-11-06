@@ -28,3 +28,11 @@ Resources\FeedBrowser\themes\platinum\search.gif
 Resources\FeedBrowser\themes\platinum\
 Resources\FeedBrowser\themes\
 Resources\FeedBrowser\
+
+'remove content list files
+DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx
+DesktopModules\Admin\ContentList\App_LocalResources\
+DesktopModules\Admin\ContentList\ContentList.ascx
+DesktopModules\Admin\ContentList\ContentList.ascx.cs
+DesktopModules\Admin\ContentList\contentList
+DesktopModules\Admin\ContentList\
