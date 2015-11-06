@@ -739,7 +739,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                WriteFeedback(response, 0, "<font color='red'>Error! (see " + strLogFile + " for more information)</font><br>", false);
+                WriteFeedback(response, 0, "<font color='red'>Error!</font> (see " + strLogFile + " for more information)<br>", false);
             }
         }
 
