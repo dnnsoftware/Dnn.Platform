@@ -659,13 +659,6 @@
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
-      <DependentUpon>ContentList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.designer.cs">
-      <DependentUpon>ContentList.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
       <DependentUpon>AvailableExtensions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2214,8 +2207,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
-    <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
     <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
@@ -4197,7 +4188,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
