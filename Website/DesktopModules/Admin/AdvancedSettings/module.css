@@ -1,0 +1,110 @@
+﻿.dnnHSRadioButtons br {
+    border-collapse: collapse;
+    display: none !important;
+    font-size: 0;
+    line-height: 0;
+}
+
+.checkBoxList {
+    /*border: 1px solid lightgray;*/
+    width: 100%;
+}
+
+.checkBoxList .dnnGridItem, .checkBoxList .dnnGridAltItem {
+    padding: 10px;
+    display: list-item;
+}
+
+/* Styles for Skins and containers */
+.dnnFormItem .esCheckBoxes label {
+    width: auto;
+    font-weight: normal;
+    margin-top: 0;
+    padding-left: 5px;
+}
+.dnnEditSkins table.skinViewer {
+   /* margin-left: 202px; 
+    float: left;*/
+    width: 100%;
+}
+
+.dnnEditSkins table.skinViewer td{
+    width: 120px;
+    /*padding-bottom: 25px;*/
+}
+
+.dnnFormItem.legacySkinNotice {
+    margin-left: 15%;
+}
+.dnnFormItem.legacySkinNotice .dnnFormMessage {
+    margin-top: 0;
+    margin-left: 1.5em;
+}
+/* clean some form style */
+.RadComboBox_Default + a.dnnSecondaryAction {
+    position: absolute;
+    top: 0;
+}
+
+h2 .Head
+{
+    line-height: 18px;    
+    margin-bottom: 18px;
+    padding-bottom: 7px;
+    color: #444;
+    letter-spacing: -0.008em;
+    border-bottom: 0px;
+    font-size: 18px;
+}
+
+h2.dnnFormSectionHead {
+    line-height: 18px;    
+    margin-bottom: 18px;
+    padding-bottom: 7px;
+    color: #444;
+    letter-spacing: -0.008em;
+    font-size: 18px;
+    border-bottom: 0px;
+}
+
+.DnnModule-AdvancedSettings table {
+    background: none;
+}
+
+.dnnEditSkins .dnnLabel {
+    width: 170px;
+}
+
+.dnnEditSkins .skinTitle {
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    white-space: nowrap;
+    font-style: italic;
+    color: grey;
+}
+
+.dnnEditSkins .dnnSecondaryAction {
+    min-width: 0px;
+    margin-bottom: 0px;
+}
+
+.dnnEditSkins .dnnActions {
+    padding-top: 0px;
+}
+.dnnEditSkins fieldset {
+    margin-bottom: 0px;
+}
+
+.dnnEditSkins .dnnFormItem > .RadComboBox_Default {
+    margin-bottom: 4px;
+}
+
+.dnnEditSkins .dnnFormMessage 
+{
+    margin-bottom: 5px;
+}
+
+.dnnEditSkins .applyAction {
+    margin-bottom: 4px;
+}

@@ -617,6 +617,27 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx.cs">
+      <DependentUpon>AdvancedSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx.designer.cs">
+      <DependentUpon>AdvancedSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx.cs">
+      <DependentUpon>LanguagePacks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx.designer.cs">
+      <DependentUpon>LanguagePacks.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.cs">
+      <DependentUpon>SmtpServerSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.designer.cs">
+      <DependentUpon>SmtpServerSettings.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Authentication.ascx.cs">
       <DependentUpon>Authentication.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -756,13 +777,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.designer.cs">
       <DependentUpon>InstalledExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.designer.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.cs">
       <DependentUpon>MoreExtensions.ascx</DependentUpon>
@@ -1114,7 +1128,6 @@
       <DependentUpon>OAUTHLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\Web.config" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
@@ -2168,6 +2181,11 @@
     <Content Include="Default.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx" />
+    <Content Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.gif" />
+    <Content Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx" />
+    <Content Include="DesktopModules\Admin\AdvancedSettings\module.css" />
+    <Content Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\Authentication.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\authentication.png" />
     <Content Include="DesktopModules\Admin\Authentication\Images\socialLoginbuttons-icons.png" />
@@ -4149,6 +4167,9 @@
     <EmbeddedResource Include="controls\App_LocalResources\URLControl.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\UrlTrackingControl.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\User.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\AdvancedSettings.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\LanguagePacks.ascx.resx" />
+    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
       <SubType>Designer</SubType>
