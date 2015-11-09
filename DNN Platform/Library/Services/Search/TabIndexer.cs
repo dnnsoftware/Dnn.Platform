@@ -23,7 +23,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
