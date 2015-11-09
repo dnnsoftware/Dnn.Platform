@@ -4182,6 +4182,7 @@
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\LanguagePacks.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
