@@ -419,7 +419,7 @@ namespace DotNetNuke.Security.Roles
 
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
-            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupName == roleGroupName);
+            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupName.ToLower().Trim() == roleGroupName.ToLower().Trim());
         }
 
         /// -----------------------------------------------------------------------------

@@ -387,7 +387,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         PortalID = PortalId,
                         RoleID = _roleID,
                         RoleGroupID = int.Parse(cboRoleGroups.SelectedValue),
-                        RoleName = txtRoleName.Text,
+                        RoleName = txtRoleName.Text.Trim(),
                         Description = txtDescription.Text,
                         ServiceFee = sglServiceFee,
                         BillingPeriod = intBillingPeriod,
@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (_roleID == -1)
                     {
-                        if (RoleController.Instance.GetRole(PortalId, r => r.RoleName == role.RoleName) == null)
+                        if (RoleController.Instance.GetRole(PortalId, r => r.RoleName.ToLower() == role.RoleName.ToLower()) == null)
                         {
                             RoleController.Instance.AddRole(role, chkAssignToExistUsers.Checked);
                         }
