@@ -238,18 +238,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.ActivityFeed.Title.Text" xml:space="preserve">
     <value>Activity Feed</value>
   </data>
-  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
   <data name="Tab.AdvUrlManagement.ContentPane.Module.Title.Text" xml:space="preserve">
     <value>Advanced URL Management</value>
   </data>

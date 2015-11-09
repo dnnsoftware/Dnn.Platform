@@ -28,3 +28,18 @@ Resources\FeedBrowser\themes\platinum\search.gif
 Resources\FeedBrowser\themes\platinum\
 Resources\FeedBrowser\themes\
 Resources\FeedBrowser\
+
+'remove advanced settings files
+DesktopModules\Admin\AdvancedSettings\App_LocalResources\AdvancedSettings.ascx.resx
+DesktopModules\Admin\AdvancedSettings\App_LocalResources\LanguagePacks.ascx.resx
+DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx
+DesktopModules\Admin\AdvancedSettings\App_LocalResources\
+DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx
+DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx.cs
+DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx
+DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx.cs
+DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx
+DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.cs
+DesktopModules\Admin\AdvancedSettings\AdvancedSettings.gif
+DesktopModules\Admin\AdvancedSettings\module.css
+DesktopModules\Admin\AdvancedSettings\

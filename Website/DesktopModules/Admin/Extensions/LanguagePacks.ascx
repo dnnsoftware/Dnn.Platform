@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Modules.Admin.AdvancedSettings.LanguagePacks" Codebehind="LanguagePacks.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Website.DesktopModules.Admin.Extensions.LanguagePacks" Codebehind="LanguagePacks.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <asp:Repeater ID="extensionTypeRepeater" runat="server">
     <ItemTemplate>

@@ -237,18 +237,6 @@
   <data name="Tab.GettingStarted.LeftPane.Module.Content.9.Text" xml:space="preserve">
     <value>Find new themes for your website on the DNN Store.</value>
   </data>
-  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
   <data name="Tab.About.RightPane.OtherModule.Content.8.Text" xml:space="preserve">
     <value>Share your feedback</value>
   </data>

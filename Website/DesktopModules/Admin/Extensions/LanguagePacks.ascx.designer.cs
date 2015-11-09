@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.AdvancedSettings {
+namespace DotNetNuke.Website.DesktopModules.Admin.Extensions {
     
     
     public partial class LanguagePacks {
