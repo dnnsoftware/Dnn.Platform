@@ -2336,9 +2336,8 @@ namespace DotNetNuke.Entities.Urls
                 //ignore all install requests
                 retVal = true;
             }
-            else if (request != null && (request.Path.EndsWith("SetGettingStartedPageAsShown") || request.Path.ToLower().EndsWith("ImageChallenge.captcha.aspx".ToLower())))
+            else if (request != null && request.Path.ToLower().EndsWith("ImageChallenge.captcha.aspx".ToLower()))
             {
-                //ignore request to the Getting Started Web Method
                 retVal = true;
             }
             else

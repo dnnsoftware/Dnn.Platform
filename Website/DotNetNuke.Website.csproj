@@ -3785,9 +3785,6 @@
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Portals\_default\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
-    <Content Include="Portals\_default\GettingStarted.css" />
-    <Content Include="Portals\_default\GettingStartedFallback.htm" />
-    <Content Include="Portals\_default\GettingStartedFallback.png" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
     <Content Include="Portals\_default\Skins\DarkKnightMobile\DNNMobileNav\DNNMobileNav-menudef.xml" />
@@ -3998,12 +3995,6 @@
     <Content Include="Resources\Shared\components\FileUpload\dnn.FileUpload.js" />
     <Content Include="Resources\Shared\components\FileUpload\Images\dropZone.png" />
     <Content Include="Resources\Shared\components\FileUpload\Images\indeterminate.gif" />
-    <Content Include="Resources\Shared\components\GettingStarted\dnn.GettingStarted.css" />
-    <Content Include="Resources\Shared\components\GettingStarted\dnn.GettingStarted.js" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\facebook.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\loading.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\manual.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\twitter.png" />
     <Content Include="Resources\Shared\components\Toast\images\close.gif" />
     <Content Include="Resources\Shared\components\Toast\images\error.png" />
     <Content Include="Resources\Shared\components\Toast\images\notice.png" />
@@ -4111,7 +4102,9 @@
   <ItemGroup>
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddModule.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddPage.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx" />
+    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\RibbonBar.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SiteAddPage.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SwitchSite.ascx.resx" />
@@ -4150,7 +4143,9 @@
     <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\SharedResources.resx" />
+    <EmbeddedResource Include="App_GlobalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\WebControls.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\Address.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\DualListControl.ascx.resx" />

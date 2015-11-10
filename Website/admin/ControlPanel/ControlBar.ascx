@@ -137,11 +137,6 @@
                             <dd>
                                 <ul>
                                     <asp:Literal ID="helpLink" runat="server" ViewStateMode="Disabled"></asp:Literal>
-                                    <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                                       {%>
-                                        <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
-                                            <%= GetString("Tool.GettingStarted.Text") %></a></li>
-                                    <% } %>
                                 </ul>
                             </dd>
                         </dl>

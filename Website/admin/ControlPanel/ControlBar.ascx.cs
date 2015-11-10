@@ -125,12 +125,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 ID = "ControlBar";
 
-                var gettingStarted = DnnGettingStarted.GetCurrent(Page);
-                if (gettingStarted == null)
-                {
-                    gettingStarted = new DnnGettingStarted();
-                    Page.Form.Controls.Add(gettingStarted);
-                }
                 FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
                 Page.Form.Controls.Add(FileUploader);
 

@@ -1084,9 +1084,6 @@ Sincerely,
   <data name="//Admin//Taxonomy.String" xml:space="preserve">
     <value>Taxonomy</value>
   </data>
-  <data name="//GettingStarted.String" xml:space="preserve">
-    <value>Getting Started</value>
-  </data>
   <data name="//Home.String" xml:space="preserve">
     <value>Home</value>
   </data>
