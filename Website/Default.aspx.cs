@@ -711,8 +711,6 @@ namespace DotNetNuke.Framework
         {
             base.OnLoad(e);
 
-            ManageGettingStarted();
-
             ManageInstallerFiles();
 
             if (!String.IsNullOrEmpty(ScrollTop.Value))

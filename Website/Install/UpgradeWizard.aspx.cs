@@ -302,13 +302,6 @@ namespace DotNetNuke.Services.Install
             //remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
-            //Update Getting Started Settings
-            foreach (UserInfo hostUser in UserController.GetUsers(false, true, -1))
-            {
-                HostController.Instance.Update(String.Format("GettingStarted_Hide_{0}", hostUser.UserID), "false");
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", hostUser.UserID), "true");
-            }
-
             Config.Touch();
             Response.Redirect("../Default.aspx", true);
         }

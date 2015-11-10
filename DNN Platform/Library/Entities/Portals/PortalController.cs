@@ -226,17 +226,6 @@ namespace DotNetNuke.Entities.Portals
                         {
                             ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
-
-                        //copy getting started css into portal's folder.
-                        var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
-                        if (File.Exists(hostGettingStartedFile))
-                        {
-                            var portalFile = mappedHomeDirectory + "GettingStarted.css";
-                            if (!File.Exists(portalFile))
-                            {
-                                File.Copy(hostGettingStartedFile, portalFile);
-                            }
-                        }
                     }
                     catch (Exception Exc)
                     {
@@ -1676,10 +1665,6 @@ namespace DotNetNuke.Entities.Portals
                     case "searchtab":
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
-                        break;
-                    case "gettingStartedTab":                        
-                        UpdatePortalSetting(portalId, "GettingStartedTabId", tab.TabID.ToString());
-                        logType = "GettingStartedTabId";
                         break;
                     case "404Tab":
                         portal.Custom404TabId = tab.TabID;

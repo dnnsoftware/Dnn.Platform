@@ -656,7 +656,6 @@ namespace DotNetNuke.Security
             {
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
             }
         }
 

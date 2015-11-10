@@ -52,3 +52,16 @@ DesktopModules\Admin\ContentList\ContentList.ascx.cs
 DesktopModules\Admin\ContentList\contentList
 DesktopModules\Admin\ContentList\
 
+'remove getting started files
+Resources\Shared\components\GettingStarted\dnn.GettingStarted.js
+Resources\Shared\components\GettingStarted\dnn.GettingStarted.css
+Resources\Shared\components\GettingStarted\Images\twitter.png
+Resources\Shared\components\GettingStarted\Images\manual.png
+Resources\Shared\components\GettingStarted\Images\loading.png
+Resources\Shared\components\GettingStarted\Images\facebook.png
+Resources\Shared\components\GettingStarted\Images\
+Resources\Shared\components\GettingStarted\
+Portals\_default\GettingStartedFallback.png
+Portals\_default\GettingStartedFallback.htm
+Portals\_default\GettingStarted.css
+

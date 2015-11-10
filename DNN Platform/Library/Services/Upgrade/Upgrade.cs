@@ -3515,6 +3515,35 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
+        private static void RemoveGettingStartedPages()
+        {
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            {
+                try
+                {
+                    var portalFile = portal.HomeDirectoryMapPath + "GettingStarted.css";
+                    if (File.Exists(portalFile))
+                    {
+                        File.Delete(portalFile);
+                    }
+
+                    var gettingStartedTabId = PortalController.GetPortalSettingAsInteger("GettingStartedTabId", portal.PortalID, Null.NullInteger);
+                    if (gettingStartedTabId > Null.NullInteger)
+                    {
+                        // remove getting started page from portal
+                        if (TabController.Instance.GetTab(gettingStartedTabId, portal.PortalID, true) != null)
+                        {
+                            TabController.Instance.DeleteTab(gettingStartedTabId, portal.PortalID);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+        }
+
         private static bool DoesLogTypeExists(string logTypeKey)
         {
             LogTypeInfo logType;
@@ -5486,6 +5515,8 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.AdvancedSettings", "Module");
             
             UninstallPackage("DotNetNuke.ContentList", "Module");
+
+            RemoveGettingStartedPages();
         }
 
         private static int MaxIncremental(Version version)
