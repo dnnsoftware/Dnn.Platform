@@ -3,9 +3,11 @@
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}OAuthSettings]') AND type in (N'U'))
 BEGIN
 CREATE TABLE {databaseOwner}[{objectQualifier}OAuthSettings](
+	[SettingId] [int] IDENTITY(1,1) NOT NULL,
 	[AuthorizationServerPrivateKey] [nvarchar](max) NULL,
 	[ResourceServerDecryptionKey] [nvarchar](max) NULL,
-	[AuthorizationServerVerificationKey] [nvarchar](max) NULL
+	[AuthorizationServerVerificationKey] [nvarchar](max) NULL,
+    CONSTRAINT [PK_{objectQualifier}OAuthSettings] PRIMARY KEY CLUSTERED ([SettingId] ASC)
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
