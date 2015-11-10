@@ -3521,10 +3521,10 @@ namespace DotNetNuke.Services.Upgrade
             {
                 try
                 {
-                    var portalFile = portal.HomeDirectoryMapPath + "GettingStarted.css";
-                    if (File.Exists(portalFile))
+                    var fileInfo = FileManager.Instance.GetFile(portal.PortalID, "GettingStarted.css");
+                    if (fileInfo != null)
                     {
-                        File.Delete(portalFile);
+                        FileManager.Instance.DeleteFile(fileInfo);
                     }
 
                     var gettingStartedTabId = PortalController.GetPortalSettingAsInteger("GettingStartedTabId", portal.PortalID, Null.NullInteger);
@@ -3535,6 +3535,7 @@ namespace DotNetNuke.Services.Upgrade
                         {
                             TabController.Instance.DeleteTab(gettingStartedTabId, portal.PortalID);
                         }
+                        PortalController.DeletePortalSetting(portal.PortalID, "GettingStartedTabId");
                     }
                 }
                 catch (Exception ex)
