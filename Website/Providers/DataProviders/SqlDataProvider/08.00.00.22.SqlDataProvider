@@ -22,3 +22,10 @@ BEGIN
 	ORDER BY DM.[FriendlyName] ASC
 END
 GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}OAuthSettings') AND name = 'SettingId')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}OAuthSettings ADD [SettingId] INT IDENTITY(1,1) NOT NULL
+        ALTER TABLE {databaseOwner}[{objectQualifier}OAuthSettings] ADD CONSTRAINT [PK_{objectQualifier}OAuthSettings] PRIMARY KEY CLUSTERED  ([SettingId] ASC)
+	END
+GO
