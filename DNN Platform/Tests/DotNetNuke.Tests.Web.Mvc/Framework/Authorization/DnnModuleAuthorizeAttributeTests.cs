@@ -23,7 +23,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
@@ -34,6 +36,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         private MockRepository _mockRepository;
         private Mock<ActionDescriptor> _mockActionDescriptor;
         private Mock<ControllerDescriptor> _mockControllerDescriptor;
+        private Mock<DnnModuleAuthorizeAttribute> _mockDnnModuleAuthorizeAttribute;
 
         [SetUp]
         public void Setup()
@@ -42,13 +45,17 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
 
             _mockActionDescriptor = _mockRepository.Create<ActionDescriptor>();
             _mockControllerDescriptor = _mockRepository.Create<ControllerDescriptor>();
+
+            _mockDnnModuleAuthorizeAttribute = _mockRepository.Create<DnnModuleAuthorizeAttribute>();
+            _mockDnnModuleAuthorizeAttribute.CallBase = true;
         }
 
         [Test]
         public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAtribute_IsNotPresent()
         {
             // Arrange
-            var a = new TestableDnnModuleAuthorizeAttribute();
+            _mockDnnModuleAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
+            var sut = _mockDnnModuleAuthorizeAttribute.Object;
 
             _mockActionDescriptor.Setup(x => x.IsDefined(typeof (AllowAnonymousAttribute), true)).Returns(false);
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
@@ -59,10 +66,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
 
             // Act
-            a.OnAuthorization(context);
+            sut.OnAuthorization(context);
 
             // Assert
-            Assert.IsFalse(a.IsAuthorized);
             _mockRepository.VerifyAll();
         }
 
@@ -70,7 +76,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtControllerLevel()
         {
             // Arrange
-            var a = new TestableDnnModuleAuthorizeAttribute();
+            var sut = _mockDnnModuleAuthorizeAttribute.Object;
 
             _mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(true);
@@ -81,10 +87,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
 
             // Act
-            a.OnAuthorization(context);
+            sut.OnAuthorization(context);
 
             // Assert
-            Assert.IsTrue(a.IsAuthorized);
             _mockRepository.VerifyAll();
         }
 
@@ -92,7 +97,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtActionLevel()
         {
             // Arrange
-            var a = new TestableDnnModuleAuthorizeAttribute();
+            var sut = _mockDnnModuleAuthorizeAttribute.Object;
 
             _mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(true);
             
@@ -101,10 +106,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
 
             // Act
-            a.OnAuthorization(context);
+            sut.OnAuthorization(context);
 
             // Assert
-            Assert.IsTrue(a.IsAuthorized);
+            //Assert.IsTrue(a.IsAuthorized);
             _mockRepository.VerifyAll();
         }
 
@@ -112,7 +117,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         public void RegisteredUser_IsAllowed_IfHasModuleAccess()
         {
             // Arrange
-            var a = new TestableDnnModuleAuthorizeAttribute(true);
+            var sut = _mockDnnModuleAuthorizeAttribute.Object;
+            _mockDnnModuleAuthorizeAttribute.Protected().Setup<bool>("HasModuleAccess").Returns(true);
+            _mockDnnModuleAuthorizeAttribute.Protected().Setup("HandleAuthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
 
             _mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
@@ -125,10 +132,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
             
             // Act
-            a.OnAuthorization(context);
+            sut.OnAuthorization(context);
 
             // Assert
-            Assert.IsTrue(a.IsAuthorized);
             _mockRepository.VerifyAll();
         }
 
@@ -136,7 +142,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         public void RegisteredUser_IsDenied_IfHasNoModuleAccess()
         {
             // Arrange
-            var a = new TestableDnnModuleAuthorizeAttribute(false);
+            var sut = _mockDnnModuleAuthorizeAttribute.Object;
+            _mockDnnModuleAuthorizeAttribute.Protected().Setup<bool>("HasModuleAccess").Returns(false);
+            _mockDnnModuleAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
 
             _mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
@@ -149,10 +157,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
 
             // Act
-            a.OnAuthorization(context);
+            sut.OnAuthorization(context);
 
             // Assert
-            Assert.IsFalse(a.IsAuthorized);
             _mockRepository.VerifyAll();
         }
     }
