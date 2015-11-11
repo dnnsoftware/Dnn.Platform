@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         {
             if (_module != null)
             {
-                return ModulePermissionController.HasModuleAccess(AccessLevel, PermissionKey, _module);
+                return HasModuleAccess();
             }
 
             return false;
@@ -64,6 +64,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             _module = controller.ModuleContext.Configuration;
 
             base.OnAuthorization(filterContext);
+        }
+
+        protected virtual bool HasModuleAccess()
+        {
+            return ModulePermissionController.HasModuleAccess(AccessLevel, PermissionKey, _module);
         }
     }
 }
