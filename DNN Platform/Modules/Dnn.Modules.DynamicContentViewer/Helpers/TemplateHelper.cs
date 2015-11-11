@@ -109,7 +109,13 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
             var count = fieldNames.Length;
             for (int i = 0; i < count; i++)
             {
-                field = contentPart.Fields[fieldNames[i]];
+                var fieldNameKey = fieldNames[i];
+                if (!contentPart.Fields.ContainsKey(fieldNameKey))
+                {
+                    continue;
+                }
+
+                field = contentPart.Fields[fieldNameKey];
                 if (i < count - 1)
                 {
                     contentPart = field.Value as DynamicContentPart;
@@ -224,7 +230,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
 
             if (contentField == null)
             {
-                throw new InvalidOperationException("The fieldName does not represent a valid DynamicContentField");
+                return new MvcHtmlString(string.Empty);
             }
 
             if (String.IsNullOrEmpty(htmlFieldName))
@@ -254,7 +260,7 @@ namespace Dnn.Modules.DynamicContentViewer.Helpers
 
             if (contentField == null)
             {
-                throw new InvalidOperationException("The fieldName does not represent a valid DynamicContentField");
+                return new MvcHtmlString(string.Empty);
             }
 
             var dataType = contentField.Definition.DataType;
