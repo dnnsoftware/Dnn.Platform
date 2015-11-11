@@ -21,10 +21,7 @@
           <desktopModule>
             <moduleName>SkinManagement</moduleName>
             <foldername>Admin/SkinManagement</foldername>
-            <businessControllerClass>Dnn.Modules.SkinManagement.Components.SkinManagementController, Dnn.Modules.SkinManagement</businessControllerClass>
-            <supportedFeatures>
-              <supportedFeature type="Upgradeable" />
-            </supportedFeatures>
+            <businessControllerClass></businessControllerClass>
             <page type="Admin" common="false">
               <name>Themes</name>
               <icon>~/Icons/Sigma/Skins_16X16_Standard.png</icon>
@@ -62,15 +59,6 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-          <eventMessage>
-            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-            <processorCommand>UpgradeModule</processorCommand>
-            <attributes>
-              <businessControllerClass>Dnn.Modules.SkinManagement.Components.SkinManagementController</businessControllerClass>
-              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>08.00.00</upgradeVersionsList>
-            </attributes>
-          </eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>
