@@ -1,7 +1,7 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Skins.Attributes" Codebehind="Attributes.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Attributes.ascx.cs" Inherits="Dnn.Modules.SkinManagement.Attributes" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <div class="dnnForm dnnEditSkins dnnClear" id="dnnEditSkins">
     <fieldset>
         <legend></legend>

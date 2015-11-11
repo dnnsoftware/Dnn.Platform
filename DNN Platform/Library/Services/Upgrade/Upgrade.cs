@@ -5514,9 +5514,12 @@ namespace DotNetNuke.Services.Upgrade
 
             RemoveAdminPages("//Admin//AdvancedSettings");
             UninstallPackage("DotNetNuke.AdvancedSettings", "Module");
-            
             UninstallPackage("DotNetNuke.ContentList", "Module");
 
+            RemoveAdminPages("//Admin//Skins");
+            UninstallPackage("DotNetNuke.Skins", "Module");
+            UninstallPackage("DotNetNuke.Skin Designer", "Module");
+            
             RemoveGettingStartedPages();
         }
 

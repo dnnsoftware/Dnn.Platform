@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Skins {
+namespace Dnn.Modules.SkinManagement {
     
     
     public partial class EditSkins {
@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plType;
+        protected global::System.Web.UI.UserControl plType;
         
         /// <summary>
         /// chkHost control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSkins;
+        protected global::System.Web.UI.UserControl plSkins;
         
         /// <summary>
         /// cboSkins control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plContainers;
+        protected global::System.Web.UI.UserControl plContainers;
         
         /// <summary>
         /// cboContainers control.
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblApply;
+        protected global::System.Web.UI.UserControl lblApply;
         
         /// <summary>
         /// chkPortal control.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblParseOptions;
+        protected global::System.Web.UI.UserControl lblParseOptions;
         
         /// <summary>
         /// optParse control.

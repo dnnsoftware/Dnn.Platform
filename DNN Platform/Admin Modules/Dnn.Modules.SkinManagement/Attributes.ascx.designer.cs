@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Admin.Skins {
+namespace Dnn.Modules.SkinManagement {
     
     
     public partial class Attributes {
@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSkin;
+        protected global::System.Web.UI.UserControl plSkin;
         
         /// <summary>
         /// cboSkins control.
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plContainer;
+        protected global::System.Web.UI.UserControl plContainer;
         
         /// <summary>
         /// cboContainers control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
+        protected global::System.Web.UI.UserControl plFile;
         
         /// <summary>
         /// cboFiles control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plToken;
+        protected global::System.Web.UI.UserControl plToken;
         
         /// <summary>
         /// cboTokens control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSetting;
+        protected global::System.Web.UI.UserControl plSetting;
         
         /// <summary>
         /// cboSettings control.
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Skins {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plValue;
+        protected global::System.Web.UI.UserControl plValue;
         
         /// <summary>
         /// txtValue control.

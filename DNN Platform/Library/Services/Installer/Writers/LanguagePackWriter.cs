@@ -368,18 +368,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "skins":
-                                switch (fileName.Replace(extendedExtension, ""))
-                                {
-                                    case "attributes.ascx":
-                                        filePath = "DesktopModules\\Admin\\SkinDesigner\\App_LocalResources";
-                                        break;
-                                    case "editskins.ascx":
-                                        filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
-                                        break;
-                                    default:
-                                        filePath = "Admin\\Skins\\App_LocalResources";
-                                        break;
-                                }
+                                filePath = "Admin\\Skins\\App_LocalResources";
                                 break;
                             case "syndication":
                                 filePath = "DesktopModules\\Admin\\FeedExplorer\\App_LocalResources";

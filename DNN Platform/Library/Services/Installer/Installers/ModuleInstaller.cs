@@ -217,74 +217,38 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add DesktopModule to all portals
             if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
             {
-              
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
-                    string tabPath = "//Admin//" + _desktopModule.AdminPage;
-                    var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                    TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portal.PortalID);
-                    ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                    TabInfo newAdminPage = null;
-                    if (portalAdmin == null && _desktopModule.Page != null)
+
+                    bool createdNewPage = false, addedNewModule = false;
+                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+
+                    if (createdNewPage)
                     {
-                        newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
-                                                                             _desktopModule.Page.Description,
-                                                                             _desktopModule.Page.Icon,
-                                                                             _desktopModule.Page.LargeIcon,
-                                                                             true);
-
-                        if (_desktopModule.Page.IsCommon)
-                        {
-                            TabController.Instance.UpdateTabSetting(newAdminPage.TabID, "ControlBar_CommonTab", "Y");
-                        }
-
                         Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
                     }
 
-                    if (moduleDefinition != null && _desktopModule.Page != null)
+                    if (addedNewModule)
                     {
-                        Upgrade.Upgrade.AddModuleToPage(newAdminPage,
-                       moduleDefinition.ModuleDefID,
-                       _desktopModule.Page.Description,
-                       _desktopModule.Page.Icon,
-                       true);
                         Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
                     }
-
-                   
                 }
                
             }
+
             //Add host items
             if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
             {
-                string tabPath = "//Host//" + _desktopModule.HostPage;
-                var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
-                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                TabInfo newHostPage = TabController.Instance.GetTab(tabID, Null.NullInteger);
-                if (newHostPage == null)
+                bool createdNewPage = false, addedNewModule = false;
+                DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
+
+                if (createdNewPage)
                 {
-                    newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
-                        _desktopModule.Page.Description,
-                        _desktopModule.Page.Icon, 
-                        _desktopModule.Page.LargeIcon,
-                        true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.HostPage));
                 }
 
-                if (_desktopModule.Page.IsCommon)
+                if (addedNewModule)
                 {
-                    TabController.Instance.UpdateTabSetting(newHostPage.TabID, "ControlBar_CommonTab", "Y");
-                }
-
-                if (moduleDefinition != null)
-                {
-                //Add Module To Page
-                    Upgrade.Upgrade.AddModuleToPage(newHostPage,
-                        moduleDefinition.ModuleDefID,
-                        _desktopModule.Page.Description,
-                        _desktopModule.Page.Icon,
-                        true);
                     Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.HostPage));
                 }
             }

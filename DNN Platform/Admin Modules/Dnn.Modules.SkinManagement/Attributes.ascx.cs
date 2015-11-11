@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -36,11 +36,11 @@ using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Skins
+namespace Dnn.Modules.SkinManagement
 {
     public partial class Attributes : PortalModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Attributes));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Attributes));
 
         #region Event Handlers
 
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Skins
             if (Page.IsValid)
             {
                 UpdateSkin();
-            }            
+            }
         }
 
         public bool HideUpdateButton
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Admin.Skins
                     }
                 }
             }
-			
+
             //load portal skins
             strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootSkin;
             if (Directory.Exists(strRoot))
@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.Admin.Skins
                     }
                 }
             }
-			
+
             //load portal containers
             strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootContainer;
             if (Directory.Exists(strRoot))
@@ -276,12 +276,12 @@ namespace DotNetNuke.Modules.Admin.Skins
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
+                    Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
             }
             cboSettings.InsertItem(0, "<" + Localization.GetString("Not_Specified") + ">", "");
         }
@@ -340,12 +340,12 @@ namespace DotNetNuke.Modules.Admin.Skins
                 }
                 catch
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
+                    Skin.AddModuleMessage(this, "Error Loading Settings File For Object", ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "Object Selected Does Not Have Settings Defined", ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.Admin.Skins
                         string strValue = cboValue.Visible ? cboValue.SelectedItem.Value : txtValue.Text;
                         if (intStartAttribute != -1 && intStartAttribute < intCloseTag)
                         {
-							//remove attribute
+                            //remove attribute
                             var intEndAttribute = strSkin.IndexOf("\" ", intStartAttribute);
                             strSkin = strSkin.Substring(0, intStartAttribute) + strSkin.Substring(intEndAttribute + 2);
                         }
@@ -383,26 +383,26 @@ namespace DotNetNuke.Modules.Admin.Skins
 
                             UpdateManifest();
 
-                            UI.Skins.Skin.AddModuleMessage(this, "Skin Successfully Updated", ModuleMessage.ModuleMessageType.GreenSuccess);
+                            Skin.AddModuleMessage(this, "Skin Successfully Updated", ModuleMessage.ModuleMessageType.GreenSuccess);
                         }
                         catch
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, "Error Updating Skin File", ModuleMessage.ModuleMessageType.RedError);
+                            Skin.AddModuleMessage(this, "Error Updating Skin File", ModuleMessage.ModuleMessageType.RedError);
                         }
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, "Selected File Does Not Contain Token", ModuleMessage.ModuleMessageType.YellowWarning);
+                        Skin.AddModuleMessage(this, "Selected File Does Not Contain Token", ModuleMessage.ModuleMessageType.YellowWarning);
                     }
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, "You Must Specify A Value For The Setting", ModuleMessage.ModuleMessageType.YellowWarning);
+                    Skin.AddModuleMessage(this, "You Must Specify A Value For The Setting", ModuleMessage.ModuleMessageType.YellowWarning);
                 }
             }
             else
             {
-                UI.Skins.Skin.AddModuleMessage(this, "You Must Select A Token Setting", ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, "You Must Select A Token Setting", ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -428,7 +428,7 @@ namespace DotNetNuke.Modules.Admin.Skins
                 var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + cboTokens.SelectedItem.Text + "]']");
                 if (xmlToken == null)
                 {
-					//add token
+                    //add token
                     string strToken = "<Token>[" + cboTokens.SelectedItem.Text + "]</Token><Settings></Settings>";
                     xmlToken = xmlDoc.CreateElement("Object");
                     xmlToken.InnerXml = strToken;
@@ -465,10 +465,10 @@ namespace DotNetNuke.Modules.Admin.Skins
                     objStream.WriteLine(strXML);
                     objStream.Close();
                 }
-				catch (Exception ex)
-				{
-					Logger.Error(ex);
-				}
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
             }
 
         }
