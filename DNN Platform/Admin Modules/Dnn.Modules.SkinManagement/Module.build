@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>dnn_SkinManagement</DNNFileName>
-    <PackageName>Dnn.Themes</PackageName>
+    <PackageName>DNNCE_Themes</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\Admin\SkinManagement</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
