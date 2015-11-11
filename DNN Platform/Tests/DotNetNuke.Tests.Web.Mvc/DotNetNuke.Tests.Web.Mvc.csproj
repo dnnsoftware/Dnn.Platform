@@ -83,6 +83,7 @@
     <Compile Include="Fakes\FakeDnnController.cs" />
     <Compile Include="Framework\Authorization\DnnModuleAuthorizeAttributeTests.cs" />
     <Compile Include="Framework\Authorization\DnnAuthorizeAttributeTests.cs" />
+    <Compile Include="Framework\DnnHandleErrorAttributeTests.cs" />
     <Compile Include="Framework\DnnWebViewPageTests.cs" />
     <Compile Include="Framework\Controllers\DnnControllerTests.cs" />
     <Compile Include="Framework\Modules\ModuleApplicationTests.cs" />
