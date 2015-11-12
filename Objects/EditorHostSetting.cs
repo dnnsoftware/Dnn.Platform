@@ -1,9 +1,11 @@
-﻿
+﻿using System;
+
 namespace DNNConnect.CKEditorProvider.Objects
 {
     /// <summary>
     /// A Editor Host Setting Item
     /// </summary>
+    [Serializable]
     public class EditorHostSetting
     {
         #region Properties
