@@ -532,6 +532,10 @@ namespace DotNetNuke.Entities.Modules
                         bool createdNewPage = false, addedNewModule = false;
                         AddDesktopModulePageToPortal(desktopModule, desktopModule.AdminPage, portalId, ref createdNewPage, ref addedNewModule);
                     }
+                    else
+                    {
+                        AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                    }
                     
                 }
             }
