@@ -28,7 +28,7 @@ using Moq;
 using Moq.Protected;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
+namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
     [TestFixture]
     class DnnModuleAuthorizeAttributeTests
@@ -51,7 +51,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         }
 
         [Test]
-        public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAtribute_IsNotPresent()
+        public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAttribute_IsNotPresent()
         {
             // Arrange
             _mockDnnModuleAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         }
 
         [Test]
-        public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtControllerLevel()
+        public void AnonymousUser_IsAllowed_If_AllowAnonymousAttribute_IsAtControllerLevel()
         {
             // Arrange
             var sut = _mockDnnModuleAuthorizeAttribute.Object;
@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
         }
 
         [Test]
-        public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtActionLevel()
+        public void AnonymousUser_IsAllowed_If_AllowAnonymousAttribute_IsAtActionLevel()
         {
             // Arrange
             var sut = _mockDnnModuleAuthorizeAttribute.Object;

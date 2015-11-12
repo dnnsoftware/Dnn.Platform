@@ -24,10 +24,10 @@ using System.Web.Mvc;
 using DotNetNuke.Tests.Web.Mvc.Fakes;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using Moq;
-using NUnit.Framework;
 using Moq.Protected;
+using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Web.Mvc.Framework
+namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
     [TestFixture]
     public class DnnHandleErrorAttributeTests
