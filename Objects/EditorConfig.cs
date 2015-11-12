@@ -53,7 +53,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.Entities_Greek = false;
             this.Entities_Latin = false;
             this.Entities_ProcessNumerical = false;
-            this.ExtraPlugins = "mathjax,oembed,syntaxhighlight,tableresize,textselection,stylesheetparser,qrcodes,newsarticleslinks,codemirror,dnnpages,xmltemplates,wordcount";
+            this.ExtraPlugins = "newsarticleslinks,dnnpages";
             this.FileBrowserWindowFeatures = "location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes";
             this.FileBrowserWindowHeight = "70%";
             this.FileBrowserWindowWidth = "80%";
