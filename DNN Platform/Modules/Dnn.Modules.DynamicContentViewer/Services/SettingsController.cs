@@ -18,7 +18,7 @@ namespace Dnn.Modules.DynamicContentViewer.Services
     /// SettingsController provides the Web Services to manage Settings
     /// </summary>
     [SupportedModules("Dnn.DynamicContentViewer")]
-    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
     public class SettingsController : DnnApiController
     {
         private readonly IContentTemplateManager _contentTemplateManager;

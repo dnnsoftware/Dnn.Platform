@@ -21,6 +21,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// <summary>
     /// The ViewerController is used to manage the Actions associated with the Dynamic Content Viewer
     /// </summary>
+    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class ViewerController : DnnController
     {
         #region Members
@@ -40,6 +41,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         /// </summary>
         /// <returns>The ViewResult</returns>
         [HttpGet]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         public ActionResult Edit()
         {
             string templateName;
@@ -67,6 +69,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
         public ActionResult Edit(FormCollection collection)
         {
             var contentItem = _dynamicContentViewerManager.GetContentItem(ActiveModule);

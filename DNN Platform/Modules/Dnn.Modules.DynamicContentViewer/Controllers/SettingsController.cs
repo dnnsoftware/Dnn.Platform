@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentViewer.Components;
 using Dnn.Modules.DynamicContentViewer.Models;
+using DotNetNuke.Security;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.DynamicContentViewer.Controllers
@@ -13,6 +15,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// <summary>
     /// The Settings Controller manages the modules settings
     /// </summary>
+    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
     public class SettingsController : DnnController
     {
         #region Members
