@@ -293,9 +293,25 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
-                    control.LocalResourceFile = string.Concat(
-                        slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                        Localization.LocalResourceDirectory, "/", Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                    string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLower());
+                    switch (extension)
+                    {
+                        case ".mvc":
+                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+                            control.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                                slaveModule.DesktopModule.FolderName,
+                                Localization.LocalResourceDirectory,
+                                segments[0]);
+                            break;
+                        default:
+                            control.LocalResourceFile = string.Concat(
+                                slaveModule.ModuleControl.ControlSrc.Replace(
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
+                                Localization.LocalResourceDirectory, "/",
+                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                            break;
+                    }
                     var title = Localization.LocalizeControlTitle(control);
                     
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));

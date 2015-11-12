@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -406,6 +407,7 @@ namespace DotNetNuke.UI.Containers
                 // always add the actions menu as the first item in the content pane.
                 if (InjectActionMenu && !ModuleHost.IsViewMode(ModuleConfiguration, PortalSettings) && Request.QueryString["dnnprintmode"] != "true")
                 {
+                    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     ContentPane.Controls.Add(LoadControl("~/admin/Menus/ModuleActions/ModuleActions.ascx"));
 
                     //register admin.css
