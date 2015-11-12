@@ -3,6 +3,7 @@
   <friendlyName>DNNConnect CKEditorProvider</friendlyName>
   <description>CKEditor Provider for DNN</description>
   <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
+  <azureCompatible>true</azureCompatible>
   <owner>
     <name></name>
     <organization>DNN Connect</organization>
