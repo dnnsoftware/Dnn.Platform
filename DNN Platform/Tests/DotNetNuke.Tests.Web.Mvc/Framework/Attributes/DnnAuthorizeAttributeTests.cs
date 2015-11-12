@@ -28,7 +28,7 @@ using Moq;
 using Moq.Protected;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Web.Mvc.Framework.Authorization
+namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
     [TestFixture]
     class DnnAuthorizeAttributeTests
