@@ -16,6 +16,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// The Settings Controller manages the modules settings
     /// </summary>
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
+    [DnnHandleError]
     public class SettingsController : DnnController
     {
         #region Members

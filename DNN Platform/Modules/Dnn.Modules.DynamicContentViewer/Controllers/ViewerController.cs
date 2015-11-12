@@ -22,6 +22,7 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// The ViewerController is used to manage the Actions associated with the Dynamic Content Viewer
     /// </summary>
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DnnHandleError]
     public class ViewerController : DnnController
     {
         #region Members
