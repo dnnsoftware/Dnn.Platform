@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Common.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -26,6 +27,10 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (String.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException("value");
+                }
+                if (!Directory.Exists(value))
+                {
+                    Directory.CreateDirectory(value);
                 }
                 _cachePath = value;
             }
@@ -83,14 +88,13 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
-        internal IPCount()
-        {
-            if (CachePath != null && !Directory.Exists(CachePath))
-            {
-                Directory.CreateDirectory(CachePath);
-            }
-        }
-
+        //internal IPCount()
+        //{
+        //    if (CachePath != null && !Directory.Exists(CachePath))
+        //    {
+        //        Directory.CreateDirectory(CachePath);
+        //    }
+        //}
 
         public static bool CheckIp(string ipAddress)
         {
@@ -165,7 +169,7 @@ namespace DotNetNuke.Services.GeneratedImage
             return CachePath + ipAddress + TempFileExtension;
         }
 
-                /// <summary>
+        /// <summary>
         /// method to get Client ip address
         /// </summary>
         /// <returns>IP Address of visitor</returns>
@@ -188,34 +192,8 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 //This is for Local(LAN) Connected ID Address
                 string stringHostName = Dns.GetHostName();
-                //Get Ip Host Entry
-                IPHostEntry ipHostEntries = Dns.GetHostEntry(stringHostName);
-                //Get Ip Address From The Ip Host Entry Address List
-                IPAddress[] arrIpAddress = ipHostEntries.AddressList;
+                visitorIPAddress = NetworkUtils.GetAddress(stringHostName, AddressType.IPv4);
 
-                try
-                {
-                    visitorIPAddress = arrIpAddress[arrIpAddress.Length - 2].ToString();
-                }
-                catch
-                {
-                    try
-                    {
-                        visitorIPAddress = arrIpAddress[0].ToString();
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            arrIpAddress = Dns.GetHostAddresses(stringHostName);
-                            visitorIPAddress = arrIpAddress[0].ToString();
-                        }
-                        catch
-                        {
-                            visitorIPAddress = "127.0.0.1";
-                        }
-                    }
-                }
             }
             return visitorIPAddress;
         }

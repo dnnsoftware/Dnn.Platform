@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.GeneratedImage
             string ipAddress = IPCount.GetVisitorIPAddress(context);
 
             // Check if allowed standalone
-            if (!AllowStandalone && context.Request.UrlReferrer == null && ipAddress != "127.0.0.1")
+            if (!AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
             {
                 string message = "Not allowed to use standalone";
                 if (LogSecurity)
