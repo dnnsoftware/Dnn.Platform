@@ -43,7 +43,15 @@ namespace DotNetNuke.Modules.Html
     /// </history>
     public partial class Settings : ModuleSettingsBase
     {
-        private new HtmlModuleSettings ModuleSettings { get; set; }
+        private HtmlModuleSettings _moduleSettings;
+        private new HtmlModuleSettings ModuleSettings
+        {
+            get
+            {
+                return _moduleSettings ?? (_moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+            }
+        }
+
 
         #region Event Handlers
 
@@ -51,8 +59,6 @@ namespace DotNetNuke.Modules.Html
         {
             base.OnLoad(e);
             cboWorkflow.SelectedIndexChanged += OnWorkflowSelectedIndexChanged;
-            var repo = new HtmlModuleSettingsRepository();
-            ModuleSettings = repo.GetSettings(this.ModuleConfiguration);
         }
 
         protected void OnWorkflowSelectedIndexChanged(object sender, EventArgs e)
@@ -77,7 +83,7 @@ namespace DotNetNuke.Modules.Html
                     {
                         strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
                     }
-                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo) arrStates[0]).Description;
+                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
                 }
                 lblDescription.Text = strDescription;
             }
@@ -104,7 +110,7 @@ namespace DotNetNuke.Modules.Html
                     var workflowStateController = new WorkflowStateController();
 
                     chkReplaceTokens.Checked = ModuleSettings.ReplaceTokens;
-					cbDecorate.Checked = ModuleSettings.UseDecorate;
+                    cbDecorate.Checked = ModuleSettings.UseDecorate;
 
                     // get workflow/version settings
                     var workflows = new ArrayList();
@@ -130,7 +136,7 @@ namespace DotNetNuke.Modules.Html
                         rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
                     }
 
-					txtSearchDescLength.Text = ModuleSettings.SearchDescLength.ToString();
+                    txtSearchDescLength.Text = ModuleSettings.SearchDescLength.ToString();
                 }
                 //Module failed to load
             }
