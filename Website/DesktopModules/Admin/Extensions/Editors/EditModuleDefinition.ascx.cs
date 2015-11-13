@@ -446,8 +446,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 
 	    private bool IsSpecialFolder(string folderName)
 	    {
-            return SpecialModuleFolders.Contains(folderName.ToLower())
-                || SpecialModuleFolders.Contains(folderName.ToUpper());
+            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
 	    }
 
 		private void SetupModuleFolders()
