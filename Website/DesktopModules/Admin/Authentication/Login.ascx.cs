@@ -1001,8 +1001,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				//if a Login Page has not been specified for the portal
 				if (Globals.IsAdminControl())
 				{
-					//redirect to current page 
-					Response.Redirect(Globals.NavigateURL(), true);
+                    //redirect browser 
+                    Response.Redirect(RedirectURL, true);
 				}
 				else //make module container invisible if user is not a page admin
 				{

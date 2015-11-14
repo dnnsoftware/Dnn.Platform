@@ -19,19 +19,35 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI;
+using System;
+using System.Web.Mvc;
+using Dnn.Modules.DynamicContentViewer.Controllers;
+using NUnit.Framework;
+using DotNetNuke.Security;
 
-namespace DotNetNuke.Services.Tokens
+namespace Dnn.Tests.DynamicContentViewer.UnitTests.Controllers
 {
-    public class HtmlTokenReplace : TokenReplace
+    class ViewerControllerTests
     {
-        public HtmlTokenReplace(Page page)
-            : base(Scope.DefaultSettings)
+        [Test]
+        public void Index_Has_View_SecurityAccessLevel()
         {
-            PropertySource["css"] = new CssPropertyAccess(page);
-            PropertySource["js"] = new JavaScriptPropertyAccess(page);
-            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
-            PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
+            var method = typeof(ViewerController).GetMethod("Index");
+            Assert.IsTrue(ModuleAuthorizeAttributeHelpers.ActionHasAccessLevel(method, SecurityAccessLevel.View));
+        }
+
+        [Test]
+        public void Get_Edit_Has_Edit_SecurityAccessLevel()
+        {
+            var method = typeof(ViewerController).GetMethod("Edit", new Type[0]);
+            Assert.IsTrue(ModuleAuthorizeAttributeHelpers.ActionHasAccessLevel(method, SecurityAccessLevel.Edit));
+        }
+
+        [Test]
+        public void Post_Edit_Has_Edit_SecurityAccessLevel()
+        {
+            var method = typeof(ViewerController).GetMethod("Edit", new[] { typeof(FormCollection) });
+            Assert.IsTrue(ModuleAuthorizeAttributeHelpers.ActionHasAccessLevel(method, SecurityAccessLevel.Edit));
         }
     }
 }

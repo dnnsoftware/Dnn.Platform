@@ -19,19 +19,28 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI;
+using System.Reflection;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+using DotNetNuke.Security;
 
-namespace DotNetNuke.Services.Tokens
+namespace Dnn.Tests.DynamicContentViewer.UnitTests.Controllers
 {
-    public class HtmlTokenReplace : TokenReplace
+    class ModuleAuthorizeAttributeHelpers
     {
-        public HtmlTokenReplace(Page page)
-            : base(Scope.DefaultSettings)
+        public static bool ActionHasAccessLevel(MethodInfo method, SecurityAccessLevel securityAccessLevel)
         {
-            PropertySource["css"] = new CssPropertyAccess(page);
-            PropertySource["js"] = new JavaScriptPropertyAccess(page);
-            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
-            PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
+            var type = typeof (DnnModuleAuthorizeAttribute);
+            var attributes = method.GetCustomAttributes(type, true);
+
+            if (attributes.Length == 1)
+            {
+                return ((DnnModuleAuthorizeAttribute)attributes[0]).AccessLevel == securityAccessLevel;
+            }
+            
+            attributes = method.DeclaringType.GetCustomAttributes(type, true);
+
+            return attributes.Length == 1 
+                && ((DnnModuleAuthorizeAttribute)attributes[0]).AccessLevel == securityAccessLevel;
         }
     }
 }
