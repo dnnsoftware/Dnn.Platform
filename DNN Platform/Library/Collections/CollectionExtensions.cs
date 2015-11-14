@@ -847,6 +847,23 @@ namespace DotNetNuke.Collections
                              .ToLookup(pair => pair.Key, pair => pair.Value);
         }
 
+        /// <summary>
+        /// Executes an action for each element in the source collection.
+        /// </summary>
+        /// <typeparam name="TType">The type of the type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public static IEnumerable<TType> ForEach<TType>(this IEnumerable<TType> source, Action<TType> action)
+        {
+            foreach (TType element in source)
+            {
+                action(element);
+            }
+
+            return source;
+        }
+
         #region Private Methods
 
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
