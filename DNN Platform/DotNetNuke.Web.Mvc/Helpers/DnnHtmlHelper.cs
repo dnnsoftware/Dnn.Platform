@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return new MvcHtmlString(String.Empty);
         }
 
-        internal HtmlHelper HtmlHelper { get; set; }
+        public HtmlHelper HtmlHelper { get; set; }
 
         public ModuleInstanceContext ModuleContext { get; set; }
 
