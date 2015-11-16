@@ -1237,6 +1237,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </summary>
         private void RegisterCKEditorLibrary()
         {
+            ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/editor.css"));
 
             ClientScriptManager cs = Page.ClientScript;
