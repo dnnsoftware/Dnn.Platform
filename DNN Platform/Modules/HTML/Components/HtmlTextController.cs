@@ -513,7 +513,7 @@ namespace DotNetNuke.Modules.Html
                         }
                         // add upload directory
                         if (!strURL.StartsWith("/") 
-                            && !String.IsNullOrEmpty(strURL.Trim())) //We don't write the UploadDirecotry if the token//attribute has not value. Therefore we will avoid an unnecessary request
+                            && !String.IsNullOrEmpty(strURL.Trim())) //We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
                         {
                             sbBuff.Append(uploadDirectory);
                         }
