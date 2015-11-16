@@ -498,7 +498,7 @@ namespace DotNetNuke.Modules.Html
                     }
 
                     // if we are linking internally
-                    if (strURL.Contains("://") == false)
+                    if (!strURL.Contains("://"))
                     {
                         // remove the leading portion of the path if the URL contains the upload directory structure
                         string strDirectory = uploadDirectory;
@@ -512,7 +512,8 @@ namespace DotNetNuke.Modules.Html
                             strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
                         }
                         // add upload directory
-                        if (strURL.StartsWith("/") == false)
+                        if (!strURL.StartsWith("/") 
+                            && !String.IsNullOrEmpty(strURL.Trim())) //We don't write the UploadDirecotry if the token//attribute has not value. Therefore we will avoid an unnecessary request
                         {
                             sbBuff.Append(uploadDirectory);
                         }
