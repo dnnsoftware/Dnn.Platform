@@ -40,7 +40,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.Dashboard.Components.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -776,7 +775,11 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (IsValid)
 				{
-					CreateUser();
+                    if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    {
+                        CreateUser();
+                    }
+
 				}
 				else
 				{

@@ -26,7 +26,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Upgrade;
 using System.Collections.Generic;
 
@@ -53,12 +52,16 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
-        private static readonly Regex StripTagsRegex = new Regex("<[^>]*>", RegexOptions.Compiled);
-        private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.Singleline);
-          
+        private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
+        private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
+         
         //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
         private readonly static Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
 
+        //Create Regular Expression objects
+        const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+        private readonly static Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
+        private readonly static Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -341,17 +344,9 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode")]
         public static string StripEntities(string HTML, bool RetainSpace)
         {
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
+            var repString = RetainSpace ? " " : "";
             //Replace Entities by replacement String and return mofified string
-            return Regex.Replace(HTML, "&[^;]*;", RepString);
+            return Regex.Replace(HTML, "&[^;]+;", repString); // obsoleted; no need to optimize
         }
 
         /// <summary>
@@ -420,7 +415,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //Stripped HTML
-            result.Append(Regex.Replace(html, "<[^>]*>", RepString));
+            result.Append(StripTagsRegex.Replace(html, RepString));
 
             //Adding Tag info from specified tags
             foreach (Match m in Regex.Matches(html, "(?<=(" + specifiedTags + ")=)\"(?<a>.*?)\""))
@@ -455,11 +450,6 @@ namespace DotNetNuke.Common.Utilities
                 return string.Empty;
             }
 
-            //Create Regular Expression objects
-            const string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
-            var afterRegEx = new Regex(punctuationMatch + "\\s");
-            var beforeRegEx = new Regex("\\s" + punctuationMatch);
-
             //Define return string
             string retHTML = HTML + " "; //Make sure any punctuation at the end of the String is removed
 
@@ -473,13 +463,13 @@ namespace DotNetNuke.Common.Utilities
             {
                 RepString = "";
             }
-            while (beforeRegEx.IsMatch(retHTML))
+            while (BeforeRegEx.IsMatch(retHTML))
             {
-                retHTML = beforeRegEx.Replace(retHTML, RepString);
+                retHTML = BeforeRegEx.Replace(retHTML, RepString);
             }
-            while (afterRegEx.IsMatch(retHTML))
+            while (AfterRegEx.IsMatch(retHTML))
             {
-                retHTML = afterRegEx.Replace(retHTML, RepString);
+                retHTML = AfterRegEx.Replace(retHTML, RepString);
             }
             // Return modified string after trimming leading and ending quotation marks
             return retHTML.Trim('"');
@@ -749,7 +739,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                WriteFeedback(response, 0, "<font color='red'>Error! (see " + strLogFile + " for more information)</font><br>", false);
+                WriteFeedback(response, 0, "<font color='red'>Error!</font> (see " + strLogFile + " for more information)<br>", false);
             }
         }
 
@@ -774,7 +764,7 @@ namespace DotNetNuke.Common.Utilities
                     searchAlias = string.Format("{0}/", portalAlias);
                 }
 
-                Regex exp = new Regex(string.Format("((?:href|src)=&quot;)https?://{0}(.*?&quot;)", searchAlias), RegexOptions.IgnoreCase);
+                var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);
 
                 if (portalAlias.Contains("/"))
                 {

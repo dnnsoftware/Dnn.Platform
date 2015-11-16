@@ -23,6 +23,12 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
+                        <page type="Admin" common="false">
+                            <name>Languages</name>
+                            <icon>~/Icons/Sigma/Languages_16X16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/Languages_32X32_Standard.png</largeIcon>
+                            <description>Manage Language Resources.</description>
+                        </page>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Languages</friendlyName>

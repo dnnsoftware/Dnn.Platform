@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Collections;
 
 namespace Dnn.DynamicContent
@@ -13,12 +14,15 @@ namespace Dnn.DynamicContent
         /// </summary>
         /// <param name="dataType">The data type to add.</param>
         /// <returns>data type id.</returns>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be added by Super Users</exception>
         int AddDataType(DataType dataType);
 
         /// <summary>
         /// Deletes the data type for use with Structured(Dynamic) Content Types.
         /// </summary>
         /// <param name="dataType">The data type to delete.</param>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be deleted by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         void DeleteDataType(DataType dataType);
 
         /// <summary>
@@ -60,6 +64,8 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        /// <exception cref="SystemDataTypeSecurityException">system data types can only be modified by Super Users</exception>
+        /// <exception cref="DataTypeDoesNotExistException">requested data type by DataTypeId and PortalId does not exist</exception>  
         void UpdateDataType(DataType dataType, bool overrideWarning = false);
     }
 }

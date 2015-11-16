@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Collections;
 
 namespace Dnn.DynamicContent
@@ -18,6 +19,10 @@ namespace Dnn.DynamicContent
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
         /// </summary>
+        /// <param name="contentTemplate">The content template to delete.</param>
+        /// <exception cref="System.ArgumentNullException">content template is null.</exception>
+        /// <exception cref="System.InvalidOperationException">content template is in use.</exception>
+        /// <exception cref="ContentTemplateDoesNotExistException">content template does not exist for the given template id and portal id</exception>
         void DeleteContentTemplate(ContentTemplate contentTemplate);
 
         /// <summary>
@@ -62,9 +67,20 @@ namespace Dnn.DynamicContent
         IPagedList<ContentTemplate> GetContentTemplates(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false);
 
         /// <summary>
+        /// This method retrieves all the content templates for a given content Type regardless of portal
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the Content Type</param>
+        /// <returns>content template collection.</returns>
+        IQueryable<ContentTemplate> GetContentTemplatesByContentType(int contentTypeId);
+
+        /// <summary>
         /// Updates the content template.
         /// </summary>
         /// <param name="contentTemplate">The content template.</param>
+        /// <exception cref="System.ArgumentNullException">content template is null.</exception>
+        /// <exception cref="System.ArgumentException">contentTemplate.Name is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">content template is in use.</exception>
+        /// <exception cref="ContentTemplateDoesNotExistException">content template does not exist for the given template id and portal id</exception>
         void UpdateContentTemplate(ContentTemplate contentTemplate);
     }
 }

@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -75,6 +76,9 @@ namespace Dnn.Modules.Tabs
     {
         private TabInfo _tab;
         private string _strAction = "";
+
+        private dynamic contentLocalizationControl;
+        private const string ContentLocalizationControlPath = @"~/DesktopModules/Admin/Languages/CLControl.ascx";
 
         #region Protected Properties
 
@@ -185,6 +189,7 @@ namespace Dnn.Modules.Tabs
             }
             listTabs = TabController.GetPortalTabs(listTabs, Null.NullInteger, false, Null.NullString, false, false, false, false, true);
             cboPositionTab.DataSource = listTabs;
+            cboPositionTab.SelectedIndex = Null.NullInteger;
             cboPositionTab.DataBind();
 
             if (parentTab != null && parentTab.IsSuperTab)
@@ -233,6 +238,20 @@ namespace Dnn.Modules.Tabs
 
         }
 
+        private void LoadContentLocalizationControl()
+        {
+            if (IsLanguageModuleInstalled())
+            {
+                contentLocalizationControl = LoadControl(ContentLocalizationControlPath);
+                localizationControlRow.Controls.Add(contentLocalizationControl);
+            }
+        }
+
+        private bool IsLanguageModuleInstalled()
+        {
+            return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
+        }
+
         protected void BindCLControl()
         {
             if (!localizationPanel.Visible)
@@ -246,7 +265,7 @@ namespace Dnn.Modules.Tabs
             AddMissing.Visible = false;
             if (String.IsNullOrEmpty(_tab.CultureCode))
             {
-                CLControl1.Visible = false;
+                contentLocalizationControl.Visible = false;
                 if (!(string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy"))
                 {
                     MakeTranslatable.Visible = true;
@@ -254,9 +273,9 @@ namespace Dnn.Modules.Tabs
             }
             else
             {
-                CLControl1.Visible = true;
-                CLControl1.enablePageEdit = true;
-                CLControl1.BindAll(_tab.TabID);
+                contentLocalizationControl.Visible = true;
+                contentLocalizationControl.enablePageEdit = true;
+                contentLocalizationControl.BindAll(_tab.TabID);
                 cmdUpdateLocalization.Visible = true;
 
                 // only show "Convert to neutral" if page has no child pages
@@ -486,7 +505,8 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ContentLocalizationEnabled 
                 && LocaleController.Instance.GetLocales(PortalId).Count > 1
                 && _tab.TabID != PortalSettings.AdminTabId
-                && _tab.ParentId != PortalSettings.AdminTabId)
+                && _tab.ParentId != PortalSettings.AdminTabId
+                && contentLocalizationControl != null)
             {
                 localizationTab.Visible = true;
                 localizationPanel.Visible = true;
@@ -642,18 +662,19 @@ namespace Dnn.Modules.Tabs
         /// <summary>
         ///   Checks if parent tab will cause a circular reference
         /// </summary>
-        /// <param name = "intTabId">Tabid</param>
+        /// <param name = "tabId">Tab id.</param>
+        /// <param name = "portalId">portal id.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
         /// <history>
         ///   [VMasanas]	28/11/2004	Created
         /// </history>
-        private bool IsCircularReference(int intTabId, int portalId)
+        private bool IsCircularReference(int tabId, int portalId)
         {
-            if (intTabId != -1)
+            if (tabId != -1)
             {
-                var tabInfo = TabController.Instance.GetTab(intTabId, portalId, false);
+                var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
 
                 if (tabInfo.Level == 0)
                 {
@@ -664,11 +685,11 @@ namespace Dnn.Modules.Tabs
             return false;
         }
 
-        private List<ModuleInfo> LoadTabModules(int TabID)
+        private List<ModuleInfo> LoadTabModules(int tabId)
         {
             var moduleList = new List<ModuleInfo>();
 
-            foreach (var m in ModuleController.Instance.GetTabModules(TabID).Values)
+            foreach (var m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 if (TabPermissionController.CanAddContentToPage() && !m.IsDeleted && !m.AllTabs)
                 {
@@ -787,7 +808,7 @@ namespace Dnn.Modules.Tabs
 
             //Set Tab's position
             var positionTabId = Null.NullInteger;
-            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue))
+            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue) && cboPositionTab.Items.Count > 0)
             {
                 positionTabId = Int32.Parse(cboPositionTab.SelectedValue);
             }
@@ -927,13 +948,13 @@ namespace Dnn.Modules.Tabs
                     //Refresh tab
                     _tab = TabController.Instance.GetTab(Tab.TabID, Tab.PortalID, true);
 
-					//change the localized pages order to match original order.
-	                if (positionTabId > Null.NullInteger)
-	                {
-		                var positionTab = TabController.Instance.GetTab(positionTabId, Tab.PortalID);
+                    //change the localized pages order to match original order.
+                    if (positionTabId > Null.NullInteger && _tab.LocalizedTabs.Count > 1)
+                    {
+                        var positionTab = TabController.Instance.GetTab(positionTabId, _tab.PortalID);
 		                if (positionTab != null)
 		                {
-			                foreach (var localizedTab in Tab.LocalizedTabs.Values)
+			                foreach (var localizedTab in _tab.LocalizedTabs.Values)
 			                {
 				                var cultureCode = localizedTab.CultureCode;
 								if (positionTab.LocalizedTabs.ContainsKey(cultureCode))
@@ -1430,6 +1451,8 @@ namespace Dnn.Modules.Tabs
             PortalAliasCaption.Text = PortalAlias.HTTPAlias;
             PortalAliasCaption.ToolTip = PortalAlias.HTTPAlias;
             UrlContainer.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "um-page-url-container");
+
+            LoadContentLocalizationControl();
         }
 
         private void DisableHostAdminFunctions()
@@ -1962,7 +1985,10 @@ namespace Dnn.Modules.Tabs
 
         protected void cmdUpdateLocalization_Click(object sender, EventArgs e)
         {
-            CLControl1.SaveData();
+            if (contentLocalizationControl != null)
+            {
+                contentLocalizationControl.SaveData();
+            }
 
             var returnPath = Globals.NavigateURL();
 

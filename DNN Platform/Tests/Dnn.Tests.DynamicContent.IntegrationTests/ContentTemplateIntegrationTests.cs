@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
-using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
@@ -97,7 +96,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpContentTemplates(RecordCount);
 
             var contentTemplateController = new ContentTemplateManager();
-            var contentTemplate = new ContentTemplate() { TemplateId = templateId, Name = "New_Type" };
+            var contentTemplate = new ContentTemplate() { PortalId = PortalId, TemplateId = templateId };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
@@ -116,12 +115,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
-            var portalId = Constants.PORTAL_ValidPortalId;
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 
             var contentTemplateController = new ContentTemplateManager();
-            var contentTemplate = new ContentTemplate() { PortalId = portalId, ContentTypeId = contentTypeId, TemplateId = templateId, Name = "New_Type" };
+            var contentTemplate = new ContentTemplate() { PortalId = PortalId, TemplateId = templateId };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
@@ -130,7 +128,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             contentTemplateController.DeleteContentTemplate(contentTemplate);
 
             //Assert
-            MockCache.Verify(c => c.Remove(GetCacheKey(portalId)));
+            MockCache.Verify(c => c.Remove(GetCacheKey(PortalId)));
         }
 
         [Test]
@@ -185,6 +183,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate()
                                         {
+                                            PortalId = PortalId,
                                             Name = "Name",
                                             TemplateId = templateId,
                                             ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
@@ -211,11 +210,10 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             var templateId = 2;
-            var portalId = Constants.PORTAL_ValidPortalId;
             SetUpContentTemplates(RecordCount);
 
             var contentTemplateController = new ContentTemplateManager();
-            var contentTemplate = new ContentTemplate() { PortalId = portalId, ContentTypeId = contentTypeId, TemplateId = templateId, Name = "NewType" };
+            var contentTemplate = new ContentTemplate() { PortalId = PortalId, ContentTypeId = contentTypeId, TemplateId = templateId, Name = "NewType" };
 
             var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
             mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
@@ -230,7 +228,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             contentTemplateController.UpdateContentTemplate(contentTemplate);
 
             //Assert
-            MockCache.Verify(c => c.Remove(GetCacheKey(portalId)));
+            MockCache.Verify(c => c.Remove(GetCacheKey(PortalId)));
         }
 
         private string GetCacheKey(int portalId)

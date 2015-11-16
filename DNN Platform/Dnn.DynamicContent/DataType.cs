@@ -2,12 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Web.Caching;
 using Dnn.DynamicContent.Localization;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 // ReSharper disable ConvertPropertyToExpressionBody
@@ -16,7 +14,7 @@ namespace Dnn.DynamicContent
 {
     [Serializable]
     [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
+    [PrimaryKey("DataTypeID", "FieldTypeId")]
     [Cacheable(DataTypeManager.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
     [Scope(DataTypeManager.PortalScope)]
     public class DataType : BaseEntity
@@ -31,8 +29,17 @@ namespace Dnn.DynamicContent
 
         public int DataTypeId { get; set; }
 
+        /// <summary>
+        /// True if the data type is defined to be available for all portals, false otherwise
+        /// </summary>
         [IgnoreColumn]
-        public bool IsSystem { get { return (PortalId == -1); } }
+        public bool IsSystem
+        {
+            get
+            {
+                return PortalId == Null.NullInteger;
+            }
+        }
 
         public string Name { get; set; }
 

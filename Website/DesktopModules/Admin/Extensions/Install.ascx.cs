@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         pType = Request.QueryString["ptype"];
                     }
-                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == pType);
+                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(pType, StringComparison.OrdinalIgnoreCase));
                 }
                 return _PackageType;
             }
@@ -440,25 +440,25 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 packageType = Request.QueryString["ptype"];
             }
-            switch (packageType)
+            switch (packageType.ToLowerInvariant())
             {
-                case "Auth_System":
+                case "auth_system":
                     installFolder = "AuthSystem";
                     break;
-                case "CoreLanguagePack":
-                case "ExtensionLanguagePack":
+                case "corelanguagepack":
+                case "extensionlanguagepack":
                     installFolder = "Language";
                     break;
-                case "JavaScript_Library":
+                case "javascript_library":
                     installFolder = "JavaScriptLibrary";
                     break;
-                case "Module":
-                case "Skin":
-                case "Container":
-                case "Provider":
+                case "module":
+                case "skin":
+                case "container":
+                case "provider":
                     installFolder = packageType;
                     break;
-                case "Library":
+                case "library":
                     installFolder = "Module";
                     break;
                 default:
@@ -808,7 +808,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (!String.IsNullOrEmpty(TempInstallFolder) && Directory.Exists(TempInstallFolder))
                 {
-                    Directory.Delete(TempInstallFolder, true);
+                    Globals.DeleteFolderRecursive(TempInstallFolder);
                 }
 				//Redirect to Definitions page
                 Response.Redirect(ReturnURL, true);

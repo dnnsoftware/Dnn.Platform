@@ -1,5 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Scheduler.ViewScheduleHistory" Codebehind="ViewScheduleHistory.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" Assembly="DotNetNuke.Website" %>
 <div class="dnnForm dnnScheduleHistory dnnClear" id="dnnScheduleHistory">
     <dnn:DnnGrid id="dgHistory" runat="server" AutoGenerateColumns="false" AllowSorting="true" CssClass="dnnGrid">

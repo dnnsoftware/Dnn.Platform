@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
@@ -93,6 +94,18 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
+        public void PetaPocoDataContext_Constructor_Initialises_TablePrefix_Property()
+        {
+            //Arrange
+
+            //Act
+            var context = new PetaPocoDataContext(connectionStringName, tablePrefix);
+
+            //Assert
+            Assert.AreEqual(tablePrefix, context.TablePrefix);
+        }
+
+        [Test]
         public void PetaPocoDataContext_Constructor_Initialises_Mapper_Property()
         {
             //Arrange
@@ -103,6 +116,19 @@ namespace DotNetNuke.Tests.Data
             //Assert
             Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"));
             Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"));
+        }
+
+        [Test]
+        public void PetaPocoDataContext_Constructor_Initialises_FluentMappers_Property()
+        {
+            //Arrange
+
+            //Act
+            var context = new PetaPocoDataContext(connectionStringName);
+
+            //Assert
+            Assert.IsInstanceOf<Dictionary<Type, IMapper>>(context.FluentMappers);
+            Assert.AreEqual(0,context.FluentMappers.Count);
         }
 
         [Test]
@@ -241,6 +267,35 @@ namespace DotNetNuke.Tests.Data
 
             //Assert
             Assert.IsInstanceOf<Database>(Util.GetPrivateMember<PetaPocoRepository<Dog>, Database>(repo, "_database"));
+        }
+
+        [Test]
+        public void PetaPocoDataContext_GetRepository_Uses_PetaPocoMapper_If_No_FluentMapper()
+        {
+            //Arrange
+            var context = new PetaPocoDataContext(connectionStringName);
+
+            //Act
+            var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
+
+            //Assert
+            Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
+            Assert.IsInstanceOf<PetaPocoMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
+        }
+
+        [Test]
+        public void PetaPocoDataContext_GetRepository_Uses_FluentMapper_If_FluentMapper_Defined()
+        {
+            //Arrange
+            var context = new PetaPocoDataContext(connectionStringName);
+            context.AddFluentMapper<Dog>();
+
+            //Act
+            var repo = (PetaPocoRepository<Dog>)context.GetRepository<Dog>();
+
+            //Assert
+            Assert.IsInstanceOf<IMapper>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
+            Assert.IsInstanceOf<FluentMapper<Dog>>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
         }
 
         #endregion

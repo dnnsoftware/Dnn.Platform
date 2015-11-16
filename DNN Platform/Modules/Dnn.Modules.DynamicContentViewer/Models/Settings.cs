@@ -17,9 +17,20 @@ namespace Dnn.Modules.DynamicContentViewer.Models
     {
 #pragma warning disable 1591
         public const string DCC_ContentTypeId = "DCC_ContentTypeId";
+        public const string DCC_ContentItemId = "DCC_ContentItemId";
         public const string DCC_EditTemplateId = "DCC_EditTemplateId";
         public const string DCC_ViewTemplateId = "DCC_ViewTemplateId";
 #pragma warning restore 1591
+
+        /// <summary>
+        /// Constructor for Settings object
+        /// </summary>
+        public Settings()
+        {
+            ContentTypeId = -1;
+            EditTemplateId = -1;
+            ViewTemplateId = -1;
+        }
 
         /// <summary>
         /// The Id of the Content Type
@@ -37,6 +48,12 @@ namespace Dnn.Modules.DynamicContentViewer.Models
         /// </summary>
         [JsonProperty("editTemplateId")]
         public int EditTemplateId { get; set; }
+
+        /// <summary>
+        /// The Id of the Module
+        /// </summary>
+        [JsonProperty("moduleId")]
+        public int ModuleId { get; set; }
 
         /// <summary>
         /// A list of templates for the currently selected contentType

@@ -44,7 +44,7 @@
     <DocumentationFile>bin\Dnn.Modules.Html.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>

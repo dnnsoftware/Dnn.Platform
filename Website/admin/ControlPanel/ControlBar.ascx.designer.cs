@@ -58,15 +58,6 @@ namespace DotNetNuke.UI.ControlPanels {
         protected global::System.Web.UI.WebControls.Literal helpLink;
         
         /// <summary>
-        /// gettingStartedLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl gettingStartedLink;
-        
-        /// <summary>
         /// CustomMenuItems control.
         /// </summary>
         /// <remarks>

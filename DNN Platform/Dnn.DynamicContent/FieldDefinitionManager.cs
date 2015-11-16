@@ -2,15 +2,16 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Data;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
+using Dnn.DynamicContent.Repositories;
 using DotNetNuke.Common;
-using DotNetNuke.Data;
+using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
 {
-    public class FieldDefinitionManager : ControllerBase<FieldDefinition, IFieldDefinitionManager, FieldDefinitionManager>, IFieldDefinitionManager
+    public class FieldDefinitionManager : ServiceLocator<IFieldDefinitionManager, FieldDefinitionManager>, IFieldDefinitionManager
     {
         internal const string FieldDefinitionCacheKey = "ContentTypes_FieldDefinitions";
         internal const string FieldDefinitionScope = "ContentTypeId";
@@ -18,14 +19,25 @@ namespace Dnn.DynamicContent
         public const string LabelKey = "ContentField_{0}_Label";
         public const string NameKey = "ContentField_{0}_Name";
 
+        private readonly IFieldDefinitionChecker _fieldDefinitionChecker;
+        private readonly IFieldDefinitionRepository _fieldDefinitionRepository;
+        private readonly IValidationRuleManager _validationRuleManager;
+        private readonly IDynamicContentTypeManager _dynamicContentTypeManager;
+        private readonly IContentTypeLocalizationManager _contentTypeLocalizationManager;
+
         protected override Func<IFieldDefinitionManager> GetFactory()
         {
             return () => new FieldDefinitionManager();
         }
 
-        public FieldDefinitionManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
-
-        public FieldDefinitionManager(IDataContext dataContext) : base(dataContext) { }
+        public FieldDefinitionManager() 
+        {
+            _fieldDefinitionChecker = FieldDefinitionChecker.Instance;
+            _fieldDefinitionRepository = FieldDefinitionRepository.Instance;
+            _validationRuleManager = ValidationRuleManager.Instance;
+            _dynamicContentTypeManager = DynamicContentTypeManager.Instance;
+            _contentTypeLocalizationManager = ContentTypeLocalizationManager.Instance;
+        }
 
         /// <summary>
         /// Adds a new field definition for use with Structured(Dynamic) Content Types.
@@ -34,17 +46,23 @@ namespace Dnn.DynamicContent
         /// <returns>field definition id.</returns>
         /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        /// <exception cref="Dnn.DynamicContent.Exceptions.InvalidEntityException">The field object is not valid (Inexisting content type, dead loop definition, 
+        /// duplicate field names in the same content type, etc.).</exception>
         public int AddFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
-            Requires.PropertyNotNegative(field, "DataTypeId");
-            Requires.PropertyNotNegative(field, "ContentTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
-            field.Order = Get(field.ContentTypeId).Count();
+            field.Order = _fieldDefinitionRepository.Get(field.ContentTypeId).Count();
 
-            Add(field);
+            string errorMessage;
+            if (!_fieldDefinitionChecker.IsValid(field, out errorMessage))
+            {
+                throw new InvalidEntityException(errorMessage);
+            }
+
+            _fieldDefinitionRepository.Add(field);
 
             ClearContentTypeCache(field);
 
@@ -52,7 +70,7 @@ namespace Dnn.DynamicContent
             foreach (var validationRule in field.ValidationRules)
             {
                 validationRule.FieldDefinitionId = field.FieldDefinitionId;
-                ValidationRuleManager.Instance.AddValidationRule(validationRule);
+                _validationRuleManager.AddValidationRule(validationRule);
             }
 
             return field.FieldDefinitionId;
@@ -60,7 +78,7 @@ namespace Dnn.DynamicContent
 
         private void ClearContentTypeCache(FieldDefinition field)
         {
-            var contentType = DynamicContentTypeManager.Instance.GetContentType(field.ContentTypeId, field.PortalId, true);
+            var contentType = _dynamicContentTypeManager.GetContentType(field.ContentTypeId, field.PortalId, true);
 
             if (contentType != null)
             {
@@ -73,23 +91,31 @@ namespace Dnn.DynamicContent
         /// </summary>
         /// <param name="field">The field definitione to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        /// <exception cref="FieldDefinitionDoesNotExistException">requested data type by FieldDefinitionId and PortalId does not exist</exception>
         public void DeleteFieldDefinition(FieldDefinition field)
         {
-            Delete(field);
+            Requires.NotNull(field);
+
+            var storedField = GetFieldDefinition(field.FieldDefinitionId, field.ContentTypeId);
+            if (storedField == null)
+            {
+                throw new FieldDefinitionDoesNotExistException();
+            }
+            
+            _fieldDefinitionRepository.Delete(field);
 
             ClearContentTypeCache(field);
 
             //Delete any ValidationRules
             foreach (var validationRule in field.ValidationRules)
             {
-                ValidationRuleManager.Instance.DeleteValidationRule(validationRule);
+                _validationRuleManager.DeleteValidationRule(validationRule);
             }
 
             //Delete Localizations
-            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(NameKey, field.FieldDefinitionId));
-            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(LabelKey, field.FieldDefinitionId));
-            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(DescriptionKey, field.FieldDefinitionId));
+            _contentTypeLocalizationManager.DeleteLocalizations(field.PortalId, String.Format(NameKey, field.FieldDefinitionId));
+            _contentTypeLocalizationManager.DeleteLocalizations(field.PortalId, String.Format(LabelKey, field.FieldDefinitionId));
+            _contentTypeLocalizationManager.DeleteLocalizations(field.PortalId, String.Format(DescriptionKey, field.FieldDefinitionId));
         }
 
         /// <summary>
@@ -101,7 +127,7 @@ namespace Dnn.DynamicContent
         //TODO add Unit Tests for this method
         public FieldDefinition GetFieldDefinition(int fieldDefinitionId, int contentTypeId)
         {
-            return Get(contentTypeId).SingleOrDefault((f) => f.FieldDefinitionId == fieldDefinitionId);
+            return _fieldDefinitionRepository.Get(contentTypeId).SingleOrDefault(f => f.FieldDefinitionId == fieldDefinitionId);
         }
 
         /// <summary>
@@ -111,7 +137,7 @@ namespace Dnn.DynamicContent
         /// <returns>field definition collection.</returns>
         public IQueryable<FieldDefinition> GetFieldDefinitions(int contentTypeId)
         {
-            return Get(contentTypeId).OrderBy(f => f.Order).AsQueryable();
+            return _fieldDefinitionRepository.Get(contentTypeId).OrderBy(f => f.Order).AsQueryable();
         }
 
         /// <summary>
@@ -120,33 +146,14 @@ namespace Dnn.DynamicContent
         /// <param name="contentTypeId">The Id of the parent Content Type</param>
         /// <param name="sourceIndex">The index (order) of the item being moved</param>
         /// <param name="targetIndex">The target index (order) of the item being moved</param>
-        public void MoveFieldDefintion(int contentTypeId, int sourceIndex, int targetIndex)
+        public void MoveFieldDefinition(int contentTypeId, int sourceIndex, int targetIndex)
         {
             //First get the item to be moved
-            var field = Get(contentTypeId).SingleOrDefault(f => f.Order == sourceIndex);
+            var field = _fieldDefinitionRepository.Get(contentTypeId).SingleOrDefault(f => f.Order == sourceIndex);
 
             if (field != null)
             {
-                //Next update all the intermediate fields
-                var sql = @"IF @1 > @2 -- Move other items down order
-                            BEGIN
-                                UPDATE dnn_ContentTypes_FieldDefinitions
-                                    SET[Order] = [Order] + 1
-                                        WHERE[Order] < @1 AND[Order] >= @2
-                                        AND ContentTypeID = @0
-                            END
-                        ELSE --Move other items up order
-                            BEGIN
-                                UPDATE dnn_ContentTypes_FieldDefinitions
-                                    SET[Order] = [Order] - 1
-                                        WHERE[Order] > @1 AND[Order] <= @2
-                                        AND ContentTypeId = @0
-                            END";
-
-                using (var context = DotNetNuke.Data.DataContext.Instance())
-                {
-                    context.Execute(CommandType.Text, sql, contentTypeId, sourceIndex, targetIndex);
-                }
+                _fieldDefinitionRepository.Move(contentTypeId, sourceIndex, targetIndex);
 
                 //Update item to be moved
                 field.Order = targetIndex;
@@ -164,15 +171,34 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">field definition id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        /// <exception cref="FieldDefinitionDoesNotExistException">requested data type by FieldDefinitionId and PortalId does not exist</exception>
+        /// <exception cref="InvalidOperationException">portal id is different than the stored portal id</exception>
+        /// <exception cref="Dnn.DynamicContent.Exceptions.InvalidEntityException">The field object is not valid (Inexisting content type, dead loop definition, 
+        /// duplicate field names in the same content type, etc.).</exception>
         public void UpdateFieldDefinition(FieldDefinition field)
         {
             //Argument Contract
-            Requires.PropertyNotNegative(field, "ContentTypeId");
-            Requires.PropertyNotNegative(field, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(field, "Name");
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
-            Update(field);
+            var storedField = GetFieldDefinition(field.FieldDefinitionId, field.ContentTypeId);
+            if (storedField == null)
+            {
+                throw new FieldDefinitionDoesNotExistException();
+            }
+
+            if (storedField.PortalId != field.PortalId)
+            {
+                throw new InvalidOperationException("PortalId cannot be modified");
+            }
+
+            string errorMessage;
+            if (!_fieldDefinitionChecker.IsValid(field, out errorMessage))
+            {
+                throw new InvalidEntityException(errorMessage);
+            }
+
+            _fieldDefinitionRepository.Update(field);
 
             ClearContentTypeCache(field);
 
@@ -182,11 +208,11 @@ namespace Dnn.DynamicContent
                 if (validationRule.ValidationRuleId == -1)
                 {
                     validationRule.FieldDefinitionId = field.FieldDefinitionId;
-                    ValidationRuleManager.Instance.AddValidationRule(validationRule);
+                    _validationRuleManager.AddValidationRule(validationRule);
                 }
                 else
                 {
-                    ValidationRuleManager.Instance.UpdateValidationRule(validationRule);
+                    _validationRuleManager.UpdateValidationRule(validationRule);
                 }
             }
         }

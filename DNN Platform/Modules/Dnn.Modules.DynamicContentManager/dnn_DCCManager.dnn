@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.DynamicContentManager" type="Module" version="08.00.00" isSystem="true">
+    <package name="Dnn.DynamicContentManager" type="Module" version="08.00.00">
       <friendlyName>Dynamic Content Manager</friendlyName>
       <description>DNN Dynamic Content Manager module</description>
       <owner>
@@ -20,7 +20,7 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentManager</moduleName>
             <foldername>Dnn/DynamicContentManager</foldername>
-            <businessControllerClass/>
+            <businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController</businessControllerClass>
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
@@ -43,15 +43,15 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-        	<eventMessage>
-						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-						<processorCommand>UpgradeModule</processorCommand>
-						<attributes>
-							<businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
-							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-							<upgradeVersionsList>08.00.00</upgradeVersionsList>
-						</attributes>
-					</eventMessage>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>Install,Upgrade</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>

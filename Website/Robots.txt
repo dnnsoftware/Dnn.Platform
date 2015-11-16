@@ -113,24 +113,10 @@ Disallow: /Components/
 Disallow: /Config/
 Disallow: /contest/
 Disallow: /controls/
-Disallow: /DesktopModules/
 Disallow: /Documentation/
 Disallow: /HttpModules/
-Disallow: /images/
 Disallow: /Install/
-Disallow: /js/
-Disallow: /Portals/
 Disallow: /Providers/
-Disallow: /Resources/ContentRotator/
-Disallow: /Resources/ControlPanel/
-Disallow: /Resources/Dashboard/
-Disallow: /Resources/FeedBrowser/
-Disallow: /Resources/OpenForceAd/
-Disallow: /Resources/Search/
-Disallow: /Resources/Shared/
-Disallow: /Resources/SkinWidgets/
-Disallow: /Resources/TabStrip/
-Disallow: /Resources/Widgets/
 Disallow: /Activity-Feed/userId/	# Do not index user profiles
 
 User-agent: Yahoo Pipes 1.0

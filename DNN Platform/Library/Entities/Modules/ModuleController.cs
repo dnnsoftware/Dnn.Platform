@@ -70,23 +70,6 @@ namespace DotNetNuke.Entities.Modules
         {
             return () => new ModuleController();
         }
-
-        private static event EventHandler<ModuleEventArgs> ModuleCreated;
-        private static event EventHandler<ModuleEventArgs> ModuleUpdated;
-        private static event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
-        private static event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
-
-        static ModuleController()
-        {
-            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
-            {
-                ModuleCreated += handlers.Value.ModuleCreated;
-                ModuleUpdated += handlers.Value.ModuleUpdated;
-                ModuleRemoved += handlers.Value.ModuleRemoved;
-                ModuleDeleted += handlers.Value.ModuleDeleted;
-            }
-        }
-
         #region Private Methods
 
         private static void AddContent(XmlNode nodeModule, ModuleInfo module)
@@ -99,9 +82,11 @@ namespace DotNetNuke.Entities.Modules
                     var controller = businessController as IPortable;
                     if (controller != null)
                     {
-                        string Content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                        if (!String.IsNullOrEmpty(Content))
+                        string content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                        if (!String.IsNullOrEmpty(content))
                         {
+                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
+
                             //add attributes to XML document
                             if (nodeModule.OwnerDocument != null)
                             {
@@ -124,8 +109,8 @@ namespace DotNetNuke.Entities.Modules
                                 {
                                     newnode.Attributes.Append(xmlattr);
                                 }
-                                Content = HttpContext.Current.Server.HtmlEncode(Content);
-                                newnode.InnerXml = XmlUtils.XMLEncode(Content);
+                                content = HttpContext.Current.Server.HtmlEncode(content);
+                                newnode.InnerXml = XmlUtils.XMLEncode(content);
                                 nodeModule.AppendChild(newnode);
                             }
                         }
@@ -172,8 +157,7 @@ namespace DotNetNuke.Entities.Modules
             //Save ModuleSettings
             UpdateModuleSettings(module);
 
-            if (ModuleCreated != null)
-                ModuleCreated(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleCreated(new ModuleEventArgs { Module = module });
         }
 
         private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
@@ -827,9 +811,9 @@ namespace DotNetNuke.Entities.Modules
                 {
                     UpdateTabModuleOrder(moduleInfo.TabID);
                     //ModuleRemove is only raised when doing a soft delete of the module
-                    if (softDelete && ModuleRemoved != null)
+                    if (softDelete)
                     { 
-                        ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                        EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
                     }
                 }
 
@@ -1203,8 +1187,10 @@ namespace DotNetNuke.Entities.Modules
                 ClearCache(tabId);
 
                 //ModuleRemove is only raised when doing a soft delete of the module
-                if (softDelete && ModuleRemoved != null)
-                    ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                if (softDelete)
+                {
+                    EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
+                }
             }
         }
 
@@ -1238,8 +1224,7 @@ namespace DotNetNuke.Entities.Modules
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
-            if (ModuleDeleted != null)
-                ModuleDeleted(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleDeleted(new ModuleEventArgs { Module = module });
         }
 
         /// <summary>
@@ -1942,8 +1927,7 @@ namespace DotNetNuke.Entities.Modules
                 ClearCache(tabModule.TabID);
             }
 
-            if (ModuleUpdated != null)
-                ModuleUpdated(null, new ModuleEventArgs { Module = module });
+            EventManager.Instance.OnModuleUpdated(new ModuleEventArgs { Module = module });
         }
         
         /// <summary>

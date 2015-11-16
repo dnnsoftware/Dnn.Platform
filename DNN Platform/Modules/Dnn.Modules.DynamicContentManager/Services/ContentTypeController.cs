@@ -1,17 +1,27 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
+using Dnn.Modules.DynamicContentManager.Services.Attributes;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 
 namespace Dnn.Modules.DynamicContentManager.Services
 {
@@ -20,6 +30,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DccExceptionFilter]
     public class ContentTypeController : BaseController
     {
         /// <summary>
@@ -44,8 +55,16 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentType(ContentTypeViewModel viewModel)
         {
-            return DeleteEntity(() => DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true),
+            try
+            {
+                return DeleteEntity(() => DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true),
                                 contentType => DynamicContentTypeManager.Instance.DeleteContentType(contentType));
+            }
+            catch (ContentTypeInUseException ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse((HttpStatusCode)HttpStatusCodeAdditions.UnprocessableEntity, ex.Message);
+            }            
         }
 
         /// <summary>
@@ -57,8 +76,26 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentField(int contentTypeId, int contentFieldId)
         {
-            return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId),
+            return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault(c => c.FieldDefinitionId == contentFieldId),
                            contentField => new ContentFieldViewModel(contentField, PortalSettings));
+        }
+
+        /// <summary>
+        /// GetAllContentFields retrieves all the content fields including those of enclosed content types
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllContentFields(int contentTypeId)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var response = new
+                            {
+                                results = ProcessFields(contentType, String.Empty)
+                            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         /// <summary>
@@ -88,14 +125,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MoveContentField(MoveContentFieldViewModel viewModel)
         {
-            FieldDefinitionManager.Instance.MoveFieldDefintion(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
+            FieldDefinitionManager.Instance.MoveFieldDefinition(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
 
-            var response = new
-                            {
-                                success = true
-                            };
-
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(HttpStatusCode.OK, new {});
         }
 
         /// <summary>
@@ -122,7 +154,51 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
+        }
 
+        
+
+        private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
+        {
+            var fields = new ArrayList();
+
+            var locale = Thread.CurrentThread.CurrentUICulture.ToString();
+
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                var key = String.Format(FieldDefinitionManager.NameKey, definition.FieldDefinitionId);
+                var fieldName = definition.Name;
+                var localizedName = (locale == PortalSettings.DefaultLanguage)
+                                        ? fieldName
+                                        : ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, locale, PortalSettings.PortalId);
+
+                if (definition.IsReferenceType)
+                {
+                    var newPrefix = (String.IsNullOrEmpty(prefix)) ? fieldName : prefix + fieldName;
+                    newPrefix += "/";
+
+                    var field = new
+                                {
+                                    name = localizedName,
+                                    fields = ProcessFields(definition.ContentType, newPrefix)
+                                };
+
+                    fields.Add(field);
+                }
+                else
+                {
+
+                    var field = new
+                                {
+                                    fieldName = prefix + fieldName,
+                                    name = localizedName
+                                };
+
+                    fields.Add(field);
+                }
+            }
+
+            return fields;
         }
 
         /// <summary>
@@ -139,49 +215,134 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var contentFieldId = viewModel.ContentFieldId;
 
             var localizedNames = new List<ContentTypeLocalization>();
-            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
+            var defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
             var localizedLabels = new List<ContentTypeLocalization>();
-            string defaultLabel = ParseLocalizations(viewModel.LocalizedLabels, localizedLabels, portalId);
+            var defaultLabel = ParseLocalizations(viewModel.LocalizedLabels, localizedLabels, portalId);
 
             var localizedDescriptions = new List<ContentTypeLocalization>();
-            string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
+            var defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
 
-            return SaveEntity(contentFieldId,
-                /*CheckEntity*/ () => FieldDefinitionManager.Instance.GetFieldDefinitions(viewModel.ContentTypeId)
-                                                .SingleOrDefault((t => t.Name == defaultName)),
+            string errorMessage;
 
-                /*ErrorMsg*/    LocalizeString("ContentFieldExists"),
+            if (!IsValidContentField(portalId, viewModel, defaultName, localizedNames, out errorMessage))
+            {
+                return GetErrorResponse(errorMessage);
+            }
 
-                /*CreateEntity*/() => new FieldDefinition()
-                                        {
-                                            ContentTypeId = contentType.ContentTypeId,
-                                            DataTypeId = viewModel.DataTypeId,
-                                            Label = defaultLabel,
-                                            Name = defaultName,
-                                            Description = defaultDescription,
-                                            PortalId = portalId
-                                        },
+            if (contentFieldId == Null.NullInteger)
+            {
+                contentFieldId = AddFieldDefinition(portalId, viewModel, defaultName, defaultLabel, defaultDescription);
+            }
+            else
+            {
+                UpdateFieldDefinition(viewModel, defaultName, defaultLabel, defaultDescription);
 
-                /*AddEntity*/   contentField => FieldDefinitionManager.Instance.AddFieldDefinition(contentField),
+            }
 
-                /*GetEntity*/   () => FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId),
+            SaveFieldLocalizations(portalId, contentFieldId, localizedNames, localizedLabels, localizedDescriptions);
 
-                /*UpdateEntity*/contentField =>
-                                        {
-                                            contentField.Name = defaultName;
-                                            contentField.Description = defaultDescription;
-                                            contentField.Label = defaultLabel;
-                                            contentField.DataTypeId = viewModel.DataTypeId;
-                                            FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
-                                        },
+            return Request.CreateResponse(HttpStatusCode.OK, new {contentFieldId});
+        }
 
-                /*SaveLocal*/   id =>
-                                        {
-                                            SaveContentLocalizations(localizedNames, FieldDefinitionManager.NameKey, id, portalId);
-                                            SaveContentLocalizations(localizedLabels, FieldDefinitionManager.LabelKey, id, portalId);
-                                            SaveContentLocalizations(localizedDescriptions, FieldDefinitionManager.DescriptionKey, id, portalId);
-                                        });
+        private bool IsValidContentField(int portalId, ContentFieldViewModel viewModel, string defaultName, IEnumerable<ContentTypeLocalization> localizedNames, 
+            out string errorMessage)
+        {
+            var contentFieldId = viewModel.ContentFieldId;
+
+            if (!IsUniqueName(defaultName, FieldDefinitionManager.Instance.GetFieldDefinitions(viewModel.ContentTypeId).
+                Where(x => x.FieldDefinitionId != contentFieldId).Select(x => x.Name)))
+            {
+                errorMessage = LocalizeString("ContentFieldExists");
+                return false;
+            }
+
+            foreach (var localizedName in localizedNames)
+            {
+                var otherFields = FieldDefinitionManager.Instance.GetFieldDefinitions(viewModel.ContentTypeId).Where(x => x.FieldDefinitionId != contentFieldId);
+                var localizations = ContentTypeLocalizationManager.Instance.GetLocalizations(portalId);
+                var otherFieldsNameTranslations = new List<string>();
+                foreach (var field in otherFields)
+                {
+                    var localizationKey = String.Format(FieldDefinitionManager.NameKey, field.FieldDefinitionId);
+                    var fieldTranslation = localizations.SingleOrDefault(x => x.CultureCode == localizedName.CultureCode && x.Key == localizationKey);
+                    if (fieldTranslation != null)
+                    {
+                        otherFieldsNameTranslations.Add(fieldTranslation.Value);
+                    }
+                }
+
+                if (!IsUniqueName(localizedName.Value, otherFieldsNameTranslations))
+                {
+                    var language = GetLanguage(portalId, localizedName.CultureCode);
+                    errorMessage = string.Format(LocalizeString("ContentFieldTranslationExists"), language ?? localizedName.CultureCode);
+                    return false;
+                }
+            }
+
+            errorMessage = string.Empty;
+            return true;
+        }
+
+        private static bool IsUniqueName(string fieldName, IEnumerable<string> otherFieldsNames)
+        {
+            return otherFieldsNames.All(x => ! x.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static string GetLanguage(int portalId, string cultureCode)
+        {
+            var language = LocaleController.Instance.GetLocales(portalId).Values.FirstOrDefault(x => x.Code == cultureCode);
+            return language != null ? language.NativeName : null;
+        }
+
+        private HttpResponseMessage GetErrorResponse(string errorMessage)
+        {
+            return Request.CreateErrorResponse((HttpStatusCode) HttpStatusCodeAdditions.UnprocessableEntity, errorMessage);
+        }
+
+        private static int AddFieldDefinition(int portalId, ContentFieldViewModel viewModel, string defaultName,
+            string defaultLabel, string defaultDescription)
+        {
+            return FieldDefinitionManager.Instance.AddFieldDefinition(
+                new FieldDefinition
+                {
+                    ContentTypeId = viewModel.ContentTypeId,
+                    PortalId = portalId,
+                    Name = defaultName,
+                    Label = defaultLabel,
+                    Description = defaultDescription,
+                    FieldTypeId = viewModel.FieldTypeId,
+                    IsReferenceType = viewModel.IsReferenceType,
+                    IsList = viewModel.IsList
+                });
+        }
+
+        private static void UpdateFieldDefinition(ContentFieldViewModel viewModel, string defaultName, string defaultLabel, string defaultDescription)
+        {
+            var savedField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
+
+            FieldDefinitionManager.Instance.UpdateFieldDefinition(
+                new FieldDefinition
+                {
+                    FieldDefinitionId = savedField.FieldDefinitionId,
+                    ContentTypeId = savedField.ContentTypeId,
+                    PortalId = savedField.PortalId,
+                    Name = defaultName,
+                    Description = defaultDescription,
+                    Label = defaultLabel,
+                    FieldTypeId = viewModel.FieldTypeId,
+                    IsReferenceType = viewModel.IsReferenceType,
+                    IsList = viewModel.IsList,
+                    Order = savedField.Order
+                });
+        }
+
+        private void SaveFieldLocalizations(int portalId, int contentFieldId, List<ContentTypeLocalization> localizedNames,
+            List<ContentTypeLocalization> localizedLabels, List<ContentTypeLocalization> localizedDescriptions)
+        {
+            SaveContentLocalizations(localizedNames, FieldDefinitionManager.NameKey, contentFieldId, portalId);
+            SaveContentLocalizations(localizedLabels, FieldDefinitionManager.LabelKey, contentFieldId, portalId);
+            SaveContentLocalizations(localizedDescriptions, FieldDefinitionManager.DescriptionKey, contentFieldId, portalId);
         }
 
         /// <summary>
@@ -205,7 +366,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
             return SaveEntity(contentTypeId,
 
                 /*CheckEntity*/ () => DynamicContentTypeManager.Instance.GetContentTypes(portalId, true)
-                                                .SingleOrDefault((t => t.Name == defaultName)),
+                                                .SingleOrDefault((t => t.Name.Equals(defaultName, StringComparison.InvariantCultureIgnoreCase))),
 
                 /*ErrorMsg*/    LocalizeString("ContentTypeExists"),
 

@@ -1,14 +1,18 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
+using DnnLocalization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
-    public class DataTypeInUseException : InvalidOperationException
+    /// <summary>
+    /// Exception thrown when a DataType is in use and it is tried to be deleted
+    /// </summary>
+    public class DataTypeInUseException : EntityInUseException
     {
         public DataTypeInUseException(DataType dataType)
-            :base(String.Format(DotNetNuke.Services.Localization.Localization.GetString("DataTypeInUse", DotNetNuke.Services.Localization.Localization.ExceptionsResourceFile), dataType.DataTypeId))
+            : base(DnnLocalization.GetString("DataType",
+                DnnLocalization.SharedResourceFile), dataType.DataTypeId)            
         {
         }
     }

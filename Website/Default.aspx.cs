@@ -44,7 +44,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Modules;
@@ -77,6 +76,10 @@ namespace DotNetNuke.Framework
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DefaultPage));
+
+        private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
         #region Properties
 
         /// -----------------------------------------------------------------------------
@@ -94,10 +97,11 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                int pageScrollTop = Null.NullInteger;
-                if (ScrollTop != null && !String.IsNullOrEmpty(ScrollTop.Value) && Regex.IsMatch(ScrollTop.Value, "^\\d+$"))
+                int pageScrollTop;
+                var scrollValue = ScrollTop != null ? ScrollTop.Value : "";
+                if (!int.TryParse(scrollValue, out pageScrollTop) || pageScrollTop < 0)
                 {
-                    pageScrollTop = Convert.ToInt32(ScrollTop.Value);
+                    pageScrollTop = Null.NullInteger;
                 }
                 return pageScrollTop;
             }
@@ -289,9 +293,25 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
-                    control.LocalResourceFile = string.Concat(
-                        slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                        Localization.LocalResourceDirectory, "/", Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                    string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLower());
+                    switch (extension)
+                    {
+                        case ".mvc":
+                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+                            control.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                                slaveModule.DesktopModule.FolderName,
+                                Localization.LocalResourceDirectory,
+                                segments[0]);
+                            break;
+                        default:
+                            control.LocalResourceFile = string.Concat(
+                                slaveModule.ModuleControl.ControlSrc.Replace(
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
+                                Localization.LocalResourceDirectory, "/",
+                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                            break;
+                    }
                     var title = Localization.LocalizeControlTitle(control);
                     
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
@@ -393,10 +413,9 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
-            if (!UrlUtils.InPopUp() && 
-                !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline) &&
-                !Regex.IsMatch(PortalSettings.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline)
-                )
+            if (!UrlUtils.InPopUp() &&
+                !(HeaderTextRegex.IsMatch(PortalSettings.ActiveTab.PageHeadText) ||
+                  HeaderTextRegex.IsMatch(PortalSettings.PageHeadText)))
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
@@ -421,14 +440,6 @@ namespace DotNetNuke.Framework
                 string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
                                                      DotNetNukeContext.Current.Application.Version);
                 Title += versionString;
-            }
-
-            //register DNN SkinWidgets Inititialization scripts
-            if (PortalSettings.EnableSkinWidgets & !UrlUtils.InPopUp())
-            {
-				JavaScript.RequestRegistration(CommonJs.jQuery);
-                // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
-                ClientAPI.RegisterStartUpScript(Page, "initWidgets", string.Format("<script type=\"text/javascript\" src=\"{0}\" ></script>", ResolveUrl("~/Resources/Shared/scripts/initWidgets.js")));
             }
 
 			//register the custom stylesheet of current page
@@ -477,40 +488,6 @@ namespace DotNetNuke.Framework
             //Find the placeholder control and render the doctype
             skinDocType.Text = PortalSettings.ActiveTab.SkinDoctype;
             attributeList.Text = HtmlAttributeList;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>
-        /// - manage affiliates
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void ManageRequest()
-        {
-            //affiliate processing
-            int affiliateId = -1;
-            if (Request.QueryString["AffiliateId"] != null)
-            {
-                if (Regex.IsMatch(Request.QueryString["AffiliateId"], "^\\d+$"))
-                {
-                    affiliateId = Int32.Parse(Request.QueryString["AffiliateId"]);
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(affiliateId, 1, 0);
-
-                    //save the affiliateid for acquisitions
-                    if (Request.Cookies["AffiliateId"] == null) //do not overwrite
-                    {
-                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
-                        {
-                            Expires = DateTime.Now.AddYears(1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                        };
-                        Response.Cookies.Add(objCookie);
-                    }
-                }
-            }
         }
 
         private void ManageFavicon()
@@ -641,6 +618,7 @@ namespace DotNetNuke.Framework
 
             // DataBind common paths for the client resource loader
             ClientResourceLoader.DataBind();
+            ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(Page);
 
             //check for and read skin package level doctype
             SetSkinDoctype();
@@ -749,8 +727,6 @@ namespace DotNetNuke.Framework
         {
             base.OnLoad(e);
 
-            ManageGettingStarted();
-
             ManageInstallerFiles();
 
             if (!String.IsNullOrEmpty(ScrollTop.Value))
@@ -763,12 +739,6 @@ namespace DotNetNuke.Framework
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
-
-            //process the current request
-            if (!Globals.IsAdminControl())
-            {
-                ManageRequest();
-            }
 
             //Set the Head tags
             metaPanel.Visible = !UrlUtils.InPopUp();

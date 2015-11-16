@@ -52,14 +52,19 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             if (AuthorizeCore(filterContext.HttpContext))
             {
-                HttpCachePolicyBase cachePolicy = filterContext.HttpContext.Response.Cache;
-                cachePolicy.SetProxyMaxAge(new TimeSpan(0));
-                cachePolicy.AddValidationCallback(CacheValidateHandler, null /* data */);
+                HandleAuthorizedRequest(filterContext);
             }
             else
             {
                 HandleUnauthorizedRequest(filterContext);
             }
+        }
+
+        protected virtual void HandleAuthorizedRequest(AuthorizationContext filterContext)
+        {
+            HttpCachePolicyBase cachePolicy = filterContext.HttpContext.Response.Cache;
+            cachePolicy.SetProxyMaxAge(new TimeSpan(0));
+            cachePolicy.AddValidationCallback(CacheValidateHandler, null /* data */);
         }
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)

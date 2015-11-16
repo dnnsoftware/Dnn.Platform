@@ -52,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -76,9 +77,6 @@
     <Compile Include="Personalization\PersonalizationModule.cs" />
     <Compile Include="Services\ServicesModule.cs" />
     <Compile Include="UrlRewrite\BasicUrlRewriter.cs" />
-    <Compile Include="UrlRewrite\Config\RewriterConfiguration.cs" />
-    <Compile Include="UrlRewrite\Config\RewriterRule.cs" />
-    <Compile Include="UrlRewrite\Config\RewriterRuleCollection.cs" />
     <Compile Include="Users Online\UsersOnlineModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +124,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UrlRewrite\Config\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

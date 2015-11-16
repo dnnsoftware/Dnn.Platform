@@ -49,16 +49,12 @@
         viewModel.mode("listTemplates");
     };
 
-    var selectSettings = function (data, e) {
-        menuClick(e.target, settings.settingsPanel);
-    };
-
     var init = function(element) {
         $rootElement = $(element);
 
         activePanel = settings.initialPanel;
 
-        var util = dcc.utility(settings, resx);
+        var util = dnn.utility(settings, resx);
 
         util.languageService = function(){
             util.sf.serviceController = "Language";
@@ -80,6 +76,17 @@
             return util.sf;
         };
 
+        util.handleServiceError = function (xhr, status, err) {
+            if (xhr && xhr.responseText) {
+                var json = JSON.parse(xhr.responseText);
+                if (json && json.Message) {
+                    util.alert(json.Message, resx.ok);
+                    return;
+                }
+            }
+            util.alert(status + ":" + err, resx.ok);
+        };
+
         var config = {
             settings: settings,
             resx: resx,
@@ -89,6 +96,10 @@
             codeEditor: codeEditor,
             ko: ko
         };
+        var conf = dnn.modules.dynamicContentManager.cf.init();
+        var sf = util.sf;
+        var persis = dnn.modules.dynamicContentManager.persistent.init(conf, sf);
+        util.persistent = persis;
 
         //Build the ViewModel
         viewModel.resx = resx;
@@ -99,16 +110,16 @@
 
         util.languageService().get("GetEnabledLanguages", {},
             function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data != null) {
                     //Success
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
+                    for (var i = 0; i < data.results.length; i++) {
+                        var result = data.results[i];
                         var language = { code: result.code, language: result.language };
                         viewModel.languages.push(language);
                     }
                     viewModel.isLocalized(viewModel.languages().length > 1);
-                    viewModel.selectedLanguage(data.data.defaultLanguage);
-                    viewModel.defaultLanguage = data.data.defaultLanguage;
+                    viewModel.selectedLanguage(data.defaultLanguage);
+                    viewModel.defaultLanguage = data.defaultLanguage;
                 }
             },
             function () {
@@ -137,7 +148,13 @@
         viewModel.selectContentTypes = selectContentTypes;
         viewModel.selectDataTypes = selectDataTypes;
         viewModel.selectTemplates = selectTemplates;
-        viewModel.selectSettings = selectSettings;
+
+        viewModel.pageSizeOptions = ko.observableArray([
+                                { text: 10, value: 10 },
+                                { text: 25, value: 25 },
+                                { text: 50, value: 50 },
+                                { text: 100, value: 100 }
+        ]);
 
         viewModel.showCloseIcon = ko.computed(function() {
             var showIcon = false;
@@ -178,12 +195,10 @@
             switch(viewModel.mode()){
                 case "editField":
                 case "editType":
-                    viewModel.mode("listTypes");
-                    viewModel.contentTypes.refresh();
+                    viewModel.contentTypes.closeEdit();
                     break;
                 case "editTemplate":
-                    viewModel.mode("listTemplates");
-                    viewModel.templates.refresh();
+                    viewModel.templates.closeEdit();
                     break;
             }
         };

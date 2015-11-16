@@ -13,10 +13,10 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     self.rootViewModel = rootViewModel;
 
     self.isSystemUser = settings.isSystemUser;
-    self.searchText = ko.observable("");
+    self.searchText = ko.observable("").extend({ throttle: 500 });
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
-    self.pageSize = settings.pageSize;
+    self.pageSize = ko.observable(settings.pageSize);
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.dataTypes_PagerFormat;
     self.pager_NoPagerFormat = resx.dataTypes_NoPagerFormat;
@@ -37,11 +37,18 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     var findDataTypes =  function() {
         self.pageIndex(0);
         self.getDataTypes();
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.dataTypePageSize != self.pageSize()) {
+            persistentData.dataTypePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
     };
 
-    self.addDataType = function(){
+    self.addDataType = function(event, ui){
         var tbody = $rootElement.find("#dataTypes-addbody");
 
+        $(ui.target).fadeOut(200);
         util.asyncParallel([
             function(cb1){
                 self.selectedDataType.init();
@@ -59,6 +66,8 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.editDataType = function(data, e){
+		$rootElement.find('a.dccButton').fadeIn(200);
+		
         var row = $rootElement.find(e.target);
 
         if(row.is("tr") === false){
@@ -67,7 +76,7 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
 
         if(row.hasClass('in-edit-row')){
             row.removeClass('in-edit-row');
-            $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(600, 'linear', function(){
                 $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             });
             return;
@@ -82,13 +91,13 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
                 self.getDataType(data.dataTypeId(), cb1);
             },
             function(cb2){
-                $rootElement.find('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideUp(200, 'linear', function(){
                     cb2();
                 });
             }
         ], function() {
             $rootElement.find('#dataTypes-editrow').insertAfter(row);
-            $rootElement.find('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+            $rootElement.find('#dataTypes-editrow > td > div').stop(true, false).slideDown(400, 'linear');
         });
     };
 
@@ -96,19 +105,25 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
         var params = {
             dataTypeId: dataTypeId
         };
-        util.dataTypeService().getEntity(params, "GetDataType", self.selectedDataType);
+        util.dataTypeService().getEntity("GetDataType",
+            params,
+            self.selectedDataType);
 
         if(typeof cb === 'function') cb();
     };
 
     self.getDataTypes = function () {
+        $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
+        $rootElement.find('#dataTypes-editrow > td > div').hide();
+        $rootElement.find('a.dccButton').fadeIn(200);
+		
         var params = {
             searchTerm: self.searchText(),
             pageIndex: self.pageIndex(),
-            pageSize: self.pageSize
+            pageSize: self.pageSize()
         };
-        util.dataTypeService().getEntities(params,
-            "GetDataTypes",
+        util.dataTypeService().getEntities("GetDataTypes",
+            params,
             self.results,
             function() {
                 // ReSharper disable once InconsistentNaming
@@ -119,12 +134,19 @@ dcc.dataTypesViewModel = function(rootViewModel, config) {
     };
 
     self.init = function() {
-        $rootElement.find('#dataTypes-editrow > td > div').hide();
-        dcc.pager().init(self);
+        // ReSharper disable once UseOfImplicitGlobalInFunctionScope
+        dnn.koPager().init(self, config);
 
         self.searchText.subscribe(function () {
             findDataTypes();
         });
+        self.pageSize.subscribe(function () {
+            findDataTypes();
+        });
+
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.dataTypePageSize);
     };
 
     self.refresh = function() {
@@ -164,6 +186,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     var collapseDetailRow = function(cb) {
         $rootElement.find("tr.in-edit-row").removeClass('in-edit-row');
+        $rootElement.find('a.dccButton').fadeIn(200);
         $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
             $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             if(typeof cb === 'function') cb();
@@ -193,8 +216,9 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
                     collapseDetailRow(parentViewModel.refresh);
                 },
 
-                function(){
+                function (xhr, status, err) {
                     //Failure
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         });
@@ -202,7 +226,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
 
     self.init = function() {
         self.dataTypeId(-1);
-        self.canEdit(false);
+        self.canEdit(true);
         self.baseType(0);
         self.isSystem(false);
 
@@ -234,17 +258,11 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             };
 
             util.dataTypeService().post("SaveDataType", params,
-                function(data) {
-                    if (data.success === true) {
-                        //Success
-                        collapseDetailRow(parentViewModel.refresh);
-                    } else {
-                        //Error
-                        util.alert(data.message, resx.ok);
-                    }
-                },
                 function() {
-                    //Failure
+                    collapseDetailRow(parentViewModel.refresh);
+                },
+                function (xhr, status, err) {
+                    util.alert(status + ":" + err, resx.ok);
                 }
             );
         }

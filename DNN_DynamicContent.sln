@@ -10,10 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
-		Website\Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.03.SqlDataProvider
-		Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
+		Website\DesktopModules\MVC\Web.config = Website\DesktopModules\MVC\Web.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"

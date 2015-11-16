@@ -9,16 +9,19 @@ input[type="password"] {
   padding: 9px;
 }
 .dccContainer {
-  border: solid 1px #aaaaaa;
+  border: solid 1px #dddddd;
   width: 950px;
+  background: #fafafa;
+  font-family: inherit;
 }
 .dccContainer .dccHeading {
   width: 950px;
-  padding-top: 25px;
-  padding-bottom: 10px;
-  border-bottom: solid 1px #aaaaaa;
-  background-color: white;
-  box-shadow: 0px 2px 2px #aaaaaa;
+  padding-top: 40px;
+  border-bottom: solid 1px #dddddd;
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: 28px;
+  height: 60px;
 }
 .dccContainer .dccHeading span {
   font-size: 28px;
@@ -33,17 +36,19 @@ input[type="password"] {
 .dccContainer .dccBody {
   margin: 20px;
   width: 910px;
-  background-color: white;
-  border: solid 1px #aaaaaa;
+  background-color: #ffffff;
+  border: solid 1px #dddddd;
   border-radius: 4px;
+  font-family: inherit;
 }
 .dccContainer .dccMenu {
   position: relative;
+  margin-bottom: -6px;
 }
 .dccContainer .dccMenu ul {
   display: inline-block;
-  margin-left: 0px;
-  margin-bottom: 0px;
+  margin: 0;
+  padding: 0;
   width: 909px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -60,12 +65,11 @@ input[type="password"] {
   width: 100px;
   padding: 12px 15px 10px 15px;
   cursor: pointer;
+  font-weight: bold;
+  font-family: inherit;
 }
 .dccContainer .dccMenu ul > li.selected {
-  background-color: white;
-}
-.dccContainer .dccMenu ul > li.selected {
-  background-color: white;
+  background-color: #ffffff;
   color: #0087c6;
 }
 .dccContainer .dccPanel {
@@ -73,42 +77,76 @@ input[type="password"] {
 }
 .dccContainer .dccSearchPanel {
   padding: 15px;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #dddddd;
+  background: #ffffff;
 }
 .dccContainer .dccSearchPanel > .dccSearchBox {
   padding: 8px;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #dddddd;
   width: 250px;
   border-radius: 3px;
   margin-bottom: 0;
   display: inline-block;
   background-image: url(images/search.png);
+  background-color: #ffffff;
   background-repeat: no-repeat;
   background-position: 240px 8px;
+  font-family: inherit;
 }
 .dccContainer .dccTable {
   width: 100%;
   border-collapse: collapse;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #dddddd;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+.dccContainer .dccTable .ellipsis-overflow {
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
 }
 .dccContainer .dccTable tr:nth-child(2n) {
-  background: #eeeeee;
+  background: rgba(0, 0, 0, 0.04);
 }
 .dccContainer .dccTable tbody tr {
   transition: background 100ms linear;
 }
-.dccContainer .dccTable tbody tr:hover {
-  background: #d9ecfa;
+.dccContainer .dccTable > tbody > tr:hover {
+  background: rgba(2, 139, 255, 0.15);
 }
-.dccContainer .dccTable th {
-  border-left: 1px solid #aaaaaa;
-  border-bottom: 1px solid #aaaaaa;
+.dccContainer .dccTable > tbody > tr#templates-editrow {
+  background: transparent;
+  width: 909px;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow:hover {
+  background: transparent;
+}
+.dccContainer #templates-listView .dccTable tbody tr td > div.dccExpand {
+  background: transparent;
+}
+.dccContainer #templates-listView .dccTable tbody tr:hover div.dccExpand {
+  background: #bedef7;
+}
+.dccContainer .dccTable > tbody > tr#templates-editrow div.dccEditRow > div.CodeMirror {
+  margin-right: 0px;
 }
 .dccContainer .dccTable th,
 .dccContainer .dccTable td {
-  padding: 8px 5px 7px 5px;
-  text-align: center;
+  padding: 5px 9px;
+  text-align: left;
   height: 20px;
+  font-family: inherit;
+}
+.dccContainer .dccTable th {
+  border-left: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  background: #ffffff;
+  font-family: inherit;
+  color: #777777;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: normal;
 }
 .dccContainer .dccTable th:first-child,
 .dccContainer .dccTable td:first-child {
@@ -116,86 +154,131 @@ input[type="password"] {
   border-left: none;
   text-align: left;
 }
-.dccContainer .dccTable .fa {
+.dccContainer .dccTable .dnni {
   font-size: 18px;
 }
 .dccContainer .dccTable tfoot {
-  border-top: 1px solid #aaaaaa;
+  border-top: 1px solid #dddddd;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 5px;
 }
-.dccContainer .dccTable tfoot td > div > div {
-  margin-top: 6px;
-}
-.dccContainer .dccTable tfoot td > div > div.left {
-  margin-bottom: 6px;
-}
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
+.dccContainer .dccTable tbody tr td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr th i.fa-caret-down {
+.dccContainer .dccTable tbody tr th i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr:hover td i.fa-caret-down {
+.dccContainer .dccTable tbody tr:hover td i.dnni-caret-down {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-up {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-up {
   display: inherit;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-down {
+.dccContainer .dccTable tbody tr.in-edit-row td i.dnni-caret-down {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-up {
+.dccContainer .dccTable tbody tr td i.dnni-caret-up {
   display: none;
 }
-.dccContainer #data-types-panel .dccTable tbody tr:hover td:last-child {
-  background: #0087c6;
+.dccContainer .dccTable tbody tr td.dccActions {
+  padding: 0;
+  position: relative;
 }
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td,
-.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row:hover td {
-  background: #0087c6;
-  color: white;
-  border-color: #0087c6;
+.dccContainer .dccTable tbody tr td > a {
+  height: 35px;
+}
+.dccContainer .dccTable tbody tr td > a:first-child {
+  padding: 0 5px 0 10px;
+}
+.dccContainer .dccTable tbody tr td > div.dccExpand {
+  padding: 9px 5px 5px 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #bedef7;
+  width: 26px;
+  height: 21px;
+  text-align: center;
+  cursor: pointer;
+}
+.dccContainer .dccTable tbody tr:hover div.dccExpand {
+  background: #bedef7;
+}
+.dccContainer #data-types-panel .dccTable tr > th:last-child,
+.dccContainer #data-types-panel .dccTable tr > td:last-child {
+  padding-left: 11px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.dccContainer #data-types-panel .dccTable tr > td:last-child {
+  padding-left: 14px;
+}
+.dccContainer #data-types-panel .dccTable > tbody > tr:hover > td:last-child {
+  background: #bedef7;
+  cursor: pointer;
+}
+.dccContainer .dccTable > tbody > tr.in-edit-row > td,
+.dccContainer .dccTable > tbody > tr.in-edit-row:hover > td {
+  background: #bedef7;
+  border-color: #bedef7;
 }
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row td,
 .dccContainer #data-types-panel .dccTable tbody tr.edit-row:hover td:last-child {
-  background-color: white;
+  background-color: #fafafa;
+  padding-left: 0;
 }
-.dccContainer ul.pager {
+.dccContainer .dccTable .dccPager {
+  width: 100%;
+}
+.dccContainer .dccTable .dccPager td {
+  padding: 0px;
+  height: 40px;
+  width: 33%;
+}
+.dccContainer .dccTable .dccPager td:nth-child(2) {
+  text-align: center;
+}
+.dccContainer .dccTable .dccPager td select {
+  margin-bottom: 1px;
+  background: #ffffff;
+}
+.dccContainer .dccTable .dccPager td div {
+  margin-bottom: 0px;
+}
+.dccContainer .dccTable .dccPager td div.right {
+  margin-top: 9px;
+}
+.dccContainer .dccTable .dccPager td ul {
   display: block;
   list-style-type: none;
-  margin: 0 10px 0 8px;
+  margin: 4px 10px 0 8px;
   padding: 0;
 }
-.dccContainer ul.pager > li {
+.dccContainer .dccTable .dccPager td ul > li {
   display: inline-block;
   list-style-type: none;
 }
-.dccContainer .dccTable td a {
-  color: #0087c6;
-  text-decoration: none;
-}
-.dccContainer .dccTable td a.prev,
-.dccContainer .dccTable td a.next {
+.dccContainer .dccTable .dccPager td a.prev,
+.dccContainer .dccTable .dccPager td a.next {
   background-position: center center;
   background-repeat: no-repeat;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #dddddd;
   width: 25px;
   height: 25px;
   display: block;
   cursor: pointer;
   border-radius: 2px;
-  background-color: white;
+  background-color: #fafafa;
 }
-.dccContainer .dccTable td a.prev {
+.dccContainer .dccTable .dccPager td a.prev {
   background-image: url('images/left.png');
 }
-.dccContainer .dccTable td a.next {
+.dccContainer .dccTable .dccPager td a.next {
   background-image: url('images/right.png');
 }
-.dccContainer .dccTable td a.prev.disabled,
-.dccContainer .dccTable td a.next.disabled {
-  opacity: 0.5;
+.dccContainer .dccTable .dccPager td a.prev.disabled,
+.dccContainer .dccTable .dccPager td a.next.disabled {
+  opacity: 0.50;
   cursor: default;
 }
 .dccContainer .dccTable tr.edit-row td,
@@ -204,7 +287,6 @@ input[type="password"] {
 }
 .dccContainer div.dccEditForm {
   padding: 15px;
-  min-height: 135px;
 }
 .dccContainer .dccTable div.dccEditForm {
   border-bottom: 2px solid #0087c6;
@@ -212,13 +294,31 @@ input[type="password"] {
 .dccContainer div.dccEditRow {
   float: left;
   position: relative;
-  width: 100%;
+}
+.dccContainer div.name {
+  width: 33%;
+}
+.dccContainer div.description {
+  width: 40%;
+}
+.dccContainer div.globalToggle {
+  width: 27%;
+}
+.dccContainer div.name {
+  width: 33%;
+}
+.dccContainer div.description {
+  width: 40%;
+}
+.dccContainer div.globalToggle {
+  width: 27%;
 }
 .dccContainer div.dccEditRow > div {
   float: left;
+  max-width: 100%;
 }
 .dccContainer div.dccEditRow > div.dccExtraMargin {
-  margin-right: 25px;
+  margin-right: 24px;
 }
 .dccContainer .dccTable div.dccEditRow > div {
   margin-right: 25px;
@@ -226,15 +326,23 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div > label {
   display: block;
   cursor: default;
+  text-align: left;
 }
 .dccContainer div.dccEditRow > div > textarea {
   height: 35px;
   width: 842px;
 }
+.dccContainer #content-types-panel #contentTypes-editView div.dccEditRow > div > textarea {
+  max-width: 320px;
+}
 .dccContainer div.dccEditRow > div > input,
 .dccContainer div.dccEditRow > div > textarea,
 .dccContainer div.dccEditRow > div > select {
   margin-bottom: 10px;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  max-width: 100%;
 }
 .dccContainer div.dccEditRow > div > input {
   width: 220px;
@@ -249,17 +357,17 @@ input[type="password"] {
 .dccContainer .dccEditRow i {
   float: right;
 }
-.dccContainer i.fa-exclamation {
+.dccContainer i.dnni-exclamation {
   font-size: 18px;
   margin-left: 5px;
   color: transparent;
   display: block;
 }
-.dccContainer .dccError i.fa-exclamation {
+.dccContainer .dccError i.dnni-exclamation {
   color: #dd0000;
 }
-.dccContainer .dccWarning i.fa-exclamation {
-  color: darkorange;
+.dccContainer .dccWarning i.dnni-exclamation {
+  color: #ff8c00;
 }
 .dccContainer div.dccEditRow > div.toggle {
   float: right;
@@ -278,6 +386,7 @@ input[type="password"] {
 .dccContainer div.dccEditRow > div.toggle > span.label {
   padding-bottom: 15px;
   display: inline-block;
+  min-width: 100px;
 }
 .dccContainer .dnnCheckbox {
   display: inline-block;
@@ -286,9 +395,10 @@ input[type="password"] {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
-  background-color: #cccccc;
+  background-color: #ccc;
   margin: 0;
   cursor: pointer;
+  position: relative;
   -webkit-transition: background 100ms linear;
   -moz-transition: background 100ms linear;
   -o-transition: background 100ms linear;
@@ -298,7 +408,7 @@ input[type="password"] {
   background-color: #48d348;
 }
 .dccContainer div.toggle.disabled .dnnCheckbox.dnnCheckbox-checked {
-  background-color: #cccccc;
+  background-color: #ccc;
 }
 .dccContainer .dnnCheckbox .mark {
   width: 22px;
@@ -307,9 +417,9 @@ input[type="password"] {
   -webkit-border-radius: 11px;
   -moz-border-radius: 11px;
   border-radius: 11px;
-  background-color: white;
+  background-color: #fff;
   border: 2px solid #b5b5b5;
-  position: relative;
+  position: absolute;
   top: -2px;
   left: 0px;
   -webkit-box-sizing: border-box;
@@ -333,7 +443,8 @@ input[type="password"] {
   text-align: center;
 }
 .dccContainer .dccButton {
-  background: white;
+  font-family: inherit;
+  background: #ffffff;
   color: #333333;
   display: inline-block;
   padding: 8px;
@@ -342,17 +453,18 @@ input[type="password"] {
   border-radius: 3px;
   text-decoration: none;
   font-size: 13px;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #dddddd;
   text-align: center;
   line-height: normal;
 }
 .dccContainer div.dccEditForm > div > a.primarybtn,
 .dccContainer div.dccEditForm > div > a.secondarybtn {
   margin-left: 5px;
+  font-family: inherit;
 }
 .dccContainer a.primarybtn {
   background: #0087c6;
-  color: white !important;
+  color: #ffffff !important;
   display: inline-block;
   padding: 9px 9px;
   cursor: pointer;
@@ -394,7 +506,7 @@ input[type="password"] {
   width: 300px;
 }
 .dccContainer .dnnDialogHeader {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   font-size: 18px;
   font-weight: bold;
   padding-bottom: 18px;
@@ -410,24 +522,28 @@ input[type="password"] {
   display: none;
 }
 .dccContainer .buttonpanel {
-  margin: 0.5em 0 0 0;
-  padding: 0.3em 1em 0em 0em;
+  margin: .5em 0 0 0;
+  padding: .3em 1em 0em 0em;
   overflow: hidden;
   border-width: 1px 0 0 0;
   background-image: none;
   text-align: left;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ddd;
 }
 .dccContainer a.dccIcon {
   padding: 0px 5px 0px 5px;
   cursor: pointer;
+}
+.dccContainer a.dccRemove .dnni {
+  font-size: 13px;
+  padding-top: 3px;
 }
 .dccContainer .dccSubSubPanel {
   margin-top: 10px;
   margin-bottom: 10px;
   padding-top: 9px;
   padding-bottom: 9px;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #dddddd;
   border-radius: 5px;
 }
 .dccContainer .dccSubSubPanel .dccSubHeading {
@@ -439,7 +555,7 @@ input[type="password"] {
   display: inline-block;
 }
 .dccContainer .dccSubSubPanel .dccTable {
-  border-top: solid 1px #aaaaaa;
+  border-top: solid 1px #dddddd;
   border-bottom: none;
 }
 .dccContainer .dccSubHeading {
@@ -453,32 +569,40 @@ input[type="password"] {
 }
 .dccContainer div.CodeMirror {
   width: 862px;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #dddddd;
   margin-top: 20px;
 }
 .dccContainer div.dccLanguageSelector {
   position: absolute;
-  top: 6px;
+  top: 5px;
   left: 635px;
   display: inline-block;
 }
 .dccContainer div.dccLanguageSelector span {
-  font-size: 16px;
+  font-size: 100%;
+  display: inline;
+  font-family: inherit;
+  font-weight: bold;
 }
 .dccContainer div.dccLanguageSelector select {
-  margin-bottom: 0px;
-  padding: 2px 5px 5px 5px;
-  font-size: 15px;
+  margin-bottom: 0;
+  margin-left: 5px;
+  padding: 5px;
+  background-color: #ffffff;
+  font-size: 100%;
+  width: 72%;
+  display: inline;
+  font-family: inherit;
 }
 .dccContainer ul#templateEditorContextMenu {
   float: left;
   position: relative;
   z-index: 5;
   list-style: none;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #dddddd;
   box-shadow: 5px 5px 5px #aaaaaa;
   border-radius: 4px;
-  background-color: white;
+  background-color: #fafafa;
 }
 .dccContainer ul#templateEditorContextMenu li {
   position: relative;
@@ -492,7 +616,7 @@ input[type="password"] {
   padding: 5px;
   text-decoration: none;
   cursor: pointer;
-  min-width: 100px;
+  min-width: 110px;
 }
 .dccContainer ul#templateEditorContextMenu li div span {
   padding-right: 5px;
@@ -504,12 +628,20 @@ input[type="password"] {
   list-style: none;
   position: absolute;
   left: -9999px;
-  border: solid 1px #aaaaaa;
+  border: solid 1px #dddddd;
   box-shadow: 5px 5px 5px #aaaaaa;
   border-radius: 4px;
-  background-color: white;
+  background-color: #fafafa;
 }
-.dccContainer ul#templateEditorContextMenu li:hover ul {
+.dccContainer ul#templateEditorContextMenu li:hover > ul {
   left: 100px;
   top: 5px;
 }
+.dccContainer div.dccEditRow select option {
+  padding-left: 20px;
+}
+.dccContainer div.dccEditRow select option:disabled {
+  color: #999999;
+  padding-left: 0px;
+}
+/*# sourceMappingURL=module.css.map */

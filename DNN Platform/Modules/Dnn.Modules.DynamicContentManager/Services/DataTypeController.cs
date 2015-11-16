@@ -7,8 +7,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -30,7 +32,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         public HttpResponseMessage DeleteDataType(DataTypeViewModel viewModel)
         {
              return DeleteEntity(() => DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true),
-                                 dataType =>DataTypeManager.Instance.DeleteDataType(dataType));
+                                 dataType => DataTypeManager.Instance.DeleteDataType(dataType));
         }
 
         /// <summary>

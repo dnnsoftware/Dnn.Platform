@@ -43,20 +43,12 @@ namespace Dnn.Modules.Tabs.Components
                 switch (version)
                 {
                     case "08.00.00":
-						ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Tabs");
+                        var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Tabs");
                         if (moduleDefinition != null)
                         {
-                            //Add Module to Admin Page for all Portals
-							Upgrade.AddAdminPages("Pages",
-													"Manage pages within the site.",
-													"~/Icons/Sigma/Tabs_16X16_Standard.png",
-													"~/Icons/Sigma/Tabs_32X32_Standard.png",
-                                                    true,
-                                                    moduleDefinition.ModuleDefID,
-													"Page Management",
-													"~/Icons/Sigma/Tabs_32X32_Standard.png",
-                                                    true);
+                            new ModuleDefinitionController().DeleteModuleDefinition(moduleDefinition.ModuleDefID);
                         }
+
                         break;
                 }
                 return "Success";

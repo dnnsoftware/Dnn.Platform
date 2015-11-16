@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="VocabulariesList.ascx.cs" Inherits="DotNetNuke.Modules.Taxonomy.Views.VocabularyList" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" %>
 <div class="dnnForm dnnVocabularyList dnnClear">
     <h3><asp:Label ID="titleLabel" runat="server" resourceKey="Title" /></h3>

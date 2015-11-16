@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Search
                 PortalId = tab.PortalID,
                 CultureCode = tab.CultureCode,
                 ModifiedTimeUtc = tab.LastModifiedOnDate,
-                Body = tab.PageHeadText,
+                Body = string.Empty,
                 Description = tab.Description
             };
 

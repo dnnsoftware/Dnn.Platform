@@ -5,6 +5,8 @@ using System;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Validators;
 using DotNetNuke.Tests.Utilities;
+using DotNetNuke.Tests.Utilities.Mocks;
+using Moq;
 using NUnit.Framework;
 
 namespace Dnn.Tests.DynamicContent.UnitTests.Validators
@@ -12,6 +14,22 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
     [TestFixture]
     class DynamicContentValidatorTests
     {
+        private Mock<IFieldDefinitionManager> _mockFieldDefinitionManager;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mockFieldDefinitionManager = MockComponentProvider.CreateNew<IFieldDefinitionManager>();
+            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionManager.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            MockComponentProvider.ResetContainer();
+            FieldDefinitionManager.ClearInstance();
+        }
+
         [Test]
         public void Constructor_Throws_on_Null_ContentItem()
         {
@@ -22,8 +40,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
         [Test]
         public void Constructor_Sets_ContentItem_Property()
         {
-            //Arrange
-            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId);
+            //Arrange            
+            var contentItem = new DynamicContentItem(Constants.PORTAL_ValidPortalId, new DynamicContentType(Constants.PORTAL_ValidPortalId));
 
             //Act
             var validator = new DynamicContentValidator(contentItem);

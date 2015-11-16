@@ -5,22 +5,32 @@
     var moduleId = Dnn.ModuleContext.ModuleId;
 
     ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/MVC/Dnn/DynamicContentViewer/ClientScripts/dcc.quickSettings.js");
-    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/DesktopModules/MVC/Dnn/DynamicContentViewer/ClientScripts/util.js");
+    ClientResourceManager.RegisterScript(Dnn.DnnPage, "~/Resources/Shared/scripts/dnn.utility.js");
 
     JavaScript.RequestRegistration("Knockout");
+
+    var routeValues = new RouteValueDictionary();
+    routeValues["dnnprintmode"] = "true";
+    routeValues["SkinSrc"] = "[G]Skins/_default/No+Skin";
+    routeValues["ContainerSrc"] = "[G]Containers/_default/No+Container";
+
+
 }
 <div id="DCCquickSettings-@moduleId" class="dnnForm">
+    <div class="dnnFormMessage dnnFormInfo">
+        @Dnn.LocalizeString("SettingsInfo")
+    </div>
     <div class="dnnFormItem">
         @Dnn.Label("contentType", Dnn.LocalizeString("ContentType"), Dnn.LocalizeString("ContentType.Help"))
         <select id="contentType" data-bind="options: contentTypes, value: selectedTypeId, optionsText: 'name', optionsValue: 'value'"></select>
     </div>
     <div>
         @Dnn.Label("viewTemplateId", Dnn.LocalizeString("ViewTemplate"), Dnn.LocalizeString("ViewTemplate.Help"))
-        <select id="viewTemplateId" data-bind="options: templates, value: selectedViewTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
+        <select id="viewTemplateId" data-bind="options: viewTemplates, value: selectedViewTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
     </div>
     <div>
         @Dnn.Label("editTemplateId", Dnn.LocalizeString("EditTemplate"), Dnn.LocalizeString("EditTemplate.Help"))
-        <select id="editTemplateId" data-bind="options: templates, value: selectedEditTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
+        <select id="editTemplateId" data-bind="options: editTemplates, value: selectedEditTemplateId, optionsText: 'name', optionsValue: 'value'"></select>
     </div>
 </div>
 
@@ -30,11 +40,13 @@
         var moduleId = @moduleId;
         $(document).ready(function($) {
             var resx = {
-
+                autoTemplate: "@Dnn.LocalizeString("AutoTemplate")"
             };
 
             var options = {
                 moduleId: moduleId,
+                url: "@(Url.Action("Index","Viewer", routeValues))",
+                container: "#dccViewerContainer-@Model.ModuleId",
                 contentTypes: [
                     @{
                         for (var i = 0; i < Model.ContentTypes.Count; i++)
@@ -60,11 +72,11 @@
 
                                 if (i < Model.Templates.Count - 1)
                                 {
-                                    @:{ name: '@template.Name', value: @template.TemplateId },
+                                    @:{ name: '@template.Name', value: @template.TemplateId, isEdit: @template.IsEditTemplate.ToString().ToLowerInvariant() },
                                     }
                                 else
                                 {
-                                    @:{ name: '@template.Name', value: @template.TemplateId }
+                                    @:{ name: '@template.Name', value: @template.TemplateId, isEdit: @template.IsEditTemplate.ToString().ToLowerInvariant() }
                                 }
                             }
                         }

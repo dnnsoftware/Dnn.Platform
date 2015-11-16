@@ -129,9 +129,6 @@
   <data name="ModuleTitle.Text" xml:space="preserve">
     <value>Content Manager</value>
   </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
   <data name="Templates.Text" xml:space="preserve">
     <value>Templates</value>
   </data>
@@ -274,7 +271,7 @@
     <value>Showing {0}-{1} of {2} Templates</value>
   </data>
   <data name="SystemTemplate.Text" xml:space="preserve">
-    <value>GlobalTemplate</value>
+    <value>Global Template?</value>
   </data>
   <data name="TemplateFile.Text" xml:space="preserve">
     <value>Template File</value>
@@ -303,7 +300,7 @@
   <data name="InsertHelper.Text" xml:space="preserve">
     <value>Insert Helper Tag</value>
   </data>
-    <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
+  <data name="DefaultLocalizedValueMissing.Text" xml:space="preserve">
     <value>The value of the field in the default language is required.</value>
   </data>
   <data name="InvalidContentTypeMessage.Text" xml:space="preserve">
@@ -333,5 +330,34 @@
   <data name="TemplateExists.Text" xml:space="preserve">
     <value>A Template with that name already exists.  Please try again with a different name.</value>
   </data>
-
+  <data name="DataTypesPageSize.Text" xml:space="preserve">
+    <value>Data Types per page</value>
+  </data>
+  <data name="ContentTypesPageSize.Text" xml:space="preserve">
+    <value>Content Types per page</value>
+  </data>
+  <data name="TemplatesPageSize.Text" xml:space="preserve">
+    <value>Templates per page</value>
+  </data>
+  <data name="FieldType.Text" xml:space="preserve">
+    <value>Field Type</value>
+  </data>
+  <data name="IsContentType.Text" xml:space="preserve">
+    <value>Content Type?</value>
+  </data>
+  <data name="IsEditTemplate.Text" xml:space="preserve">
+    <value>Edit Template?</value>
+  </data>
+  <data name="IsList.Text" xml:space="preserve">
+    <value>Is List?</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="InvalidCharsMessage.Text" xml:space="preserve">
+    <value>The template file name contains invalid characters. Please, do not use the following characters |"&lt;&gt;</value>
+  </data>
+  <data name="ContentFieldTranslationExists.Text" xml:space="preserve">
+    <value>A Content Field with the translated name for language '{0}' already exists.  Please try again with a different name.</value>
+  </data>
 </root>

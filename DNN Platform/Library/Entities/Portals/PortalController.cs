@@ -88,19 +88,9 @@ namespace DotNetNuke.Entities.Portals
 
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
-        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
-
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
-        }
-
-        public PortalController()
-        {
-            foreach (var handlers in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
-            {
-                PortalCreated += handlers.Value.PortalCreated;
-            }
         }
 
         #region Private Methods
@@ -236,17 +226,6 @@ namespace DotNetNuke.Entities.Portals
                         {
                             ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
-
-                        //copy getting started css into portal's folder.
-                        var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
-                        if (File.Exists(hostGettingStartedFile))
-                        {
-                            var portalFile = mappedHomeDirectory + "GettingStarted.css";
-                            if (!File.Exists(portalFile))
-                            {
-                                File.Copy(hostGettingStartedFile, portalFile);
-                            }
-                        }
                     }
                     catch (Exception Exc)
                     {
@@ -326,6 +305,10 @@ namespace DotNetNuke.Entities.Portals
                         foreach (Locale newPortalLocale in newPortalLocales.AllValues)
                         {
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
+                            if (portalSettings.ContentLocalizationEnabled)
+                            {
+                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                            }
                         }
                     }
 
@@ -406,10 +389,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(exc);
                     }
 
-                    if (PortalCreated != null)
-                    {
-                        PortalCreated(this, new PortalCreatedEventArgs { PortalId = portalId});
-                    }
+                    EventManager.Instance.OnPortalCreated(new PortalCreatedEventArgs { PortalId = portalId });
                 }
                 else
                 {
@@ -1685,10 +1665,6 @@ namespace DotNetNuke.Entities.Portals
                     case "searchtab":
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
-                        break;
-                    case "gettingStartedTab":                        
-                        UpdatePortalSetting(portalId, "GettingStartedTabId", tab.TabID.ToString());
-                        logType = "GettingStartedTabId";
                         break;
                     case "404Tab":
                         portal.Custom404TabId = tab.TabID;

@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeleteItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Item?</value>
+    <value>Are you sure you wish to delete this item?</value>
   </data>
   <data name="DeletetUser.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This User?</value>
+    <value>Are you sure you wish to delete this user?</value>
   </data>
   <data name="UnregisterUser.Text" xml:space="preserve">
     <value>Are you sure you want to unregister? This will delete your user account.</value>
   </data>
   <data name="RemoveItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Remove This Item?</value>
+    <value>Are you sure you wish to remove this item?</value>
   </data>
   <data name="Calendar.Text" xml:space="preserve">
     <value>Calendar</value>
@@ -1242,6 +1242,33 @@
   <data name="MODULE_UnRegistered.Text" xml:space="preserve">
     <value>Module un-registered successfully - {0}</value>
   </data>
+  <data name="MODULE_AdminPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Admin page {0} on portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageRemoved.Text" xml:space="preserve">
+    <value>Admin page {0} removed from portal {1}.</value>
+  </data>
+  <data name="MODULE_AdminPageAdded.Text" xml:space="preserve">
+    <value>Admin page {0} added to portal {1}.</value>
+  </data>
+  <data name="MODULE_HostAdded.Text" xml:space="preserve">
+    <value>Module added Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageAdded.Text" xml:space="preserve">
+    <value>Host page {0} added.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleAdded.Text" xml:space="preserve">
+    <value>Module added to Host page {0}.</value>
+  </data>
+  <data name="MODULE_HostPageRemoved.Text" xml:space="preserve">
+    <value>Host page {0} removed.</value>
+  </data>
+  <data name="MODULE_HostPagemoduleRemoved.Text" xml:space="preserve">
+    <value>Module removed from Host page {0}.</value>
+  </data>
   <data name="PACKAGE_NoLicense.Text" xml:space="preserve">
     <value>The license for this package is not currently included within the installation file, please check with the vendor for full license details.</value>
   </data>
@@ -1821,42 +1848,6 @@
   <data name="ScriptCollision.Text" xml:space="preserve">
     <value>Requests for two or more different versions of JavaScript libraries were made for this page. The details have been logged to the event log.</value>
   </data>
-  <data name="GettingStarted.Title" xml:space="preserve">
-    <value>Welcome to your website</value>
-  </data>
-  <data name="GettingStarted.SignUpLabel" xml:space="preserve">
-    <value>Sign up for our Newsletter</value>
-  </data>
-  <data name="GettingStarted.SignUpText" xml:space="preserve">
-    <value>Get Tips, Tricks, and Product Updates In Your Inbox</value>
-  </data>
-  <data name="GettingStarted.SignUpButton" xml:space="preserve">
-    <value>Sign Up</value>
-  </data>
-  <data name="GettingStarted.DownloadManualButton" xml:space="preserve">
-    <value>Download the User Manual</value>
-  </data>
-  <data name="GettingStarted.DontShowDialogLabel" xml:space="preserve">
-    <value>Don't show this again</value>
-  </data>
-  <data name="GettingStarted.FacebookLinkTooltip" xml:space="preserve">
-    <value>Facebook</value>
-  </data>
-  <data name="GettingStarted.TwitterLinkTooltip" xml:space="preserve">
-    <value>DNN Corp Twitter</value>
-  </data>
-  <data name="GettingStarted.InvalidEmailTitle" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="GettingStarted.InvalidEmailMessage" xml:space="preserve">
-    <value>Specified e-mail is invalid.</value>
-  </data>
-  <data name="GettingStarted.SignUpTitle" xml:space="preserve">
-    <value>Thank You!</value>
-  </data>
-  <data name="GettingStarted.SignUpMessage" xml:space="preserve">
-    <value>Your request has been received.</value>
-  </data>
   <data name="ViewJournal.Text" xml:space="preserve">
     <value>View</value>
   </data>
@@ -1946,5 +1937,11 @@
   </data>
   <data name="QuickSettings.Text" xml:space="preserve">
     <value>Quick Settings</value>
+  </data>
+  <data name="ContentType.Text" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
+  <data name="DataType.Text" xml:space="preserve">
+    <value>Data Type</value>
   </data>
 </root>

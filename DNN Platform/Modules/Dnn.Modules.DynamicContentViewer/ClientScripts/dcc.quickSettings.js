@@ -6,7 +6,8 @@ dcc.quickSettings = function ($, ko, options, resx) {
     var opts = $.extend({}, dcc.quickSettings.defaultOptions, options);
     var $rootElement;
 
-    var util = dcc.utility(opts, resx);
+    // ReSharper disable once UseOfImplicitGlobalInFunctionScope
+    var util = dnn.utility(opts, resx);
     util.settingsService = function () {
         util.sf.serviceController = "Settings";
         return util.sf;
@@ -18,10 +19,29 @@ dcc.quickSettings = function ($, ko, options, resx) {
         $rootElement = $(element);
 
         viewModel.contentTypes = opts.contentTypes;
-        viewModel.templates = ko.observableArray(opts.templates);
+        viewModel.editTemplates = ko.observableArray([]);
+        viewModel.viewTemplates = ko.observableArray([]);
         viewModel.selectedTypeId = ko.observable(opts.selectedTypeId);
         viewModel.selectedViewTemplateId = ko.observable(opts.selectedViewTemplateId);
         viewModel.selectedEditTemplateId = ko.observable(opts.selectedEditTemplateId);
+
+        var refreshTemplates = function(templates) {
+            viewModel.editTemplates.removeAll();
+            viewModel.viewTemplates.removeAll();
+            viewModel.editTemplates.push({ name: resx.autoTemplate, value: -1 });
+            viewModel.viewTemplates.push({ name: resx.autoTemplate, value: -1 });
+            for (var i = 0; i < templates.length; i++) {
+                var result = templates[i];
+                var template = { name: result.name, value: result.value };
+                if (result.isEdit) {
+                    viewModel.editTemplates.push(template);
+                } else {
+                    viewModel.viewTemplates.push(template);
+                }
+            }
+        }
+
+        refreshTemplates(opts.templates);
 
         var getTemplates = function (contentTypeId) {
             var params = {
@@ -30,23 +50,20 @@ dcc.quickSettings = function ($, ko, options, resx) {
 
             util.settingsService().get("GetTemplates", params,
             function (data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
+                if (typeof data !== "undefined" && data !== null) {
                     //Success
-                    viewModel.templates.removeAll();
-                    for (var i = 0; i < data.data.results.length; i++) {
-                        var result = data.data.results[i];
-                        var template = { name: result.name, value: result.value };
-                        viewModel.templates.push(template);
-                    }
+                    refreshTemplates(data.results);
                 }
             },
             function () {
                 //Failure
-            }
-        );
+            });
         };
 
         var saveSettings = function () {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
+
             var params = {
                 contentTypeId: viewModel.selectedTypeId(),
                 viewTemplateId: viewModel.selectedViewTemplateId(),
@@ -56,17 +73,21 @@ dcc.quickSettings = function ($, ko, options, resx) {
             util.settingsService().post("SaveSettings", params,
                 function (data) {
                     if (data.success === true) {
-                        //Success
+                        $(opts.container).load(opts.url + " " + opts.container + " .dccViewContent");
+                        deferred.resolve();
                     } else {
                         //Error
                         util.alert(data.message, resx.ok);
+                        deferred.reject();
                     }
                 },
                 function () {
                     //Failure
+                    deferred.reject();
                 }
             );
 
+            return promise;
         };
 
         viewModel.selectedTypeId.subscribe(function (newValue) {
@@ -80,8 +101,6 @@ dcc.quickSettings = function ($, ko, options, resx) {
             onSave: saveSettings
         });
     }
-
-
 
     return {
         init: init

@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Utilities;
@@ -312,61 +313,71 @@ namespace DotNetNuke.Modules.Admin.Modules
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
-            chkAllTabs.CheckedChanged += OnAllTabsCheckChanged;
-            chkInheritPermissions.CheckedChanged += OnInheritPermissionsChanged;
-            chkWebSlice.CheckedChanged += OnWebSliceCheckChanged;
-            cboCacheProvider.TextChanged += OnCacheProviderIndexChanged;
-            cmdDelete.Click += OnDeleteClick;
-            cmdUpdate.Click += OnUpdateClick;
-            dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
-
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            //get ModuleId
-            if ((Request.QueryString["ModuleId"] != null))
+            try
             {
-                _moduleId = Int32.Parse(Request.QueryString["ModuleId"]);
-            }
-            if (Module.ContentItemId == Null.NullInteger && Module.ModuleID != Null.NullInteger)
-            {
-                //This tab does not have a valid ContentItem
-                ModuleController.Instance.CreateContentItem(Module);
+                chkAllTabs.CheckedChanged += OnAllTabsCheckChanged;
+                chkInheritPermissions.CheckedChanged += OnInheritPermissionsChanged;
+                chkWebSlice.CheckedChanged += OnWebSliceCheckChanged;
+                cboCacheProvider.TextChanged += OnCacheProviderIndexChanged;
+                cmdDelete.Click += OnDeleteClick;
+                cmdUpdate.Click += OnUpdateClick;
+                dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
-                ModuleController.Instance.UpdateModule(Module);
-            }
+			    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            //Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Module))
-            {
-                if (!(IsSharedViewOnly() && TabPermissionController.CanAddContentToPage()))
+                //get ModuleId
+                if ((Request.QueryString["ModuleId"] != null))
                 {
-                    Response.Redirect(Globals.AccessDeniedURL(), true);
+                    _moduleId = Int32.Parse(Request.QueryString["ModuleId"]);
                 }
-            }
-            if (Module != null)
-            {
-                //get module
-                TabModuleId = Module.TabModuleID;
-
-                //get Settings Control
-                ModuleControlInfo moduleControlInfo = ModuleControlController.GetModuleControlByControlKey("Settings", Module.ModuleDefID);
-
-                if (moduleControlInfo != null)
+                if (Module.ContentItemId == Null.NullInteger && Module.ModuleID != Null.NullInteger)
                 {
-                    _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
+                    //This tab does not have a valid ContentItem
+                    ModuleController.Instance.CreateContentItem(Module);
 
-                    var settingsControl = _control as ISettingsControl;
-                    if (settingsControl != null)
+                    ModuleController.Instance.UpdateModule(Module);
+                }
+
+                //Verify that the current user has access to edit this module
+                if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Module))
+                {
+                    if (!(IsSharedViewOnly() && TabPermissionController.CanAddContentToPage()))
                     {
-                        hlSpecificSettings.Text = Localization.GetString("ControlTitle_settings", settingsControl.LocalResourceFile);
-                        if (String.IsNullOrEmpty(hlSpecificSettings.Text))
-                        {
-                            hlSpecificSettings.Text = String.Format(Localization.GetString("ControlTitle_settings", LocalResourceFile), Module.DesktopModule.FriendlyName);
-                        }
-                        pnlSpecific.Controls.Add(_control);
+                        Response.Redirect(Globals.AccessDeniedURL(), true);
                     }
                 }
+                if (Module != null)
+                {
+                    //get module
+                    TabModuleId = Module.TabModuleID;
+
+                    //get Settings Control
+                    ModuleControlInfo moduleControlInfo = ModuleControlController.GetModuleControlByControlKey("Settings", Module.ModuleDefID);
+
+                    if (moduleControlInfo != null)
+                    {
+                    
+                        _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
+
+                        var settingsControl = _control as ISettingsControl;
+                        if (settingsControl != null)
+                        {
+                            hlSpecificSettings.Text = Localization.GetString("ControlTitle_settings",
+                                settingsControl.LocalResourceFile);
+                            if (String.IsNullOrEmpty(hlSpecificSettings.Text))
+                            {
+                                hlSpecificSettings.Text =
+                                    String.Format(Localization.GetString("ControlTitle_settings", LocalResourceFile),
+                                        Module.DesktopModule.FriendlyName);
+                            }
+                            pnlSpecific.Controls.Add(_control);
+                        }
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                Exceptions.ProcessModuleLoadException(this, err);
             }
         }
 

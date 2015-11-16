@@ -23,7 +23,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Web.UI;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -33,6 +36,7 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Services.Installer.Packages;
 
 #endregion
 
@@ -53,7 +57,119 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
+        #region Inner Classes
+
+        [Serializable]
+        public class PageInfo : IXmlSerializable
+        {
+            [XmlAttribute("type")]
+            public string Type { get; set; }
+
+            [XmlAttribute("common")]
+            public bool IsCommon { get; set; }
+
+            [XmlElement("name")]
+            public string Name { get; set; }
+
+            [XmlElement("icon")]
+            public string Icon { get; set; }
+
+            [XmlElement("largeIcon")]
+            public string LargeIcon { get; set; }
+
+            [XmlElement("description")]
+            public string Description { get; set; }
+
+            public bool HasAdminPage()
+            {
+                return Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+            public bool HasHostPage()
+            {
+                return Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+
+            public XmlSchema GetSchema()
+            {
+                return null;
+            }
+
+            public void ReadXml(XmlReader reader)
+            {
+                while (!reader.EOF)
+                {
+                    if (reader.NodeType == XmlNodeType.EndElement)
+                    {
+                        if (reader.Name == "page")
+                        {
+                            break;
+                        }
+
+                        reader.Read();
+                        continue;
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Whitespace)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    switch (reader.Name)
+                    {
+                        case "page":
+                            Type = reader.GetAttribute("type");
+                            var commonValue = reader.GetAttribute("common");
+                            if (!string.IsNullOrEmpty(commonValue))
+                            {
+                                IsCommon = commonValue.ToLowerInvariant() == "true";
+                            }
+
+                            reader.Read();
+                            break;
+                        case "name":
+                            Name = reader.ReadElementContentAsString();
+                            break;
+                        case "icon":
+                            Icon = reader.ReadElementContentAsString();
+                            break;
+                        case "largeIcon":
+                            LargeIcon = reader.ReadElementContentAsString();
+                            break;
+                        case "description":
+                            Description = reader.ReadElementContentAsString();
+                            break;
+                        default:
+                            reader.Read();
+                            break;
+                    }
+                }
+            }
+
+            public void WriteXml(XmlWriter writer)
+            {
+                //Write start of main elemenst
+                writer.WriteStartElement("page");
+                writer.WriteAttributeString("type", Type);
+                writer.WriteAttributeString("common", IsCommon.ToString().ToLowerInvariant());
+
+                //write out properties
+                writer.WriteElementString("name", Name);
+                writer.WriteElementString("icon", Icon);
+                writer.WriteElementString("largeIcon", LargeIcon);
+                writer.WriteElementString("description", Description);
+
+                //Write end of main element
+                writer.WriteEndElement();
+            }
+        }
+
+        #endregion
+
         private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
+        private PageInfo _pageInfo;
 
         public DesktopModuleInfo()
         {
@@ -89,6 +205,11 @@ namespace DotNetNuke.Entities.Modules
         /// </history>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
+
+        /// <summary>
+        /// returns whether this has an associated Admin page
+        /// </summary>
+        public string AdminPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -189,6 +310,11 @@ namespace DotNetNuke.Entities.Modules
         /// </history>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
+
+        /// <summary>
+        /// returns whether this has an associated hostpage
+        /// </summary>
+        public string HostPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -356,6 +482,33 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public string Version { get; set; }
 
+        public PageInfo Page
+        {
+            get
+            {
+                if (_pageInfo == null && PackageID > Null.NullInteger)
+                {
+                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
+                    if (package != null && !string.IsNullOrEmpty(package.Manifest))
+                    {
+                        var xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(package.Manifest);
+                        var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
+                        if (pageNode != null)
+                        {
+                            _pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
+                        }
+                    }
+                }
+
+                return _pageInfo;
+            }
+            set
+            {
+                _pageInfo = value;
+            }
+        }
+
 		#endregion
 
 		#region IHydratable Members
@@ -387,6 +540,8 @@ namespace DotNetNuke.Entities.Modules
             Dependencies = Null.SetNullString(dr["Dependencies"]);
             Permissions = Null.SetNullString(dr["Permissions"]);
 		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            AdminPage = Null.SetNullString(dr["AdminPage"]);
+            HostPage = Null.SetNullString(dr["HostPage"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -441,6 +596,10 @@ namespace DotNetNuke.Entities.Modules
                 {
                     ReadModuleSharing(reader);
                 }
+                else if (reader.NodeType == XmlNodeType.Element && reader.Name == "page" && !reader.IsEmptyElement)
+                {
+                    ReadPageInfo(reader);
+                }
                 else
                 {
                     switch (reader.Name)
@@ -458,6 +617,19 @@ namespace DotNetNuke.Entities.Modules
                             break;
                         case "codeSubDirectory":
                             CodeSubDirectory = reader.ReadElementContentAsString();
+                            break;
+                        case "page":
+                            ReadPageInfo(reader);
+
+                            if (Page.HasAdminPage())
+                            {
+                                AdminPage = Page.Name;
+                            }
+
+                            if (Page.HasHostPage())
+                            {
+                                HostPage = Page.Name;
+                            }
                             break;
                         case "isAdmin":
                             bool isAdmin;
@@ -479,7 +651,7 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
         }
-		
+
 		/// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a DesktopModuleInfo to an XmlWriter
@@ -527,6 +699,12 @@ namespace DotNetNuke.Entities.Modules
 
             //Write end of Supported Features
             writer.WriteEndElement();
+
+            //Write admin/host page info.
+            if (Page != null)
+            {
+                Page.WriteXml(writer);
+            }
 
             // Module sharing
 
@@ -715,6 +893,23 @@ namespace DotNetNuke.Entities.Modules
                 ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
             } while (reader.ReadToNextSibling("moduleDefinition"));
 		}
+
+        private void ReadPageInfo(XmlReader reader)
+        {
+            Page = new PageInfo();
+            //Load it from the Xml
+            Page.ReadXml(reader.ReadSubtree());
+
+            if (Page.HasAdminPage())
+            {
+                AdminPage = Page.Name;
+            }
+
+            if (Page.HasHostPage())
+            {
+                HostPage = Page.Name;
+            }
+        }
 
 		#endregion
 	}

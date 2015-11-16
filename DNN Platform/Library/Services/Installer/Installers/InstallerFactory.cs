@@ -74,9 +74,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "Auth_System":
                     installer = new AuthenticationInstaller();
                     break;
-                case "DashboardControl":
-                    installer = new DashboardInstaller();
-                    break;
                 case "Script":
                     installer = new ScriptInstaller();
                     break;

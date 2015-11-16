@@ -473,7 +473,8 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (cboTabs.SelectedItem != null)
                         {
                             strTab = cboTabs.SelectedItem.Value;
-                            if (Regex.IsMatch(strTab, "^\\d+$") && (Convert.ToInt32(strTab) >= 0))
+                            int id;
+                            if (int.TryParse(strTab,out id) && id >= 0)
                             {
                                 r = strTab;
                             }

@@ -23,6 +23,7 @@
 
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
@@ -46,6 +47,7 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class BreadCrumb : SkinObjectBase
     {
+        private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
         private string _separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
         private string _cssClass = "SkinObject";
         private int _rootLevel = 0;
@@ -116,6 +118,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
             // Position in breadcrumb list
             var position = 1;
+
+            //resolve image path in separator content
+            ResolveSeparatorPaths();
 
             // If we have enabled hiding when there are no breadcrumbs, simply return
             if (HideWithNoBreadCrumb && PortalSettings.ActiveTab.BreadCrumbs.Count == (_rootLevel + 1))
@@ -210,6 +215,55 @@ namespace DotNetNuke.UI.Skins.Controls
             _breadcrumb.Append("</span>"); //End of BreadcrumbList
             
             lblBreadCrumb.Text = _breadcrumb.ToString();
+        }
+
+        private void ResolveSeparatorPaths()
+        {
+            if (string.IsNullOrEmpty(_separator))
+            {
+                return;
+            }
+
+            var urlMatches = Regex.Matches(_separator, UrlRegex, RegexOptions.IgnoreCase);
+            if (urlMatches.Count > 0)
+            {
+                foreach (Match match in urlMatches)
+                {
+                    var url = match.Groups[3].Value;
+                    var changed = false;
+
+                    if (url.StartsWith("/"))
+                    {
+                        if (!string.IsNullOrEmpty(Globals.ApplicationPath))
+                        {
+                            url = string.Format("{0}{1}", Globals.ApplicationPath, url);
+                            changed = true;
+                        }
+                    }
+                    else if (url.StartsWith("~/"))
+                    {
+                        url = Globals.ResolveUrl(url);
+                        changed = true;
+                    }
+                    else
+                    {
+                        url = string.Format("{0}{1}", PortalSettings.ActiveTab.SkinPath, url);
+                        changed = true;
+                    }
+
+                    if (changed)
+                    {
+                        var newMatch = string.Format("{0}={1}{2}{3}", 
+                                                        match.Groups[1].Value, 
+                                                        match.Groups[2].Value, 
+                                                        url,
+                                                        match.Groups[4].Value);
+
+                        _separator = _separator.Replace(match.Value, newMatch);
+                    }
+                }
+
+            }
         }
     }
 }

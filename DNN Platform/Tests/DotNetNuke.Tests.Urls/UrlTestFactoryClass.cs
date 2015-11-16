@@ -82,14 +82,14 @@ namespace DotNetNuke.Tests.Urls
             // ReSharper restore RedundantCatchClause
         }
 
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName)
+        internal static FriendlyUrlSettings GetSettings(string testType, string testName, int portalId)
         {
-            return GetSettings(testType, testName, "Settings");
+            return GetSettings(testType, testName, "Settings", portalId);
         }
 
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile)
+        internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile, int portalId)
         {
-            var settings = new FriendlyUrlSettings(-2);
+            var settings = new FriendlyUrlSettings(portalId);
 
             //Read Test Settings
             TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>

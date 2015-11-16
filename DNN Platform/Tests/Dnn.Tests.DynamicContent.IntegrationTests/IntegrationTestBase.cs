@@ -40,11 +40,28 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 PortalID int NOT NULL DEFAULT -1,
 			    [Name] [nvarchar](100) NOT NULL,
                 [TemplateFileID] [int] NOT NULL,
+	            IsEditTemplate bit NOT NULL DEFAULT 0,
                 CreatedByUserID int NOT NULL,
                 CreatedOnDate datetime NOT NULL DEFAULT getdate(),
                 LastModifiedByUserID int NOT NULL,
                 LastModifiedOnDate datetime NOT NULL DEFAULT getdate()
             )";
+
+        private const string CreateContentItemsTableSql = @"
+           CREATE TABLE ContentItems(
+	        [ContentItemID] [int] IDENTITY(1,1) NOT NULL,
+	        [Content] nvarchar (4000) NULL,
+	        [ContentTypeID] [int] NOT NULL,
+	        [TabID] [int] NOT NULL,
+	        [ModuleID] [int] NOT NULL,
+	        [ContentKey] nvarchar (250) NULL,
+	        [Indexed] [bit] NOT NULL,
+	        [CreatedByUserID] [int] NULL,
+	        [CreatedOnDate] [datetime] NULL,
+	        [LastModifiedByUserID] [int] NULL,
+	        [LastModifiedOnDate] [datetime] NULL,
+	        [StateID] [int] NULL
+        )";
 
         private const string CreateValidatorTypeTableSql = @"
             CREATE TABLE ContentTypes_ValidatorTypes(
@@ -79,7 +96,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 	            FieldDefinitionID int IDENTITY(1,1) NOT NULL,
                 ContentTypeID int NOT NULL,
                 PortalID int NOT NULL,
-                DataTypeID int NOT NULL,
+                FieldTypeID int NOT NULL,
+                IsReferenceType bit NOT NULL DEFAULT (0),
+                IsList bit NOT NULL DEFAULT (0),
 	            Name nvarchar(100) NOT NULL,
 	            Label nvarchar(100) NOT NULL,
 	            Description nvarchar(2000) NULL,
@@ -94,7 +113,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                                             VALUES ('{0}', '{1}')";
 
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
-                                                            (ContentTypeID, PortalID, DataTypeID, Name, Label, Description, [Order]) 
+                                                            (ContentTypeID, PortalID, FieldTypeID, Name, Label, Description, [Order]) 
                                                             VALUES ({0}, {1}, {2}, '{3}', '{4}', '{5}', {6})";
 
         private const string InsertContentTypeSql = @"INSERT INTO ContentTypes 
@@ -148,12 +167,26 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTemplateTableSql);
+            DataUtil.ExecuteNonQuery(DatabaseName, CreateContentItemsTableSql);
         }
 
         public void TearDownInternal()
         {
             DataUtil.DeleteDatabase(DatabaseName);
             LogController.ClearInstance();
+        }
+
+        protected void SetUpContentTypes(int count, int portalId)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int isDynamic = 0;
+                if (i % 2 == 0)
+                {
+                    isDynamic = 1;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isDynamic, CreatedByUserId, LastModifiedByUserId));
+            }
         }
 
         protected void SetUpContentTypes(int count)
@@ -175,7 +208,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
+                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, 1, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i), i));
             }
         }
 

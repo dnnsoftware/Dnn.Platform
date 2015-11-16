@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI;
 
@@ -65,6 +66,8 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
+        protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)\.resx", RegexOptions.Compiled);
+
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 

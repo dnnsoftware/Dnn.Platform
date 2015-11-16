@@ -12,12 +12,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleApplication
     {
-        private const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        protected const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         
         private bool _initialized;
         private readonly object _lock = new object();
@@ -82,6 +82,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
 
+                moduleController.ValidateRequest = false;
+
                 moduleController.DnnPage = context.DnnPage;
 
                 moduleController.ModuleContext = context.ModuleContext;
@@ -135,7 +137,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                     });
         }
 
-        private static string NormalizeFolderPath(string path)
+        protected static string NormalizeFolderPath(string path)
         {
             // Remove leading and trailing slashes
             if (!String.IsNullOrEmpty(path))

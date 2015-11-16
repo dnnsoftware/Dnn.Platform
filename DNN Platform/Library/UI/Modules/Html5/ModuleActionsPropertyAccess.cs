@@ -48,6 +48,9 @@ namespace DotNetNuke.UI.Modules.Html5
 
         [JsonProperty("titlekey")]
         public string TitleKey { get; set; }
+
+        [JsonProperty("script")]
+        public string Script { get; set; }
     }
 
     public class ModuleActionsPropertyAccess : JsonPropertyAccess<ModuleActionDto>
@@ -63,8 +66,8 @@ namespace DotNetNuke.UI.Modules.Html5
 
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            var title = (!String.IsNullOrEmpty(model.TitleKey) && !String.IsNullOrEmpty(model.LocalResourceFile)) 
-                                ? Localization.GetString(model.TitleKey, model.LocalResourceFile) 
+            var title = (!String.IsNullOrEmpty(model.TitleKey) && !String.IsNullOrEmpty(model.LocalResourceFile))
+                                ? Localization.GetString(model.TitleKey, model.LocalResourceFile)
                                 : model.Title;
 
             SecurityAccessLevel securityAccessLevel = SecurityAccessLevel.View;
@@ -89,12 +92,23 @@ namespace DotNetNuke.UI.Modules.Html5
             }
 
             var moduleAction = new ModuleAction(_moduleContext.GetNextActionID())
-                                        {
-                                            Title = title,
-                                            Url = _moduleContext.EditUrl(model.ControlKey),
-                                            Icon = model.Icon,
-                                            Secure = securityAccessLevel
-                                        };
+            {
+                Title = title,
+                Icon = model.Icon,
+                Secure = securityAccessLevel
+            };
+
+            if (string.IsNullOrEmpty(model.Script))
+            {
+                moduleAction.Url = _moduleContext.EditUrl(model.ControlKey);
+            }
+            else
+            {
+                moduleAction.Url = model.Script.ToLower().StartsWith("javascript:") ? 
+                                    model.Script : 
+                                    string.Format("javascript:{0}", model.Script);
+            }
+
             _moduleActions.Add(moduleAction);
 
             return String.Empty;

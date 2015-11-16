@@ -4,10 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using DotNetNuke.Collections;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -39,12 +42,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 deleteEntity(entity);
             }
 
-            var response = new
-                            {
-                                success = true
-                            };
-
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(HttpStatusCode.OK, new { });
 
         }
 
@@ -58,18 +56,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <returns></returns>
         protected HttpResponseMessage GetEntity<TEntity, TViewModel>(Func<TEntity> getEntity, Func<TEntity, TViewModel> getViewModel)
         {
-            var entity = getEntity();
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            result = getViewModel(entity)
-                                        }
-                                    };
-
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(getViewModel(getEntity()));
         }
 
         /// <summary>
@@ -89,15 +76,11 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             var response = new
                             {
-                                success = true,
-                                data = new
-                                        {
-                                            results = entities,
-                                            totalResults = entityList.TotalCount
-                                        }
+                                results = entities,
+                                total = entityList.TotalCount
                             };
 
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         /// <summary>
@@ -118,12 +101,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 }
                 else
                 {
-                    localizations.Add(new ContentTypeLocalization()
+                    localizations.Add(new ContentTypeLocalization
                                             {
                                                 PortalId = portalId,
                                                 CultureCode = localizedName.code,
                                                 Value = localizedName.value
-                    });
+                                            });
                 }
             }
             return defaultValue;
@@ -210,8 +193,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
             saveLocalizations(id);
 
             var response = (isSuccess) 
-                                ? Request.CreateResponse(new { success = true, data = new { id } }) 
-                                : Request.CreateResponse(new { success = false, message = errorMessage });
+                                ? Request.CreateResponse(HttpStatusCode.OK, new { id })
+                                : Request.CreateErrorResponse((HttpStatusCode) HttpStatusCodeAdditions.UnprocessableEntity, errorMessage);
 
             return response;
         }

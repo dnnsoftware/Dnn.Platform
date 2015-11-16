@@ -48,6 +48,8 @@ namespace DotNetNuke.Modules.Admin.MobilePreview
 
 	public partial class Preview : PortalModuleBase
 	{
+        private static readonly Regex PathRegex = new Regex("(src|href)=['\"]?([^>'\"\\s]+)['\"]?", RegexOptions.Compiled);
+
 		#region "Public Properties"
 
 		protected string PreviewUrl
@@ -223,8 +225,7 @@ namespace DotNetNuke.Modules.Admin.MobilePreview
 
 			}
 
-			Regex pathReg = new Regex("(src|href)=['\"]?([^>'\"\\s]+)['\"]?");
-			MatchCollection matches = pathReg.Matches(content);
+			MatchCollection matches = PathRegex.Matches(content);
 			foreach (Match match in matches)
 			{
                 var path = match.Groups[2].Value;

@@ -5,19 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Xml.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -27,6 +29,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DnnExceptionFilter]
     public class TemplateController : BaseController
     {
         /// <summary>
@@ -60,16 +63,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
             LoadSnippets(PortalSettings.HomeDirectoryMapPath, snippets);
 
             var response = new
-            {
-                success = true,
-                data = new
-                        {
-                            results = snippets,
-                            totalResults = snippets.Count
-                }
-            };
+                                {
+                                    results = snippets,
+                                    totalResults = snippets.Count
+                                };
 
-            return Request.CreateResponse(response);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         private void LoadSnippets(string path, List<SnippetViewModel> snippets)
@@ -133,25 +132,28 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveTemplate(TemplateViewModel viewModel)
         {
-            var templateStream = new MemoryStream(Encoding.UTF8.GetBytes(viewModel.Content ?? ""));
-            var folderPath = viewModel.FilePath.Substring(0, viewModel.FilePath.LastIndexOf("/", StringComparison.Ordinal));
-            var fileName = Path.GetFileName(viewModel.FilePath);
+            
             var portalId = (viewModel.IsSystem) ? -1 : PortalSettings.PortalId;
-
-            var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
-                         FolderManager.Instance.AddFolder(portalId, folderPath);
-
-            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-            var file = FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType, PortalSettings.UserId);
-
-            if (file == null)
+            IFileInfo file;
+            try
             {
-                return Request.CreateResponse(new { success = false, message = Localization.GetString("FileCreateError", LocalResourceFile) });
+                file = CreateTemplateFile(viewModel, portalId);
+
+                if (file == null)
+                {
+                    return Request.CreateResponse(new { success = false, message = Localization.GetString("FileCreateError", LocalResourceFile) });
+                }
             }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse((HttpStatusCode)HttpStatusCodeAdditions.UnprocessableEntity, Localization.GetString("FileCreateError", LocalResourceFile));
+            }
+            
 
             var templateId = viewModel.TemplateId;
             var localizedNames = new List<ContentTypeLocalization>();
-            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
+            var defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
             return SaveEntity(templateId,
                 /*CheckEntity*/ () => ContentTemplateManager.Instance.GetContentTemplates(portalId, true).SingleOrDefault((t => t.Name == defaultName)),
@@ -163,8 +165,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                                 ContentTypeId = viewModel.ContentTypeId,
                                                 Name = defaultName,
                                                 TemplateFileId = file.FileId,
-                                                PortalId = portalId
-
+                                                PortalId = portalId,
+                                                IsEditTemplate = viewModel.IsEditTemplate
                                             },
 
                 /*AddEntity*/   template => ContentTemplateManager.Instance.AddContentTemplate(template),
@@ -174,10 +176,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 /*UpdateEntity*/template =>
                                             {
                                                 template.Name = defaultName;
+                                                template.IsEditTemplate = viewModel.IsEditTemplate;
+                                                template.TemplateFileId = file.FileId;
                                                 ContentTemplateManager.Instance.UpdateContentTemplate(template);
                                             },
 
                 /*SaveLocal*/   id => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
+        }
+
+        private IFileInfo CreateTemplateFile(TemplateViewModel viewModel, int portalId)
+        {
+            using (var templateStream = new MemoryStream(Encoding.UTF8.GetBytes(viewModel.Content ?? "")))
+            {
+                var folderPath = viewModel.FilePath.Substring(0, viewModel.FilePath.LastIndexOf("/", StringComparison.Ordinal));
+
+                var fileName = Path.GetFileName(viewModel.FilePath);
+                
+                var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
+                             FolderManager.Instance.AddFolder(portalId, folderPath);
+
+                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+
+                return FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType,
+                    PortalSettings.UserId);                
+            }            
         }
     }
 }

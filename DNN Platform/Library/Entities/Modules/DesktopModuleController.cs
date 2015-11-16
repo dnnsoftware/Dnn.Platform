@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -40,6 +41,8 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Upgrade;
+using Microsoft.VisualBasic.Logging;
 
 #endregion
 
@@ -347,7 +350,8 @@ namespace DotNetNuke.Entities.Modules
                                                                 desktopModule.Dependencies,
                                                                 desktopModule.Permissions,
                                                                 desktopModule.ContentItemId,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID,
+                                                                desktopModule.AdminPage, desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
@@ -374,7 +378,9 @@ namespace DotNetNuke.Entities.Modules
                                                  desktopModule.Dependencies,
                                                  desktopModule.Permissions,
                                                  desktopModule.ContentItemId,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID,
+                                                 desktopModule.AdminPage,
+                                                 desktopModule.HostPage);
 
                 //Update Tags
                 if (saveTerms)
@@ -521,7 +527,16 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (!desktopModule.IsPremium)
                 {
-                    AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                    if (desktopModule.Page != null && !string.IsNullOrEmpty(desktopModule.AdminPage))
+                    {
+                        bool createdNewPage = false, addedNewModule = false;
+                        AddDesktopModulePageToPortal(desktopModule, desktopModule.AdminPage, portalId, ref createdNewPage, ref addedNewModule);
+                    }
+                    else
+                    {
+                        AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                    }
+                    
                 }
             }
             DataCache.ClearPortalCache(portalId, true);
@@ -618,6 +633,70 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
+        #region Interal Methods
+
+        internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
+        {
+            var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
+            var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+            TabInfo existTab = TabController.Instance.GetTab(tabId, portalId);
+            if (existTab == null)
+            {
+                if (portalId == Null.NullInteger)
+                {
+                    existTab = Upgrade.AddHostPage(pageName,
+                                                    desktopModule.Page.Description,
+                                                    desktopModule.Page.Icon,
+                                                    desktopModule.Page.LargeIcon,
+                                                    true);
+                }
+                else
+                {
+                    existTab = Upgrade.AddAdminPage(PortalController.Instance.GetPortal(portalId),
+                                                        pageName,
+                                                        desktopModule.Page.Description,
+                                                        desktopModule.Page.Icon,
+                                                        desktopModule.Page.LargeIcon,
+                                                        true);
+                }
+
+                if (desktopModule.Page.IsCommon)
+                {
+                    TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
+                }
+
+                createdNewPage = true;
+            }
+
+            AddDesktopModuleToPage(desktopModule, existTab, ref addedNewModule);
+        }
+
+        internal static void AddDesktopModuleToPage(DesktopModuleInfo desktopModule, TabInfo tab, ref bool addedNewModule)
+        {
+            if (tab.PortalID != Null.NullInteger)
+            {
+                AddDesktopModuleToPortal(tab.PortalID, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+            }
+
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModule.DesktopModuleID).Values;
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
+            foreach (var moduleDefinition in moduleDefinitions)
+            {
+                if (tabModules.All(m => m.ModuleDefinition.ModuleDefID != moduleDefinition.ModuleDefID))
+                {
+                    Upgrade.AddModuleToPage(tab,
+                        moduleDefinition.ModuleDefID,
+                        desktopModule.Page.Description,
+                        desktopModule.Page.Icon,
+                        true);
+
+                    addedNewModule = true;
+                }
+            }
+
+        }
+
+        #endregion
 
         #endregion
 

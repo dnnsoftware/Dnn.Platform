@@ -32,9 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -62,27 +63,41 @@
     <Compile Include="Common\DateUtilitiesManager.cs" />
     <Compile Include="Common\IDateUtilitiesManager.cs" />
     <Compile Include="ContentTemplate.cs" />
+    <Compile Include="Exceptions\ContentTemplateDoesNotExistException.cs" />
     <Compile Include="ContentTemplateManager.cs" />
     <Compile Include="DataType.cs" />
+    <Compile Include="Exceptions\DataTypeDoesNotExistException.cs" />
     <Compile Include="DataTypeManager.cs" />
     <Compile Include="DynamicContentField.cs" />
     <Compile Include="DynamicContentItem.cs" />
+    <Compile Include="DynamicContentSearchManager.cs" />
     <Compile Include="DynamicContentItemManager.cs" />
+    <Compile Include="DynamicContentPart.cs" />
     <Compile Include="DynamicContentType.cs" />
     <Compile Include="DynamicContentTypeManager.cs" />
+    <Compile Include="Exceptions\DynamicContentTypeDoesNotExistException.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />
+    <Compile Include="Exceptions\FieldDefinitionDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ItemDoesNotExistException.cs" />
+    <Compile Include="Exceptions\ContentTypeInUseException.cs" />
+    <Compile Include="Exceptions\EntityInUseException.cs" />
+    <Compile Include="Exceptions\InvalidEntityException.cs" />
+    <Compile Include="Exceptions\SystemContentTypeSecurityException.cs" />
+    <Compile Include="Exceptions\SystemDataTypeSecurityException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
     <Compile Include="Exceptions\InvalidValidationTypeException.cs" />
     <Compile Include="Exceptions\InvalidValidatorException.cs" />
     <Compile Include="Exceptions\JsonContentTypeInvalidException.cs" />
     <Compile Include="Exceptions\JsonInvalidFieldException.cs" />
-    <Compile Include="Exceptions\JsonMissingContentException.cs" />
     <Compile Include="FieldDefinition.cs" />
+    <Compile Include="FieldDefinitionChecker.cs" />
     <Compile Include="FieldDefinitionManager.cs" />
     <Compile Include="IContentTemplateManager.cs" />
     <Compile Include="IDataTypeManager.cs" />
+    <Compile Include="IDynamicContentSearchManager.cs" />
     <Compile Include="IDynamicContentItemManager.cs" />
     <Compile Include="IDynamicContentTypeManager.cs" />
+    <Compile Include="IFieldDefinitionChecker.cs" />
     <Compile Include="IFieldDefinitionManager.cs" />
     <Compile Include="IValidationRuleManager.cs" />
     <Compile Include="IValidatorTypeManager.cs" />
@@ -91,6 +106,8 @@
     <Compile Include="Localization\IContentTypeLocalizationManager.cs" />
     <Compile Include="Localization\ObectType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\FieldDefinitionRepository.cs" />
+    <Compile Include="Repositories\IFieldDefinitionRepository.cs" />
     <Compile Include="UnderlyingDataType.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="ValidationRuleManager.cs" />

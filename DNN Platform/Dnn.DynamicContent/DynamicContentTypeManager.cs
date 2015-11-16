@@ -2,14 +2,16 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
 {
@@ -35,12 +37,19 @@ namespace Dnn.DynamicContent
         /// <returns>content type id.</returns>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be added by Super Users</exception>
         public int AddContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
 
-            contentType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (contentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
+
+            contentType.CreatedByUserId = currentUser.UserID;
             contentType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(contentType);
@@ -68,10 +77,30 @@ namespace Dnn.DynamicContent
         /// <param name="contentType">Type of the content.</param>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be deleted by Super Users</exception>
+        /// <exception cref="DynamicContentTypeDoesNotExistException">requested content type by ContentTypeId and PortalId does not exist</exception>
+        /// <exception cref="ContentTypeInUseException">Content Type is in use by other component</exception>
         public void DeleteContentType(DynamicContentType contentType)
         {
-            Delete(contentType);
+            Requires.NotNull(contentType);
+            Requires.PropertyNotNegative(contentType, "ContentTypeId");
+            
+            var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
+            if (storedContentType == null)
+            {
+                throw new DynamicContentTypeDoesNotExistException();
+            }
 
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedContentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
+            if (IsInUse(contentType.ContentTypeId))
+            {
+                throw new ContentTypeInUseException(contentType); ;
+            }
+            
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
             {
@@ -87,7 +116,36 @@ namespace Dnn.DynamicContent
             //Delete Localizations
             ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(NameKey, contentType.ContentTypeId));
             ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(DescriptionKey, contentType.ContentTypeId));
+
+            Delete(contentType);
         }
+
+        private bool IsInUse(int contentTypeId)
+        {
+            using (DataContext)
+            {
+                //Check Content Items
+                var contentItemsCount = DataContext.ExecuteScalar<int>(CommandType.Text, @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentItems
+                                                        WHERE ContentTypeID = "+contentTypeId);
+                if (contentItemsCount > 0)
+                {
+                    return true; //There is at least one ContentItem using this Content Type
+                }
+
+                //Check Content Type references
+                var contentTypeReferencesCount = DataContext.ExecuteScalar<int>(CommandType.Text, @"SELECT count(*)
+                                                        FROM {objectQualifier}ContentTypes_FieldDefinitions
+                                                        WHERE IsReferenceType = 1 AND FieldTypeID = " + contentTypeId);
+                if (contentTypeReferencesCount > 0)
+                {
+                    return true; //There is at least one Content Type referencing this Content Type
+                }
+            }
+            return false;
+        }
+
+
 
         /// <summary>
         /// GetContentType retrieves a dynamic content type for a portal, optionally including system types
@@ -97,7 +155,6 @@ namespace Dnn.DynamicContent
         /// <param name="includeSystem">A flag to determine if System content types (ie. content types that are available for all portals)
         /// should be returned. Defaults to false</param>
         /// <returns>content type</returns>
-        //TODO add Unit Tests for this method
         public DynamicContentType GetContentType(int contentTypeId, int portalId, bool includeSystem = false)
         {
             DynamicContentType contentType = Get(portalId).SingleOrDefault(ct => ct.ContentTypeId == contentTypeId);
@@ -158,12 +215,27 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <exception cref="SystemContentTypeSecurityException">system content types can only be modified by Super Users</exception>
+        /// <exception cref="DynamicContentTypeDoesNotExistException">requested content type by ContentTypeId and PortalId does not exist</exception>
         public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
+            Requires.PropertyNotNegative(contentType, "ContentTypeId");
+            
+            var storedContentType = GetContentType(contentType.ContentTypeId, contentType.PortalId, true);
+            if (storedContentType == null)
+            {
+                throw new DynamicContentTypeDoesNotExistException();
+            }
 
-            contentType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (storedContentType.IsSystem && !currentUser.IsSuperUser)
+            {
+                throw new SystemContentTypeSecurityException();
+            }
+
+            contentType.LastModifiedByUserId = currentUser.UserID;
             contentType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Update(contentType);

@@ -22,7 +22,6 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
 
         }
 
-
         /// <summary>
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
@@ -32,9 +31,11 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         {
             ContentFieldId = definition.FieldDefinitionId;
             ContentTypeId = definition.ContentTypeId;
-            DataTypeId = definition.DataTypeId;
-            DataType = definition.DataType.Name;
+            FieldTypeId = definition.FieldTypeId;
+            IsReferenceType = definition.IsReferenceType;
+            FieldType =  (IsReferenceType) ? definition.ContentType.Name : definition.DataType.Name;
             Order = definition.Order;
+            IsList = definition.IsList;
 
             LocalizedDescriptions = GetLocalizedValues(definition.Description, FieldDefinitionManager.DescriptionKey, ContentFieldId, definition.PortalId, portalSettings);
             LocalizedLabels = GetLocalizedValues(definition.Label, FieldDefinitionManager.LabelKey, ContentFieldId, definition.PortalId, portalSettings);
@@ -54,16 +55,28 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         public int ContentTypeId { get; set; }
 
         /// <summary>
-        /// The data type of the Content Field
+        /// The type of the Content Field
         /// </summary>
-        [JsonProperty("dataType")]
-        public string DataType { get; set; }
+        [JsonProperty("fieldType")]
+        public string FieldType { get; set; }
 
         /// <summary>
         /// The id of the data type of the Content Field
         /// </summary>
-        [JsonProperty("dataTypeId")]
-        public int DataTypeId { get; set; }
+        [JsonProperty("fieldTypeId")]
+        public int FieldTypeId { get; set; }
+
+        /// <summary>
+        /// Indicates whether the field type is a list
+        /// </summary>
+        [JsonProperty("isList")]
+        public bool IsList { get; set; }
+
+        /// <summary>
+        /// Indicates whether the field type is a referecne type
+        /// </summary>
+        [JsonProperty("isReferenceType")]
+        public bool IsReferenceType { get; set; }
 
         /// <summary>
         /// A List of localized values for the Description property

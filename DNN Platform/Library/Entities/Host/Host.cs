@@ -538,22 +538,6 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets whether The Getting Started Page is Enabled
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to True
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public static bool EnableGettingStartedPage
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("EnableGettingStartedPage", true);
-            }
-        }
-
         /// <summary>
         /// enable whether the IP address of the user is checked against a list during login
         /// </summary>
@@ -562,6 +546,16 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetBoolean("EnableIPChecking", false);
+            }
+        }
+        /// <summary>
+        /// determines whether oauth authorization server support is enabled
+        /// </summary>
+        public static bool EnableOAuthAuthorization
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableOAuthAuthorization", false);
             }
         }
 
@@ -1460,7 +1454,7 @@ namespace DotNetNuke.Entities.Host
         /// Gets the SMTP mode (portal|host)
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private static bool SMTPPortalEnabled
+        internal static bool SMTPPortalEnabled
         {
             get
             {

@@ -26,3 +26,23 @@ SELECT
 	ORDER BY FriendlyName ASC
 END
 GO
+
+/* DNN-7405: Update GetTabPaths Procedure to return all tab paths when culture code is null. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabPaths]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths] 
+	@PortalID		INT,
+	@CultureCode	NVARCHAR(10)
+AS
+	SELECT
+		TabID, 
+		PortalID, 
+		TabPath
+	FROM {databaseOwner}{objectQualifier}vw_Tabs
+	WHERE (PortalID = @PortalID AND (CultureCode = @CultureCode OR CultureCode Is NULL OR ISNULL(@CultureCode, '') = ''))
+		OR @PortalID Is NULL
+GO

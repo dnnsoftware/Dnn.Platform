@@ -32,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.Modules.DynamicContentViewer.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,18 +44,20 @@
     <DocumentationFile>bin\Dnn.Modules.DynamicContentViewer.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Razor">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web.Razor\bin\DotNetNuke.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -119,7 +122,16 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="ModuleApplication.cs" />
+    <Compile Include="Components\BusinessController.cs" />
+    <Compile Include="Components\DynamicContentViewerManager.cs" />
+    <Compile Include="Components\IDynamicContentViewerManager.cs" />
+    <Compile Include="Helpers\DefaultEditorTemplates.cs" />
+    <Compile Include="Helpers\DnnDisplayExtensions.cs" />
+    <Compile Include="Helpers\DnnEditorExtensions.cs" />
+    <Compile Include="Helpers\DnnLabelExtensions.cs" />
+    <Compile Include="Helpers\DnnTemplateExtensions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\TemplateHelper.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\SettingsController.cs" />
     <Content Include="ClientScripts\dcc.quickSettings.js" />
@@ -129,9 +141,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientScripts\util.js" />
-    <Content Include="dnn_DCCViewer.dnn" />
+    <Content Include="dnn_DCCViewer.dnn">
+      <SubType>Designer</SubType>
+    </Content>
+    <Compile Include="Helpers\DefaultDisplayTemplates.cs" />
     <Content Include="license.txt" />
+    <Content Include="module.css">
+      <DependentUpon>module.less</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -149,8 +166,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewEngines\DynamicContentView.cs" />
-    <Compile Include="ViewEngines\DynamicContentViewEngine.cs" />
     <Content Include="Views\Settings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +190,98 @@
   <ItemGroup>
     <Content Include="App_LocalResources\Viewer.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\GettingStarted.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Boolean.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Bytes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\DateTime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Float.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Guid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Integer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\String.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\TimeSpan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Uri.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Boolean.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Bytes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\DateTime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Float.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Guid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Integer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\String.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\TimeSpan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Uri.cshtml" />
+    <Content Include="compilerconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="module.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Viewer\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Viewer\AutoGenerated.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Date.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Date.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Viewer\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\Markdown.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\EditorTemplates\RichText.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\RichText.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content Templates\DisplayTemplates\Markdown.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Viewer\AutoGeneratedView.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

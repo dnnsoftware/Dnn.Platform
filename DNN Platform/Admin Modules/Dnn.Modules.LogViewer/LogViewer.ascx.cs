@@ -251,7 +251,7 @@ namespace Dnn.Modules.LogViewer
             }
 
             string returnMsg;
-            if (Regex.IsMatch(strFromEmailAddress, Globals.glbEmailRegEx))
+            if (Globals.EmailValidatorRegex.IsMatch(strFromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
                 var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
@@ -358,7 +358,6 @@ namespace Dnn.Modules.LogViewer
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

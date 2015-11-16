@@ -63,6 +63,7 @@ namespace Dnn.Modules.Languages
     public partial class LanguageEditor : PortalModuleBase, IActionable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguageEditor));
+
         #region Private Enums
 
         /// -----------------------------------------------------------------------------
@@ -413,6 +414,7 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Returns the resource file name for a given resource and language
         /// </summary>
+        /// <param name="language">Language Name.</param>
         /// <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
         /// <returns>Localized File Name</returns>
         /// <remarks>
@@ -501,7 +503,6 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Loads suported locales and shows default values
         /// </summary>
-        /// <param name = "sender"></param>
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>
@@ -974,7 +975,7 @@ namespace Dnn.Modules.Languages
             foreach (string file in Directory.GetFiles(path, "*.resx"))
             {
                 var fileInfo = new FileInfo(file);
-                var match = Regex.Match(fileInfo.Name, @"\.(\w\w\-\w\w)\.resx");
+                var match = FileInfoRegex.Match(fileInfo.Name);
 
                 if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
                 {

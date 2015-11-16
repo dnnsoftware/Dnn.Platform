@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 
@@ -63,16 +63,23 @@ namespace Dnn.DynamicContent
             }
         }
 
-
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
         /// </summary>
         /// <param name="contentTemplate">The content template to delete.</param>
         /// <exception cref="System.ArgumentNullException">content template is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">content template id is less than 0.</exception>
-        /// <exception cref="System.InvalidOperationException">contentTemplate is in use.</exception>
+        /// <exception cref="System.InvalidOperationException">content template is in use.</exception>
+        /// <exception cref="ContentTemplateDoesNotExistException">content template does not exist for the given template id and portal id</exception>
         public void DeleteContentTemplate(ContentTemplate contentTemplate)
         {
+            Requires.NotNull(contentTemplate);
+
+            var storedContentTemplate = GetContentTemplate(contentTemplate.TemplateId, contentTemplate.PortalId);
+            if (storedContentTemplate == null)
+            {
+                throw new ContentTemplateDoesNotExistException();
+            }
+
             Delete(contentTemplate);
 
             ClearContentTypeCache(contentTemplate);
@@ -88,7 +95,6 @@ namespace Dnn.DynamicContent
         /// <param name="includeSystem">A flag to determine if System Templates (ie. Templates that are available for all portals)
         /// should be searched. Defaults to false</param>
         /// <returns>content template</returns>
-        //TODO add Unit Tests for this method
         public ContentTemplate GetContentTemplate(int templateId, int portalId, bool includeSystem = false)
         {
             return GetContentTemplates(portalId, includeSystem).SingleOrDefault((t) => t.TemplateId == templateId);
@@ -147,18 +153,35 @@ namespace Dnn.DynamicContent
         }
 
         /// <summary>
+        /// This method retrieves all the content templates for a given content Type regardless of portal
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the Content Type</param>
+        /// <returns>content template collection.</returns>
+        public IQueryable<ContentTemplate> GetContentTemplatesByContentType(int contentTypeId)
+        {
+            return Get().Where(t => t.ContentTypeId == contentTypeId).AsQueryable();
+        }
+
+        /// <summary>
         /// Updates the content template.
         /// </summary>
         /// <param name="contentTemplate">The content template.</param>
         /// <exception cref="System.ArgumentNullException">content template is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">content template id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentTemplate.Name is empty.</exception>
-        /// <exception cref="System.InvalidOperationException">contentTemplate is in use.</exception>
+        /// <exception cref="System.InvalidOperationException">content template is in use.</exception>
+        /// <exception cref="ContentTemplateDoesNotExistException">content template does not exist for the given template id and portal id</exception>
         public void UpdateContentTemplate(ContentTemplate contentTemplate)
         {
             //Argument Contract
+            Requires.NotNull(contentTemplate);
             Requires.PropertyNotNullOrEmpty(contentTemplate, "Name");
             Requires.PropertyNotNegative(contentTemplate, "ContentTypeId");
+
+            var storedContentTemplate = GetContentTemplate(contentTemplate.TemplateId, contentTemplate.PortalId);
+            if (storedContentTemplate == null)
+            {
+                throw new ContentTemplateDoesNotExistException();
+            }
 
             contentTemplate.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             contentTemplate.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();

@@ -121,6 +121,8 @@
         }
 
         function closeMenu(ul) {
+            var $menuroot = $('#moduleActions-' + moduleId + ' ul.dnn_mact');
+            $menuroot.removeClass('showhover').data('displayQuickSettings', false);
             if (ul && ul.position()) {
                 if (ul.position().top > 0) {
                     ul.hide('slide', { direction: 'up' }, 80, function () {
@@ -143,12 +145,6 @@
             var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
 
             var ulHeight = ul.height();
-
-            if ($self.hasClass('actionQuickSettings')) {
-                var container = $(".DnnModule-" + moduleId);
-                var containerWidth = container.width();
-                ul.css({ width: containerWidth });
-            }
 
             if (!atViewPortTop) {
                 ul.css({
@@ -175,7 +171,7 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "'></a><ul></ul>");
+            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "' /></a><ul></ul>");
             var parent = root.find("li." + rootClass + " > ul");
 
             return parent;
@@ -215,7 +211,7 @@
                     }
 
                     if (isEnabled(action)) {
-                        htmlString += "<a href=\"" + action.Url + "\"><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
+                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
                     } else {
                         htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
                     }
@@ -321,6 +317,7 @@
 
             var $quickSettings = $("#moduleActions-" + moduleId + "-QuickSettings");
             $quickSettings.show();
+            root.addClass('showhover');
 
             $parent.append($quickSettings);
         }
@@ -377,6 +374,7 @@
                 }
                 if (supportsQuickSettings) {
                     buildQuickSettings(menuRoot, "Quick", "actionQuickSettings", "caret-down");
+                    menuRoot.data('displayQuickSettings', displayQuickSettings);
                 }
 
                 if (isShared) {
@@ -393,12 +391,17 @@
                 showMenu($(this).find("ul"));
             },
             out: function () {
-                if (!($(this).hasClass("actionQuickSettings") && displayQuickSettings)) {
+                if (!($(this).hasClass("actionQuickSettings") && $(this).data('displayQuickSettings'))) {
                     closeMenu($(this).find("ul"));
                 }
             },
             timeout: 400,
             interval: 200
+        });
+
+        var $container = $('#moduleActions-' + moduleId + '-QuickSettings');
+        $container.find('select').mouseout(function(e) {
+            e.stopPropagation();
         });
 
         return $self;
@@ -416,6 +419,20 @@
         supportsQuickSettings: false
     };
 
+    /*
+    * Creates a new quick setting object.
+    *
+    * @method dnnQuickSettings
+    * @param {Object} options Options needed to create a new quick settings.
+    * @param {int} options.moduleId Module identifier associated to the quick setting.
+    * @param {function} options.onSave A callback function that will executed when save button is clicked. This function MUST
+    *                           returns a promise (see https://api.jquery.com/category/deferred-object/) in order the quick module 
+    *                           object is allowed to close menu once the save callback action has finished.
+    * @param {function} options.onCancel A callback function that will executed when cancel button is clicked. This function MUST
+    *                           returns a promise (see https://api.jquery.com/category/deferred-object/) in order the quick module 
+    *                           object is allowed to close menu once the cancel callback action has finished.
+    * @return {Object} Returnsa quick setting object.
+    */
     $.fn.dnnQuickSettings = function(options) {
         var opts = $.extend({}, $.fn.dnnQuickSettings.defaultOptions, options);
         var onCancel = opts.onCancel;
@@ -429,6 +446,8 @@
         var $cancelButton = $container.find("a.secondarybtn");
 
         var closeMenu = function (ul) {
+            var $menuRoot = $('#moduleActions-' + moduleId + ' ul.dnn_mact');
+            $menuRoot.removeClass('showhover').data('displayQuickSettings', false);
             if (ul && ul.position()) {
                 if (ul.position().top > 0) {
                     ul.hide('slide', { direction: 'up' }, 80, function () {
@@ -442,14 +461,44 @@
             }
         }
 
+        var throwErrorWhenInvalidPromise = function checkPromiseHandler(promise, callbackName) {
+            if (!promise || typeof promise !== 'object') {
+                throw "The '"+callbackName+"' callback should return a promise.";
+            }
+
+            if (typeof promise.done !== 'function') {
+                throw "The '" + callbackName + "' callback should return a promise with a valid 'done' function.";
+            }
+        };
+
         $cancelButton.click(function () {
-            onCancel.call(this);
-            closeMenu($container.parent());
+            if (typeof onCancel !== "function") {
+                throw "The 'onCancel' callback must be a function";
+            }
+
+            var promise = onCancel.call(this);
+            throwErrorWhenInvalidPromise(promise, "onCancel");
+            
+            promise.done(
+                function() {
+                    closeMenu($container.parent());
+                }
+            );
         });
 
         $saveButton.click(function () {
-            onSave.call(this);
-            closeMenu($container.parent());
+            if (typeof onSave !== "function") {
+                throw "The 'onSave' callback must be a function";
+            }
+
+            var promise = onSave.call(this);
+            throwErrorWhenInvalidPromise(promise, "onSave");
+
+            promise.done(
+                function () {
+                    closeMenu($container.parent());
+                }
+            );
         });
 
         return $self;
@@ -457,7 +506,15 @@
 
     $.fn.dnnQuickSettings.defaultOptions = {
         moduleId: -1,
-        onCancel: function () { },
-        onSave: function () { }
+        onCancel: function () {
+            var deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
+        },
+        onSave: function() {
+            var deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
+        }
     };
 })(jQuery);

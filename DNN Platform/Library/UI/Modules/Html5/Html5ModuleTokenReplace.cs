@@ -19,14 +19,20 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.UI;
-using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
     public class Html5ModuleTokenReplace : HtmlTokenReplace
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Html5ModuleTokenReplace));
+
         public Html5ModuleTokenReplace(Page page, string html5File, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
             : base(page)
         {
@@ -39,6 +45,28 @@ namespace DotNetNuke.UI.Modules.Html5
             PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
             PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
             PropertySource["request"] = new RequestPropertyAccess(page.Request);
+
+            // DNN-7750
+            var bizClass = moduleContext.Configuration.DesktopModule.BusinessControllerClass;
+            if (!string.IsNullOrEmpty(bizClass))
+            {
+                try
+                {
+                    var businessController = Reflection.CreateObject(bizClass, bizClass) as ICustomTokenProvider;
+                    if (businessController != null)
+                    {
+                        var tokens = businessController.GetTokens(page, moduleContext);
+                        foreach (var token in tokens)
+                        {
+                            PropertySource.Add(token.Key, token.Value);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+            }
         }
     }
 }

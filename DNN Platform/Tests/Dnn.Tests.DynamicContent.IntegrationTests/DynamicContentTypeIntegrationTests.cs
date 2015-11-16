@@ -7,8 +7,6 @@ using Dnn.DynamicContent;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Entities.Content;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
 using Moq;
@@ -40,14 +38,14 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void AddContentType_Inserts_New_Record_In_Database()
         {
             //Arrange
-            SetUpContentTypes(RecordCount);
+            SetUpContentTypes(RecordCount, PortalId);
 
             var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
             mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
             DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
 
             var contentTypeController = new DynamicContentTypeManager();
-            var contentType = new DynamicContentType() { Name = "New_Type"};
+            var contentType = new DynamicContentType() { Name = "New_Type", PortalId = PortalId };
 
             //Act
             contentTypeController.AddContentType(contentType);
@@ -62,7 +60,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void AddContentType_Clears_Cache()
         {
             //Arrange
-            SetUpContentTypes(RecordCount);
+            SetUpContentTypes(RecordCount, PortalId);
 
             var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
             mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
@@ -82,10 +80,10 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void DeleteContentType_Deletes_Record_From_Database()
         {
             //Arrange
-            var typeId = 2;
-            SetUpContentTypes(RecordCount);
+            const int typeId = 2;
+            SetUpContentTypes(RecordCount, PortalId);
             var contentTypeController = new DynamicContentTypeManager();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2", PortalId = PortalId};
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
@@ -103,10 +101,10 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void DeleteContentType_Deletes_Correct_Record_From_Database()
         {
             //Arrange
-            var typeId = 2;
-            SetUpContentTypes(RecordCount);
+            const int typeId = 2;
+            SetUpContentTypes(RecordCount, PortalId);
             var contentTypeController = new DynamicContentTypeManager();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2", PortalId = PortalId };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
             ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
@@ -122,8 +120,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void DeleteContentType_Clears_Cache()
         {
             //Arrange
-            var typeId = 2;
-            SetUpContentTypes(RecordCount);
+            const int typeId = 2;
+            SetUpContentTypes(RecordCount, PortalId);
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "New_Type", PortalId = PortalId };
 
@@ -191,15 +189,15 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void UpdateContentType_Updates_Correct_Record_In_Database()
         {
             //Arrange
-            var contentTypeId = 2;
-            SetUpContentTypes(RecordCount);
+            const int contentTypeId = 2;
+            SetUpContentTypes(RecordCount, PortalId);
 
             var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
             mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
             DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
 
             var contentTypeController = new DynamicContentTypeManager();
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, Name = "NewType" };
+            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, Name = "NewType", PortalId = PortalId };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
@@ -215,8 +213,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void UpdateContentType_Clears_Cache()
         {
             //Arrange
-            var typeId = 2;
-            SetUpContentTypes(RecordCount);
+            const int typeId = 2;
+            SetUpContentTypes(RecordCount, PortalId);
 
             var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
             mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);

@@ -79,7 +79,7 @@
     <value xml:space="preserve">Nom de la base de données requis.</value>
   </data>
   <data name="DatabaseName.Text">
-    <value xml:space="preserve">Database Name</value>
+    <value xml:space="preserve">Nom de fichier</value>
   </data>
   <data name="DatabaseObjectQualifier.Help">
     <value xml:space="preserve">Le qualificateurs d'objet pour votre site web.</value>
