@@ -212,6 +212,8 @@
     <Content Include="Browser\jquery.fileupload-ui.css" />
     <Content Include="Browser\jquery.fileupload.css" />
     <Content Include="CKEditorConfig.png" />
+    <Content Include="css\CkEditorContents.css" />
+    <Content Include="css\CkEditorToolBars.css" />
     <Content Include="Install\CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
