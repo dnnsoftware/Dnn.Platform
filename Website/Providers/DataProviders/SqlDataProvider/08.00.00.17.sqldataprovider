@@ -35,7 +35,7 @@ BEGIN
 		   Height               = @Height,
 		   ContentType          = @ContentType,
 		   FolderID             = @FolderID,
-		   PortalID			    = @PortalID;
+		   PortalID             = @PortalID,
 		   LastModifiedByUserID = @LastModifiedByUserID,
 		   LastModifiedOnDate   = GetDate(),
 		   SHA1Hash             = @Hash,
