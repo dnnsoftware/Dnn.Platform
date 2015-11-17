@@ -23,8 +23,11 @@
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
       <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
       <ProviderFiles Include="..\Website\Install\Provider\*.*" />
+<<<<<<< HEAD
+=======
       <ModuleFiles Include="..\Website\Install\Module\*.*" />
       <SkinFiles Include="..\Website\Install\Skin\*.*" />
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
       <WebConfig Include="$(WebsitePath)\we*.config" />
       <WebsiteDatabase Include="$(WebsiteAppDataPath)\Data*ase.mdf" />
       <WebsiteRadSpell Include="$(WebsiteRadSpellPath)\*.tdf" />
@@ -65,9 +68,12 @@
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
     <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteInstallPath)\Config" Condition="'@(WebsiteConfigMerge)' == ''" />
     <Copy SourceFiles="@(ProviderFiles)" DestinationFolder="$(WebsiteInstallPath)\Provider" />
+<<<<<<< HEAD
+=======
     <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(WebsiteInstallPath)\Module" />
     <Copy SourceFiles="@(SkinFiles)" DestinationFolder="$(WebsiteInstallPath)\Skin" />
     <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(WebsiteInstallPath)"/>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
     <!-- Copy development.config or release.config to web.config -->
     <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" 

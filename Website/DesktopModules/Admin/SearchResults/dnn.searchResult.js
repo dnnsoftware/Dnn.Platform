@@ -210,6 +210,31 @@
         }
     };
 
+<<<<<<< HEAD
+    dnn.searchResult.getQueryVariable = function(name) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] === name) {
+                return pair[1];
+            }
+        }
+        return '';
+    };
+
+    dnn.searchResult.pushHistoryState = function (state) {
+        if (!dnn.searchResult.catchHistoryState) {
+            return;
+        }
+
+        var currentState = dnn.searchResult.getQueryVariable("Search");
+        if (state !== currentState) {
+            var url = location.href.replace('Search=' + currentState, 'Search=' + state);
+            history.pushState(null, "Search", url);
+        }
+    }
+=======
 	dnn.searchResult.parseLocationInfo = function() {
 	    var query = location.search.substring(1);
 	    var path = location.href.replace(location.search, '');
@@ -353,6 +378,7 @@
 	        history.pushState({searchState: true}, "Search", url);
 	    }
 	}
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
     dnn.searchResult.doSearch = function () {
         var sterm = dnn.searchResult.queryOptions.searchTerm;
@@ -371,7 +397,11 @@
                 beforeSend: dnn.searchResult.service.setModuleHeaders,
                 success: function (results) {
                     dnn.searchResult.renderResults(results);
+<<<<<<< HEAD
+                    dnn.searchResult.pushHistoryState(sterm);
+=======
 	                dnn.searchResult.pushHistoryState();
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                 },
                 complete: function () {
                     dnn.searchResult.removeLoading();
@@ -477,6 +507,15 @@
 
     dnn.searchResult.init = function (settings) {
 
+<<<<<<< HEAD
+        dnn.searchResult.defaultSettings = $.extend(dnn.searchResult.defaultSettings, settings);
+        dnn.searchResult.catchHistoryState = typeof history.pushState !== "undefined";
+        if (dnn.searchResult.catchHistoryState) {
+                window.addEventListener("popstate", function () {
+                    window.location.href = "Search-Results?Search=" + dnn.searchResult.getQueryVariable("Search");
+                });
+        }
+=======
     	dnn.searchResult.defaultSettings = $.extend(dnn.searchResult.defaultSettings, settings);
     	dnn.searchResult.catchHistoryState = typeof history.pushState !== "undefined";
     	if (dnn.searchResult.catchHistoryState) {
@@ -490,6 +529,7 @@
 		        window.location.reload();
 		    });
 		}
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         // search box
         dnn.searchResult.searchInput = $('#dnnSearchResult_dnnSearchBox').dnnSearchBox({

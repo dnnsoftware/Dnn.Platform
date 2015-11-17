@@ -67,6 +67,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Url.FriendlyUrl;
+using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
 
@@ -638,6 +639,10 @@ namespace DotNetNuke.Common
                             //Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
+<<<<<<< HEAD
+
+=======
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                     }
 
                     _status = tempStatus;
@@ -650,6 +655,14 @@ namespace DotNetNuke.Common
 
         }
 
+<<<<<<< HEAD
+        /// <summary>
+        /// check if an incremental version exists
+        /// </summary>
+        /// <param name="version">version number</param>
+        /// <returns>true if one exists and hasnt been applied, false otherwise</returns>
+=======
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         public static bool IncrementalVersionExists(Version version)
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
@@ -657,11 +670,23 @@ namespace DotNetNuke.Common
             //If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
+<<<<<<< HEAD
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", "");
+                if (Directory.Exists(providerpath))
+                {
+                    var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
+                    if (
+                        incrementalcount == 1)
+                    {
+                        return false;
+                    }
+=======
                 providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~","");
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
                    
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                     if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;
@@ -670,7 +695,10 @@ namespace DotNetNuke.Common
             }
             return false;
         }
+<<<<<<< HEAD
+=======
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         /// <summary>
         /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
@@ -1187,6 +1215,28 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
+<<<<<<< HEAD
+        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
+        {
+            //update the version and increment
+            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+            _dataBaseVersion = version;
+        }
+
+        public static int GetLastAppliedIteration(Version version)
+        {
+            try
+            {
+                return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+
+        }
+=======
        public static void UpdateDataBaseVersionIncrement(Version version,int increment)
         {
             //update the version and increment
@@ -1207,6 +1257,7 @@ namespace DotNetNuke.Common
            }
            
        }
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         /// <summary>
         /// Adds the port.

@@ -1,3 +1,107 @@
+<<<<<<< HEAD
+﻿
+(function ($) {
+    $.fn.dnnModuleActions = function (options) {
+        var opts = $.extend({}, $.fn.dnnModuleActions.defaultOptions, options);
+        var $self = this;
+        var actionButton = opts.actionButton;
+        var moduleId = opts.moduleId;
+        var tabId = opts.tabId;
+        var adminActions = opts.adminActions;
+        var adminCount = adminActions.length;
+        var customActions = opts.customActions;
+        var customCount = customActions.length;
+        var panes = opts.panes;
+        var supportsMove = opts.supportsMove;
+        var count = adminCount + customCount;
+        var isShared = opts.IsShared;
+        
+        if (count > 0 || supportsMove) {
+            var $form = $("form#Form");
+            if ($form.find("div#moduleActions-" + moduleId).length === 0) {
+                $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
+                var menu = $form.find("div:last");
+                var menuRoot = menu.find("ul");
+                if (customCount > 0) {
+                    buildMenu(menuRoot, "Edit", "actionMenuEdit", customActions, customCount);
+                }
+                if (adminCount > 0) {
+                    buildMenu(menuRoot, "Admin", "actionMenuAdmin", adminActions, adminCount);
+                }
+                if (supportsMove) {
+                    buildMoveMenu(menuRoot, "Move", "actionMenuMove");
+                }
+                
+                if (isShared) {
+                    buildSharedMenu(menuRoot, "Shared Module", "dnn_shared");
+                }
+                watchResize(moduleId);
+            }
+        }
+
+        function buildMoveMenu(root, rootText, rootClass) {
+            var parent = buildMenuRoot(root, rootText, rootClass);
+            var modulePane = $(".DnnModule-" + moduleId).parent();
+            var paneName = modulePane.attr("id").replace("dnn_", "");
+
+            var htmlString;
+            var moduleIndex = -1;
+            var id = paneName + moduleId;
+            var modules = modulePane.children();
+            var moduleCount = modules.length;
+            var i;
+
+            for (i = 0; i < moduleCount; i++) {
+                var module = modules[i];
+                var mid = getModuleId(module);
+
+                if (moduleId == parseInt(mid)) {
+                    moduleIndex = i;
+                    break;
+                }
+            }
+
+            //Add Top/Up actions
+            if (moduleIndex > 0) {
+                //htmlString = "<li id=\"" + id + "-top\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_top.gif\"><span>" + opts.topText + "</span></a>";
+                htmlString = "<li id=\"" + id + "-top\" class=\"common\">" + opts.topText;
+                parent.append(htmlString);
+
+                //Add click event handler to just added element
+                parent.find("li#" + id + "-top").click(function () {
+                    moveTop(paneName);
+                });
+
+                //htmlString = "<li id=\"" + id + "-up\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_up.gif\"><span>" + opts.upText + "</span></a>";
+                htmlString = "<li id=\"" + id + "-up\" class=\"common\">" + opts.upText;
+                parent.append(htmlString);
+
+                //Add click event handler to just added element
+                parent.find("li#" + id + "-up").click(function () {
+                    moveUp(paneName, moduleIndex);
+                });
+            }
+
+            //Add Bottom/Down actions
+            if (moduleIndex < moduleCount - 1) {
+                //htmlString = "<li id=\"" + id + "-down\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_down.gif\"><span>" + opts.downText + "</span></a>";
+                htmlString = "<li id=\"" + id + "-down\" class=\"common\">" + opts.downText;
+                parent.append(htmlString);
+
+                //Add click event handler to just added element
+                parent.find("li#" + id + "-down").click(function () {
+                    moveDown(paneName, moduleIndex);
+                });
+
+                //htmlString = "<li id=\"" + id + "-bottom\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_bottom.gif\"><span>" + opts.bottomText + "</span></a>";
+                htmlString = "<li id=\"" + id + "-bottom\" class=\"common\">" + opts.bottomText;
+                parent.append(htmlString);
+
+                //Add click event handler to just added element
+                parent.find("li#" + id + "-bottom").click(function () {
+                    moveBottom(paneName);
+                });
+=======
 ﻿
 (function ($) {
     $.fn.dnnModuleActions = function (options) {
@@ -50,6 +154,7 @@
             var $anchor = $(module).children("a");
             if ($anchor.length === 0) {
                 $anchor = $(module).children("div.dnnDraggableContent").children("a");
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
             }
             return $anchor.attr("name");
         }
@@ -136,6 +241,13 @@
             }
         }
 
+<<<<<<< HEAD
+            if (htmlStringContainer) {
+                // loop is done, append the HTML and add moveToPane function on click event
+                parent.append(htmlStringContainer);
+                parent.find("li").not('.common').click(function () {
+                    moveToPane($(this).attr("id").replace(moduleId, ""));
+=======
         function showMenu(ul) {
             // detect position
             var $self = ul.parent();
@@ -155,6 +267,7 @@
                         $(this).jScrollPane();
                     }
                     dnn.addIframeMask(ul[0]);
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                 });
             }
             else {

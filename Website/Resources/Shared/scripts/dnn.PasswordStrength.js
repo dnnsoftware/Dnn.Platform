@@ -39,6 +39,33 @@
             this._$container = this.$element.parent();
 
             //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
+<<<<<<< HEAD
+            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth()).hide();
+	        var handler = this;
+	        setInterval(function () {
+				handler._$meter.width(handler.$element.outerWidth());
+	        }, 50);
+            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="" /></div>').appendTo(this._$meter);
+            this._$meterText = $("<label/>").prependTo(this._$meterValue);
+
+            this.$element.dnntooltip({
+                getTooltipMarkup: $.proxy(this._getTooltipMarkup, this),
+                cssClass: "password-strength-tooltip",
+                top: 0,
+				left: 0,
+                closeOnMouseLeave: true,
+                container: this._$container
+            });
+
+            this.$element.on("change keyup paste input propertychange", $.proxy(this._onInput, this));
+
+	        this.$element.on('focus', function() {
+		        $(this).trigger('mouseenter');
+	        }).on('blur', function() {
+		        $(this).trigger('mouseleave');
+	        });
+
+=======
             this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth());
 	        var handler = this;
 	        setInterval(function () {
@@ -70,6 +97,7 @@
             };
             this._$meter.hoverIntent(meterHover);
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 	        var validateFunction = window['ValidatorValidate'];
 			if (typeof validateFunction === 'function') {
 				window['ValidatorValidate'] = function() {
@@ -89,6 +117,19 @@
         },
 
         _initializeTooltip: function() {
+<<<<<<< HEAD
+        	this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content");
+			this._$tooltipContent.width(this.$element.outerWidth() * 0.8 - 16);
+			$('<h2 />').html(this.options.passwordRulesHeadText).appendTo(this._$tooltipContent);
+			$('<div />').html(this.options.passwordRulesBodyText).appendTo(this._$tooltipContent);
+            var list = $("<ul/>").appendTo(this._$tooltipContent);
+            this._$labelOneUpperCaseLetter = $("<label/>").text(this.options.criteriaOneUpperCaseLetterText).appendTo($("<li/>").appendTo(list));
+            this._$labelOneLowerCaseLetter = $("<label/>").text(this.options.criteriaOneLowerCaseLetterText).appendTo($("<li/>").appendTo(list));
+            this._$labelOneSpecialChar = $("<label/>").text(this.options.criteriaSpecialCharText).appendTo($("<li/>").appendTo(list));
+            this._$labelOneNumericChar = $("<label/>").text(this.options.criteriaOneNumberText).appendTo($("<li/>").appendTo(list));
+            this._$labelAtLeastNChars = $("<label/>").text(this.options.criteriaAtLeastNCharsText).appendTo($("<li/>").appendTo(list));
+        },
+=======
         	this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content").appendTo(this._$tooltipContainer);
 			this._$tooltipContent.width(this.$element.outerWidth() - 20);
 			$('<h2 />').html(this.options.passwordRulesHeadText).appendTo(this._$tooltipContent);
@@ -102,6 +143,7 @@
             if (this.options.minNumberOfSpecialChars === 0) {
                 this._$labelAtLeastNSpecialChars.hide();
             }
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
             
             if (this.options.validationExpression === '') {
@@ -115,6 +157,9 @@
         },
 
         _onInput: function (e) {
+<<<<<<< HEAD
+	        this._$meter.show();
+=======
 	        if (e.type === 'propertychange' && e.originalEvent.propertyName.toLowerCase() !== 'value') {
 		        return;
 	        }
@@ -123,6 +168,7 @@
                 this._$meter.addClass('visible');
             }
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
             this._updateState();
         },
 
@@ -200,9 +246,15 @@
         },
 
 		_updateFieldState: function(strength) {
+<<<<<<< HEAD
+			var rating = Math.min(strength.rating, strength.maxRating);
+			if (this.$element.val().length > 0) {
+				if (rating > 1) {
+=======
 			if (this.$element.val().length > 0) {
 			    var matchedPasswordPolicy = this._matchedPasswordPolicy(strength);
 				if (matchedPasswordPolicy) {
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 					this.$element.removeClass('validate-fail').addClass('validate-success');
 				} else {
 					this.$element.removeClass('validate-success').addClass('validate-fail');
@@ -212,12 +264,15 @@
 			}
 		},
 
+<<<<<<< HEAD
+=======
         _matchedPasswordPolicy: function(strength) {
             return strength.hasLengthOfNChars
                         && (this.options.minNumberOfSpecialChars === 0 || strength.hasMinNumberOfSpecialChars)
                         && (this.options.validationExpression === '' || strength.matchValidationExpression);
         },
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         _getStrength: function(password, options) {
             var rating = 0;
 

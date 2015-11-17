@@ -410,9 +410,15 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
+<<<<<<< HEAD
+        /// <param name="allowLeadingWildcard"></param>
+        /// <returns>cleaned and pre-processed search phrase</returns>
+        public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
+=======
 		/// <param name="allowLeadingWildcard"></param>
         /// <returns>cleaned and pre-processed search phrase</returns>
 		public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         {
             searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 

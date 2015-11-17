@@ -165,7 +165,11 @@
             </uninstall>
           </config>
         </component>
+<<<<<<< HEAD
+        <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
+=======
         <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
       </components>
     </package>
   </packages>

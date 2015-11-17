@@ -2808,4 +2808,8 @@ namespace DotNetNuke.Entities.Urls
 
         #endregion
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57

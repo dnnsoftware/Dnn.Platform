@@ -84,6 +84,7 @@ namespace DotNetNuke.Modules.Admin.Host
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
+<<<<<<< HEAD
     public partial class HostSettings : PortalModuleBase
 	{
 		#region Fields
@@ -106,6 +107,30 @@ namespace DotNetNuke.Modules.Admin.Host
 
 		#region Private Methods
 
+=======
+    public partial class HostSettings : PortalModuleBase
+	{
+		#region Fields
+
+		//Field Boost Settings - they are scaled down by 10.
+		internal const int DefaultSearchTitleBoost = 50;
+		internal const int DefaultSearchTagBoost = 40;
+		internal const int DefaultSearchContentBoost = 35;
+		internal const int DefaultSearchDescriptionBoost = 20;
+		internal const int DefaultSearchAuthorBoost = 15;
+
+		//Field Bosst Setting Names
+		internal const string SearchTitleBoostSetting = "Search_Title_Boost";
+		internal const string SearchTagBoostSetting = "Search_Tag_Boost";
+		internal const string SearchContentBoostSetting = "Search_Content_Boost";
+		internal const string SearchDescriptionBoostSetting = "Search_Description_Boost";
+		internal const string SearchAuthorBoostSetting = "Search_Author_Boost";
+
+		#endregion
+
+		#region Private Methods
+
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 		/// -----------------------------------------------------------------------------
         /// <summary>
         /// BindData fetches the data from the database and updates the controls
@@ -608,19 +633,32 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+<<<<<<< HEAD
+            chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
+=======
 			chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
             var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
 
             cbCustomAnalyzer.DataSource = GetAvailableAnalyzers();
             cbCustomAnalyzer.DataBind();
             cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
+<<<<<<< HEAD
             cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
 
 			txtTitleBoost.Text = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost).ToString();
 			txtTagBoost.Text = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost).ToString();
 			txtContentBoost.Text = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost).ToString();
 			txtDescriptionBoost.Text = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost).ToString();
+=======
+            cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
+
+			txtTitleBoost.Text = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost).ToString();
+			txtTagBoost.Text = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost).ToString();
+			txtContentBoost.Text = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost).ToString();
+			txtDescriptionBoost.Text = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost).ToString();
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 			txtAuthorBoost.Text = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost).ToString();
         }
 
@@ -1018,12 +1056,21 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
 
+<<<<<<< HEAD
 			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N");
 
 			HostController.Instance.Update(SearchTitleBoostSetting, string.IsNullOrEmpty(txtTitleBoost.Text) ? DefaultSearchTitleBoost.ToString() : txtTitleBoost.Text);
 			HostController.Instance.Update(SearchTagBoostSetting, string.IsNullOrEmpty(txtTagBoost.Text) ? DefaultSearchTagBoost.ToString() : txtTagBoost.Text);
 			HostController.Instance.Update(SearchContentBoostSetting, string.IsNullOrEmpty(txtContentBoost.Text) ? DefaultSearchContentBoost.ToString() : txtContentBoost.Text);
 			HostController.Instance.Update(SearchDescriptionBoostSetting, string.IsNullOrEmpty(txtDescriptionBoost.Text) ? DefaultSearchDescriptionBoost.ToString() : txtDescriptionBoost.Text);
+=======
+			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N");
+
+			HostController.Instance.Update(SearchTitleBoostSetting, string.IsNullOrEmpty(txtTitleBoost.Text) ? DefaultSearchTitleBoost.ToString() : txtTitleBoost.Text);
+			HostController.Instance.Update(SearchTagBoostSetting, string.IsNullOrEmpty(txtTagBoost.Text) ? DefaultSearchTagBoost.ToString() : txtTagBoost.Text);
+			HostController.Instance.Update(SearchContentBoostSetting, string.IsNullOrEmpty(txtContentBoost.Text) ? DefaultSearchContentBoost.ToString() : txtContentBoost.Text);
+			HostController.Instance.Update(SearchDescriptionBoostSetting, string.IsNullOrEmpty(txtDescriptionBoost.Text) ? DefaultSearchDescriptionBoost.ToString() : txtDescriptionBoost.Text);
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 			HostController.Instance.Update(SearchAuthorBoostSetting, string.IsNullOrEmpty(txtAuthorBoost.Text) ? DefaultSearchAuthorBoost.ToString() : txtAuthorBoost.Text);
 
             var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);

@@ -26,7 +26,11 @@
 				<asp:label id = "lblQuestion" runat="server" />
 			</div>
 			<div class="dnnFormItem">
+<<<<<<< HEAD
+				<asp:textbox id="txtAnswer" runat="server" size="25" maxlength="20" />
+=======
 				<asp:textbox id="txtAnswer" runat="server" />
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 			</div>
 		</div>
         <ul class="dnnActions dnnClear">

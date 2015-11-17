@@ -379,11 +379,11 @@ namespace DotNetNuke.Tests.Urls
             {
                 switch (deletedTabHandling)
                 {
-                    case "Do404Error":
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
+                    case "Do301RedirectToPortalHome":
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
                         break;
                     default:
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
                         break;
                 }
             }

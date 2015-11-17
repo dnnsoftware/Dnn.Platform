@@ -52,7 +52,10 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
+<<<<<<< HEAD
+=======
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -675,7 +678,11 @@ namespace DotNetNuke.Web.InternalServices
 	            {
 		            fileName = new Uri(dto.Url).Segments.Last();
 	            }
+<<<<<<< HEAD
+                result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+=======
 	            result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                 /* Response Content Type cannot be application/json 
@@ -724,6 +731,8 @@ namespace DotNetNuke.Web.InternalServices
 			return new ContentDisposition(contentDisposition).FileName;
 		}
 
+<<<<<<< HEAD
+=======
         private bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
@@ -758,6 +767,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             return false;
         }
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
     }
 
 }

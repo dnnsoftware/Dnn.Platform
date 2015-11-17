@@ -447,6 +447,11 @@
   <data name="SitemapUrlGenerationError.Text" xml:space="preserve">
     <value>URL sitemap generation for page '{0} - {1}' caused an exception: {2}</value>
   </data>
+<<<<<<< HEAD
+  <data name="UpdateUserMembershipFailed.Text" xml:space="preserve">
+    <value>Asp.net membership update user failed. Possible Reason(s): you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.</value>
+  </data>
+=======
   <data name="DynamicContentEntityInUse.Text" xml:space="preserve">
     <value>The {0} with Id {1} is in use, so it cannot be deleted.</value>
   </data>
@@ -492,4 +497,5 @@
   <data name="ContentTypeDoesNotExist.Text" xml:space="preserve">
     <value>The specified content type is not valid.</value>
   </data>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 </root>

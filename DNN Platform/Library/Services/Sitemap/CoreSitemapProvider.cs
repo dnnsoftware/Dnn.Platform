@@ -89,7 +89,11 @@ namespace DotNetNuke.Services.Sitemap
 								pageUrl = GetPageUrl(tab, currentLanguage);
 								urls.Add(pageUrl);
 							}
+<<<<<<< HEAD
+							catch (Exception ex)
+=======
 							catch (Exception)
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 							{
 								Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
 							}

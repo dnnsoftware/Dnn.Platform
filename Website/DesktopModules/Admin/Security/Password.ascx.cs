@@ -31,8 +31,13 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
+<<<<<<< HEAD
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+=======
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -305,15 +310,22 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+<<<<<<< HEAD
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
 			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
 
+=======
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
-			if (Host.EnableStrengthMeter)
+			if (DotNetNuke.Entities.Host.Host.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtNewPassword.CssClass = "password-strength";

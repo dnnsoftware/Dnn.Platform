@@ -43,6 +43,10 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 
         #endregion
 
+<<<<<<< HEAD
+        #region Constructor
+
+=======
         #region Properties
 
         public override string this[string name]
@@ -76,6 +80,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 
         #region Constructor
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         /// <summary>
         /// Constructs a new instance of ClientCapability.
         /// See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
@@ -183,6 +188,19 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         }
 
         #endregion
+<<<<<<< HEAD
+
+        #region Private Methods
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as an boolean.
+        /// </summary>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a boolean.</param>
+        /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
+        private static bool GetBoolValue(IEnumerable<Profile> profiles, string propertyName)
+=======
 
         #region Private Methods
 
@@ -217,12 +235,56 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// <param name="propertyName">The name of the property to return as a integer.</param>
         /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
         private static int GetIntValue(IEnumerable<Profile> profiles, string propertyName)
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         {
             Values value;
             var e = profiles.GetEnumerator();
             while (e.MoveNext())
             {
                 value = e.Current[propertyName];
+                if (value != null && value.Count > 0 &&
+<<<<<<< HEAD
+                    value[0].Property.ValueType == typeof(bool))
+                {
+                    return value.ToBool();
+                }
+            }
+            return false;
+=======
+                    (value[0].Property.ValueType == typeof(int) ||
+                    value[0].Property.ValueType == typeof(double)))
+                {
+                    return (int)value.ToInt();
+                }
+            }
+            return 0;
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+<<<<<<< HEAD
+        /// as an integer.
+        /// </summary>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a integer.</param>
+        /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
+        private static int GetIntValue(IEnumerable<Profile> profiles, string propertyName)
+=======
+        /// as a string.
+        /// </summary>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a string.</param>
+        /// <returns>The string value of the property, or null if the property is not found.</returns>
+        private static string GetStringValue(IEnumerable<Profile> profiles, string propertyName)
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
+        {
+            Values value;
+            var e = profiles.GetEnumerator();
+            while (e.MoveNext())
+            {
+                value = e.Current[propertyName];
+<<<<<<< HEAD
                 if (value != null && value.Count > 0 &&
                     (value[0].Property.ValueType == typeof(int) ||
                     value[0].Property.ValueType == typeof(double)))
@@ -247,6 +309,8 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             while (e.MoveNext())
             {
                 value = e.Current[propertyName];
+=======
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                 if (value != null)
                 {
                     return value.ToString();

@@ -61,6 +61,11 @@ namespace DotNetNuke.UI.Skins
     public class SkinController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
+<<<<<<< HEAD
+		private const string GlobalSkinPrefix = "[G]";
+		private const string PortalSystemSkinPrefix = "[S]";
+		private const string PortalSkinPrefix = "[L]";
+=======
 	private const string GlobalSkinPrefix = "[G]";
 	private const string PortalSystemSkinPrefix = "[S]";
 	private const string PortalSkinPrefix = "[L]";
@@ -68,6 +73,7 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
 		#region Public Shared Properties
 		

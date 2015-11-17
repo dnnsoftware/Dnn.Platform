@@ -122,8 +122,14 @@ namespace DotNetNuke.Services.Install
             else
             {
                 versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
+<<<<<<< HEAD
+                currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));
+            }
+
+=======
                 currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));  
             }
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         }
 
         private static void GetInstallerLocales()

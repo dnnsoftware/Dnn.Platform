@@ -46,9 +46,15 @@ using Telerik.Web.UI;
 
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
+<<<<<<< HEAD
 using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
 
+=======
+using System.Web.UI.WebControls;
+using DotNetNuke.Framework.JavaScriptLibraries;
+
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Users
@@ -477,16 +483,23 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+<<<<<<< HEAD
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
 			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
 
+=======
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
 
-			if (Host.EnableStrengthMeter)
+			if (DotNetNuke.Entities.Host.Host.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtPassword.CssClass = "password-strength";

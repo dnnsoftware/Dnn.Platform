@@ -83,8 +83,13 @@ namespace DotNetNuke.Entities.Modules
                     if (controller != null)
                     {
                         string content = Convert.ToString(controller.ExportModule(module.ModuleID));
+<<<<<<< HEAD
                         if (!String.IsNullOrEmpty(content))
                         {
+=======
+                        if (!String.IsNullOrEmpty(content))
+                        {
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                             content = XmlUtils.RemoveInvalidXmlCharacters(content);
 
                             //add attributes to XML document

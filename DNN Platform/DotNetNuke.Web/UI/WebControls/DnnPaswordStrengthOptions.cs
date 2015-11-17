@@ -57,6 +57,12 @@ namespace DotNetNuke.Web.UI.WebControls
 		[DataMember(Name = "passwordRulesHeadText")]
 		public string PasswordRulesHeadText;
 
+		[DataMember(Name = "passwordRulesHeadText")]
+		public string PasswordRulesHeadText;
+
+		[DataMember(Name = "passwordRulesBodyText")]
+		public string PasswordRulesBodyText;
+
         public DnnPaswordStrengthOptions()
         {
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
@@ -65,11 +71,20 @@ namespace DotNetNuke.Web.UI.WebControls
             FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
             StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
 
+<<<<<<< HEAD
+            CriteriaOneUpperCaseLetterText = Utilities.GetLocalizedString("CriteriaOneUpperCaseLetter");
+            CriteriaOneLowerCaseLetterText = Utilities.GetLocalizedString("CriteriaOneLowerCaseLetter");
+            CriteriaOneNumberText = Utilities.GetLocalizedString("CriteriaOneNumber");
+			CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+			PasswordRulesBodyText = Utilities.GetLocalizedString("PasswordRulesBodyText");
+=======
             CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
             CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
             CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
             
 			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
             WeakColor = "#ed1e24";
             FairColor = "#f6d50a";
@@ -93,10 +108,19 @@ namespace DotNetNuke.Web.UI.WebControls
             CriteriaAtLeastNCharsText = string.Format(CriteriaAtLeastNCharsText, MinLength);
 
             MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
+<<<<<<< HEAD
+            CriteriaSpecialCharText = MinNumberOfSpecialChars > 0 ?
+                string.Format(Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars"), MinNumberOfSpecialChars) :
+                Utilities.GetLocalizedString("CriteriaSpecialChar");
+
+	        PasswordRulesBodyText = string.Format(PasswordRulesBodyText, MinLength, CriteriaSpecialCharText);
+
+=======
             CriteriaAtLeastNSpecialCharsText = string.Format(CriteriaAtLeastNSpecialCharsText, MinNumberOfSpecialChars);
 
             ValidationExpression = settings.ValidationExpression;
             CriteriaValidationExpressionText = string.Format(CriteriaValidationExpressionText, ValidationExpression);
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         }
     }
 }

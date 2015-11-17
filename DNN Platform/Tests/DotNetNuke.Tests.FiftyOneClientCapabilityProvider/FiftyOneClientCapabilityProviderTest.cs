@@ -96,6 +96,10 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
             var clientCapabilitiesByEmptyId = _clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
         #endregion
     }
 }

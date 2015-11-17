@@ -66,6 +66,14 @@ namespace DotNetNuke.Services.FileSystem
 		{
 			get { return FileContentTypeManager.Instance.ContentTypes; }
 		}
+<<<<<<< HEAD
+
+        private bool IgnoreWhiteList
+        {
+            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
+        }
+=======
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         #endregion
 

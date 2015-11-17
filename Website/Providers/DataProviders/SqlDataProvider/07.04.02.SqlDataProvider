@@ -22,8 +22,8 @@ GO
 
  ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
  ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
-
  GO
+
 
 /* DNN-5631 */
 /************/
@@ -522,6 +522,60 @@ AS
 	FROM {databaseOwner}[{objectQualifier}Folders] f
 	WHERE f.WorkflowID IS NULL
 GO
+
+/* Update Version table for increment column */
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Version' AND COLUMN_NAME='Increment')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Version
+			ADD	Increment int NULL
+	END
+GO
+
+/* Drop existing constraint */
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Version DROP CONSTRAINT [IX_{objectQualifier}Version]
+END
+GO
+
+/* Add new  constraint */
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Version ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  ([Major], [Minor], [Build],[Increment])
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateDatabaseVersionIncrement]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int,
+	@Increment int,
+	@Name	nvarchar(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Version
+	SET Increment=@Increment where Major=@Major AND Minor=@Minor AND Build=@Build AND Name=@Name
+		
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLastAppliedIteration]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int	
+
+AS
+
+	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
+GO		
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

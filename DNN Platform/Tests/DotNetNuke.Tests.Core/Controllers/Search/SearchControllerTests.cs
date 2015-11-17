@@ -1,4 +1,4 @@
-﻿ #region Copyright
+﻿#region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -196,8 +196,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
-	        LuceneController.ClearInstance();
-	        _luceneController = null;
+            LuceneController.ClearInstance();
+            _luceneController = null;
         }
 
         #endregion
@@ -276,12 +276,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var table = new DataTable("Portal");
 
             var cols = new[]
-			           	{
-			           		"PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
-			           		"HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
-			           		"ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-			           		"UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
-			           	};
+                           {
+                               "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
+                               "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
+                               "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
+                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+                           };
 
             foreach (var col in cols)
             {
@@ -491,7 +491,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
         {
-             var doc1 = new SearchDocument
+            var doc1 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key1",
@@ -538,7 +538,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() {doc1, doc2, doc3, doc4, doc5};
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
             _internalSearchController.AddSearchDocuments(docs);
 
@@ -601,18 +601,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return docs.Count;
         }
 
-        private int AddDocuments(IList<string> titles, string body,  int searchTypeId = OtherSearchTypeId)
+        private int AddDocuments(IList<string> titles, string body, int searchTypeId = OtherSearchTypeId)
         {
             var count = 0;
             foreach (var doc in titles.Select(title => new SearchDocument
-                                                           {
-                                                               Title = title,
-                                                               UniqueKey = Guid.NewGuid().ToString(),
-                                                               Body = body,
-                                                               SearchTypeId = OtherSearchTypeId,
-                                                               ModifiedTimeUtc = DateTime.UtcNow,
-                                                               PortalId = PortalId12
-                                                           }))
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Body = body,
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12
+            }))
             {
                 _internalSearchController.AddSearchDocument(doc);
                 count++;
@@ -659,7 +659,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
         {
+<<<<<<< HEAD
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
+=======
 			var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
             return _searchController.SiteSearch(query);
         }
 
@@ -1538,7 +1542,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var added = AddStandardSearchDocs();
             var stypeIds = new List<int> { ModuleSearchTypeId };
             var utcNow = DateTime.UtcNow.AddDays(1);
-            const SortFields sfield = SortFields.LastModified; 
+            const SortFields sfield = SortFields.LastModified;
 
             //Act and Assert - just a bit later
             var query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddSeconds(1), EndModifiedTimeUtc = utcNow.AddDays(1) };
@@ -1709,7 +1713,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
 
             _searchController.SiteSearch(query);
-         }
+        }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -1752,7 +1756,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             _searchController.SiteSearch(query);
         }
-        
+
         [Test]
         public void SearchController_GetResult_Sorty_By_Date_Returns_Latest_Docs_First()
         {
@@ -1761,10 +1765,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.LastModified
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.LastModified
+            };
             var search = _searchController.SiteSearch(query);
 
             //Assert
@@ -1852,7 +1856,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Ascending_Returns_Alphabetic_Ascending()
         {
-            var titles = new List<string> {"cat", "ant", "dog", "antelope", "zebra", "yellow", " "};
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
 
             var added = AddDocuments(titles, "animal");
 
@@ -1874,7 +1878,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Assert.AreEqual(title, search.Results[count++].Title);
             }
-       }
+        }
 
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Descending_Returns_Alphabetic_Descending()
@@ -2037,11 +2041,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.Relevance,
-                    KeyWords = "brown OR fox"
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "brown OR fox"
+            };
             var search = _searchController.SiteSearch(query);
 
             //Assert
@@ -2171,11 +2175,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.LastModified,
-                    CultureCode = CultureItIt
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.LastModified,
+                CultureCode = CultureItIt
+            };
             var search = _searchController.SiteSearch(query);
 
             //Assert
@@ -2581,7 +2585,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             //Arrange
             AddFoldersAndFiles();
-            
+
             //Act
             var result1 = SearchForKeyword("kw-folderName:Images/*");
             var result2 = SearchForKeyword("kw-folderName:Images/DNN/*");
@@ -2600,7 +2604,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             AddFoldersAndFiles();
 
             //Act - Space is replaced by <
-            var query1 = new SearchQuery {KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
+            var query1 = new SearchQuery { KeyWords = "kw-folderName:Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = false };
             var query2 = new SearchQuery { KeyWords = "kw-folderName:my<Images/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
             var query3 = new SearchQuery { KeyWords = "kw-folderName:my<Images/my<dnn/*", SearchTypeIds = new[] { OtherSearchTypeId }, WildCardSearch = true };
             var result1 = _searchController.SiteSearch(query1);
@@ -2739,7 +2743,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _internalSearchController.AddSearchDocument(doc1);
             _internalSearchController.AddSearchDocument(doc2);
 
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0};
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0 };
 
             //Act
             var result = _searchController.SiteSearch(query);
@@ -2774,7 +2778,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-         
+
             _internalSearchController.AddSearchDocument(doc1);
             _internalSearchController.AddSearchDocument(doc2);
             _internalSearchController.AddSearchDocument(doc3);
@@ -2962,7 +2966,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
 
             AddDocumentsWithKeywords();
-            
+
             //Act
             var query = new SearchQuery
             {
@@ -2979,6 +2983,82 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #endregion
 
+<<<<<<< HEAD
+        #region Leading Wildcard search tests
+
+        [Test]
+        public void SearchController_EnableLeadingWildcard_Should_Not_Return_Results_When_Property_Is_False()
+        {
+            _mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+
+            //Arrange
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+            //Act
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+            _internalSearchController.AddSearchDocument(doc3);
+            _internalSearchController.Commit();
+
+
+            var result = SearchForKeyword("rld", OtherSearchTypeId, true, false);
+
+            //Assert
+            Assert.AreEqual(0, result.TotalHits);
+        }
+
+        [Test]
+        public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_True()
+        {
+            _mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+
+            //Arrange
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+            //Act
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+            _internalSearchController.AddSearchDocument(doc3);
+            _internalSearchController.Commit();
+
+
+            var result = SearchForKeyword("rld", OtherSearchTypeId, true, true);
+
+            //Assert
+            Assert.AreEqual(1, result.TotalHits);
+            Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+        }
+
+        [Test]
+        public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_False_But_Host_Setting_Is_True()
+        {
+            _mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
+
+            //Arrange
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+            //Act
+            _internalSearchController.AddSearchDocument(doc1);
+            _internalSearchController.AddSearchDocument(doc2);
+            _internalSearchController.AddSearchDocument(doc3);
+            _internalSearchController.Commit();
+
+
+            var result = SearchForKeyword("rld", OtherSearchTypeId, true, false);
+
+            //Assert
+            Assert.AreEqual(1, result.TotalHits);
+            Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+        }
+
+        #endregion
+=======
 		#region Leading Wildcard search tests
 
 		[Test]
@@ -3053,6 +3133,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 		}
 
 		#endregion
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         #region stop-words tests
 
