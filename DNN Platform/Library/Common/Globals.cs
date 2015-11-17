@@ -65,6 +65,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
@@ -86,6 +87,11 @@ namespace DotNetNuke.Common
     public sealed class Globals
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Globals));
+
+        public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
+        public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         #region PerformanceSettings enum
 
         /// <summary>
@@ -341,7 +347,8 @@ namespace DotNetNuke.Common
         private static string _installPath;
         private static Version _dataBaseVersion;
         private static UpgradeStatus _status = UpgradeStatus.Unknown;
-        private static string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the application path.
@@ -632,7 +639,10 @@ namespace DotNetNuke.Common
                             //Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
                     }
 
                     _status = tempStatus;
@@ -645,11 +655,14 @@ namespace DotNetNuke.Common
 
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// check if an incremental version exists
         /// </summary>
         /// <param name="version">version number</param>
         /// <returns>true if one exists and hasnt been applied, false otherwise</returns>
+=======
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
         public static bool IncrementalVersionExists(Version version)
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
@@ -657,6 +670,7 @@ namespace DotNetNuke.Common
             //If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
+<<<<<<< HEAD
                 providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", "");
                 if (Directory.Exists(providerpath))
                 {
@@ -666,6 +680,13 @@ namespace DotNetNuke.Common
                     {
                         return false;
                     }
+=======
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~","");
+                if (Directory.Exists(providerpath))
+                {
+                    var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
+                   
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
                     if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;
@@ -674,6 +695,10 @@ namespace DotNetNuke.Common
             }
             return false;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
 
         /// <summary>
         /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
@@ -1190,6 +1215,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
+<<<<<<< HEAD
         public static void UpdateDataBaseVersionIncrement(Version version, int increment)
         {
             //update the version and increment
@@ -1210,6 +1236,28 @@ namespace DotNetNuke.Common
             }
 
         }
+=======
+       public static void UpdateDataBaseVersionIncrement(Version version,int increment)
+        {
+            //update the version and increment
+           DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+            _dataBaseVersion = version;
+        }
+
+       public static int GetLastAppliedIteration(Version version)
+       {
+           try
+           {
+               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);           
+           }
+           catch (Exception)
+           {
+
+               return 0;
+           }
+           
+       }
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
 
         /// <summary>
         /// Adds the port.
@@ -2491,16 +2539,14 @@ namespace DotNetNuke.Common
                         //Create Valid Class
                         // letters ([a-zA-Z]), digits ([0-9]), hyphens ("-") and underscores ("_") are valid in class values
                         // Remove all characters that aren't in the list
-                        var invalidCharacters = new Regex("[^A-Z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidCharacters.Replace(inputValue, string.Empty);
+                        returnValue = InvalidCharacters.Replace(inputValue, string.Empty);
 
                         // If we're asked to validate the first character...
                         if ((validateFirstChar))
                         {
                             // classes should begin with a letter ([A-Za-z])' 
                             // prepend a starting non-letter character with an A
-                            var invalidInitialCharacters = new Regex("^[^A-Z]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                            if ((invalidCharacters.IsMatch(returnValue)))
+                            if ((InvalidCharacters.IsMatch(returnValue)))
                             {
                                 returnValue = "A" + returnValue;
                             }
@@ -2550,13 +2596,11 @@ namespace DotNetNuke.Common
                         // '... letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".")' are valid identifiers
                         // We aren't allowing hyphens or periods, even though they're valid, since the previous version of this function didn't
                         // Replace all characters that aren't in the list with an underscore
-                        var invalidCharacters = new Regex("[^A-Z0-9_:]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidCharacters.Replace(inputValue, "_");
+                        returnValue = InvalidCharacters.Replace(inputValue, "_");
 
                         // identifiers '... must begin with a letter ([A-Za-z])' 
                         // replace a starting non-letter character with an A
-                        var invalidInitialCharacters = new Regex("^[^A-Z]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidInitialCharacters.Replace(returnValue, "A");
+                        returnValue = InvalidInitialCharacters.Replace(returnValue, "A");
 
                         //put in Dictionary
                         validIDLookupDictionary[inputValue] = returnValue;
@@ -3582,28 +3626,22 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static string GenerateTabPath(int parentId, string tabName)
         {
-            string strTabPath = "";
+            var strTabPath = Null.NullString;
 
             if (!Null.IsNull(parentId))
             {
-                string strTabName;
                 var objTab = TabController.Instance.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
-                    strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
+                    var strTabName = TabPathInvalidCharsRx.Replace(objTab.TabName, string.Empty);
                     strTabPath = "//" + strTabName + strTabPath;
-                    if (Null.IsNull(objTab.ParentId))
-                    {
-                        objTab = null;
-                    }
-                    else
-                    {
-                        objTab = TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
-                    }
+                    objTab = Null.IsNull(objTab.ParentId)
+                        ? null
+                        : TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
                 }
             }
 
-            strTabPath = strTabPath + "//" + Regex.Replace(tabName, _tabPathInvalidCharsEx, string.Empty); ;
+            strTabPath = strTabPath + "//" + TabPathInvalidCharsRx.Replace(tabName, string.Empty);
             return strTabPath;
         }
 

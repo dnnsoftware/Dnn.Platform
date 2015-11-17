@@ -23,14 +23,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
 using System.Xml.XPath;
 
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -124,9 +122,14 @@ namespace DotNetNuke.Services.Install
             else
             {
                 versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
+<<<<<<< HEAD
                 currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));
             }
 
+=======
+                currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));  
+            }
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
         }
 
         private static void GetInstallerLocales()
@@ -212,6 +215,10 @@ namespace DotNetNuke.Services.Install
 
             _upgradeRunning = true;
             _upgradeProgress = 0;
+
+            //Output the current time for the user
+            CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+                ":", DateTime.Now.ToString()));
 
             foreach (var step in _steps)
             {
@@ -300,13 +307,6 @@ namespace DotNetNuke.Services.Install
 
             //remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
-
-            //Update Getting Started Settings
-            foreach (UserInfo hostUser in UserController.GetUsers(false, true, -1))
-            {
-                HostController.Instance.Update(String.Format("GettingStarted_Hide_{0}", hostUser.UserID), "false");
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", hostUser.UserID), "true");
-            }
 
             Config.Touch();
             Response.Redirect("../Default.aspx", true);

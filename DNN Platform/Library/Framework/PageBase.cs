@@ -64,6 +64,9 @@ namespace DotNetNuke.Framework
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
 
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private readonly static Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private PageStatePersister _persister;
         #region Private Members
 
@@ -334,8 +337,6 @@ namespace DotNetNuke.Framework
             //    jQuery.RegisterHoverIntent(Page);
             //}
 
-            JavaScript.Register(Page);
-
             if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);
@@ -434,9 +435,7 @@ namespace DotNetNuke.Framework
             var linkButton = control as LinkButton;
             if (linkButton != null)
             {
-                var imgMatches = Regex.Matches(value,
-                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
-                    RegexOptions.IgnoreCase);
+                var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))
@@ -615,11 +614,15 @@ namespace DotNetNuke.Framework
             var objModuleControl = control as IModuleControl;
             if (objModuleControl == null)
             {
+                //Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
-                if (pi != null && pi.GetValue(control, null) != null)
+                if (pi != null) 
                 {
-                    //If controls has a LocalResourceFile property use this
-                    IterateControls(control.Controls, affectedControls, pi.GetValue(control, null).ToString());
+                    //Attempt to get property value
+                    var pv = pi.GetValue(control, null);
+
+                    //If controls has a LocalResourceFile property use this, otherwise pass the resource file root
+                    IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
                 }
                 else
                 {

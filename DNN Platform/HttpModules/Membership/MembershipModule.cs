@@ -24,6 +24,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Web;
 
 using DotNetNuke.Application;
@@ -50,6 +51,8 @@ namespace DotNetNuke.HttpModules.Membership
     /// </summary>
     public class MembershipModule : IHttpModule
     {
+        private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
+
         private static string _cultureCode;
         /// <summary>
         /// Gets the name of the module.
@@ -153,10 +156,9 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 string userName = string.Empty;
                 //get WinAuth username from context 
-                if (context != null && context.User != null && context.User.Identity != null)
+                if (context.User != null && context.User.Identity != null)
                 {
-                    var rgx = new System.Text.RegularExpressions.Regex(@"\w+[\\]+(?=)");
-                    userName = rgx.Replace(context.User.Identity.Name, string.Empty);
+                    userName = NameRegex.Replace(context.User.Identity.Name, string.Empty);
                 }
 
                 UserInfo userInfo = UserController.GetCachedUser(portalSettings.PortalId, userName);

@@ -1,6 +1,4 @@
-﻿#region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+﻿// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,26 +15,29 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
-#region Usings
 
+using System;
 using System.Web.UI;
 
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.UI.Modules
 {
     public class WebFormsModuleControlFactory : IModuleControlFactory
     {
-        #region IModuleControlFactory Members
+        public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
+        {
+            return ControlUtilities.LoadControl<Control>(containerControl, controlSrc);
+        }
 
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return ControlUtilities.LoadControl<Control>(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
-        #endregion
+        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            return CreateControl(containerControl, String.Empty, controlSrc);
+        }
     }
 }

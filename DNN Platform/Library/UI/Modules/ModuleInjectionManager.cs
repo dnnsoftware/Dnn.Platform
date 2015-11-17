@@ -76,8 +76,7 @@ namespace DotNetNuke.UI.Modules
 
         internal static bool IsValidModuleInjectionFilter(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                   typeof(IModuleInjectionFilter).IsAssignableFrom(t);
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
         }
 
         public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)

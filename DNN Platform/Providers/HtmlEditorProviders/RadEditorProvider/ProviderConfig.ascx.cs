@@ -52,6 +52,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
     public partial class ProviderConfig : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable
     {
+        private static Regex RoleMatchRegex = new Regex("^RoleId\\.([-\\d]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region Private Members
 
 
@@ -1311,6 +1313,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
         /// This method will build a dnn property label (Same as used in the user profile edit area) that can be added to a control.
         /// </summary>
         /// <param name="resourceKey"></param>
+		/// <param name="associatedControlId"></param>
         /// <returns></returns>
         /// <remarks></remarks>
 		private PropertyLabelControl BuildLabel(string resourceKey, string associatedControlId)
@@ -1466,7 +1469,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         if (strTargetGroup.Length > 0)
                         {
-                            var roleMatch = Regex.Match(strTargetGroup, "^RoleId\\.([-\\d]+)", RegexOptions.IgnoreCase);
+                            var roleMatch = RoleMatchRegex.Match(strTargetGroup);
                             if (roleMatch.Success)
                             {
                                 var roleId = roleMatch.Groups[1].Value;

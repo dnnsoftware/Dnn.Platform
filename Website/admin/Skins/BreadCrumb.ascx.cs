@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNuke? - http://www.dotnetnuke.com
+// Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,15 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
-
+using System.Text;
+using System.Text.RegularExpressions;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Common.Utilities;
-using System.Globalization;
+using DotNetNuke.Entities.Tabs;
 
 #endregion
 
@@ -37,138 +37,233 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <returns></returns>
     /// <remarks></remarks>
     /// <history>
+    ///     
     /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
     ///                             brackets from property names
+    /// 
+    ///     [augustk]   07/14/2015  Added schema.org support and refactored most of
+    ///                             the code
     /// </history>
     /// -----------------------------------------------------------------------------
     public partial class BreadCrumb : SkinObjectBase
     {
-        private const string MyFileName = "Breadcrumb.ascx";
-        public string Separator { get; set; }
+        private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
+        private string _separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
+        private string _cssClass = "SkinObject";
+        private int _rootLevel = 0;
+        private bool _showRoot = false;
+        private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
+        private string _homeUrl = "";
+        private string _homeTabName = "Root";
 
-        public string CssClass { get; set; }
+        // Separator between breadcrumb elements
+        public string Separator
+        {
+            get { return _separator; }
+            set { _separator = value; }
+        }
 
-        public string RootLevel { get; set; }
+        public string CssClass
+        {
+            get { return _cssClass; }
+            set { _cssClass = value; }
+        }
 
+        // Level to begin processing breadcrumb at.
+        // -1 means show root breadcrumb
+        public string RootLevel
+        {
+            get { return _rootLevel.ToString(); }
+            set
+            {
+                _rootLevel = int.Parse(value);
+
+                if (_rootLevel < 0)
+                {
+                    _showRoot = true;
+                    _rootLevel = 0;
+                }
+            }
+        }
+
+        // Use the page title instead of page name
         public bool UseTitle { get; set; }
 
-        public int ProfileUserId {
-            get {
-                var userId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["UserId"])) {
-                    if (!Int32.TryParse(Request.Params["UserId"], out userId)) userId = Null.NullInteger;
-                }
-                return userId;
-            }
-        }
-        public int GroupId {
-            get {
-                var groupId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["GroupId"])) {
-                    groupId = Int32.Parse(Request.Params["GroupId"]);
-                }
-                return groupId;
-            }
-        }
-
-        //do not show when there is no breadcrumb(only has current tab)
+        // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
 
-        private void InitializeComponent()
+		public int ProfileUserId
         {
+            get
+            {
+                return string.IsNullOrEmpty(Request.Params["UserId"])
+                    ? Null.NullInteger
+                    : int.Parse(Request.Params["UserId"]);
+            }
         }
 
-        protected override void OnInit(EventArgs e)
+        public int GroupId
         {
-            base.OnInit(e);
-
-            InitializeComponent();
+            get
+            {
+                return string.IsNullOrEmpty(Request.Params["GroupId"])
+                    ? Null.NullInteger
+                    : int.Parse(Request.Params["GroupId"]);
+            }
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            if (HideWithNoBreadCrumb && PortalSettings.ActiveTab.BreadCrumbs.Count == 1)
+            // Position in breadcrumb list
+            var position = 1;
+
+            //resolve image path in separator content
+            ResolveSeparatorPaths();
+
+            // If we have enabled hiding when there are no breadcrumbs, simply return
+            if (HideWithNoBreadCrumb && PortalSettings.ActiveTab.BreadCrumbs.Count == (_rootLevel + 1))
             {
                 return;
             }
 
-            //public attributes
-            string strSeparator;
-            if (!String.IsNullOrEmpty(Separator))
+            // Without checking if the current tab is the home tab, we would duplicate the root tab
+            if (_showRoot && PortalSettings.ActiveTab.TabID != PortalSettings.HomeTabId)
             {
-                if (Separator.IndexOf("src=") != -1)
-                {
-                    Separator = Separator.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
-                }
-                strSeparator = Separator;
-            }
-            else
-            {
-                strSeparator = "&nbsp;<img alt=\"*\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">&nbsp;";
-            }
-            string strCssClass;
-            if (!String.IsNullOrEmpty(CssClass))
-            {
-                strCssClass = CssClass;
-            }
-            else
-            {
-                strCssClass = "SkinObject";
-            }
-            int intRootLevel;
-            if (!String.IsNullOrEmpty(RootLevel))
-            {
-                intRootLevel = int.Parse(RootLevel);
-            }
-            else
-            {
-                intRootLevel = 1;
-            }
-            string strBreadCrumbs = "";
+                // Add the current protocal to the current URL
+                _homeUrl = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
 
-            if (intRootLevel == -1)
-            {
-                strBreadCrumbs += string.Format(Localization.GetString("Root", Localization.GetResourceFile(this, MyFileName)),
-                                                Globals.GetPortalDomainName(PortalSettings.PortalAlias.HTTPAlias, Request, true),
-                                                strCssClass);
-                strBreadCrumbs += strSeparator;
-                intRootLevel = 0;
+                // Make sure we have a home tab ID set
+                if (PortalSettings.HomeTabId != -1)
+                {
+                    _homeUrl = Globals.NavigateURL(PortalSettings.HomeTabId);
+
+                    var tc = new TabController();
+                    var homeTab = tc.GetTab(PortalSettings.HomeTabId, PortalSettings.PortalId, false);
+                    _homeTabName = homeTab.LocalizedTabName;
+
+                    // Check if we should use the tab's title instead
+                    if (UseTitle && !string.IsNullOrEmpty(homeTab.Title))
+                    {
+                        _homeTabName = homeTab.Title;
+                    }
+                }
+
+                // Append all of the HTML for the root breadcrumb
+                _breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
+                _breadcrumb.Append("<a href=\"" + _homeUrl + "\" class=\"" + _cssClass + "\" itemprop=\"item\" ><span itemprop=\"name\">" + _homeTabName + "</span></a>");
+                _breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                _breadcrumb.Append("</span>");
+
+                // Add a separator
+                _breadcrumb.Append(_separator);
             }
-			
+
             //process bread crumbs
-            int intTab;
-            for (intTab = intRootLevel; intTab <= PortalSettings.ActiveTab.BreadCrumbs.Count - 1; intTab++)
+            for (var i = _rootLevel; i < PortalSettings.ActiveTab.BreadCrumbs.Count; ++i)
             {
-                if (intTab != intRootLevel)
+                // Only add separators if we're past the root level
+                if (i > _rootLevel)
                 {
-                    strBreadCrumbs += strSeparator;
-                }
-                var objTab = (TabInfo) PortalSettings.ActiveTab.BreadCrumbs[intTab];
-                string strLabel = objTab.LocalizedTabName;
-                if (UseTitle && !String.IsNullOrEmpty(objTab.Title))
-                {
-                    strLabel = objTab.Title;
-                }
-                var tabUrl = objTab.FullUrl;
-                if (ProfileUserId > -1) {
-                    tabUrl = Globals.NavigateURL(objTab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    _breadcrumb.Append(_separator);
                 }
 
-                if (GroupId > -1) {
-                    tabUrl = Globals.NavigateURL(objTab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
-                }
-                if (objTab.DisableLink)
+                // Grab the current tab
+                var tab = (TabInfo)PortalSettings.ActiveTab.BreadCrumbs[i];
+
+                var tabName = tab.LocalizedTabName;
+
+                // Determine if we should use the tab's title instead of tab name
+                if (UseTitle && !string.IsNullOrEmpty(tab.Title))
                 {
-                    strBreadCrumbs += "<span class=\"" + strCssClass + "\">" + strLabel + "</span>";
+                    tabName = tab.Title;
+                }
+
+                // Get the absolute URL of the tab
+                var tabUrl = tab.FullUrl;
+
+                // 
+                if (ProfileUserId > -1)
+                {
+                    tabUrl = Globals.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId);
+                }
+
+                // 
+                if (GroupId > -1)
+                {
+                    tabUrl = Globals.NavigateURL(tab.TabID, "", "GroupId=" + GroupId);
+                }
+
+                // Begin breadcrumb
+                _breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
+
+                // Is this tab disabled? If so, only render the text
+                if (tab.DisableLink)
+                {
+                    _breadcrumb.Append("<span class=\"" + _cssClass + "\" itemprop=\"name\">" + tabName + "</span>");
                 }
                 else
                 {
-                    strBreadCrumbs += "<a href=\"" + tabUrl + "\" class=\"" + strCssClass + "\">" + strLabel + "</a>";
+                    _breadcrumb.Append("<a href=\"" + tabUrl + "\" class=\"" + _cssClass + "\" itemprop=\"item\"><span itemprop=\"name\">" + tabName + "</span></a>");
                 }
+
+                _breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                _breadcrumb.Append("</span>");
             }
-            lblBreadCrumb.Text = strBreadCrumbs;
+
+            _breadcrumb.Append("</span>"); //End of BreadcrumbList
+            
+            lblBreadCrumb.Text = _breadcrumb.ToString();
+        }
+
+        private void ResolveSeparatorPaths()
+        {
+            if (string.IsNullOrEmpty(_separator))
+            {
+                return;
+            }
+
+            var urlMatches = Regex.Matches(_separator, UrlRegex, RegexOptions.IgnoreCase);
+            if (urlMatches.Count > 0)
+            {
+                foreach (Match match in urlMatches)
+                {
+                    var url = match.Groups[3].Value;
+                    var changed = false;
+
+                    if (url.StartsWith("/"))
+                    {
+                        if (!string.IsNullOrEmpty(Globals.ApplicationPath))
+                        {
+                            url = string.Format("{0}{1}", Globals.ApplicationPath, url);
+                            changed = true;
+                        }
+                    }
+                    else if (url.StartsWith("~/"))
+                    {
+                        url = Globals.ResolveUrl(url);
+                        changed = true;
+                    }
+                    else
+                    {
+                        url = string.Format("{0}{1}", PortalSettings.ActiveTab.SkinPath, url);
+                        changed = true;
+                    }
+
+                    if (changed)
+                    {
+                        var newMatch = string.Format("{0}={1}{2}{3}", 
+                                                        match.Groups[1].Value, 
+                                                        match.Groups[2].Value, 
+                                                        url,
+                                                        match.Groups[4].Value);
+
+                        _separator = _separator.Replace(match.Value, newMatch);
+                    }
+                }
+
+            }
         }
     }
 }

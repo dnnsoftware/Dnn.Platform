@@ -43,15 +43,13 @@ namespace DotNetNuke.Entities.Urls
 {
     public class AdvancedFriendlyUrlProvider : FriendlyUrlProviderBase
     {
+        private static readonly Regex FriendlyPathRegex = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex DefaultPageRegex = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex AumDebugRegex = new Regex("/_aumdebug/(?:true|false)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        #region Internal Properties
-
-        private FriendlyUrlSettings GetSettings(int portalId)
-        {
-                return new FriendlyUrlSettings(portalId) { UrlFormat = "Advanced" };          
-        }
-
-        #endregion
+        const string CodePattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
+        private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
         #region Constructor
 
@@ -414,7 +412,7 @@ namespace DotNetNuke.Entities.Urls
             Guid parentTraceId = Guid.Empty;
             int portalId = (portalSettings != null) ? portalSettings.PortalId : tab.PortalID;
             bool cultureSpecificAlias;
-            var localSettings = GetSettings(portalId);
+            var localSettings = new FriendlyUrlSettings(portalId);
 
             //Call GetFriendlyAlias to get the Alias part of the url
             if (String.IsNullOrEmpty(portalAlias) && portalSettings != null)
@@ -467,8 +465,7 @@ namespace DotNetNuke.Entities.Urls
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
-                friendlyPath = regex.Replace(friendlyPath, "https://");
+               friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
                 var sslUrl = portalSettings.SSLURL;
@@ -507,8 +504,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string GetCultureOfPath(string path)
         {
             string code = "";
-            const string codeRegexPattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
-            MatchCollection matches = Regex.Matches(path, codeRegexPattern);
+            MatchCollection matches = CodePatternRegex.Matches(path);
             if (matches.Count > 0)
             {
                 foreach (Match langMatch in matches)
@@ -551,7 +547,7 @@ namespace DotNetNuke.Entities.Urls
             bool done = false;
             string httpAliasFull = null;
             //this regex identifies if the correct http(s)://portalAlias already is in the path
-            var portalMatchRegex = new Regex("^http[s]*://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            var portalMatchRegex = new Regex("^https?://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             string cultureCode = GetCultureOfPath(path);
             if (portalSettings != null)
             {
@@ -570,23 +566,40 @@ namespace DotNetNuke.Entities.Urls
                         cultureCode = GetCultureOfSettings(portalSettings);
                         //lookup the culture code of the portal settings object
                     }
-                    var primaryAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
 
-                    if (primaryAlias != null)
+                    PortalAliasInfo redirectAlias;
+                    if (aliasMapping == PortalSettings.PortalAliasMapping.Redirect)
                     {
-                        if ((aliasMapping == PortalSettings.PortalAliasMapping.Redirect || !String.IsNullOrEmpty(primaryAlias.CultureCode))
-                            &&  String.Compare(primaryAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
+                        // Alias mapping is redirect -> Search for primary alias
+                        redirectAlias = primaryAliases.Where(e => e.IsPrimary)
+                            .GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                    }
+                    else
+                    {
+                        var httpAliasWithoutCulture = httpAlias.Split('/').First();
+                        var portalAliasList = primaryAliases.Where(e => e.HTTPAlias.StartsWith(httpAliasWithoutCulture, StringComparison.OrdinalIgnoreCase)).ToList();
+                        redirectAlias =
+                            // Get culture specific portal alias
+                            portalAliasList.Where(e => cultureCode.Equals(e.CultureCode, StringComparison.OrdinalIgnoreCase)).GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings) ??
+                            // Get default (none culture specific) portal alias
+                            portalAliasList.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                    }
+
+                    if (redirectAlias != null)
+                    {
+                        if (!String.IsNullOrEmpty(redirectAlias.CultureCode)
+                            && String.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
                         {
                             //found the primary alias alias, and it's different from the supplied portal alias
                             //and the site is using a redirect portal alias mapping
                             //substitute in the primary Alias for the supplied alias
                             friendlyPath = friendlyPath.Replace(Globals.AddHTTP(httpAlias), String.Empty);
-                            httpAlias = primaryAlias.HTTPAlias;
-                            if (!string.IsNullOrEmpty(primaryAlias.CultureCode))
+                            httpAlias = redirectAlias.HTTPAlias;
+                            if (!string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
-                            else if (primaryAlias.CultureCode == "")
+                            else if (redirectAlias.CultureCode == "")
                             {
                                 cultureSpecificAlias = true;
                                 //770: hacking this so that a change is forced to portal settings when a non-chosen alias is requested.
@@ -595,8 +608,8 @@ namespace DotNetNuke.Entities.Urls
                         else
                         {
                             //check to see if we matched for this alias - if so, it's a culture specific alias
-                            if (String.Compare(primaryAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
-                                !string.IsNullOrEmpty(primaryAlias.CultureCode))
+                            if (String.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
+                                !string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
@@ -640,13 +653,14 @@ namespace DotNetNuke.Entities.Urls
                         string originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString();
                         //confirming this portal was the original one requested, making all the generated aliases
                         //for the same portal
-                        Match portalMatch = Regex.Match(originalUrl, "^" + httpAliasFull,
-                                                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var fullALiasRx = UrlRewriterUtils.GetCahcedRegex("^" + httpAliasFull, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        Match portalMatch = fullALiasRx.Match(originalUrl);
                         if (portalMatch.Success == false)
                         {
                             //Manage the special case where original url contains the alias as 
                             //http://www.domain.com/Default.aspx?alias=www.domain.com/child" 
-                            portalMatch = Regex.Match(originalUrl, "^?alias=" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var httpAliasRx = UrlRewriterUtils.GetCahcedRegex("^?alias=" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            portalMatch = httpAliasRx.Match(originalUrl);
                             if (portalMatch.Success)
                             {
                                 friendlyPath = Globals.ResolveUrl(friendlyPath);
@@ -675,8 +689,7 @@ namespace DotNetNuke.Entities.Urls
         private static string GetFriendlyQueryString(TabInfo tab, string path, string pageName, FriendlyUrlSettings settings)
         {
             string friendlyPath = path;
-            Match queryStringMatch = Regex.Match(friendlyPath, "(.[^\\\\?]*)\\\\?(.*)",
-                                                 RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            Match queryStringMatch = FriendlyPathRegex.Match(friendlyPath);
             string queryStringSpecialChars = "";
             const string defaultPageName = Globals.glbDefaultPage;
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
@@ -687,8 +700,8 @@ namespace DotNetNuke.Entities.Urls
                 if (String.Compare(pageName, defaultPageName, StringComparison.OrdinalIgnoreCase) != 0)
                 //take out the end page name, it will get re-added
                 {
-                    friendlyPath = Regex.Replace(friendlyPath, pageName, "",
-                                                 RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    var pgNameRx = UrlRewriterUtils.GetCahcedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    friendlyPath = pgNameRx.Replace(friendlyPath, "");
                 }
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if ((queryString.StartsWith("?")))
@@ -727,7 +740,8 @@ namespace DotNetNuke.Entities.Urls
                         {
                             if (pair[1].Length > 0)
                             {
-                                if (Regex.IsMatch(pair[1], settings.RegexMatch) == false)
+                                var rx = UrlRewriterUtils.GetCahcedRegex(settings.RegexMatch);
+                                if (rx.IsMatch(pair[1]) == false)
                                 {
                                     // Contains Non-AlphaNumeric Characters 
                                     if (pair[0].ToLower() == "tabid")
@@ -883,8 +897,8 @@ namespace DotNetNuke.Entities.Urls
             //655 : no friendly url if matched with regex
             if (!string.IsNullOrEmpty(settings.NoFriendlyUrlRegex))
             {
-                if (Regex.IsMatch(friendlyPath, settings.NoFriendlyUrlRegex,
-                                  RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                var rx = UrlRewriterUtils.GetCahcedRegex(settings.NoFriendlyUrlRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                if (rx.IsMatch(friendlyPath))
                 {
                     return friendlyPath;
                 }
@@ -902,8 +916,8 @@ namespace DotNetNuke.Entities.Urls
                 string customHttpAlias;
                 bool isHomePage = TabPathHelper.IsTabHomePage(tab, portalSettings);
                 //do a regex check on the base friendly Path, to see if there is parameters on the end or not
-                var tabOnlyRegex = new Regex("[^?]*/tabId/(?<tabid>\\d+)/" + pageName + @"($|\?(?<qs>.+$))",
-                                             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var tabOnlyRegex = UrlRewriterUtils.GetCahcedRegex("[^?]*/tabId/(?<tabid>\\d+)/" + pageName + "($|\\?(?<qs>.+$))",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (tabOnlyRegex.IsMatch(friendlyPath))
                 {
@@ -969,8 +983,8 @@ namespace DotNetNuke.Entities.Urls
                     //this regex splits the incoming friendly path pagename/tabid/56/default.aspx into the non-tabid path, and individual parms for each /parm/ in the friendly path 
                     //550 : add in \. to allow '.' in the parameter path.
                     //667 : allow non-word characters (specifically %) in the path
-                    var rgx = new Regex(@"[^?]*(?<tabs>/tabId/(?<tabid>\d+))(?<path>(?<parms>(?:(?:/[^/?]+){1})+))(?:/" + pageName + @")(?:$|\?(?<qs>.+$))", 
-                                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant); 
+                    var rgx = UrlRewriterUtils.GetCahcedRegex("[^?]*(?<tabs>/tabId/(?<tabid>\\d+))(?<path>(?<parms>(?:(?:/[^/?]+){1})+))(?:/" + pageName + ")(?:$|\\?(?<qs>.+$))",
+                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     MatchCollection matches = rgx.Matches(friendlyPath);
                     if (matches.Count > 0)
                     {
@@ -981,7 +995,8 @@ namespace DotNetNuke.Entities.Urls
                         bool hasParms = false;
                         string cultureCode = null;
                         string defaultCode = null;
-                        string newPageName = "";
+
+                        const string newPageName = "";
                         string newPath = "";
                         string qs = "";
                         string langParms = "";
@@ -993,7 +1008,7 @@ namespace DotNetNuke.Entities.Urls
                                 hasParms = true;
                                 newPath = rgxMatch.Groups["path"].Value;
                                 qs = rgxMatch.Groups["qs"].Value;
-                                Match langMatch = Regex.Match(newPath, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                                Match langMatch = LangMatchRegex.Match(newPath);
                                 if (langMatch.Success)
                                 {
                                     //a language specifier parameter is in the string
@@ -1072,7 +1087,7 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             //check for parameter regex replacement 
-                            string changedPath = String.Empty;
+                            string changedPath;
                             bool allowOtherParameters = false;
                             if (FriendlyUrlPathController.CheckUserProfileReplacement(newPath,
                                                                                         tab,
@@ -1172,7 +1187,8 @@ namespace DotNetNuke.Entities.Urls
                                                                     isHomePage);
 
                             //702: look for _aumdebug=true|false and remove if so - never want it part of the output friendly url path
-                            finalPath = Regex.Replace(finalPath, "/_aumdebug/(?:true|false)", "");
+
+                            finalPath = AumDebugRegex.Replace(finalPath, "");
 
                             //'and we're done! 
                             if (customOnly && isCustomUrl || customOnly == false || builtInUrl)
@@ -1183,7 +1199,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        var re = new Regex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var re = UrlRewriterUtils.GetCahcedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                         if ((re.IsMatch(friendlyPath)))
                         {
                             Match sesMatch = re.Match(friendlyPath);
@@ -1284,7 +1300,7 @@ namespace DotNetNuke.Entities.Urls
 
             var pathBuilder = new StringBuilder();
             var queryStringBuilder = new StringBuilder();
-            var notInPath = new Regex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            var notInPath = UrlRewriterUtils.GetCahcedRegex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
             // Iterate over each key/value parameter pair in path and test whether the parameter
             // should be excluded in the path and moved to the query string

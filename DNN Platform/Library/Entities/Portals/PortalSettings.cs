@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -24,26 +24,15 @@
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.UI.Skins;
 
 #endregion
 
@@ -145,7 +134,7 @@ namespace DotNetNuke.Entities.Portals
 		    BuildPortalSettings(tabId, portal);
 		}
 
-	    private void BuildPortalSettings(int tabId, PortalInfo portal)
+        private void BuildPortalSettings(int tabId, PortalInfo portal)
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 
@@ -153,7 +142,20 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-            ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
+            if (items != null && items.Contains(key))
+            {
+                ActiveTab = items[key] as TabInfo;
+            }
+            else
+            {
+                ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+                if (items != null && ActiveTab != null)
+                {
+                    items[key] = ActiveTab;
+                }
+            }
         }
 
         #endregion
@@ -228,7 +230,8 @@ namespace DotNetNuke.Entities.Portals
 
         public int SearchTabId { get; set; }
 
-		public int SiteLogHistory { get; set; }
+        [Obsolete("Deprecated in 8.0.0")]
+        public int SiteLogHistory { get; set; }
 
 		public int SplashTabId { get; set; }
 
@@ -588,7 +591,7 @@ namespace DotNetNuke.Entities.Portals
                 // For New Install
                 string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     pageHead = (setting == "false") ? "" : setting;
@@ -622,7 +625,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 string CompatibleHttpHeader = "IE=edge";
                 string setting;
-                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     CompatibleHttpHeader = (setting == "false") ? "" : setting;
@@ -787,11 +790,6 @@ namespace DotNetNuke.Entities.Portals
 				case "backgroundfile":
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(BackgroundFile, format);
-					break;
-				case "siteloghistory":
-					isPublic = false;
-					propertyNotFound = false;
-					result = SiteLogHistory.ToString(outputFormat, formatProvider);
 					break;
 				case "admintabid":
 					isPublic = false;

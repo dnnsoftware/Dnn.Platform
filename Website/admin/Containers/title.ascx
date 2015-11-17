@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Containers.Title" CodeFile="Title.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Containers.Title" Codebehind="Title.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
 <dnn:DNNLabelEdit id="titleLabel" runat="server" cssclass="Head" enableviewstate="False" MouseOverCssClass="LabelEditOverClass"
 	ToolBarId="titleToolbar" LabelEditCssClass="LabelEditTextClass" EditEnabled="True" EventName="none" LostFocusSave="false"></dnn:DNNLabelEdit>

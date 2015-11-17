@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Host.IPFilters" CodeFile="IPFilters.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Host.IPFilters" Codebehind="IPFilters.ascx.cs" %>
 <div id="dvRedirectionsGrid" runat="server" class="dnnGrid dnnRedirectionGrid">
     <div class="dnnTableHeader">
         <asp:HyperLink ID="cmdAddFilter" runat="server" resourcekey="cmdAdd" CssClass="dnnSecondaryAction dnnRight" />

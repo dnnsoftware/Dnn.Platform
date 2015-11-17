@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Lists;
@@ -471,8 +472,10 @@ namespace DotNetNuke.UI.WebControls
 				//Add the Selected Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
+
+            var defaultText = HttpUtility.HtmlEncode("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">");
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
-            writer.Write("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">");
+            writer.Write(defaultText);
             writer.RenderEndTag();
             
             foreach (ListEntryInfo item in ListEntries)

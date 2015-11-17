@@ -89,7 +89,11 @@ namespace DotNetNuke.Services.Sitemap
 								pageUrl = GetPageUrl(tab, currentLanguage);
 								urls.Add(pageUrl);
 							}
+<<<<<<< HEAD
 							catch (Exception ex)
+=======
+							catch (Exception)
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
 							{
 								Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
 							}
@@ -148,10 +152,10 @@ namespace DotNetNuke.Services.Sitemap
                         (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
-                        alternates.Add(new AlternateUrl() 
-                        { 
-                            Url = alternateUrl, 
-                            Language = localized.CultureCode 
+                        alternates.Add(new AlternateUrl()
+                        {
+                            Url = alternateUrl,
+                            Language = localized.CultureCode
                         });
                     }
                 }
@@ -165,7 +169,7 @@ namespace DotNetNuke.Services.Sitemap
                         Url = alternateUrl,
                         Language = currentTab.CultureCode
                     });
-                    
+
                     pageUrl.AlternateUrls = alternates;
                 }
             }

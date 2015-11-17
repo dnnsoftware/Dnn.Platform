@@ -1,6 +1,6 @@
-<%@ Control Language="c#" AutoEventWireup="false" Explicit="True" CodeFile="ModuleLocalization.ascx.cs" Inherits="DotNetNuke.Admin.Modules.ModuleLocalization" %>
+<%@ Control Language="c#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Admin.Modules.ModuleLocalization" Codebehind="ModuleLocalization.ascx.cs" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnModuleLocalization dnnClear">
 	<dnnweb:DnnGrid ID="localizedModulesGrid" runat="server" AutoGenerateColumns="false" AllowMultiRowSelection="true" 
             CssClass="dnnModuleLocalizationGrid">
@@ -21,7 +21,7 @@
 				<dnnweb:DnnGridTemplateColumn UniqueName="Edit" HeaderText="Edit"  ItemStyle-Width="40px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
 					<ItemTemplate>
 						<a href='<%# DotNetNuke.Common.Globals.NavigateURL(Convert.ToInt32(Eval("TabId")), Null.NullBoolean, PortalSettings, "Module", Eval("CultureCode").ToString(), "ModuleId=" + Eval("ModuleID")) %>' >
-							<dnn:DnnImage ID="editCultureImage" runat="server" ResourceKey="edit" IconKey="Edit" />
+							<dnnweb:DnnImage ID="editCultureImage" runat="server" ResourceKey="edit" IconKey="Edit" />
 						</a>
 					</ItemTemplate>
 				</dnnweb:DnnGridTemplateColumn>

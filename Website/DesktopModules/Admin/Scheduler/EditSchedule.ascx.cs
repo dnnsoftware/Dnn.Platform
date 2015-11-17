@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -107,7 +108,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 {
                     ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement).Selected = true;
                 }
-                txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
+                txtRetryTimeLapse.Text = scheduleItem.RetryTimeLapse == Null.NullInteger ? string.Empty : Convert.ToString(scheduleItem.RetryTimeLapse);
                 if (ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement) != null)
                 {
                     ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement).Selected = true;
@@ -129,10 +130,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
                 txtServers.Text = scheduleItem.Servers.Trim(',');
-                if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
-                {
-                    ddlRetryTimeLapseMeasurement.Visible = false;
-                }
             }
             else
             {
@@ -147,10 +144,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = txtType.Text.Replace(" ", "");
             scheduleItem.FriendlyName = txtFriendlyName.Text;
-            //DNN-4964 - values for time lapse and retry frequency can't be set to 0, -1 or left empty (client side validation has been added)
+            //DNN-4964 - values for time lapse can't be set to 0, -1 or left empty (client side validation has been added)
             scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
             scheduleItem.TimeLapseMeasurement = ddlTimeLapseMeasurement.SelectedItem.Value;
-            scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
+            scheduleItem.RetryTimeLapse = string.IsNullOrWhiteSpace(txtRetryTimeLapse.Text) ? Null.NullInteger : Convert.ToInt32(txtRetryTimeLapse.Text);
             scheduleItem.RetryTimeLapseMeasurement = ddlRetryTimeLapseMeasurement.SelectedItem.Value;
             scheduleItem.RetainHistoryNum = Convert.ToInt32(ddlRetainHistoryNum.SelectedItem.Value);
             scheduleItem.AttachToEvent = ddlAttachToEvent.SelectedItem.Value;
@@ -201,7 +198,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;
@@ -214,15 +211,27 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+
                 if (chkEnabled.Checked)
                 {
                     //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
-                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate != null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate) < DateTime.Now;
+                    if ((startScheduleDatePicker.SelectedDate ?? Null.NullDate) >= DateTime.Now)
+                    {
+                        cmdRun.Visible = false;
+                    }
+                    else
+                    {
+                        // Hide "Run now" if scheduler should not run on this server
+                        if (!SchedulingController.CanRunOnThisServer(txtServers.Text))
+                        {
+                            cmdRun.Visible = false;
+                        }
+                    }
                 }
                 else
                 {
-                    cmdRun.Enabled = chkEnabled.Checked;
-                    cmdRun.Visible = chkEnabled.Checked;
+                    cmdRun.Enabled = false;
+                    cmdRun.Visible = false;
                 }
 
 
@@ -287,9 +296,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 objScheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
                 var scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
-                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || (chkEnabled.Checked) ||
+                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || 
+                    (chkEnabled.Checked) ||
                     (txtTimeLapse.Text != Convert.ToString(scheduleItem.TimeLapse)) ||
-                    (txtRetryTimeLapse.Text != Convert.ToString(scheduleItem.RetryTimeLapse)) ||
+                    (txtRetryTimeLapse.Text.Trim() != (scheduleItem.RetryTimeLapse == Null.NullInteger ? string.Empty : Convert.ToString(scheduleItem.RetryTimeLapse))) ||
                     (ddlRetryTimeLapseMeasurement.SelectedValue != scheduleItem.RetryTimeLapseMeasurement) ||
                     (ddlTimeLapseMeasurement.SelectedValue != scheduleItem.TimeLapseMeasurement))
                 {
@@ -317,6 +327,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 
         private bool VerifyValidTimeLapseRetry()
         {
+            // Do not validate, if retry time lapse is not defined
+            if (string.IsNullOrWhiteSpace(txtRetryTimeLapse.Text)) return true;
+            
             var timeLapse = CalculateTime(Convert.ToInt32(txtTimeLapse.Text), ddlTimeLapseMeasurement.SelectedItem.Value);
             var retry = CalculateTime(Convert.ToInt32(txtRetryTimeLapse.Text), ddlRetryTimeLapseMeasurement.SelectedItem.Value);
             if (retry > timeLapse)
@@ -355,19 +368,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     break;
             }
             return nextTime;
-        }
-
-        protected void VisibilityRetryTimeLapse(object sender, EventArgs e)
-        {
-
-            if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
-            {
-                ddlRetryTimeLapseMeasurement.Visible = false;
-            }
-            else
-            {
-                ddlRetryTimeLapseMeasurement.Visible = true;
-            }
         }
 
         #endregion

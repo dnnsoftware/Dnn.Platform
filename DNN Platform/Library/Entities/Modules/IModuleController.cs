@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 
@@ -166,13 +167,13 @@ namespace DotNetNuke.Entities.Modules
         ModuleInfo GetModuleByCulture(int ModuleId, int tabid, int portalId, Locale locale);
 
         /// <summary>
-        /// Get ModuleInfo object of first module instance with a given friendly name of the module definition
+        /// Get ModuleInfo object of first module instance with a given name of the module definition
         /// </summary>
         /// <param name="portalId">ID of the portal, where to look for the module</param>
-        /// <param name="friendlyName">friendly name of module definition</param>
+        /// <param name="definitionName">The name of module definition (NOTE: this looks at <see cref="ModuleDefinitionInfo.DefinitionName"/>, not <see cref="ModuleDefinitionInfo.FriendlyName"/>)</param>
         /// <returns>ModuleInfo of first module instance</returns>
         /// <remarks>preferably used for admin and host modules</remarks>
-        ModuleInfo GetModuleByDefinition(int portalId, string friendlyName);
+        ModuleInfo GetModuleByDefinition(int portalId, string definitionName);
 
         /// <summary>
         ///   get a Module object
@@ -194,9 +195,9 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the modules by definition.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <param name="friendlyName">Name of the friendly.</param>
+        /// <param name="definitionName">The name of the module definition.</param>
         /// <returns>module collection</returns>
-        ArrayList GetModulesByDefinition(int portalID, string friendlyName);
+        ArrayList GetModulesByDefinition(int portalID, string definitionName);
 
         /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable

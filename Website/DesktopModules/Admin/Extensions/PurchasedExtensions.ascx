@@ -1,6 +1,7 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.PurchasedExtensions" CodeFile="PurchasedExtensions.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.PurchasedExtensions" Codebehind="PurchasedExtensions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <dnn:DnnAjaxLoadingPanel ID="loadingPanel" runat="server" Skin="Default">
 </dnn:DnnAjaxLoadingPanel>
 <dnn:DnnAjaxPanel ID="ajaxPanel" runat="server" LoadingPanelID="loadingPanel" RestoreOriginalRenderDelegate="false">

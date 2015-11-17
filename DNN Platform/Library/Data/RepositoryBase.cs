@@ -24,7 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Web.Caching;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -38,7 +38,7 @@ namespace DotNetNuke.Data
 
         protected RepositoryBase()
         {
-            Initialize();
+            InitializeInternal();
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace DotNetNuke.Data
             }
         }
 
-        private void Initialize()
+        private void InitializeInternal()
         {
             var type = typeof (T);
             Scope = String.Empty;
@@ -208,25 +208,17 @@ namespace DotNetNuke.Data
 
         protected TProperty GetPropertyValue<TProperty>(T item, string propertyName)
         {
-            var modelType = typeof(T);
-            var property = modelType.GetProperty(propertyName);
-
-            return (TProperty)property.GetValue(item, null);
+            return DataUtil.GetPropertyValue<T, TProperty>(item, propertyName);
         }
 
         protected TProperty GetPrimaryKey<TProperty>(T item)
         {
-            Type modelType = typeof(T);
-
-            //Get the primary key
-            var primaryKeyName = DataUtil.GetPrimaryKeyProperty(modelType, String.Empty);
-
-            return GetPropertyValue<TProperty>(item, primaryKeyName);
+            return DataUtil.GetPrimaryKey<T, TProperty>(item);
         }
 
         protected TProperty GetScopeValue<TProperty>(T item)
         {
-            return GetPropertyValue<TProperty>(item, Scope);
+            return DataUtil.GetPropertyValue<T, TProperty>(item, Scope);
         }
 
         #region Abstract Methods
@@ -248,6 +240,24 @@ namespace DotNetNuke.Data
         protected abstract void UpdateInternal(T item);
 
         #endregion
-    }
 
+        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
+        {
+            Scope = scope;
+            IsScoped = (!String.IsNullOrEmpty(Scope));
+            IsCacheable = (!String.IsNullOrEmpty(cacheKey));
+            if (IsCacheable)
+            {
+                if (IsScoped)
+                {
+                    cacheKey += "_" + Scope + "_{0}";
+                }
+                CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+            }
+            else
+            {
+                CacheArgs = null;
+            }
+        }
+    }
 }

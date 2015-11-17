@@ -1,0 +1,4 @@
+﻿bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.dll
+bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.pdb
+bin\Providers\DotNetNuke.Providers.FiftyOneClientCapabilityProvider.xml
+bin\Providers\FiftyOne.Foundation.dll

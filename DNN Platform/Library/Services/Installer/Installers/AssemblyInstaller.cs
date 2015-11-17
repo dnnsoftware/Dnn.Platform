@@ -45,6 +45,8 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class AssemblyInstaller : FileInstaller
     {
+        private readonly static Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
 		#region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
@@ -268,7 +270,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             var name = assemblyName.Name;
-            var publicKeyToken = Regex.Match(assemblyName.FullName, @"PublicKeyToken=(\w+)").Groups[1].Value;
+            var publicKeyToken = PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
             var oldVersion = "0.0.0.0-" + new Version(assemblyName.Version.Major, short.MaxValue, short.MaxValue, short.MaxValue);
             var newVersion = assemblyName.Version.ToString();
 

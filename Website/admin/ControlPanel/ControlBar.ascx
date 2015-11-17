@@ -1,7 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.ControlBar"
-    CodeFile="ControlBar.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.ControlBar" Codebehind="ControlBar.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Security.Permissions" %>
+<%@ Import Namespace="DotNetNuke.Entities.Modules" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <!--SEO NOINDEX-->
 <asp:Panel ID="ControlPanel" runat="server">
     <div id="ControlBar">
@@ -110,6 +111,7 @@
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
+                                    <% } %>
                                     <% if (ShowSwitchLanguagesPanel())
                                        { %>
                                     <li>
@@ -120,7 +122,7 @@
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
-                                    <% } %>
+
                                     <% } %>
                                 </ul>
                             </dd>
@@ -135,11 +137,6 @@
                             <dd>
                                 <ul>
                                     <asp:Literal ID="helpLink" runat="server" ViewStateMode="Disabled"></asp:Literal>
-                                    <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                                       {%>
-                                        <li id="gettingStartedLink" runat="server"><a href="javascript:dnn.GettingStartedDialog.getInstance().show();">
-                                            <%= GetString("Tool.GettingStarted.Text") %></a></li>
-                                    <% } %>
                                 </ul>
                             </dd>
                         </dl>
@@ -261,7 +258,7 @@
 
                         <li><a href="<%= BuildToolUrl("PageTemplate", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageTemplate.Text") %></a></li>
-                            <% if (PortalSettings.ContentLocalizationEnabled)
+                            <% if (PortalSettings.ContentLocalizationEnabled && IsLanguageModuleInstalled())
                                { %>
                         <li><a href="<%= BuildToolUrl("PageLocalization", false, "", "", "", true) %>" class="ControlBar_PopupLink">
                             <%= GetString("Tool.ManageLocalization.Text") %></a></li>

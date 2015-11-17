@@ -90,28 +90,6 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        private static event EventHandler<UserEventArgs> UserAuthenticated;
-
-        private static event EventHandler<UserEventArgs> UserCreated;
-
-        private static event EventHandler<UserEventArgs> UserDeleted;
-
-        private static event EventHandler<UserEventArgs> UserRemoved;
-
-        private static event EventHandler<UserEventArgs> UserApproved;
-
-        static UserController()
-        {            
-            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
-            {
-                UserAuthenticated += handlers.Value.UserAuthenticated;
-                UserCreated += handlers.Value.UserCreated;
-                UserDeleted += handlers.Value.UserDeleted;
-                UserRemoved += handlers.Value.UserRemoved;
-                UserApproved += handlers.Value.UserApproved;
-            }
-        }
-
         #region Private Methods
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
@@ -548,6 +526,13 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
 
+        
+        public UserInfo GetUserByHmacAppId(string appId)
+        {
+            return MembershipProvider.Instance().GetUserByHmacAppId(PortalSettings.Current.PortalId, appId);
+            
+        }
+
         UserInfo IUserController.GetUserById(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
@@ -596,6 +581,8 @@ namespace DotNetNuke.Entities.Users
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
+
+    
         #endregion
 
         #region Public Helper Methods
@@ -897,10 +884,7 @@ namespace DotNetNuke.Entities.Users
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
-                if (UserCreated != null)
-                {
-                    UserCreated(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user });
             }
 
             //Reset PortalId
@@ -989,10 +973,7 @@ namespace DotNetNuke.Entities.Users
 
                 DataProvider.Instance().AddSearchDeletedItems(document);
 
-                if (UserDeleted != null)
-                {
-                    UserDeleted(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserDeleted(new UserEventArgs { User = user });
             }
 
             FixMemberPortalId(user, portalId);
@@ -1668,10 +1649,7 @@ namespace DotNetNuke.Entities.Users
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
 
-                if (UserRemoved != null)
-                {
-                    UserRemoved(null, new UserEventArgs { User = user });
-                }
+                EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user });
             }
 
             //Reset PortalId
@@ -1739,9 +1717,13 @@ namespace DotNetNuke.Entities.Users
         {
             var settings = new MembershipPasswordSettings(user.PortalID);
 
-            user.PasswordResetExpiration = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
-            user.PasswordResetToken = Guid.NewGuid();
-            UpdateUser(user.PortalID, user);
+            if (user.PasswordResetExpiration < DateTime.Now)
+            {
+                user.PasswordResetExpiration = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
+                user.PasswordResetToken = Guid.NewGuid();
+                UpdateUser(user.PortalID, user);
+            }
+
             if (sendEmail)
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -1837,6 +1819,21 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(portalId, user, loggedAction, true);
         }
 
+         /// -----------------------------------------------------------------------------
+         /// <summary>
+         ///   updates a user
+         /// </summary>
+         /// <param name = "portalId">the portalid of the user</param>
+         /// <param name = "user">the user object</param>
+         /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
+         /// <remarks>
+         /// </remarks>
+         public static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
+         {
+             UpdateUser(portalId, user, loggedAction, sendNotification, true);
+         }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		///   updates a user
@@ -1844,11 +1841,12 @@ namespace DotNetNuke.Entities.Users
 		/// <param name = "portalId">the portalid of the user</param>
 		/// <param name = "user">the user object</param>
 		/// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
 		/// <param name="clearCache">Whether clear cache after update user.</param>
 		/// <remarks>
 		/// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
 		/// </remarks>
-		internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool clearCache)
+         internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
 		{
 		    var originalPortalId = user.PortalID;
 			portalId = GetEffectivePortalId(portalId);
@@ -1881,15 +1879,10 @@ namespace DotNetNuke.Entities.Users
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
 
-            if (user.Membership.Approving)
-            {
-                user.Membership.ConfirmApproved();
-                if (UserApproved != null)
-                {
-                    UserApproved(null, new UserEventArgs { User = user });
-                }                    
-            }
-		}
+		    if (!user.Membership.Approving) return;
+		    user.Membership.ConfirmApproved();
+            EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1948,16 +1941,13 @@ namespace DotNetNuke.Entities.Users
 
             //Update User in Database with Last IP used
             user.LastIPAddress = ip;
-            UpdateUser(portalId, user, false);
+            DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
 
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
             security.SignIn(user, createPersistentCookie);
 
-            if (UserAuthenticated != null)
-            {
-                UserAuthenticated(null, new UserEventArgs() {User = user});
-            }
+            EventManager.Instance.OnUserAuthenticated(new UserEventArgs { User = user });
         }
 
         /// -----------------------------------------------------------------------------
@@ -1969,16 +1959,11 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ValidatePassword(string password)
         {
-            var isValid = true;
-
             //Valid Length
-            if (password.Length < MembershipProviderConfig.MinPasswordLength)
-            {
-                isValid = false;
-            }
+            var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
             //Validate NonAlphaChars
-            var rx = new Regex("[^0-9a-zA-Z]");
+            var rx = Globals.InvalidCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;
@@ -1986,8 +1971,7 @@ namespace DotNetNuke.Entities.Users
             //Validate Regex
             if (!String.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
-                rx = new Regex(MembershipProviderConfig.PasswordStrengthRegularExpression);
-                isValid = rx.IsMatch(password);
+                isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
             }
             return isValid;
         }

@@ -215,7 +215,13 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException)
                 {
+<<<<<<< HEAD
                     searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
+=======
+#pragma warning disable 618
+                    searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
+#pragma warning restore 618
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
                     StoreSearchDocuments(searchDocs);
                     indexedCount += searchDocs.Count();
                 }
@@ -230,7 +236,13 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException)
             {
+<<<<<<< HEAD
                 searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
+=======
+#pragma warning disable 618
+                searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
+#pragma warning restore 618
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
                 StoreSearchDocuments(searchDocs);
                 indexedCount += searchDocs.Count();
             }

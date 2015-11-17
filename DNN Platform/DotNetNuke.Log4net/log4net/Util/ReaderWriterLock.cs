@@ -59,7 +59,7 @@ namespace log4net.Util
 		public ReaderWriterLock()
 		{
 #if HAS_READERWRITERLOCK
-			m_lock = new System.Threading.ReaderWriterLock();
+			m_lock = new System.Threading.ReaderWriterLockSlim();
 #endif
 		}
 
@@ -79,7 +79,7 @@ namespace log4net.Util
 		public void AcquireReaderLock()
 		{
 #if HAS_READERWRITERLOCK
-			m_lock.AcquireReaderLock(-1);
+			m_lock.EnterReadLock();
 #else
 			System.Threading.Monitor.Enter(this);
 #endif
@@ -97,7 +97,7 @@ namespace log4net.Util
 		public void ReleaseReaderLock()
 		{
 #if HAS_READERWRITERLOCK
-			m_lock.ReleaseReaderLock();
+			m_lock.ExitReadLock();
 #else
 			System.Threading.Monitor.Exit(this);
 #endif
@@ -114,7 +114,7 @@ namespace log4net.Util
 		public void AcquireWriterLock()
 		{
 #if HAS_READERWRITERLOCK
-			m_lock.AcquireWriterLock(-1);
+			m_lock.EnterWriteLock();
 #else
 			System.Threading.Monitor.Enter(this);
 #endif
@@ -132,7 +132,7 @@ namespace log4net.Util
 		public void ReleaseWriterLock()
 		{
 #if HAS_READERWRITERLOCK
-			m_lock.ReleaseWriterLock();
+			m_lock.ExitWriteLock();
 #else
 			System.Threading.Monitor.Exit(this);
 #endif
@@ -143,7 +143,7 @@ namespace log4net.Util
 		#region Private Members
 
 #if HAS_READERWRITERLOCK
-		private System.Threading.ReaderWriterLock m_lock;
+		private readonly System.Threading.ReaderWriterLockSlim m_lock;
 #endif
 
 		#endregion

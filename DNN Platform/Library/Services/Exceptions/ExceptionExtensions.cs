@@ -8,21 +8,39 @@ namespace DotNetNuke.Services.Exceptions
     {
         public static string Hash(this Exception exc)
         {
-            var ex = exc ?? new Exception();
-            var sb = new StringBuilder()
-                .AppendLine(DateTime.UtcNow.ToString("O")) // make it unique in case two exact exceptions were thrown
-                .AppendLine(ex.Source)
-                .AppendLine(ex.ToString());
-
-            while (ex.InnerException != null)
+            if (exc == null)
             {
-                ex = ex.InnerException;
-                sb.AppendLine(ex.ToString());
+                return string.Empty;
+            }
+
+            var sb = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(exc.Message))
+            {
+                sb.AppendLine(exc.Message);
+            }
+
+            if (!string.IsNullOrEmpty(exc.StackTrace))
+            {
+                sb.AppendLine(exc.StackTrace);
+            }
+
+            if (exc.InnerException != null)
+            {
+                if (!string.IsNullOrEmpty(exc.InnerException.Message))
+                {
+                    sb.AppendLine(exc.InnerException.Message);
+                }
+
+                if (!string.IsNullOrEmpty(exc.InnerException.StackTrace))
+                {
+                    sb.AppendLine(exc.InnerException.StackTrace);
+                }
             }
 
             using (var hasher = new MD5CryptoServiceProvider())
             {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString()));
+                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString().ToLower()));
                 return Convert.ToBase64String(byteArray);
             }
         }

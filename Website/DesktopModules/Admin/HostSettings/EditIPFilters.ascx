@@ -1,4 +1,4 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.EditIPFilters" Language="C#" AutoEventWireup="false" CodeFile="EditIPFilters.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.EditIPFilters" Language="C#" AutoEventWireup="false" Codebehind="EditIPFilters.ascx.cs" %>
 <%@ Import Namespace="System" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 

@@ -218,7 +218,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
             string answer = String.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {

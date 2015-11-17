@@ -180,9 +180,6 @@
   <data name="//Admin//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
   </data>
-  <data name="//Admin//SiteLog.String" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
   <data name="//Admin//Newsletters.String" xml:space="preserve">
     <value>Newsletters</value>
   </data>
@@ -248,9 +245,6 @@
   </data>
   <data name="//Host//SuperuserAccounts.String" xml:space="preserve">
     <value>SuperUser Accounts</value>
-  </data>
-  <data name="//Admin//Solutions.String" xml:space="preserve">
-    <value>Solutions Explorer</value>
   </data>
   <data name="View.Permission" xml:space="preserve">
     <value>View Module</value>
@@ -1014,9 +1008,6 @@ Thank you, we appreciate your support...
 [Portal:PortalName]
 </value>
   </data>
-  <data name="//Host//WhatsNew.String" xml:space="preserve">
-    <value>What's New</value>
-  </data>
   <data name="PurgeCacheUnsupported.Text" xml:space="preserve">
     <value>This Caching Provider does not require the PurgeCache feature.</value>
   </data>
@@ -1092,9 +1083,6 @@ Sincerely,
   </data>
   <data name="//Admin//Taxonomy.String" xml:space="preserve">
     <value>Taxonomy</value>
-  </data>
-  <data name="//GettingStarted.String" xml:space="preserve">
-    <value>Getting Started</value>
   </data>
   <data name="//Home.String" xml:space="preserve">
     <value>Home</value>

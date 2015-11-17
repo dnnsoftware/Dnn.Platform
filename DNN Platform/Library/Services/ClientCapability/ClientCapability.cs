@@ -33,12 +33,13 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class ClientCapability : IClientCapability
     {
+        private IDictionary<string, string> _capabilities;
         /// <summary>
         ///   Default Constructor.
         /// </summary>
         public ClientCapability()
         {
-            Capabilities = new Dictionary<string, string>();
+            _capabilities = new Dictionary<string, string>();
         }
     
         #region Implementation of IClientCapability
@@ -95,8 +96,27 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         /// A key-value collection containing all capabilities supported by requester
         /// </summary>
+<<<<<<< HEAD
         [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.")]         
         public IDictionary<string, string> Capabilities { get; set; }
+=======
+        [Obsolete(
+            "This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name."
+            )]
+        public IDictionary<string, string> Capabilities
+        {
+            get
+            {
+                return _capabilities;
+                
+            }
+            set
+            {
+                _capabilities = value;
+                
+            }
+        }
+>>>>>>> c0886a2e603b938bafe9939c1594e982f993cf93
 
         /// <summary>
         /// Represents the name of the broweser in the request

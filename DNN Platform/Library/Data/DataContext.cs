@@ -24,9 +24,12 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data.PetaPoco;
+using DotNetNuke.UI.Containers;
+using PetaPoco;
 
 #endregion
 
@@ -34,20 +37,56 @@ namespace DotNetNuke.Data
 {
     public class DataContext
     {
-        #region Public Methods
-
         public static IDataContext Instance()
         {
-            var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+            IDataContext instance = ComponentFactory.GetComponent<IDataContext>();
 
-            return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+            if (instance == null)
+            {
+                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+
+                instance = new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+            }
+
+            return instance;
         }
 
         public static IDataContext Instance(string connectionStringName)
         {
-            return new PetaPocoDataContext(connectionStringName, DataProvider.Instance().ObjectQualifier);
+            IDataContext instance = ComponentFactory.GetComponent<IDataContext>(connectionStringName);
+
+            if (instance == null)
+            {
+                instance = new PetaPocoDataContext(connectionStringName, DataProvider.Instance().ObjectQualifier);
+            }
+
+            return instance;
         }
 
-        #endregion
+        public static IDataContext Instance(Dictionary<Type, IMapper> mappers)
+        {
+            IDataContext instance = ComponentFactory.GetComponent<IDataContext>();
+
+            if (instance == null)
+            {
+                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+
+                instance = new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
+            }
+
+            return instance;
+        }
+
+        public static IDataContext Instance(string connectionStringName, Dictionary<Type, IMapper> mappers)
+        {
+            IDataContext instance = ComponentFactory.GetComponent<IDataContext>(connectionStringName);
+
+            if (instance == null)
+            {
+                instance = new PetaPocoDataContext(connectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
+            }
+
+            return instance;
+        }
     }
 }
