@@ -8,7 +8,7 @@
 /*****                                                  *****/
 /************************************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]'))
   DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]
 GO
 
