@@ -223,9 +223,6 @@ namespace DotNetNuke.Services.Installer.Writers
                                     case "requestfilters.ascx":
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
                                         break;
-                                    case "solutions.ascx":
-                                        filePath = "DesktopModules\\Admin\\Solutions\\App_LocalResources";
-                                        break;
                                 }
                                 break;
                             case "lists":
@@ -250,9 +247,6 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "";
                                         break;
                                 }
-                                break;
-                            case "log":
-                                filePath = "DesktopModules\\Admin\\SiteLog\\App_LocalResources";
                                 break;
                             case "logging":
                                 filePath = "DesktopModules\\Admin\\LogViewer\\App_LocalResources";
@@ -374,18 +368,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "skins":
-                                switch (fileName.Replace(extendedExtension, ""))
-                                {
-                                    case "attributes.ascx":
-                                        filePath = "DesktopModules\\Admin\\SkinDesigner\\App_LocalResources";
-                                        break;
-                                    case "editskins.ascx":
-                                        filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
-                                        break;
-                                    default:
-                                        filePath = "Admin\\Skins\\App_LocalResources";
-                                        break;
-                                }
+                                filePath = "Admin\\Skins\\App_LocalResources";
                                 break;
                             case "syndication":
                                 filePath = "DesktopModules\\Admin\\FeedExplorer\\App_LocalResources";

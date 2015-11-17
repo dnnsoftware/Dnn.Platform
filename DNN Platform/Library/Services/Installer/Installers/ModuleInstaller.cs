@@ -28,8 +28,10 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Entities.Tabs;
 
 #endregion
 
@@ -100,10 +102,54 @@ namespace DotNetNuke.Services.Installer.Installers
                         Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
                     }
                     var controller = new DesktopModuleController();
-                    controller.DeleteDesktopModule(tempDesktopModule);
+                    
 
                     Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    //remove admin/host pages
+                    if (!String.IsNullOrEmpty(tempDesktopModule.AdminPage))
+                    {
+                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
+                        
+                        var portals = PortalController.Instance.GetPortals();
+                        foreach (PortalInfo portal in portals)
+                        {
+                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                            
+                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
+                            if ((temp != null))
+                            {
+                               
+                                var mods = TabModulesController.Instance.GetTabModules((temp));
+                                bool noOtherTabModule = true;
+                                foreach (ModuleInfo mod in mods)
+                                {
+                                    if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
+                                    {
+                                        noOtherTabModule = false;
+                                        
+                                    }
+                                }
+                                if (noOtherTabModule)
+                                {
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                }
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                            }
+                        }
+                        
+                    }
+                    if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
+                    {
+                        Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
+                        Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                    }
+
+                    controller.DeleteDesktopModule(tempDesktopModule);
+                    
                 }
+
             }
             catch (Exception ex)
             {
@@ -166,6 +212,45 @@ namespace DotNetNuke.Services.Installer.Installers
 			if (!_desktopModule.IsPremium)
             {
                 DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+            }
+
+            //Add DesktopModule to all portals
+            if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
+            {
+                foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+                {
+
+                    bool createdNewPage = false, addedNewModule = false;
+                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+
+                    if (createdNewPage)
+                    {
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
+                    }
+
+                    if (addedNewModule)
+                    {
+                        Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
+                    }
+                }
+               
+            }
+
+            //Add host items
+            if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
+            {
+                bool createdNewPage = false, addedNewModule = false;
+                DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
+
+                if (createdNewPage)
+                {
+                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.HostPage));
+                }
+
+                if (addedNewModule)
+                {
+                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.HostPage));
+                }
             }
         }
 
@@ -231,55 +316,8 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 _desktopModule.SupportedFeatures = 0;
             }
-            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
-            if (eventMessageNav != null)
-            {
-                _eventMessage = new EventMessage
-                                    {
-                                        Priority = MessagePriority.High,
-                                        ExpirationDate = DateTime.Now.AddYears(-1),
-                                        SentDate = DateTime.Now,
-                                        Body = "",
-                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
-                                    };
-                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
-                {
-                    var attribName = attributeNav.Name;
-                    var attribValue = attributeNav.Value;
-                    if (attribName == "upgradeVersionsList")
-                    {
-                        if (!String.IsNullOrEmpty(attribValue))
-                        {
-                            string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = ""; 
-                            foreach (string version in upgradeVersions)
-                            {
-                                Version upgradeVersion = null;
-                                try
-                                {
-                                    upgradeVersion = new Version(version);
-                                }
-                                catch (FormatException)
-                                {
-                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
-                                }
 
-                                if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
-                                {
-                                    attribValue += version + ",";                                    
-                                }
-                                else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
-                                {
-                                    attribValue += version + ",";
-                                }
-                            }
-                            attribValue = attribValue.TrimEnd(',');
-                        }
-                    }
-                   _eventMessage.Attributes.Add(attribName, attribValue);
-                }
-            }
+            _eventMessage = ReadEventMessageNode(manifestNav);
 			
             //Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))

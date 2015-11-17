@@ -1,7 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Scheduler.ViewSchedule" CodeFile="ViewSchedule.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Scheduler.ViewSchedule" Codebehind="ViewSchedule.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" %>
+<%@ Register TagPrefix="dnn" Namespace="Telerik.Web.UI" Assembly="DotNetNuke.Website" %>
 <div class="dnnForm dnnSchedulerSettings dnnClear" id="dnnSchedulerSettings">
     <div class="dnnFormItem">
                 <dnn:Label ID="plServers" runat="server" ControlName="ddlServerName" />

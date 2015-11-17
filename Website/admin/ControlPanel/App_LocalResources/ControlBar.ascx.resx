@@ -213,9 +213,6 @@
   <data name="Tool.ImportPage.Text" xml:space="preserve">
     <value>Import Page</value>
   </data>
-  <data name="Tool.GettingStarted.Text" xml:space="preserve">
-    <value>Getting Started</value>
-  </data>
   <data name="Tool.LayoutMode.Text" xml:space="preserve">
     <value>View in Layout Mode</value>
   </data>

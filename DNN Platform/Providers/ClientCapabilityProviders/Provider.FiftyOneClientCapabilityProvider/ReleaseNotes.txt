@@ -3,7 +3,11 @@
 <div class="License">
 	
 	<p class="Owner">
+<<<<<<< HEAD
 		<b>Version </b>7.4.2<br /><br />
+=======
+		<b>Version </b>8.0.0<br /><br />
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 	</p>
 	<p><b>Grow web site profit with improved user experiences for touch screen and different device types.</b></p>
 	<p>Device data contains information about thousands of different mobiles, tablets, TVs, games consoles and many more. By using our device data, a web developer can automatically adapt content and navigation to provide the best user experience on every device. For example; a mega menu for mouse, and responsive menu for smartphone.</p>

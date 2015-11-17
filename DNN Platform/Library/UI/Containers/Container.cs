@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -406,6 +407,7 @@ namespace DotNetNuke.UI.Containers
                 // always add the actions menu as the first item in the content pane.
                 if (InjectActionMenu && !ModuleHost.IsViewMode(ModuleConfiguration, PortalSettings) && Request.QueryString["dnnprintmode"] != "true")
                 {
+                    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     ContentPane.Controls.Add(LoadControl("~/admin/Menus/ModuleActions/ModuleActions.ascx"));
 
                     //register admin.css
@@ -454,14 +456,23 @@ namespace DotNetNuke.UI.Containers
                 string controlSrc = ModuleConfiguration.ModuleControl.ControlSrc;
                 string folderName = ModuleConfiguration.DesktopModule.FolderName;
 
+                string stylesheet = "";
                 if (String.IsNullOrEmpty(folderName)==false)
                 {
-                    ClientResourceManager.RegisterStyleSheet(Page, Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css", FileOrder.Css.ModuleCss);
+                    if (controlSrc.EndsWith(".mvc"))
+                    {
+                        stylesheet = Globals.ApplicationPath + "/DesktopModules/MVC/" + folderName.Replace("\\", "/") + "/module.css";
+                    }
+                    else
+                    {
+                        stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
+                    }
+                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
-
                 if (controlSrc.LastIndexOf("/") > 0)
                 {
-                    ClientResourceManager.RegisterStyleSheet(Page, Globals.ApplicationPath + "/" + controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + "module.css", FileOrder.Css.ModuleCss);
+                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + "module.css";
+                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
             }
         }

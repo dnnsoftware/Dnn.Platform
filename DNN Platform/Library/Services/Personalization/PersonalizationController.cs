@@ -55,27 +55,8 @@ namespace DotNetNuke.Services.Personalization
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {
-                IDataReader dr = null;
-                try
-                {
-                    dr = DataProvider.Instance().GetProfile(userId, portalId);
-                    if (dr.Read())
-                    {
-                        profileData = dr["ProfileData"].ToString();
-                    }
-                    else //does not exist
-                    {
-                        DataProvider.Instance().AddProfile(userId, portalId);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.Exceptions.LogException(ex);
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
+               var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                profileData = CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
             {
@@ -89,6 +70,36 @@ namespace DotNetNuke.Services.Personalization
             personalization.Profile = string.IsNullOrEmpty(profileData)
                 ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
             return personalization;
+        }
+
+        private static object GetCachedUserPersonalizationCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var userId = (int)cacheItemArgs.ParamList[1];
+            var returnValue = Null.NullString; //Default is no profile
+            IDataReader dr = null;
+            try
+            {
+                dr = DataProvider.Instance().GetProfile(userId, portalId);
+                if (dr.Read())
+                {
+                    returnValue = dr["ProfileData"].ToString();
+                }
+                else //does not exist
+                {
+                    DataProvider.Instance().AddProfile(userId, portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return returnValue;
         }
 
         public void SaveProfile(PersonalizationInfo personalization)
@@ -114,6 +125,9 @@ namespace DotNetNuke.Services.Personalization
                     if (userId > Null.NullInteger)
                     {
                         DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
+
+                        var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                        DataCache.RemoveCache(cacheKey);
                     }
                     else
                     {

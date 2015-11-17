@@ -370,14 +370,14 @@ namespace DotNetNuke.Modules.Admin.Security
             ctlPagingControl.PageSize = PageSize;
             ctlPagingControl.CurrentPage = CurrentPage;
             ctlPagingControl.TabID = TabId;
-            ctlPagingControl.QuerystringParams = System.Web.HttpUtility.UrlDecode(String.Join("&", Request.QueryString.ToString().Split('&').
+            ctlPagingControl.QuerystringParams = System.Web.HttpUtility.UrlDecode(string.Join("&", Request.QueryString.ToString().Split('&').
                                                                         ToList().
-                                                                        Where(s => s.StartsWith("ctl") 
-                                                                            || s.StartsWith("mid")
-                                                                            || s.StartsWith("RoleId")
-                                                                            || s.StartsWith("UserId")
-                                                                            || s.StartsWith("filter")
-                                                                            || s.StartsWith("popUp")).ToArray()));
+                                                                        Where(s => s.StartsWith("ctl", StringComparison.OrdinalIgnoreCase) 
+                                                                            || s.StartsWith("mid", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("RoleId", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("UserId", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("filter", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("popUp", StringComparison.OrdinalIgnoreCase)).ToArray()));
         }
 
         private IList<UserRoleInfo> GetPagedDataSource()

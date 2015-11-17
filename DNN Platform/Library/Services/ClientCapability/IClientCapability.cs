@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Web;
 #endregion
@@ -91,7 +92,8 @@ namespace DotNetNuke.Services.ClientCapability
 
         /// <summary>
         /// A key-value collection containing all capabilities supported by requester
-        /// </summary>        
+        /// </summary>    
+        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.")]    
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>
@@ -103,5 +105,12 @@ namespace DotNetNuke.Services.ClientCapability
         ///   Http server variable used for SSL offloading - if this value is empty offloading is not enabled
         /// </summary>
         string SSLOffload { get; set; }
+
+        /// <summary>
+        /// Get client capability value by property name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        string this[string name] { get; }
     }
 }

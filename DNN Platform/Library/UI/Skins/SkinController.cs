@@ -61,9 +61,19 @@ namespace DotNetNuke.UI.Skins
     public class SkinController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
+<<<<<<< HEAD
 		private const string GlobalSkinPrefix = "[G]";
 		private const string PortalSystemSkinPrefix = "[S]";
 		private const string PortalSkinPrefix = "[L]";
+=======
+	private const string GlobalSkinPrefix = "[G]";
+	private const string PortalSystemSkinPrefix = "[S]";
+	private const string PortalSkinPrefix = "[L]";
+        private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
 		#region Public Shared Properties
 		
@@ -251,16 +261,16 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!String.IsNullOrEmpty(strSkinSrc))
             {
-                switch (strSkinSrc.ToLowerInvariant().Substring(0, 3))
+                switch (strSkinSrc.Substring(0, 3).ToLowerInvariant())
                 {
                     case "[g]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
+                        strSkinSrc = GdirRegex.Replace(strSkinSrc, Globals.HostPath);
                         break;
                     case "[s]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[s]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = SdirRegex.Replace(strSkinSrc, portalSettings.HomeSystemDirectory);
                         break;
                     case "[l]": //to be compliant with all versions
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = LdirRegex.Replace(strSkinSrc, portalSettings.HomeDirectory);
                         break;
                 }
             }

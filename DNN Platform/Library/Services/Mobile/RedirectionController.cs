@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>        
         public string GetRedirectUrl(string userAgent, int portalId, int currentTabId)
         {
-            Requires.NotNull("userAgent", userAgent);
+            Requires.NotNullOrEmpty("userAgent", userAgent);
 
 			string redirectUrl = string.Empty;
 
@@ -178,8 +178,9 @@ namespace DotNetNuke.Services.Mobile
             {
                 return redirectUrl;
             }
-			
-			var clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
+
+            IClientCapability clientCapability = null;
+           
 			foreach (var redirection in redirections)
 			{
 				if (redirection.Enabled)
@@ -215,6 +216,10 @@ namespace DotNetNuke.Services.Mobile
 
 					if (checkFurther)
 					{
+					    if (clientCapability == null)
+					    {
+                            clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
+					    }
 						//check if client capability matches with this rule
 						if (DoesCapabilityMatchWithRule(clientCapability, redirection))
 						{
@@ -696,9 +701,9 @@ namespace DotNetNuke.Services.Mobile
                 int matchCount = 0;
                 foreach (IMatchRule rule in redirection.MatchRules)
                 {
-                    if (clientCapability.Capabilities != null && clientCapability.Capabilities.ContainsKey(rule.Capability))
+                    if (!string.IsNullOrEmpty(clientCapability[rule.Capability]))
                     {
-                        if (clientCapability.Capabilities[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
+                        if (clientCapability[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
                         {
                             matchCount++;
                         }

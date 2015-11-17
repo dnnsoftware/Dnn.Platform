@@ -62,10 +62,12 @@ using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 using System.Globalization;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Web.Client;
-
+using OAuth.AuthorizationServer.Core.Server;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -74,6 +76,7 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DesktopModules.Admin.Portals
 {
     using DotNetNuke.Services.Mail;
+    using jQuery = DotNetNuke.Framework.jQuery;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -91,9 +94,8 @@ namespace DesktopModules.Admin.Portals
     {
 
         #region Private Members
-        private IEnumerable<IEditPagePanelExtensionPoint> advancedSettingsExtensions;
 
-        private int _portalId = -1;
+		private int _portalId = -1;
         
         private string SelectedCultureCode
         {
@@ -190,10 +192,6 @@ namespace DesktopModules.Admin.Portals
             txtHostSpace.Text = portal.HostSpace.ToString();
             txtPageQuota.Text = portal.PageQuota.ToString();
             txtUserQuota.Text = portal.UserQuota.ToString();
-            if (portal.SiteLogHistory != Null.NullInteger)
-            {
-                txtSiteLogHistory.Text = portal.SiteLogHistory.ToString();
-            }
         }
 
         private void BindMarketing(PortalInfo portal)
@@ -334,6 +332,11 @@ namespace DesktopModules.Admin.Portals
 
         private void BindPortal(int portalId, string activeLanguage)
         {
+            if (portalId != PortalId)
+            {
+                activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
+            }
+
             var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
             var portalsettings = new PortalSettings(portal);
 
@@ -352,7 +355,6 @@ namespace DesktopModules.Admin.Portals
                 ctlBackground.FilePath = portal.BackgroundFile;
                 ctlBackground.FileFilter = Globals.glbImageFileTypes;
                 ctlFavIcon.FilePath = new FavIcon(portal.PortalID).GetSettingPath();
-                chkSkinWidgestEnabled.Checked = PortalController.GetPortalSettingAsBoolean("EnableSkinWidgets", portalId, true);
 
                 BindSkins(portal);
 
@@ -438,6 +440,38 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
+            BindOAuth(portal);
+        }
+
+        private void BindOAuth(PortalInfo portal)
+        {
+            if (Host.EnableOAuthAuthorization == false)
+            {
+                OAuthStatus.Visible = true;
+                OAuthClient.Visible = false;
+                OAuthSecret.Visible = false;
+                cmdOAuth.Visible = false;
+                return;
+            }
+            else
+            {
+                var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DNNOAuth");
+                if (package == null)
+                {
+                    plOAuthWarning.Visible = true;
+                    plOAuthWarning.Text = Localization.GetString("plOAuthWarning", "DesktopModules/Admin/HostSettings/App_LocalResources/HostSettings.ascx.resx"); 
+                }
+               
+            }
+
+            var btnstatus=PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", portal.PortalID, false);
+            cmdOAuth.Text = Localization.GetString(btnstatus ? "DisableOAuth" : "EnableOAuth", LocalResourceFile);
+
+            OAuthSitesettingsClientLabel.Text=PortalController.GetPortalSetting("OAuthClient",_portalId, string.Empty);
+            OAuthSitesettingsSecretLabel.Text = PortalController.GetPortalSetting("OAuthSecret", _portalId, string.Empty);
+            OAuthStatus.Visible = !btnstatus;
+            OAuthClient.Visible = btnstatus;
+            OAuthSecret.Visible = btnstatus;
         }
 
         private void BindCustomSettings(PortalInfo portal)
@@ -913,10 +947,11 @@ namespace DesktopModules.Admin.Portals
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;
+            cmdOAuth.Click += UpdateOAuth;
             rblSMTPmode.SelectedIndexChanged += OnSmtpModeChanged;
             chkPayPalSandboxEnabled.CheckedChanged += OnChkPayPalSandboxChanged;
             IncrementCrmVersionButton.Click += IncrementCrmVersion;
@@ -927,12 +962,37 @@ namespace DesktopModules.Admin.Portals
 
         }
 
+        private void UpdateOAuth(object sender, EventArgs e)
+        {
+            var btnstatus = PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", PortalSettings.PortalId, false);
+            if (btnstatus==false)
+            {
+                var existingClientId = PortalController.GetPortalSetting("OAuthClient", _portalId, string.Empty);
+                if (existingClientId == string.Empty)
+                {
+                    //create oauth portal specific settings
+                    var rnd = new Random(DateTime.Now.Millisecond);
+                    int ticks = rnd.Next(0, 3000);
+                    var clientId = "Client-" + ticks.ToString();
+                    PortalController.UpdatePortalSetting(_portalId, "OAuthClient", clientId, false);
+                    Guid id = Guid.NewGuid();
+
+                    PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", id.ToString(), false);
+                    OAUTHDataController.ClientInsert(clientId, id.ToString(), string.Empty, PortalSettings.PortalName, 1);
+                }
+               
+            }
+            
+            PortalController.UpdatePortalSetting(_portalId, "EnableOAuthAuthorization", (!btnstatus).ToString(), true);
+            Response.Redirect(Request.RawUrl, true);
+        }
+
         /// <summary>
         /// Initializes DropDownLists
         /// </summary>
         private void InitializeDropDownLists()
         {
-            var undefinedItem = new ListItem(SharedConstants.Unspecified, String.Empty);
+            var undefinedItem = new ListItem(DynamicSharedConstants.Unspecified, String.Empty);
             cboSplashTabId.UndefinedItem = undefinedItem;
             cboHomeTabId.UndefinedItem = undefinedItem;
             cboRegisterTabId.UndefinedItem = undefinedItem;
@@ -1319,12 +1379,6 @@ namespace DesktopModules.Admin.Portals
                         userQuota = int.Parse(txtUserQuota.Text);
                     }
 
-                    int siteLogHistory = existingPortal.SiteLogHistory;
-                    if (!String.IsNullOrEmpty(txtSiteLogHistory.Text))
-                    {
-                        siteLogHistory = int.Parse(txtSiteLogHistory.Text);
-                    }
-
                     DateTime expiryDate = existingPortal.ExpiryDate;
                     if (datepickerExpiryDate.SelectedDate.HasValue)
                     {
@@ -1380,7 +1434,6 @@ namespace DesktopModules.Admin.Portals
                                                 Description = txtDescription.Text,
                                                 KeyWords = txtKeyWords.Text,
                                                 BackgroundFile = background,
-                                                SiteLogHistory = siteLogHistory,
                                                 SplashTabId = intSplashTabId,
                                                 HomeTabId = intHomeTabId,
                                                 LoginTabId = intLoginTabId,
@@ -1411,7 +1464,6 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.MinifyCssKey, chkMinifyCss.Checked.ToString(CultureInfo.InvariantCulture), false);
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.MinifyJsKey, chkMinifyJs.Checked.ToString(CultureInfo.InvariantCulture), false);
 
-                    PortalController.UpdatePortalSetting(_portalId, "EnableSkinWidgets", chkSkinWidgestEnabled.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminSkin", editSkinCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalSkin", portalSkinCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false, SelectedCultureCode);
@@ -1585,6 +1637,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
                     PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "AddCachebusterToResourceUris", chkAddCachebusterToResourceUris.Checked.ToString());
+
 
                     profileDefinitions.Update();
 

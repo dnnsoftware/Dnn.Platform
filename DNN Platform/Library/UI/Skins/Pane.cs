@@ -450,7 +450,7 @@ namespace DotNetNuke.UI.Skins
                 return false;
             }
             
-            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
             return controller is IVersionable;
         }
 
@@ -507,7 +507,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     foreach (var actionControl in container.Controls.OfType<IActionControl>())
                     {
-                        if (actionControl is ActionsMenu || actionControl is SolPartActions)
+                        if (actionControl is ActionsMenu)
                         {
                             Control control = actionControl as Control;
                             if (control != null)

@@ -207,4 +207,7 @@
   <data name="VisitWebsite.Text" xml:space="preserve">
     <value>Visit Website</value>
   </data>
+  <data name="UpgradeStarted.Text" xml:space="preserve">
+    <value>Upgrade Started at</value>
+  </data>
 </root>

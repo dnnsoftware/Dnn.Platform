@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.UpgradeWizard" CodeFile="UpgradeWizard.aspx.cs" %>
+<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.UpgradeWizard" Codebehind="UpgradeWizard.aspx.cs" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -38,8 +38,13 @@
             <h2 class="dnnForm dnnInstall dnnClear">
                 <asp:Label ID="lblDotNetNukeUpgrade" runat="server" ResourceKey="Title" />
                 <h5><asp:Label ID="currentVersionLabel" runat="server" /></h5>
+<<<<<<< HEAD
                 <h5><asp:Label ID="versionLabel" runat="server" /></h5>      
                 <h5><asp:Label ID="versionsMatch" runat="server" /></h5>           
+=======
+                <h5><asp:Label ID="versionLabel" runat="server" /></h5>   
+				<h5><asp:Label ID="versionsMatch" runat="server" /></h5>   				
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
             </h2>
             <br/>
             <div class="dnnForm dnnInstall dnnClear" id="dnnInstall" runat="server">

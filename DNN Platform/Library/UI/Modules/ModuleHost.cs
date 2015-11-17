@@ -47,7 +47,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
 using Telerik.Web.UI;
 
 #endregion
@@ -69,6 +68,10 @@ namespace DotNetNuke.UI.Modules
     public sealed class ModuleHost : Panel
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
+
+        private readonly static Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region Private Members
 
         private readonly ModuleInfo _moduleConfiguration;
@@ -354,12 +357,13 @@ namespace DotNetNuke.UI.Modules
 
             Controls.Add(loadingPanel);
 
-            var ajaxPanel = new RadAjaxPanel {
+            var ajaxPanel = new RadAjaxPanel
+            {
                 ID = _control.ID + "_UP",
                 LoadingPanelID = loadingPanel.ID,
                 RestoreOriginalRenderDelegate = false
             };
-            InjectMessageControl(ajaxPanel); 
+            InjectMessageControl(ajaxPanel);
             ajaxPanel.Controls.Add(_control);
 
             Controls.Add(ajaxPanel);
@@ -405,18 +409,15 @@ namespace DotNetNuke.UI.Modules
             InjectModuleContent(updatePanel);
 
             //create image for update progress control
-			var image = new Image
-                            {
-                                ImageUrl = "~/images/progressbar.gif", //hardcoded
-                                AlternateText = "ProgressBar"
-                            };
+            var progressTemplate = "<div class=\"dnnLoading dnnPanelLoading\"></div>";
 
             //inject updateprogress into the panel
             var updateProgress = new UpdateProgress
                                      {
                                          AssociatedUpdatePanelID = updatePanel.ID, 
-                                         ID = updatePanel.ID + "_Prog", 
-                                         ProgressTemplate = new LiteralTemplate(image)
+                                         ID = updatePanel.ID + "_Prog",
+
+                                         ProgressTemplate = new LiteralTemplate(progressTemplate)
                                      };
             Controls.Add(updateProgress);
         }
@@ -485,7 +486,7 @@ namespace DotNetNuke.UI.Modules
         private void RestoreCachedClientResourceRegistrations(string cachedContent)
         {
             // parse the registered CDF from content
-            var matches = Regex.Matches(cachedContent, @"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->", RegexOptions.IgnoreCase);
+            var matches = CdfMatchRegex.Matches(cachedContent);
             if (matches.Count == 0)
             {
                 return;

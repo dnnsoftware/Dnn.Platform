@@ -9,6 +9,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
@@ -19,6 +21,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		internal string TemplatePath;
 		internal string TemplateVirtualPath;
 		internal string TemplateHeadPath;
+		internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
+		internal readonly List<string> ScriptUrls = new List<string>();
 		internal readonly List<string> ScriptKeys = new List<string>();
 		internal readonly Dictionary<string, string> Scripts = new Dictionary<string, string>();
 		internal readonly List<string> StyleSheets = new List<string>();
@@ -29,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		public List<ClientOption> ClientOptions = new List<ClientOption>();
 		public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
 
-		private readonly Regex regexLinks =
+		private static readonly Regex RegexLinks =
 			new Regex(
 				"( (href|src)=['\"]?)(?!http:|ftp:|mailto:|file:|javascript:|/)([^'\">]+['\">])",
 				RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -85,12 +89,56 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 									var scriptPath = String.IsNullOrEmpty(scriptElt.InnerText.Trim())
 									                 	? ""
 									                 	: Globals.ResolveUrl(GetResolvedPath(scriptElt, resolver));
-									var key = String.IsNullOrEmpty(jsObject) ? scriptPath : jsObject;
+									if (String.IsNullOrEmpty(jsObject))
+									{
+										var jsLibraryName = scriptElt.GetAttribute("name");
+										if (!String.IsNullOrEmpty(jsLibraryName))
+										{
+											SpecificVersion specificityTemp;
+											SpecificVersion? specificity = null;
+											Version libraryVersion;
+											if (!Version.TryParse(scriptElt.GetAttribute("version"), out libraryVersion))
+											{
+												libraryVersion = null;
+											}
+											else if (Enum.TryParse(scriptElt.GetAttribute("specificVersion"), true, out specificityTemp))
+											{
+												specificity = specificityTemp;
+											}
+
+											baseDef.ScriptLibraries[jsLibraryName] = Tuple.Create(libraryVersion, specificity);
+											continue;
+										}
+
+										baseDef.ScriptUrls.Add(scriptPath);
+										continue;
+									}
+
+									if (String.IsNullOrEmpty(scriptPath))
+									{
+										// support legacy named jsObjects that map to libraries
+										if (jsObject.Equals("jQuery"))
+										{
+											Version libraryVersion = null;
+											SpecificVersion? specificity = null;
+											baseDef.ScriptLibraries[CommonJs.jQuery] = Tuple.Create(libraryVersion, specificity);
+											baseDef.ScriptLibraries[CommonJs.jQueryMigrate] = Tuple.Create(libraryVersion, specificity);
+										}
+										else if (jsObject.Equals("jQuery.ui"))
+										{
+											Version libraryVersion = null;
+											SpecificVersion? specificity = null;
+											baseDef.ScriptLibraries[CommonJs.jQueryUI] = Tuple.Create(libraryVersion, specificity);
+										}
+
+										continue;
+									}
+
 									var script = CreateScript(jsObject, scriptPath);
 									if (!String.IsNullOrEmpty(script))
 									{
-										baseDef.ScriptKeys.Add(key);
-										baseDef.Scripts.Add(key, script);
+										baseDef.ScriptKeys.Add(jsObject);
+										baseDef.Scripts.Add(jsObject, script);
 									}
 								}
 								break;
@@ -181,48 +229,32 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
 			if (String.IsNullOrEmpty(scriptPath))
 			{
-				var scheme = HttpContext.Current.Request.Url.Scheme;
 				switch (jsObject)
 				{
-					case "jQuery":
 					case "DDRjQuery":
-						scriptPath = DNNAbstract.RequestJQuery()
-						             	? ""
-						             	: (scheme + "://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
-						break;
-					case "jQuery.ui":
-						scriptPath = scheme + "://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js";
+						scriptPath = "";
 						break;
 					default:
 						throw new ApplicationException(String.Format("Can't deduce script path for JavaScript object '{0}'", jsObject));
 				}
 			}
 
-			if (string.IsNullOrEmpty(jsObject))
+			if (jsObject == "DDRjQuery")
 			{
 				result = String.IsNullOrEmpty(scriptPath)
-				         	? ""
-				         	: String.Format(@"<script type=""text/javascript"" src=""{0}""></script>", scriptPath);
+					        ? @"<script type=""text/javascript"">DDRjQuery=window.DDRjQuery||jQuery;</script>"
+					        : String.Format(
+					         	@"<script type=""text/javascript"">if (!window.DDRjQuery) {{if (window.jQuery && (jQuery.fn.jquery>=""1.3"")) DDRjQuery=jQuery; else document.write(unescape('%3Cscript src=""{0}"" type=""text/javascript""%3E%3C/script%3E'));}}</script><script type=""text/javascript"">if (!window.DDRjQuery) DDRjQuery=jQuery.noConflict(true);</script>",
+					         	scriptPath);
 			}
 			else
 			{
-				if (jsObject == "DDRjQuery")
-				{
-					result = String.IsNullOrEmpty(scriptPath)
-					         	? @"<script type=""text/javascript"">DDRjQuery=window.DDRjQuery||jQuery;</script>"
-					         	: String.Format(
-					         		@"<script type=""text/javascript"">if (!window.DDRjQuery) {{if (window.jQuery && (jQuery.fn.jquery>=""1.3"")) DDRjQuery=jQuery; else document.write(unescape('%3Cscript src=""{0}"" type=""text/javascript""%3E%3C/script%3E'));}}</script><script type=""text/javascript"">if (!window.DDRjQuery) DDRjQuery=jQuery.noConflict(true);</script>",
-					         		scriptPath);
-				}
-				else
-				{
-					result = String.IsNullOrEmpty(scriptPath)
-					         	? ""
-					         	: String.Format(
-					         		@"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
-					         		GetObjectCheckScript(jsObject),
-					         		scriptPath);
-				}
+				result = String.IsNullOrEmpty(scriptPath)
+					        ? ""
+					        : String.Format(
+					         	@"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
+					         	GetObjectCheckScript(jsObject),
+					         	scriptPath);
 			}
 
 			return result;
@@ -293,20 +325,34 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		internal void PreRender()
 		{
 			var page = DNNContext.Current.Page;
-			var headControls = page.Header.Controls;
 
-			var contextItems = HttpContext.Current.Items;
 			foreach (var stylesheet in StyleSheets)
 			{
-				if (!contextItems.Contains(stylesheet))
-				{
-					var cssControl = new HtmlGenericControl("link");
-					cssControl.Attributes.Add("rel", "stylesheet");
-					cssControl.Attributes.Add("type", "text/css");
-					cssControl.Attributes.Add("href", stylesheet);
-					headControls.Add(cssControl);
+				ClientResourceManager.RegisterStyleSheet(page, stylesheet);
+			}
 
-					contextItems.Add(stylesheet, true);
+			foreach (var scriptUrl in ScriptUrls)
+			{
+				ClientResourceManager.RegisterScript(page, scriptUrl);
+			}
+
+			foreach (var libraryInfo in ScriptLibraries)
+			{
+				var libraryName = libraryInfo.Key;
+				var parameters = libraryInfo.Value;
+				var libraryVersion = parameters.Item1;
+				var specificVersion = parameters.Item2;
+				if (libraryVersion == null)
+				{
+					JavaScript.RequestRegistration(libraryName);
+				}
+				else if (specificVersion == null)
+				{
+					JavaScript.RequestRegistration(libraryName, libraryVersion);
+				}
+				else
+				{
+					JavaScript.RequestRegistration(libraryName, libraryVersion, specificVersion.Value);
 				}
 			}
 
@@ -320,7 +366,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			}
 
 			var headContent = String.IsNullOrEmpty(TemplateHeadPath) ? "" : Utilities.CachedFileContent(TemplateHeadPath);
-			var expandedHead = regexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
+			var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
 			page.Header.Controls.Add(new LiteralControl(expandedHead));
 		}
 

@@ -328,7 +328,7 @@
     <value>Inline Editor Enabled?</value>
   </data>
   <data name="plInlineEditor.Help" xml:space="preserve">
-    <value>Select this option if you wish for inline editing to be enabled on your site.</value>
+    <value>Select this option to enable inline editing on your site.</value>
   </data>
   <data name="plControlPanelMode.Text" xml:space="preserve">
     <value>Control Panel Mode:</value>
@@ -425,12 +425,6 @@
   </data>
   <data name="plHostSpace.Help" xml:space="preserve">
     <value>The amount of Disk Space in MB allowed for this site (enter 0 for unlimited space).</value>
-  </data>
-  <data name="plSiteLogHistory.Text" xml:space="preserve">
-    <value>Site Log History (Days):</value>
-  </data>
-  <data name="plSiteLogHistory.Help" xml:space="preserve">
-    <value>The number of days of site activity that is kept for this site.</value>
   </data>
   <data name="plDesktopModules.Text" xml:space="preserve">
     <value>Available modules:</value>
@@ -679,13 +673,13 @@
     <value>Throttling Interval in Minutes:</value>
   </data>
   <data name="plMsgThrottlingInterval.Help" xml:space="preserve">
-    <value>Number of minutes after which a User can send the next message. Zero indicates no restrictions. Not applies to Site Administrators or Host</value>
+    <value>Enter the number of minutes after which a user can send the next message. Zero indicates no restrictions. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plMsgRecipientLimit.Text" xml:space="preserve">
     <value>Recipient Limit:</value>
   </data>
   <data name="plMsgRecipientLimit.Help" xml:space="preserve">
-    <value>Maximum number of Recipients allowed in To field. Message to a Role is considered as a single Recipient .</value>
+    <value>Maximum number of Recipients allowed in To field. Message to a Role is considered as a single Recipient.</value>
   </data>
   <data name="plMsgProfanityFilters.Text" xml:space="preserve">
     <value>Enable Profanity Filters:</value>
@@ -703,7 +697,7 @@
     <value>Allow Attachments:</value>
   </data>
   <data name="plMsgAllowAttachments.Help" xml:space="preserve">
-    <value>Select if attachments are allowed or not.</value>
+    <value>Choose whether attachments are allowed or not.</value>
   </data>
   <data name="plIncludeAttachments.Text" xml:space="preserve">
     <value>Include Attachments:</value>
@@ -1220,6 +1214,12 @@ The host-level settings are currently set as follows:
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
     <value>You Must Specify The Host Email Address</value>
   </data>
+  <data name="EnableOAuth.Text" xml:space="preserve">
+    <value>Enable OAuth</value>
+  </data>
+  <data name="DisableOAuth.Text" xml:space="preserve">
+    <value>Disable OAuth</value>
+  </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
   </data>
@@ -1257,6 +1257,12 @@ The host-level settings are currently set as follows:
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
   </data>
+  <data name="OAuthSite.Text" xml:space="preserve">
+    <value>OAuth Settings</value>
+  </data>
+  <data name="OAuthNotEnabled.Text" xml:space="preserve">
+    <value>OAuth is currently not enabled for this site.</value>
+  </data>
   <data name="plPageHeadText.Help" xml:space="preserve">
     <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
   </data>
@@ -1275,6 +1281,18 @@ The host-level settings are currently set as follows:
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
     <value>X-UA-Compatible Http Header</value>
   </data>
+  <data name="plOAuthSitesettingsClient.Help" xml:space="preserve">
+    <value>OAuth Client identity for 3rd party usage</value>
+  </data>
+  <data name="plOAuthSitesettingsClient.Text" xml:space="preserve">
+    <value>Client Identifier</value>
+  </data>
+  <data name="plOAuthSitesettingsSecret.Help" xml:space="preserve">
+    <value>OAuth Client (shared) secret for 3rd party usage</value>
+  </data>
+  <data name="plOAuthSitesettingsSecret.Text" xml:space="preserve">
+    <value>Client Secret</value>
+  </data>
   <data name="plAddCachebusterToResourceUris.Help" xml:space="preserve">
     <value>Add a cache buster parameter (ver=[file timestamp]) to file resource URIs.</value>
   </data>
@@ -1282,7 +1300,7 @@ The host-level settings are currently set as follows:
     <value>Cachebust resource URIs</value>
   </data>
   <data name="plDisablePrivateMessage.Help" xml:space="preserve">
-    <value>When this option is set, regular users can't send message to specific user or group anymore.</value>
+    <value>Select to prevent users from sending messages to specific users or groups. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plDisablePrivateMessage.Text" xml:space="preserve">
     <value>Disable Private Message</value>

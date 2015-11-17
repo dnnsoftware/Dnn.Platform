@@ -1,0 +1,3 @@
+﻿DesktopModules/Admin/Console/ViewConsole.ascx.cs
+DesktopModules/Admin/Console/Settings.ascx.cs
+DesktopModules/Admin/Console/jquery.console.js

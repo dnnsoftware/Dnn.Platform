@@ -33,6 +33,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
@@ -194,7 +195,7 @@ namespace DesktopModules.Admin.Security
             cmdAddRole.Click += cmdAddRole_Click;
             cmdAddRoleGroup.Click += cmdAddRoleGroup_Click;
 
-            jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             foreach (var column in grdRoles.Columns)
             {
@@ -244,7 +245,7 @@ namespace DesktopModules.Admin.Security
 
         void cmdAddRole_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("RoleGroupID", Request.QueryString["RoleGroupID"]), true);
+            Response.Redirect(EditUrl("RoleGroupID", Request.QueryString["RoleGroupID"]));
         }
 
         protected override void OnLoad(EventArgs e)

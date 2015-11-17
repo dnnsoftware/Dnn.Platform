@@ -343,7 +343,7 @@ namespace DotNetNuke.Entities.Controllers
         public void UpdateEncryptedString(string key, string value, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
-            Requires.NotNull("value", value);
+            Requires.PropertyNotNull("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
             Update(key, cipherText);

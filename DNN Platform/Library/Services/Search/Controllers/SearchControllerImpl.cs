@@ -98,7 +98,11 @@ namespace DotNetNuke.Services.Search.Controllers
                 try
                 {
 	                var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y" || searchQuery.AllowLeadingWildcard;
+<<<<<<< HEAD
 	                var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
+=======
+					var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
                     var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);
@@ -107,7 +111,11 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch,
                             fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
+<<<<<<< HEAD
 	                	parserContent.AllowLeadingWildcard = allowLeadingWildcard;
+=======
+						parserContent.AllowLeadingWildcard = allowLeadingWildcard;
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
                     }

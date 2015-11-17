@@ -40,7 +40,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.Dashboard.Components.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -54,11 +53,14 @@ using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
 	public partial class Register : UserUserControlBase
 	{
 		protected const string PasswordStrengthTextBoxCssClass = "password-strength";
@@ -123,7 +125,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			base.OnInit(e);
 
-			jQuery.RequestDnnPluginsRegistration();
+			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
@@ -773,7 +775,11 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (IsValid)
 				{
-					CreateUser();
+                    if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    {
+                        CreateUser();
+                    }
+
 				}
 				else
 				{

@@ -1,6 +1,7 @@
-<%@ Control Inherits="DesktopModules.Admin.Security.Roles" Language="C#" AutoEventWireup="false" CodeFile="Roles.ascx.cs" %>
+<%@ Control Inherits="DesktopModules.Admin.Security.Roles" Language="C#" AutoEventWireup="false" Codebehind="Roles.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <div class="dnnForm dnnSecurityRoles">
     <div runat="server" id="divGroups">
         <div class="dnnFormItem">

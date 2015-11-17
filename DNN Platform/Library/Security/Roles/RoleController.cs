@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -53,11 +54,6 @@ namespace DotNetNuke.Security.Roles
         private static readonly string[] UserRoleActionsCaption = { "ASSIGNMENT", "UPDATE", "UNASSIGNMENT" };
         private static readonly RoleProvider provider = RoleProvider.Instance();
 
-        private static event EventHandler<RoleEventArgs> RoleCreated;
-        private static event EventHandler<RoleEventArgs> RoleDeleted;
-        private static event EventHandler<RoleEventArgs> RoleJoined;
-        private static event EventHandler<RoleEventArgs> RoleLeft;
-
         private enum UserRoleActions
         {
             add = 0,
@@ -68,17 +64,6 @@ namespace DotNetNuke.Security.Roles
         protected override Func<IRoleController> GetFactory()
         {
             return () => new RoleController();
-        }
-
-        static RoleController()
-        {
-            foreach (var handlers in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
-            {
-                RoleCreated += handlers.Value.RoleCreated;
-                RoleDeleted += handlers.Value.RoleDeleted;
-                RoleJoined += handlers.Value.RoleJoined;
-                RoleLeft += handlers.Value.RoleLeft;
-            }
         }
 
         #region Private Methods
@@ -131,11 +116,7 @@ namespace DotNetNuke.Security.Roles
                     DataCache.ClearUserCache(portalId, user.Username);
                     Instance.ClearRoleCache(portalId);
 
-                    if (RoleLeft != null)
-                    {
-                        var role = Instance.GetRoleById(portalId, roleId);
-                        RoleLeft(null, new RoleEventArgs() { Role = role, User = user });
-                    }
+                    EventManager.Instance.OnRoleLeft(new RoleEventArgs() { Role = Instance.GetRoleById(portalId, roleId), User = user });
                 }
                 else
                 {
@@ -216,10 +197,7 @@ namespace DotNetNuke.Security.Roles
 
                 ClearRoleCache(role.PortalID);
 
-                if (RoleCreated != null)
-                {
-                    RoleCreated(null, new RoleEventArgs() {Role = role});
-                }
+                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
             }
 
             return roleId;
@@ -255,11 +233,7 @@ namespace DotNetNuke.Security.Roles
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
             }
 
-            if (RoleJoined != null)
-            {
-                var role = GetRoleById(portalId, roleId);
-                RoleJoined(null, new RoleEventArgs() { Role = role, User = user});
-            }
+            EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = GetRoleById(portalId, roleId), User = user });
 
             //Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
@@ -303,10 +277,7 @@ namespace DotNetNuke.Security.Roles
 
             provider.DeleteRole(role);
 
-            if (RoleDeleted != null)
-            {
-                RoleDeleted(null, new RoleEventArgs() { Role = role });
-            }
+            EventManager.Instance.OnRoleDeleted(new RoleEventArgs() { Role = role });
 
             //Remove the UserInfo objects of users that have been members of the group from the cache, as they have been modified
             foreach (var user in users)

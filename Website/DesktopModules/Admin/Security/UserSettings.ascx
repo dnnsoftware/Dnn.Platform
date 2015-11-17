@@ -1,5 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DesktopModules.Admin.Security.UserSettings" CodeFile="UserSettings.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DesktopModules.Admin.Security.UserSettings" Codebehind="UserSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <asp:Panel runat="server" ID="CannotChangeSettingsMessage" CssClass="dnnFormMessage dnnFormWarning" Visible="False"><%=LocalizeString("CannotChangeSettings") %></asp:Panel>
 <div class="dnnForm dnnUserSettings dnnClear" id="dnnUserSettings" runat="server" ClientIDMode="Static">
     <div class="usUserAccounts" id="usUserAccounts">

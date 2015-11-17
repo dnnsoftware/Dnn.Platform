@@ -1,6 +1,6 @@
-<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false"
-    CodeFile="HostSettings.ascx.cs" %>
+<%@ Control Inherits="DotNetNuke.Modules.Admin.Host.HostSettings" Language="C#" AutoEventWireup="false" Codebehind="HostSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="RequestFilters" Src="~/DesktopModules/Admin/HostSettings/RequestFilters.ascx" %>
@@ -361,6 +361,19 @@
                         </Items>
                     </dnn:dnncombobox>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plcboUnauthCacheability" controlname="cboUnauthCacheability" runat="server" />
+                    <dnn:dnncombobox id="cboUnauthCacheability" runat="server">
+                        <Items>
+                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
+                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
+                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
+                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
+                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        </Items>
+                    </dnn:dnncombobox>
+                </div>
             </fieldset>
             <h2 id="Panel-JQuery" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("JQuery")%></a></h2>
             <fieldset>
@@ -584,25 +597,6 @@
                     <dnn:dnncombobox id="cboControlPanel" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogStorage" controlname="optSiteLogStorage" runat="server" />
-                    <asp:RadioButtonList ID="optSiteLogStorage" CssClass="dnnHSRadioButtons" runat="server"
-                        RepeatLayout="Flow">
-                        <asp:ListItem Value="D" resourcekey="Database" />
-                        <asp:ListItem Value="F" resourcekey="FileSystem" />
-                    </asp:RadioButtonList>
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
-                    <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
-                    <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
-                    <asp:RangeValidator runat="server" id="valSiteLogBuffer" Type="Integer" controltovalidate="txtSiteLogBuffer" validationexpression="^\d*" MinimumValue="1" MaximumValue="999" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="SiteLogBufferValidation"  />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
-                    <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                    <asp:Label ID="lblSiteLogHistory" runat="server" resourcekey="Days" />
-                </div>
-                <div class="dnnFormItem">
                     <dnn:label id="plUsersOnline" controlname="chkUsersOnline" runat="server" />
                     <asp:CheckBox ID="chkUsersOnline" runat="server" />
                 </div>
@@ -665,6 +659,14 @@
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plEnableOAuth" controlname="chkEnableOAuth" runat="server" />
+                    <asp:CheckBox ID="chkEnableOAuth" runat="server" />
+                    <div class="dnnFormItem psPageStateWarning dnnClear">
+                        <asp:Label ID="plOAuthWarning" runat="server" CssClass="dnnFormMessage dnnFormWarning"
+                            resourcekey="plOAuthWarning" Visible="false" />
+                    </div>
                 </div>
             </fieldset>
         </div>

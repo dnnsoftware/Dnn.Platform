@@ -234,12 +234,6 @@
   <data name="plDemoSignup.Text" xml:space="preserve">
     <value>Anonymous Demo Signup?</value>
   </data>
-  <data name="plSiteLogBuffer.Text" xml:space="preserve">
-    <value>Site Log Buffer :</value>
-  </data>
-  <data name="plSiteLogHistory.Text" xml:space="preserve">
-    <value>Site Log History:</value>
-  </data>
   <data name="plUsersOnline.Text" xml:space="preserve">
     <value>Enable Users Online?</value>
   </data>
@@ -474,12 +468,6 @@
   <data name="plWebRequestTimeout.Help" xml:space="preserve">
     <value>Enter a time out value for a Web Request</value>
   </data>
-  <data name="plSiteLogBuffer.Help" xml:space="preserve">
-    <value>Enter the number of Items in the Site Log Buffer</value>
-  </data>
-  <data name="plSiteLogHistory.Help" xml:space="preserve">
-    <value>Enter the number of Days of activity to keep in the Site Log</value>
-  </data>
   <data name="plUsersOnline.Help" xml:space="preserve">
     <value>You can optionally enable the Users Online feature</value>
   </data>
@@ -509,12 +497,6 @@
   </data>
   <data name="ContainerUpload.Text" xml:space="preserve">
     <value>Upload Container</value>
-  </data>
-  <data name="plSiteLogStorage.Text" xml:space="preserve">
-    <value>Site Log Storage:</value>
-  </data>
-  <data name="plSiteLogStorage.Help" xml:space="preserve">
-    <value>Select the storage location for the Site Log</value>
   </data>
   <data name="Database.Text" xml:space="preserve">
     <value>Database</value>
@@ -563,6 +545,12 @@
   </data>
   <data name="plEnableHelp.Help" xml:space="preserve">
     <value>You can enable or disable the Online Help Action Menu for Modules.  If enabled, you will need to provide the Help URL for the module, in the Module Definitions, although this may have been provided by the developer of the module.</value>
+  </data>
+  <data name="plcboUnauthCacheability.Text" xml:space="preserve">
+    <value>Unauthenticated Cacheability:</value>
+  </data>
+  <data name="plcboUnauthCacheability.Help" xml:space="preserve">
+    <value>Sets the Cache-Control HTTP header value for unauthenticated users.</value>
   </data>
   <data name="plCacheability.Text" xml:space="preserve">
     <value>Authenticated Cacheability:</value>
@@ -798,6 +786,9 @@
   <data name="plPsWarning.Text" xml:space="preserve">
     <value>Warning: Memory page state persistence can cause Ajax issues</value>
   </data>
+  <data name="plOAuthWarning.Text" xml:space="preserve">
+    <value>Warning: The OAuth library must be installed for OAuth server support to work</value>
+  </data>
   <data name="ModuleCacheProvider.Help" xml:space="preserve">
     <value>Select the default module caching provider.  This setting can be overridden by each individual module.</value>
   </data>
@@ -1013,6 +1004,9 @@
   </data>
   <data name="plAsyncTimeout.Text" xml:space="preserve">
     <value>Time Before Timeout:</value>
+  </data>
+  <data name="plEnableOAuth.Text" xml:space="preserve">
+    <value>Enable OAuth Authorization:</value>
   </data>
   <data name="plEnablePasswordHistory.Help" xml:space="preserve">
     <value>Sets whether a list of recently used passwords is maintained and checked to prevent re-use.</value>
@@ -1242,30 +1236,47 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Enable partial-word search (slow):</value>
   </data>
   <data name="lblAuthorBoost.Help" xml:space="preserve">
+<<<<<<< HEAD
     <value>Set the boost value of author field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+=======
+    <value>Author boost value is associated with the author as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
   </data>
   <data name="lblAuthorBoost.Text" xml:space="preserve">
     <value>Author Boost:</value>
   </data>
   <data name="lblContentBoost.Help" xml:space="preserve">
+<<<<<<< HEAD
     <value>Set the boost value of content field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+=======
+    <value>Content boost value is associated with the content as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
   </data>
   <data name="lblContentBoost.Text" xml:space="preserve">
     <value>Content Boost:</value>
   </data>
   <data name="lblDescriptionBoost.Help" xml:space="preserve">
+<<<<<<< HEAD
     <value>Set the boost value of description field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+=======
+    <value>Description boost value is associated with the description as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
   </data>
   <data name="lblDescriptionBoost.Text" xml:space="preserve">
     <value>Description Boost:</value>
   </data>
   <data name="lblTagBoost.Help" xml:space="preserve">
+<<<<<<< HEAD
     <value>Set the boost value of tag field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
+=======
+    <value>Tag boost value is associated with the tag as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
   </data>
   <data name="lblTagBoost.Text" xml:space="preserve">
     <value>Tag Boost:</value>
   </data>
   <data name="lblTitleBoost.Help" xml:space="preserve">
+<<<<<<< HEAD
     <value>Set the boost value of title field when save search document. If this field has high boost value, when search hit this field, the search result will have higher score and show at more top of the result list.</value>
   </data>
   <data name="lblTitleBoost.Text" xml:space="preserve">
@@ -1273,5 +1284,11 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   </data>
   <data name="SiteLogBufferValidation.Text" xml:space="preserve">
     <value>Buffer size needs to be at least 1.</value>
+=======
+    <value>Title boost value is associated with the title as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblTitleBoost.Text" xml:space="preserve">
+    <value>Title Boost:</value>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
   </data>
 </root>

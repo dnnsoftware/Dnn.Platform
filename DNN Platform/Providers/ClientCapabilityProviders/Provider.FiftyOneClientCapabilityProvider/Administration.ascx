@@ -3,6 +3,10 @@
 <%@ Register Assembly="FiftyOne.Foundation" Namespace="FiftyOne.Foundation.Mobile.Detection" TagPrefix="fiftyOne" %>
 <%@ Register Assembly="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" Namespace="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" tagPrefix="dnn" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<<<<<<< HEAD
+=======
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelcontrol.ascx" %>
 

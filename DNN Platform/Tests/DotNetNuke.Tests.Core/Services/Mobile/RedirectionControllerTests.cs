@@ -35,6 +35,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mobile;
+using DotNetNuke.Tests.Core.Services.ClientCapability;
 using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 
@@ -240,7 +241,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		#region Get Redirections URL Tests
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void RedirectionController_GetRedirectionUrl_Throws_On_Null_UserAgent()
         {
 			_redirectionController.GetRedirectUrl(null, Portal0, 0);
@@ -856,7 +857,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private IClientCapability GetClientCapabilityCallBack(string userAgent)
 		{
-            IClientCapability clientCapability = new DotNetNuke.Services.ClientCapability.ClientCapability();
+            IClientCapability clientCapability = new TestClientCapability();
             if (userAgent == iphoneUserAgent)
             {
                 clientCapability.IsMobile = true;

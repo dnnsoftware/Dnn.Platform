@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.04.02" >
+    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="08.00.00">
       <friendlyName>DotNetNuke Client Capability Provider</friendlyName>
       <description>Device Detection / Client Capability Provider</description>
       <iconFile>~/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/mobiledevicedet_16X16.png</iconFile>
@@ -84,13 +84,12 @@
         
         <component type="Assembly">
           <assemblies>
-            <basePath>bin\Providers</basePath>
             <assembly>
-              <path>bin\Providers</path>
+              <path>bin</path>
               <name>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.dll</name>
             </assembly>
             <assembly>
-              <path>bin\Providers</path>
+              <path>bin</path>
               <name>FiftyOne.Foundation.dll</name>
             </assembly>
           </assemblies>
@@ -166,7 +165,11 @@
             </uninstall>
           </config>
         </component>
+<<<<<<< HEAD
         <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
+=======
+        <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
       </components>
     </package>
   </packages>

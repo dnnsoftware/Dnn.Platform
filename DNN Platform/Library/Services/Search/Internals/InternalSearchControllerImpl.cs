@@ -71,6 +71,9 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
+        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region constructor
         public InternalSearchControllerImpl()
         {
@@ -473,10 +476,18 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new NumericField(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
             }
 
+            bool tagBoostApplied = false;
             foreach (var tag in searchDocument.Tags)
             {
                 var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost) field.Boost = _tagBoost / 10f;
+                if (!tagBoostApplied)
+                {
+                    if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost)
+                    {
+                        field.Boost = _tagBoost / 10f;
+                        tagBoostApplied = true;
+                    }
+                }
                 doc.Add(field);
             }
 
@@ -516,7 +527,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Add Field to Doc when supplied fieldValue > 0
         /// </summary>
-        private void AddIntField(Document doc, int fieldValue, string fieldTag)
+        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
@@ -537,9 +548,9 @@ namespace DotNetNuke.Services.Search.Internals
             if (!String.IsNullOrEmpty(strippedString))
             {
                 // Remove all opening HTML Tags with no attributes
-                strippedString = Regex.Replace(strippedString, @"<\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
                 // Remove all closing HTML Tags
-                strippedString = Regex.Replace(strippedString, @"</\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
             }
 
             if (!String.IsNullOrEmpty(strippedString))

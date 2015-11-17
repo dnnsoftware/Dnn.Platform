@@ -200,9 +200,9 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public virtual void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.NotNull("newFolderPath", newFolderPath);
+            Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             if (folderPath == newFolderPath) return;
@@ -282,12 +282,11 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folderMapping", folderMapping);
 
             var folderProvider = Instance(folderMapping.FolderProviderType);
-
-            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
-
             var folder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
             var folderManager = new FolderManager();
             var subFolders = folderManager.GetFolderMappingFoldersRecursive(folderMapping, folder).Skip(1).Reverse();
+
+            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
 
             foreach (var subFolderPath in subFolders.Select(s => s.Key))
             {

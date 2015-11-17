@@ -17,9 +17,8 @@
       <ResourceFiles Include="App_LocalResources/*.resx" />
       <DNNMenuFiles Include="DNNMenu/*.*" />
       <DumpXMLFiles Include="DumpXML/*.*" />
-      <SolPartFiles Include="SolPart/*.*" />
       <JsFiles Include="js/*.*" />
-      <Resources Include="@(TextFiles);@(SourceFiles);@(ResourceFiles);@(DNNMenuFiles);@(DumpXMLFiles);@(SolPartFiles);@(JsFiles);" />
+      <Resources Include="@(TextFiles);@(SourceFiles);@(ResourceFiles);@(DNNMenuFiles);@(DumpXMLFiles);@(JsFiles);" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -33,7 +32,6 @@
     <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModuleFolderName)\App_LocalResources" />
     <Copy SourceFiles="@(DNNMenuFiles)" DestinationFolder="$(ModuleFolderName)\DNNMenu" />
     <Copy SourceFiles="@(DumpXMLFiles)" DestinationFolder="$(ModuleFolderName)\DumpXML" />
-    <Copy SourceFiles="@(SolPartFiles)" DestinationFolder="$(ModuleFolderName)\SolPart" />
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ModuleFolderName)\Js" />
   </Target>
 </Project>

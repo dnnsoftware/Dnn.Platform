@@ -1,0 +1,48 @@
+/* DNN-7410 Fix GetSchedule */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+ @Server varchar(150)
+AS
+BEGIN
+SELECT
+  S.*
+  , (SELECT max(S1.NextStart)
+   FROM {databaseOwner}{objectQualifier}ScheduleHistory S1
+   WHERE S1.ScheduleID = S.ScheduleID) as NextStart
+ FROM {databaseOwner}{objectQualifier}Schedule S
+ WHERE
+	(
+		@Server IS NULL OR 
+		S.Servers LIKE '%,' + @Server + ',%' OR
+		S.Servers LIKE @Server + ',%' OR
+		S.Servers LIKE '%,' + @Server OR
+		S.Servers = @Server OR
+		S.Servers IS NULL)
+	ORDER BY FriendlyName ASC
+END
+GO
+
+/* DNN-7405: Update GetTabPaths Procedure to return all tab paths when culture code is null. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabPaths]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths] 
+	@PortalID		INT,
+	@CultureCode	NVARCHAR(10)
+AS
+	SELECT
+		TabID, 
+		PortalID, 
+		TabPath
+	FROM {databaseOwner}{objectQualifier}vw_Tabs
+	WHERE (PortalID = @PortalID AND (CultureCode = @CultureCode OR CultureCode Is NULL OR ISNULL(@CultureCode, '') = ''))
+		OR @PortalID Is NULL
+GO

@@ -204,9 +204,6 @@
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -240,18 +237,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.ActivityFeed.Title.Text" xml:space="preserve">
     <value>Activity Feed</value>
-  </data>
-  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
   </data>
   <data name="Tab.AdvUrlManagement.ContentPane.Module.Title.Text" xml:space="preserve">
     <value>Advanced URL Management</value>
@@ -309,21 +294,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Extensions.Title.Text" xml:space="preserve">
     <value>Extensions</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Content.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Description.Text" xml:space="preserve">
-    <value>Configure Site Google Analytics settings.</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Name.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Title.Text" xml:space="preserve">
-    <value>Google Analytics</value>
   </data>
   <data name="Tab.Home.CompanyIntro.Text" xml:space="preserve">
     <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide.  In addition to our commercial CMS and Social Community solutiosn, DNN is the steward of the DotNetNuke Open Source Project.</value>
@@ -562,9 +532,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -665,9 +632,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -765,9 +729,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -807,21 +768,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
     <value>My Profile</value>
-  </data>
-  <data name="Tab.Newsletters.Content.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Description.Text" xml:space="preserve">
-    <value>Send email messages to users, security roles and specific email addresses.</value>
-  </data>
-  <data name="Tab.Newsletters.Name.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
   </data>
   <data name="Tab.PageManagement.Content.Text" xml:space="preserve">
     <value>Page Management</value>
@@ -921,21 +867,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Sharepoint.Name.Text" xml:space="preserve">
     <value>SharePoint Connector</value>
-  </data>
-  <data name="Tab.SiteLog.Content.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Description.Text" xml:space="preserve">
-    <value>View statistical reports on site activity for the portal.</value>
-  </data>
-  <data name="Tab.SiteLog.Name.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
   </data>
   <data name="Tab.SiteMapSettings.Content.Text" xml:space="preserve">
     <value>Site Map Settings</value>
@@ -1083,5 +1014,14 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
+  </data>
+  <data name="Tab.DCCManager.Description.Text" xml:space="preserve">
+    <value>Manage the Dynamic Content Types for your Site</value>
+  </data>
+  <data name="Tab.DCCmanager.Name.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
+  </data>
+  <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
   </data>
 </root>

@@ -31,6 +31,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem.EventArgs;
@@ -39,16 +40,6 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FileVersionController : ComponentBase<IFileVersionController, FileVersionController>, IFileVersionController
     {
-        #region Private Events
-        private event EventHandler<FileChangedEventArgs> FileChanged;
-        #endregion
-
-        #region Contructor
-        public FileVersionController()
-        {
-            RegisterEventHandlers();
-        }
-        #endregion
 
         #region database methods
         public string AddFileVersion(IFileInfo file, int userId, bool published, bool removeOldestVersions, Stream content = null)
@@ -271,24 +262,14 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region helper methods
-        private void RegisterEventHandlers()
-        {
-            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            {
-                FileChanged += events.Value.FileOverwritten;
-            }
-        }
 
         private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
-            if (FileChanged != null)
-            {
-                FileChanged(this, new FileChangedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId
-                });
-            }
+            EventManager.Instance.OnFileChanged(new FileChangedEventArgs
+                                                        {
+                                                            FileInfo = fileInfo,
+                                                            UserId = userId
+                                                        });
         }
 
         private Stream GetVersionContent(FolderProvider provider, IFolderInfo folder, IFileInfo file, int version)

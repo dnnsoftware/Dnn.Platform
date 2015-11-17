@@ -39,8 +39,9 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Authentication
+namespace DotNetNuke.Modules.Admin.Authentication.DNN
 {
+    using Host = DotNetNuke.Entities.Host.Host;
 
 	/// <summary>
 	/// The Login AuthenticationLoginBase is used to provide a login for a registered user
@@ -334,7 +335,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 		#region Private Methods
 
-		protected new string GetRedirectUrl(bool checkSettings = true)
+		protected string GetRedirectUrl(bool checkSettings = true)
 		{
 			var redirectUrl = "";
 			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;

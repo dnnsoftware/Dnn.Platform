@@ -54,7 +54,9 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-		#region Private Members
+        private readonly static Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        #region Private Members
 
         private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider _richTextEditor;
@@ -369,11 +371,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        private string RemoveBaseTags(String strInput)
+        private static string RemoveBaseTags(String strInput)
 		{
-			//const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-			const string pattern = "<base[^>]*>";
-            return Regex.Replace(strInput, pattern, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            return BaseTagRegex.Replace(strInput, " ");
 		}
 		#endregion
 

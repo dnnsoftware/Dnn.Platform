@@ -42,6 +42,8 @@ using NUnit.Framework;
 using Constants = DotNetNuke.Services.Search.Internals.Constants;
 using DotNetNuke.Entities.Controllers;
 
+using Lucene.Net.Documents;
+
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     /// <summary>
@@ -657,7 +659,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
         {
+<<<<<<< HEAD
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
+=======
+			var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
             return _searchController.SiteSearch(query);
         }
 
@@ -2426,7 +2432,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             //Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "Hello World" };
-            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Tags = new List<string> { "cow" } };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Tags = new List<string> { "cow", "hello", "world" } };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "random text" };
 
             //Act
@@ -2434,8 +2440,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _internalSearchController.AddSearchDocument(doc2);
             _internalSearchController.AddSearchDocument(doc3);
             _internalSearchController.Commit();
-
-
             var result = SearchForKeyword("cow");
 
             //Assert
@@ -2979,6 +2983,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #endregion
 
+<<<<<<< HEAD
         #region Leading Wildcard search tests
 
         [Test]
@@ -3053,6 +3058,82 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+=======
+		#region Leading Wildcard search tests
+
+		[Test]
+		public void SearchController_EnableLeadingWildcard_Should_Not_Return_Results_When_Property_Is_False()
+		{
+			_mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+
+			//Arrange
+			var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+			//Act
+			_internalSearchController.AddSearchDocument(doc1);
+			_internalSearchController.AddSearchDocument(doc2);
+			_internalSearchController.AddSearchDocument(doc3);
+			_internalSearchController.Commit();
+
+
+			var result = SearchForKeyword("rld", OtherSearchTypeId, true, false);
+
+			//Assert
+			Assert.AreEqual(0, result.TotalHits);
+		}
+
+		[Test]
+		public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_True()
+		{
+			_mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
+
+			//Arrange
+			var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+			//Act
+			_internalSearchController.AddSearchDocument(doc1);
+			_internalSearchController.AddSearchDocument(doc2);
+			_internalSearchController.AddSearchDocument(doc3);
+			_internalSearchController.Commit();
+
+
+			var result = SearchForKeyword("rld", OtherSearchTypeId, true, true);
+
+			//Assert
+			Assert.AreEqual(1, result.TotalHits);
+			Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+		}
+
+		[Test]
+		public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_False_But_Host_Setting_Is_True()
+		{
+			_mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
+
+			//Arrange
+			var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+			var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+
+			//Act
+			_internalSearchController.AddSearchDocument(doc1);
+			_internalSearchController.AddSearchDocument(doc2);
+			_internalSearchController.AddSearchDocument(doc3);
+			_internalSearchController.Commit();
+
+
+			var result = SearchForKeyword("rld", OtherSearchTypeId, true, false);
+
+			//Assert
+			Assert.AreEqual(1, result.TotalHits);
+			Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
+		}
+
+		#endregion
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
 
         #region stop-words tests
 

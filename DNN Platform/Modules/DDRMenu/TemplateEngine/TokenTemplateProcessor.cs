@@ -17,7 +17,12 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
 		                                                             {{"page", "node"}, {"name", "text"}};
 
-		public bool LoadDefinition(TemplateDefinition baseDefinition)
+        private static readonly Regex TemplatesRegex =
+                new Regex(
+                    @"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",
+                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        public bool LoadDefinition(TemplateDefinition baseDefinition)
 		{
 			if (!baseDefinition.TemplateVirtualPath.EndsWith(".txt", StringComparison.InvariantCultureIgnoreCase))
 			{
@@ -53,13 +58,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			var current = (XmlElement)(docElt.GetElementsByTagName("template", xmlNs)[1]);
 			var stack = new Stack<XmlElement>();
 
-			var re =
-				new Regex(
-					@"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",
-					RegexOptions.Compiled | RegexOptions.IgnoreCase);
 			var index = 0;
-			foreach (Match match in re.Matches(templateText))
-			{
+			foreach (Match match in TemplatesRegex.Matches(templateText))
+            {
 				current.AppendChild(xml.CreateTextNode(templateText.Substring(index, match.Index - index)));
 
 				var directive = match.Groups["directive"].Value;

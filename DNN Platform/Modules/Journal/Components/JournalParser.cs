@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.Journal.Components
 	    private bool isUnverifiedUser;
 	    private const string ResxPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
 
+        private static readonly Regex CdataRegex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>", RegexOptions.Compiled);
+
 	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo) 
         {
 			PortalSettings = portalSettings;
@@ -56,6 +58,8 @@ namespace DotNetNuke.Modules.Journal.Components
 								!HttpContext.Current.Request.Url.IsDefaultPort && !url.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 		}
 
+        private static readonly Regex BaseUrlRegex = new Regex("\\[BaseUrl\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 		public string GetList(int currentIndex, int rows) 
         {
             if (CurrentUser.UserID > 0) {
@@ -71,10 +75,10 @@ namespace DotNetNuke.Modules.Journal.Components
             string photoTemplate = Localization.GetString("journal_photo", ResxPath);
             string fileTemplate = Localization.GetString("journal_file", ResxPath);
 
-		    statusTemplate = Regex.Replace(statusTemplate, "\\[BaseUrl\\]", url, RegexOptions.IgnoreCase);
-            linkTemplate = Regex.Replace(linkTemplate, "\\[BaseUrl\\]", url, RegexOptions.IgnoreCase);
-            photoTemplate = Regex.Replace(photoTemplate, "\\[BaseUrl\\]", url, RegexOptions.IgnoreCase);
-            fileTemplate = Regex.Replace(fileTemplate, "\\[BaseUrl\\]", url, RegexOptions.IgnoreCase);
+            statusTemplate = BaseUrlRegex.Replace(statusTemplate, url);
+            linkTemplate = BaseUrlRegex.Replace(linkTemplate, url);
+            photoTemplate = BaseUrlRegex.Replace(photoTemplate, url);
+            fileTemplate = BaseUrlRegex.Replace(fileTemplate, url);
 
             string comment = Localization.GetString("comment", ResxPath);
             
@@ -187,7 +191,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 template = Localization.GetString("journal_generic", ResxPath);
             }
 
-            template = Regex.Replace(template, "\\[BaseUrl\\]", url, RegexOptions.IgnoreCase);
+            template = BaseUrlRegex.Replace(template, url);
             template = template.Replace("[journalitem:action]", Localization.GetString(journalType + ".Action", ResxPath));
 
             const string pattern = "{CanComment}(.*?){/CanComment}";
@@ -319,10 +323,9 @@ namespace DotNetNuke.Modules.Journal.Components
             if (comment.CommentXML != null && comment.CommentXML.SelectSingleNode("/root/comment") != null)
             {
                 string text;
-                var regex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>");
-                if (regex.IsMatch(comment.CommentXML.SelectSingleNode("/root/comment").InnerText))
+                if (CdataRegex.IsMatch(comment.CommentXML.SelectSingleNode("/root/comment").InnerText))
                 {
-                    var match = regex.Match(comment.CommentXML.SelectSingleNode("/root/comment").InnerText);
+                    var match = CdataRegex.Match(comment.CommentXML.SelectSingleNode("/root/comment").InnerText);
                     text = match.Groups["text"].Value;                
                 }
                 else

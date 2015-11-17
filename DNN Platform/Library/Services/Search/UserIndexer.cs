@@ -153,6 +153,10 @@ namespace DotNetNuke.Services.Search
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
+=======
+                checkpointModified = false;
+>>>>>>> d6b3052586e0f08ce8a11adbd7ecec23ecae9c57
                 Exceptions.Exceptions.LogException(ex);
             }
 

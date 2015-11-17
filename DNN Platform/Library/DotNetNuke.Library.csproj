@@ -12,7 +12,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke</RootNamespace>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -30,6 +30,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -70,9 +72,37 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CountryListBox">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="dotnetnuke.log4net">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Services.Syndication">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -87,9 +117,13 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
@@ -119,17 +153,32 @@
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -139,8 +188,19 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapper.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
+    <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
+    <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
+    <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Obsolete\Arg.cs" />
+    <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
+    <Compile Include="Entities\EventManager.cs" />
+    <Compile Include="Entities\IEventManager.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
     <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />
     <Compile Include="Entities\Portals\IPortalSettingsController.cs" />
@@ -572,8 +632,6 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
     <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
@@ -653,6 +711,32 @@
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\GeneratedImage\IPCount.cs" />
+    <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
+    <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageBrightnessTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageContrastTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGammaTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGreyscaleTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageInvertTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageResizeTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageRotateFlipTransform.cs" />
+    <Compile Include="Services\GeneratedImage\GeneratedImage.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandlerInternal.cs" />
+    <Compile Include="Services\GeneratedImage\ImageInfo.cs" />
+    <Compile Include="Services\GeneratedImage\ImageParameter.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\GrayscaleQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\OctreeQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\PaletteQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\Quantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageResizeMode.cs" />
+    <Compile Include="Services\GeneratedImage\ImageTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\ImageFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\ModInfoTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
@@ -722,6 +806,13 @@
     <Compile Include="Services\Social\Messaging\IUserPreferencesController.cs" />
     <Compile Include="Services\Social\Messaging\UserPreference.cs" />
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
+    <Compile Include="Services\Tokens\CacheLevel.cs" />
+    <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Upgrade\DnnInstallLogger.cs" />
     <Compile Include="Services\Upgrade\Internals\IInstallController.cs" />
     <Compile Include="Services\Upgrade\Internals\InstallConfiguration\ConnectionConfig.cs" />
@@ -940,25 +1031,6 @@
     <Compile Include="Framework\UserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Modules\Console\Components\ConsoleController.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardControl.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\BackupInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DatabaseController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbFileInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\DataService.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\IDashboardData.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModuleInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModulesController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalsController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinsController.cs" />
     <Compile Include="Modules\HtmlEditorProvider.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1174,7 +1246,6 @@
     </Compile>
     <Compile Include="Services\Installer\Installers\ConfigInstaller.cs" />
     <Compile Include="Services\Installer\Installers\ContainerInstaller.cs" />
-    <Compile Include="Services\Installer\Installers\DashboardInstaller.cs" />
     <Compile Include="Services\Installer\Installers\FileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\InstallerFactory.cs" />
     <Compile Include="Services\Installer\Installers\LanguageInstaller.cs" />
@@ -1282,18 +1353,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Log\EventLog\SendLogNotifications.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\BufferedSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\PurgeSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Mail\Mail.cs" />
@@ -1404,36 +1463,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
-    <Compile Include="Services\Vendors\AffiliateController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\AffiliateInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1458,6 +1487,17 @@
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
+    <Compile Include="UI\Modules\Html5\Html5HostControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
@@ -1471,6 +1511,7 @@
     <Compile Include="UI\Modules\ModuleUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Modules\ReflectedModuleControlFactory.cs" />
     <Compile Include="UI\Modules\StandardModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\WebFormsModuleControlFactory.cs" />
     <Compile Include="UI\Navigation.cs">
@@ -1484,13 +1525,11 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\Skins\Controls\SkinsEditControl.cs" />
-    <Compile Include="UI\Skins\Controls\SolPartMenu.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="UI\Skins\EventListeners\SkinEventArgs.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventType.cs" />
+    <Compile Include="UI\Skins\InstalledSkinInfo.cs" />
     <Compile Include="UI\Skins\ISkinControl.cs" />
     <Compile Include="UI\Skins\NavObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1582,12 +1621,9 @@
     <Compile Include="UI\WebControls\DataGrids\RolesSelectionGrid.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumn.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumnTemplate.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStartedOptions.cs" />
     <Compile Include="UI\WebControls\DualListBox.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventArgs.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventHandler.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStarted.cs" />
-    <Compile Include="Services\GettingStarted\GettingStartedController.cs" />
     <Compile Include="UI\WebControls\LanguageSelector.cs" />
     <Compile Include="UI\WebControls\LiteralTemplate.cs" />
     <Compile Include="UI\WebControls\NavDataSource\NavDataPageHierarchicalEnumerable.cs" />
@@ -1656,14 +1692,11 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingInfo.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
-    <Compile Include="UI\WebControls\SolPartActions.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -1794,10 +1827,13 @@
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{86af9531-d270-4c18-a8b9-c67a8782af69}</Project>
-      <Name>DotNetNuke.Syndication</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="Module.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>
