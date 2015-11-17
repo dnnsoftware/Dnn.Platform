@@ -13,16 +13,16 @@
 
 -- make sure, the column size has been increased (just in case):
 DECLARE @MaxLen SmallInt = 0;
-SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = ObjectID({databaseOwner}[{objectQualifier}Tabs]) AND Name = 'IconFile'
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFile'
 IF @MaxLen > 0 AND @MaxLen < 255
   ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
 GO
 
 DECLARE @MaxLen SmallInt = 0;
-SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = ObjectID({databaseOwner}[{objectQualifier}Tabs]) AND Name = 'IconFileLarge'
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFileLarge'
 IF @MaxLen > 0 AND @MaxLen < 255
    ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
- GO
+GO
 
 IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]'))
   DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
