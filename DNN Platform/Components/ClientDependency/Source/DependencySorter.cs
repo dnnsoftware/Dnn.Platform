@@ -21,6 +21,11 @@ namespace ClientDependency.Core
             //by the way they were defined
             if (!files.Any()) return files;
 
+            // check if we need to manage frameworks
+            if (files.Any(f => f.Framework != ""))
+            {
+            }
+
             var firstPriority = files.First().Priority;
 
             if (files.Any(x => x.Priority != firstPriority))
