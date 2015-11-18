@@ -127,9 +127,9 @@ namespace DotNetNuke.Entities.Modules.Settings
                 if (attribute is PortalSettingAttribute)
                 {
                     settingValue = PortalController.GetPortalSetting(mapping.ParameterName, ctlModule.PortalID, null);
-                    if (string.IsNullOrWhiteSpace((string)settingValue) && (attribute.DefaultValue != null))
+                    if (string.IsNullOrWhiteSpace((string)settingValue))
                     {
-                        settingValue = attribute.DefaultValue;
+                        settingValue = null;
                     }
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.ParameterName))
@@ -140,11 +140,6 @@ namespace DotNetNuke.Entities.Modules.Settings
                 {
                     settingValue = ctlModule.ModuleSettings[mapping.ParameterName];
                 }
-                else if (attribute.DefaultValue != null)
-                {
-                    settingValue = attribute.DefaultValue;
-                }
-
                 if (settingValue != null && property.CanWrite)
                 {
                     this.WriteProperty(settings, property, settingValue);

@@ -7,8 +7,6 @@ namespace DotNetNuke.Entities.Modules.Settings
     /// </summary>
     public abstract class ParameterAttributeBase : Attribute
     {
-        public object DefaultValue { get; set; }
-
         public string ParameterName { get; set; }
     }
 }
