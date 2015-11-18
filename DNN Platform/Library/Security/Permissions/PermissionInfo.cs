@@ -72,9 +72,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissionid")]
         public int PermissionID { get; set; }

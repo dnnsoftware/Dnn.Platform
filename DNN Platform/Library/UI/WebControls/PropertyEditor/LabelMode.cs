@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.WebControls
     /// LabelMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
     /// to determine how the label is displayed.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	04/07/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum LabelMode
     {

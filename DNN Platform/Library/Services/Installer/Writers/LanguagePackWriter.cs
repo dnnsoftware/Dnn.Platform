@@ -42,9 +42,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/30/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
@@ -135,9 +132,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the associated Language
         /// </summary>
         /// <value>An Locale object</value>
-        /// <history>
-        /// 	[cnurse]	01/30/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Locale Language
         {
@@ -156,9 +150,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the associated Language Pack
         /// </summary>
         /// <value>An LanguagePackInfo object</value>
-        /// <history>
-        /// 	[cnurse]	05/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {

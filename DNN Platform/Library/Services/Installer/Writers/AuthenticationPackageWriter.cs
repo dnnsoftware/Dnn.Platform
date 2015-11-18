@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/30/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
@@ -65,9 +62,6 @@ namespace DotNetNuke.Services.Installer.Writers
 		/// Gets the associated Authentication System
 		/// </summary>
 		/// <value>An AuthenticationInfo object</value>
-		/// <history>
-		/// 	[cnurse]	01/30/2008  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
 		

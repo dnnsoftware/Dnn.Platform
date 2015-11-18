@@ -47,9 +47,6 @@ namespace DotNetNuke.Services.Installer
     /// <summary>
     /// The Installer class provides a single entrypoint for Package Installation
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Installer
     {

@@ -1112,9 +1112,6 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tabId">ID of the affected tab</param>
         /// <param name="settingName">Name of the setting to be deleted</param>
-        /// <history>
-        ///    [jlucarino] 2009-10-01 Created
-        /// </history>
         public void DeleteTabSetting(int tabId, string settingName)
         {
             Provider.DeleteTabSetting(tabId, settingName);
@@ -1131,9 +1128,6 @@ namespace DotNetNuke.Entities.Tabs
         /// Delete all Settings of a tab instance
         /// </summary>
         /// <param name="tabId">ID of the affected tab</param>
-        /// <history>
-        ///    [jlucarino] 2009-10-01 Created
-        /// </history>
         public void DeleteTabSettings(int tabId)
         {
             Provider.DeleteTabSettings(tabId);
@@ -1986,9 +1980,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="settingName">name of the setting property</param>
         /// <param name="settingValue">value of the setting (String).</param>
         /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
-        /// <history>
-        ///    [jlucarino] 2009-10-01 Created
-        /// </history>
         public void UpdateTabSetting(int tabId, string settingName, string settingValue)
         {
             UpdateTabSettingInternal(tabId, settingName, settingValue, true);
@@ -2149,14 +2140,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="hModules">Modules Hashtable.</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	03/09/2004	Created
-        /// 	[VMasanas]	15/10/2004	Modified for new skin structure
-        ///		[cnurse]	15/10/2004	Modified to allow for merging template
-        ///								with existing pages
-        ///     [cnurse]    10/02/2007  Moved from PortalController
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void DeserializePanes(XmlNode nodePanes, int portalId, int tabId,
                                             PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {

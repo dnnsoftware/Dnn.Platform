@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	05/29/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ProviderPackageWriter : PackageWriterBase
     {

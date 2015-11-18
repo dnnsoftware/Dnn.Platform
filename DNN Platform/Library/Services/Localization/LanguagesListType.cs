@@ -24,9 +24,6 @@ namespace DotNetNuke.Services.Localization
     /// <summary>
     /// Enumeration that determines the type of Languages List
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	2/19/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum LanguagesListType
     {

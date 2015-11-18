@@ -52,9 +52,6 @@ namespace DotNetNuke.Services.Exceptions
     /// 'add to a placeholder and place on page
     /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {

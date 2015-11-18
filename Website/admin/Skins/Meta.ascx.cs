@@ -29,11 +29,6 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>A skin object which enables adding a <c>meta</c> element to the <c>head</c></summary>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class Meta : SkinObjectBase
     {
         /// <summary>Backing field for <see cref="Http" /></summary>

@@ -49,10 +49,6 @@ namespace Dnn.Modules.SiteWizard
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	10/8/2004	created
-    ///     [cnurse]    12/04/2006  converted to use ASP.NET 2 Wizard classes
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class SiteWizard : PortalModuleBase
     {
@@ -78,9 +74,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindContainers()
         {
@@ -126,9 +119,6 @@ namespace Dnn.Modules.SiteWizard
         /// <param name="type">An enum indicating what type of containers to load</param>
         /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]"</param>
         /// <param name="strFolder">The folder to search for skins</param>
-        /// <history>
-        /// 	[cnurse]	12/14/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void GetContainers(ContainerType type, string skinType, string strFolder)
         {
@@ -160,9 +150,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/04/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void GetSkins()
         {
@@ -179,9 +166,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/04/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void GetTemplates()
         {
@@ -236,9 +220,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/04/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UseTemplate()
         {
@@ -258,9 +239,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/11/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -310,9 +288,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnIncludeAllCheckChanged(object sender, EventArgs e)
         {
@@ -325,9 +300,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/13/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnTemplateCheckChanged(object sender, EventArgs e)
         {
@@ -344,9 +316,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/04/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnTemplateSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -397,9 +366,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnWizardActiveStepChanged(object sender, EventArgs e)
         {
@@ -417,9 +383,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/12/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnWizardFinishedClick(object sender, WizardNavigationEventArgs e)
         {
@@ -472,9 +435,6 @@ namespace Dnn.Modules.SiteWizard
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnWizardNextClick(object sender, WizardNavigationEventArgs e)
         {

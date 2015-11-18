@@ -35,10 +35,6 @@ namespace DotNetNuke.UI.Containers.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
 	[ParseChildren(false)]
 	[PersistChildren(true)]

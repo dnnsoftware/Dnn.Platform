@@ -48,9 +48,6 @@ namespace DotNetNuke.Services.Messaging
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 6.2.0, please use DotNetNuke.Services.Social.Messaging.MessagingController")]
     public class MessagingController : IMessagingController
     {

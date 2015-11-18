@@ -60,11 +60,6 @@ namespace Dnn.Modules.LogViewer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse] 17/9/2004  Updated for localization, Help and 508. Also 
-    ///                       consolidated Send Exceptions into one set of 
-    ///                       controls
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LogViewer : PortalModuleBase, ILogViewer
     {

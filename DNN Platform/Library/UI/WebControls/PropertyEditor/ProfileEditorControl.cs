@@ -46,9 +46,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	05/04/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
@@ -59,9 +56,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// CreateEditor creates the control collection.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	05/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateEditor()
         {

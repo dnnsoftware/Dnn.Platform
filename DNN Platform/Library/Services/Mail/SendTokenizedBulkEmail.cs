@@ -54,10 +54,6 @@ namespace DotNetNuke.Services.Mail
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [sleupold]	8/15/2007	created to support tokens and localisation
-    ///     [sleupold]  9/09/2007   refactored interface for enhanced type safety
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {

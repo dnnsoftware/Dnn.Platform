@@ -97,9 +97,6 @@ namespace DotNetNuke.Services.Upgrade
     ///</summary>
     ///<remarks>
     ///</remarks>
-    ///<history>
-    ///  [cnurse]	11/6/2004	documented
-    ///</history>
     ///-----------------------------------------------------------------------------
     public class Upgrade
     {
@@ -154,9 +151,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
         ///	<param name="moduleTitle">The Module's title</param>
         ///	<param name="moduleIconFile">The Module's icon</param>
-        /// <history>
-        /// 	[cnurse]	11/16/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
@@ -230,9 +224,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="controlType">The type of control</param>
         ///	<param name="viewOrder">The vieworder for this module</param>
         ///	<param name="helpURL">The Help Url</param>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL)
         {
@@ -278,10 +269,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="premium">A flag representing whether the module is a Premium module</param>
         ///	<param name="admin">A flag representing whether the module is an Admin module</param>
         ///	<returns>The Module Definition Id of the new Module</returns>
-        /// <history>
-        /// 	[cnurse]	10/14/2004	documented
-        ///     [cnurse]    11/11/2004  removed addition of Module Control (now in AddMOduleControl)
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, bool premium, bool admin)
         {
@@ -304,10 +291,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="premium">A flag representing whether the module is a Premium module</param>
         ///	<param name="admin">A flag representing whether the module is an Admin module</param>
         ///	<returns>The Module Definition Id of the new Module</returns>
-        /// <history>
-        /// 	[cnurse]	10/14/2004	documented
-        ///     [cnurse]    11/11/2004  removed addition of Module Control (now in AddMOduleControl)
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, string businessControllerClass, bool isPortable, bool premium, bool admin)
         {
@@ -386,9 +369,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
         ///	<param name="moduleTitle">The Module's title</param>
         ///	<param name="moduleIconFile">The Module's icon</param>
-        /// <history>
-        /// 	[cnurse]	11/11/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
@@ -411,9 +391,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="isVisible">A flag indicating whether the tab is visible</param>
         ///	<param name="permissions">Page Permissions Collection for this page</param>
         /// <param name="isAdmin">Is an admin page</param>
-        /// <history>
-        /// 	[cnurse]	11/11/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static TabInfo AddPage(TabInfo parentTab, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
@@ -443,9 +420,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="isVisible">A flag indicating whether the tab is visible</param>
         ///	<param name="permissions">Page Permissions Collection for this page</param>
         /// <param name="isAdmin">Is and admin page</param>
-        /// <history>
-        /// 	[cnurse]	11/11/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static TabInfo AddPage(int portalId, int parentId, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
@@ -491,9 +465,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="permissions">Page Permissions Collection for this page</param>
         ///	<param name="key">The Permission key</param>
         ///	<param name="roleId">The role given the permission</param>
-        /// <history>
-        /// 	[cnurse]	11/11/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
         {
@@ -512,9 +483,6 @@ namespace DotNetNuke.Services.Upgrade
         /// AddSearchResults adds a top level Hidden Search Results Page
         /// </summary>
         ///	<param name="moduleDefId">The Module Deinition Id for the Search Results Module</param>
-        /// <history>
-        /// 	[cnurse]	11/11/2004	created 
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddSearchResults(int moduleDefId)
         {
@@ -550,9 +518,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="controlKey">The key for this control in the Definition</param>
         /// <param name="packageName">Package Name.</param>
         ///	<param name="controlSrc">Te source of ths control</param>
-        /// <history>
-        /// 	[cnurse]	05/26/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddSkinControl(string controlKey, string packageName, string controlSrc)
         {
@@ -737,9 +702,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///	<param name="desktopModuleName">The Friendly Name of the Module</param>
         ///	<returns>True if the Module exists, otherwise False</returns>
-        /// <history>
-        /// 	[cnurse]	10/14/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static bool CoreModuleExists(string desktopModuleName)
         {
@@ -814,9 +776,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///	<param name="scriptFile">The script to Execute</param>
         /// <param name="writeFeedback">Need to output feedback message.</param>
-        /// <history>
-        /// 	[cnurse]	11/09/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         internal static string ExecuteScript(string scriptFile, bool writeFeedback)
         {
@@ -876,9 +835,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="desktopModuleName">The Friendly Name of the Module to Add</param>
         ///	<param name="moduleDefinitionName">The Module Definition Name</param>
         ///	<returns>The Module Definition Id of the Module (-1 if no module definition)</returns>
-        /// <history>
-        /// 	[cnurse]	11/16/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static int GetModuleDefinition(string desktopModuleName, string moduleDefinitionName)
         {
@@ -908,9 +864,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///	<param name="tabName">The Name of the Tab</param>
         ///	<returns>True if the Tab exists, otherwise False</returns>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static bool HostTabExists(string tabName)
         {
@@ -935,9 +888,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///	<param name="providerPath">The Path to the Provider Directory</param>
         /// <param name="writeFeedback">Whether need to output feedback message.</param>
-        /// <history>
-        /// 	[cnurse]	02/02/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         internal static string InstallMemberRoleProvider(string providerPath, bool writeFeedback)
         {
@@ -989,9 +939,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="providerPath">The Path to the Provider Directory</param>
         ///	<param name="scriptFile">The Name of the Script File</param>
         ///	<param name="writeFeedback">Whether or not to echo results</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string InstallMemberRoleProviderScript(string providerPath, string scriptFile, bool writeFeedback)
         {
             if (writeFeedback)
@@ -1027,9 +974,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///	<param name="node">The Files node</param>
         ///	<param name="portalId">The PortalId (-1 for Host Files)</param>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void ParseFiles(XmlNode node, int portalId)
         {
@@ -1082,9 +1026,6 @@ namespace DotNetNuke.Services.Upgrade
         ///	<param name="tabName">The Name to tab that contains the Module</param>
         ///	<param name="removeTab">A flag to determine whether to remove the Tab if it has no
         ///	other modules</param>
-        /// <history>
-        /// 	[cnurse]	10/14/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void RemoveCoreModule(string desktopModuleName, string parentTabName, string tabName, bool removeTab)
         {
@@ -3574,9 +3515,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "moduleTitle">The Module's title</param>
         ///<param name = "moduleIconFile">The Module's icon</param>
         ///<param name = "inheritPermissions">Modules Inherit the Pages View Permisions</param>
-        ///<history>
-        ///  [cnurse]	11/11/2004	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
@@ -3605,9 +3543,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "tabIconFile">The Icon for this new Tab</param>
         ///<param name="tabIconFileLarge"></param>
         ///<param name = "isVisible">A flag indicating whether the tab is visible</param>
-        ///<history>
-        ///  [cnurse]	11/11/2004	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
@@ -3633,9 +3568,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "tabIconFile">The Icon for this new Tab</param>
         ///<param name="tabIconFileLarge"></param>
         ///<param name = "isVisible">A flag indicating whether the tab is visible</param>
-        ///<history>
-        ///  [cnurse]	11/11/2004	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
@@ -3662,9 +3594,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "iconFile">The icon file</param>
         ///<param name = "controlType">The type of control</param>
         ///<param name = "viewOrder">The vieworder for this module</param>
-        ///<history>
-        ///  [cnurse]	11/08/2004	documented
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder)
         {
@@ -3683,9 +3612,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "description">Description of the Module</param>
         ///<param name = "moduleDefinitionName">The Module Definition Name</param>
         ///<returns>The Module Definition Id of the new Module</returns>
-        ///<history>
-        ///  [cnurse]	10/14/2004	documented
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName)
         {
@@ -3704,9 +3630,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "moduleTitle">The Module's title</param>
         ///<param name = "moduleIconFile">The Module's icon</param>
         ///<param name = "inheritPermissions">Inherit the Pages View Permisions</param>
-        ///<history>
-        ///  [cnurse]	11/16/2004	created
-        ///</history>
         ///-----------------------------------------------------------------------------
 		public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
 		{
@@ -3808,9 +3731,6 @@ namespace DotNetNuke.Services.Upgrade
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	11/06/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddPortal(XmlNode node, bool status, int indent)
         {
@@ -4056,9 +3976,6 @@ namespace DotNetNuke.Services.Upgrade
         /// <summary>
         ///   CheckUpgrade checks whether there are any possible upgrade issues
         /// </summary>
-        /// <history>
-        ///   [cnurse]	04/11/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string CheckUpgrade()
         {
@@ -4139,9 +4056,6 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="providerPath">Path to provider</param>
         /// <param name = "version">The Version being Upgraded</param>
         /// <param name="writeFeedback">Display status in UI?</param>
-        /// <history>
-        ///   [swalker]	11/09/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DeleteFiles(string providerPath, Version version, bool writeFeedback)
         {
@@ -4248,9 +4162,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<remarks>
         ///</remarks>
         ///<param name = "strProviderPath">The path to the Data Provider</param>
-        ///<history>
-        ///  [cnurse]	05/04/2005	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void ExecuteScripts(string strProviderPath)
         {
@@ -4287,9 +4198,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<remarks>
         ///</remarks>
         ///<param name = "file">The script file to execute</param>
-        ///<history>
-        ///  [cnurse]	04/11/2006	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void ExecuteScript(string file)
         {
@@ -4308,9 +4216,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "xmlDoc">The Xml Document to load</param>
         ///<returns>A string which contains the error message - if appropriate</returns>
-        ///<history>
-        ///  [cnurse]	02/13/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string GetInstallTemplate(XmlDocument xmlDoc)
         {
@@ -4369,9 +4274,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<remarks>
         ///</remarks>
         ///<param name = "xmlDoc">The Install Template</param>
-        ///<history>
-        ///  [cnurse]	02/13/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static Version GetInstallVersion(XmlDocument xmlDoc)
         {
@@ -4395,9 +4297,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "providerPath">The path to the Data Provider</param>
         ///<param name = "version">The Version</param>
-        ///<history>
-        ///  [cnurse]	02/16/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string GetLogFile(string providerPath, Version version)
         {
@@ -4412,9 +4311,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "providerPath">The path to the Data Provider</param>
         ///<param name = "version">The Version</param>
-        ///<history>
-        ///  [cnurse]	02/16/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string GetScriptFile(string providerPath, Version version)
         {
@@ -4428,9 +4324,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<remarks>
         ///</remarks>
         ///<param name = "version">The Version</param>
-        ///<history>
-        ///  [cnurse]	02/15/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string GetStringVersion(Version version)
         {
@@ -4469,9 +4362,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "xmlTemplate">The install Templae</param>
         ///<param name = "writeFeedback">a flag to determine whether to output feedback</param>
-        ///<history>
-        ///  [cnurse]	02/16/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static UserInfo GetSuperUser(XmlDocument xmlTemplate, bool writeFeedback)
         {
@@ -4529,9 +4419,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "providerPath">The path to the Data Provider</param>
         ///<param name = "databaseVersion">The current Database Version</param>
-        ///<history>
-        ///  [cnurse]	02/14/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static ArrayList GetUpgradeScripts(string providerPath, Version databaseVersion)
         {
@@ -4611,9 +4498,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "xmlTemplate">The install Templae</param>
         ///<param name = "writeFeedback">a flag to determine whether to output feedback</param>
-        ///<history>
-        ///  [cnurse]	02/16/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void InitialiseHostSettings(XmlDocument xmlTemplate, bool writeFeedback)
         {
@@ -4693,9 +4577,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream</param>
         ///<param name="version"></param>
         ///<returns>A string which contains the error message - if appropriate</returns>
-        ///<history>
-        ///  [cnurse]	02/13/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string InstallDatabase(Version version, string providerPath, XmlDocument xmlDoc, bool writeFeedback)
         {
@@ -4733,9 +4614,6 @@ namespace DotNetNuke.Services.Upgrade
         ///<remarks>
         ///</remarks>
         ///<param name = "strProviderPath">The path to the Data Provider</param>
-        ///<history>
-        ///  [cnurse]	11/06/2004	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void InstallDNN(string strProviderPath)
         {
@@ -4847,9 +4725,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "xmlDoc">The Xml Document to load</param>
         ///<param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream</param>
-        ///<history>
-        ///  [cnurse]	02/19/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void InstallFiles(XmlDocument xmlDoc, bool writeFeedback)
         {
@@ -5207,10 +5082,6 @@ namespace DotNetNuke.Services.Upgrade
         ///  Since it is not version specific and is invoked whenever the application is
         ///  restarted, the operations must be re-executable.
         ///</remarks>
-        ///<history>
-        ///  [cnurse]	11/6/2004	documented
-        ///  [cnurse] 02/27/2007 made public so it can be called from Wizard
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void UpgradeApplication()
         {
@@ -5271,9 +5142,6 @@ namespace DotNetNuke.Services.Upgrade
         ///  should only happen once. Database references are not recommended because future
         ///  versions of the application may result in code incompatibilties.
         ///</remarks>
-        ///<history>
-        ///  [cnurse]	11/6/2004	documented
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {
@@ -5687,11 +5555,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "providerPath">The path to the Data Provider</param>
         ///<param name = "dataBaseVersion">The current Database Version</param>
-        ///<history>
-        ///  [cnurse]	11/06/2004	created (Upgrade code extracted from AutoUpgrade)
-        ///  [cnurse] 11/10/2004 version specific upgrades extracted to ExecuteScript
-        ///  [cnurse] 01/20/2005 changed to Public so Upgrade can be manually controlled
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static void UpgradeDNN(string providerPath, Version dataBaseVersion)
         {
@@ -5823,9 +5686,6 @@ namespace DotNetNuke.Services.Upgrade
         ///</remarks>
         ///<param name = "scriptFile">The upgrade script file</param>
         ///<param name="writeFeedback">Write status to Response Stream?</param>
-        ///<history>
-        ///  [cnurse]	02/14/2007	created
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback)
         {

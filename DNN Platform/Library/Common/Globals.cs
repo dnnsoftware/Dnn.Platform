@@ -865,9 +865,6 @@ namespace DotNetNuke.Common
         /// <param name="NumericValueColumn">Name of the column, that contains the field value, if stored as number. Column must be contained in DataReader</param>
         /// <param name="Culture">culture of the field values in data reader's string value column</param>
         /// <returns>The generated DataSet</returns>
-        /// <history>
-        /// 	[sleupold]     08/24/2006	Created temporary clone of core function and added support for culture based parsing of numeric values
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DataSet BuildCrossTabDataSet(string DataSetName, IDataReader result, string FixedColumns, string VariableColumns, string KeyColumn, string FieldColumn, string FieldTypeColumn,
                                                    string StringValueColumn, string NumericValueColumn, CultureInfo Culture)
@@ -1087,9 +1084,6 @@ namespace DotNetNuke.Common
         /// for this instance of DotNetNuke, and Id is the current PortalId for normal
         /// users or glbSuperUserAppName for SuperUsers.
         /// </remarks>
-        /// <history>
-        ///		[cnurse]	01/18/2005	documented and modifeid to handle a Prefix
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName()
         {
@@ -1120,9 +1114,6 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload is used to build the Application Name from the Portal Id
         /// </remarks>
-        /// <history>
-        ///		[cnurse]	01/18/2005	documented and modifeid to handle a Prefix
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName(int PortalID)
         {
@@ -1489,10 +1480,6 @@ namespace DotNetNuke.Common
         /// <param name="portalId">Portal Id.</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 16/9/2004  Updated for localization, Help and 508
-        ///   [Philip Beadle] 6 October 2004 Moved to Globals from WebUpload.ascx.vb so can be accessed by URLControl.ascx
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSubFolderPath(string strFileNamePath, int portalId)
         {
@@ -1516,9 +1503,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="dr">An <see cref="IDataReader"/> containing the Total no of records</param>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	02/01/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int GetTotalRecords(ref IDataReader dr)
         {
@@ -1545,9 +1529,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/12/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Replaced in DotNetNuke 6.0 by Globals.Status Property")]
         public static void GetStatus()
@@ -1572,10 +1553,6 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// </remarks>
         /// <returns>An UpgradeStatus enum Upgrade/Install/None</returns>
-        /// <history>
-        /// 	[cnurse]	10/11/2007	moved from PortalController so the same 
-        ///                             logic can be used by Module and Tab templates
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ImportFile(int PortalId, string url)
         {
@@ -1621,9 +1598,6 @@ namespace DotNetNuke.Common
         /// This overload takes a the PortalId
         /// </remarks>
         ///	<param name="PortalID">The Portal Id</param>
-        /// <history>
-        ///		[cnurse]	01/18/2005	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(int PortalID)
         {
@@ -1638,9 +1612,6 @@ namespace DotNetNuke.Common
         /// This overload takes a the PortalId
         /// </remarks>
         ///	<param name="ApplicationName">The Application Name to set</param>
-        /// <history>
-        ///		[cnurse]	01/18/2005	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string ApplicationName)
         {
@@ -1922,9 +1893,6 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	06/04/2009	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
@@ -1939,9 +1907,6 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	9/16/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
@@ -2032,9 +1997,6 @@ namespace DotNetNuke.Common
         /// <returns>HTML with paths for images and background corrected</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[sleupold]	8/18/2007	corrected and refactored
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ManageUploadDirectory(string strHTML, string strUploadDirectory)
         {
@@ -2053,11 +2015,6 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// called by ManageUploadDirectory for each token.
         /// </remarks>
-        /// <history>
-        /// 	[sleupold]	8/18/2007	created as refactoring of ManageUploadDirectory
-        ///                             added proper handling of subdirectory installations.
-        ///     [sleupold] 11/03/2007   case insensitivity added
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ManageTokenUploadDirectory(string strHTML, string strUploadDirectory, string strToken)
         {
@@ -2139,9 +2096,6 @@ namespace DotNetNuke.Common
         /// FindControlRecursive starts at the passed in control and walks the tree up.  Therefore, this function is 
         /// more a expensive task.
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	9/17/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Control FindControlRecursiveDown(Control objParent, string strControlName)
         {
@@ -2424,11 +2378,6 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// </remarks>
         /// <returns>A cleaned string</returns>
-        /// <history>
-        /// 	[cnurse]	10/11/2007	moved from Import/Export Module user controls to avoid 
-        ///                             duplication and for use in new Import and Export Tab
-        ///                             user controls
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string CleanName(string Name)
         {
@@ -2456,9 +2405,6 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// </remarks>
         /// <returns>A string suitable for use as a class value</returns>
-        /// <history>
-        ///   [jenni]	27/10/2010	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string CreateValidClass(string inputValue, bool validateFirstChar)
         {
@@ -2630,9 +2576,6 @@ namespace DotNetNuke.Common
         /// This overload assumes the current page
         /// </remarks>
         /// <returns>The formatted root url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ApplicationURL()
         {
@@ -2653,9 +2596,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="TabID">The id of the tab/page</param>
         /// <returns>The formatted root url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ApplicationURL(int TabID)
         {
@@ -2804,9 +2744,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="URL">The url</param>
         /// <returns>The url type</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static TabType GetURLType(string URL)
         {
@@ -2838,9 +2775,6 @@ namespace DotNetNuke.Common
         /// <param name="ModuleId">Integer</param>
         /// <param name="url">String</param>
         /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is</returns>
-        /// <history>
-        ///     [erikvb]    06/11/2008     corrected file check and added tab and member check
-        /// </history>
         public static string ImportUrl(int ModuleId, string url)
         {
             string strUrl = url;
@@ -3254,9 +3188,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="url">The url to format.</param>
         /// <returns>The formatted (resolved) url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ResolveUrl(string url)
         {
@@ -3568,10 +3499,6 @@ namespace DotNetNuke.Common
         /// <param name="parentId">The Id of the Parent Tab</param>
         /// <param name="tabName">The Name of the current Tab</param>
         /// <returns>The TabPath</returns>
-        /// <history>
-        ///		[cnurse]	1/28/2005	documented
-        ///                             modified to remove characters not allowed in urls
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GenerateTabPath(int parentId, string tabName)
         {
@@ -3717,9 +3644,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="Source">The String Source to deserialize</param>
         /// <returns>The deserialized Hashtable</returns>
-        /// <history>
-        ///		[cnurse]	2/16/2005	moved to Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Hashtable DeserializeHashTableBase64(string Source)
         {
@@ -3757,9 +3681,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="Source">The String Source to deserialize</param>
         /// <returns>The deserialized Hashtable</returns>
-        /// <history>
-        ///		[cnurse]	2/16/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Hashtable DeserializeHashTableXml(string Source)
         {
@@ -3776,9 +3697,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="Source">The Hashtable to serialize</param>
         /// <returns>The serialized String</returns>
-        /// <history>
-        ///		[cnurse]	2/16/2005	moved to Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SerializeHashTableBase64(Hashtable Source)
         {
@@ -3819,10 +3737,6 @@ namespace DotNetNuke.Common
         /// </remarks>
         /// <param name="Source">The Hashtable to serialize</param>
         /// <returns>The serialized String</returns>
-        /// <history>
-        ///		[cnurse]	2/16/2005	moved to Globals
-        ///     [cnurse]    01/19/2007  extracted to XmlUtils
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SerializeHashTableXml(Hashtable Source)
         {
@@ -4295,9 +4209,6 @@ namespace DotNetNuke.Common
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [Jon Henning]	9/16/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DotNetNuke 5.0")]
         public static bool IsTabPreview()

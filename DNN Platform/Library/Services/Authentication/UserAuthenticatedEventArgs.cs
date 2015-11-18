@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Authentication
     /// The UserAuthenticatedEventArgs class provides a custom EventArgs object for the
     /// UserAuthenticated event
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/10/2007  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserAuthenticatedEventArgs : EventArgs
     {

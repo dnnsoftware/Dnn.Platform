@@ -2855,9 +2855,6 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="pageSize">The size of the page</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
-        /// <history>
-        ///     [cnurse]	11/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
