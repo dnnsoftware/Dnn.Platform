@@ -24,6 +24,24 @@ namespace ClientDependency.Core
             // check if we need to manage frameworks
             if (files.Any(f => f.Framework != ""))
             {
+                var newList = files.Where(f => f.Framework == "").ToList();
+                var frameworks = files.Where(f => f.Framework != "").GroupBy(f => f.Framework);
+                foreach (var framework in frameworks)
+                {
+                    var topPriority = framework.First(f => f.RemoveFramework);
+                    if (topPriority != null)
+                    {
+                        if (topPriority.FilePath != "")
+                        {
+                            newList.Add(topPriority);
+                        }
+                    }
+                    else
+                    {
+                        newList.Add(framework.OrderByDescending(f => f.Version).First());
+                    }
+                }
+                files = newList;
             }
 
             var firstPriority = files.First().Priority;
@@ -44,7 +62,7 @@ namespace ClientDependency.Core
             //they are all the same so we can really just return the original list since it will already be in the 
             //order that they were added.
             return files;
-        } 
+        }
 
     }
 }
