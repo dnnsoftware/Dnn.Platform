@@ -61,10 +61,6 @@ namespace DotNetNuke.UI.Modules
     /// <summary>
     /// ModuleHost hosts a Module Control (or its cached Content).
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/15/2007  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public sealed class ModuleHost : Panel
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
@@ -88,10 +84,6 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
             ID = "ModuleContent";
@@ -111,10 +103,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets the attached ModuleControl
         /// </summary>
         /// <returns>An IModuleControl</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl
         {
             get
@@ -129,10 +117,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets the current POrtal Settings
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public PortalSettings PortalSettings
         {
             get
@@ -219,10 +203,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets a flag that indicates whether the Module Content should be displayed
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// [cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private bool DisplayContent()
         {
 			//module content visibility options
@@ -260,10 +240,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets a flag that indicates whether the Module is in View Mode
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
             bool viewMode;
@@ -286,10 +262,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// LoadModuleControl loads the ModuleControl (PortalModuelBase)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/15/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void LoadModuleControl()
         {
             try
@@ -375,10 +347,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// LoadUpdatePanel optionally loads an AJAX Update Panel
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/16/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void LoadUpdatePanel()
         {
 			//register AJAX
@@ -429,10 +397,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets a flag that indicates whether the Module Instance supports Caching
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private bool SupportsCaching()
         {
             return _moduleConfiguration.CacheTime > 0;
@@ -443,10 +407,6 @@ namespace DotNetNuke.UI.Modules
         /// Trys to load previously cached Module Content
         /// </summary>
         /// <returns>A Boolean that indicates whether the cahed content was loaded</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private bool TryLoadCached()
         {
             bool success = false;
@@ -533,10 +493,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// CreateChildControls builds the control tree
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
             Controls.Clear();
@@ -584,10 +540,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// RenderContents renders the contents of the control to the output stream
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (_isCached)

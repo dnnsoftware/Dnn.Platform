@@ -48,8 +48,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class CreateModuleDefinition : ModuleUserControlBase
     {
 
@@ -183,8 +181,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// <remarks>
 		/// Loads the cboSource control list with locations of controls.
 		/// </remarks>
-		/// <history>
-		/// </history>
 		private ModuleDefinitionInfo ImportControl(string controlSrc)
 		{
 			ModuleDefinitionInfo moduleDefinition = null;
@@ -484,9 +480,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	03/01/2006
-		/// </history>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -510,8 +503,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// </history>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);

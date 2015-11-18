@@ -41,11 +41,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[smcculloch]10/15/2004	Fixed Logoff Link for FriendlyUrls
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Login : SkinObjectBase
     {

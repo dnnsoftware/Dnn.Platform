@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/31/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageWriterFactory
     {
@@ -48,9 +45,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// The GetWriter method instantiates the relevant PackageWriter Installer
         /// </summary>
         /// <param name="package">The associated PackageInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static PackageWriterBase GetWriter(PackageInfo package)
         {

@@ -274,11 +274,6 @@ namespace DotNetNuke.Services.FileSystem
         ///   Fills a FolderInfo from a Data Reader
         /// </summary>
         /// <param name = "dr">The Data Reader to use</param>
-        /// <history>
-        ///   [cnurse]	07/14/2008   Documented
-        ///   [vnguyen]   30/04/2010   Modified: Added VersionGuid
-        ///   [frivola] 04/30/2013 Modified: Added WorkflowID
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -304,9 +299,6 @@ namespace DotNetNuke.Services.FileSystem
         ///   Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        ///   [cnurse]	07/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID

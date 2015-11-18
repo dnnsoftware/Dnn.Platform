@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/14/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class EditControlFactory
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.UI.WebControls
         /// TypeDataField
         /// </summary>
         /// <param name="editorInfo">An EditorInfo object</param>
-        /// <history>
-        ///     [cnurse]	03/06/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {

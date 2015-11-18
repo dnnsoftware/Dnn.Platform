@@ -1131,9 +1131,6 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "module"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   20110-05-10   Modified: Added update tabmodule versionguids
-        /// </history>
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType  = ContentType.Module;
@@ -1232,10 +1229,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="moduleId">ID of the affected module</param>
         /// <param name="settingName">Name of the setting to be deleted</param>
-        /// <history>
-        ///    [sleupold]   2007-09-24   documented
-        ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
-        /// </history>
         public void DeleteModuleSetting(int moduleId, string settingName)
         {
             dataProvider.DeleteModuleSetting(moduleId, settingName);

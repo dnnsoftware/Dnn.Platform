@@ -54,9 +54,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// ModuleInfo provides the Entity Layer for Modules
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
@@ -147,9 +144,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Associated Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public DesktopModuleInfo DesktopModule
@@ -167,9 +161,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Associated Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int DesktopModuleID { get; set; }
@@ -257,9 +248,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Associated Module Definition
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int ModuleDefID { get; set; }
@@ -269,9 +257,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Associated Module Definition
         /// </summary>
         /// <returns>A ModuleDefinitionInfo</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public ModuleDefinitionInfo ModuleDefinition
@@ -554,9 +539,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a ModuleInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -653,9 +635,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public override int KeyID

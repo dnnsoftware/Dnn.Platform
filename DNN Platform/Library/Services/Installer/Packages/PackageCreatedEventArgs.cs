@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Packages
     /// PackageCreatedEventArgs provides a custom EventArgs class for a
     /// Package Created Event.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	01/23/2008	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class PackageCreatedEventArgs : EventArgs
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// </summary>
         /// <param name="package">The package associated with this event</param>
         /// <remarks></remarks>
-        /// <history>
-        ///     [cnurse]	01/23/2008	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public PackageCreatedEventArgs(PackageInfo package)
         {
@@ -62,9 +56,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <summary>
         /// Gets the Package associated with this event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/23/2008	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public PackageInfo Package
         {

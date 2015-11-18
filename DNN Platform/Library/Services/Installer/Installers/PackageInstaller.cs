@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>
     /// The PackageInstaller class is an Installer for Packages
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/16/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageInstaller : ComponentInstallerBase
     {
@@ -60,9 +57,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// This Constructor creates a new PackageInstaller instance
         /// </summary>
         /// <param name="package">A PackageInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	01/21/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(PackageInfo package)
         {
@@ -97,9 +91,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="info">An InstallerInfo instance</param>
         /// <param name="packageManifest">The manifest as a string</param>
-        /// <history>
-        /// 	[cnurse]	01/16/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(string packageManifest, InstallerInfo info)
         {
@@ -127,9 +118,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// package
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DeleteFiles { get; set; }
 
@@ -138,9 +126,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets whether the Package is Valid
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	01/16/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 		
@@ -152,9 +137,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The CheckSecurity method checks whether the user has the appropriate security
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	09/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
@@ -181,9 +163,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadComponents method reads the components node of the manifest file.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/21/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadComponents(XPathNavigator manifestNav)
         {
@@ -245,9 +224,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method commits the package installation
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -282,9 +258,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the components of the package
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -348,9 +321,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file and parses it into components.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -554,9 +524,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Rollback method rolls back the package installation
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -588,9 +555,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Uninstall method uninstalls the components of the package
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

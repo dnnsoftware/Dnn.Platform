@@ -51,9 +51,6 @@ namespace DotNetNuke.Security.Roles
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/28/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DNNRoleProvider : RoleProvider
     {
@@ -223,9 +220,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="user">The user to add.</param>
         /// <param name="userRole">The role to add the user to.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool AddUserToRole(int portalId, UserInfo user, UserRoleInfo userRole)
         {
@@ -255,9 +249,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="userId">The Id of the User</param>
         /// <param name="roleId">The Id of the Role.</param>
         /// <returns>The UserRoleInfo object</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
@@ -289,9 +280,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="userName">The user to fetch roles for</param>
         /// <param name="roleName">The role to fetch users for</param>
         /// <returns>An ArrayList of UserRoleInfo objects</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUserRoles(int portalId, string userName, string roleName)
         {
@@ -306,9 +294,6 @@ namespace DotNetNuke.Security.Roles
         /// retrieved.</param>
         /// <param name="roleName">The role to fetch users for</param>
         /// <returns>An ArrayList of UserInfo objects</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUsersByRoleName(int portalId, string roleName)
         {
@@ -324,9 +309,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="portalId">Id of the portal</param>
         /// <param name="user">The user to remove.</param>
         /// <param name="userRole">The role to remove the user from.</param>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void RemoveUserFromRole(int portalId, UserInfo user, UserRoleInfo userRole)
         {
@@ -338,9 +320,6 @@ namespace DotNetNuke.Security.Roles
         /// Updates a User/Role
         /// </summary>
         /// <param name="userRole">The User/Role to update</param>
-        /// <history>
-        ///     [cnurse]	12/15/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UpdateUserRole(UserRoleInfo userRole)
         {
@@ -372,10 +351,6 @@ namespace DotNetNuke.Security.Roles
         /// </remarks>
         /// <param name="roleGroup">The RoleGroup to persist to the Data Store.</param>
         /// <returns>The Id of the new role.</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        ///     [jlucarino]	02/26/2009	added CreatedByUserID parameter
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
@@ -391,9 +366,6 @@ namespace DotNetNuke.Security.Roles
         /// DeleteRoleGroup deletes a RoleGroup from the Data Store
         /// </summary>
         /// <param name="roleGroup">The RoleGroup to delete from the Data Store.</param>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
@@ -408,9 +380,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="portalId">Id of the portal</param>
         /// <param name="roleGroupId">The Id of the RoleGroup to retrieve.</param>
         /// <returns>A RoleGroupInfo object</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
@@ -428,9 +397,6 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <returns>An ArrayList of RoleGroupInfo objects</returns>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoleGroups(int portalId)
         {
@@ -452,10 +418,6 @@ namespace DotNetNuke.Security.Roles
         /// Update a RoleGroup
         /// </summary>
         /// <param name="roleGroup">The RoleGroup to update</param>
-        /// <history>
-        ///     [cnurse]	03/28/2006	created
-        ///     [jlucarino]	02/26/2009	added LastModifiedByUserID parameter
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {

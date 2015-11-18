@@ -54,20 +54,11 @@ namespace DotNetNuke.UI.Containers
 {
     using Web.Client;
 
-    /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : Container
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Container is the base for the Containers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/04/2005	Documented
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class Container : UserControl
     {
 		#region Private Members
@@ -80,15 +71,10 @@ namespace DotNetNuke.UI.Containers
 
 		#region Protected Properties
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Content Pane Control (Id="ContentPane")
         /// </summary>
         /// <returns>An HtmlContainerControl</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected HtmlContainerControl ContentPane
         {
             get
@@ -102,10 +88,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Portal Settings for the current Portal
         /// </summary>
         /// <returns>A PortalSettings object</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
         {
             get
@@ -123,10 +105,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ModuleControl object that this container is displaying
         /// </summary>
         /// <returns>A ModuleHost object</returns>
-        /// <history>
-        /// 	[cnurse]	01/12/2009  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl
         {
             get
@@ -145,10 +123,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleInfo object that this container is displaying
         /// </summary>
         /// <returns>A ModuleInfo object</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get
@@ -162,10 +136,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ModuleHost object that this container is displaying
         /// </summary>
         /// <returns>A ModuleHost object</returns>
-        /// <history>
-        /// 	[cnurse]	01/12/2009  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ModuleHost ModuleHost
         {
             get
@@ -179,10 +149,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Parent Container for this container
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public Skins.Skin ParentSkin
         {
             get
@@ -197,10 +163,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Path for this container
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string ContainerPath
         {
             get
@@ -214,10 +176,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Source for this container
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	06/10/2009  documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string ContainerSrc { get; set; }
 
         [Obsolete("Deprecated in 5.1. Replaced by ContainerPath")]
@@ -247,10 +205,6 @@ namespace DotNetNuke.UI.Containers
         /// and an EventHandler to respond to the Actions Action event.  If the control is a
         /// Container Object (IContainerControl) it attaches the ModuleControl.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProcessChildControls(Control control)
         {
             IActionControl actions;
@@ -291,10 +245,6 @@ namespace DotNetNuke.UI.Containers
         /// ProcessContentPane processes the ContentPane, setting its style and other
         /// attributes.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProcessContentPane()
         {
             SetAlignment();
@@ -345,10 +295,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ProcessFooter adds an optional footer (and an End_Module comment)..
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProcessFooter()
         {
 			//inject the footer
@@ -369,10 +315,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ProcessHeader adds an optional header (and a Start_Module_ comment)..
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProcessHeader()
         {
             if (!Globals.IsAdminControl())
@@ -393,10 +335,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ProcessModule processes the module which is attached to this container
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProcessModule()
         {
             if (ContentPane != null)
@@ -440,11 +378,6 @@ namespace DotNetNuke.UI.Containers
 		/// ProcessStylesheets processes the Module and Container stylesheets and adds
 		/// them to the Page.
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	12/05/2007	Created
-		/// </history>
-		/// -----------------------------------------------------------------------------
-
         private void ProcessStylesheets(bool includeModuleCss)
         {
             ClientResourceManager.RegisterStyleSheet(Page, ContainerPath + "container.css", FileOrder.Css.ContainerCss);
@@ -519,12 +452,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnInit runs when the Container is initialised.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/04/2005	Documented
-        ///     [cnurse]    12/05/2007  Refactored
-        ///     [cnurse]    04/17/2009  Refactored to use ContainerAdapter
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -535,11 +462,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnLoad runs when the Container is loaded.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
+       protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -551,10 +474,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnLoad runs just before the Container is rendered.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -566,10 +485,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnUnLoad runs when the Container is unloaded.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);
@@ -615,11 +530,6 @@ namespace DotNetNuke.UI.Containers
         /// Note: with the refactoring of this to the Container, this could be handled at the container level.
         /// However, for legacy purposes this is left this way, as many modules would have registered their
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
-        /// <history>
-        /// 	[cnurse]	07/04/2005	Documented
-        ///     [cnurse]    12/05/2007  Moved from Container.vb
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ModuleActionClick(object sender, ActionEventArgs e)
         {
 			//Search through the listeners

@@ -50,10 +50,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// <summary>
     /// Supplies the functionality for creating Extension packages
     /// </summary>
-    /// <history>
-    ///     [cnurse]   01/31/2008    Created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class PackageWriter : ModuleUserControlBase
     {
 		#region "Members"
@@ -98,10 +94,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets the Return Url
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/31/2007    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string ReturnURL
         {
             get
@@ -123,10 +115,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine checks the Access Security
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
             if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
@@ -294,10 +282,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   01/31/2008    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -320,10 +304,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   01/31/2008    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -497,10 +477,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   02/01/2008    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void wizPackage_CancelButtonClick(object sender, EventArgs e)
         {
             try
@@ -520,10 +496,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   02/01/2008    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void wizPackage_FinishButtonClick(object sender, WizardNavigationEventArgs e)
         {
             try
@@ -544,10 +516,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   01/31/2008    Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void wizPackage_NextButtonClick(object sender, WizardNavigationEventArgs e)
         {
             switch (e.CurrentStepIndex)

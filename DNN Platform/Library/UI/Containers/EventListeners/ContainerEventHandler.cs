@@ -25,9 +25,6 @@ namespace DotNetNuke.UI.Containers.EventListeners
     /// The ContainerEventHandler delegate defines a custom event handler for a Container
     /// Event.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	05/19/2009	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public delegate void ContainerEventHandler(object sender, ContainerEventArgs e);
 }

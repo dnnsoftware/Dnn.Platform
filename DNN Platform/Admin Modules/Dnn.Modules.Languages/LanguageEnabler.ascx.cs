@@ -58,9 +58,6 @@ namespace Dnn.Modules.Languages
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [erikvb]    20100224  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LanguageEnabler : PortalModuleBase
     {

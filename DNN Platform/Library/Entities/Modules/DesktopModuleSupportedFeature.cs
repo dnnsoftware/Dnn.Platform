@@ -32,9 +32,6 @@ namespace DotNetNuke.Entities.Modules
     /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported
     /// Features
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Flags]
     public enum DesktopModuleSupportedFeature

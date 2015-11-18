@@ -13,9 +13,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public interface IInstallController
     {
         bool IsValidSqlServerVersion(string connectionString);

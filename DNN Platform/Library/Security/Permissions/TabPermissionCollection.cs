@@ -41,9 +41,6 @@ namespace DotNetNuke.Security.Permissions
     /// TabPermissionCollection provides the a custom collection for TabPermissionInfo
     /// objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("tabpermissions")]

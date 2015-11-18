@@ -44,9 +44,6 @@ namespace DotNetNuke.Services.Analytics
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [vnguyen]   10/08/2010   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class GoogleAnalyticsController
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Services.Analytics
         /// <param name = "Version"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   10/08/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpgradeModule(string Version)
         {
@@ -104,9 +98,6 @@ namespace DotNetNuke.Services.Analytics
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   10/08/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private StreamReader GetConfigFile()
         {

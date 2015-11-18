@@ -43,9 +43,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/16/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class HtmlUtils
     {
@@ -74,10 +71,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The Html to clean</param>
         /// <param name="RemovePunctuation">A flag indicating whether to remove punctuation</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        ///     [galatrash] 05/31/2013  added fix for double html-encoding
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string Clean(string HTML, bool RemovePunctuation)
         {
@@ -120,9 +113,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The cleaned up string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   09/02/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -156,9 +146,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="Email">The email address to format</param>
         /// <returns>The formatted email address</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email)
         {
@@ -172,9 +159,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="Email">The email address to format</param>
         /// <param name="cloak">A flag that indicates whether the text should be cloaked</param>
         /// <returns>The formatted email address</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email, bool cloak)
         {
@@ -206,9 +190,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Whether ratain Space</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	12/13/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatText(string HTML, bool RetainSpace)
         {
@@ -224,9 +205,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name = "strText">Text to format</param>
         /// <returns>The formatted html</returns>
-        /// <history>
-        ///   [cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
@@ -251,9 +229,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name = "strHtml">Html to format</param>
         /// <returns>The formatted text</returns>
-        /// <history>
-        ///   [cnurse]	12/13/2004	Documented and modified to use HtmlUtils methods
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ConvertToText(string strHtml)
         {
@@ -279,9 +254,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="Website">The domain name to format</param>
         /// <returns>The formatted domain name</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatWebsite(object Website)
         {
@@ -314,9 +286,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="length">The max number of characters to return</param>
         /// <param name="suffix">An optional suffic to append to the shortened string</param>
         /// <returns>The shortened string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string Shorten(string txt, int length, string suffix)
         {
@@ -337,9 +306,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Entity by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode")]
         public static string StripEntities(string HTML, bool RetainSpace)
@@ -368,9 +334,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Tag by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
@@ -390,9 +353,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The cleaned up string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   09/02/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {
@@ -439,9 +399,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Punctuation by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripPunctuation(string HTML, bool RetainSpace)
         {
@@ -485,9 +442,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the WhiteSpace by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	12/13/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
@@ -506,9 +460,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Non-Word Character by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	1/28/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
@@ -545,9 +496,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="file">The filename where the Error Occurred</param>
         /// <param name="message">The error message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteError(HttpResponse response, string file, string message)
         {
@@ -569,10 +517,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="indent">The indent for this feedback message</param>
         /// <param name="message">The feedback message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        ///     [gve] 	    07/14/2006	added extra overload (showtime) to show or hide the upgrade runtime
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message)
         {
@@ -589,10 +533,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="indent">The indent for this feedback message</param>
         /// <param name="message">The feedback message</param>
         /// <param name="showtime">Show the timespan before the message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        ///     [gve] 	    07/14/2006	added extra overload (showtime) to show or hide the upgrade runtime
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
         {
@@ -645,9 +585,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// </remarks>
         /// <param name="response">The ASP.Net Response object</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFooter(HttpResponse response)
         {
@@ -664,9 +601,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="mode">The mode Install/Upgrade etc</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteHeader(HttpResponse response, string mode)
         {

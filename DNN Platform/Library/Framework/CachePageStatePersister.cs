@@ -40,9 +40,6 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// CachePageStatePersister provides a cache based page state peristence mechanism
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CachePageStatePersister : PageStatePersister
     {
@@ -52,9 +49,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the CachePageStatePersister
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CachePageStatePersister(Page page) : base(page)
         {
@@ -64,9 +58,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Loads the Page State from the Cache
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Load()
         {
@@ -96,9 +87,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Saves the Page State to the Cache
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Save()
         {

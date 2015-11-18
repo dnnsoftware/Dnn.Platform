@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/18/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DualListBoxEventArgs : EventArgs
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.UI.WebControls
         /// Constructs a new DualListBoxEventArgs
         /// </summary>
         /// <param name="items">The items</param>
-        /// <history>
-        ///     [cnurse]	02/18/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DualListBoxEventArgs(List<string> items)
         {
@@ -63,9 +57,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Items
         /// </summary>
         /// <value>A List(Of String)</value>
-        /// <history>
-        ///     [cnurse]	02/18/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public List<string> Items { get; set; }
     }

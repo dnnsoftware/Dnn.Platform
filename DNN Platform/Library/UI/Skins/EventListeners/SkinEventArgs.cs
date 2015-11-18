@@ -31,9 +31,6 @@ namespace DotNetNuke.UI.Skins.EventListeners
     /// SkinEventArgs provides a custom EventARgs class for Skin Events
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    ///     [cnurse]	05/19/2009	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class SkinEventArgs : EventArgs
     {

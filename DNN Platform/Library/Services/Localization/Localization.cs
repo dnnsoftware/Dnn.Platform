@@ -214,9 +214,6 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/20/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool ShowMissingKeys
         {
@@ -1110,9 +1107,6 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="key">The resource key to find</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key)
         {
@@ -1127,9 +1121,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find</param>
         /// <param name="portalSettings">The current portals Portal Settings</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, PortalSettings portalSettings)
         {
@@ -1145,9 +1136,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root</param>
         /// <param name="disableShowMissingKeys">Disable to show missing key.</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
@@ -1162,9 +1150,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find</param>
         /// <param name="resourceFileRoot">The Resource File Name.</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot)
         {
@@ -1180,9 +1165,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root</param>
         /// <param name="language">A specific language to lookup the string</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, string language)
         {
@@ -1199,9 +1181,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portals Portal Settings</param>
         /// <param name="language">A specific language to lookup the string</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language)
         {
@@ -1219,11 +1198,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="language">A specific language to lookup the string</param>
         /// <param name="disableShowMissingKeys">Disables the show missing keys flag</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        ///     [cnurse]    01/30/2008  Refactored to use Dictionaries and to cahe the portal and host 
-        ///                             customisations and language versions separately
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language, bool disableShowMissingKeys)
         {
@@ -1306,9 +1280,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName)
         {
@@ -1333,9 +1304,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
@@ -1361,9 +1329,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
@@ -1389,9 +1354,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile)
         {
@@ -1418,9 +1380,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile)
         {
@@ -1441,11 +1400,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile, ArrayList custom)
         {
@@ -1467,11 +1421,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
@@ -1494,11 +1443,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
@@ -1523,11 +1467,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom, string customCaption,
                                               int accessingUserID)
@@ -1554,9 +1493,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    09/09/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList customArray,
                                               IDictionary customDictionary, string customCaption, int accessingUserID)
@@ -1756,9 +1692,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="grid">Grid to localize</param>
         /// <param name="resourceFile">The root name of the Resource File where the localized
         ///   text can be found</param>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LocalizeDataGrid(ref DataGrid grid, string resourceFile)
         {
@@ -1859,9 +1792,6 @@ namespace DotNetNuke.Services.Localization
         /// -DesktopTabs
         /// -BreadCrumbs
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/01/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string LocalizeRole(string role)
         {

@@ -67,9 +67,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
         /// </summary>
         /// <param name="xmlTemplate">Reference to XmlDocument context</param>
         /// <param name="nodeTabs">Node to add the serialized objects</param>
-        /// <history>
-        /// 	[cnurse]	10/02/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {

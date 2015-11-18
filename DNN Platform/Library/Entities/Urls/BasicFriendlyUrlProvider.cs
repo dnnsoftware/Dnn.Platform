@@ -86,10 +86,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page name.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
@@ -123,10 +119,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalAlias">The portal alias of the site.</param>
         /// <param name="isPagePath">Whether is a relative page path.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string GetFriendlyAlias(string path, string portalAlias, bool isPagePath)
         {
             string friendlyPath = path;
@@ -209,11 +201,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The Page name.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        ///		[smcculloch]10/10/2005	Regex update for rewritten characters
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string GetFriendlyQueryString(TabInfo tab, string path, string pageName)
         {
             string friendlyPath = path;

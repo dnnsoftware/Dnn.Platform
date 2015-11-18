@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class ComponentInstallerBase
     {
@@ -55,9 +52,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual string AllowableFiles
         {
@@ -72,9 +66,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Completed flag
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Completed { get; set; }
 
@@ -83,9 +74,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the InstallMode
         /// </summary>
         /// <value>An InstallMode value</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -100,9 +88,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Logger
         /// </summary>
         /// <value>An Logger object</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -117,9 +102,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the associated Package
         /// </summary>
         /// <value>An PackageInfo object</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package { get; set; }
 
@@ -128,9 +110,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a Dictionary of Files that are included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> PackageFiles
         {
@@ -145,9 +124,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PhysicalSitePath
         {
@@ -238,9 +214,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets whether the Installer supports Manifest only installs
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool SupportsManifestOnlyInstall
         {
@@ -255,9 +228,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets and sets the Type of the component
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Type { get; set; }
 
@@ -266,9 +236,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Version of the Component
         /// </summary>
         /// <value>A System.Version</value>
-        /// <history>
-        /// 	[cnurse]	02/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 

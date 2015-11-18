@@ -30,9 +30,6 @@ namespace DotNetNuke.Modules.Html.Components
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class DataProvider
     {
         #region Shared/Static Methods

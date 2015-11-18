@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge
     /// </summary>
-    /// <history>
-    ///     [cnurse]	03/16/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CaptchaHandler : IHttpHandler
     {

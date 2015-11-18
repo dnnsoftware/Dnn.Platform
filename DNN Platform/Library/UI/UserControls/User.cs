@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.UserControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/21/2005	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
@@ -264,9 +261,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {

@@ -54,9 +54,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [vnguyen]   05/27/2013 
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProvider
     {

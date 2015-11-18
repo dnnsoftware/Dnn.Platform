@@ -38,9 +38,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	01/03/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserRoleInfo : RoleInfo

@@ -51,9 +51,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// <summary>
     /// The ModuleEditor ModuleUserControlBase is used to edit Module Definitions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	02/04/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ModuleEditor : PackageEditorBase
     {
@@ -184,9 +181,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine Binds the DesktopModule
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/04/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindDesktopModule(bool refreshDefinitions)
         {

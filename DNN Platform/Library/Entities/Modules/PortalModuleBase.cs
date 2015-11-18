@@ -55,15 +55,6 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	09/17/2004	Added Documentation
-    ///								Modified LocalResourceFile to be Writeable
-    ///		[cnurse]	10/21/2004	Modified Settings property to get both
-    ///								TabModuleSettings and ModuleSettings
-    ///     [cnurse]    12/15/2007  Refactored to support the new IModuleControl
-    ///                             Interface
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
         protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)\.resx", RegexOptions.Compiled);
@@ -101,9 +92,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 01/19/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool EditMode
         {
@@ -234,9 +222,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the underlying base control for this ModuleControl
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/17/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Control Control
         {
@@ -251,9 +236,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Path for this control (used primarily for UserControls)
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlPath
         {
@@ -268,9 +250,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Name for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlName
         {
@@ -285,9 +264,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the local resource file for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -315,9 +291,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Module Context for this control
         /// </summary>
         /// <returns>A ModuleInstanceContext</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
@@ -376,9 +349,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 17/9/2004  Added Documentation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void AddActionHandler(ActionEventHandler e)
         {
@@ -415,9 +385,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 04/28/2005  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Plaese use ModuleController.CacheDirectory()")]
         public string CacheDirectory
@@ -435,9 +402,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 04/28/2005  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID)")]
         public string CacheFileName
