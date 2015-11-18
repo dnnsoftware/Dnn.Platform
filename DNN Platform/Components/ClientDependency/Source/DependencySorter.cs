@@ -16,7 +16,7 @@ namespace ClientDependency.Core
             if (dependencies.Any(f => f.Name != ""))
             {
                 var newList = dependencies.Where(f => f.Name == "").ToList();
-                var frameworks = dependencies.Where(f => f.Name != "").GroupBy(f => f.Name);
+                var frameworks = dependencies.Where(f => f.Name != "").GroupBy(f => f.Name.ToLower());
                 foreach (var framework in frameworks)
                 {
                     newList.Add(framework.OrderByDescending(f => f.Version).First());
