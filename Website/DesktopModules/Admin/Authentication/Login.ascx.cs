@@ -1006,7 +1006,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				}
 				else //make module container invisible if user is not a page admin
 				{
-                    if (RedirectURL.Split('?')[0] != Globals.NavigateURL(PortalSettings.HomeTabId))
+                    var path = RedirectURL.Split('?')[0];
+                    if (path != Globals.NavigateURL() && path != Globals.NavigateURL(PortalSettings.HomeTabId))
                     {
                         Response.Redirect(RedirectURL, true);
                     }
