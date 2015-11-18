@@ -28,7 +28,7 @@ namespace ClientDependency.Core
                 var frameworks = files.Where(f => f.Framework != "").GroupBy(f => f.Framework);
                 foreach (var framework in frameworks)
                 {
-                    var topPriority = framework.First(f => f.RemoveFramework);
+                    var topPriority = framework.FirstOrDefault(f => f.RemoveFramework);
                     if (topPriority != null)
                     {
                         if (topPriority.FilePath != "")
