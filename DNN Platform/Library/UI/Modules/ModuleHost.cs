@@ -30,8 +30,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -45,8 +43,11 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Telerik.Web.UI;
+using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -350,6 +351,27 @@ namespace DotNetNuke.UI.Modules
             _control.ViewStateMode = ViewStateMode.Enabled;
         }
 
+        private void LoadAjaxPanel()
+        {
+            // Reference dnn.js to add attachEvent/detachEvent functions in IE11 to fix Telerik (see DNN-6167)
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+
+            var loadingPanel = new RadAjaxLoadingPanel { ID = _control.ID + "_Prog", Skin = "Default" };
+
+            Controls.Add(loadingPanel);
+
+            var ajaxPanel = new RadAjaxPanel
+            {
+                ID = _control.ID + "_UP",
+                LoadingPanelID = loadingPanel.ID,
+                RestoreOriginalRenderDelegate = false
+            };
+            InjectMessageControl(ajaxPanel);
+            ajaxPanel.Controls.Add(_control);
+
+            Controls.Add(ajaxPanel);
+        }
+
         /// <summary>
         /// LoadUpdatePanel optionally loads an AJAX Update Panel
         /// </summary>
@@ -528,7 +550,7 @@ namespace DotNetNuke.UI.Modules
                 //if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
                 if (!_isCached && _moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
                 {
-                    LoadUpdatePanel();
+                    LoadAjaxPanel();
                 }
                 else
                 {

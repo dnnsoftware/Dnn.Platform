@@ -59,43 +59,27 @@ namespace DotNetNuke.UI.WebControls
 
             if (editorInfo.Editor == "UseSystemType")
             {
-                Type type = Type.GetType(editorInfo.Type);
                 //Use System Type
-
-                switch (type.FullName)
-                {
-                    case "System.DateTime":
-                        propEditor = new DateTimeEditControl();
-                        break;
-                    case "System.Boolean":
-                        propEditor = new CheckEditControl();
-                        break;
-                    case "System.Int32":
-                    case "System.Int16":
-                        propEditor = new IntegerEditControl();
-                        break;
-                    default:
-                        if (type.IsEnum)
-                        {
-                            propEditor = new EnumEditControl(editorInfo.Type);
-                        }
-                        else
-                        {
-                            propEditor = new TextEditControl(editorInfo.Type);
-                        }
-                        break;
-                }
+                propEditor = CreateEditControlInternal(editorInfo.Type);
             }
             else
             {
-				//Use Editor
-                Type editType = Type.GetType(editorInfo.Editor, true, true);
-                propEditor = (EditControl) Activator.CreateInstance(editType);
+                //Use Editor
+                try
+                {
+                    Type editType = Type.GetType(editorInfo.Editor, true, true);
+                    propEditor = (EditControl)Activator.CreateInstance(editType);
+                }
+                catch (TypeLoadException)
+                {
+                    //Use System Type
+                    propEditor = CreateEditControlInternal(editorInfo.Type);
+                }
             }
             propEditor.ID = editorInfo.Name;
             propEditor.Name = editorInfo.Name;
             propEditor.DataField = editorInfo.Name;
-			propEditor.Category = editorInfo.Category;
+            propEditor.Category = editorInfo.Category;
 
             propEditor.EditMode = editorInfo.EditMode;
             propEditor.Required = editorInfo.Required;
@@ -107,5 +91,36 @@ namespace DotNetNuke.UI.WebControls
 
             return propEditor;
         }
+
+        private static EditControl CreateEditControlInternal(string systemType)
+        {
+            Type type = Type.GetType(systemType);
+            EditControl propEditor;
+            switch (type.FullName)
+            {
+                case "System.DateTime":
+                    propEditor = new DateTimeEditControl();
+                    break;
+                case "System.Boolean":
+                    propEditor = new CheckEditControl();
+                    break;
+                case "System.Int32":
+                case "System.Int16":
+                    propEditor = new IntegerEditControl();
+                    break;
+                default:
+                    if (type.IsEnum)
+                    {
+                        propEditor = new EnumEditControl(systemType);
+                    }
+                    else
+                    {
+                        propEditor = new TextEditControl(systemType);
+                    }
+                    break;
+            }
+            return propEditor;
+        }
     }
 }
+

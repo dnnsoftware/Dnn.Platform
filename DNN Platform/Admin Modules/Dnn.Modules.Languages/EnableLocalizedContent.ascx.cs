@@ -101,6 +101,12 @@ namespace Dnn.Modules.Languages
             }
         }
 
+        private void KeepConnectionAlive()
+        {
+            Response.Write(' ');
+            Response.Flush();
+        }
+
         private void ProcessLanguage(IEnumerable<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
         {
             RadProgressContext progress = RadProgressContext.Current;
@@ -151,6 +157,11 @@ namespace Dnn.Modules.Languages
                 {
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
+
+                if (i % 10 == 0)
+                {
+                    KeepConnectionAlive();
+                }
             }
         }
 
@@ -182,10 +193,6 @@ namespace Dnn.Modules.Languages
             //Set AJAX timeout to 1 hr for large sites
             AJAX.GetScriptManager(Page).AsyncPostBackTimeout = timeout;
 
-            // Azure Load Balancer silently dropping idle connections after 4 minutes.
-            // call ServicePointManager.SetTcpKeepAlive to make the Azure Load balancer doesn't kill the TCP connection
-            ServicePointManager.SetTcpKeepAlive(true, timeout * 1000, 1000);
-
             _PortalDefault = PortalSettings.DefaultLanguage;
             defaultLanguageLabel.Language = PortalSettings.DefaultLanguage;
             defaultLanguageLabel.Visible = true;
@@ -214,6 +221,10 @@ namespace Dnn.Modules.Languages
 
         protected void updateButton_Click(object sender, EventArgs e)
         {
+            // Set RedirectLocation header before make any Write/Flush to keep connection alive
+            // This prevents "Cannot redirect after HTTP headers have been sent" error
+            Response.RedirectLocation = Globals.NavigateURL();
+
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
 
             var pageList = GetPages(PortalId);
@@ -254,7 +265,7 @@ namespace Dnn.Modules.Languages
             //clear portal cache
             DataCache.ClearPortalCache(PortalId, true);
             //'Redirect to refresh page (and skinobjects)
-            Response.Redirect(Globals.NavigateURL(), true);
+            Response.End();
         }
 
         #endregion
