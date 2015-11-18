@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            byte[] hash = await ComputeHash(req.Content);
+            byte[] hash = ComputeHash(req.Content);
 
             if (hash != null)
             {
@@ -163,12 +163,12 @@ namespace DotNetNuke.Web.Api
             return false;
         }
 
-        private static async Task<byte[]> ComputeHash(HttpContent httpContent)
+        private static byte[] ComputeHash(HttpContent httpContent)
         {
             using (MD5 md5 = MD5.Create())
             {
                 byte[] hash = null;
-                var content = await httpContent.ReadAsByteArrayAsync();
+                var content = httpContent.ReadAsByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 if (content.Length != 0)
                 {
                     hash = md5.ComputeHash(content);
