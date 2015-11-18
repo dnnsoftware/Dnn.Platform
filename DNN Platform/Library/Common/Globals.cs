@@ -2913,29 +2913,35 @@ namespace DotNetNuke.Common
             {
                 returnURL = String.Format("returnurl={0}", returnURL);
             }
+            var popUpParameter = "";
+            if (HttpUtility.UrlDecode(returnURL).Contains("popUp=true"))
+            {
+                popUpParameter = "popUp=true";
+            }
+
             if (portalSettings.LoginTabId != -1 && !@override)
             {
                 if (ValidateLoginTabID(portalSettings.LoginTabId))
                 {
                     strURL = string.IsNullOrEmpty(returnURL)
-                                        ? NavigateURL(portalSettings.LoginTabId, "")
-                                        : NavigateURL(portalSettings.LoginTabId, "", returnURL);
+                                        ? NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
+                                        : NavigateURL(portalSettings.LoginTabId, "", returnURL, popUpParameter);
                 }
                 else
                 {
                     string strMessage = String.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
                     //No account module so use portal tab
                     strURL = string.IsNullOrEmpty(returnURL)
-                                 ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage)
-                                 : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL, strMessage);
+                                 ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
+                                 : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL, strMessage, popUpParameter);
                 }
             }
             else
             {
                 //portal tab
                 strURL = string.IsNullOrEmpty(returnURL)
-                                ? NavigateURL(portalSettings.ActiveTab.TabID, "Login")
-                                : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL);
+                                ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
+                                : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL, popUpParameter);
             }
             return strURL;
         }
