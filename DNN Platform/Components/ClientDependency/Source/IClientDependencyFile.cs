@@ -13,9 +13,8 @@ namespace ClientDependency.Core
         string PathNameAlias { get; set; }
         string ForceProvider { get; set; }
         bool ForceBundle { get; set; }
-        string Framework { get; set; }
+        string Name { get; set; }
         string Version { get; set; }
-        bool RemoveFramework { get; set; }
 
     }
 }

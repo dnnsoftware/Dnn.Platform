@@ -18,9 +18,8 @@ namespace ClientDependency.Core
 		    HtmlAttributes = new Dictionary<string, string>();
 		    Priority = Constants.DefaultPriority;
 		    Group = Constants.DefaultGroup;
-            Framework = "";
+            Name = "";
             Version = "";
-            RemoveFramework = false;
         }
 
         #region IClientDependencyFile Members
@@ -47,20 +46,13 @@ namespace ClientDependency.Core
         /// <summary>
         /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
         /// </summary>
-        public string Framework { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Version of this resource if it is a framework
         /// Note this field is only used when Framework is specified
         /// </summary>
         public string Version { get; set; }
-
-        /// <summary>
-        /// If set then the versions of any other resources with the same framework name will be removed
-        /// If no resource
-        /// Note this field is only used when Framework is specified
-        /// </summary>
-        public bool RemoveFramework { get; set; }
 
         #endregion
 

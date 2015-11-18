@@ -10,6 +10,22 @@ namespace ClientDependency.Core
     /// </summary>
     internal static class DependencySorter
     {
+
+        public static IList<IClientDependencyFile> FilterDependencies(IList<IClientDependencyFile> dependencies)
+        {
+            if (dependencies.Any(f => f.Name != ""))
+            {
+                var newList = dependencies.Where(f => f.Name == "").ToList();
+                var frameworks = dependencies.Where(f => f.Name != "").GroupBy(f => f.Name);
+                foreach (var framework in frameworks)
+                {
+                    newList.Add(framework.OrderByDescending(f => f.Version).First());
+                }
+                dependencies = newList;
+            }
+            return dependencies;
+        }
+
         /// <summary>
         /// Sort the items by their priority and their index they currently exist in the collection
         /// </summary>
@@ -20,29 +36,6 @@ namespace ClientDependency.Core
             //first check if each item's order is the same, if this is the case we'll make sure that we order them 
             //by the way they were defined
             if (!files.Any()) return files;
-
-            // check if we need to manage frameworks
-            if (files.Any(f => f.Framework != ""))
-            {
-                var newList = files.Where(f => f.Framework == "").ToList();
-                var frameworks = files.Where(f => f.Framework != "").GroupBy(f => f.Framework);
-                foreach (var framework in frameworks)
-                {
-                    var topPriority = framework.FirstOrDefault(f => f.RemoveFramework);
-                    if (topPriority != null)
-                    {
-                        if (topPriority.FilePath != "")
-                        {
-                            newList.Add(topPriority);
-                        }
-                    }
-                    else
-                    {
-                        newList.Add(framework.OrderByDescending(f => f.Version).First());
-                    }
-                }
-                files = newList;
-            }
 
             var firstPriority = files.First().Priority;
 

@@ -14,9 +14,8 @@ namespace ClientDependency.Core.Controls
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
             AddTag = true;
-            Framework = "";
+            Name = "";
             Version = "";
-            RemoveFramework = false;
 		}
 
         protected ClientDependencyInclude(IClientDependencyFile file)
@@ -28,9 +27,8 @@ namespace ClientDependency.Core.Controls
             Group = file.Group;
             HtmlAttributes = new Dictionary<string, string>();
             AddTag = true;
-            Framework = "";
+            Name = "";
             Version = "";
-            RemoveFramework = false;
         }
 
         public ClientDependencyType DependencyType { get; internal set; }
@@ -44,20 +42,13 @@ namespace ClientDependency.Core.Controls
         /// <summary>
         /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
         /// </summary>
-        public string Framework { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Version of this resource if it is a framework
         /// Note this field is only used when Framework is specified
         /// </summary>
         public string Version { get; set; }
-
-        /// <summary>
-        /// If set then the versions of any other resources with the same framework name will be removed
-        /// If no resource
-        /// Note this field is only used when Framework is specified
-        /// </summary>
-        public bool RemoveFramework { get; set; }
 
 		/// <summary>
 		/// This can be empty and will use default provider

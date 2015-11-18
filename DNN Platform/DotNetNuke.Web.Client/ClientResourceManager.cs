@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public static void RegisterDefaultStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "08.00.00", false);
+            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "08.00.00");
         }
 
         public static void RegisterFeatureStylesheet(Page page, string filePath)
@@ -312,7 +312,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            RegisterScript(page, filePath, priority, provider, "", "", false);
+            RegisterScript(page, filePath, priority, provider, "", "");
         }
 
         /// <summary>
@@ -322,12 +322,11 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-        /// <param name="framework">Name of framework like Bootstrap, Angular, etc</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
         /// <param name="version">Version nr of framework</param>
-        /// <param name="removeFramework">Whether to remove all other versions of the framework in favor of this one</param>
-        public static void RegisterScript(Page page, string filePath, int priority, string provider, string framework, string version, bool removeFramework)
+        public static void RegisterScript(Page page, string filePath, int priority, string provider, string name, string version)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Framework = framework, Version = version, RemoveFramework = removeFramework };
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -376,7 +375,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider)
         {
-            RegisterStyleSheet(page, filePath, priority, provider, "", "", false);
+            RegisterStyleSheet(page, filePath, priority, provider, "", "");
         }
 
         /// <summary>
@@ -386,10 +385,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-        /// <param name="framework">Name of framework like Bootstrap, Angular, etc</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
         /// <param name="version">Version nr of framework</param>
-        /// <param name="removeFramework">Whether to remove all other versions of the framework in favor of this one</param>
-        public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string framework, string version, bool removeFramework)
+        public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string name, string version)
         {
             var fileExists = false;
 
@@ -411,7 +409,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             if (fileExists || FileExists(page, filePath))
             {
-                var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Framework = framework, Version = version, RemoveFramework = removeFramework };
+                var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
                 var loader = page.FindControl("ClientResourceIncludes");
 
                 if (loader != null)
