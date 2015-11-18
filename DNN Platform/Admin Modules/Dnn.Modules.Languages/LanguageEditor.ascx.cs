@@ -909,12 +909,12 @@ namespace Dnn.Modules.Languages
                         e.Node.Nodes.Add(node);
                     }
 
-                    string portalSkinFolder = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
+                    string portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
                     if (Directory.Exists(portalSkinFolder) && (PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId))
                     {
                         node = new RadTreeNode();
                         node.Text = LocalizeString("PortalSkins");
-                        node.Value = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
+                        node.Value = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
                         node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
                         e.Node.Nodes.Add(node);
                     }
