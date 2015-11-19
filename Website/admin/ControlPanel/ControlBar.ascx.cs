@@ -810,7 +810,7 @@ namespace DotNetNuke.UI.ControlPanels
                 PageList.Services.SortTreeMethod = "ItemListService/SortPagesInPortalGroup";
             }
 
-            PageList.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            PageList.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
             PageList.OnClientSelectionChanged.Add("dnn.controlBar.ControlBar_Module_PageList_Changed");
             return multipleSites;
         }

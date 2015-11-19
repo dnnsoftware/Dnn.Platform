@@ -221,12 +221,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            FoldersComboBox.SelectItemDefaultText = (SupportHost && PortalSettings.Current.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+            FoldersComboBox.SelectItemDefaultText = (SupportHost && PortalSettings.Current.ActiveTab.IsSuperTab) ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
             FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
             FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
 
             FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
-            FilesComboBox.SelectItemDefaultText = SharedConstants.Unspecified;
+            FilesComboBox.SelectItemDefaultText = DynamicSharedConstants.Unspecified;
             FilesComboBox.IncludeNoneSpecificItem = true;
             FilesComboBox.Filter = FileFilter;
 

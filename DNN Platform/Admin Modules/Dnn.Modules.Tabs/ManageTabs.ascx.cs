@@ -1431,10 +1431,10 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ActiveTab.IsSuperTab || PortalSecurity.IsInRole("Administrators") || PortalSettings.ActiveTab.ParentId == Null.NullInteger)
             {
                 // Add Non Specified if user is Admin or if current tab is already on the top level
-                cboParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                cboParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
             }
 
-            cboCopyPage.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            cboCopyPage.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
             PortalAliasCaption.Text = PortalAlias.HTTPAlias;
             PortalAliasCaption.ToolTip = PortalAlias.HTTPAlias;
