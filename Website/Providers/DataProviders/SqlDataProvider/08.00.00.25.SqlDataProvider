@@ -139,8 +139,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
 AS
 BEGIN
     DELETE
-    FROM {databaseOwner}{objectQualifier}OutputCache
-    WHERE ItemId = @ItemId OR @ItemId IS NULL
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId OR @ItemId IS NULL
 END
 GO
 
@@ -149,7 +149,7 @@ GO
 IF NOT EXISTS(SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke')
 BEGIN
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule
-	(	[TypeFullName]
+	(   [TypeFullName]
 	   ,[TimeLapse]
 	   ,[TimeLapseMeasurement]
 	   ,[RetryTimeLapse]
@@ -168,20 +168,20 @@ BEGIN
 	) VALUES
     (	'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
 	   ,1
-	   ,'m'
+	   ,N'm'
 	   ,30
-	   ,'s'
+	   ,N's'
 	   ,10
-	   ,''
+	   ,N''
 	   ,0
 	   ,0
-	   ,'OutputCache'
+	   ,N'OutputCache'
 	   ,NULL
 	   ,NULL
 	   ,NULL
 	   ,NULL
 	   ,NULL
-	   ,'Purge Output Cache'
+	   ,N'Purge Output Cache'
 	 )
 END
 GO
