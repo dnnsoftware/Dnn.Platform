@@ -39,7 +39,6 @@ UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHE
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ContentList'
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ConfigurationManager'
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
-UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SecurityAnalyzer'
 
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Banners'
@@ -113,7 +112,6 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Configuration Manager'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ProfessionalPreview'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
-UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='SecurityAnalyzer'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
 
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.WebServer'
