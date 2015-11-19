@@ -1,6 +1,7 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
@@ -32,6 +33,11 @@ namespace DotNetNuke.Web.Mvc.Helpers
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }
+
+        public virtual string Encode(string url)
+        {
+            return HttpUtility.UrlEncode(url);
+        }
 
         public virtual string Action()
         {
