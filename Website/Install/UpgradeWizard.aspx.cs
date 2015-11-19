@@ -349,9 +349,6 @@ namespace DotNetNuke.Services.Install
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/14/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -366,9 +363,6 @@ namespace DotNetNuke.Services.Install
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/09/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {

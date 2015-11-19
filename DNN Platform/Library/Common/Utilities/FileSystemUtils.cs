@@ -95,9 +95,6 @@ namespace DotNetNuke.Common.Utilities
         /// Gets the filename for a file path
         /// </summary>
         /// <param name="filePath">The full name of the file</param>
-        /// <history>
-        ///     [cnurse]    04/26/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
@@ -133,9 +130,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="objStream">The Input Stream</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	04/27/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void WriteStream(HttpResponse objResponse, Stream objStream)
         {
@@ -272,9 +266,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="contentType">The type of the content</param>
         /// <remarks>This method adds a new file
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    04/26/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite) ")]
@@ -313,11 +304,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>This method is called by the SynchonizeFolder method, when the file exists in the file system
         /// but not in the Database
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/2/2004	Created
-        ///     [cnurse]    04/26/2006  Updated to account for secure storage
-        ///     [cnurse]    04/07/2008  Made public
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite) ")]
@@ -355,9 +341,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="portalSettings">The Portal Settings</param>
 		/// <param name="parentFolder">The parent folder</param>
 		/// <param name="newFolder">The new folder name</param>
-        /// <history>
-        ///     [cnurse]    04/26/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.AddFolder(FolderMappingInfo folderMapping, string folderPath) ")]
@@ -382,9 +365,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="parentFolder">The parent folder</param>
 		/// <param name="newFolder">The new folder name</param>
 		/// <param name="storageLocation">The storage location</param>
-        /// <history>
-        ///     [vnguyen]    06/04/2010  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.AddFolder(FolderMappingInfo folderMapping, string folderPath) ")]
@@ -449,9 +429,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="storageLocation">The Storage Location</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[jlucarino]	02/26/2010	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.")]
@@ -474,9 +451,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Adds a File to a Zip File
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/4/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
         {
@@ -521,9 +495,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="sourceFileName">The name of the source file</param>
         /// <param name="destFileName">The name of the destination file</param>
-        /// <history>
-        ///     [cnurse]    06/27/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
@@ -543,9 +514,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="settings">The Portal Settings for the Portal/Host Account</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/2/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.CopyFile(IFileInfo file, IFolderInfo destinationFolder) ")]
@@ -590,13 +558,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="unzip"></param> 
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]        16/9/2004   Updated for localization, Help and 508
-        ///     [Philip Beadle] 10/06/2004  Moved to Globals from WebUpload.ascx.vb so can be accessed by URLControl.ascx
-        ///     [cnurse]        04/26/2006  Updated for Secure Storage
-        ///     [sleupold]      08/14/2007  Added NewFileName
-        ///     [sdarkis]       10/19/2009  Creates a file from a string
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType) ")]
@@ -657,9 +618,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>Boolean</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cpaterra]	4/7/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by PathUtils.Instance.IsDefaultProtectedPath(string folderPath) ")]
@@ -679,9 +637,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>Boolean</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dcaron]	9/17/2009	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool DeleteFileWithWait(string filename, Int16 waitInMilliseconds, Int16 maxAttempts)
         {
@@ -724,9 +679,6 @@ namespace DotNetNuke.Common.Utilities
         /// Trys to delete a file from the file system
         /// </summary>
 		/// <param name="fileName">The name of the file</param>
-        /// <history>
-        ///     [cnurse]    04/26/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {
@@ -745,10 +697,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="settings">The Portal Settings for the Portal/Host Account</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	11/1/2004	Created
-        ///     [cnurse]        12/6/2004   delete file from db
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.DeleteFile(IFileInfo file) ")]
@@ -768,10 +716,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="clearCache"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	11/1/2004	Created
-        ///     [cnurse]        12/6/2004   delete file from db
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.DeleteFile(IFileInfo file) ")]
@@ -831,9 +775,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="folderName">The Name of the folder relative to the Root of the Portal</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/4/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.DeleteFolder(IFolderInfo folder) ")]
@@ -856,10 +797,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="fileLoc">File Location</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	11/1/2004	Created
-        /// 	[Jon Henning]	1/4/2005	Fixed extension comparison, added content length header - DNN-386
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.")]
@@ -892,8 +829,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="FileId">FileId identifying file in database</param>
         /// <param name="ClientCache">Cache file in client browser - true/false</param>
         /// <param name="ForceDownload">Force Download File dialog box - true/false</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition) ")]
@@ -910,8 +845,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="FileId">FileId identifying file in database</param>
         /// <param name="ClientCache">Cache file in client browser - true/false</param>
         /// <param name="ForceDownload">Force Download File dialog box - true/false</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager.Instance.WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition) ")]
@@ -945,9 +878,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="extension">The extension</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	04/26/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.")]
@@ -1005,9 +935,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="portalID">The Id of the Portal</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	04/22/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.GetFolders(int portalID) ")]
@@ -1039,9 +966,6 @@ namespace DotNetNuke.Common.Utilities
 		/// <param name="parentFolder"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	04/22/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.GetFolders(IFolderInfo parentFolder) ")]
@@ -1089,10 +1013,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="strDestFile">The new File Name</param>
         /// <param name="settings">The Portal Settings for the Portal/Host Account</param>
         /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/2/2004	Created
-        /// </history>host  dnnhost
+        /// </remarks>host  dnnhost
         /// 
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1202,9 +1123,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="fileAttributesOn">Pass in Attributes you wish to switch on (i.e. FileAttributes.Hidden + FileAttributes.ReadOnly)</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	11/1/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.")]
@@ -1223,9 +1141,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="relativePath">The folder's Relative Path</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/4/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.SetFolderPermissions(IFolderInfo folder, int administratorRoleId) ")]
@@ -1256,9 +1171,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="relativePath">The folder's Relative Path</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/01/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FolderManager.Instance.SetFolderPermission(IFolderInfo folder, int permissionId, int roleId) ")]

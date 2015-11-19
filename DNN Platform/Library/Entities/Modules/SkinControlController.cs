@@ -40,9 +40,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// ModuleControlController provides the Business Layer for Module Controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinControlController
     {
@@ -53,9 +50,6 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteSkinControl deletes a Skin Control in the database
         /// </summary>
         /// <param name="skinControl">The Skin Control to delete</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteSkinControl(SkinControlInfo skinControl)
         {
@@ -68,9 +62,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControl gets a single Skin Control from the database
         /// </summary>
         /// <param name="skinControlID">The ID of the SkinControl</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControl(int skinControlID)
         {
@@ -82,9 +73,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControlByPackageID gets a single Skin Control from the database
         /// </summary>
         /// <param name="packageID">The ID of the Package</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByPackageID(int packageID)
         {
@@ -96,9 +84,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControlByKey gets a single Skin Control from the database
         /// </summary>
         /// <param name="key">The key of the Control</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByKey(string key)
         {
@@ -109,9 +94,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// GetSkinControls gets all the Skin Controls from the database
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, SkinControlInfo> GetSkinControls()
         {
@@ -123,9 +105,6 @@ namespace DotNetNuke.Entities.Modules
         /// SaveSkinControl updates a Skin Control in the database
         /// </summary>
         /// <param name="skinControl">The Skin Control to save</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SaveSkinControl(SkinControlInfo skinControl)
         {

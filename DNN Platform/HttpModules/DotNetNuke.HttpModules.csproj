@@ -69,6 +69,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
+    <Compile Include="OutputCaching\OutputCacheModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

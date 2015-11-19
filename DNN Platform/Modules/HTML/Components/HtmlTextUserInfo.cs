@@ -36,8 +36,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserInfo
     {

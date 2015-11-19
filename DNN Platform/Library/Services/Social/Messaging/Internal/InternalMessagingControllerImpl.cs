@@ -37,9 +37,6 @@ using DotNetNuke.Services.Social.Messaging.Internal.Views;
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
     /// <summary>The Controller class for social Messaging</summary>
-    /// -----------------------------------------------------------------------------
-    /// <history></history>
-    /// -----------------------------------------------------------------------------
     internal class InternalMessagingControllerImpl : IInternalMessagingController
     {
         #region Constants

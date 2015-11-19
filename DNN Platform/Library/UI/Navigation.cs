@@ -80,9 +80,6 @@ namespace DotNetNuke.UI
         /// <param name="intDepth">How many levels deep should be populated</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/15/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddChildActions(ModuleAction parentAction, DNNNode parentNode, DNNNode rootNode, IActionControl actionControl, int intDepth)
         {
@@ -165,9 +162,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Logic moved to separate sub to make GetNavigationNodes cleaner
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips)
         {
@@ -425,9 +419,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/15/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNode GetActionNode(string strID, string strNamespace, ModuleAction objActionRoot, Control objControl)
         {
@@ -449,9 +440,6 @@ namespace DotNetNuke.UI
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetActionNodes(ModuleAction objActionRoot, Control objControl)
         {
@@ -469,9 +457,6 @@ namespace DotNetNuke.UI
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/15/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetActionNodes(ModuleAction objActionRoot, Control objControl, int intDepth)
         {
@@ -508,9 +493,6 @@ namespace DotNetNuke.UI
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/15/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetActionNodes(ModuleAction objActionRoot, DNNNode objRootNode, Control objControl, int intDepth)
         {
@@ -533,9 +515,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNode GetNavigationNode(string strID, string strNamespace)
         {
@@ -558,9 +537,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Returns all navigation nodes for a given user
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(string strNamespace)
         {
@@ -581,9 +557,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Returns a subset of navigation nodes based off of passed in starting node id and depth
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(string strNamespace, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
@@ -605,9 +578,6 @@ namespace DotNetNuke.UI
         /// <remarks>
         /// Returns a subset of navigation nodes based off of passed in starting node id and depth
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {

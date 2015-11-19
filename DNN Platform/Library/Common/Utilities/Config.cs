@@ -42,9 +42,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2005	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Config
     {
@@ -191,9 +188,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	11/15/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString()
         {
@@ -207,9 +201,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="name">Name of Connection String to return</param>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	11/15/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString(string name)
         {
@@ -365,9 +356,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[smehaffie]	07/13/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetUpgradeConnectionString()
         {
@@ -380,9 +368,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The database owner</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetDataBaseOwner()
         {
@@ -442,9 +427,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The object qualifier</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetObjectQualifer()
         {
@@ -507,9 +489,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The provider path</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetProviderPath(string type)
         {

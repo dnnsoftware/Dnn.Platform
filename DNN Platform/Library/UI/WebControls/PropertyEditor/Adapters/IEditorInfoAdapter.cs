@@ -30,9 +30,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	05/05/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public interface IEditorInfoAdapter
     {

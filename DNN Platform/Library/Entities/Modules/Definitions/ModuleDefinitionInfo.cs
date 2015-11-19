@@ -42,9 +42,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
     /// <summary>
     /// ModuleDefinitionInfo provides the Entity Layer for Module Definitions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModuleDefinitionInfo : IXmlSerializable, IHydratable
@@ -65,9 +62,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets and sets the Module Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ModuleDefID { get; set; }
 
@@ -76,9 +70,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets and sets the Default Cache Time
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int DefaultCacheTime { get; set; }
 
@@ -87,9 +78,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets and sets the associated Desktop Module ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
@@ -98,9 +86,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets and sets the Friendly Name
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
@@ -127,9 +112,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets the Dictionary of ModuleControls that are part of this definition
         /// </summary>
         /// <returns>A Dictionary(Of String, ModuleControlInfo)</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleControlInfo> ModuleControls
         {
@@ -148,9 +130,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets the Dictionary of Permissions that are part of this definition
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PermissionInfo> Permissions { get; private set; }
 
@@ -161,9 +140,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Fills a ModuleDefinitionInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -182,9 +158,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -206,9 +179,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <summary>
         /// Gets an XmlSchema for the ModuleDefinitionInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -220,9 +190,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Reads a ModuleDefinitionInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -278,9 +245,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Writes a ModuleDefinitionInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
@@ -318,9 +282,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Reads the ModuleControls from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadModuleControls(XmlReader reader)
         {

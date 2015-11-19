@@ -1558,8 +1558,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Entities.Modules.Actions.ModuleActionCollection ModuleActions
         {

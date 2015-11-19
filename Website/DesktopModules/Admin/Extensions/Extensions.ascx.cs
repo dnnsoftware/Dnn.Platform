@@ -42,9 +42,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/04/2008	Created
-    /// </history>
     public partial class Extensions : ModuleUserControlBase
     {
         #region Protected Methods

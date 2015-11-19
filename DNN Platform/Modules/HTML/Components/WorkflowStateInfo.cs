@@ -33,8 +33,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class WorkflowStateInfo

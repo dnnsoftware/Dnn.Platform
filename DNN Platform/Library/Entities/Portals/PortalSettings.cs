@@ -111,9 +111,6 @@ namespace DotNetNuke.Entities.Portals
 		/// </remarks>
 		///	<param name="tabId">The current tab</param>
 		///	<param name="portalAliasInfo">The current portal</param>
-		/// <history>
-		/// 	[cnurse]	10/21/2004	documented
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
 		{
@@ -256,9 +253,6 @@ namespace DotNetNuke.Entities.Portals
 		/// CurrentCulture (content) and CurrentUICulture (interface)
 		/// </summary>
 		/// <remarks>Defaults to False</remarks>
-		/// <history>
-		/// 	[vmasanas]	03/22/2012   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool AllowUserUICulture { get; internal set; }
 
@@ -285,9 +279,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets the Default Module Id
 		/// </summary>
 		/// <remarks>Defaults to Null.NullInteger</remarks>
-		/// <history>
-		/// 	[cnurse]	05/02/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
@@ -300,9 +291,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets the Default Tab Id
 		/// </summary>
 		/// <remarks>Defaults to Null.NullInteger</remarks>
-		/// <history>
-		/// 	[cnurse]	05/02/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public int DefaultTabId { get; internal set; }
 
@@ -311,9 +299,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets whether Browser Language Detection is Enabled
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
-		/// <history>
-		/// 	[cnurse]	02/19/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool EnableBrowserLanguage { get; internal set; }
 
@@ -346,9 +331,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets whether the Skin Widgets are enabled/supported
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
-		/// <history>
-		/// 	[cnurse]	07/03/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool EnableSkinWidgets { get; internal set; }
 
@@ -372,9 +354,6 @@ namespace DotNetNuke.Entities.Portals
 		/// <remarks>
 		///   Defaults to True
 		/// </remarks>
-		/// <history>
-		///   [cnurse]	08/28/2008 Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
 
@@ -395,9 +374,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets whether the Inline Editor is enabled
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
-		/// <history>
-		/// 	[cnurse]	08/28/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
 
@@ -406,9 +382,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets whether to inlcude Common Words in the Search Index
 		/// </summary>
 		/// <remarks>Defaults to False</remarks>
-		/// <history>
-		/// 	[cnurse]	03/10/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon { get; internal set; }
 
@@ -417,9 +390,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets whether to inlcude Numbers in the Search Index
 		/// </summary>
 		/// <remarks>Defaults to False</remarks>
-		/// <history>
-		/// 	[cnurse]	03/10/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric { get; internal set; }
 
@@ -430,9 +400,6 @@ namespace DotNetNuke.Entities.Portals
 		/// <remarks>
 		///   Defaults to ""
 		/// </remarks>
-		/// <history>
-		///   [vnguyen]   09/03/2010   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public string SearchIncludedTagInfoFilter { get; internal set; }
 
@@ -441,9 +408,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets the maximum Search Word length to index
 		/// </summary>
 		/// <remarks>Defaults to 3</remarks>
-		/// <history>
-		/// 	[cnurse]	03/10/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength { get; internal set; }
 
@@ -452,9 +416,6 @@ namespace DotNetNuke.Entities.Portals
 		/// Gets the minum Search Word length to index
 		/// </summary>
 		/// <remarks>Defaults to 3</remarks>
-		/// <history>
-		/// 	[cnurse]	03/10/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public int SearchMinWordlLength { get; internal set; }
 

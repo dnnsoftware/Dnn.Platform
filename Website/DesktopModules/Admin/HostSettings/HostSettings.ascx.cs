@@ -110,11 +110,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// <summary>
         /// BindData fetches the data from the database and updates the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void BindConfiguration()
         {
             lblProduct.Text = DotNetNukeContext.Current.Application.Description;
@@ -551,12 +546,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        ///     [VMasanas]  9/28/2004   Changed redirect to Access Denied
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -715,11 +704,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void ClearCache(object sender, EventArgs e)
         {
             DataCache.ClearCache();
@@ -742,11 +726,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void TestEmail(object sender, EventArgs e)
         {
             try
@@ -821,11 +800,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void UpdateSettings(object sender, EventArgs e)
         {
             if (Page.IsValid)

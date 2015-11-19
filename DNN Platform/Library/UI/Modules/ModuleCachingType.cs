@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.Modules
     /// <summary>
     /// ModuleCachingType is an enum that provides the caching types for Module Content
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/16/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum ModuleCachingType
     {

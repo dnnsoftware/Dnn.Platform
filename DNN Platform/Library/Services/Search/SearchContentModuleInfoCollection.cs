@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase

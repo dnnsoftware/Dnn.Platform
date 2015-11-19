@@ -45,9 +45,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/30/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageWriterBase
     {
@@ -99,9 +96,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of AppCodeFiles that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	02/12/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> AppCodeFiles
         {
@@ -116,9 +110,6 @@ namespace DotNetNuke.Services.Installer.Writers
 		 /// Gets and sets the Path for the Package's app code files
 		 /// </summary>
 		 /// <value>A String</value>
-		 /// <history>
-		 /// 	[cnurse]	02/12/2008  created
-		 /// </history>
 		 /// -----------------------------------------------------------------------------
          public string AppCodePath { get; set; }
 
@@ -127,9 +118,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of Assemblies that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Assemblies
         {
@@ -144,9 +132,6 @@ namespace DotNetNuke.Services.Installer.Writers
 		 /// Gets and sets the Path for the Package's assemblies
 		 /// </summary>
 		 /// <value>A String</value>
-		 /// <history>
-		 /// 	[cnurse]	01/31/2008  created
-		 /// </history>
 		 /// -----------------------------------------------------------------------------
          public string AssemblyPath { get; set; }
 
@@ -155,9 +140,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets and sets the Base Path for the Package
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string BasePath
         {
@@ -176,9 +158,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of CleanUpFiles that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public SortedList<string, InstallFile> CleanUpFiles
         {
@@ -193,9 +172,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of Files that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Files
         {
@@ -210,9 +186,6 @@ namespace DotNetNuke.Services.Installer.Writers
  /// Gets and sets whether a project file is found in the folder
  /// </summary>
  /// <value>A String</value>
- /// <history>
- /// 	[cnurse]	01/31/2008  created
- /// </history>
  /// -----------------------------------------------------------------------------
         public bool HasProjectFile { get; set; }
 
@@ -221,9 +194,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets whether to include Assemblies
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool IncludeAssemblies
         {
@@ -246,9 +216,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the Logger
         /// </summary>
         /// <value>An Logger object</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -263,9 +230,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the associated Package
         /// </summary>
         /// <value>An PackageInfo object</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package
         {
@@ -284,9 +248,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of Resources that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	02/11/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Resources
         {
@@ -301,9 +262,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a Dictionary of Scripts that should be included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Scripts
         {
@@ -318,9 +276,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets a List of Versions that should be included in the Package
         /// </summary>
         /// <value>A List(Of String)</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public List<string> Versions
         {

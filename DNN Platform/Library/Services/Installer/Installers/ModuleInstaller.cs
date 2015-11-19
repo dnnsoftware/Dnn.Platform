@@ -43,9 +43,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/15/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleInstaller : ComponentInstallerBase
     {
@@ -64,9 +61,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -84,9 +78,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The DeleteModule method deletes the Module from the data Store.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DeleteModule()
         {
@@ -166,9 +157,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Modules this is not neccessary</remarks>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -258,9 +246,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the Module component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -297,9 +282,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file for the Module compoent.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -347,9 +329,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -370,9 +349,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the Module component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

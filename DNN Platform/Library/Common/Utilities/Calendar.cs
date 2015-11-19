@@ -42,12 +42,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	12/09/2004	Added localized parameter strings: today, close, calendar
-        ///                             Use AbbreviatedDayName property instead of first 3 chars of day name
-        /// 	[VMasanas]	14/10/2004	Added support for First Day Of Week
-        ///     [VMasanas]  14/11/2004  Register client script to work with FriendlyURLs
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string InvokePopupCal(TextBox Field)
         {

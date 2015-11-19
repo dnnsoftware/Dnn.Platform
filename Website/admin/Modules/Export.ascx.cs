@@ -51,8 +51,6 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Export : PortalModuleBase
     {

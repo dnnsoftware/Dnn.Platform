@@ -54,9 +54,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[willhsc]	3/3/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinController
     {
@@ -332,9 +329,6 @@ namespace DotNetNuke.UI.Skins
         /// </remarks>
         /// <param name="skinFolder">The Folder Name</param>
         /// <param name="skinFile">The File Name without extension</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
             if (skinFolder.ToLower() == "_default")
@@ -365,9 +359,6 @@ namespace DotNetNuke.UI.Skins
         /// passed as a parameter.  Using this method abstracts knowledge of the actual location
         /// of skins in the file system.
         /// </remarks>
-        /// <history>
-        ///     [Joe Brinkman]	10/20/2007	Created
-        /// </history>
         public static bool IsGlobalSkin(string skinSrc)
         {
             return skinSrc.Contains(Globals.HostPath);

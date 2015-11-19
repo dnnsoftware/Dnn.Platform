@@ -38,9 +38,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/04/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class AuthenticationEditor : PackageEditorBase
     {
@@ -93,9 +90,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine Binds the Authentication System
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/15/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindAuthentication()
         {

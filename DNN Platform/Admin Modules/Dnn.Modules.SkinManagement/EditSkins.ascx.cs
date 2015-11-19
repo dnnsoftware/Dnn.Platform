@@ -48,10 +48,6 @@ namespace Dnn.Modules.SkinManagement
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	public partial class EditSkins : PortalModuleBase
 	{

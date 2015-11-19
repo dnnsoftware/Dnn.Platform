@@ -35,9 +35,6 @@ namespace DotNetNuke.Security.Permissions
     /// CompareTabPermissions provides the a custom IComparer implementation for
     /// TabPermissionInfo objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     internal class CompareTabPermissions : IComparer
     {

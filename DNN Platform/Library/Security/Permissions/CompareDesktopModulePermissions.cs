@@ -35,9 +35,6 @@ namespace DotNetNuke.Security.Permissions
     /// CompareDesktopModulePermissions provides the a custom IComparer implementation for
     /// DesktopModulePermissionInfo objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/15/2008   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     internal class CompareDesktopModulePermissions : IComparer
     {

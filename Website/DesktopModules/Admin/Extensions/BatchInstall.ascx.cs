@@ -46,9 +46,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]   05/13/2008    Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class BatchInstall : ModuleUserControlBase
     {
@@ -59,9 +56,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindAuthSystems()
         {
@@ -74,9 +68,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindLanguages()
         {
@@ -89,9 +80,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindModules()
         {
@@ -148,9 +136,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindSkins()
         {
@@ -165,9 +150,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool InstallAuthSystems()
         {
@@ -180,9 +162,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool InstallLanguages()
         {
@@ -195,9 +174,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool InstallModules()
         {
@@ -253,9 +229,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   05/13/2008    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool InstallSkins()
         {

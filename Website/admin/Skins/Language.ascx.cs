@@ -414,9 +414,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// <history>
-        ///      [erikvb]  20070814	  added
-        /// </history>
         protected void rptLanguages_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             try

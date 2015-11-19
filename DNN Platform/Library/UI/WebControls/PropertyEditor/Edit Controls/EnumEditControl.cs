@@ -42,9 +42,6 @@ namespace DotNetNuke.UI.WebControls
     /// The EnumEditControl control provides a standard UI component for editing
     /// enumerated properties.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/23/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:EnumEditControl runat=server></{0}:EnumEditControl>")]
     public class EnumEditControl : EditControl
@@ -57,9 +54,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Constructs an EnumEditControl
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public EnumEditControl()
         {
@@ -69,9 +63,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Constructs an EnumEditControl
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public EnumEditControl(string type)
         {
@@ -88,9 +79,6 @@ namespace DotNetNuke.UI.WebControls
         /// StringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -115,9 +103,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
@@ -135,9 +120,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
@@ -181,9 +163,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View (readonly) mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {

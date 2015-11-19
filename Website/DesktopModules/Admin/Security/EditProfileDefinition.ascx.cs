@@ -51,9 +51,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/22/2006  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class EditProfileDefinition : PortalModuleBase
     {
@@ -96,9 +93,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets whether we are dealing with SuperUsers
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool IsSuperUser
         {
@@ -151,9 +145,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Portal Id whose Users we are managing
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected int UsersPortalId
         {
@@ -362,9 +353,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Page_Init runs when the control is initialised
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/22/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -395,9 +383,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Page_Load runs when the control is loaded
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/22/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -472,9 +457,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/30/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void Wizard_ActiveStepChanged(object sender, EventArgs e)
         {
@@ -503,9 +485,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/30/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void Wizard_CancelButtonClick(object sender, EventArgs e)
         {
@@ -526,9 +505,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/30/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void Wizard_FinishButtonClick(object sender, WizardNavigationEventArgs e)
         {
@@ -556,9 +532,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/30/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void Wizard_NextButtonClick(object sender, WizardNavigationEventArgs e)
         {

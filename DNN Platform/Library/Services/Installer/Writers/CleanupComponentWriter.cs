@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/21/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CleanupComponentWriter
     {
@@ -56,9 +53,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// </summary>
         /// <param name="basePath">Base Path.</param>
         /// <param name="files">A Dictionary of files</param>
-        /// <history>
-        /// 	[cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CleanupComponentWriter(string basePath, SortedList<string, InstallFile> files)
         {

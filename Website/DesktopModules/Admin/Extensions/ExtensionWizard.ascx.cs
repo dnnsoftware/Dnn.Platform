@@ -44,9 +44,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// <summary>
     /// The ExtensionWizard control is used to create a Extension
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	08/25/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ExtensionWizard : ModuleUserControlBase
     {
@@ -289,9 +286,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/25/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void wizNewExtension_CancelButtonClick(object sender, EventArgs e)
         {
@@ -306,9 +300,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/25/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void wizNewExtension_NextButtonClick(object sender, WizardNavigationEventArgs e)
         {

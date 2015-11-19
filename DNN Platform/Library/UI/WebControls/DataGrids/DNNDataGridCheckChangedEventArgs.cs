@@ -39,9 +39,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/17/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DNNDataGridCheckChangedEventArgs : DataGridItemEventArgs
     {

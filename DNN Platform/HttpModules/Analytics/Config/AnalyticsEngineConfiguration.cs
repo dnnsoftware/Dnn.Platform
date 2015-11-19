@@ -45,9 +45,6 @@ namespace DotNetNuke.HttpModules.Config
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cniknet]	05/03/2009	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable, XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration

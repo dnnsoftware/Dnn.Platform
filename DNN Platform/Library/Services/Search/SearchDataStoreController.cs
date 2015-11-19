@@ -42,9 +42,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     public class SearchDataStoreController
@@ -94,9 +91,6 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="PortalID">A Id of the Portal</param>
         /// <param name="Word">The word</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
@@ -119,9 +113,6 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="ModuleId">The Id of the Module</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, string> GetSearchSettings(int ModuleId)
         {

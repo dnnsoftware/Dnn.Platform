@@ -48,10 +48,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     public partial class EditSchedule : PortalModuleBase, IActionable
     {
 
@@ -191,9 +187,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -247,9 +240,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected void OnDeleteClick(Object sender, EventArgs e)
         {
             var objScheduleItem = new ScheduleItem { ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]) };
@@ -282,9 +272,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected void OnUpdateClick(Object sender, EventArgs e)
         {
             if (VerifyValidTimeLapseRetry() == false)

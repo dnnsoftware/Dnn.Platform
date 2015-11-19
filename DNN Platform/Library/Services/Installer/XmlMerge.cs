@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer
     /// <summary>
     /// The XmlMerge class is a utility class for XmlSplicing config files
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	08/03/2007	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class XmlMerge
     {
@@ -60,9 +57,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceFileName"></param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlMerge(string sourceFileName, string version, string sender)
         {
@@ -79,9 +73,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceStream"></param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlMerge(Stream sourceStream, string version, string sender)
         {
@@ -98,9 +89,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceReader"></param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlMerge(TextReader sourceReader, string version, string sender)
         {
@@ -117,9 +105,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceDoc"></param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlMerge(XmlDocument sourceDoc, string version, string sender)
         {
@@ -137,9 +122,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Source for the Config file
         /// </summary>
         /// <value>An XmlDocument</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlDocument SourceConfig { get; private set; }
 
@@ -148,9 +130,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Sender (source) of the changes to be merged
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Sender { get; private set; }
 
@@ -159,9 +138,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Target Config file
         /// </summary>
         /// <value>An XmlDocument</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig { get; set; }
 
@@ -170,9 +146,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the File Name of the Target Config file
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string TargetFileName { get; private set; }
 
@@ -181,9 +154,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Version of the changes to be merged
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Version { get; private set; }
 
@@ -582,9 +552,6 @@ namespace DotNetNuke.Services.Installer
         /// Config Xml Document.
         /// </summary>
         /// <param name="target">An Xml Document represent the Target Xml File</param>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target)
         {
@@ -602,9 +569,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="target">An Xml Document represent the Target Xml File</param>
         /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot</param>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target, string fileName)
         {
@@ -621,9 +585,6 @@ namespace DotNetNuke.Services.Installer
         /// The UpdateConfigs method processes the source file and updates the various config 
         /// files
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
 
         public void UpdateConfigs()

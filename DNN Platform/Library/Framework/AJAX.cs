@@ -43,9 +43,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void AddScriptManager(Page page)
         {
 	        AddScriptManager(page, true);
@@ -140,9 +137,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static bool IsEnabled()
         {
             if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
@@ -161,9 +155,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static bool IsInstalled()
         {
             return true;
@@ -175,9 +166,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RegisterPostBackControl(Control objControl)
         {
             ScriptManager objScriptManager = GetScriptManager(objControl.Page);
@@ -193,9 +181,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RegisterScriptManager()
         {
             if (!IsEnabled())
@@ -210,9 +195,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RemoveScriptManager(Page objPage)
         {
             if (!IsEnabled())
@@ -231,9 +213,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {
             var updatePanel = new UpdatePanel();

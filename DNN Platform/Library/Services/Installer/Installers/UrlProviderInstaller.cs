@@ -42,10 +42,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get

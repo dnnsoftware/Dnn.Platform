@@ -28,9 +28,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// The VisibilityState enum provides an enumeration of the Visibility options
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum VisibilityState
     {
