@@ -2246,21 +2246,8 @@ namespace DotNetNuke.Common
         /// <param name="strRoot">The root.</param>
         public static void DeleteFolderRecursive(string strRoot)
         {
-            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
-            {
-                return;
-            }
-            foreach (var strFolder in Directory.GetDirectories(strRoot))
-            {
-                DeleteFolderRecursive(strFolder);
-            }
-            foreach (var strFile in Directory.GetFiles(strRoot))
-            {
-                DeleteFile(strFile);
-            }
-            DeleteFolder(strRoot);
+            FileSystemUtils.DeleteFolderRecursive(strRoot);
         }
-        
         /// <summary>
         /// Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.
         /// </summary>
@@ -2268,22 +2255,7 @@ namespace DotNetNuke.Common
         /// <param name="filter">The filter.</param>
         public static void DeleteFilesRecursive(string strRoot, string filter)
         {
-            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
-            {
-                return;
-            }
-            foreach (var strFolder in Directory.GetDirectories(strRoot))
-            {
-                var directory = new DirectoryInfo(strFolder);
-                if ((directory.Attributes & FileAttributes.Hidden) == 0 && (directory.Attributes & FileAttributes.System) == 0)
-                {
-                    DeleteFilesRecursive(strFolder, filter);
-                }
-            }
-            foreach (var strFile in Directory.GetFiles(strRoot, "*" + filter))
-            {
-                DeleteFile(strFile);
-            }
+            FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
         }
 
         private static void DeleteFile(string filePath)
