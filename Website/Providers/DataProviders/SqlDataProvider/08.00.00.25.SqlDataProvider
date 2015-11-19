@@ -1,0 +1,500 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-6758 */
+/************/
+
+-- make sure, the column size has been increased (just in case):
+DECLARE @MaxLen SmallInt = 0;
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFile'
+IF @MaxLen > 0 AND @MaxLen < 255
+  ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
+GO
+
+DECLARE @MaxLen SmallInt = 0;
+SELECT @MaxLen = max_length FROM Sys.Columns WHERE Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND Name = 'IconFileLarge'
+IF @MaxLen > 0 AND @MaxLen < 255
+   ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTab]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTab]
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @TabOrder               Int,
+    @UniqueId               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(Max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               bit
+AS
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}Tabs (
+        ContentItemID,
+        PortalID,
+        TabOrder,
+        UniqueId,
+        VersionGuid,
+        DefaultLanguageGuid,
+        LocalizedVersionGuid,
+        TabName,
+        IsVisible,
+        DisableLink,
+        ParentId,
+        IconFile,
+        IconFileLarge,
+        Title,
+        Description,
+        KeyWords,
+        IsDeleted,
+        Url,
+        SkinSrc,
+        ContainerSrc,
+        StartDate,
+        EndDate,
+        RefreshInterval,
+        PageHeadText,
+        IsSecure,
+        PermanentRedirect,
+        SiteMapPriority,
+        CreatedByUserID,
+        CreatedOnDate,
+        LastModifiedByUserID,
+        LastModifiedOnDate,
+        CultureCode,
+        IsSystem
+    )
+    VALUES (
+        @ContentItemID,
+        @PortalID,
+        @TabOrder,
+        @UniqueId,
+        @VersionGuid,
+        @DefaultLanguageGuid,
+        @LocalizedVersionGuid,
+        @TabName,
+        @IsVisible,
+        @DisableLink,
+        @ParentId,
+        @IconFile,
+        @IconFileLarge,
+        @Title,
+        @Description,
+        @KeyWords,
+        0,
+        @Url,
+        @SkinSrc,
+        @ContainerSrc,
+        @StartDate,
+        @EndDate,
+        @RefreshInterval,
+        @PageHeadText,
+        @IsSecure,
+        @PermanentRedirect,
+        @SiteMapPriority,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate(),
+        @CultureCode,
+        @IsSystem
+    )
+    DECLARE @TabId Int = SCOPE_IDENTITY();
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId;
+    SELECT @TabId;
+    RETURN @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+    @TabId                  Int,
+    @ContentItemID          Int,
+    @PortalId               Int,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @IsDeleted              Bit,
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @LastModifiedByUserID   Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @OldParentId Int
+    SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    -- Get New TabOrder
+    DECLARE @NewTabOrder Int
+    SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+    IF @NewTabOrder IS NULL
+        SET @NewTabOrder = 1
+    ELSE
+        SET @NewTabOrder = @NewTabOrder + 2
+
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET
+            ContentItemID           = @ContentItemID,
+            PortalId                = @PortalId,
+            VersionGuid             = @VersionGuid,
+            DefaultLanguageGuid     = @DefaultLanguageGuid,
+            LocalizedVersionGuid    = @LocalizedVersionGuid,
+            TabName                 = @TabName,
+            IsVisible               = @IsVisible,
+            DisableLink             = @DisableLink,
+            ParentId                = @ParentId,
+            IconFile                = @IconFile,
+            IconFileLarge           = @IconFileLarge,
+            Title                   = @Title,
+            Description             = @Description,
+            KeyWords                = @KeyWords,
+            IsDeleted               = @IsDeleted,
+            Url                     = @Url,
+            SkinSrc                 = @SkinSrc,
+            ContainerSrc            = @ContainerSrc,
+            StartDate               = @StartDate,
+            EndDate                 = @EndDate,
+            RefreshInterval         = @RefreshInterval,
+            PageHeadText            = @PageHeadText,
+            IsSecure                = @IsSecure,
+            PermanentRedirect       = @PermanentRedirect,
+            SiteMapPriority         = @SiteMapPriority,
+            LastModifiedByUserID    = @LastModifiedByUserID,
+            LastModifiedOnDate      = getdate(),
+            CultureCode             = @CultureCode,
+            IsSystem                = @IsSystem
+    WHERE  TabId = @TabId;
+
+    IF (@OldParentId <> @ParentId) BEGIN
+        -- update TabOrder of Tabs with same original Parent
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = TabOrder - 2
+         WHERE (ParentId = @OldParentId)
+           AND TabOrder > @TabOrder
+
+        -- Update Tab with new TabOrder
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = @NewTabOrder
+         WHERE TabID = @TabId
+    END /* IF */
+
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabAfter]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabAfter]
+    @AfterTabID             Int,
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabId    Int
+    DECLARE @TabOrder Int = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @AfterTabID)
+
+    -- Update TabOrders for all Tabs higher than @TabOrder
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+       SET TabOrder = TabOrder + 2
+     WHERE (ParentId = @ParentID OR (ParentId IS NULL AND @ParentID IS NULL))
+       AND TabOrder > @TabOrder
+       AND (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+
+    -- Create Tab
+    SET @TabOrder = @TabOrder + 2
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueId,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentID,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabBefore]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabBefore]
+    @BeforeTabID            Int,
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabID    Int
+    DECLARE @TabOrder Int = (SELECT TabOrder FROM {databaseOwner}{objectQualifier}Tabs WHERE TabID = @BeforeTabID);
+
+    -- Update TabOrders for all Tabs higher than @TabOrder
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+       SET TabOrder = TabOrder + 2
+     WHERE (ParentId = @ParentId OR (ParentID IS NULL AND @ParentID IS NULL))
+       AND TabOrder >= @TabOrder
+       AND (PortalId = @PortalId OR (PortalID IS NULL AND @PortalID IS NULL))
+
+    -- Create Tab
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueID,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentID,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabToEnd]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+    @ContentItemID          Int,
+    @PortalID               Int,
+    @UniqueID               UniqueIdentifier,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentID               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @CreatedByUserID        Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @TabId Int
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}{objectQualifier}Tabs
+                     WHERE (PortalId = @PortalID OR (PortalID IS NULL AND @PortalID IS NULL))
+                       AND (ParentId = @ParentID OR (ParentID IS NULL AND @ParentID IS NULL))
+                    )
+    IF @TabOrder IS NULL
+        SET @TabOrder = 1
+    ELSE
+        SET @TabOrder = @TabOrder + 2
+
+    -- Create Tab
+    EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab
+                        @ContentItemID,
+                        @PortalID,
+                        @TabOrder,
+                        @UniqueId,
+                        @VersionGuid,
+                        @DefaultLanguageGuid,
+                        @LocalizedVersionGuid,
+                        @TabName,
+                        @IsVisible,
+                        @DisableLink,
+                        @ParentId,
+                        @IconFile,
+                        @IconFileLarge,
+                        @Title,
+                        @Description,
+                        @KeyWords,
+                        @Url,
+                        @SkinSrc,
+                        @ContainerSrc,
+                        @StartDate,
+                        @EndDate,
+                        @RefreshInterval,
+                        @PageHeadText,
+                        @IsSecure,
+                        @PermanentRedirect,
+                        @SiteMapPriority,
+                        @CreatedByUserID,
+                        @CultureCode,
+                        @IsSystem;
+
+    -- Update Content Item
+    UPDATE {databaseOwner}{objectQualifier}ContentItems
+       SET TabID = @TabId
+     WHERE ContentItemID = @ContentItemID;
+
+    SELECT @TabId;
+END /* Procedure */
+GO
