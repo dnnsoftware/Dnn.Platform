@@ -6,114 +6,125 @@
 /*****************************/
 
 IF  NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}OutputCache') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-	BEGIN
-		CREATE TABLE {databaseOwner}{objectQualifier}OutputCache
-			(
-				[CacheKey] [varchar](36) NOT NULL,
-				[ItemId] [int] NOT NULL,
-				[Data] [ntext] NOT NULL,
-				[Expiration] [datetime] NOT NULL,
-				CONSTRAINT [PK_{objectQualifier}OutputCache] PRIMARY KEY CLUSTERED ( [CacheKey] ASC )
-			)
-	END
+	CREATE TABLE {databaseOwner}{objectQualifier}OutputCache
+	(
+		[CacheKey]   VarChar (36)  NOT NULL,
+		[ItemId]     Int           NOT NULL,
+		[Data]       nVarChar(Max) NOT NULL,
+		[Expiration] DateTime      NOT NULL,
+		CONSTRAINT [PK_{objectQualifier}OutputCache] PRIMARY KEY CLUSTERED ([CacheKey] ASC)
+	)
 GO
 
 /* Add New OutputCacheGetItem  */
 /*******************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItem]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
 GO
 	
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
-	@CacheKey [varchar](36)
+	@CacheKey VarChar (36)
 AS
+BEGIN
     SELECT *
-    FROM {databaseOwner}{objectQualifier}OutputCache
-    WHERE CacheKey = @CacheKey
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE CacheKey = @CacheKey
+END
 GO
 
 /* Add New OutputCacheAddItem  */
 /*******************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheAddItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheAddItem]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
-	@ItemId int,
-	@CacheKey [varchar](36),
-	@Data	ntext,
-	@Expiration	datetime
+	@ItemId     Int,
+	@CacheKey   VarChar ( 36),
+	@Data	    nVarChar(Max),
+	@Expiration DateTime
 AS
+BEGIN
     INSERT INTO {databaseOwner}{objectQualifier}OutputCache
-		(ItemId, 
-		CacheKey, 
-		Data, 
-		Expiration)
-    VALUES
-		(@ItemId, 
-		@CacheKey, 
-		@Data, 
-		@Expiration)
+    (	ItemId, 
+	CacheKey, 
+	Data, 
+	Expiration
+    ) VALUES 
+    (   @ItemId, 
+	@CacheKey, 
+	@Data, 
+	@Expiration
+    )
+END
 GO
 
 /* Add New OutputCacheGetItemCount  */
 /************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItemCount]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItemCount]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
 	@ItemId int
 AS
-    SELECT COUNT(*)
-    FROM {databaseOwner}{objectQualifier}OutputCache
-    WHERE ItemId = @ItemId
+BEGIN
+    SELECT COUNT(*) N
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId
+END
 GO
 
 /* Add New OutputCachePurgeCache  */
 /**********************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeCache]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeCache]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
 AS
+BEGIN
     DELETE
-    FROM {databaseOwner}{objectQualifier}OutputCache
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+END
 GO
 
 /* Add New OutputCachePurgeExpiredItems  */
 /*****************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeExpiredItems]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeExpiredItems]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
-	@CurrentUtcDateTime datetime
+	@CurrentUtcDateTime DateTime
 AS
+BEGIN
     DELETE
-    FROM {databaseOwner}{objectQualifier}OutputCache
-    WHERE Expiration <= @CurrentUtcDateTime
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE Expiration <= @CurrentUtcDateTime
+END
 GO
 
 /* Add New OutputCacheRemoveItem  */
 /**********************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheRemoveItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheRemoveItem]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
-	@ItemId int
+	@ItemId Int
 AS
+BEGIN
     DELETE
-    FROM {databaseOwner}{objectQualifier}OutputCache
+    FROM  {databaseOwner}{objectQualifier}OutputCache
     WHERE ItemId = @ItemId
+END
 GO
 
 /* Add New OutputCacheGetKeys  */
@@ -124,11 +135,13 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
-	@ItemId int
+	@ItemId Int
 AS
+BEGIN
     DELETE
     FROM {databaseOwner}{objectQualifier}OutputCache
-    WHERE ItemId = @ItemId or @ItemId IS NULL
+    WHERE ItemId = @ItemId OR @ItemId IS NULL
+END
 GO
 
 /* Add PurgeOutputCache Schedule Job */
@@ -136,39 +149,40 @@ GO
 IF NOT EXISTS(SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke')
 BEGIN
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule
-			   ([TypeFullName]
-			   ,[TimeLapse]
-			   ,[TimeLapseMeasurement]
-			   ,[RetryTimeLapse]
-			   ,[RetryTimeLapseMeasurement]
-			   ,[RetainHistoryNum]
-			   ,[AttachToEvent]
-			   ,[CatchUpEnabled]
-			   ,[Enabled]
-			   ,[ObjectDependencies]
-			   ,[Servers]
-			   ,[CreatedByUserID]
-			   ,[CreatedOnDate]
-			   ,[LastModifiedByUserID]
-			   ,[LastModifiedOnDate]
-			   ,[FriendlyName])
-		 VALUES
-			   ('DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
-			   ,1
-			   ,'m'
-			   ,30
-			   ,'s'
-			   ,10
-			   ,''
-			   ,0
-			   ,0
-			   ,'OutputCache'
-			   ,NULL
-			   ,NULL
-			   ,NULL
-			   ,NULL
-			   ,NULL
-			   ,'Purge Output Cache')
+	(	[TypeFullName]
+	   ,[TimeLapse]
+	   ,[TimeLapseMeasurement]
+	   ,[RetryTimeLapse]
+	   ,[RetryTimeLapseMeasurement]
+	   ,[RetainHistoryNum]
+	   ,[AttachToEvent]
+	   ,[CatchUpEnabled]
+	   ,[Enabled]
+	   ,[ObjectDependencies]
+	   ,[Servers]
+	   ,[CreatedByUserID]
+	   ,[CreatedOnDate]
+	   ,[LastModifiedByUserID]
+	   ,[LastModifiedOnDate]
+	   ,[FriendlyName]
+	) VALUES
+    (	'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
+	   ,1
+	   ,'m'
+	   ,30
+	   ,'s'
+	   ,10
+	   ,''
+	   ,0
+	   ,0
+	   ,'OutputCache'
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,'Purge Output Cache'
+	 )
 END
 GO
 
