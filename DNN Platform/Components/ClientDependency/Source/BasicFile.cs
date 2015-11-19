@@ -20,6 +20,7 @@ namespace ClientDependency.Core
 		    Group = Constants.DefaultGroup;
             Name = "";
             Version = "";
+            ForceVersion = false;
         }
 
         #region IClientDependencyFile Members
@@ -53,6 +54,12 @@ namespace ClientDependency.Core
         /// Note this field is only used when Framework is specified
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Force this version to be used. Meant for skin designers that wish to override
+        /// choices made by module developers or the framework.
+        /// </summary>
+        public bool ForceVersion { get; set; }
 
         #endregion
 

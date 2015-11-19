@@ -29,6 +29,7 @@ namespace ClientDependency.Core.Controls
             AddTag = true;
             Name = "";
             Version = "";
+            ForceVersion = false;
         }
 
         public ClientDependencyType DependencyType { get; internal set; }
@@ -49,6 +50,12 @@ namespace ClientDependency.Core.Controls
         /// Note this field is only used when Framework is specified
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Force this version to be used. Meant for skin designers that wish to override
+        /// choices made by module developers or the framework.
+        /// </summary>
+        public bool ForceVersion { get; set; }
 
 		/// <summary>
 		/// This can be empty and will use default provider

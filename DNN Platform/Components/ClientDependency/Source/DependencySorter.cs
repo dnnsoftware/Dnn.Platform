@@ -19,7 +19,15 @@ namespace ClientDependency.Core
                 var frameworks = dependencies.Where(f => f.Name != "").GroupBy(f => f.Name.ToLower());
                 foreach (var framework in frameworks)
                 {
-                    newList.Add(framework.OrderByDescending(f => f.Version).First());
+                    var topPriority = framework.FirstOrDefault(d => d.ForceVersion);
+                    if (topPriority == null)
+                    {
+                        newList.Add(framework.OrderByDescending(f => f.Version).First());
+                    }
+                    else
+                    {
+                        newList.Add(topPriority);
+                    }
                 }
                 dependencies = newList;
             }

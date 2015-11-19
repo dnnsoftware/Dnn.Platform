@@ -15,6 +15,7 @@ namespace ClientDependency.Core
         bool ForceBundle { get; set; }
         string Name { get; set; }
         string Version { get; set; }
+        bool ForceVersion { get; set; }
 
     }
 }
