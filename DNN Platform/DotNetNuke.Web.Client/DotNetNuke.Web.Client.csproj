@@ -56,9 +56,9 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Controls\ClientResourceRemove.cs" />
-    <Compile Include="Controls\DnnJsRemove.cs" />
-    <Compile Include="Controls\DnnCssRemove.cs" />
+    <Compile Include="Controls\ClientResourceExclude.cs" />
+    <Compile Include="Controls\DnnJsExclude.cs" />
+    <Compile Include="Controls\DnnCssExclude.cs" />
     <Compile Include="Controls\DnnJsIncludeFallback.cs" />
     <Compile Include="FileOrder.cs" />
     <Compile Include="Controls\ClientResourceInclude.cs" />

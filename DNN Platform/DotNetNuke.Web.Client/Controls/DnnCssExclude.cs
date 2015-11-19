@@ -2,9 +2,9 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    public class DnnCssRemove : ClientResourceRemove
+    public class DnnCssExclude : ClientResourceExclude
     {
-        public DnnCssRemove()
+        public DnnCssExclude()
         {
             DependencyType = ClientDependency.Core.ClientDependencyType.Css;
         }

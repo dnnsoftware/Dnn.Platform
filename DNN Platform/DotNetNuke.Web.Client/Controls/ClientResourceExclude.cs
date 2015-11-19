@@ -5,7 +5,7 @@ using ClientDependency.Core.Controls;
 
 namespace DotNetNuke.Web.Client.Controls
 {
-    public abstract class ClientResourceRemove : Control
+    public abstract class ClientResourceExclude : Control
     {
 
         public string Name { get; set; }

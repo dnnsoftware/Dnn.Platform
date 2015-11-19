@@ -2,9 +2,9 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    public class DnnJsRemove : ClientResourceRemove
+    public class DnnJsExclude : ClientResourceExclude
     {
-        public DnnJsRemove()
+        public DnnJsExclude()
         {
             DependencyType = ClientDependency.Core.ClientDependencyType.Javascript;
         }
