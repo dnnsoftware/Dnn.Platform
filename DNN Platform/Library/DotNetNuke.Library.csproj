@@ -129,6 +129,10 @@
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SchwabenCode.QuickIO">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>
