@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	11/24/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class WidgetPackageWriter : PackageWriterBase
     {

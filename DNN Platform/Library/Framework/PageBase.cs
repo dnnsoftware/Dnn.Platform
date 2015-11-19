@@ -56,9 +56,6 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// PageBase provides a custom DotNetNuke base class for pages
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
@@ -83,9 +80,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the Page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
@@ -101,9 +95,6 @@ namespace DotNetNuke.Framework
         /// PageStatePersister returns an instance of the class that will be used to persist the Page State
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister</returns>
-        /// <history>
-        /// 	[cnurse]	    11/30/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {

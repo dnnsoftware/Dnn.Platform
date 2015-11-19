@@ -47,9 +47,6 @@ namespace DotNetNuke.Services.Social.Messaging
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class MessagingController 
                                 : ServiceLocator<IMessagingController, MessagingController>
                                 , IMessagingController

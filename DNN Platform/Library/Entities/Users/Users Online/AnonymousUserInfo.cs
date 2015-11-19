@@ -36,9 +36,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/14/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class AnonymousUserInfo : BaseUserInfo
@@ -49,9 +46,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User Id for this online user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string UserID
         {

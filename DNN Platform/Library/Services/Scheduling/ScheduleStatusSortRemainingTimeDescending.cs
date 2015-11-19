@@ -33,10 +33,6 @@ namespace DotNetNuke.Services.Scheduling
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ScheduleStatusSortRemainingTimeDescending : IComparer
     {

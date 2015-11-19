@@ -36,15 +36,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary></summary>
     /// <returns></returns>
     /// <remarks></remarks>
-    /// <history>
-    ///     
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// 
-    ///     [augustk]   07/14/2015  Added schema.org support and refactored most of
-    ///                             the code
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";

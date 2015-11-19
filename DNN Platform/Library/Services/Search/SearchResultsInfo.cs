@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     [Serializable]

@@ -51,9 +51,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/21/2006  Created
-    /// </history>
     public partial class SendPassword : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
@@ -71,9 +68,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/11/2008  Created
-        /// </history>
         protected string RedirectURL
         {
             get
@@ -132,9 +126,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected bool UseCaptcha
         {
             get
@@ -229,9 +220,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -261,9 +249,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected void OnSendPasswordClick(Object sender, EventArgs e)
         {
             //pretty much alwasy display the same message to avoid hinting on the existance of a user name

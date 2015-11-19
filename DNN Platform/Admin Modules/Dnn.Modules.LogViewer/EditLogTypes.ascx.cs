@@ -55,9 +55,6 @@ namespace Dnn.Modules.LogViewer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse] 17/9/2004  Updated for localization, Help and 508. 
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class EditLogTypes : PortalModuleBase, IActionable
     {
@@ -193,10 +190,6 @@ namespace Dnn.Modules.LogViewer
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/17/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -239,10 +232,6 @@ namespace Dnn.Modules.LogViewer
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/17/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnCancelClick(Object sender, EventArgs e)
         {
@@ -262,10 +251,6 @@ namespace Dnn.Modules.LogViewer
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/17/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnDeleteClick(Object sender, EventArgs e)
         {
@@ -289,10 +274,6 @@ namespace Dnn.Modules.LogViewer
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/17/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OnUpdateClick(Object sender, EventArgs e)
         {

@@ -129,6 +129,10 @@
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SchwabenCode.QuickIO">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>
@@ -748,6 +752,12 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryResponseFilter.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />

@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.WebControls
     /// PropertyEditorMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
     /// to determine the mode of the Editor.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	2/27/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum PropertyEditorMode
     {

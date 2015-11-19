@@ -34,9 +34,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [jbrinkman]	02/26/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:MultiLineTextEditControl runat=server></{0}:MultiLineTextEditControl>")]
     public class MultiLineTextEditControl : TextEditControl

@@ -45,8 +45,6 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
 
 #if SEARCHABLE

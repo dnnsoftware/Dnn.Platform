@@ -27,9 +27,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[bdukes]	03/03/2009  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class InvalidDependency : DependencyBase
     {

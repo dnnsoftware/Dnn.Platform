@@ -42,10 +42,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class EditGroups : PortalModuleBase
     {
@@ -63,10 +59,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -125,11 +117,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// 	[jlucarino]	2/26/2009	Added CreatedByUserID and LastModifiedByUserID
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
@@ -174,10 +161,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(object sender, EventArgs e)
         {
@@ -198,10 +181,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdCancel_Click(object sender, EventArgs e)
         {

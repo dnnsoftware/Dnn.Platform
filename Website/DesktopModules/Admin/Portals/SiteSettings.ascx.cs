@@ -85,11 +85,6 @@ namespace DesktopModules.Admin.Portals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/8/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class SiteSettings : PortalModuleBase
     {
 
@@ -789,10 +784,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void LoadStyleSheet(PortalInfo portal)
         {
             string uploadDirectory = "";
@@ -835,10 +826,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>A formatted string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string FormatCurrency()
         {
             var retValue = "";
@@ -861,10 +848,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>A formatted string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string FormatFee(object objHostFee)
         {
             var retValue = "";
@@ -887,10 +870,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>True if Subscribed, False if not</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsSubscribed(int portalModuleDefinitionId)
         {
             try
@@ -912,10 +891,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>True if SuperUser, False if not</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/4/2004	Added
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsSuperUser()
         {
             return UserInfo.IsSuperUser;
@@ -1046,11 +1021,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -1109,12 +1079,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        ///     [VMasanas]  9/12/2004   Move skin deassignment to DeletePortalInfo.
-        ///     [jmarino]  16/06/2011   Modify redirection after deletion of portal 
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void DeletePortal(object sender, EventArgs e)
         {
             try
@@ -1240,10 +1204,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnRestoreClick(object sender, EventArgs e)
         {
             try
@@ -1278,10 +1238,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnSaveClick(object sender, EventArgs e)
         {
             try
@@ -1336,11 +1292,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// 	[aprasad]	1/17/2011	New setting AutoAddPortalAlias
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void UpdatePortal(object sender, EventArgs e)
         {
             if (Page.IsValid)

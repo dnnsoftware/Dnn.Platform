@@ -66,9 +66,6 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// [skydnn] DNN4016 and DNN4133
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider
     {
@@ -861,10 +858,6 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="user">The user to persist to the Data Store.</param>
         /// <returns>A UserCreateStatus enumeration indicating success or reason for failure.</returns>
-        /// <history>
-        /// DNN-4016 Allow OAuth authenticated user to join more than one portal
-        /// DNN-4133 Prevent duplicate usernames for OAuth email address with same email prefix and different email domain.
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {

@@ -68,10 +68,6 @@ namespace Dnn.Modules.Tabs
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///   and localisation
-    /// </history>
     public partial class ManageTabs : PortalModuleBase
     {
         private TabInfo _tab;
@@ -667,9 +663,6 @@ namespace Dnn.Modules.Tabs
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [VMasanas]	28/11/2004	Created
-        /// </history>
         private bool IsCircularReference(int tabId, int portalId)
         {
             if (tabId != -1)
@@ -741,11 +734,6 @@ namespace Dnn.Modules.Tabs
         /// <remarks>
         /// </remarks>
         /// <param name = "strAction">The action to perform "edit" or "add"</param>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [jlucarino]	2/26/2009	Added CreatedByUserID and LastModifiedByUserID
-        /// </history>
         private int SaveTabData(string strAction)
         {
             string strIcon = ctlIcon.Url;
@@ -1738,11 +1726,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [VMasanas]  30/09/2004  When a parent tab is deleted all child are also marked as deleted.
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(object Sender, EventArgs e)
         {
@@ -1822,13 +1805,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   [aprasad]	3/21/2011	DNN-14685. Modified Redirect behavior after Save. Stays to the same page
-        ///                         if more than one langugae is present, else redirects to the updated/new page
-        ///   and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object Sender, EventArgs e)
         {
             try

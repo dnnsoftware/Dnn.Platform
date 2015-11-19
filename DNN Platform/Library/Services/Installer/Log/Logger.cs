@@ -38,9 +38,6 @@ namespace DotNetNuke.Services.Installer.Log
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Logger
     {
@@ -65,9 +62,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for Error Log Entries
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ErrorClass
         {
@@ -98,9 +92,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for Log Entries that should be highlighted
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string HighlightClass
         {
@@ -123,9 +114,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets a List of Log Entries
         /// </summary>
         /// <value>A List of LogEntrys</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public IList<LogEntry> Logs
         {
@@ -140,9 +128,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for normal Log Entries
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string NormalClass
         {
@@ -165,9 +150,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets a Flag that indicates whether the Installation was Valid
         /// </summary>
         /// <value>A List of LogEntrys</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Valid
         {
@@ -183,9 +165,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// </summary>
         /// <remarks>This method also sets the Valid flag to false</remarks>
         /// <param name="failure">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddFailure(string failure)
         {
@@ -204,9 +183,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The AddInfo method adds a new LogEntry of type Info to the Logs collection
         /// </summary>
         /// <param name="info">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddInfo(string info)
         {            
@@ -219,9 +195,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The AddWarning method adds a new LogEntry of type Warning to the Logs collection
         /// </summary>
         /// <param name="warning">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddWarning(string warning)
         {
@@ -235,9 +208,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The EndJob method adds a new LogEntry of type EndJob to the Logs collection
         /// </summary>
         /// <param name="job">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void EndJob(string job)
         {
@@ -248,9 +218,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// <summary>
         /// GetLogsTable formats log entries in an HtmlTable
         /// </summary>
-        /// <history>
-        ///   [jbrinkman] 24/11/2004  Created new method.  Moved from WebUpload.ascx.vb
-        /// </history>
         /// -----------------------------------------------------------------------------
         public HtmlTable GetLogsTable()
         {
@@ -302,9 +269,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The StartJob method adds a new LogEntry of type StartJob to the Logs collection
         /// </summary>
         /// <param name="job">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void StartJob(string job)
         {

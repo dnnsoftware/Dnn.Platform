@@ -36,9 +36,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[willhsc]	3/3/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class SkinInfo

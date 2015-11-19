@@ -34,9 +34,6 @@ namespace DotNetNuke.Services.Authentication
     /// The AuthenticationLogoffBase class provides a base class for Authentiication 
     /// Logoff controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/10/2007  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLogoffBase : UserModuleBase
     {
@@ -47,9 +44,6 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>
         /// Gets and Sets the Type of Authentication associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType
         {

@@ -36,9 +36,6 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	03/02/2007
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ProfileUserControlBase : UserModuleBase
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the OnProfileUpdateCompleted Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/13/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdateCompleted(EventArgs e)
         {
@@ -65,9 +59,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the ProfileUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/16/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdated(EventArgs e)
         {

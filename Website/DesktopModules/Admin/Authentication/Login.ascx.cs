@@ -65,9 +65,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]        07/03/2007   Created
-	/// </history>
 	public partial class Login : UserModuleBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
@@ -1260,9 +1257,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	07/12/2007	created
-		/// </history>
 		protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
 		{
 			var strMessage = "";

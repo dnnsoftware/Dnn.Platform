@@ -2774,10 +2774,16 @@ namespace DotNetNuke.Entities.Portals
                     Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string HomeDirectory = portal.HomeDirectoryMapPath;
-                        if (Directory.Exists(HomeDirectory))
+                        string homeDirectory = portal.HomeDirectoryMapPath;
+
+                        if (homeDirectory.EndsWith("\\"))
                         {
-                            Globals.DeleteFolderRecursive(HomeDirectory);
+                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
+                        }
+
+                        if (Directory.Exists(homeDirectory))
+                        {
+                            Globals.DeleteFolderRecursive(homeDirectory);
                         }
                     }
                     //remove database references
@@ -2855,9 +2861,6 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="pageSize">The size of the page</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
-        /// <history>
-        ///     [cnurse]	11/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {

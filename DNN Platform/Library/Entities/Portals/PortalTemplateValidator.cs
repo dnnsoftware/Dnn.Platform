@@ -32,9 +32,6 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class PortalTemplateValidator : XmlValidatorBase
     {
         public bool Validate(string xmlFilename, string schemaFileName)

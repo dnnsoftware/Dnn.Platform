@@ -40,9 +40,6 @@ namespace DotNetNuke.Modules.Admin.Host
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/06/2006 Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class FriendlyUrls : PortalModuleBase
     {
@@ -60,9 +57,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <value></value>
         /// <returns></returns>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool AddMode
         {
@@ -87,9 +81,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <value></value>
         /// <returns></returns>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private RewriterRuleCollection Rules
         {
@@ -163,9 +154,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -203,9 +191,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -226,9 +211,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void AddRule(object sender, EventArgs e)
         {
@@ -249,9 +231,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	7/06/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DeleteRule(object source, DataGridCommandEventArgs e)
         {

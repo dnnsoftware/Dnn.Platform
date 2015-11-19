@@ -41,9 +41,6 @@ namespace DotNetNuke.Security.Permissions
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
     /// objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModulePermissionCollection : CollectionBase

@@ -45,8 +45,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
     public partial class UsageDetails : PortalModuleBase
     {
         private bool _IsListBound;

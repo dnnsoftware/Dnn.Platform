@@ -35,8 +35,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     public partial class MyWork : PortalModuleBase
     {
 
@@ -57,8 +55,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

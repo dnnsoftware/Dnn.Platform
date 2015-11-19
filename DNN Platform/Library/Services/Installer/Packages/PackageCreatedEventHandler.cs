@@ -29,9 +29,6 @@ namespace DotNetNuke.Services.Installer.Packages
     /// The PackageCreatedEventHandler delegate defines a custom event handler for a
     /// PAckage Created Event.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	01/23/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public delegate void PackageCreatedEventHandler(object sender, PackageCreatedEventArgs e);
 }

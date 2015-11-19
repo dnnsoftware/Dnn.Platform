@@ -45,10 +45,6 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/05/2007	created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class Util
     {
         #region Constants
@@ -201,10 +197,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="sourceStream">The Source Stream</param>
         /// <param name="destStream">The Destination Stream</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void StreamToStream(Stream sourceStream, Stream destStream)
         {
             var buf = new byte[1024];
@@ -259,11 +251,7 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to backup</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
+       public static void BackupFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
@@ -286,10 +274,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to copy</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void CopyFile(InstallFile installFile, string basePath, Logger log)
         {
             string filePath = Path.Combine(basePath, installFile.Path);
@@ -315,10 +299,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to delete</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(InstallFile installFile, string basePath, Logger log)
         {
             DeleteFile(installFile.FullName, basePath, log);
@@ -331,10 +311,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">The file to delete</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, fileName);
@@ -359,10 +335,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="key">The localization key</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string GetLocalizedString(string key)
         {
             return Localization.Localization.GetString(key, Localization.Localization.SharedResourceFile);
@@ -393,10 +365,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="tabId">The id of the tab you are on</param>
         /// <param name="type">The type of package you are installing</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string InstallURL(int tabId, string type)
         {
             var parameters = new string[2];
@@ -463,11 +431,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="context">The ModuleContext of the module</param>
         /// <param name="packageId">The id of the package you are packaging</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        ///     [vnguyen]   05/24/2011  updated: calls NavigateUrl of Module Context to handle popups
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string PackageWriterURL(ModuleInstanceContext context, int packageId)
         {
             var parameters = new string[3];
@@ -544,10 +507,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to restore</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RestoreFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
@@ -567,11 +526,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="tabId">The id of the tab you are on</param>
         /// <param name="packageId">The id of the package you are uninstalling</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        ///     [vnguyen]   05/24/2011  updated: calls NavigateUrl of Module Context to handle popups
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string UnInstallURL(int tabId, int packageId)
         {
             var parameters = new string[2];
@@ -587,10 +541,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="sourceStream">The Source Stream</param>
         /// <param name="destFileName">The Destination file</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void WriteStream(Stream sourceStream, string destFileName)
         {
             //Delete the file
