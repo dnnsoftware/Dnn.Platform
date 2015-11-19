@@ -1771,6 +1771,7 @@
     <Content Include="Resources\Shared\scripts\dnn.utility.js" />
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
+    <Content Include="Resources\Shared\stylesheets\default\8.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
@@ -3766,7 +3767,6 @@
     <Content Include="Portals\_default\Containers\Gravity\Title_h4.jpg" />
     <Content Include="Portals\_default\Containers\_default\No Container.ascx" />
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
-    <Content Include="Portals\_default\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
