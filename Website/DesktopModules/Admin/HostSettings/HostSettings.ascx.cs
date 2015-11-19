@@ -226,6 +226,7 @@ namespace DotNetNuke.Modules.Admin.Host
                 cboPerformance.FindItemByValue("3").Selected = true;
             }
             cboCacheability.FindItemByValue(Entities.Host.Host.AuthenticatedCacheability).Selected = true;
+            cboUnauthCacheability.FindItemByValue(Entities.Host.Host.UnauthenticatedCacheability).Selected = true;
         }
 
         private void BindPaymentProcessor()
