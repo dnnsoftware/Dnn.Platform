@@ -400,6 +400,34 @@
     <Compile Include="admin\Skins\BreadCrumb.ascx.designer.cs">
       <DependentUpon>breadcrumb.ascx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Skins\DnnJsExclude.ascx.cs">
+      <DependentUpon>DnnJsExclude.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\DnnJsExclude.ascx.designer.cs">
+      <DependentUpon>DnnJsExclude.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Skins\DnnCssExclude.ascx.cs">
+      <DependentUpon>DnnCssExclude.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\DnnCssExclude.ascx.designer.cs">
+      <DependentUpon>DnnCssExclude.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Skins\DnnJsInclude.ascx.cs">
+      <DependentUpon>DnnJsInclude.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\DnnJsInclude.ascx.designer.cs">
+      <DependentUpon>DnnJsInclude.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Skins\DnnCssInclude.ascx.cs">
+      <DependentUpon>DnnCssInclude.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\DnnCssInclude.ascx.designer.cs">
+      <DependentUpon>DnnCssInclude.ascx</DependentUpon>
+    </Compile>
     <Compile Include="admin\Skins\Copyright.ascx.cs">
       <DependentUpon>copyright.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1107,6 +1135,20 @@
       <DependentUpon>OAUTHLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="admin\Skins\DnnJsInclude.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\Skins\DnnCssInclude.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\Skins\DnnJsExclude.xml" />
+    <Content Include="admin\Skins\DnnCssExclude.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\Skins\DnnJsExclude.ascx" />
+    <Content Include="admin\Skins\DnnCssExclude.ascx" />
+    <Content Include="admin\Skins\DnnJsInclude.ascx" />
+    <Content Include="admin\Skins\DnnCssInclude.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\Web.config" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
