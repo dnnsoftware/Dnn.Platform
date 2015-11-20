@@ -35,6 +35,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                                                        true);
         }
 
+        #region Serialization
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
@@ -51,23 +52,29 @@ namespace DotNetNuke.Entities.Modules.Settings
                     var settingValue = property.GetValue(settings, null);
                     if (settingValue != null)
                     {
+                        string settingValueAsString = settingValue.ToString();
+                        if (settingValue is DateTime)
+                        {
+                            settingValueAsString = ((DateTime)settingValue).ToString("u");
+                        }
                         if (attribute is ModuleSettingAttribute)
                         {
-                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.ParameterName, settingValue.ToString());
+                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.ParameterName, settingValueAsString);
                         }
                         else if (attribute is TabModuleSettingAttribute)
                         {
-                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.ParameterName, settingValue.ToString());
+                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.ParameterName, settingValueAsString);
                         }
                         else if (attribute is PortalSettingAttribute)
                         {
-                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.ParameterName, settingValue.ToString());
+                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.ParameterName, settingValueAsString);
                         }
                     }
                 }
             });
             DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
         }
+        #endregion
 
         #region Mappings
         protected IList<ParameterMapping> LoadMapping()
@@ -112,7 +119,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         }
         #endregion
 
-        #region Loading
+        #region Deserialization
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
@@ -142,7 +149,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 if (settingValue != null && property.CanWrite)
                 {
-                    this.WriteProperty(settings, property, settingValue);
+                    this.DeserializeProperty(settings, property, settingValue);
                 }
             });
 
@@ -154,14 +161,14 @@ namespace DotNetNuke.Entities.Modules.Settings
             return string.Format("SettingsModule{0}", moduleId);
         }
 
-                /// <summary>
-        /// Writes the property.
+        /// <summary>
+        /// Deserializes the property.
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>
         /// <exception cref="System.InvalidCastException"></exception>
-        private void WriteProperty(T settings, PropertyInfo property, object propertyValue)
+        private void DeserializeProperty(T settings, PropertyInfo property, object propertyValue)
         {
             try
             {
