@@ -5367,6 +5367,7 @@ namespace DotNetNuke.Services.Upgrade
 
             UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
             UninstallPackage("DotNetNuke.Dashboard", "Module");
+            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
         }
 
         private static void UpgradeToVersion80013()
