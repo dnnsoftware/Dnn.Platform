@@ -7,6 +7,8 @@ namespace DotNetNuke.Entities.Modules.Settings
     /// </summary>
     public abstract class ParameterAttributeBase : Attribute
     {
+        public string Prefix { get; set; }
         public string ParameterName { get; set; }
+        public string Serializer { get; set; }
     }
 }

@@ -27,16 +27,12 @@ namespace DotNetNuke.Entities.Modules.Settings
                 parameterName = property.Name;
             }
 
-            var parameterGrouping = attribute as IParameterGrouping;
-            if (parameterGrouping != null)
+            if (!string.IsNullOrWhiteSpace(attribute.Prefix))
             {
-                if (!string.IsNullOrWhiteSpace(parameterGrouping.Prefix))
-                {
-                    parameterName = parameterGrouping.Prefix + parameterName;
-                }
+                parameterName = attribute.Prefix + parameterName;
             }
 
-            this.ParameterName = parameterName;
+            this.FullParameterName = parameterName;
         }
 
         #endregion
@@ -45,7 +41,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         public ParameterAttributeBase Attribute { get; set; }
 
-        public string ParameterName { get; set; }
+        public string FullParameterName { get; set; }
 
         public PropertyInfo Property { get; set; }
 

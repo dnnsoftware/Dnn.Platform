@@ -52,22 +52,37 @@ namespace DotNetNuke.Entities.Modules.Settings
                     var settingValue = property.GetValue(settings, null);
                     if (settingValue != null)
                     {
-                        string settingValueAsString = settingValue.ToString();
-                        if (settingValue is DateTime)
+                        string settingValueAsString = "";
+                        if (!string.IsNullOrEmpty(attribute.Serializer))
                         {
-                            settingValueAsString = ((DateTime)settingValue).ToString("u");
+                            ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
+                            if (serializer != null)
+                            {
+                                settingValueAsString = serializer.Serialize((T)settingValue);
+                            }
+                            else
+                            {
+                                if (settingValue is DateTime)
+                                {
+                                    settingValueAsString = ((DateTime)settingValue).ToString("u");
+                                }
+                                else
+                                {
+                                    settingValueAsString = settingValue.ToString();
+                                }
+                            }
                         }
                         if (attribute is ModuleSettingAttribute)
                         {
-                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.ParameterName, settingValueAsString);
+                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
                         }
                         else if (attribute is TabModuleSettingAttribute)
                         {
-                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.ParameterName, settingValueAsString);
+                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         }
                         else if (attribute is PortalSettingAttribute)
                         {
-                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.ParameterName, settingValueAsString);
+                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.FullParameterName, settingValueAsString);
                         }
                     }
                 }
@@ -110,8 +125,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             properties.ForEach(property =>
             {
-                // In .NET Framework 4.5.x the call below can be replaced by property.GetCustomAttributes<BaseParameterAttribute>(true);
-                var attributes = property.GetCustomAttributes(typeof(ParameterAttributeBase), true).OfType<ParameterAttributeBase>();
+                var attributes = property.GetCustomAttributes<ParameterAttributeBase>(true);
                 attributes.ForEach(attribute => mapping.Add(new ParameterMapping(attribute, property)));
             });
 
@@ -133,23 +147,23 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var property = mapping.Property;
                 if (attribute is PortalSettingAttribute)
                 {
-                    settingValue = PortalController.GetPortalSetting(mapping.ParameterName, ctlModule.PortalID, null);
+                    settingValue = PortalController.GetPortalSetting(mapping.FullParameterName, ctlModule.PortalID, null);
                     if (string.IsNullOrWhiteSpace((string)settingValue))
                     {
                         settingValue = null;
                     }
                 }
-                else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.ParameterName))
+                else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = ctlModule.TabModuleSettings[mapping.ParameterName];
+                    settingValue = ctlModule.TabModuleSettings[mapping.FullParameterName];
                 }
-                else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.ParameterName))
+                else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = ctlModule.ModuleSettings[mapping.ParameterName];
+                    settingValue = ctlModule.ModuleSettings[mapping.FullParameterName];
                 }
                 if (settingValue != null && property.CanWrite)
                 {
-                    this.DeserializeProperty(settings, property, settingValue);
+                    this.DeserializeProperty(settings, property, attribute, settingValue);
                 }
             });
 
@@ -168,7 +182,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>
         /// <exception cref="System.InvalidCastException"></exception>
-        private void DeserializeProperty(T settings, PropertyInfo property, object propertyValue)
+        private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, object propertyValue)
         {
             try
             {
@@ -184,6 +198,14 @@ namespace DotNetNuke.Entities.Modules.Settings
                 {
                     // The property and settingsValue have the same type - no conversion needed - just update!
                     property.SetValue(settings, propertyValue, null);
+                }
+                else if (!string.IsNullOrEmpty(attribute.Serializer))
+                {
+                    ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
+                    if (serializer != null)
+                    {
+                        property.SetValue(settings, serializer.Deserialize((string)propertyValue), null);
+                    }
                 }
                 else if (propertyType.BaseType == typeof(Enum))
                 {
