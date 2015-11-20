@@ -43,6 +43,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
             TokenMethod = HttpMethod.GET;
             AuthorizationEndpoint = new Uri("https://graph.facebook.com/oauth/authorize");
             MeGraphEndpoint = new Uri("https://graph.facebook.com/me");
+            AccessToken = "fields=id,name,email,first_name,last_name,birthday,link,gender,locale,timezone,website&access_token";
 
             Scope = "email";
 
