@@ -94,19 +94,6 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        private int LockedByUserID
-        {
-            get
-            {
-                var userID = Settings.LockedBy;
-                return userID;
-            }
-            set
-            {
-                Settings.LockedBy = value;
-            }
-        }
-
         private string TempContent
         {
             get
@@ -486,7 +473,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     var workflowStates = _workflowStateController.GetWorkflowStates(WorkflowID);
                     var maxVersions = _htmlTextController.GetMaximumVersionHistory(PortalId);
-                    var userCanEdit = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) || UserInfo.UserID == LockedByUserID;
+                    var userCanEdit = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
 
                     lblMaxVersions.Text = maxVersions.ToString();
                     dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); //min 5, max 10

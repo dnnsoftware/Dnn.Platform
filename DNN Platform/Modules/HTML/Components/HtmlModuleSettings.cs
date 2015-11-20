@@ -6,20 +6,18 @@ namespace DotNetNuke.Modules.Html.Components
 {
     public class HtmlModuleSettings
     {
-        [ModuleSetting(Prefix = "HtmlText_", DefaultValue = false)]
-        public bool ReplaceTokens { get; set; }
+        [ModuleSetting(Prefix = "HtmlText_")]
+        public bool ReplaceTokens { get; set; } = false;
 
-        [ModuleSetting(Prefix = "HtmlText_", DefaultValue = true)]
-        public bool UseDecorate { get; set; }
+        [ModuleSetting(Prefix = "HtmlText_")]
+        public bool UseDecorate { get; set; } = true;
 
-        [ModuleSetting(Prefix = "HtmlText_", DefaultValue = 100)]
-        public int SearchDescLength { get; set; }
+        [ModuleSetting(Prefix = "HtmlText_")]
+        public int SearchDescLength { get; set; } = 100;
 
-        [ModuleSetting(DefaultValue = -1)]
-        public int WorkFlowID { get; set; }
+        [ModuleSetting()]
+        public int WorkFlowID { get; set; } = -1;
 
-        [ModuleSetting(Prefix = "Content_", DefaultValue = -1)]
-        public int LockedBy { get; set; }
     }
 
     public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
