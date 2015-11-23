@@ -33,5 +33,5 @@ jQuery(document).ready(function () {
         jQuery(this).removeClass("ui-state-hover");
     });
 
-    jQuery("#panUploadDiv .MessageBox").draggable();
+    jQuery("#panUploadDiv .MessageBox").draggable({ cursor: "move", handle: "div.modalHeader" });
 });
