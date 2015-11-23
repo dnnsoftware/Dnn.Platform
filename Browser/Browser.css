@@ -286,6 +286,10 @@ img {border:0}
 /* ModalDialog for Upload Dialog and Create Folder Dialog */
 .MessageBox{ position: absolute;z-index: 100;text-align: left; display:block;top: 96px; left: 220px;}  
 
+.MessageBox .modalHeader:hover {
+    cursor: move;
+}
+
 .ModalDialog .popup {
 	position:relative;
 	border:3px solid #000000;

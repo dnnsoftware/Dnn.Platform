@@ -211,6 +211,12 @@
     <Content Include="Browser\Browser.css" />
     <Content Include="Browser\jquery.fileupload-ui.css" />
     <Content Include="Browser\jquery.fileupload.css" />
+    <Content Include="Browser\js\Browser.js" />
+    <Content Include="Browser\js\jquery.cropzoom.js" />
+    <Content Include="Browser\js\jquery.fileupload.comb.min.js" />
+    <Content Include="Browser\js\jquery.ImageResizer.js" />
+    <Content Include="Browser\js\jquery.ImageSlider.js" />
+    <Content Include="Browser\js\jquery.pagemethod.js" />
     <Content Include="CKEditorConfig.png" />
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
