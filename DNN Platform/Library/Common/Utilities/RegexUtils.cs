@@ -10,8 +10,9 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Creates and caches a Regex object for later use and retrieves it in a later call if it is cacehd
         /// </summary>
-        public static Regex GetCahcedRegex(string pattern, RegexOptions options = RegexOptions.None)
+        public static Regex GetCahcedRegex(string pattern, RegexOptions options = RegexOptions.None, int timeoutSeconds = 2)
         {
+            Requires.NotNull("pattern", pattern);
             var key = pattern;
             if ((options & RegexOptions.IgnoreCase) != 0)
             {
@@ -20,14 +21,20 @@ namespace DotNetNuke.Common.Utilities
                     : pattern.ToUpper();
             }
 
-            key = string.Join(":", "REGEX_ITEM", options.ToString("X"), key);
+            // // should not allow for compiled dynamic regex object
+            options &= ~RegexOptions.Compiled;
+            key = string.Join(":", "REGEX_ITEM", options.ToString("X"), key.GetHashCode().ToString("X"));
+
+            // limit timeout between 1 and 10 seconds
+            if (timeoutSeconds < 1) timeoutSeconds = 1;
+            else if (timeoutSeconds > 10) timeoutSeconds = 10;
 
             var cache = CachingProvider.Instance();
             var regex = cache.GetItem(key) as Regex;
             if (regex == null)
             {
-                regex = new Regex(pattern, options & ~RegexOptions.Compiled, TimeSpan.FromSeconds(1)); // should not compile a dynamic regex
-                cache.Insert(key, regex, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30), CacheItemPriority.BelowNormal, null);
+                regex = new Regex(pattern, options & ~RegexOptions.Compiled, TimeSpan.FromSeconds(timeoutSeconds));
+                cache.Insert(key, regex, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(10), CacheItemPriority.BelowNormal, null);
             }
 
             return regex;
