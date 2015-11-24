@@ -44,34 +44,46 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
     ELSE
     BEGIN
         UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Server.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Server.ServerController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Server'
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Server.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Server.ServerController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Server'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Database.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Database.DatabaseController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Database'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Database.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Database.DatabaseController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Database'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Host.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Host.HostController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Host'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Host.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Host.HostController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Host'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Portals.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Portals.PortalsController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Portals'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Portals.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Portals.PortalsController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Portals'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Modules.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Modules.ModulesController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Modules'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Modules.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Modules.ModulesController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Modules'
 
-                        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Skins.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Skins.SkinsController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Skins'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Skins.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Skins.SkinsController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Skins'
+
+		UPDATE {databaseOwner}[{objectQualifier}Packages] SET [Version] = N'8.0.0'
+		WHERE [Name] IN
+		(
+			'DotNetNuke.Dashboard.WebServer',
+			'DotNetNuke.Dashboard.Database',
+			'DotNetNuke.Dashboard.Host',
+			'DotNetNuke.Dashboard.Portals',
+			'DotNetNuke.Dashboard.Modules',
+			'DotNetNuke.Dashboard.Skins'
+		)
+
     END
 GO
 
