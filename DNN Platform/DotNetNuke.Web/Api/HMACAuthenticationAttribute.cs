@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Api
                     var nonce = autherizationHeaderArray[2];
                     var requestTimeStamp = autherizationHeaderArray[3];
 
-                    var isValid = isValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
+                    var isValid = IsValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
 
                     if (isValid.Result)
                     {
@@ -101,7 +101,9 @@ namespace DotNetNuke.Web.Api
 
         }
 
-        private async Task<bool> isValidRequest(HttpRequestMessage req, string APPId, string incomingBase64Signature, string nonce, string requestTimeStamp)
+#pragma warning disable 1998
+        private async Task<bool> IsValidRequest(HttpRequestMessage req, string APPId, string incomingBase64Signature, string nonce, string requestTimeStamp)
+#pragma warning restore 1998
         {
             string requestContentBase64String = "";
             string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());

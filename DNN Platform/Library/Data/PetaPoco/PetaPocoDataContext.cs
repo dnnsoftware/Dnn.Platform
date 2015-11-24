@@ -30,6 +30,7 @@ using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    [CLSCompliant(false)]
     public class PetaPocoDataContext : IDataContext
     {
         #region Private Members

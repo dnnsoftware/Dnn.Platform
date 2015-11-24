@@ -1,13 +1,15 @@
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
-	/// <summary>
-	/// Summary description for PaletteQuantizer.
-	/// </summary>
-	public  class PaletteQuantizer : Quantizer
+    /// <summary>
+    /// Summary description for PaletteQuantizer.
+    /// </summary>
+    [CLSCompliant(false)]
+    public  class PaletteQuantizer : Quantizer
 	{
 		/// <summary>
 		/// Construct the palette quantizer
@@ -109,11 +111,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <summary>
 		/// Lookup table for colors
 		/// </summary>
-		private Hashtable	_colorMap ;
+		private Hashtable _colorMap ;
 
 		/// <summary>
 		/// List of all colors in the palette
 		/// </summary>
-		protected Color[]		_colors ;
+		protected Color[] _colors ;
 	}
 }

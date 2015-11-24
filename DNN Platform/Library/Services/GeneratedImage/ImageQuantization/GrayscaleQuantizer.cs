@@ -4,10 +4,11 @@ using System.Drawing;
 
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
-	/// <summary>
-	/// Summary description for PaletteQuantizer.
-	/// </summary>
-	public  class GrayscaleQuantizer : PaletteQuantizer
+    /// <summary>
+    /// Summary description for PaletteQuantizer.
+    /// </summary>
+    [CLSCompliant(false)]
+    public  class GrayscaleQuantizer : PaletteQuantizer
 	{
 		/// <summary>
 		/// Construct the palette quantizer

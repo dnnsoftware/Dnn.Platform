@@ -29,7 +29,7 @@ namespace Dnn.Modules.DynamicContentManager.Components
                 Personalization.SetProfile(personalization, "DCC", "UserSettings" + portalSettings.PortalId + moduleId, setting);
                 personalizationController.SaveProfile(personalization);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 DotNetNuke.Services.Log.EventLog.EventLogController.Instance.AddLog("Personalization Save Failed",
                     "Failed to load/save personalization data.", portalSettings, -1, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.ADMIN_ALERT);
