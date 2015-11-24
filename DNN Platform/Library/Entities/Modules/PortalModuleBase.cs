@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Modules
     /// </remarks>
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
-        protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)\.resx", RegexOptions.Compiled);
+        protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
 
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
