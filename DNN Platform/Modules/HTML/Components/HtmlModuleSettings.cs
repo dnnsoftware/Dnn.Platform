@@ -4,6 +4,14 @@ using System.Web.Caching;
 
 namespace DotNetNuke.Modules.Html.Components
 {
+    /// <summary>
+    /// An example implementation of the <see cref="ModuleSettingAttribute"/>
+    /// </summary>
+    /// <remarks>
+    /// HtmlModuleSettings provides a strongly typed list of properties used by 
+    /// the HTML module.  Settings will automatically be serialized and deserialized
+    /// for storage in the underlying settings table.
+    /// </remarks>
     public class HtmlModuleSettings
     {
         [ModuleSetting(Prefix = "HtmlText_")]
@@ -20,6 +28,9 @@ namespace DotNetNuke.Modules.Html.Components
 
     }
 
+    /// <summary>
+    /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>
+    /// </summary>
     public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
     {
     }
