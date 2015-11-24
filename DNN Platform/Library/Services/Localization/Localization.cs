@@ -115,6 +115,7 @@ namespace DotNetNuke.Services.Localization
     public class Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
+
         #region Private Members
 
         private static string _defaultKeyName = "resourcekey";
@@ -122,6 +123,7 @@ namespace DotNetNuke.Services.Localization
         //private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static Nullable<Boolean> _showMissingKeys;
 
+        private static readonly Regex UnsafeJsRegex = new Regex("(['\"\\\\])", RegexOptions.Compiled);
         #endregion
 
         #region Public Shared Properties
@@ -1238,10 +1240,10 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            var safeString = !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
-			if (!string.IsNullOrEmpty(safeString))
+            var safeString = string.IsNullOrEmpty(unsafeString) ? "" : UnsafeJsRegex.Replace(unsafeString, "\\$1");
+			if (safeString.Length > 0)
 	        {
-				safeString = safeString.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+				safeString = safeString.Replace("\r", string.Empty).Replace("\n", string.Empty);
 	        }
 
 			return safeString;

@@ -19,21 +19,18 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Globalization;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Instrumentation;
-
-using Telerik.Web.UI.Widgets;
-using DotNetNuke.Services.FileSystem;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem;
+using Telerik.Web.UI.Widgets;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Providers.RadEditorProvider
@@ -849,7 +846,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			bool returnValue = false;
 			foreach (string pattern in searchPatterns)
 			{
-				bool result = new System.Text.RegularExpressions.Regex(ConvertToRegexPattern(pattern), System.Text.RegularExpressions.RegexOptions.IgnoreCase).IsMatch(dnnFileName);
+				bool result = new Regex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase).IsMatch(dnnFileName);
 
 				if (result)
 				{
@@ -863,7 +860,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
         private string ConvertToRegexPattern(string pattern)
 		{
-			string returnValue = System.Text.RegularExpressions.Regex.Escape(pattern);
+			string returnValue = Regex.Escape(pattern);
 			returnValue = returnValue.Replace("\\*", ".*");
 			returnValue = returnValue.Replace("\\?", ".") + "$";
 			return returnValue;

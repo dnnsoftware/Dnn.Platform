@@ -90,6 +90,10 @@ namespace DotNetNuke.Common
         public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
         public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex NumberMatchRegex = new Regex(@"^\d+$", RegexOptions.Compiled);
+        public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+        public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
 
         #region PerformanceSettings enum
 
@@ -1926,35 +1930,40 @@ namespace DotNetNuke.Common
         public static void CreateRSS(IDataReader dr, string TitleField, string URLField, string CreatedDateField, string SyndicateField, string DomainName, string FileName)
         {
             // Obtain PortalSettings from Current Context
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            string strRSS = "";
-            string strRelativePath = DomainName + FileName.Substring(FileName.IndexOf("\\Portals")).Replace("\\", "/");
-            strRelativePath = strRelativePath.Substring(0, strRelativePath.LastIndexOf("/"));
+            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var strRSS = new StringBuilder();
+            var strRelativePath = DomainName + FileName.Substring(FileName.IndexOf("\\Portals", StringComparison.InvariantCultureIgnoreCase)).Replace("\\", "/");
+            strRelativePath = strRelativePath.Substring(0, strRelativePath.LastIndexOf("/", StringComparison.InvariantCulture));
             try
             {
                 while (dr.Read())
                 {
-                    if (Convert.ToInt32(dr[SyndicateField]) > 0)
+                    int field;
+                    int.TryParse((dr[SyndicateField] ?? "").ToString(), out field);
+                    if (field > 0)
                     {
-                        strRSS += "      <item>" + Environment.NewLine;
-                        strRSS += "         <title>" + dr[TitleField] + "</title>" + Environment.NewLine;
-                        if (dr["URL"].ToString().IndexOf("://") == -1)
+                        strRSS.AppendLine(" <item>");
+                        strRSS.AppendLine("  <title>" + dr[TitleField] + "</title>");
+                        var drUrl = (dr["URL"] ?? "").ToString();
+                        if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
                         {
-                            if (Regex.IsMatch(dr["URL"].ToString(), "^\\d+$"))
+                            strRSS.Append("  <link>");
+                            if (NumberMatchRegex.IsMatch(drUrl))
                             {
-                                strRSS += "         <link>" + DomainName + "/" + glbDefaultPage + "?tabid=" + dr[URLField] + "</link>" + Environment.NewLine;
+                                strRSS.Append(DomainName + "/" + glbDefaultPage + "?tabid=" + dr[URLField]);
                             }
                             else
                             {
-                                strRSS += "         <link>" + strRelativePath + dr[URLField] + "</link>" + Environment.NewLine;
+                                strRSS.Append(strRelativePath + dr[URLField]);
                             }
+                            strRSS.AppendLine("</link>");
                         }
                         else
                         {
-                            strRSS += "         <link>" + dr[URLField] + "</link>" + Environment.NewLine;
+                            strRSS.AppendLine("  <link>" + dr[URLField] + "</link>");
                         }
-                        strRSS += "         <description>" + _portalSettings.PortalName + " " + GetMediumDate(dr[CreatedDateField].ToString()) + "</description>" + Environment.NewLine;
-                        strRSS += "     </item>" + Environment.NewLine;
+                        strRSS.AppendLine("  <description>" + _portalSettings.PortalName + " " + GetMediumDate(dr[CreatedDateField].ToString()) + "</description>");
+                        strRSS.AppendLine(" </item>");
                     }
                 }
             }
@@ -1966,18 +1975,16 @@ namespace DotNetNuke.Common
             {
                 CBO.CloseDataReader(dr, true);
             }
-            if (!String.IsNullOrEmpty(strRSS))
+
+            if (strRSS.Length == 0)
             {
-                strRSS = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>" + Environment.NewLine + "<rss version=\"0.91\">" + Environment.NewLine + "  <channel>" + Environment.NewLine + "     <title>" +
-                         _portalSettings.PortalName + "</title>" + Environment.NewLine + "     <link>" + DomainName + "</link>" + Environment.NewLine + "     <description>" +
-                         _portalSettings.PortalName + "</description>" + Environment.NewLine + "     <language>en-us</language>" + Environment.NewLine + "     <copyright>" +
+                strRSS.Append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>" + Environment.NewLine + "<rss version=\"0.91\">" + Environment.NewLine + "  <channel>" + Environment.NewLine + "  <title>" +
+                         _portalSettings.PortalName + "</title>" + Environment.NewLine + "  <link>" + DomainName + "</link>" + Environment.NewLine + "  <description>" +
+                         _portalSettings.PortalName + "</description>" + Environment.NewLine + "  <language>en-us</language>" + Environment.NewLine + "  <copyright>" +
                          (!string.IsNullOrEmpty(_portalSettings.FooterText) ? _portalSettings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty) +
-                         "</copyright>" + Environment.NewLine + "     <webMaster>" + _portalSettings.Email + "</webMaster>" + Environment.NewLine + strRSS + "   </channel>" + Environment.NewLine +
-                         "</rss>";
-                StreamWriter objStream;
-                objStream = File.CreateText(FileName);
-                objStream.WriteLine(strRSS);
-                objStream.Close();
+                         "</copyright>" + Environment.NewLine + "  <webMaster>" + _portalSettings.Email + "</webMaster>" + Environment.NewLine + strRSS + "   </channel>" + Environment.NewLine +
+                         "</rss>");
+                File.WriteAllText(FileName, strRSS.ToString());
             }
             else
             {
@@ -2725,7 +2732,7 @@ namespace DotNetNuke.Common
             }
             if (URL.ToLower().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
             {
-                if (Regex.IsMatch(URL, @"^\d+$"))
+                if (NumberMatchRegex.IsMatch(URL))
                 {
                     return TabType.Tab;
                 }

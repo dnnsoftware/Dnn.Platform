@@ -41,8 +41,6 @@ namespace DotNetNuke.Modules.Journal
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileUploadController));
 
-        private static readonly Regex FileNameRegex = new Regex(@"\..+;", RegexOptions.Compiled);
-
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -80,7 +78,7 @@ namespace DotNetNuke.Modules.Journal
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
-                   && !FileNameRegex.IsMatch(fileName);
+                   && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
         private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG" };

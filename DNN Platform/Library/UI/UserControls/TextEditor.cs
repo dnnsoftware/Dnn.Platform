@@ -25,7 +25,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.HTMLEditorProvider;
@@ -51,8 +51,6 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-        private readonly static Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         #region Private Members
 
         private const string MyFileName = "TextEditor.ascx";
@@ -358,7 +356,7 @@ namespace DotNetNuke.UI.UserControls
 
         private static string RemoveBaseTags(String strInput)
 		{
-            return BaseTagRegex.Replace(strInput, " ");
+            return Globals.BaseTagRegex.Replace(strInput, " ");
 		}
 		#endregion
 

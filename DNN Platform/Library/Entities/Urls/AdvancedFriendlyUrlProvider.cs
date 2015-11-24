@@ -691,13 +691,11 @@ namespace DotNetNuke.Entities.Urls
             string friendlyPath = path;
             Match queryStringMatch = FriendlyPathRegex.Match(friendlyPath);
             string queryStringSpecialChars = "";
-            const string defaultPageName = Globals.glbDefaultPage;
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
-                friendlyPath = Regex.Replace(friendlyPath, defaultPageName, "",
-                                             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                if (String.Compare(pageName, defaultPageName, StringComparison.OrdinalIgnoreCase) != 0)
+                friendlyPath = DefaultPageRegex.Replace(friendlyPath, "");
+                if (String.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                 //take out the end page name, it will get re-added
                 {
                     var pgNameRx = UrlRewriterUtils.GetCahcedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

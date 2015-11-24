@@ -349,7 +349,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         private void MenuItem_Click(NavigationEventArgs args)
         {
-            if (Regex.IsMatch(args.ID, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
                 ModuleAction action = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
                 if (!ActionManager.ProcessAction(action))

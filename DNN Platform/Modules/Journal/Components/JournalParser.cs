@@ -33,6 +33,8 @@ namespace DotNetNuke.Modules.Journal.Components
 	    private const string ResxPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
 
         private static readonly Regex CdataRegex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>", RegexOptions.Compiled);
+        private static readonly Regex TemplateRegex = new Regex("{CanComment}(.*?){/CanComment}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
 
 	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo) 
         {
@@ -110,22 +112,21 @@ namespace DotNetNuke.Modules.Journal.Components
             IList<CommentInfo> comments = JournalController.Instance.GetCommentsByJournalIds(journalIds);
 
 			foreach (JournalItem ji in journalList) {
-                const string pattern = "{CanComment}(.*?){/CanComment}";
 			    string replacement = GetStringReplacement(ji);
 
 			    string rowTemplate;
 			    if (ji.JournalType == "status") {
                     rowTemplate = statusTemplate;
-                    rowTemplate = Regex.Replace(rowTemplate, pattern, replacement, RegexOptions.IgnoreCase);
+                    rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
                 } else if (ji.JournalType == "link") {
                     rowTemplate = linkTemplate;
-                    rowTemplate = Regex.Replace(rowTemplate, pattern, replacement, RegexOptions.IgnoreCase);
+                    rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
                 } else if (ji.JournalType == "photo") {
                     rowTemplate = photoTemplate;
-                    rowTemplate = Regex.Replace(rowTemplate, pattern, replacement, RegexOptions.IgnoreCase);
+                    rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
                 } else if (ji.JournalType == "file") {
                     rowTemplate = fileTemplate;
-                    rowTemplate = Regex.Replace(rowTemplate, pattern, replacement, RegexOptions.IgnoreCase);
+                    rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
                 } else {
                     rowTemplate = GetJournalTemplate(ji.JournalType, ji);
                 }
@@ -194,12 +195,8 @@ namespace DotNetNuke.Modules.Journal.Components
             template = BaseUrlRegex.Replace(template, url);
             template = template.Replace("[journalitem:action]", Localization.GetString(journalType + ".Action", ResxPath));
 
-            const string pattern = "{CanComment}(.*?){/CanComment}";
-            string replacement = GetStringReplacement(ji);
-
-            template = Regex.Replace(template, pattern, replacement, RegexOptions.IgnoreCase);
-
-            return template;
+            var replacement = GetStringReplacement(ji);
+            return TemplateRegex.Replace(template, replacement);
         }
 
 		internal string GetLikeListHTML(JournalItem ji, ref bool isLiked) 

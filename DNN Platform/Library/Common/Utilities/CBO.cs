@@ -315,7 +315,7 @@ namespace DotNetNuke.Common.Utilities
                             if (propType.BaseType.Equals(typeof (Enum)))
                             {
 								//check if value is numeric and if not convert to integer ( supports databases like Oracle )
-                                if (Regex.IsMatch(coloumnValue.ToString(), "^\\d+$"))
+                                if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
                                 {
                                     objPropertyInfo.SetValue(hydratedObject,
                                                              Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),

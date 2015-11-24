@@ -10,8 +10,7 @@ namespace DotNetNuke.Modules.Groups {
 
             string pattern = "(\\[" + Token + "\\](.*?)\\[\\/" + Token + "\\])";
             Regex regExp = new Regex(pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            MatchCollection matches = default(MatchCollection);
-            matches = regExp.Matches(Template);
+            MatchCollection matches = matches = regExp.Matches(Template);
             foreach (Match match in matches) {
                 if (Condition) {
                     Template = Template.Replace(match.Value, match.Groups[2].Value);

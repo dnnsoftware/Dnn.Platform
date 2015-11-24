@@ -59,10 +59,12 @@ namespace DotNetNuke.Services.Installer.Writers
         private readonly List<string> _Versions = new List<string>();
         private string _BasePath = Null.NullString;
         private PackageInfo _Package;
-		
-		#endregion
 
-	#region "Constructors"
+        private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
+
+        #endregion
+
+        #region "Constructors"
 
         protected PackageWriterBase()
         {
@@ -620,7 +622,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     _Files[file.FullName.ToLower()] = file;
                     break;
             }
-            if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && Regex.IsMatch(file.Name, Util.REGEX_Version))
+            if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
             {
                 string version = Path.GetFileNameWithoutExtension(file.Name);
                 if (!_Versions.Contains(version))

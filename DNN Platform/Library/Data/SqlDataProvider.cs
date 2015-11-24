@@ -315,7 +315,7 @@ namespace DotNetNuke.Data
                 var objRegex = (Regex)DataCache.GetCache("SQLDelimiterRegex");
                 if (objRegex == null)
                 {
-                    objRegex = new Regex(_scriptDelimiterRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                    objRegex = new Regex(_scriptDelimiterRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
                     DataCache.SetCache("SQLDelimiterRegex", objRegex);
                 }
                 return objRegex;

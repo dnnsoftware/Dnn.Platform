@@ -207,7 +207,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a Regular Expression that deermines the strength of the password
+        /// Gets and sets a Regular Expression that determines the strength of the password
         /// </summary>
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------

@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
                                 //Contains Non-AlphaNumeric Characters
                                 if ((pair[0].ToLower() == "tabid"))
                                 {
-                                    if ((Regex.IsMatch(pair[1], "^\\d+$")))
+                                    if (Globals.NumberMatchRegex.IsMatch(pair[1]))
                                     {
                                         if (tab != null)
                                         {

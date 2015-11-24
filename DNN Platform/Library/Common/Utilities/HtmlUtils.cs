@@ -46,19 +46,20 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class HtmlUtils
     {
-        private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled);
         private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
         private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
          
         //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
-        private readonly static Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
+        private static readonly Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
 
         //Create Regular Expression objects
-        const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
-        private readonly static Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
-        private readonly static Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
+        private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+        private static readonly Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
+        private static readonly Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
+        private static readonly Regex EntityRegEx = new Regex("&[^;]+;", RegexOptions.Compiled);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -165,7 +166,7 @@ namespace DotNetNuke.Common.Utilities
             string formatEmail = "";
             if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Email.Trim()))
             {
-                if (Email.IndexOf("@") != -1)
+                if (Email.IndexOf("@", StringComparison.Ordinal) != -1)
                 {
                     formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", Email);
                 }
@@ -262,10 +263,10 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (!String.IsNullOrEmpty(Website.ToString().Trim()))
                 {
-                    if (Website.ToString().IndexOf(".") > -1)
+                    if (Website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
                         formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
-                            (Website.ToString().IndexOf("://") > -1 ? "" : "http://"));
+                            (Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? "" : "http://"));
                     }
                     else
                     {
@@ -312,7 +313,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var repString = RetainSpace ? " " : "";
             //Replace Entities by replacement String and return mofified string
-            return Regex.Replace(HTML, "&[^;]+;", repString); // obsoleted; no need to optimize
+            return EntityRegEx.Replace(HTML, repString);
         }
 
         /// <summary>
@@ -364,18 +365,10 @@ namespace DotNetNuke.Common.Utilities
             var result = new StringBuilder();
 
             //Set up Replacement String
-            string RepString = null;
-            if (retainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
+            var repString = retainSpace ? " " : "";
 
             //Stripped HTML
-            result.Append(StripTagsRegex.Replace(html, RepString));
+            result.Append(StripTagsRegex.Replace(html, repString));
 
             //Adding Tag info from specified tags
             foreach (Match m in Regex.Matches(html, "(?<=(" + specifiedTags + ")=)\"(?<a>.*?)\""))
@@ -411,22 +404,14 @@ namespace DotNetNuke.Common.Utilities
             string retHTML = HTML + " "; //Make sure any punctuation at the end of the String is removed
 
             //Set up Replacement String
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
+            var repString = RetainSpace ? " " : "";
             while (BeforeRegEx.IsMatch(retHTML))
             {
-                retHTML = BeforeRegEx.Replace(retHTML, RepString);
+                retHTML = BeforeRegEx.Replace(retHTML, repString);
             }
             while (AfterRegEx.IsMatch(retHTML))
             {
-                retHTML = AfterRegEx.Replace(retHTML, RepString);
+                retHTML = AfterRegEx.Replace(retHTML, repString);
             }
             // Return modified string after trimming leading and ending quotation marks
             return retHTML.Trim('"');
@@ -549,7 +534,7 @@ namespace DotNetNuke.Common.Utilities
                 string strMessage = "";
                 if (showtime)
                 {
-                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".") + 4) + " -";
+                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
                 }
                 for (int i = 0; i <= indent; i++)
                 {
@@ -655,14 +640,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void WriteSuccessError(HttpResponse response, bool bSuccess)
         {
-            if (bSuccess)
-            {
-                WriteFeedback(response, 0, "<font color='green'>Success</font><br>", false);
-            }
-            else
-            {
-                WriteFeedback(response, 0, "<font color='red'>Error!</font><br>", false);
-            }
+            WriteFeedback(response, 0, bSuccess ? "<font color='green'>Success</font><br>" : "<font color='red'>Error!</font><br>", false);
         }
 
         public static void WriteScriptSuccessError(HttpResponse response, bool bSuccess, string strLogFile)
