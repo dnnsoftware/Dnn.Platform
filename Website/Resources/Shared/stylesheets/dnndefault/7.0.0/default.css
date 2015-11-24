@@ -1,0 +1,3800 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/* ---------------------------------------------------------
+	
+	* Filename:				default.css
+	* Description: 			sets typography, basic grids, 
+							and standard formstyles
+	* Version:				1.0.0 (2012-06-16)
+	* Author:				Ryan Martinez
+	
+	== INDEX ===============================================
+	
+	$__generic classes		classes used globally, should be at bottom to prevent semantic inheritance
+	
+------------------------------------------------------------*/
+
+
+/*-------------------------------------*/
+/* RESET */
+/*-------------------------------------*/
+
+/* http://meyerweb.com/eric/tools/css/reset/
+    v2.0 | 20110126
+    License: none (public domain)
+    */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+caption, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+html, button, input, select, textarea {
+    font-family: sans-serif;
+    color: #222;
+}
+
+/*
+     * Remove text-shadow in selection highlight: h5bp.com/i
+     * These selection declarations have to be separate
+     * Also: hot pink! (or customize the background color to match your design)
+     */
+
+::-moz-selection {
+    background: rgba(2,139,255,1); /* blue */
+    color: #fff;
+    text-shadow: none;
+}
+
+::selection {
+    background: rgba(2,139,255,1); /* blue */
+    color: #fff;
+    text-shadow: none;
+}
+
+/* Improve readability of pre-formatted text in all browsers */
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Position subscript and superscript content without affecting line-height: h5bp.com/k */
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+body {
+    color: #444;
+    font-size: 12px;
+    line-height: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
+    -webkit-text-size-adjust: 100%;
+}
+
+/*-------------------------------------*/
+/* HEADER STYLES */
+/*-------------------------------------*/
+
+h1, h2, h3, h4, h5, h6 {
+    display: block;
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+        font-weight: inherit;
+    }
+
+h1 {
+    font-size: 38px;
+    line-height: 54px;
+    letter-spacing: normal;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: normal;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: normal;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 22px;
+    line-height: 36px;
+    letter-spacing: normal;
+}
+
+h5 {
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: normal;
+}
+
+h6 {
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: normal;
+}
+
+/* Module titles */
+.Head {
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+/* Some old forge modules use .Head, .SubHead, .SubSubHead in table td, We keep this to be compatible */
+td.Head, td.SubHead, td.SubSubHead {
+    display: table-cell;
+    margin-bottom: 0;
+}
+
+input[type="image"] + span.Head, input[type="image"] + span.SubHead {
+    display: inline;
+}
+
+/*-------------------------------------*/
+/* PARAGRAPH STYLES */
+/*-------------------------------------*/
+p {
+    margin: 0 0 18px 0;
+}
+    /* margin bottom is equal to line-height */
+    p img {
+        margin: 0;
+    }
+
+em, i {
+    font-style: italic;
+}
+
+strong, b {
+    font-weight: bold;
+}
+
+small {
+    font-size: 80%;
+}
+
+/* Set text size in modules*/
+.Normal,
+.NormalDisabled,
+.NormalDeleted {
+    color: #444;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+}
+
+/* disabled text styles */
+.NormalDisabled,
+.NormalDeleted {
+    color: #999;
+}
+
+/* text style used for help text rendered by modules */
+.Help {
+    padding: 2px;
+    border: #000 1px solid;
+    background-color: #ff9;
+    font-weight: normal;
+    font-size: 11px;
+    color: #000;
+}
+/* text style used for rendered text which requires emphasis */
+.NormalBold {
+    font-weight: bold;
+    color: #222;
+}
+
+/* text style used for error messages */
+.NormalRed {
+    font-weight: bold;
+    color: red;
+}
+
+/* text style used for rendered text which should appear deleted */
+.NormalDeleted {
+    text-decoration: line-through;
+}
+
+/*	Blockquotes  */
+blockquote, blockquote p {
+    font-size: 17px;
+    line-height: 24px;
+    color: #777;
+    font-style: italic;
+}
+
+blockquote {
+    margin: 0 0 20px;
+    padding: 9px 20px 0 19px;
+    border-left: 1px solid #ddd;
+}
+
+    blockquote cite {
+        display: block;
+        font-size: 12px;
+        color: #555;
+    }
+
+        blockquote cite:before {
+            content: "\2014 \0020";
+        }
+
+        blockquote cite a, blockquote cite a:visited, blockquote cite a:visited {
+            color: #555;
+        }
+
+hr {
+    clear: both;
+    margin: 17px 0 17px;
+    height: 0;
+    border: solid #ddd;
+    border-width: 1px 0 0;
+}
+
+/*-------------------------------------*/
+/* ANCHOR STYLES */
+/*-------------------------------------*/
+a, a:visited {
+    color: rgb(2,139,255); /*blue*/
+    text-decoration: underline;
+    outline: 0;
+}
+
+    a:hover, a:focus, a:active {
+        color: #222;
+        outline: 0;
+    }
+
+p a, p a:visited {
+    line-height: inherit;
+}
+
+/*-------------------------------------*/
+/* IMAGE STYLES */
+/*-------------------------------------*/
+img.dnn-scale-img {
+    max-width: 100%;
+    height: auto;
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+    vertical-align: middle;
+}
+
+#dnn_dnnLOGO_imgLogo {
+     border: 0;
+}
+
+/*-------------------------------------*/
+/* lIST STYLES */
+/*-------------------------------------*/
+ul, ol {
+    margin-bottom: 18px;
+    margin-left: 18px;
+}
+
+ul {
+    list-style: square outside;
+}
+
+ol {
+    list-style: decimal;
+}
+
+    /* Nested Styles */
+    ul ul, ul ol,
+    ol ol, ol ul {
+        margin-left: 18px;
+        margin-bottom: 0;
+    }
+
+    ol ol {
+        list-style: lower-roman;
+    }
+
+li p {
+    line-height: 18px;
+}
+
+/*-------------------------------------*/
+/* MESSAGE STYLES */
+/*-------------------------------------*/
+.dnnFormMessage {
+    display: block;
+    padding: 17px 18px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(2,139,255,0.2); /* blue */
+    background: rgba(2,139,255,0.15); /* blue */
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    max-width: 980px;
+}
+
+    .dnnFormMessage.dnnFormError,
+    .dnnFormMessage.dnnFormValidationSummary {
+        background-color: rgba(255,0,0,0.15); /* red */
+        border-color: rgba(255,0,0,0.2); /* red */
+    }
+
+    .dnnFormMessage.dnnFormWarning {
+        background-color: rgba(255,255,0,0.15); /* yellow */
+        border-color: #CDB21F; /* yellow */
+    }
+
+    .dnnFormMessage.dnnFormSuccess {
+        background-color: rgba(0,255,0,0.15); /* green */
+        border-color: rgba(0,255,0,0.5); /* green */
+    }
+
+/*-------------------------------------*/
+/* TABLE STYLES */
+/*-------------------------------------*/
+.dnnTableHeader {
+    display: block;
+    padding: 15px;
+    background: none repeat scroll 0 0 #E3E3E5;
+}
+.dnnTableHeader a,
+.dnnTableHeader input, 
+.dnnTableHeader select{
+    margin: 0;
+}
+.dnnTableDisplay {
+    margin-bottom: 18px;
+    border: 1px solid #d1d1d1;
+    border-left: 0;
+    border-bottom: 0;
+}
+
+    .dnnTableDisplay td, .dnnTableDisplay th {
+        padding: 5px 9px;
+        border-bottom: 1px solid #d1d1d1;
+    }
+
+    .dnnTableDisplay th {
+        padding: 0;
+        border-left: 1px solid #d1d1d1;
+        -webkit-box-shadow: 1px 0px 0px 0px rgba(255, 255, 255, 0.9);
+        box-shadow: 1px 0px 0px 0px rgba(255, 255, 255, 0.9);
+    }
+
+        .dnnTableDisplay th > span,
+        .dnnTableDisplay th > a {
+            display: block;
+            padding: 5px 9px;
+        }
+
+    .dnnTableDisplay td:first-child {
+        border-left: 1px solid #cfcfcf;
+    }
+
+    .dnnTableDisplay label {
+        display: inline;
+        padding-left: 5px;
+    }
+
+    .dnnTableDisplay caption {
+        display: none;
+    }
+
+    /* thead styles */
+    .dnnTableDisplay th {
+        background: -moz-linear-gradient(top, #f5f5f5 0%, #dfdfdf 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* IE10+ */
+        background: linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* W3C */
+        text-align: left;
+        text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+        color: #333;
+    }
+
+        .dnnTableDisplay th a, .dnnTableDisplay th label {
+            font-weight: normal;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dnnTableDisplay th a {
+            padding: 8px 9px;
+        }
+
+            .dnnTableDisplay th a:hover {
+                background: #fefefe; /* Old browsers */
+                background: -moz-linear-gradient(top, #fefefe 0%, #e8e8e8 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#e8e8e8)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* IE10+ */
+                background: linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* W3C */
+                color: #333;
+            }
+
+            .dnnTableDisplay th a:active {
+                border-color: #999;
+                background: #c6c6c6; /* Old browsers */
+                background: -moz-linear-gradient(top, #c6c6c6 0%, #f3f3f3 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c6c6c6), color-stop(100%,#f3f3f3)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* IE10+ */
+                background: linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* W3C */
+                -webkit-box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+                box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+            }
+    /* tbody styles */
+    .dnnTableDisplay tr:nth-child(2n) td {
+        background: rgba(0,0,0,0.04);
+    }
+
+    .dnnTableDisplay tr:hover td {
+        background: rgba(2,139,255,0.15); /* blue */
+    }
+
+    /* tfooter styles */
+    .dnnTableDisplay tfoot tr:hover td {
+        background: none;
+    }
+
+/* table filter styles */
+.dnnTableFilter {
+    margin-bottom: 18px;
+    background: rgba(0,0,0,0.04);
+}
+
+    .dnnTableFilter .dnnTableDisplay {
+        margin-bottom: 0;
+    }
+
+.dnnFilterSet {
+    padding: 18px;
+}
+
+    .dnnFilterSet label {
+        display: inline-block;
+    }
+
+    .dnnFilterSet input,
+    .dnnFilterSet select {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+/* table filter vertical styles */
+.verticalFilter .dnnFilterSet {
+    float: left;
+    width: 20%;
+    padding: 2% 18px;
+}
+
+.verticalFilter .dnnTableDisplay {
+    float: right;
+    width: 75%;
+}
+
+.verticalFilter input[type=search], .verticalFilter select, .verticalFilter input[type=text] {
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; /* Firefox */
+    -webkit-box-sizing: border-box; /* Safari */
+}
+
+/*-------------------------------------*/
+/* PAGINATION & RESULT STYLES */
+/*-------------------------------------*/
+.dnnResults {
+    float: left;
+    margin-bottom: 0;
+}
+
+.dnnPagination {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+    .dnnPagination li {
+        float: left;
+        list-style: none;
+    }
+
+        .dnnPagination li a, .dnnPagination li span {
+            display: inline-block;
+            padding: 0 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+            .dnnPagination li a:hover {
+                text-decoration: underline;
+                color: #222;
+            }
+
+        .dnnPagination li span {
+            color: #222;
+            text-decoration: underline;
+        }
+
+/*-------------------------------------*/
+/* FORM STYLES */
+/*-------------------------------------*/
+
+.dnnFormItem input[type="text"],
+.dnnFormItem select,
+.dnnFormItem textarea,
+.dnnFormItem input[type="email"],
+.dnnFormItem input[type="search"],
+.dnnFormItem input[type="password"] {
+    margin-bottom: 18px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8), inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8), inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 12px;
+}
+
+    .dnnFormItem input.aspNetDisabled,
+    .dnnFormItem textarea.aspNetDisabled {
+        background: #ebebeb;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-color: #a7a7a7;
+        border-width: 1px;
+    }
+
+.aspNetDisabled, a.aspNetDisabled,
+.dnnDisabled, a.dnnDisabled {
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+/* Active and Focus States */
+.dnnFormItem input[type="text"]:active, .dnnFormItem input[type="text"]:focus,
+.dnnFormItem input[type="password"]:focus, .dnnFormItem input[type="password"]:active,
+.dnnFormItem input[type="email"]:active, .dnnFormItem input[type="email"]:focus,
+.dnnFormItem select:active, .dnnFormItem select:focus,
+.dnnFormItem textarea:active, .dnnFormItem textarea:focus,
+.dnnFormItem input[type="search"]:active, .dnnFormItem input[type="search"]:focus {
+    background: #fff;
+    border: 1px solid rgba(2,139,255,0.5); /* blue */
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(2, 139, 255, 0.4);
+    box-shadow: 0px 0px 3px 0px rgba(2, 139, 255, 0.4);
+    color: #333;
+}
+/* Required Fields */
+.required label:after,
+legend.required:after {
+    display: inline-block;
+    margin-top: -2px;
+    margin-left: 9px;
+    padding: 1px 9px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: rgba(0,0,0,0.03);
+    content: 'Required';
+    font-weight: normal;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    color: #777;
+}
+
+/* Error Styles */
+.error label, legend.error {
+    color: rgba(255,0,0,0.9); /* opaque red*/
+}
+
+.error input[type="text"],
+.error select, .error textarea,
+.error input[type="email"],
+.error input[type="search"] {
+    border: 1px solid rgba(255,0,0,0.6); /* opaque red*/
+    color: rgba(255,0,0,0.7); /* opaque red*/
+}
+
+/*
+	 * 1. Display hand cursor for clickable form elements
+	 * 2. Allow styling of clickable form elements in iOS
+	 * 3. Correct inner spacing displayed oddly in IE7 (doesn't effect IE6)
+	 */
+
+.dnnFormItem button, .dnnFormItem input[type="button"],
+.dnnFormItem input[type="reset"],
+.dnnFormItem input[type="submit"],
+.dnnPrimaryAction,
+.dnnSecondaryAction,
+.dnnTertiaryAction,
+ul.dnnAdminTabNav li a,
+.dnnLogin .LoginTabGroup span {
+    display: inline-block;
+    padding: 9px 9px;
+    margin-bottom: 9px;
+    cursor: pointer;
+    min-width: 75px;
+    *overflow: visible;
+    border: 1px solid #c2c2c2;
+    background: #eaeaea;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+}
+
+.dnnFormItem button, .dnnFormItem input[type="button"],
+.dnnFormItem input[type="reset"],
+.dnnFormItem input[type="submit"],
+.dnnPrimaryAction,
+.dnnSecondaryAction,
+.dnnTertiaryAction {
+    padding: 6px 6px;
+}
+
+/* Primary Action */
+
+.dnnPrimaryAction, .dnnFormItem input[type="submit"], a.dnnPrimaryAction {
+    border-color: #0D569E; /*dark blue*/
+    background: #3792ED;
+    background: -moz-linear-gradient(top, #358eea 0%, #2170cd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#358eea), color-stop(100%,#2170cd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #358eea 0%,#2170cd 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #358eea 0%,#2170cd 100%); /* W3C */
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.6), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.6), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4);
+    color: #efefef;
+    text-shadow: 0px -1px 0px #185B93;
+}
+
+    .dnnPrimaryAction:hover, .dnnFormItem input[type="submit"]:hover, a.dnnPrimaryAction:hover {
+        border-color: #0D569E;
+        background: #6cb6f3; /* Old browsers */
+        background: -moz-linear-gradient(top, #6cb6f3 0%, #4387d2 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6cb6f3), color-stop(100%,#4387d2)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #6cb6f3 0%,#4387d2 100%); /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(top, #6cb6f3 0%,#4387d2 100%); /* W3C */
+        color: #fff;
+    }
+
+    .dnnPrimaryAction:active, .dnnFormItem input[type="submit"]:active, a.dnnPrimaryAction:active {
+        border-color: #0D569E;
+        background: #1f66be; /* Old browsers */
+        background: -moz-linear-gradient(top, #1f66be 0%, #3085e0 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1f66be), color-stop(100%,#3085e0)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #1f66be 0%,#3085e0 100%); /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(top, #1f66be 0%,#3085e0 100%); /* W3C */
+        -webkit-box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
+        box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
+        color: #fff;
+    }
+
+    .dnnPrimaryAction[disabled], .dnnPrimaryAction[disabled]:hover, .dnnPrimaryAction[disabled]:active {
+        background: #ccc !important;
+        border: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        color: #aaa !important;
+        text-shadow: none;
+    }
+
+/* Secondary Action */
+.dnnFormItem button, .dnnFormItem input[type="button"],
+.dnnFormItem input[type="reset"],
+.dnnSecondaryAction,
+a.dnnSecondaryAction,
+ul.dnnAdminTabNav li a,
+.dnnLogin .LoginTabGroup span {
+    background: #f5f5f5; /* Old browsers */
+    background: -moz-linear-gradient(top, #f5f5f5 0%, #dfdfdf 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* IE10+ */
+    background: linear-gradient(top, #f5f5f5 0%,#dfdfdf 100%); /* W3C */
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    text-shadow: 0px 1px 0px #ffffff;
+    color: #333;
+}
+
+    .dnnFormItem button:hover, .dnnFormItem input[type="button"]:hover,
+    .dnnFormItem input[type="reset"]:hover,
+    .dnnSecondaryAction:hover,
+    a.dnnSecondaryAction:hover,
+    ul.dnnAdminTabNav li a:hover,
+    .dnnLogin .LoginTabGroup span:hover {
+        background: #fefefe; /* Old browsers */
+        background: -moz-linear-gradient(top, #fefefe 0%, #e8e8e8 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#e8e8e8)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* IE10+ */
+        background: linear-gradient(top, #fefefe 0%,#e8e8e8 100%); /* W3C */
+        color: #555;
+    }
+
+    .dnnFormItem button:active,
+    .dnnFormItem input[type="button"]:active,
+    .dnnFormItem input[type="reset"]:active,
+    .dnnFormItem input[type="reset"]:active,
+    .dnnSecondaryAction:active,
+    a.dnnSecondaryAction:active,
+    ul.dnnAdminTabNav li a:active {
+        border-color: #999;
+        background: #c6c6c6; /* Old browsers */
+        background: -moz-linear-gradient(top, #c6c6c6 0%, #f3f3f3 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c6c6c6), color-stop(100%,#f3f3f3)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* IE10+ */
+        background: linear-gradient(top, #c6c6c6 0%,#f3f3f3 100%); /* W3C */
+        -webkit-box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
+        box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
+    }
+
+/* Fix some old forge modules use .dnnPrimaryAction and .dnnSecondaryAction in wrong way */
+span.dnnPrimaryAction > input[type="image"],
+span.dnnSecondaryAction > input[type="image"] {
+    display: none;
+}
+
+span.dnnPrimaryAction > a.dnnPrimaryAction,
+span.dnnSecondaryAction > a.dnnSecondaryAction {
+    display: inline;
+    background: transparent;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/* Tertiary Action */
+.dnnTertiaryAction, a.dnnTertiaryAction {
+    padding: 10px 10px;
+    border: none;
+    background: #eaeaea;
+    color: #333;
+}
+
+    .dnnTertiaryAction:hover, a.dnnTertiaryAction:hover {
+        background: #f2f2f2;
+    }
+
+    .dnnTertiaryAction:active, a.dnnTertiaryAction:active {
+        background: #d8d8d8;
+    }
+
+/* Action Button behind input */
+.dnnFormItem input[type="text"] + a.dnnPrimaryAction,
+.dnnFormItem input[type="text"] + a.dnnSecondaryAction,
+.dnnFormItem input[type="text"] + a.dnnTerriaryAction { 
+    margin-left: 5px;
+}
+
+.dnnFormItem input[type="checkbox"] + span,
+.dnnFormItem input[type="radio"] + span {
+    margin: 5px;
+}
+
+/* text style for buttons and link buttons used in the portal admin pages */
+
+/* button style for standard HTML buttons */
+.StandardButton {
+    border: 1px solid blue;
+}
+
+
+/* Re-set default cursor for disabled elements */
+.dnnFormItem button[disabled],
+.dnnFormItem input[disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+
+/* Consistent box sizing and appearance */
+.dnnFormItem input[type="checkbox"],
+.dnnFormItem input[type="radio"] {
+    *width: 13px;
+    *height: 13px; /*why are we using hacks here*/
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dnnFormItem input[type="search"] {
+    -webkit-appearance: textfield;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+    .dnnFormItem input[type="search"]::-webkit-search-decoration,
+    .dnnFormItem input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+    }
+
+
+/* Remove inner padding and border in FF3/4: h5bp.com/l */
+.dnnFormItem button::-moz-focus-inner, .dnnFormItem input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/*
+	 * 1. Remove default vertical scrollbar in IE6/7/8/9
+	 * 2. Allow only vertical resizing
+	 */
+
+.dnnFormItem textarea {
+    overflow: auto;
+    vertical-align: top;
+    resize: vertical;
+}
+
+    /* Colors for form validity */
+    .dnnFormItem input:valid, .dnnFormItem textarea:valid {
+    }
+
+    .dnnFormItem input:invalid, .dnnFormItem textarea:invalid {
+        background-color: #f0dddd;
+    }
+
+/*-------------------------------------*/
+/* TAXONOMY */
+/*-------------------------------------*/
+
+/* Horizontal taxonomy styles */
+.horizontal ul.categories,
+.horizontal ul.tags {
+    list-style: none;
+}
+
+.horizontal ul.categories {
+}
+
+.horizontal ul.tags {
+}
+
+    .horizontal ul.categories li, .horizontal ul.tags li {
+    }
+
+        .horizontal ul.tags li.add-tags {
+        }
+
+            .horizontal ul.tags li.add-tags img {
+            }
+
+/* Vertical taxonomy styles */
+.vertical ul.categories,
+.vertical ul.tags {
+    list-style: none;
+}
+
+    .vertical ul.categories li,
+    .vertical ul.tags li {
+    }
+
+    .vertical ul.categories li {
+    }
+
+    .vertical ul.tags li {
+    }
+
+        .vertical ul.tags li.add-tags {
+        }
+
+            .vertical ul.tags li.add-tags img {
+            }
+
+/*-------------------------------------*/
+/* TABS : JQUERY UI TABS 1.8.14 */
+/*-------------------------------------*/
+/* Tabs */
+ul.dnnAdminTabNav {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 0;
+    width: 100%;
+    height: 37px;
+    border-bottom: 1px solid #c2c2c2;
+}
+
+    ul.dnnAdminTabNav li {
+        float: left;
+        margin-right: 4px;
+        list-style: none;
+    }
+
+        ul.dnnAdminTabNav li a {
+            /* most styles are inherited from typography.css */
+            margin-bottom: 0;
+            border-bottom: 0;
+            box-shadow: none;
+            webkit-box-shadow: none;
+            -webkit-border-radius: 3px 3px 0px 0px;
+            border-radius: 3px 3px 0px 0px;
+        }
+
+        ul.dnnAdminTabNav li.ui-tabs-active a {
+            margin-top: -3px;
+            padding: 12px 9px 10px 9px;
+            background: #fff;
+        }
+
+/* Panels */
+.ui-tabs .ui-tabs-panel {
+    position: relative;
+    display: block;
+}
+
+.ui-tabs .ui-tabs-hide {
+    display: none;
+}
+
+/*-------------------------------------*/
+/* LOGIN TAB GROUP */
+/*-------------------------------------*/
+.dnnLogin .LoginTabGroup {
+    display: inline-block;
+    width: 100%;
+    height: 37px;
+    margin-left: 0;
+    margin-top: 5px;
+    border-bottom: 1px solid #C2C2C2;
+}
+
+    .dnnLogin .LoginTabGroup span {
+        margin-right: 4px;
+        margin-bottom: 0;
+        border-bottom: 0 none;
+        border-radius: 3px 3px 0 0;
+        box-shadow: none;
+    }
+
+        .dnnLogin .LoginTabGroup span.LoginTabSelected {
+            margin-top: -3px;
+            padding: 12px 9px 10px;
+            background: none repeat scroll 0 0 #FFFFFF;
+        }
+
+/*-------------------------------------*/
+/* TABS : JQUERY UI RESIZABLE 1.8.14 */
+/*-------------------------------------*/
+.dnnForm .ui-resizable {
+    position: relative;
+}
+
+.dnnForm .ui-resizable-handle {
+    position: absolute;
+    display: block;
+    z-index: 99999;
+    font-size: 0.1px;
+}
+
+.dnnForm .ui-resizable-disabled .ui-resizable-handle,
+.dnnForm .ui-resizable-autohide .ui-resizable-handle {
+    display: none;
+}
+
+.dnnForm .ui-resizable-n {
+    cursor: n-resize;
+    height: 7px;
+    width: 100%;
+    top: -5px;
+    left: 0;
+}
+
+.dnnForm .ui-resizable-s {
+    cursor: s-resize;
+    height: 7px;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+}
+
+.dnnForm .ui-resizable-e {
+    cursor: e-resize;
+    width: 7px;
+    right: -5px;
+    top: 0;
+    height: 100%;
+}
+
+.dnnForm .ui-resizable-w {
+    cursor: w-resize;
+    width: 7px;
+    left: -5px;
+    top: 0;
+    height: 100%;
+}
+
+.dnnForm .ui-resizable-se {
+    cursor: se-resize;
+    width: 12px;
+    height: 12px;
+    right: 1px;
+    bottom: 1px;
+}
+
+.dnnForm .ui-resizable-sw {
+    cursor: sw-resize;
+    width: 9px;
+    height: 9px;
+    left: -5px;
+    bottom: -5px;
+}
+
+.dnnForm .ui-resizable-nw {
+    cursor: nw-resize;
+    width: 9px;
+    height: 9px;
+    left: -5px;
+    top: -5px;
+}
+
+.dnnForm .ui-resizable-ne {
+    cursor: ne-resize;
+    width: 9px;
+    height: 9px;
+    right: -5px;
+    top: -5px;
+}
+/*	
+
+/*-------------------------------------*/
+/* FORM ITEMS
+/*-------------------------------------*/
+.dnnForm {
+    width: 100%;
+}
+
+    .dnnForm fieldset {
+        clear: none;
+        position: relative;
+        margin-bottom: 18px;
+        text-align: left;
+    }
+
+        .dnnForm fieldset fieldset {
+            width: 100%;
+        }
+
+    .dnnForm .dnnFormItem {
+        clear: both;
+        width: 100%;
+        display: block;
+        position: relative;
+        text-align: left;
+    }
+
+/* Label */
+.dnnTooltip {
+    position: relative;
+    display: block;
+    width: 32.075%;
+    margin-right: 18px;
+}
+
+.dnnHelperTip {
+    position: relative;
+    display: block;
+}
+
+.dnnDragdropTip {
+    z-index: 10000;
+    position: absolute;
+    width: auto !important;
+    height: auto !important;
+    padding: 10px;
+    padding-left: 30px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.75) url(../../images/pin-icn.png) no-repeat 7px 12px;
+    font-size: 11px;
+    color: #DDD;
+    text-align: left;
+}
+
+span.dnnFormRequired:after,
+div.dnnFormItem.dnnFormRequired > div.dnnLabel span:after {
+    content: "*";
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: Red;
+    font-size: 16px;
+    line-height: 1em;
+    font-weight: bold;
+}
+
+.dnnFormItem input[type="checkbox"] + span,
+.dnnFormItem input[type="radio"] + span {
+    display: inline-block;
+    width: auto;
+    margin: 6px 5px 6px 5px;
+}
+
+/* Help Label */
+a.dnnFormHelp,
+.dnnForm .dnnFormItem a.dnnFormHelp,
+.dnnTooltip label a.dnnFormHelp {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a.dnnFormHelp {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 14px;
+    height: 15px;
+    background: url(../../images/helpI-icn-grey.png) no-repeat left 2px;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.dnnLabel {
+    display: inline-block;
+    float: left;
+    position: relative;
+    width: 32.075%;
+    padding-right: 20px;
+    margin-right: 18px;
+    overflow: visible;
+    text-align: right;
+}
+
+.dnnFormItem > .dnnLabel {
+    margin-top: 5px;
+}
+
+.dnnLabel > span {
+    text-align: right;
+}
+
+.dnnForm .dnnFormItem a.dnnFormHelp span {
+    position: relative;
+}
+
+.dnnForm .dnnFormItem a.dnnFormHelp img {
+    display: block;
+}
+
+.dnnLabel + span {
+    display: inline-block;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    white-space: pre-line;
+}
+
+/* Compatible with some old forge modules */
+td > .dnnLabel {
+    width: 220px;
+}
+
+/* Help tooltip */
+.dnnTooltip .dnnFormHelpContent,
+.dnnHelperTip .dnnFormHelpContent {
+    visibility: hidden;
+    z-index: 10;
+    position: absolute;
+    width: 200px;
+    padding: 10px;
+    padding-left: 30px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.75);
+    font-size: 11px;
+    color: #ddd;
+    text-align: left;
+}
+
+.dnnFormHelpContent span {
+    display: block;
+	word-wrap: break-word;
+}
+
+/*.dnnTooltip .dnnFormHelpContent span:after,
+.dnnHelperTip .dnnFormHelpContent span:after {
+    position: absolute;
+    content: "";
+    left: 15px;
+    bottom: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #000;
+}*/
+
+.dnnTooltip .dnnFormHelpContent .dnnHelpText {
+    word-wrap: break-word;
+}
+
+.bottomArrow:after
+{
+    position: absolute;
+    content: "";
+    left: 15px;
+    bottom: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #000;
+}
+.topArrow:before {
+    position: absolute;
+    content: "";
+    left: 15px;
+    top: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #000;
+}
+
+a.pinHelp {
+    display: block;
+    position: absolute;
+    left: 7px;
+    top: 12px;
+    width: 15px;
+    height: 15px;
+    opacity: 0.5;
+    background: url(../../images/pin-icn.png) no-repeat 0 0;
+}
+
+    .ui-draggable a.pinHelp,
+    a.pinHelp:hover {
+        opacity: 1;
+    }
+
+/* Error tooltip */
+.dnnFormItem span.dnnFormMessage.dnnFormError {
+    display: block;
+    position: absolute;
+    overflow: visible;
+    /*top:-95%; right: 12%;*/
+    bottom: 95%;
+    right: 12%;
+    width: 200px;
+    margin-bottom: 0;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background: rgba(255,0,0,0.75);
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+}
+
+    .dnnFormItem span.dnnFormMessage.dnnFormError:after {
+        position: absolute;
+        bottom: -7px;
+        left: 15px;
+        content: "";
+        width: 0;
+        height: 0;
+        opacity: 0.75;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 7px solid red;
+    }
+
+/* Input Types*/
+.dnnFormItem input[type="text"],
+.dnnFormItem input[type="password"],
+.dnnFormItem input[type="email"],
+.dnnFormItem input[type="tel"],
+.dnnFormItem select,
+.dnnFormItem textarea {
+    width: 45%;
+    max-width: 445px;
+}
+
+.dnnFormItem select {
+    width: 47%;
+}
+
+    .dnnFormItem select option {
+        color: #333;
+    }
+
+.dnnFormItem table {
+    background: none;
+}
+
+/* Input Customised Checkbox*/
+
+.dnnCheckbox {
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .dnnCheckbox .mark {
+        display: inline-block; /*margin-top: 3px;*/
+    }
+
+    .dnnCheckbox img {
+        display: inline-block;
+        width: 20px;
+        height: 18px;
+        min-width: 20px;
+        vertical-align: middle;
+    }
+
+    .dnnCheckbox img {
+        background: transparent url(../../images/checkbox.png) no-repeat;
+    }
+
+    .dnnCheckbox img {
+        background-position: 0px 0px;
+    }
+
+.dnnCheckbox-hover img {
+    background-position: 0px 0px;
+}
+
+.dnnCheckbox-checked img {
+    background-position: -51px 0px;
+}
+
+.dnnCheckbox-disabled img {
+    opacity: .5;
+}
+
+.dnnCheckbox-checked-error img {
+    background-position: -150px 0px;
+}
+
+.dnnCheckbox-error img {
+    background-position: -100px 0px;
+}
+.dnnCheckbox-focus {
+	background-color: #e3e3e5;
+}
+.dnnBoxLabel{ display: inline-block;}
+/* normal checkbox fix */
+.dnnFormItem input[type="checkbox"].normalCheckBox {
+    display: inline-block;
+    margin: 8px 0 4px 0;
+}
+
+/* Input Customised Radiobutton */
+
+.dnnRadiobutton {
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .dnnRadiobutton .mark {
+        display: inline-block;
+    }
+
+    .dnnRadiobutton img {
+        width: 20px;
+        height: 18px;
+        min-width: 20px;
+        vertical-align: middle;
+    }
+
+    .dnnRadiobutton img {
+        background: transparent url(../../images/radiobutton.png) no-repeat;
+    }
+
+    .dnnRadiobutton img {
+        background-position: 0px 0px;
+    }
+
+.dnnRadiobutton-hover img {
+    background-position: 0px 0px;
+}
+
+.dnnRadiobutton-checked img {
+    background-position: -50px 0px;
+}
+
+.dnnRadiobutton-disabled img {
+    opacity: .5;
+}
+
+.dnnRadiobutton-checked-error img {
+    background-position: -150px 0px;
+}
+
+.dnnRadiobutton-error img {
+    background-position: -100px 0px;
+}
+.dnnRadiobutton-focus {
+	background-color: #e3e3e5;
+}
+/* Input RadioButton group */
+div.dnnFormRadioButtons,
+div.dnnHSRadioButtons,
+span.dnnFormRadioButtons,
+span.dnnHSRadioButtons {
+    display: inline-block;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+}
+
+table.dnnFormRadioButtons {
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+}
+
+.RadComboBox_Default .rcbInput {
+    width: 100% !important;
+}
+
+/* general group*/
+div.dnnFormGroup {
+    display: inline-block;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    width: 65%;
+}
+
+/* Input Customised Spinner */
+.dnnSpinner {
+    display: inline-block;
+    position: relative;
+    width: 150px;
+    padding: 6px 6px;
+    *overflow: visible;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+    -webkit-box-shadow: 0px 1px 0px 0px #bbb;
+    box-shadow: 0px 1px 0px 0px #bbb;
+}
+
+.dnnFormItem .dnnSpinner {
+    width: 45%;
+    margin-bottom: 18px;
+}
+
+.dnnSpinnerDisplay {
+    margin: 0 25px 0 8px;
+    background: transparent;
+    color: #999;
+}
+
+.dnnFormItem .dnnSpinnerDisplay > input[type="text"],
+.dnnFormItem .dnnSpinnerDisplay > input[type="text"]:focus {
+    border: none;
+    margin: 0;
+    box-shadow: none;
+    padding: 0;
+    background: transparent;
+}
+
+.dnnSpinnerCtrl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    background-color: transparent;
+    border-left: 1px solid #c9c9c9;
+}
+
+    .dnnSpinnerCtrl > a.dnnSpinnerTopButton {
+        display: block;
+        width: 25px;
+        height: 16px;
+        background: transparent url(../../images/dnnSpinnerUpArrow.png) no-repeat;
+        background-position: center;
+        cursor: pointer;
+    }
+
+    .dnnSpinnerCtrl > a.dnnSpinnerBotButton {
+        display: block;
+        width: 25px;
+        height: 16px;
+        background: transparent url(../../images/dnnSpinnerDownArrow.png) no-repeat;
+        background-position: center;
+        cursor: pointer;
+    }
+
+/* Input Customised Tags */
+div.dnnTagsInput {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 0 0 5px;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8), inset 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8), inset 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dnnFormItem .dnnTagsInput {
+    width: 45%;
+}
+
+div.dnnTagsInput span.tag {
+    display: block;
+    float: left;
+    padding: 2px 6px 2px 6px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #c9c9c9;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 12px;
+    text-decoration: none;
+    color: #888;
+    cursor: pointer;
+    background-color: #eee;
+}
+
+    div.dnnTagsInput span.tag:hover {
+        background-color: #e8f1fa;
+        color: #444;
+    }
+
+    div.dnnTagsInput span.tag a {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin: 6px 0 0 0;
+        background: transparent url(../../images/dnnTagClose.png) no-repeat;
+        background-position: center;
+    }
+
+div.dnnTagsInput > div > input,
+div.dnnTagsInput > div > input:focus {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-weight: normal;
+    font-family: helvetica;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+    height: 19px;
+    padding: 3px 0 3px 3px;
+    margin-bottom: 5px;
+}
+
+div.dnnTagsInput > div > input::-ms-clear {
+  display: none;
+}
+
+div.dnnTagsInput div {
+    display: block;
+    float: left;
+}
+
+    div.dnnTagsInput div.dnnTags_filter {
+        float: right;
+        position: relative;
+        margin: 0 0 5px 5px;
+    }
+
+        div.dnnTagsInput div.dnnTags_filter > .dnnTags_filter_label {
+            display: inline-block;
+            border-left: 1px solid #ccc;
+            padding: 3px 15px 0 10px;
+            margin-right: 3px;
+            color: #999;
+            cursor: pointer;
+            background: url(../../../images/dnnSpinnerDownArrow.png) no-repeat;
+            background-position: right center;
+            height: 22px;
+        }
+
+            div.dnnTagsInput div.dnnTags_filter > .dnnTags_filter_label.dnnExpanded {
+                color: #666;
+                background: url(../../../images/dnnSpinnerUpArrow.png) no-repeat;
+                background-position: right center;
+            }
+
+        div.dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl {
+            display: none;
+            position: absolute;
+            list-style-type: none;
+            background: #fff;
+            border: 1px solid #c9c9c9;
+            right: 22px;
+            top: 28px;
+            margin: 0;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0px 2px 0px 0px #bbb;
+            box-shadow: 0px 2px 0px 0px #bbb;
+            z-index: 15;
+        }
+
+.dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li {
+    white-space: nowrap;
+    padding: 6px 12px 6px 8px;
+    border-top: 1px solid #c9c9c9;
+    list-style: none;
+    color: #666;
+    min-width: 150px;
+}
+
+    .dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li:first-child {
+        border-top: none;
+    }
+
+    .dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li:hover {
+        background-color: #e8f1fa;
+        color: #333;
+    }
+
+    .dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li > input {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li > span.dnnCheckbox {
+        margin-right: 8px;
+    }
+
+    .dnnTagsInput div.dnnTags_filter > ul.dnnTags_filter_dropdownUl > li > label {
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+    }
+
+div.dnnTagsInput div.dnnTags_filter a.dnnSearchButton {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url(../../../images/search/searchButton.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    vertical-align: top;
+    cursor: pointer;
+    margin: 4px 5px 0 4px;
+}
+
+.dnnTagsClear {
+    clear: both;
+    width: 100%;
+    height: 0px;
+}
+
+div.dnnTagsInput > div > input.dnnTagsInvalid {
+    display: block;
+    float: left;
+    margin-right: 5px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #FBD8DB; /*light red*/
+    cursor: pointer;
+    font-size: 12px;
+    color: #90111A !important; /* dark red*/
+    text-decoration: none; 
+}
+
+/* DNN Auto Complete */
+.dnn_acResults {
+    padding: 0px;
+    border: 1px solid #c9c9c9;
+    background-color: #fff;
+    overflow: hidden;
+    z-index: 900001;
+    -webkit-border-bottom-left-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -webkit-box-shadow: 0px 2px 0px 0px #bbb;
+    box-shadow: 0px 2px 0px 0px #bbb;
+    min-width: 150px;
+}
+
+    .dnn_acResults ul {
+        margin: 0px;
+        padding: 0px;
+        list-style-position: outside;
+        list-style: none;
+    }
+
+        .dnn_acResults ul li {
+            margin: 0px;
+            padding: 6px 22px 6px 22px;
+            border-top: 1px solid #c9c9c9;
+            color: #666;
+            cursor: pointer;
+            display: block;
+            overflow: hidden;
+            color: #333;
+        }
+
+            .dnn_acResults ul li:first-child {
+                border-top: none;
+            }
+
+.dnn_acLoading {
+}
+
+.dnn_acSelect {
+    background-color: #e8f1fa;
+    color: #333;
+}
+
+/* Form Item */
+.dnnFormMessage .dnnLabel {
+    float: none;
+    width: 90%;
+    text-align: left;
+}
+
+/* Pane header */
+.dnnFormSectionHead span {
+    font-size: 18px;
+    color: #222;
+}
+
+/* Progressbar*/
+.dnnProgressbar {
+    height: 25px !important;
+    padding: 18px 10px 0 10px;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    background: -moz-linear-gradient(top, #f0f2f1 0%, #fff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f2f1), color-stop(100%,#fff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f0f2f1 0%,#fff 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #f0f2f1 0%,#fff 100%); /* W3C */
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.25), 0px 1px 0px 0px #fff;
+    box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.25), 0px 1px 0px 0px #fff;
+}
+
+.ui-progressbar {
+    height: 10px !important;
+    overflow: hidden;
+    background-color: #ccc;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #bbb;
+    box-shadow: inset 0px 1px 0px 0px #bbb;
+    text-align: left;
+}
+
+    .ui-progressbar .ui-progressbar-value {
+        margin: 0;
+        height: 100%;
+        background-color: #1a82f7;
+        background: -moz-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#2b7fda), color-stop(100%,#3fbdff)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* W3C */
+    }
+
+/* Button Dropdown */
+.dnnDropdownSettings {
+    position: relative;
+    height: 30px !important;
+}
+
+.dnnButtonDropdown {
+    width: 50px;
+    height: 30px !important;
+    background: #fff;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 0px 0px #bbb;
+    box-shadow: 0px 1px 0px 0px #bbb;
+    border: 1px solid #c9c9c9;
+    cursor: pointer;
+}
+
+.dnnButtonIcon, .dnnButtonArrow {
+    display: inline-block;
+    height: 30px !important;
+}
+
+.dnnButtonIcon {
+    width: 32px;
+}
+
+.dnnButtonArrow {
+    width: 10px;
+    background: transparent url(../../images/dnnSpinnerDownArrow.png) no-repeat center;
+}
+
+.dnnButtonDropdown-clicked {
+    z-index: 100;
+    position: absolute;
+    width: 50px;
+    height: 30px !important;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    border-bottom: 1px solid #fff;
+    -webkit-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.dnnButtonDropdown-ul {
+    display: none;
+    position: absolute;
+    z-index: 99;
+    top: 29px;
+    left: 0;
+    width: 200px;
+    margin-left: 0;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 2px 0px 0px #bbb;
+    box-shadow: 0px 2px 0px 0px #bbb;
+    list-style-type: none;
+}
+
+    .dnnButtonDropdown-ul > li, .dnnButtonDropdown-ul > ul > li {
+        padding: 8px;
+        border-bottom: 1px solid #c9c9c9;
+        color: #333;
+        cursor: pointer;
+        vertical-align: middle;
+        list-style: none;
+        margin: 0;
+    }
+	.dnnButtonDropdown-ul > ul{ margin: 0;}
+	.dnnButtonDropdown-ul > ul > li{ padding-left: 16px;}
+
+        .dnnButtonDropdown-ul > li:last-child {
+            border-bottom: none !important;
+        }
+
+        .dnnButtonDropdown-ul > li:hover {
+            background-color: #e8f1fa;
+            color: #000;
+        }
+
+/* Button Group */
+ul.dnnButtonGroup {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 0px 0px #bbb;
+    box-shadow: 0px 1px 0px 0px #bbb;
+    border: 1px solid #c9c9c9;
+    cursor: pointer;
+    list-style: none;
+}
+
+    ul.dnnButtonGroup > li {
+        display: block;
+        float: left;
+        border-left: 1px solid #c9c9c9;
+        margin: 0;
+    }
+
+        ul.dnnButtonGroup > li:hover {
+            background-color: #e8f1fa;
+        }
+
+        ul.dnnButtonGroup > li.dnnButtonGroup-first {
+            display: none;
+        }
+
+            ul.dnnButtonGroup > li.dnnButtonGroup-first + li {
+                border-left: none;
+            }
+
+        ul.dnnButtonGroup > li > a {
+            display: inline-block;
+            padding: 7px 7px 6px 7px;
+            text-decoration: none;
+            color: #333;
+        }
+
+    ul.dnnButtonGroup span {
+        color: #333;
+    }
+
+
+/* Grouped Multi Input */
+.dnnFormItem .dnnInputGroup {
+    float: left;
+    display: block;
+    width: 32.075%;
+    padding: 5px;
+    margin-bottom: 18px;
+    background: rgba(0,0,0,0.05); /* opaque black */
+}
+
+    .dnnFormItem .dnnInputGroup .dnnLeft {
+        width: 100%;
+    }
+
+    .dnnFormItem .dnnInputGroup span {
+        display: inline-block;
+        width: 33%;
+        text-align: right;
+    }
+
+/* Error Styles */
+.dnnFormError label a span {
+    color: red;
+}
+
+.dnnFormError input[type="text"],
+.dnnFormError input[type="password"],
+.dnnFormError input[type="email"],
+.dnnFormError input[type="tel"],
+.dnnFormError select,
+.dnnFormError textarea {
+    border: 1px solid red;
+}
+
+
+/* Tertiary Actions */
+.dnnFormItem input[type="text"] + .dnnTertiaryAction,
+.dnnFormItem input[type="password"] + .dnnTertiaryAction,
+.dnnFormItem input[type="email"] + .dnnTertiaryAction,
+.dnnFormItem input[type="tel"] + .dnnTertiaryAction,
+.dnnFormItem select + .dnnTertiaryAction {
+    display: inline-block;
+    max-width: 60px;
+}
+
+/* Information Feedback Aside */
+.dnnForm fieldset.dnnFormInformation {
+    float: left;
+    width: 32.075%;
+    margin-left: 16px;
+    padding: 18px 0;
+    background: rgba(0,0,0,0.05);
+}
+
+.dnnFormItem textarea {
+    min-height: 80px;
+}
+
+.dnnAddress input[type="checkbox"] {
+    margin: 0 5px;
+}
+
+/* Required Fields */
+.dnnFormRadioButtons {
+    float: left;
+    display: block;
+    width: auto;
+}
+
+    .dnnFormRadioButtons input[type=radio] {
+        float: none;
+    }
+
+    .dnnFormRadioButtons label,
+    .dnnFormItem input[type=radio] + label {
+        float: none;
+        display: inline;
+        width: auto;
+        padding-right: 0;
+        margin: 0 10px 0 0;
+        text-align: left;
+        font-weight: normal;
+    }
+
+/* Text Editor */
+.dnnTextEditor {
+    margin-bottom: 18px;
+}
+
+/* Action Items */
+.dnnActions {
+    float: none;
+    clear: both;
+    display: block; /* prevent ul from collapsing */
+    margin: 0;
+    padding-top: 18px;
+    text-align: left;
+}
+
+    .dnnActions li {
+        float: left;
+        margin-right: 5px;
+        list-style: none;
+    }
+
+.dnnLoginActions {
+    display: inline-block;
+}
+
+/* Short Form */
+.dnnForm.dnnShortForm .dnnFormItem label {
+    float: none;
+    width: 100%;
+    margin-bottom: 0.25em;
+    text-align: left;
+}
+
+.dnnForm.dnnShortForm .dnnFormItem input,
+.dnnForm.dnnShortForm .dnnFormItem select,
+.dnnForm.dnnShortForm .dnnFormItem textarea {
+    float: none;
+    text-align: left;
+}
+
+.dnnForm.dnnShortForm .dnnFormItem a.dnnFormHelp {
+    background-position: left;
+    padding-left: 22px;
+}
+
+/* UI Helpers */
+.dnnForm .ui-helper-hidden {
+    display: none;
+}
+
+.dnnForm .ui-helper-hidden-accessible {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+}
+
+/* Interaction Cues */
+.dnnForm .ui-state-highlight,
+.dnnForm .ui-widget-content .ui-state-highlight,
+.dnnForm .ui-widget-header .ui-state-highlight {
+    border: 1px solid #fed22f;
+    background: #ffe45c;
+    color: #363636;
+}
+
+    .dnnForm .ui-state-highlight a,
+    .dnnForm .ui-widget-content .ui-state-highlight a,
+    .ui-widget-header .ui-state-highlight a {
+        color: #363636;
+    }
+
+.dnnForm .ui-state-error,
+.dnnForm .ui-widget-content .ui-state-error,
+.dnnForm .ui-widget-header .ui-state-error {
+    border: 1px solid #cd0a0a;
+    background: #b81900;
+    color: #ffffff;
+}
+
+    .dnnForm .ui-state-error a,
+    .dnnForm .ui-widget-content .ui-state-error a,
+    .dnnForm .ui-widget-header .ui-state-error a {
+        color: #ffffff;
+    }
+
+.dnnForm .ui-state-error-text,
+.dnnForm .ui-widget-content .ui-state-error-text,
+.dnnForm .ui-widget-header .ui-state-error-text {
+    color: #ffffff;
+}
+
+.dnnForm .ui-priority-primary,
+.dnnForm .ui-widget-content .ui-priority-primary,
+.dnnForm .ui-widget-header .ui-priority-primary {
+    font-weight: bold;
+}
+
+.dnnForm .ui-priority-secondary,
+.dnnForm .ui-widget-content .ui-priority-secondary,
+.ui-widget-header .ui-priority-secondary {
+    opacity: .7;
+    filter: Alpha(Opacity=70);
+    font-weight: normal;
+}
+
+.dnnForm .ui-state-disabled,
+.dnnForm .ui-widget-content .ui-state-disabled,
+.dnnForm .ui-widget-header .ui-state-disabled {
+    opacity: .35;
+    filter: Alpha(Opacity=35);
+    background-image: none;
+}
+
+.dnnForm .ui-draggable {
+    cursor: move;
+}
+
+/* Corner radius */
+.dnnForm .ui-corner-all,
+.dnnForm .ui-corner-top,
+.dnnForm .ui-corner-left,
+.dnnForm .ui-corner-tl {
+    border-radius: 4px;
+}
+
+.dnnForm .ui-corner-all,
+.dnnForm .ui-corner-top,
+.dnnForm .ui-corner-right,
+.dnnForm .ui-corner-tr {
+    border-radius: 4px;
+}
+/*-------------------------------------*/
+/* MODULE TITLE - TEMPORARY */
+/*-------------------------------------*/
+
+/* Need to determine what this is */
+.ModuleTitle_MenuContainer {
+    border: 1px solid blue;
+}
+
+.ModuleTitle_MenuBar {
+}
+
+.ModuleTitle_MenuItem {
+}
+
+.ModuleTitle_MenuIcon {
+}
+
+.ModuleTitle_SubMenu {
+}
+
+.ModuleTitle_MenuBreak {
+}
+
+.ModuleTitle_MenuItemSel {
+}
+
+.ModuleTitle_MenuArrow {
+}
+
+.ModuleTitle_RootMenuArrow {
+}
+
+/*-------------------------------------*/
+/* MAIN MENU - TEMPORARY */
+/*-------------------------------------*/
+
+/* Need to determine what this is */
+.MainMenu_MenuContainer {
+    border: 1px solid green;
+}
+
+.MainMenu_MenuBar {
+}
+
+.MainMenu_MenuItem {
+}
+
+.MainMenu_MenuIcon {
+}
+
+.MainMenu_SubMenu {
+}
+
+.MainMenu_MenuBreak {
+}
+
+.MainMenu_MenuItemSel {
+}
+
+.MainMenu_MenuArrow {
+}
+
+.MainMenu_RootMenuArrow {
+}
+
+/*-------------------------------------*/
+/* POPUP */
+/*-------------------------------------*/
+
+/* Popup Menu */
+.ui-widget-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+	z-index: 9999;
+}
+
+.dnnFormPopup {
+    position: absolute;
+    padding: 18px;
+    background: #fff;
+    -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.75);
+	z-index: 100000;
+}
+    /* Popup header */
+    .dnnFormPopup .ui-dialog-titlebar {
+        position: relative;
+        padding: 0 0 18px 0;
+        border-bottom: 1px solid #ddd;
+        cursor: move;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .dnnFormPopup .dnnModalCtrl {
+        display: block;
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 69px;
+        height: 26px;
+        border-radius: 10px;
+        background-color: #fff;
+        -webkit-border-radius: 10px;
+        box-shadow: 0px 0px 5px #666;
+    }
+
+        .dnnFormPopup .dnnModalCtrl .ui-dialog-titlebar-close {
+            float: right;
+            display: block;
+            height: 18px;
+            width: 30px;
+            margin: 4px 4px 0 1px;
+            overflow: hidden;
+            -webkit-border-top-right-radius: 8px;
+            -webkit-border-bottom-right-radius: 8px;
+	        border: none;
+	        outline: none;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            background: #585858 url(../../images/closeBtn.png) no-repeat;
+            background-position: 8px 4px;
+            text-indent: -9999em;
+	        min-width: 0 !important;
+        }
+
+            .dnnFormPopup .dnnModalCtrl .ui-dialog-titlebar-close:hover {
+                background: #358EEA url(../../images/closeBtn.png) no-repeat;
+                background-position: 8px 4px;
+	            cursor: pointer;
+            }
+
+        .dnnFormPopup .dnnModalCtrl a.dnnToggleMax {
+            float: left;
+            display: block;
+            height: 18px;
+            width: 30px;
+            margin: 4px 0 0 4px;
+            overflow: hidden;
+            -webkit-border-top-left-radius: 8px;
+            -webkit-border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            background: #585858 url(../../images/resizeBtn.png) no-repeat;
+            background-position: 10px 2px;
+            text-indent: -9999em;
+        }
+
+            .dnnFormPopup .dnnModalCtrl a.dnnToggleMax:hover {
+                background: #358EEA url(../../images/resizeBtn.png) no-repeat;
+                background-position: 10px 2px;
+            }
+
+div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    display: block;
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    height: 24px;
+    width: 24px;
+    margin: 0px;
+    overflow: hidden;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    background: #585858 url(../../images/closeBtn.png) no-repeat;
+    background-position: 4px 4px;
+    border: 3px solid #fff;
+    text-indent: -9999em;
+	min-width: 0 !important;
+}
+
+/* Poup Iframe styles*/
+.dnnFormPopup #iPopUp {
+    width: 100%!important; /* to overwrite inline javscript styles */
+    padding-top: 10px;
+}
+
+.dnnFormPopup .ui-dialog-content, #iPopUp .ui-dialog-content {
+    position: relative;
+    border: 0;
+    padding: 0px;
+    overflow: auto;
+    background: #fff;
+    zoom: 1;
+}
+
+.dnnFormPopup .ui-dialog-buttonpane {
+    margin: .5em 0 0 0;
+    padding: .3em 1em 0em 0em;
+    overflow: hidden;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    text-align: left;
+    border-top: 1px solid #ddd;
+}
+
+    .dnnFormPopup .ui-dialog-buttonpane button {
+        margin: 0.5em 0.4em 0.5em 0em;
+        padding: 0.5em 1em;
+        cursor: pointer;
+        border: none;
+        outline: none;
+    }
+
+.dnnFormPopup .ui-resizable-se {
+    float: right;
+    height: 24px;
+    width: 24px;
+    background: url(../../images/modal-resize-icn.png) no-repeat bottom;
+}
+
+.dnnFormPopup .dnnDialog {
+    padding: 10px;
+}
+
+.dnnLoading {
+    background: #fff url(../../images/loading.gif) no-repeat center center;
+    position: absolute;
+    z-index: 9999;
+}
+
+/*-------------------------------------*/
+/* URL ACTION */
+/*-------------------------------------*/
+.urlControl label {
+    width: auto;
+    margin-top: 0;
+    font-weight: normal;
+}
+
+.urlControlLinkType {
+    width: auto;
+}
+
+    .urlControlLinkType span,
+    .dnnFormItem .urlControlLinkType span {
+        float: none;
+        display: block;
+        width: auto;
+        text-align: left;
+    }
+
+.dnnFormItem .ucLinkTypeRadioButtons label {
+    display: inline-block;
+    width: 260px;
+    padding-right: 0;
+    margin-top: 0;
+    font-weight: normal;
+    text-align: left;
+}
+
+.urlControlLinkType span input {
+    min-width: 3%;
+}
+
+.dnnForm.dnnModuleSettings .dnnFormItem .urlControlLinkType span label {
+    text-align: left;
+}
+
+.urlControlFileRow {
+    clear: both;
+}
+
+    .urlControlFileRow span.dnnFormLabel {
+        width: auto;
+        text-align: right;
+    }
+
+    .urlControlFileRow select, .urlControlFileRow input[type=file] {
+        clear: both;
+    }
+
+.urlControlImagesRow {
+    overflow: hidden;
+    clear: both;
+}
+
+    .urlControlImagesRow span.dnnFormLabel {
+        width: auto;
+        text-align: right;
+    }
+
+    .urlControlImagesRow select {
+        clear: both;
+    }
+
+/*-------------------------------------*/
+/* WIZARD TABS STEPS
+/*-------------------------------------*/
+
+/* Jquery UI tabs base */
+.dnnWizardTab.ui-tabs {
+    position: relative;
+    padding: 0;
+}
+
+    .dnnWizardTab.ui-tabs .ui-tabs-nav {
+        display: block;
+        height: 46px;
+        margin: 0;
+        padding: 0;
+        background: transparent url(../../images/InstallWizardBG.png) repeat-x;
+    }
+
+        .dnnWizardTab.ui-tabs .ui-tabs-nav li {
+            float: left;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            border-bottom: 0 !important;
+            list-style: none;
+            white-space: nowrap;
+        }
+
+            .dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+                margin-bottom: 0;
+            }
+
+                .dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+                .ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+                .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+                    cursor: text;
+                }
+
+            .dnnWizardTab.ui-tabs .ui-tabs-nav li a,
+            .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active a {
+                cursor: pointer;
+            }
+
+    .dnnWizardTab.ui-tabs .ui-tabs-panel {
+        clear: both;
+        display: block;
+        padding: 3em 1em 1.4em;
+        border-width: 0;
+        background: none;
+    }
+
+    .dnnWizardTab.ui-tabs .ui-tabs-hide {
+        display: none !important;
+    }
+
+    .dnnWizardTab.ui-tabs .ui-tabs-nav li a {
+        display: block;
+    }
+
+.dnnWizardStep > span {
+    display: block;
+    float: left;
+}
+
+.dnnWizardStep {
+    height: 46px;
+    padding: 0 0 0 20px;
+    background: transparent url(../../images/InstallWizardBG.png) repeat-x;
+    background-position: 0 0;
+    cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-nav li:first-child .dnnWizardStep {
+    padding-left: 30px;
+}
+
+.dnnWizardStepNumber {
+    margin: 10px 10px 0 0;
+    padding: 3px 8px 3px 8px;
+    background-color: #999;
+    -webkit-border-radius: 18px;
+    border-radius: 18px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dnnWizardStepTitle {
+    margin: 13px 20px 0 0;
+    color: #999;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.dnnWizardStepArrow {
+    width: 25px;
+    height: 46px;
+    background: transparent url(../../images/InstallWizardBG.png) no-repeat;
+    background-position: 0 -401px;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStep {
+    height: 46px;
+    background-position: 0 -100px;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStepNumber {
+    background-color: #333;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStepTitle {
+    color: #333;
+}
+
+.dnnFormExpandContent {
+    margin: 10px 0;
+}
+
+    .dnnFormExpandContent > a {
+        color: #333;
+        font-size: 13px;
+        font-weight: bold;
+    }
+/*-------------------------------------*/
+/* DNN SIMPLE GRID
+/*-------------------------------------*/
+
+table.dnnPermissionsGrid,
+table.dnnGrid,
+table.dnnASPGrid {
+    margin-bottom: 20px;
+    border: 1px solid #c9c9c9;
+}
+
+    table.dnnPermissionsGrid {
+        color: #777;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridHeader td {
+        padding: 4px 4px 4px 4px;
+        vertical-align: middle;
+        line-height: 120%;
+        text-align: center;    
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridItem td,
+    table.dnnPermissionsGrid tr.dnnGridAltItem td {
+        padding: 5px 4px 5px 4px;
+        border-top: 1px solid #c9c9c9;
+        border-bottom: 1px solid #c9c9c9;
+        width: 70px;
+        text-align: center;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridItem td.permissionHeader,
+    table.dnnPermissionsGrid tr.dnnGridAltItem td.permissionHeader {
+        border-right: 1px solid #c9c9c9;
+        text-align: left;
+        padding-left: 10px;
+        width: 150px;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridHeader td.permissionHeader {
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem label {
+        margin-right: 8px;        
+        color: #777;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem select {
+        width: 25%;
+        margin: 0 5px 5px 0;
+        min-width: 180px;
+        color: #777;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem input {        
+        margin-bottom: 0;
+        height: 17px;
+        color: #777;
+        width: 25%;
+    }
+    .dnnPermissionsGrid > .dnnFormItem ul.token-input-list-facebook {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
+        margin-right: 35px;
+        float:left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup {
+        float: left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup  > .dnnSecondaryAction {
+        position: absolute;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem {
+        margin-bottom: 18px;
+        overflow: auto;     
+    }
+
+.dnnGridHeader td, thead.dnnGridHeader th,  tr.dnnGridHeader th{
+    padding: 6px 12px 6px 12px;
+    border-bottom: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    background: #f0f2f1;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+}
+
+.dnnGridItem td, .dnnGridAltItem td {
+    padding: 6px;
+    border-right: 1px solid #c9c9c9;
+}
+
+    .dnnGridItem td input, .dnnGridAltItem td input {
+        margin-bottom: none;
+    }
+
+.dnnGridAltItem {
+    background: #F2F2F2;
+}
+
+    .dnnGridItem:hover, .dnnGridAltItem:hover {
+        background-color: #e8f1fa;
+    }
+
+/* td > input[type="image"],
+    td > input[type="image"] + a,
+    td a > img{
+        display:block;
+        float: left;
+        margin-right: 3px;
+    } */
+
+/*-------------------------------------*/
+/* URL Control
+/*-------------------------------------*/
+
+.urlControl {
+    float: left;
+    display: block;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+}
+
+    .urlControl select,
+    .urlControl input {
+        width: 180px;
+        margin-bottom: 10px;
+    }
+
+    .urlControl dnnFormItem > a.dnnSecondaryAction {
+        margin: 10px 10px 0 0;
+        float: left;
+    }
+
+    .urlControl .urlControlLinkType {
+        float: left;
+        width: 100%;
+    }
+
+        .urlControl .urlControlLinkType .dnnFormLabel {
+            float: left;
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .urlControl .urlControlLinkType input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+/*-------------------------------------*/
+/* File Picker
+/*-------------------------------------*/
+span[id$="FileControl"] {
+    display: block;
+    float: left;
+}
+
+.dnnFilePicker {
+    display: block;
+    float: left;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0 15px 0 15px;
+    width: 450px;
+}
+
+    .dnnFilePicker .dnnLeft {
+        margin: 0;
+        padding: 0;
+        margin-top: -30px;
+    }
+
+    .dnnFilePicker dnnFormItem {
+        margin: 0;
+        margin-top: -10px;
+        padding: 0;
+        position: static;
+    }
+
+    .dnnFilePicker .dnnLeft img {
+        max-width: 135px;
+        max-height: 100px;
+    }
+
+    .dnnFilePicker .dnnLeft .dnnFilePickerImageHolder {
+        width: 135px;
+        height: 100px;
+        background-color: #ccc;
+        margin: 20px 15px;
+    }
+
+    .dnnFilePicker .dnnFormItem span {
+        display: block;
+        float: left;
+        width: 40px;
+        margin-top: 8px;
+        padding-left: 5px;
+        text-align: left;
+    }
+
+    .dnnFilePicker select,
+    .dnnFilePicker input {
+        width: 200px;
+        margin: 0;
+        margin-right: 10px;
+        float: none;
+    }
+
+    .dnnFilePicker .dnnLeft a.dnnSecondaryAction {
+        margin: 10px 10px 0 0;
+        display: inline-block;
+    }
+
+    .dnnFilePicker .dnnLeft img {
+        display: block;
+        margin: 20px 15px;
+    }
+
+/* FILE UPLOAD CSS */
+span.dnnInputFileWrapper > input[type="file"] { /* force file upload style here, cause some module just override */
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    direction: ltr;
+    cursor: pointer;
+    height: 100%;
+	font-size: 200px;
+}
+
+span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
+    overflow: hidden !important;
+    margin: 0px 4px 0 0;
+    width: auto !important;
+    display: block !important;
+    float: left !important;
+	position: relative;
+}
+
+    span.dnnInputFileWrapper > span.dnnSecondaryAction {
+        display: inline-block;
+        float: none;
+        width: auto;
+    }
+
+/* DNN DRAG n DROP FILE PICKER UPLOAD */
+.dnnFileUploadScope {
+    display: block;
+    float: left;
+    background-color: #F0F0F0;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0;
+    width: 500px;
+}
+
+    .dnnFileUploadScope .dnnLeft {
+        margin: 0;
+        padding: 15px 10px 15px 10px;
+    }
+
+        .dnnFileUploadScope .dnnLeft .dnnFormItem {
+            margin-bottom: 10px;
+        }
+
+    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem > span {
+        display: block;
+        float: left;
+        width: 40px;
+        margin-top: 8px;
+        padding-left: 5px;
+        text-align: left;
+    }
+
+    .dnnFileUploadScope .dnnFormItem .dnnDropDownList span {
+        margin: 0;
+        width: auto;
+    }
+
+    .dnnFileUploadScope .dnnFormItem .RadComboBox_Default,  .dnnFileUploadScope .dnnFormItem .dnnDropDownList{
+        width: 180px;
+        margin: 0;
+        float: none;
+    }
+
+    .dnnFileUploadScope .dnnLeft .dnnFileUploadDropZone {
+        position: relative;
+        margin: 0;
+        width: 180px;
+        height: 150px;
+        background: #d9eeff;
+        border: 1px dashed #bbb;
+        box-shadow: 0px 1px 0px #fff;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        color: #4577a2;
+    }
+
+        .dnnFileUploadScope .dnnLeft .dnnFileUploadDropZone span {
+            display: block;
+            position: absolute;
+            left: 38px;
+            top: 60px;
+            color: #fff;
+            font-size: 12px;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 7px;
+            border-radius: 3px;
+            box-shadow: 0px 1px 0px #fff, inset 1px 1px 0px #555;
+            opacity: 0.5;
+            cursor: default;
+            -webkit-transition: all 500ms ease-in-out;
+            -moz-transition: all 500ms ease-in-out;
+            -ms-transition: all 500ms ease-in-out;
+            -o-transition: all 500ms ease-in-out;
+            transition: all 500ms ease-in-out;
+        }
+
+        .dnnFileUploadScope .dnnLeft .dnnFileUploadDropZone:hover span {
+            opacity: 1;
+        }
+
+input.dnnFixedSizeComboBox {
+    width: 200px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+div.dnnFixedSizeComboBox {
+    width: 218px !important;
+    margin-right: 15px;
+    float: left;
+}
+
+.dnnFixedSizeComboBox + a.dnnSecondaryAction {
+    float: left;
+    margin-right: 10px;
+}
+
+input.dnnSmallSizeComboBox {
+    width: 100px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+div.dnnSmallSizeComboBox {
+    width: 118px !important;
+    margin-right: 15px;
+    float: left;
+}
+
+.dnnSmallSizeComboBox + a.dnnSecondaryAction {
+    float: left;
+    margin-right: 10px;
+}
+
+td.dnnGridHeaderTD-NoBorder {
+    border-right: none !important;
+}
+
+tr.dnnGridItem td, tr.dnnGridAltItem td {
+    border-right: none;
+}
+
+    tr.dnnGridItem td input {
+        margin-bottom: 0;
+    }
+
+/*-------------------------------------*/
+/* ACCORDIAN
+/*-------------------------------------*/
+h2.dnnFormSectionHead {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #ddd;
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: -0.03em;
+}
+
+    h2.dnnFormSectionHead a {
+        display: block;
+        padding-left: 3px;
+        background: url(../../images/down-icn.png) no-repeat right 50%;
+        text-decoration: none;
+        color: #333;
+        font-size: 18px;
+        letter-spacing: normal;
+        font-weight: normal;
+    }
+
+        h2.dnnFormSectionHead a:hover {
+            color: #222;
+            background: rgba(2,139,255,0.05) /* blue */ url(../../images/down-icn.png) no-repeat right 50%;
+        }
+
+        h2.dnnFormSectionHead a.dnnSectionExpanded {
+            background: url(../../images/up-icn.png) no-repeat right 50%;
+            color: #222;
+        }
+
+            h2.dnnFormSectionHead a.dnnSectionExpanded:hover {
+                color: #222;
+                background: rgba(2,139,255,0.05) /* blue */ url(../../images/up-icn.png) no-repeat right 50%; /* ACTIVE BLUE */
+            }
+
+/*-------------------------------------*/
+/* VERTICAL TABS */
+/*-------------------------------------*/
+.dnnVerticalTabs {
+    margin-left: 0;
+}
+
+    .dnnVerticalTabs li {
+        list-style: none;
+    }
+
+        .dnnVerticalTabs li a {
+            display: block;
+            padding: 15px 15px;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            background: rgba(0, 0, 0, 0.04);
+            color: #999;
+            text-decoration: none;
+        }
+
+            .dnnVerticalTabs li a:hover {
+                background: rgba(0, 0, 0, 0.06);
+                color: #333;
+            }
+
+        .dnnVerticalTabs li.active a {
+            background: none;
+            color: #333;
+            border-right: 1px solid transparent;
+        }
+
+.tabBody {
+    display: none;
+}
+
+/*-------------------------------------*/
+/* SCROLL BAR */
+/*-------------------------------------*/
+
+.jspContainer {
+    overflow: hidden;
+    position: relative;
+}
+
+.jspPane {
+    position: absolute;
+}
+
+.jspVerticalBar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 11px;
+    height: 100%;
+    background: #ccc;
+}
+
+.jspHorizontalBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 11px;
+    background: #ccc;
+}
+
+    .jspVerticalBar *,
+    .jspHorizontalBar * {
+        margin: 0;
+        padding: 0;
+    }
+
+.jspCap {
+    display: none;
+}
+
+.jspHorizontalBar .jspCap {
+    float: left;
+}
+
+.jspTrack {
+    background: transparent;
+    position: relative;
+}
+
+.jspVerticalBar .jspTrack {
+    width: 10px;
+    margin: 0 0 0 3px;
+}
+
+.jspHorizontalBar .jspTrack {
+    height: 5px;
+    margin: 3px 0 3px 0;
+}
+
+.jspVerticalBar .jspCap {
+    display: block;
+    height: 3px;
+    width: 11px;
+}
+
+.jspHorizontalBar .jspCap {
+    display: block;
+    width: 3px;
+    height: 11px;
+}
+
+.jspDrag {
+    position: relative;
+    top: 0;
+    left: 0;
+    border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    opacity: .75;
+    background: #000;
+    cursor: pointer;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag {
+    float: left;
+    height: 5px;
+}
+
+/*-------------------------------------*/
+/* UPGRADE FIXES */
+/*-------------------------------------*/
+
+/* Compatible with some old forge modules---*/
+div.ModDNNAnnouncementsC table.ucLinkTypeRadioButtons label {
+    display: inline !important;
+}
+
+div.ModDNNAnnouncementsC table.ucLinkTypeRadioButtons span.dnnRadiobutton {
+    display: inline !important;
+}
+
+div.ModDNNAnnouncementsC .urlControl label, div.ModDNNLinksC .urlControl label {
+    display: inline !important;
+}
+
+div.ModDNNFAQsC .Normal {
+    width: auto !important;
+}
+
+div.ModDNNFeedbackC .dnnFormItem > label {
+    display: inline-block;
+    width: 33%;
+    text-align: right;
+}
+
+div.ModDNNUserDefinedTableC div.RadEditor {
+    height: auto !important;
+}
+
+div.ModDNNUserDefinedTableC ul.dnnActions {
+    display: block;
+}
+
+div.ModDNNIFrameC .urlControl span.dnnRadiobutton {
+    display: inline !important;
+}
+
+div.ModDNNIFrameC table.Normal td .dnnLabel {
+    width: 100px;
+}
+
+div.ModDNNIFrameC table.Normal td span.dnnRadiobutton {
+    margin: 5px 0 0 30px;
+}
+
+div.ModDNNLinksC .urlControl span.dnnRadiobutton {
+    display: inline !important;
+}
+
+/*-------------------------------------*/
+/* GENERIC CLASSES */
+/*-------------------------------------*/
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.dnnLeft {
+    float: left;
+}
+
+.dnnRight {
+    float: right;
+}
+
+.dnnClear {
+    clear: both;
+}
+
+    .dnnClear:after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+        font-size: 0;
+    }
+
+* + html .dnnClear {
+    min-height: 1%;
+}
+
+/* used to set the different module align options - from module settings */
+.DNNAlignleft {
+    text-align: left;
+}
+
+.DNNAlignright {
+    text-align: right;
+}
+
+.DNNAligncenter {
+    text-align: center;
+}
+
+/* used to collapse panes without any content in them */
+.DNNEmptyPane {
+    width: 0px;
+}
+
+/* style to apply if the content should be hidden */
+.Hidden {
+    display: none;
+}
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+}
+/*Edit In Place Tool Bar Classes*/
+.eipbackimg {
+	position:absolute;
+	margin-top:-32px;
+	white-space:nowrap;
+	background:url(../../images/eip_toolbar.png) repeat-x;
+	height:32px;
+	z-index: 1;
+}
+.eipbackimg.editMode {
+	border: 1px solid #777777 !important;
+	background: -moz-linear-gradient(top, #303030 0%, #191919 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#303030), color-stop(100%,#191919)) !important; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #303030 0%,#191919 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #303030 0%,#191919 100%) !important; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #303030 0%,#191919 100%) !important; /* IE10+ */
+    background: linear-gradient(to bottom, #303030 0%,#191919 100%) !important; /* W3C */
+	opacity: 0.8;
+}
+.eipbackimg.containerTitle {
+	margin-top: -8px;
+}
+.eipbackimg.containerTitle.editMode {
+	left: auto;
+	right: 0px;
+	margin-top: 2px;
+	background: none !important;
+	border: none !important;
+}
+.eipbuttonbackimg{
+	width: 32px;
+	height: 32px; 
+	cursor: pointer;
+	float:left;
+	background: url(../../images/eip_toolbar.png) no-repeat;
+	
+}
+.eipbackimg.editMode .eipbuttonbackimg {
+	border-left: 1px solid #1f1f1f;
+	border-right: 1px solid #393939;
+	opacity: 0.5;
+}
+
+.eipbackimg.editMode.containerTitle .eipbuttonbackimg {
+	border: none;
+	opacity: 1;
+}
+
+.eipbuttonbackimg.eipbutton_cancel{ background-position: -32px 0;}
+.eipbuttonbackimg.eipbutton_bold{ background-position: -64px 0;}
+.eipbuttonbackimg.eipbutton_italic{ background-position: -96px 0;}
+.eipbuttonbackimg.eipbutton_underline{ background-position: -128px 0;}
+.eipbuttonbackimg.eipbutton_justifyleft{ background-position: -160px 0;}
+.eipbuttonbackimg.eipbutton_justifycenter{ background-position: -192px 0;}
+.eipbuttonbackimg.eipbutton_justifyright{ background-position: -224px 0;}
+.eipbuttonbackimg.eipbutton_orderedlist{ background-position: -256px 0;}
+.eipbuttonbackimg.eipbutton_unorderedlist{ background-position: -288px 0;}
+.eipbuttonbackimg.eipbutton_outdent{ background-position: -320px 0;}
+.eipbuttonbackimg.eipbutton_indent{ background-position: -352px 0;}
+.eipbuttonbackimg.eipbutton_createlink{ background-position: -384px 0;}
+
+.eipbackimg.containerTitle .eipbutton_cancel {
+	background: url(../../images/eip_title_cancel.png) no-repeat center center;
+}
+
+.eipbutton_edit {
+	background: url(../../images/eip_edit.png) no-repeat 100% center;
+	float:left;
+}
+
+.eipbutton_save {
+	background: url(../../images/eip_save.png) no-repeat 100% center;
+	float:left;
+}
+.eipbackimg.containerTitle .eipbutton_save {
+	background-image: url(../../images/eip_title_save.png);
+}
+
+.eipbackimg.editMode .eipborderhover {
+	background-color: #333;
+	opacity: 1;
+}
+.eipbackimg.editMode.containerTitle .eipborderhover {
+	background-color: inherit;
+}
+div[id$=titleLabel_tb].visible ~ span{ margin-left: 32px;}
+
+/*Critical Error Popup*/
+div.errorWin p{ margin: 0 0 10px 0;}
+
+input[type="button"].rspCollapseBarSpacer
+{ min-width: 0; padding: 0 0; }
+
+
+/*------------------------------------------------*/
+/* DEFAULT PROFILE STYLE */
+/*------------------------------------------------*/
+
+.UserProfileControls ul li {
+    list-style-type: none;
+}
+
+/*------------------------------------------------*/
+/* PROFILE STYLE */
+/*------------------------------------------------*/
+.console.profile {
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    height: auto;
+    background-color: #484848; /* Menu Background Color */
+}
+
+.console.profile .console-none div {
+    cursor: pointer;
+    cursor: hand;
+    float: left;
+    height: auto;
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+
+.console.profile .console-none h3 {
+    padding: 10px 8px 10px 40px;
+    margin: 0;
+    border-bottom: solid 1px #fff;
+    background: url('../../images/arrow-right-white.png') 18px center no-repeat;
+    color: #eee;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.console.profile .console-none div div {
+    display: none;
+}
+
+.console.profile .console-mouseon {
+    background-color: #70b1c7; /* Menu Hover Background Color */
+}
+/*-------------------------------------------------*/
+
+/* Login/register/reset paswsword controls in mobile view */
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: inherit !important;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage{
+	margin: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	padding: 10px 0 10px 0;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage.dnnFormValidationSummary{
+	padding: 10px;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .LoginPanel,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnSendPasswordContent,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm {
+    width: 100%;
+	padding: 18px 0 0 0;
+    margin: 0;
+    float: none;	
+	min-width: inherit !important;	
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm{
+	width: 100%;
+	margin: 0;
+	float: none;
+	min-width: inherit !important;
+}
+
+
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel {
+    display: block;
+    text-align: left;
+    float: none;
+    width: 100% !important;
+    font-size: 14px;
+    margin: 0 0 7px 0;
+    vertical-align: top;
+	padding: 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnSocialRegistration{
+	display: none;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnCaptcha{
+	width: 100%;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnLeft img{
+	display: block;
+	margin: 0 0 5px 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel a.dnnFormHelp{
+	display: none !important;
+	width: 0 !important;
+	margin: 0 !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel div.dnnTooltip{
+	display: none !important;
+	width: 0 !important;
+	position: static !important;
+	right: 0 !important;
+	margin: 0 !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem input[type="text"],
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > input[type="password"]{
+    display: block;
+    box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: 100% !important;
+	margin-bottom: 18px;
+	min-width: 100% !important;	
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > label#dnn_ctr_Login_Login_DNN_lblLogin{
+	display: none !important;
+	width: 0;
+	margin: 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem span.dnnFormMessage.dnnFormError{
+	border-radius: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	right: 0;
+	width: auto;
+	max-width: 100%;
+	padding: 10px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm.dnnLoginService a.dnnPrimaryAction,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm.dnnLoginService a.dnnSecondaryAction{
+	width: 45%;
+	padding: 18px 0 18px 0;
+	display: block;
+	float: left;
+	margin: 0 5px 0 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnLoginRememberMe{
+	display: block;
+	float: left;
+	margin: 10px 0 0 5px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnLoginActions {
+	display: block;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions a.dnnSecondaryAction,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions a.dnnPrimaryAction{
+	width: 100%;
+	padding: 18px 0 18px 0;
+	display: block;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions{
+	padding: 0;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions li{
+	width: 45%;
+}
+
+/* password strength control in iPopup */
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .password-strength-container{
+	width: 100%;
+	margin: 0 0 12px 0;
+	padding: 8px 0 8px 0;
+	display: block;
+	max-width: inherit !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container input[type="password"]{
+	display: block;
+	margin: 0 8px 0 8px;
+	width: calc(100% - 20px);
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container span.min-length-text{
+	display: block;	
+	margin: 5px 0 5px 8px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container div.meter{
+	float: none;	
+	width: 90%;
+	margin: 0 0 0 8px;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormItem input.unmatched{
+	background: none !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-tooltip, 
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .confirm-password-tooltip{
+	display: none !important;
+}
+
+.mobileView .dnnFormPopup .ui-dialog-content, .mobileVie #iPopUp .ui-dialog-content {
+    max-height: none !important; 
+}
+
+.mobileView .ui-widget-overlay {
+    display: none;
+}
+.dnnFormPopup.dnnFormPopupMobileView {
+    width: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    box-shadow: none !important;
+}
+.dnnFormPopup.dnnFormPopupMobileView div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-titlebar {
+    border-bottom: none;
+    cursor: inherit;
+    font-size: 22px;
+    color: #000;
+    padding: 5px 0 0 0;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel {
+    display: block;
+    text-align: left;
+    float: none;
+    width: auto !important;
+    font-size: 14px;
+    margin: 0 0 7px 0;
+    vertical-align: top;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > input[type="text"] {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > textarea,
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .redactor_box {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > select {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnTagsInput {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-bottom: 18px;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel > input[type="checkbox"].normalCheckBox {
+    display: inline-block;
+    margin: 0 5px 0 12px;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnFormItem span.dnnFormMessage.dnnFormError {
+    right: 0;
+    width: auto;
+    border-radius: 0;
+    text-align: right;
+    max-width: 100%;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView a.dnnSecondaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnSecondaryAction {
+    width: 49%;
+    margin: 0;
+    padding: 20px 0 20px 0;
+    display: block;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnPrimaryAction {
+    float: left;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnSecondaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnSecondaryAction {
+    float: right;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane {
+    border-top: none;
+}
+
+    .dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane .ui-dialog-buttonset {
+        float: none;
+    }
+
+.dnnFormPopup.dnnFormPopupMobileView .four-btn-panel a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .four-btn-panel a.dnnSecondaryAction {
+    width: 24%;
+    display: inline-block;
+    margin-right: 1%;
+    float: none;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 25px 0 15px 0;
+}
+
+html.mobileView {
+    overflow: auto !important;
+}
+
+.mobileView .dnnFormPopup .ui-dialog-content, 
+.mobileView #iPopUp .ui-dialog-content {
+    max-height: none !important; 
+}
+
+.dnnPlaceholder{ color: #666; }
+
+/* DNN Slider Input Style */
+div.dnnSliderInput {
+	position: relative;
+	display: inline-block;
+	width: 47%;
+    margin:15px 0 23px 0;
+    max-width: 445px;
+	border: 1px solid #d3d3d3;
+	-ms-border-radius: 3px;
+	border-radius: 3px;
+	height: 10px;
+}
+
+div.dnnSliderInput .ui-slider-handle {
+	position: absolute;
+    z-index: 2;
+    width: 14px;
+    height: 14px;
+    cursor: default;
+	border: 1px solid #aaaaaa;
+    background-color: #cccccc;
+    font-weight: normal;
+    color: #555555;
+	outline: none;
+	top: -2px;
+	margin-left: -7px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+div.dnnSliderInput .dnnTooltip {
+	top: -37px;
+	margin-left: -22px;
+}
+div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
+	visibility: visible;
+	padding: 4px 10px;
+	width: 25px;
+	text-align: center;
+	z-index: 1;
+}
+/*END DNN Slider Input Style*/
