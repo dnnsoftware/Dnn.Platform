@@ -823,8 +823,9 @@
                         displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
                     }
                 }
-            }).fail(function () {
-                displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
+            }).fail(function (data) {
+                var response = $.parseJSON(data.responseText);
+                displayMessage("#dnnCoreNotification", response.Message, "dnnFormWarning");
             });
         };
 
