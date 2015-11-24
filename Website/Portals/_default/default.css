@@ -1,13 +1,16 @@
 ﻿@charset "utf-8";
+/* @import "01/correct4dnn7.css";*/
+
+
+
 /* CSS Document */
 
 /* ---------------------------------------------------------
 	
 	* Filename:				default.css
-	* Description: 			sets typography, basic grids, 
-							and standard formstyles
-	* Version:				1.0.0 (2012-06-16)
-	* Author:				Ryan Martinez
+	* Description: 			sets basic grids and standard formstyles
+	* Version:				8.0.0 (2015-11-19)
+	* Author:				Timo Breumelhof
 	
 	== INDEX ===============================================
 	
@@ -15,167 +18,7 @@
 	
 ------------------------------------------------------------*/
 
-
-/*-------------------------------------*/
-/* RESET */
-/*-------------------------------------*/
-
-/* http://meyerweb.com/eric/tools/css/reset/
-    v2.0 | 20110126
-    License: none (public domain)
-    */
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-caption, article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-
-ol, ul {
-    list-style: none;
-}
-
-blockquote, q {
-    quotes: none;
-}
-
-    blockquote:before, blockquote:after,
-    q:before, q:after {
-        content: '';
-        content: none;
-    }
-
-html, button, input, select, textarea {
-    font-family: sans-serif;
-    color: #222;
-}
-
-/*
-     * Remove text-shadow in selection highlight: h5bp.com/i
-     * These selection declarations have to be separate
-     * Also: hot pink! (or customize the background color to match your design)
-     */
-
-::-moz-selection {
-    background: rgba(2,139,255,1); /* blue */
-    color: #fff;
-    text-shadow: none;
-}
-
-::selection {
-    background: rgba(2,139,255,1); /* blue */
-    color: #fff;
-    text-shadow: none;
-}
-
-/* Improve readability of pre-formatted text in all browsers */
-pre {
-    white-space: pre;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-/* Position subscript and superscript content without affecting line-height: h5bp.com/k */
-sub, sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-}
-
-sup {
-    top: -0.5em;
-}
-
-sub {
-    bottom: -0.25em;
-}
-
-body {
-    color: #444;
-    font-size: 12px;
-    line-height: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
-    -webkit-text-size-adjust: 100%;
-}
-
-/*-------------------------------------*/
-/* HEADER STYLES */
-/*-------------------------------------*/
-
-h1, h2, h3, h4, h5, h6 {
-    display: block;
-    color: #333;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
-
-    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-        font-weight: inherit;
-    }
-
-h1 {
-    font-size: 38px;
-    line-height: 54px;
-    letter-spacing: normal;
-    margin-top: 8px;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 32px;
-    line-height: 36px;
-    letter-spacing: normal;
-    margin-top: 8px;
-    margin-bottom: 10px;
-}
-
-h3 {
-    font-size: 28px;
-    line-height: 36px;
-    letter-spacing: normal;
-    margin-top: 8px;
-    margin-bottom: 10px;
-}
-
-h4 {
-    font-size: 22px;
-    line-height: 36px;
-    letter-spacing: normal;
-}
-
-h5 {
-    font-size: 16px;
-    line-height: 18px;
-    letter-spacing: normal;
-}
-
-h6 {
-    font-size: 14px;
-    line-height: 18px;
-    letter-spacing: normal;
-}
-
+	
 /* Module titles */
 .Head {
     display: inline-block;
@@ -192,28 +35,7 @@ input[type="image"] + span.Head, input[type="image"] + span.SubHead {
     display: inline;
 }
 
-/*-------------------------------------*/
-/* PARAGRAPH STYLES */
-/*-------------------------------------*/
-p {
-    margin: 0 0 18px 0;
-}
-    /* margin bottom is equal to line-height */
-    p img {
-        margin: 0;
-    }
 
-em, i {
-    font-style: italic;
-}
-
-strong, b {
-    font-weight: bold;
-}
-
-small {
-    font-size: 80%;
-}
 
 /* Set text size in modules*/
 .Normal,
@@ -257,59 +79,7 @@ small {
     text-decoration: line-through;
 }
 
-/*	Blockquotes  */
-blockquote, blockquote p {
-    font-size: 17px;
-    line-height: 24px;
-    color: #777;
-    font-style: italic;
-}
 
-blockquote {
-    margin: 0 0 20px;
-    padding: 9px 20px 0 19px;
-    border-left: 1px solid #ddd;
-}
-
-    blockquote cite {
-        display: block;
-        font-size: 12px;
-        color: #555;
-    }
-
-        blockquote cite:before {
-            content: "\2014 \0020";
-        }
-
-        blockquote cite a, blockquote cite a:visited, blockquote cite a:visited {
-            color: #555;
-        }
-
-hr {
-    clear: both;
-    margin: 17px 0 17px;
-    height: 0;
-    border: solid #ddd;
-    border-width: 1px 0 0;
-}
-
-/*-------------------------------------*/
-/* ANCHOR STYLES */
-/*-------------------------------------*/
-a, a:visited {
-    color: rgb(2,139,255); /*blue*/
-    text-decoration: underline;
-    outline: 0;
-}
-
-    a:hover, a:focus, a:active {
-        color: #222;
-        outline: 0;
-    }
-
-p a, p a:visited {
-    line-height: inherit;
-}
 
 /*-------------------------------------*/
 /* IMAGE STYLES */
@@ -325,40 +95,6 @@ img {
     vertical-align: middle;
 }
 
-#dnn_dnnLOGO_imgLogo {
-     border: 0;
-}
-
-/*-------------------------------------*/
-/* lIST STYLES */
-/*-------------------------------------*/
-ul, ol {
-    margin-bottom: 18px;
-    margin-left: 18px;
-}
-
-ul {
-    list-style: square outside;
-}
-
-ol {
-    list-style: decimal;
-}
-
-    /* Nested Styles */
-    ul ul, ul ol,
-    ol ol, ol ul {
-        margin-left: 18px;
-        margin-bottom: 0;
-    }
-
-    ol ol {
-        list-style: lower-roman;
-    }
-
-li p {
-    line-height: 18px;
-}
 
 /*-------------------------------------*/
 /* MESSAGE STYLES */
