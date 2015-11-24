@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 var rootFolder = folders.SingleOrDefault(f => f.FolderPath == "");
                 if (rootFolder != null)
                 {
-                    ddlFolders.SelectedItem = new ListItem() {Text = SharedConstants.RootFolder, Value = rootFolder.FolderID.ToString()};
+                    ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
                 }
             }
         }

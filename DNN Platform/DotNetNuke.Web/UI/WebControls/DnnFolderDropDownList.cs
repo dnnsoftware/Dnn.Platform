@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var folderName = value != null ? value.FolderName : null;
                 if (folderName == string.Empty)
                 {
-                    folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+                    folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
                 }
 
                 SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
