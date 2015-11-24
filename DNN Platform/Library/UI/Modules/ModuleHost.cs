@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Modules
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
 
-        private readonly static Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
+        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region Private Members

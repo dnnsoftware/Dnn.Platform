@@ -398,7 +398,7 @@ namespace DotNetNuke.Services.Assets
 
         private bool IsInvalidName(string itemName)
         {
-            var invalidFilenameChars = new Regex("[" + Regex.Escape(GetInvalidChars()) + "]");
+            var invalidFilenameChars = RegexUtils.GetCahcedRegex("[" + Regex.Escape(GetInvalidChars()) + "]");
 
             return invalidFilenameChars.IsMatch(itemName);
         }

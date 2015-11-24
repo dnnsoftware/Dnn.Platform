@@ -838,24 +838,21 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private bool CheckSearchPatterns(string dnnFileName, string[] searchPatterns)
 		{
-			if (searchPatterns == null | searchPatterns.Length < 1)
+			if (searchPatterns == null || searchPatterns.Length < 1)
 			{
 				return true;
 			}
 
-			bool returnValue = false;
-			foreach (string pattern in searchPatterns)
+			foreach (var pattern in searchPatterns)
 			{
-				bool result = new Regex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase).IsMatch(dnnFileName);
-
-				if (result)
+				var rx = RegexUtils.GetCahcedRegex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase);
+				if (rx.IsMatch(dnnFileName))
 				{
-					returnValue = true;
-					break;
+                    return true;
 				}
 			}
 
-			return returnValue;
+			return false;
 		}
 
         private string ConvertToRegexPattern(string pattern)

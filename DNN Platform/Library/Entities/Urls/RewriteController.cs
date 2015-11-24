@@ -375,7 +375,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //Check for VanityUrl
-            var doNotRedirectRegex = new Regex(settings.DoNotRedirectRegex);
+            var doNotRedirectRegex = RegexUtils.GetCahcedRegex(settings.DoNotRedirectRegex);
             if (!found && !RewriterUtils.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
                 string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
@@ -1799,7 +1799,7 @@ namespace DotNetNuke.Entities.Urls
                         //process each one until a match is found
                         foreach (ParameterRewriteAction rewrite in tabRewrites)
                         {
-                            var parmRegex = new Regex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var parmRegex = RegexUtils.GetCahcedRegex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             //check the match, if a match found, do the replacement
                             if (parmRegex.IsMatch(parms))
                             {

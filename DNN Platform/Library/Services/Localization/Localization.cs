@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Localization
         private static string _defaultKeyName = "resourcekey";
         //private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         //private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
-        private static Nullable<Boolean> _showMissingKeys;
+        private static bool? _showMissingKeys;
 
         private static readonly Regex UnsafeJsRegex = new Regex("(['\"\\\\])", RegexOptions.Compiled);
         #endregion

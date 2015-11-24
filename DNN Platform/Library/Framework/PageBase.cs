@@ -62,7 +62,7 @@ namespace DotNetNuke.Framework
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
 
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
-        private readonly static Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private PageStatePersister _persister;
         #region Private Members

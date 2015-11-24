@@ -239,10 +239,8 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = portalRoot + "/";
             }
-            Regex exp = new Regex(portalRoot, RegexOptions.IgnoreCase);
-            content = exp.Replace(content, PortalRootToken);
-
-            return content;
+            var exp = RegexUtils.GetCahcedRegex(portalRoot, RegexOptions.IgnoreCase);
+            return exp.Replace(content, PortalRootToken);
         }
 
         #endregion

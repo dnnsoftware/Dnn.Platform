@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallFile
     {
-        private readonly static Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
+        private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
 		#region Private Members
 

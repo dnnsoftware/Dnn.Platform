@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.FileSystem
                 pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
             }
 
-            return new Regex(pattern, RegexOptions.IgnoreCase);
+            return RegexUtils.GetCahcedRegex(pattern, RegexOptions.IgnoreCase);
         }
         
         private static bool IsStandardFolderProviderType(FolderMappingInfo folderMappingInfo)
@@ -1641,7 +1641,7 @@ namespace DotNetNuke.Services.FileSystem
                                         ? String.Empty
                                         : (String.IsNullOrEmpty(baseMappedPath))
                                             ? mappedPath
-                                            : new Regex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
+                                            : RegexUtils.GetCahcedRegex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
 
                 var folderPath = baseFolderPath + relativePath;
 
