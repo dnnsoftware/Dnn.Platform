@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/28/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
@@ -88,9 +85,6 @@ namespace DotNetNuke.Services.Installer.Writers
 		/// Gets the associated SkinControl
 		/// </summary>
 		/// <value>A SkinControlInfo object</value>
-		/// <history>
-		/// 	[cnurse]	03/28/2008	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
 		

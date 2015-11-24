@@ -473,7 +473,8 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (cboTabs.SelectedItem != null)
                         {
                             strTab = cboTabs.SelectedItem.Value;
-                            if (Regex.IsMatch(strTab, "^\\d+$") && (Convert.ToInt32(strTab) >= 0))
+                            int id;
+                            if (int.TryParse(strTab,out id) && id >= 0)
                             {
                                 r = strTab;
                             }
@@ -891,7 +892,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         cboTabs.IncludeAllTabTypes = false;
                         cboTabs.IncludeActiveTab = IncludeActiveTab;
-                        cboTabs.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                        cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
                         PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                         var tabId = Int32.Parse(_Url);

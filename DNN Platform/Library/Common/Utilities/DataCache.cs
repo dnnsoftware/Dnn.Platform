@@ -55,9 +55,6 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>
     /// The DataCache class is a facade class for the CachingProvider Instance's
     /// </summary>
-    /// <history>
-    ///     [cnurse]	12/01/2007	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
@@ -296,7 +293,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static string _CachePersistenceEnabled = "";
 
-        private static readonly ReaderWriterLock dictionaryLock = new ReaderWriterLock();
+        private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
         private static readonly SharedDictionary<string, Object> dictionaryCache = new SharedDictionary<string, Object>();
@@ -595,39 +592,45 @@ namespace DotNetNuke.Common.Utilities
             return (TObject)objObject;
         }
 
+        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
+
         private static object GetUniqueLockObject(string key)
         {
             object @lock = null;
-            dictionaryLock.AcquireReaderLock(new TimeSpan(0, 0, 5));
-            try
+            if (dictionaryLock.TryEnterReadLock(_5seconds))
             {
-                //Try to get lock Object (for key) from Dictionary
-                if (lockDictionary.ContainsKey(key))
-                {
-                    @lock = lockDictionary[key];
-                }
-            }
-            finally
-            {
-                dictionaryLock.ReleaseReaderLock();
-            }
-            if (@lock == null)
-            {
-                dictionaryLock.AcquireWriterLock(new TimeSpan(0, 0, 5));
                 try
                 {
-                    //Double check dictionary
-                    if (!lockDictionary.ContainsKey(key))
+                    //Try to get lock Object (for key) from Dictionary
+                    if (lockDictionary.ContainsKey(key))
                     {
-                        //Create new lock
-                        lockDictionary[key] = new object();
+                        @lock = lockDictionary[key];
                     }
-                    //Retrieve lock
-                    @lock = lockDictionary[key];
                 }
                 finally
                 {
-                    dictionaryLock.ReleaseWriterLock();
+                    dictionaryLock.ExitReadLock();
+                }
+            }
+            if (@lock == null)
+            {
+                if (dictionaryLock.TryEnterWriteLock(_5seconds))
+                {
+                    try
+                    {
+                        //Double check dictionary
+                        if (!lockDictionary.ContainsKey(key))
+                        {
+                            //Create new lock
+                            lockDictionary[key] = new object();
+                        }
+                        //Retrieve lock
+                        @lock = lockDictionary[key];
+                    }
+                    finally
+                    {
+                        dictionaryLock.ExitWriteLock();;
+                    }
                 }
             }
             return @lock;
@@ -635,7 +638,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static void RemoveUniqueLockObject(string key)
         {
-            dictionaryLock.AcquireWriterLock(new TimeSpan(0, 0, 5));
+            if (!dictionaryLock.TryEnterWriteLock(_5seconds)) return;
             try
             {
                 //check dictionary
@@ -647,7 +650,7 @@ namespace DotNetNuke.Common.Utilities
             }
             finally
             {
-                dictionaryLock.ReleaseWriterLock();
+                dictionaryLock.ExitWriteLock();;
             }
         }
 

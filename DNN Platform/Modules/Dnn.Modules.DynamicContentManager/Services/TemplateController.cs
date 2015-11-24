@@ -12,12 +12,14 @@ using System.Web.Http;
 using System.Xml.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Common;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services

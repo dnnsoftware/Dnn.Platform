@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer.Packages;
@@ -225,7 +226,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var pageModules = isRemote
                                 ? tabModules.Values.Where(m => ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
-                                : tabModules.Values.Where(m => ModulePermissionController.CanAdminModule(m) && !m.IsDeleted).ToList();
+                                : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
 
             return pageModules;
 

@@ -126,6 +126,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Mm]odule[Cc]reator
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]ql
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Xx]ml[Mm]erge
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Aa]nalytics
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]kin[Mm]anagement
 
 
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Ff]acebook
@@ -234,3 +236,5 @@ Website/Install/Temp/
 Website/Providers/HtmlEditorProviders/
 Website/Portals/_default/CK*.xml
 Website/Portals/_default/Install/CK*.xml
+Website/Portals/_default/Skins/Xcillion/
+Website/Portals/_default/Containers/Xcillion/

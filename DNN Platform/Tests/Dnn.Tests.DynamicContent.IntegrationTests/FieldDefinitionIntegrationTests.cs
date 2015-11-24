@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
-using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
@@ -22,6 +22,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     {
         private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionManager.FieldDefinitionCacheKey);
         private Mock<IDynamicContentTypeManager> _mockContentTypeController;
+        private Mock<IContentTypeLocalizationManager> _mockContentTypeLocalizationManager;
+        private Mock<IFieldDefinitionChecker> _fieldDefinitionChecker;
 
         [SetUp]
         public void SetUp()
@@ -30,7 +32,18 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpValidationRules(RecordCount);
 
             _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            _mockContentTypeController.Setup(m => m.GetContentType(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).
+                Returns(() => new DynamicContentType());
             DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
+
+            _mockContentTypeLocalizationManager = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(_mockContentTypeLocalizationManager.Object);
+
+            string errorMessage;
+            _fieldDefinitionChecker = new Mock<IFieldDefinitionChecker>();
+            _fieldDefinitionChecker.Setup(m => m.IsValid(It.IsAny<FieldDefinition>(), out errorMessage))
+                .Returns(() => true);
+            FieldDefinitionChecker.SetTestableInstance(_fieldDefinitionChecker.Object);
         }
 
         [TearDown]
@@ -95,7 +108,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
                                     {
-                                        FieldDefinitionId = definitionId
+                                        FieldDefinitionId = definitionId,
+                                        ContentTypeId = 1
                                     };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
@@ -119,7 +133,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
                                     {
-                                        FieldDefinitionId = definitionId
+                                        FieldDefinitionId = definitionId,
+                                        ContentTypeId = 1
                                     };
 
             var mockLocalization = new Mock<IContentTypeLocalizationManager>();
@@ -160,7 +175,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void GetFieldDefinitions_Returns_Records_For_ContentType_From_Database_If_Cache_Is_Null()
         {
             //Arrange
-            var contentTypeId = 5;
+            var contentTypeId = 1;
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
@@ -169,7 +184,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
 
             //Assert
-            Assert.AreEqual(1, fields.Count());
+            Assert.AreEqual(RecordCount, fields.Count());
             foreach (var field in fields)
             {
                 Assert.AreEqual(contentTypeId, field.ContentTypeId);
@@ -206,6 +221,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
                             {
+                                PortalId = PortalId,
                                 FieldDefinitionId = definitionId,
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
                                 FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
@@ -233,6 +249,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
             {
+                PortalId = PortalId,
                 FieldDefinitionId = definitionId,
                 ContentTypeId = contentTypeId,
                 FieldTypeId = Constants.CONTENTTYPE_ValidDataTypeId,

@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.AvailableExtensions" Codebehind="AvailableExtensions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<%@ Register TagPrefix="dnn" TagName="LanguagePacks" Src="~/DesktopModules/admin/AdvancedSettings/LanguagePacks.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="LanguagePacks" Src="~/DesktopModules/admin/Extensions/LanguagePacks.ascx" %>
 
 <div class="dnnForm exieContent dnnClear">
     <h2 id="Panel-Language" class="dnnFormSectionHead"><a href="" class=""><%= Localization.GetString("Language.Type", LocalResourceFile) %></a></h2>

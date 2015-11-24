@@ -43,20 +43,6 @@ namespace Dnn.Modules.Languages.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Languages");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Add Module to Admin Page for all Portals
-                        //    Upgrade.AddAdminPages("Languages",
-                        //                            "Manage Language Resources.",
-                        //                            "~/Icons/Sigma/Languages_16X16_Standard.png",
-                        //                            "~/Icons/Sigma/Languages_32X32_Standard.png",
-                        //                            true,
-                        //                            moduleDefinition.ModuleDefID,
-                        //                            "Language Management",
-                        //                            "~/Icons/Sigma/Languages_32X32_Standard.png",
-                        //                            true);
-                        //}
                         break;
                 }
                 return "Success";

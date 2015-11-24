@@ -20,8 +20,10 @@
           <desktopModule>
             <moduleName>Dnn.DynamicContentViewer</moduleName>
             <foldername>Dnn/DynamicContentViewer</foldername>
-            <businessControllerClass/>
-            <supportedFeatures />
+            <businessControllerClass>Dnn.Modules.DynamicContentViewer.Components.BusinessController, Dnn.Modules.DynamicContentViewer</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Searchable" />              
+            </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
                 <definitionName>Dnn.DynamicContentViewer</definitionName>

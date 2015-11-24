@@ -226,17 +226,6 @@ namespace DotNetNuke.Entities.Portals
                         {
                             ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
-
-                        //copy getting started css into portal's folder.
-                        var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
-                        if (File.Exists(hostGettingStartedFile))
-                        {
-                            var portalFile = mappedHomeDirectory + "GettingStarted.css";
-                            if (!File.Exists(portalFile))
-                            {
-                                File.Copy(hostGettingStartedFile, portalFile);
-                            }
-                        }
                     }
                     catch (Exception Exc)
                     {
@@ -316,6 +305,10 @@ namespace DotNetNuke.Entities.Portals
                         foreach (Locale newPortalLocale in newPortalLocales.AllValues)
                         {
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
+                            if (portalSettings.ContentLocalizationEnabled)
+                            {
+                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                            }
                         }
                     }
 
@@ -1673,10 +1666,6 @@ namespace DotNetNuke.Entities.Portals
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
                         break;
-                    case "gettingStartedTab":                        
-                        UpdatePortalSetting(portalId, "GettingStartedTabId", tab.TabID.ToString());
-                        logType = "GettingStartedTabId";
-                        break;
                     case "404Tab":
                         portal.Custom404TabId = tab.TabID;
                         logType = "Custom404Tab";
@@ -2785,10 +2774,16 @@ namespace DotNetNuke.Entities.Portals
                     Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string HomeDirectory = portal.HomeDirectoryMapPath;
-                        if (Directory.Exists(HomeDirectory))
+                        string homeDirectory = portal.HomeDirectoryMapPath;
+
+                        if (homeDirectory.EndsWith("\\"))
                         {
-                            Globals.DeleteFolderRecursive(HomeDirectory);
+                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
+                        }
+
+                        if (Directory.Exists(homeDirectory))
+                        {
+                            Globals.DeleteFolderRecursive(homeDirectory);
                         }
                     }
                     //remove database references
@@ -2866,9 +2861,6 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="pageSize">The size of the page</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
-        /// <history>
-        ///     [cnurse]	11/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {

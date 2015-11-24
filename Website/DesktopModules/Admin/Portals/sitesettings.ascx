@@ -307,8 +307,8 @@
                         <div class="dnnFormItem">
                             <dnn:label id="plSMTPMode" controlname="rblSMTPmode" runat="server" />
                              <asp:RadioButtonList ID="rblSMTPmode" runat="server" AutoPostBack="true" RepeatDirection="Horizontal">
-                                    <asp:ListItem Value="h">Host</asp:ListItem>
-                                    <asp:ListItem Value="p">Portal</asp:ListItem>
+                                    <asp:ListItem Value="h" resourcekey="Host">Host</asp:ListItem>
+                                    <asp:ListItem Value="p" resourcekey="Site">Site</asp:ListItem>
                              </asp:RadioButtonList>
                         </div>
                         <div runat="server" id="SmtpSettings">

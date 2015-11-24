@@ -31,9 +31,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/21/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum ImageCommandColumnEditMode
     {

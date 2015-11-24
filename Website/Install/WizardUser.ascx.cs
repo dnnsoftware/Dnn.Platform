@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Install
             {
                 strErrorMessage = "ConfirmPassword";
             }
-            else if (!Regex.IsMatch(txtEmail.Text, Globals.glbEmailRegEx))
+            else if (!Globals.EmailValidatorRegex.IsMatch(txtEmail.Text))
             {
                 strErrorMessage = "InValidEmail";
             }
@@ -247,9 +247,6 @@ namespace DotNetNuke.Services.Install
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	02/15/2007	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void OnPreRender(EventArgs e)
 		{

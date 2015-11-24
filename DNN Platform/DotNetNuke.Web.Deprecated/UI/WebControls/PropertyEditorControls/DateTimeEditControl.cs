@@ -52,9 +52,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]	05/10/2007	created
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	[ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
 	public class DateTimeEditControl : EditControl
@@ -69,9 +66,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		/// DateValue returns the Date representation of the Value
 		/// </summary>
 		/// <value>A Date representing the Value</value>
-		/// <history>
-		///     [cnurse]	05/22/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected DateTime DateValue
 		{
@@ -99,9 +93,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		/// </summary>
 		/// <value>A String representing the default format to use to render the date</value>
 		/// <returns>A Format String</returns>
-		/// <history>
-		///     [cnurse]	10/29/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual string DefaultFormat
 		{
@@ -117,9 +108,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		/// </summary>
 		/// <value>A String representing the format to use to render the date</value>
 		/// <returns>A Format String</returns>
-		/// <history>
-		///     [cnurse]	06/11/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual string Format
 		{
@@ -147,9 +135,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		/// OldDateValue returns the Date representation of the OldValue
 		/// </summary>
 		/// <value>A Date representing the OldValue</value>
-		/// <history>
-		///     [cnurse]	05/22/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected DateTime OldDateValue
 		{
@@ -303,9 +288,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		/// RenderViewMode renders the View (readonly) mode of the control
 		/// </summary>
 		/// <param name="writer">A HtmlTextWriter.</param>
-		/// <history>
-		///     [cnurse]	06/11/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void RenderViewMode(HtmlTextWriter writer)
 		{

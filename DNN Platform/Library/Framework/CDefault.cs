@@ -31,7 +31,6 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 
@@ -43,9 +42,6 @@ namespace DotNetNuke.Framework
     /// Project	 : DotNetNuke
     /// Class	 : CDefault
     /// -----------------------------------------------------------------------------
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CDefault : PageBase
     {
@@ -82,23 +78,6 @@ namespace DotNetNuke.Framework
                 ClientAPI.RegisterClientVariable(this, "ScrollToControl", objControl.ClientID, true);
                 DNNClientAPI.SetScrollTop(Page);
             }
-        }
-
-        protected void ManageGettingStarted()
-        {
-            // The Getting Started dialog can be also opened from the Control Bar, also do not show getting started in popup.
-            var controller = new GettingStartedController();
-            if (!controller.ShowOnStartup || UrlUtils.InPopUp())
-            {
-                return;
-            }
-            var gettingStarted = DnnGettingStarted.GetCurrent(Page);
-            if (gettingStarted == null)
-            {
-                gettingStarted = new DnnGettingStarted();
-                Page.Form.Controls.Add(gettingStarted);
-            }
-            gettingStarted.ShowOnStartup = true;
         }
 
         protected void ManageInstallerFiles()

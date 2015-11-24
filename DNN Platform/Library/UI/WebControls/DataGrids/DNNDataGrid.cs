@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/17/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DNNDataGrid : DataGrid
     {
@@ -56,9 +53,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Centralised Event that is raised whenever a check box is changed.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
@@ -76,9 +70,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Called when the grid is Data Bound
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnDataBinding(EventArgs e)
         {

@@ -44,9 +44,6 @@ namespace DotNetNuke.UI.WebControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]	02/14/2006	created
-	/// </history>
 	[ToolboxData("<{0}:PropertyLabelControl runat=server></{0}:PropertyLabelControl>")]
 	public class PropertyLabelControl : WebControl
 	{
@@ -87,9 +84,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and Sets the Caption Text if no ResourceKey is provided
 		/// </summary>
 		/// <value>A string representing the Caption</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		[Browsable(true), Category("Appearance"), DefaultValue("Property"), Description("Enter Caption for the control.")]
 		public string Caption
 		{
@@ -123,9 +117,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and Sets the related Edit Control
 		/// </summary>
 		/// <value>A Control</value>
-		/// <history>
-		/// 	[cnurse]	02/14/2006	Created
-		/// </history>
 		[Browsable(false)]
 		public Control EditControl { get; set; }
 
@@ -133,9 +124,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Text is value of the Label Text if no ResourceKey is provided
 		/// </summary>
 		/// <value>A string representing the Text</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		[Browsable(true), Category("Appearance"), DefaultValue(""), Description("Enter Help Text for the control.")]
 		public string HelpText
 		{
@@ -160,9 +148,6 @@ namespace DotNetNuke.UI.WebControls
 		/// is the label help text, Control.ErrorMessage is the Validation Error Message for the
 		/// control
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	02/10/2006	Created
-		/// </history>
 		[Browsable(true), Category("Localization"), DefaultValue(""), Description("Enter the Resource key for the control.")]
 		public string ResourceKey
 		{
@@ -203,9 +188,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the value of the Field that is bound to the Label
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		[Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Label's Text property.")]
 		public string DataField { get; set; }
 
@@ -213,9 +195,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the DataSource that is bound to this control
 		/// </summary>
 		/// <value>The DataSource object</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		[Browsable(false)]
 		public object DataSource { get; set; }
 
@@ -228,9 +207,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the value of the Label Style
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
 		 Description("Set the Style for the Help Text.")]
@@ -248,9 +224,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the value of the Label Style
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
 		 Description("Set the Style for the Label Text")]
@@ -274,9 +247,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// CreateChildControls creates the control collection.
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	02/10/2006	Created
-		/// </history>
 		protected override void CreateChildControls()
 		{
             CssClass += "dnnLabel";
@@ -317,9 +287,6 @@ namespace DotNetNuke.UI.WebControls
 		/// OnDataBinding runs when the Control is being Data Bound (It is triggered by
 		/// a call to Control.DataBind()
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		protected override void OnDataBinding(EventArgs e)
 		{
 			//If there is a DataSource bind the relevent Properties
@@ -355,9 +322,6 @@ namespace DotNetNuke.UI.WebControls
 		/// OnLoad runs just before the Control is rendered, and makes sure that any
 		/// properties are set properly before the control is rendered
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	02/13/2006	Created
-		/// </history>
 		protected override void OnPreRender(EventArgs e)
 		{
 			//Make sure the Child Controls are created before assigning any properties

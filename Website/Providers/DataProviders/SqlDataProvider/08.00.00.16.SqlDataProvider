@@ -1,0 +1,4 @@
+﻿/*   DNN-7569 - Remove the FeedBrowser. */
+/******************************************************************************************/
+
+-- SQl data is not need yet in this version. But this version does need clean up file, so we crate the corresponding data file

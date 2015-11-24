@@ -163,8 +163,8 @@ namespace Dnn.Modules.DynamicContentManager.Components
         public IDictionary<string, IPropertyAccess> GetTokens(Page page, ModuleInstanceContext moduleContext)
         {
             var tokens = new Dictionary<string, IPropertyAccess>();
-
             tokens["icon"] = new FontPropertyAccess();
+            tokens["pagesize"] = new PageSizePropertyAccess(moduleContext.PortalId, moduleContext.ModuleId);
             return tokens;
         }
     }

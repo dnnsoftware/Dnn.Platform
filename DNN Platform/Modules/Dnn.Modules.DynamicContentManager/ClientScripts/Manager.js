@@ -49,10 +49,6 @@
         viewModel.mode("listTemplates");
     };
 
-    var selectSettings = function (data, e) {
-        menuClick(e.target, settings.settingsPanel);
-    };
-
     var init = function(element) {
         $rootElement = $(element);
 
@@ -100,6 +96,10 @@
             codeEditor: codeEditor,
             ko: ko
         };
+        var conf = dnn.modules.dynamicContentManager.cf.init();
+        var sf = util.sf;
+        var persis = dnn.modules.dynamicContentManager.persistent.init(conf, sf);
+        util.persistent = persis;
 
         //Build the ViewModel
         viewModel.resx = resx;
@@ -148,7 +148,6 @@
         viewModel.selectContentTypes = selectContentTypes;
         viewModel.selectDataTypes = selectDataTypes;
         viewModel.selectTemplates = selectTemplates;
-        viewModel.selectSettings = selectSettings;
 
         viewModel.pageSizeOptions = ko.observableArray([
                                 { text: 10, value: 10 },

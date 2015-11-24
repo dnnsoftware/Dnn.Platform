@@ -47,14 +47,13 @@ namespace DotNetNuke.UI.UserControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/13/2004	Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-		#region Private Members
+        private readonly static Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        #region Private Members
 
         private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider _richTextEditor;
@@ -266,9 +265,6 @@ namespace DotNetNuke.UI.UserControls
         /// </remarks>
         /// <param name="strHtml">Html to decode</param>
         /// <returns>The decoded html</returns>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
@@ -283,9 +279,6 @@ namespace DotNetNuke.UI.UserControls
         /// </remarks>
         /// <param name="strHtml">Html to encode</param>
         /// <returns>The encoded html</returns>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
@@ -298,9 +291,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void PopulateLists()
         {
@@ -323,9 +313,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/10/2005	created (extracted from Page_load)
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetPanels()
         {
@@ -369,11 +356,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        private string RemoveBaseTags(String strInput)
+        private static string RemoveBaseTags(String strInput)
 		{
-			//const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-			const string pattern = "<base[^>]*>";
-            return Regex.Replace(strInput, pattern, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            return BaseTagRegex.Replace(strInput, " ");
 		}
 		#endregion
 
@@ -409,9 +394,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -462,9 +444,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OptRenderSelectedIndexChanged(Object sender, EventArgs e)
         {
@@ -485,9 +464,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OptViewSelectedIndexChanged(Object sender, EventArgs e)
         {

@@ -32,10 +32,6 @@ namespace DotNetNuke.Services.Authentication
     /// <summary>
     /// The LogOffHandler class provides a replacement for the LogOff page
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	10/26/2007  Created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class LogOffHandler : IHttpHandler
     {
         #region IHttpHandler Members

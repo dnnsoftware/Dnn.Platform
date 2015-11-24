@@ -302,13 +302,6 @@ namespace DotNetNuke.Services.Install
             //remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
-            //Update Getting Started Settings
-            foreach (UserInfo hostUser in UserController.GetUsers(false, true, -1))
-            {
-                HostController.Instance.Update(String.Format("GettingStarted_Hide_{0}", hostUser.UserID), "false");
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", hostUser.UserID), "true");
-            }
-
             Config.Touch();
             Response.Redirect("../Default.aspx", true);
         }
@@ -356,9 +349,6 @@ namespace DotNetNuke.Services.Install
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/14/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -373,9 +363,6 @@ namespace DotNetNuke.Services.Install
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/09/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {

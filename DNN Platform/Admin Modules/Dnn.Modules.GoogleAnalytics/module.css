@@ -1,0 +1,194 @@
+/* ===========   SQL Module Styling   =========== */
+@import url("plugins/datatables/css/jquery.dataTables.css");
+@import url("plugins/datatables/css/TableTools.css");
+
+#dnnSQLModule {
+    width: 100%;
+    margin: 2em auto;
+}
+
+    #dnnSQLModule .sqlQuery, div.dataTables_wrapper {
+        background-color: rgba(0, 0, 0, 0.1);
+        padding: 1em;
+        margin-bottom: 2em;
+    }
+
+    #dnnSQLModule .dnnLabel {
+        width: 100px;
+    }
+
+    #dnnSQLModule hr {
+        clear: both;
+        height: 0;
+        border: solid #c0c0c0;
+        border-width: 1px 0 0;
+        margin: 0 0 10px 0;
+    }
+
+    #dnnSQLModule button {
+        background-image: linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
+        background-image: -o-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
+        background-image: -moz-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
+        background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
+        background-image: -ms-linear-gradient(top, #FEFEFE 0%, #EAEAEA 100%);
+        background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0, #FEFEFE), color-stop(1, #EAEAEA) );
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFFFFF inset;
+        border: 1px solid #C2C2C2;
+        height: 35px;
+        min-width: 35px;
+        cursor: pointer;
+        padding: 0;
+        margin-bottom: 18px;
+    }
+
+        #dnnSQLModule button span {
+            background-position: center center;
+            background-repeat: no-repeat;
+            display: block;
+            height: 35px;
+            width: 100%;
+            max-width: 35px;
+            text-indent: -10000000px;
+        }
+
+        #dnnSQLModule button.singleButton {
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+
+
+.dnnFormItem select {
+    width: 300px;
+}
+
+#results {
+    /* margin-top: 30px;*/
+}
+
+.dnnResults {
+    width: 100%;
+    /*overflow: auto;
+    margin-bottom: 20px;*/
+}
+
+#dialog-save .dnnFormItem {
+    margin-top: 70px;
+}
+
+    #dialog-save .dnnFormItem span.dnnFormMessage.dnnFormError {
+        bottom: 65%;
+    }
+
+ul.dnnAdminTabNav {
+    margin-bottom: -4px;
+}
+
+/*
+ * Results Table
+ */
+
+div.dataTables_wrapper {
+}
+
+div.DTTT_container {
+    margin: 0;
+}
+
+.dnnSeparatorPanel {
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+table.dataTable thead th {
+    padding: 6px 18px 6px 10px;
+    border-bottom: 1px solid #c9c9c9;
+    position: relative;
+    line-height: 28px;
+}
+
+table.dataTable tfoot th {
+    padding: 3px 18px 3px 10px;
+    border-top: 1px solid black;
+    font-weight: bold;
+}
+
+table.dataTable td {
+    padding: 3px 10px;
+}
+
+    table.dataTable td.center,
+    table.dataTable td.dataTables_empty {
+        text-align: center;
+    }
+
+table.dataTable tr.odd {
+    background-color: rgba(255,255,255,0.5);
+}
+
+table.dataTable tr.even {
+    background-color: white;
+}
+
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #D3D6FF;
+}
+
+table.dataTable tr.odd td.sorting_2 {
+    background-color: #DADCFF;
+}
+
+table.dataTable tr.odd td.sorting_3 {
+    background-color: #E0E2FF;
+}
+
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EAEBFF;
+}
+
+table.dataTable tr.even td.sorting_2 {
+    background-color: #F2F3FF;
+}
+
+table.dataTable tr.even td.sorting_3 {
+    background-color: #F9F9FF;
+}
+
+.dataTables_scrollHeadInner .sorting:after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 19px;
+    height: 40px;
+    background: url('plugins/datatables/images/sort_both.png') no-repeat center right;
+}
+
+.dataTables_scrollHeadInner .sorting_asc:after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 19px;
+    height: 40px;
+    background: url('plugins/datatables/images/sort_asc.png') no-repeat center right;
+}
+
+.dataTables_scrollHeadInner .sorting_desc:after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 19px;
+    height: 40px;
+    background: url('plugins/datatables/images/sort_desc.png') no-repeat center right;
+}
+
+.dnnTableFooter {
+    padding: 1em 0;
+}
+
+/* ===========   End SQL Module Styling   =========== */

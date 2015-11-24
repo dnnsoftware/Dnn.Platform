@@ -67,14 +67,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\DynamicContentTypeBuilder.cs" />
+    <Compile Include="Builders\FieldDefinitionBuilder.cs" />
     <Compile Include="ContentTemplateManagerTests.cs" />
     <Compile Include="ContentTemplateTests.cs" />
     <Compile Include="DataTypeManagerTests.cs" />
     <Compile Include="DataTypeTests.cs" />
+    <Compile Include="DynamicContentSearchManagerTests.cs" />
     <Compile Include="DynamicContentItemManagerTests.cs" />
     <Compile Include="DynamicContentItemTests.cs" />
     <Compile Include="DynamicContentTypeManagerTests.cs" />
     <Compile Include="DynamicContentTypeTests.cs" />
+    <Compile Include="FieldDefinitionCheckerTests.cs" />
     <Compile Include="FieldDefinitionManagerTests.cs" />
     <Compile Include="FieldDefinitionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

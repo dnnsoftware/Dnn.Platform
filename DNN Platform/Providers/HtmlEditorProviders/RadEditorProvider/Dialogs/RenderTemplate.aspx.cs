@@ -38,8 +38,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class RenderTemplate : System.Web.UI.Page
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RenderTemplate));

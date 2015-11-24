@@ -12,6 +12,8 @@ using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
 using Dnn.DynamicContent.Localization;
+using Dnn.Modules.DynamicContentManager.Components.Entities;
+using Dnn.Modules.DynamicContentManager.Services.Attributes;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
@@ -19,6 +21,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 
 namespace Dnn.Modules.DynamicContentManager.Services
 {
@@ -27,6 +30,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+    [DccExceptionFilter]
     public class ContentTypeController : BaseController
     {
         /// <summary>
@@ -121,7 +125,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MoveContentField(MoveContentFieldViewModel viewModel)
         {
-            FieldDefinitionManager.Instance.MoveFieldDefintion(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
+            FieldDefinitionManager.Instance.MoveFieldDefinition(viewModel.ContentTypeId, viewModel.SourceIndex, viewModel.TargetIndex);
 
             return Request.CreateResponse(HttpStatusCode.OK, new {});
         }
@@ -150,8 +154,9 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
                             contentType => new ContentTypeViewModel(contentType, PortalSettings));
-
         }
+
+        
 
         private ArrayList ProcessFields(DynamicContentType contentType, string prefix)
         {
@@ -316,14 +321,20 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             var savedField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
 
-            savedField.Name = defaultName;
-            savedField.Description = defaultDescription;
-            savedField.Label = defaultLabel;
-            savedField.FieldTypeId = viewModel.FieldTypeId;
-            savedField.IsReferenceType = viewModel.IsReferenceType;
-            savedField.IsList = viewModel.IsList;
-
-            FieldDefinitionManager.Instance.UpdateFieldDefinition(savedField);
+            FieldDefinitionManager.Instance.UpdateFieldDefinition(
+                new FieldDefinition
+                {
+                    FieldDefinitionId = savedField.FieldDefinitionId,
+                    ContentTypeId = savedField.ContentTypeId,
+                    PortalId = savedField.PortalId,
+                    Name = defaultName,
+                    Description = defaultDescription,
+                    Label = defaultLabel,
+                    FieldTypeId = viewModel.FieldTypeId,
+                    IsReferenceType = viewModel.IsReferenceType,
+                    IsList = viewModel.IsList,
+                    Order = savedField.Order
+                });
         }
 
         private void SaveFieldLocalizations(int portalId, int contentFieldId, List<ContentTypeLocalization> localizedNames,

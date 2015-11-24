@@ -1,8 +1,6 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Linq;
-using DotNetNuke.Collections;
 using DotNetNuke.Entities.Content;
 
 namespace Dnn.DynamicContent
@@ -11,13 +9,13 @@ namespace Dnn.DynamicContent
     {
         int AddContentItem(DynamicContentItem dynamicContent);
 
-        DynamicContentItem CreateContentItem(int portalId, int tabId, int moduleId, DynamicContentType contentType);
+        DynamicContentItem CreateContentItem(DynamicContentType contentType, int portalId);
 
-        DynamicContentItem CreateContentItem(ContentItem contentItem);
+        DynamicContentItem CreateContentItem(ContentItem contentItem, int portalId);
 
         void DeleteContentItem(DynamicContentItem dynamicContent);
 
-        IQueryable<DynamicContentItem> GetContentItems(int moduleId, int contentTypeId);
+        DynamicContentItem GetContentItem(int contentItemId, int portalId);
 
         void UpdateContentItem(DynamicContentItem dynamicContent);
     }

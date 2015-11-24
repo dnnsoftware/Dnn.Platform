@@ -27,7 +27,13 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
     // ReSharper disable once InconsistentNaming
     self.selectedContentType = new dcc.contentTypeViewModel(self, config);
 
-    var findContentTypes =  function() {
+    var findContentTypes = function() {
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        if (persistentData.contentTypePageSize != self.pageSize()) {
+            persistentData.contentTypePageSize = self.pageSize();
+            persistentObj.save(persistentData);
+        }
         self.pageIndex(0);
         self.getContentTypes();
     };
@@ -125,6 +131,10 @@ dcc.contentTypesViewModel = function(rootViewModel, config){
         self.pageSize.subscribe(function () {
             findContentTypes();
         });
+
+        var persistentObj = util.persistent;
+        var persistentData = persistentObj.load();
+        self.pageSize(persistentData.contentTypePageSize);
 
         $rootElement.find("#contentTypes-editView").css("display", "none");
 
@@ -457,45 +467,68 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         }
     });
 
-    self.fieldTypes = ko.computed(function () {
-        var i, contentType, dataType;
-        var contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes();
-        var dataTypes;
-        var fieldTypes = [];
+    function populateDataTypes(arr, dataTypes) {
+        var i, dataType;
+        for (i = 0; i < dataTypes.length; i++) {
+            dataType = dataTypes[i];
+            arr.push({
+                fieldTypeId: "D" + dataType.dataTypeId(),
+                fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
+            });
+        }
+    }
 
-        fieldTypes.push({
-            enabled: false,
-            fieldTypeId: "C0",
-            fieldName: resx.contentTypes
-        });
+    function populateContentTypes(arr, contentTypes) {
+        var i, contentType;
         for (i = 0; i < contentTypes.length; i++) {
             contentType = contentTypes[i];
             if (contentType.contentTypeId() !== self.contentTypeId()) {
-                fieldTypes.push({
-                    enabled: true,
+                arr.push({
                     fieldTypeId: "C" + contentType.contentTypeId(),
                     fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), contentType.localizedNames())
                 });
             }
         }
+    }
+
+    self.fieldTypes = ko.computed(function () {
+        var fieldTypes = [];
+        var dataTypes;
+        var contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes();
+
+        populateContentTypes(fieldTypes, contentTypes);
 
         if (parentViewModel.parentViewModel.parentViewModel.dataTypes != null) {
             dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
-            fieldTypes.push({
-                enabled: false,
-                fieldTypeId: "D0",
-                fieldName: resx.dataTypes
-            });
-            for (i = 0; i < dataTypes.length; i++) {
-                dataType = dataTypes[i];
-                fieldTypes.push({
-                    enabled: true,
-                    fieldTypeId: "D" + dataType.dataTypeId(),
-                    fieldName: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), dataType.localizedNames())
-                });
-            }
+            populateDataTypes(fieldTypes, dataTypes);
         }
+
         return fieldTypes;
+    });
+
+    self.availableFields = ko.computed(function () {
+        var contentTypes = parentViewModel.parentViewModel.parentViewModel.contentTypes();
+        var dataTypes;
+        var availableFields = [],
+            dataTypeOptions = [],
+            contentOptions = [];
+
+        populateContentTypes(contentOptions, contentTypes);
+
+        availableFields.push({
+            fieldName: resx.contentTypes,
+            fieldOptions: contentOptions
+        });
+
+        if (parentViewModel.parentViewModel.parentViewModel.dataTypes != null) {
+            dataTypes = parentViewModel.parentViewModel.parentViewModel.dataTypes();
+            populateDataTypes(dataTypeOptions, dataTypes);
+            availableFields.push({
+                fieldName: resx.dataTypes,
+                fieldOptions: dataTypeOptions
+            });
+        }
+        return availableFields;
     });
 
     self.fieldType = ko.computed(function () {

@@ -27,7 +27,7 @@ namespace DotNetNuke.HttpModules.Services
 {
     public class ServicesModule : IHttpModule
     {
-		public static readonly Regex ServiceApi = new Regex(@"DesktopModules/.+/API");
+		public static readonly Regex ServiceApi = new Regex(@"DesktopModules/.+/API/", RegexOptions.Compiled);
 
         public void Init(HttpApplication context)
         {

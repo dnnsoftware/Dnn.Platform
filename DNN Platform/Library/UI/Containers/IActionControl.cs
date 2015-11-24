@@ -35,9 +35,6 @@ namespace DotNetNuke.UI.Containers
     /// <summary>
     /// IActionControl provides a common INterface for Action Controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public interface IActionControl
     {

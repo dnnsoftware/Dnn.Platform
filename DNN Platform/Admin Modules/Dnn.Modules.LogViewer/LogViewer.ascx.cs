@@ -60,11 +60,6 @@ namespace Dnn.Modules.LogViewer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse] 17/9/2004  Updated for localization, Help and 508. Also 
-    ///                       consolidated Send Exceptions into one set of 
-    ///                       controls
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LogViewer : PortalModuleBase, ILogViewer
     {
@@ -251,7 +246,7 @@ namespace Dnn.Modules.LogViewer
             }
 
             string returnMsg;
-            if (Regex.IsMatch(strFromEmailAddress, Globals.glbEmailRegEx))
+            if (Globals.EmailValidatorRegex.IsMatch(strFromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
                 var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;

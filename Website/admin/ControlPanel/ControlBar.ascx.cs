@@ -125,12 +125,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 ID = "ControlBar";
 
-                var gettingStarted = DnnGettingStarted.GetCurrent(Page);
-                if (gettingStarted == null)
-                {
-                    gettingStarted = new DnnGettingStarted();
-                    Page.Form.Controls.Add(gettingStarted);
-                }
                 FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
                 Page.Form.Controls.Add(FileUploader);
 
@@ -816,7 +810,7 @@ namespace DotNetNuke.UI.ControlPanels
                 PageList.Services.SortTreeMethod = "ItemListService/SortPagesInPortalGroup";
             }
 
-            PageList.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            PageList.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
             PageList.OnClientSelectionChanged.Add("dnn.controlBar.ControlBar_Module_PageList_Changed");
             return multipleSites;
         }

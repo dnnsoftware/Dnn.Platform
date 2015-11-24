@@ -103,9 +103,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/17/2006	Created
-        /// </history>
         public string NavigateURL { get; set; }
 
 
@@ -113,9 +110,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets or sets the URL Formatting string
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         public string NavigateURLFormatString { get; set; }
 
 

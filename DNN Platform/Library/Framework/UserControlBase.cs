@@ -37,9 +37,6 @@ namespace DotNetNuke.Framework
     /// The UserControlBase class defines a custom base class inherited by all
     /// user controls within the Portal.
     /// </summary>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class UserControlBase : UserControl
     {
         public bool IsHostMenu

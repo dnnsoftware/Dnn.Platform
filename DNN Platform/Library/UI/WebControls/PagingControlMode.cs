@@ -31,9 +31,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/12/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum PagingControlMode
     {

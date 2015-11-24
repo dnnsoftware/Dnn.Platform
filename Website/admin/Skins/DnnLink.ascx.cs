@@ -32,9 +32,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary></summary>
     /// <returns></returns>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[bchapman]	12/11/2014	New control for default skin links
-        /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DnnLink : SkinObjectBase
     {

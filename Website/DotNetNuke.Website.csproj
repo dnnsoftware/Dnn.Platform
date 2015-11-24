@@ -103,10 +103,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -129,11 +125,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -617,34 +608,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx.cs">
-      <DependentUpon>AdvancedSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx.designer.cs">
-      <DependentUpon>AdvancedSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx.designer.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.cs">
-      <DependentUpon>SmtpServerSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx.designer.cs">
-      <DependentUpon>SmtpServerSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx.cs">
-      <DependentUpon>GoogleAnalyticsSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx.designer.cs">
-      <DependentUpon>GoogleAnalyticsSettings.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Authentication.ascx.cs">
       <DependentUpon>Authentication.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -665,13 +628,6 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.cs">
-      <DependentUpon>ContentList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\ContentList\ContentList.ascx.designer.cs">
-      <DependentUpon>ContentList.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
       <DependentUpon>AvailableExtensions.ascx</DependentUpon>
@@ -784,6 +740,13 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.designer.cs">
       <DependentUpon>InstalledExtensions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.cs">
+      <DependentUpon>LanguagePacks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.designer.cs">
+      <DependentUpon>LanguagePacks.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.cs">
       <DependentUpon>MoreExtensions.ascx</DependentUpon>
@@ -1060,20 +1023,6 @@
     <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
       <DependentUpon>UserSettings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.cs">
-      <DependentUpon>Attributes.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx.designer.cs">
-      <DependentUpon>Attributes.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.cs">
-      <DependentUpon>editskins.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Skins\EditSkins.ascx.designer.cs">
-      <DependentUpon>editskins.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1149,6 +1098,7 @@
       <DependentUpon>OAUTHLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\Web.config" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
@@ -1816,9 +1766,6 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
@@ -1856,13 +1803,21 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.15.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.16.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.17.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.18.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.19.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.20.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.21.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.22.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.23.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.25.SqlDataProvider" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />
@@ -2198,12 +2153,6 @@
     <Content Include="Default.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.ascx" />
-    <Content Include="DesktopModules\Admin\AdvancedSettings\AdvancedSettings.gif" />
-    <Content Include="DesktopModules\Admin\AdvancedSettings\LanguagePacks.ascx" />
-    <Content Include="DesktopModules\Admin\AdvancedSettings\module.css" />
-    <Content Include="DesktopModules\Admin\AdvancedSettings\SmtpServerSettings.ascx" />
-    <Content Include="DesktopModules\Admin\Analytics\GoogleAnalyticsSettings.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\Authentication.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\authentication.png" />
     <Content Include="DesktopModules\Admin\Authentication\Images\socialLoginbuttons-icons.png" />
@@ -2213,8 +2162,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\ContentList\ContentList.ascx" />
-    <Content Include="DesktopModules\Admin\ContentList\contentList.png" />
     <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
@@ -2293,11 +2240,6 @@
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
     <Content Include="DesktopModules\Admin\Security\users.ascx" />
     <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
-    <Content Include="DesktopModules\Admin\SkinDesigner\Attributes.ascx" />
-    <Content Include="DesktopModules\Admin\Skins\editskins.ascx" />
-    <Content Include="DesktopModules\Admin\Skins\module.css" />
-    <Content Include="DesktopModules\Admin\Solutions\Solutions.ascx" />
-    <Content Include="DesktopModules\Admin\Solutions\solutions.gif" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -3812,9 +3754,6 @@
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Portals\_default\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
-    <Content Include="Portals\_default\GettingStarted.css" />
-    <Content Include="Portals\_default\GettingStartedFallback.htm" />
-    <Content Include="Portals\_default\GettingStartedFallback.png" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
     <Content Include="Portals\_default\Skins\DarkKnightMobile\DNNMobileNav\DNNMobileNav-menudef.xml" />
@@ -4004,25 +3943,6 @@
     <Content Include="Resources\ControlPanel\ControlPanel.debug.js" />
     <Content Include="Resources\ControlPanel\ControlPanel.js" />
     <Content Include="Resources\Dashboard\jquery.dashboard.js" />
-    <Content Include="Resources\FeedBrowser\scripts\fallback.js" />
-    <Content Include="Resources\FeedBrowser\scripts\feedbrowser.js" />
-    <Content Include="Resources\FeedBrowser\scripts\templates.js" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\graphite.css" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\loading.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-bottom-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-left-curve.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-left.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\nav-top-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\pointer.gif" />
-    <Content Include="Resources\FeedBrowser\themes\graphite\search.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\loading.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-bottom-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-left-curve.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-left.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\nav-top-bar.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\platinum.css" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\pointer.gif" />
-    <Content Include="Resources\FeedBrowser\themes\platinum\search.gif" />
     <Content Include="Resources\Libraries\jQuery-Migrate\01_02_01\jquery-migrate.js" />
     <Content Include="Resources\Libraries\jQuery-UI\01_10_03\jquery-ui.js" />
     <Content Include="Resources\Libraries\jQuery\01_09_01\jquery.js" />
@@ -4044,12 +3964,6 @@
     <Content Include="Resources\Shared\components\FileUpload\dnn.FileUpload.js" />
     <Content Include="Resources\Shared\components\FileUpload\Images\dropZone.png" />
     <Content Include="Resources\Shared\components\FileUpload\Images\indeterminate.gif" />
-    <Content Include="Resources\Shared\components\GettingStarted\dnn.GettingStarted.css" />
-    <Content Include="Resources\Shared\components\GettingStarted\dnn.GettingStarted.js" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\facebook.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\loading.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\manual.png" />
-    <Content Include="Resources\Shared\components\GettingStarted\Images\twitter.png" />
     <Content Include="Resources\Shared\components\Toast\images\close.gif" />
     <Content Include="Resources\Shared\components\Toast\images\error.png" />
     <Content Include="Resources\Shared\components\Toast\images\notice.png" />
@@ -4157,7 +4071,9 @@
   <ItemGroup>
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddModule.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddPage.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx" />
+    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\RibbonBar.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SiteAddPage.ascx.resx" />
     <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SwitchSite.ascx.resx" />
@@ -4196,7 +4112,9 @@
     <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\SharedResources.resx" />
+    <EmbeddedResource Include="App_GlobalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\WebControls.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\Address.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\DualListControl.ascx.resx" />
@@ -4209,21 +4127,17 @@
     <EmbeddedResource Include="controls\App_LocalResources\URLControl.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\UrlTrackingControl.ascx.resx" />
     <EmbeddedResource Include="controls\App_LocalResources\User.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\AdvancedSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\LanguagePacks.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\AdvancedSettings\App_LocalResources\SmtpServerSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Analytics\App_LocalResources\GoogleAnalyticsSettings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ContentList\App_LocalResources\ContentList.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\LanguagePacks.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
@@ -4275,13 +4189,6 @@
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SkinDesigner\App_LocalResources\Attributes.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DesktopModules\Admin\Skins\App_LocalResources\EditSkins.ascx.resx" />
-    <None Include="DesktopModules\Admin\Solutions\App_LocalResources\Solutions.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
     <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />

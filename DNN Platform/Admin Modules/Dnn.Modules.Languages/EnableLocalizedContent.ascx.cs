@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -76,18 +77,6 @@ namespace Dnn.Modules.Languages
         #endregion
 
         #region Private Methods
-        
-        /// <summary>
-        /// This Write/Flush is needed periodically to avoid issue in Azure.
-        /// Azure Load Balancer silently dropping idle connections after 4 minutes.
-        /// Sending some data from time to time to the client from server side, 
-        /// the Azure Load balancer doesn't kill the TCP connection
-        /// </summary>
-        private void KeepConnectionAlive()
-        {
-            Response.Write(' ');
-            Response.Flush();
-        }
 
         protected bool IsDefaultLanguage(string code)
         {
@@ -110,6 +99,12 @@ namespace Dnn.Modules.Languages
                 enabledlanguage.IsPublished = publish;
                 LocaleController.Instance.UpdatePortalLocale(enabledlanguage);
             }
+        }
+
+        private void KeepConnectionAlive()
+        {
+            Response.Write(' ');
+            Response.Flush();
         }
 
         private void ProcessLanguage(IEnumerable<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
@@ -162,8 +157,8 @@ namespace Dnn.Modules.Languages
                 {
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
-                
-                if ((i % 10) == 0)
+
+                if (i % 10 == 0)
                 {
                     KeepConnectionAlive();
                 }
@@ -229,7 +224,7 @@ namespace Dnn.Modules.Languages
             // Set RedirectLocation header before make any Write/Flush to keep connection alive
             // This prevents "Cannot redirect after HTTP headers have been sent" error
             Response.RedirectLocation = Globals.NavigateURL();
-            
+
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
 
             var pageList = GetPages(PortalId);

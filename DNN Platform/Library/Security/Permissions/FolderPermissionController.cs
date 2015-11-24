@@ -239,9 +239,6 @@ namespace DotNetNuke.Security.Permissions
         /// SaveFolderPermissions updates a Folder's permissions
         /// </summary>
         /// <param name="folder">The Folder to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SaveFolderPermissions(FolderInfo folder)
         {

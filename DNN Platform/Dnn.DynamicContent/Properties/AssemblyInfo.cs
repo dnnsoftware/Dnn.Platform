@@ -18,3 +18,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Dnn.Tests.DynamicContent.UnitTests")]
 [assembly: InternalsVisibleTo("Dnn.Tests.DynamicContent.IntegrationTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

@@ -43,8 +43,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class SaveTemplate : DotNetNuke.Framework.PageBase
 	{
 

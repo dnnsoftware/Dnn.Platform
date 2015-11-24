@@ -129,9 +129,6 @@
   <data name="ModuleTitle.Text" xml:space="preserve">
     <value>Content Manager</value>
   </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
   <data name="Templates.Text" xml:space="preserve">
     <value>Templates</value>
   </data>

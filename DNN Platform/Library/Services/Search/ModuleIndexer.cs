@@ -50,10 +50,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    ///     [vnguyen]   04/16/2013  updated with methods for an Updated Search
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleIndexer : IndexingProvider
     {
@@ -198,9 +194,6 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId"></param>
         /// <param name="startDate"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   05/17/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
@@ -253,9 +246,6 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="searchItem"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   05/16/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         #pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
@@ -296,9 +286,6 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/16/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
@@ -327,10 +314,6 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        ///     [vnguyen]   09/07/2010  Modified: Included logic to add TabId to searchItems
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
@@ -373,9 +356,6 @@ namespace DotNetNuke.Services.Search
         /// Parses the Modules of the Portal, determining whetehr they are searchable.
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchModules' instead.")]
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)

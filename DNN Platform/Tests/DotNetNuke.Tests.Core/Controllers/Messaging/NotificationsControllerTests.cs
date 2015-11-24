@@ -1013,6 +1013,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteNotification_Calls_DataService_DeleteNotification()
         {
+            var messageRecipients = new List<MessageRecipient>
+                                        {
+                                            new MessageRecipient()
+                                        };
+
+            _mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
+
             _mockDataService.Setup(ds => ds.DeleteNotification(Constants.Messaging_MessageId_1)).Verifiable();
             _notificationsController.DeleteNotification(Constants.Messaging_MessageId_1);
             _mockDataService.Verify();

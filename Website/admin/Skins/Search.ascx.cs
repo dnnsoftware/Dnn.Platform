@@ -127,6 +127,14 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        public string ClearQueryText
+        {
+            get
+            {
+                return Localization.GetSafeJSString("SearchClearQuery", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
         public string NoResultText
         {
             get

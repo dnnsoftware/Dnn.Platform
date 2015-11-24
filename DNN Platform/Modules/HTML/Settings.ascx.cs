@@ -38,9 +38,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [leupold]	    08/12/2007	created
-    /// </history>
     public partial class Settings : ModuleSettingsBase
     {
         private HtmlModuleSettings _moduleSettings;
@@ -98,8 +95,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         public override void LoadSettings()
         {
             try

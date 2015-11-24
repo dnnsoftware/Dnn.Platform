@@ -240,9 +240,6 @@
   <data name="RetryTimeLapseValidator.ErrorMessage" xml:space="preserve">
     <value>Retry Frequency range is from 1 to 999999</value>
   </data>
-  <data name="RetryTimeLapseRequired.ErrorMessage" xml:space="preserve">
-    <value>You must set Retry Frequency value</value>
-  </data>
   <data name="plScheduleStartDate.Text" xml:space="preserve">
     <value>Schedule Start Date/Time:</value>
   </data>

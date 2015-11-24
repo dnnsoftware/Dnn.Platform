@@ -56,13 +56,13 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// PageBase provides a custom DotNetNuke base class for pages
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private readonly static Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private PageStatePersister _persister;
         #region Private Members
@@ -80,9 +80,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the Page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
@@ -98,9 +95,6 @@ namespace DotNetNuke.Framework
         /// PageStatePersister returns an instance of the class that will be used to persist the Page State
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister</returns>
-        /// <history>
-        /// 	[cnurse]	    11/30/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
@@ -432,9 +426,7 @@ namespace DotNetNuke.Framework
             var linkButton = control as LinkButton;
             if (linkButton != null)
             {
-                var imgMatches = Regex.Matches(value,
-                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
-                    RegexOptions.IgnoreCase);
+                var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))

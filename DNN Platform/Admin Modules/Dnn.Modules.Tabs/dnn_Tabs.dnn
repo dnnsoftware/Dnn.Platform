@@ -30,7 +30,7 @@
                         </page>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>Tabs</friendlyName>
+								<friendlyName>Pages</friendlyName>
 								<moduleControls>
 									<moduleControl>
 										<controlKey />

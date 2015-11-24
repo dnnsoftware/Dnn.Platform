@@ -56,9 +56,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse] 16/9/2004  Updated for localization, Help and 508
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class WebUpload : PortalModuleBase
     {
@@ -183,9 +180,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 1/21/2005  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
@@ -202,10 +196,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [Philip Beadle]     5/10/2004  Added
-        ///     [cnurse]            04/24/2006  Converted to use Database as folder source
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void LoadFolders()
         {
@@ -222,7 +212,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 var rootFolder = folders.SingleOrDefault(f => f.FolderPath == "");
                 if (rootFolder != null)
                 {
-                    ddlFolders.SelectedItem = new ListItem() {Text = SharedConstants.RootFolder, Value = rootFolder.FolderID.ToString()};
+                    ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
                 }
             }
         }
@@ -237,9 +227,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 1/21/2005  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ReturnURL()
         {
@@ -268,11 +255,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 16/9/2004  Updated for localization, Help and 508
-        ///   [VMasanas]  9/28/2004   Changed redirect to Access Denied
-        ///   [Philip Beadle]  5/10/2004  Added folder population section.
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -330,9 +312,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 16/9/2004  Updated for localization, Help and 508
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdAdd_Click(object sender, EventArgs e)
         {
@@ -415,9 +394,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 16/9/2004  Updated for localization, Help and 508
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdReturn_Click(Object sender, EventArgs e)
         {

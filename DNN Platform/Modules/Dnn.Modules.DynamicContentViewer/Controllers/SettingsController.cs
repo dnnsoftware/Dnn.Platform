@@ -4,8 +4,10 @@
 using System.Linq;
 using System.Web.Mvc;
 using Dnn.DynamicContent;
+using Dnn.Modules.DynamicContentViewer.Components;
 using Dnn.Modules.DynamicContentViewer.Models;
-using DotNetNuke.Collections;
+using DotNetNuke.Security;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.DynamicContentViewer.Controllers
@@ -13,23 +15,38 @@ namespace Dnn.Modules.DynamicContentViewer.Controllers
     /// <summary>
     /// The Settings Controller manages the modules settings
     /// </summary>
+    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
+    [DnnHandleError]
     public class SettingsController : DnnController
     {
+        #region Members
+
+        private readonly IDynamicContentViewerManager _dynamicContentViewerManager;
+        #endregion
+
+        /// <summary>
+        /// SettingsController Constructor
+        /// </summary>
+        public SettingsController()
+        {
+            _dynamicContentViewerManager = DynamicContentViewerManager.Instance;
+        }
+
         /// <summary>
         /// The Index action renders the default Settings View
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
         {
-            var contentTypeId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ContentTypeId, -1);
+            var contentTypeId = _dynamicContentViewerManager.GetContentTypeId(ActiveModule);
             var settings = new Settings
                                 {
                                     ModuleId = ActiveModule.ModuleID,
                                     ContentTypeId = contentTypeId,
                                     ContentTypes = DynamicContentTypeManager.Instance.GetContentTypes(PortalSettings.PortalId, true).ToList(),
-                                    ViewTemplateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_ViewTemplateId, -1),
+                                    ViewTemplateId = _dynamicContentViewerManager.GetViewTemplateId(ActiveModule),
                                     Templates = ContentTemplateManager.Instance.GetContentTemplates(PortalSettings.PortalId, true).Where(t => t.ContentTypeId == contentTypeId).ToList(),
-                                    EditTemplateId = ActiveModule.ModuleSettings.GetValueOrDefault(Settings.DCC_EditTemplateId, -1),
+                                    EditTemplateId = _dynamicContentViewerManager.GetEditTemplateId(ActiveModule)
                                 };
             return View(settings);
         }

@@ -480,4 +480,16 @@
   <data name="SystemContentTypesSecurityException.Text" xml:space="preserve">
     <value>System Content Types can only be created, modified or deleted by Super Users</value>
   </data>
+  <data name="EntityIsNotValid.Text" xml:space="preserve">
+    <value>The entity of type '{0}' is not valid.</value>
+  </data>
+  <data name="FieldDefinitionInvalidDeadLoop.Text" xml:space="preserve">
+    <value>It is not posible to create the field with name {0} because it would create a dead loop definition.</value>
+  </data>
+  <data name="ContentTypeFieldDefinitionDoesNotExist.Text" xml:space="preserve">
+    <value>The content type to which the field definition belongs is not valid.</value>
+  </data>
+  <data name="ContentTypeDoesNotExist.Text" xml:space="preserve">
+    <value>The specified content type is not valid.</value>
+  </data>
 </root>

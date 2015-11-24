@@ -44,9 +44,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [vnguyen]   05/27/2013 
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class TabIndexer : IndexingProvider
     {
@@ -113,7 +110,7 @@ namespace DotNetNuke.Services.Search
                 PortalId = tab.PortalID,
                 CultureCode = tab.CultureCode,
                 ModifiedTimeUtc = tab.LastModifiedOnDate,
-                Body = tab.PageHeadText,
+                Body = string.Empty,
                 Description = tab.Description
             };
 

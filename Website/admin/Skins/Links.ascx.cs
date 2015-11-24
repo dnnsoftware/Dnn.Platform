@@ -35,13 +35,11 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Links : SkinObjectBase
     {
+        private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 		#region "Private Members"
 
         private string _alignment;
@@ -126,10 +124,10 @@ namespace DotNetNuke.UI.Skins.Controls
             string strSeparator = string.Empty;
             if (!String.IsNullOrEmpty(Separator))
             {
-                if (Separator.IndexOf("src=") != -1)
+                if (Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
 					//Add the skinpath to image paths
-                    Separator = Regex.Replace(Separator, "src=[']?", "$&" + PortalSettings.ActiveTab.SkinPath);
+                    Separator = SrcRegex.Replace(Separator, "$&" + PortalSettings.ActiveTab.SkinPath);
                 }
 				
 				//Wrap in a span

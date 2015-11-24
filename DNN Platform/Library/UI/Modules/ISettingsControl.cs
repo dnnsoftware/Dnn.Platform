@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.Modules
     /// <summary>
     /// ISettingsControl provides a common Interface for Module Settings Controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public interface ISettingsControl : IModuleControl
     {

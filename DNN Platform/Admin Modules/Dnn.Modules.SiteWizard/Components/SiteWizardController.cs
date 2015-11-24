@@ -43,20 +43,6 @@ namespace Dnn.Modules.SiteWizard.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Site Wizard");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Add Module to Admin Page for all Portals
-                        //    Upgrade.AddAdminPages("Site Wizard",
-                        //                            "Configure portal settings, page design and apply a site template using a step-by-step wizard.",
-                        //                            "~/Icons/Sigma/Wizard_16X16_Standard.png",
-                        //                            "~/Icons/Sigma/Wizard_32X32_Standard.png",
-                        //                            true,
-                        //                            moduleDefinition.ModuleDefID,
-                        //                            "Site Wizard",
-                        //                            "~/Icons/Sigma/Wizard_32X32_Standard.png",
-                        //                            true);
-                        //}
                         break;
                 }
                 return "Success";
