@@ -248,6 +248,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 foreach (var notification in notificationsDomainModel)
                 {
+                    var userObj =
+                        UserController.Instance.GetUser(PortalSettings.PortalId, notification.SenderUserID);
+                    var displayName = "";
+                    displayName = (userObj != null ? userObj.DisplayName : "");
                     var notificationViewModel = new NotificationViewModel
                     {
                         NotificationId = notification.NotificationID,
@@ -257,6 +261,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         DisplayDate = Common.Utilities.DateUtils.CalculateDateForDisplay(notification.CreatedOnDate),
                         SenderAvatar = string.Format(Globals.UserProfilePicRelativeUrl(), notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
+                        SenderDisplayName = displayName,
                         Actions = new List<NotificationActionViewModel>()
                     };
 
