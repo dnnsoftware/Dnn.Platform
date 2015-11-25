@@ -669,7 +669,7 @@ namespace DotNetNuke.Framework
             }
 
             //add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.HostPath, "default.css"));
+            ClientResourceManager.RegisterDefaultStylesheet(this, "~/resources/shared/stylesheets/dnndefault/8.0.0/default.css");
             ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
 
             ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
