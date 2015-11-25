@@ -2726,6 +2726,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 Response.Write("<script type=\"text/javascript\">");
                 Response.Write(GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
                 Response.Write("</script>");
+                Response.End();
             }
             else
             {
