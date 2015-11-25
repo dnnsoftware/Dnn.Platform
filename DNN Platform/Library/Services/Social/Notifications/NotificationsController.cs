@@ -66,11 +66,19 @@ namespace DotNetNuke.Services.Social.Notifications
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public NotificationsController()
             : this(DataService.Instance, Messaging.Data.DataService.Instance)
         {
         }
 
+        /// <summary>
+        /// Constructor from specifict data service
+        /// </summary>
+        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see></param>
+        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging</param>
         public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService)
         {
             Requires.NotNull("dataService", dataService);
