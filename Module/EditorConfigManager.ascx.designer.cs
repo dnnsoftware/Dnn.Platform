@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Web.UI.WebControls;
-
 namespace DNNConnect.CKEditorProvider.Module {
     
     
@@ -21,7 +19,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label ModuleHeader;
+        protected global::System.Web.UI.WebControls.Label ModuleHeader;
         
         /// <summary>
         /// PortalOnlyLabel control.
@@ -30,7 +28,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label PortalOnlyLabel;
+        protected global::System.Web.UI.WebControls.Label PortalOnlyLabel;
         
         /// <summary>
         /// PortalOnly control.
@@ -39,7 +37,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected CheckBox PortalOnly;
+        protected global::System.Web.UI.WebControls.CheckBox PortalOnly;
         
         /// <summary>
         /// PortalTabsAndModulesTree control.
@@ -48,7 +46,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected TreeView PortalTabsAndModulesTree;
+        protected global::System.Web.UI.WebControls.TreeView PortalTabsAndModulesTree;
         
         /// <summary>
         /// IconLegendLabel control.
@@ -57,7 +55,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label IconLegendLabel;
+        protected global::System.Web.UI.WebControls.Label IconLegendLabel;
         
         /// <summary>
         /// PortalHasSettingImage control.
@@ -66,7 +64,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image PortalHasSettingImage;
+        protected global::System.Web.UI.WebControls.Image PortalHasSettingImage;
         
         /// <summary>
         /// PortalHasSettingLabel control.
@@ -75,7 +73,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label PortalHasSettingLabel;
+        protected global::System.Web.UI.WebControls.Label PortalHasSettingLabel;
         
         /// <summary>
         /// PortalNoSettingImage control.
@@ -84,7 +82,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image PortalNoSettingImage;
+        protected global::System.Web.UI.WebControls.Image PortalNoSettingImage;
         
         /// <summary>
         /// PortalNoSettingLabel control.
@@ -93,7 +91,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label PortalNoSettingLabel;
+        protected global::System.Web.UI.WebControls.Label PortalNoSettingLabel;
         
         /// <summary>
         /// PageHasSettingImage control.
@@ -102,7 +100,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image PageHasSettingImage;
+        protected global::System.Web.UI.WebControls.Image PageHasSettingImage;
         
         /// <summary>
         /// PageHasSettingLabel control.
@@ -111,7 +109,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label PageHasSettingLabel;
+        protected global::System.Web.UI.WebControls.Label PageHasSettingLabel;
         
         /// <summary>
         /// PageNoSettingImage control.
@@ -120,7 +118,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image PageNoSettingImage;
+        protected global::System.Web.UI.WebControls.Image PageNoSettingImage;
         
         /// <summary>
         /// PageNoSettingLabel control.
@@ -129,7 +127,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label PageNoSettingLabel;
+        protected global::System.Web.UI.WebControls.Label PageNoSettingLabel;
         
         /// <summary>
         /// ModuleHasSettingImage control.
@@ -138,7 +136,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image ModuleHasSettingImage;
+        protected global::System.Web.UI.WebControls.Image ModuleHasSettingImage;
         
         /// <summary>
         /// ModuleHasSettingLabel control.
@@ -147,7 +145,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label ModuleHasSettingLabel;
+        protected global::System.Web.UI.WebControls.Label ModuleHasSettingLabel;
         
         /// <summary>
         /// ModuleNoSettingImage control.
@@ -156,7 +154,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Image ModuleNoSettingImage;
+        protected global::System.Web.UI.WebControls.Image ModuleNoSettingImage;
         
         /// <summary>
         /// ModuleNoSettingLabel control.
@@ -165,7 +163,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label ModuleNoSettingLabel;
+        protected global::System.Web.UI.WebControls.Label ModuleNoSettingLabel;
         
         /// <summary>
         /// OptionsPlaceHolder control.
@@ -174,7 +172,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected PlaceHolder OptionsPlaceHolder;
+        protected global::System.Web.UI.WebControls.PlaceHolder OptionsPlaceHolder;
         
         /// <summary>
         /// ModuleInstanceInfoPlaceHolder control.
@@ -183,7 +181,7 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected PlaceHolder ModuleInstanceInfoPlaceHolder;
+        protected global::System.Web.UI.WebControls.PlaceHolder ModuleInstanceInfoPlaceHolder;
         
         /// <summary>
         /// ModuleInstanceInfo control.
@@ -192,6 +190,6 @@ namespace DNNConnect.CKEditorProvider.Module {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label ModuleInstanceInfo;
+        protected global::System.Web.UI.WebControls.Label ModuleInstanceInfo;
     }
 }

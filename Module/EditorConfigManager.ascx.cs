@@ -302,8 +302,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = string.Format("p{0}", portal.PortalID),
                 ImageUrl =
                     portalSettingsExists
-                        ? "../CKEditor/images/PortalHasSetting.png"
-                        : "../CKEditor/images/PortalNoSetting.png",
+                        ? "../js/ckeditor/4.5.3/images/PortalHasSetting.png"
+                        : "../js/ckeditor/4.5.3/images/PortalNoSetting.png",
                 Expanded = PortalOnly.Checked
             };
 
@@ -339,8 +339,8 @@ namespace DNNConnect.CKEditorProvider.Module
                                   Value = string.Format("t{0}", tabInfo.TabID),
                                   ImageUrl =
                                       tabSettingsExists
-                                          ? "../CKEditor/images/PageHasSetting.png"
-                                          : "../CKEditor/images/PageNoSetting.png"
+                                          ? "../js/ckeditor/4.5.3/images/PageHasSetting.png"
+                                          : "../js/ckeditor/4.5.3/images/PageNoSetting.png"
                               };
 
             if (tabInfo.HasChildren)
@@ -363,8 +363,8 @@ namespace DNNConnect.CKEditorProvider.Module
                                                    Text = moduleInfo.ModuleTitle,
                                                    ImageUrl =
                                                        moduleSettingsExists
-                                                           ? "../CKEditor/images/ModuleHasSetting.png"
-                                                           : "../CKEditor/images/ModuleNoSetting.png",
+                                                           ? "../js/ckeditor/4.5.3/images/ModuleHasSetting.png"
+                                                           : "../js/ckeditor/4.5.3/images/ModuleNoSetting.png",
                                                    Value = string.Format("m{0}", moduleInfo.ModuleID)
                                                })
             {

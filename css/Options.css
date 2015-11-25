@@ -61,7 +61,7 @@ h1 {font-weight: bold;margin: 0;font-size:medium;font-family:Arial, Helvetica, s
 	opacity: 0.2
 }
 
-.LoadingContent h3 {background: url(../CKEditor/Images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingContent h3 {background: url(../js/ckeditor/4.5.3/images/loading.gif) no-repeat 102px 5px;height:20px}
 .LoadingMessage {text-align:center}
 
 /* Manager Module */
