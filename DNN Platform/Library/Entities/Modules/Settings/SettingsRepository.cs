@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -52,7 +51,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     var settingValue = property.GetValue(settings, null);
                     if (settingValue != null)
                     {
-                        string settingValueAsString = "";
+                        var settingValueAsString = "";
                         if (!string.IsNullOrEmpty(attribute.Serializer))
                         {
                             ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
@@ -60,18 +59,20 @@ namespace DotNetNuke.Entities.Modules.Settings
                             {
                                 settingValueAsString = serializer.Serialize((T)settingValue);
                             }
+                        }
+
+                        if(string.IsNullOrEmpty(settingValueAsString))
+                        {
+                            if (settingValue is DateTime)
+                            {
+                                settingValueAsString = ((DateTime)settingValue).ToString("u");
+                            }
                             else
                             {
-                                if (settingValue is DateTime)
-                                {
-                                    settingValueAsString = ((DateTime)settingValue).ToString("u");
-                                }
-                                else
-                                {
-                                    settingValueAsString = settingValue.ToString();
-                                }
+                                settingValueAsString = settingValue.ToString();
                             }
                         }
+
                         if (attribute is ModuleSettingAttribute)
                         {
                             controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
