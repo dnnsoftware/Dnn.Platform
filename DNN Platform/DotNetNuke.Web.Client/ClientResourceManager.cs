@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public static void RegisterDefaultStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "08.00.00");
+            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "8.0.0");
         }
 
         public static void RegisterFeatureStylesheet(Page page, string filePath)

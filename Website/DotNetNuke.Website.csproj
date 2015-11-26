@@ -1804,7 +1804,6 @@
     <Content Include="Resources\Shared\scripts\dnn.utility.js" />
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
-    <Content Include="Resources\Shared\stylesheets\default\8.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />

@@ -1160,7 +1160,7 @@ ul.dnnAdminTabNav {
     padding: 10px;
     padding-left: 30px;
     border-radius: 3px;
-    background: rgba(0, 0, 0, 0.75) url(../../images/pin-icn.png) no-repeat 7px 12px;
+    background: rgba(0, 0, 0, 0.75) url(../../../../../images/pin-icn.png) no-repeat 7px 12px;
     font-size: 11px;
     color: #DDD;
     text-align: left;
@@ -1200,7 +1200,7 @@ a.dnnFormHelp {
     top: 2px;
     width: 14px;
     height: 15px;
-    background: url(../../images/helpI-icn-grey.png) no-repeat left 2px;
+    background: url(../../../../../images/helpI-icn-grey.png) no-repeat left 2px;
     padding: 0 !important;
     margin: 0 !important;
 }
@@ -1317,7 +1317,7 @@ a.pinHelp {
     width: 15px;
     height: 15px;
     opacity: 0.5;
-    background: url(../../images/pin-icn.png) no-repeat 0 0;
+    background: url(../../../../../images/pin-icn.png) no-repeat 0 0;
 }
 
     .ui-draggable a.pinHelp,
@@ -1400,7 +1400,7 @@ a.pinHelp {
     }
 
     .dnnCheckbox img {
-        background: transparent url(../../images/checkbox.png) no-repeat;
+        background: transparent url(../../../../../images/checkbox.png) no-repeat;
     }
 
     .dnnCheckbox img {
@@ -1455,7 +1455,7 @@ a.pinHelp {
     }
 
     .dnnRadiobutton img {
-        background: transparent url(../../images/radiobutton.png) no-repeat;
+        background: transparent url(../../../../../images/radiobutton.png) no-repeat;
     }
 
     .dnnRadiobutton img {
@@ -1567,7 +1567,7 @@ div.dnnFormGroup {
         display: block;
         width: 25px;
         height: 16px;
-        background: transparent url(../../images/dnnSpinnerUpArrow.png) no-repeat;
+        background: transparent url(../../../../../images/dnnSpinnerUpArrow.png) no-repeat;
         background-position: center;
         cursor: pointer;
     }
@@ -1576,7 +1576,7 @@ div.dnnFormGroup {
         display: block;
         width: 25px;
         height: 16px;
-        background: transparent url(../../images/dnnSpinnerDownArrow.png) no-repeat;
+        background: transparent url(../../../../../images/dnnSpinnerDownArrow.png) no-repeat;
         background-position: center;
         cursor: pointer;
     }
@@ -1624,7 +1624,7 @@ div.dnnTagsInput span.tag {
         width: 8px;
         height: 8px;
         margin: 6px 0 0 0;
-        background: transparent url(../../images/dnnTagClose.png) no-repeat;
+        background: transparent url(../../../../../images/dnnTagClose.png) no-repeat;
         background-position: center;
     }
 
@@ -1665,14 +1665,14 @@ div.dnnTagsInput div {
             margin-right: 3px;
             color: #999;
             cursor: pointer;
-            background: url(../../../images/dnnSpinnerDownArrow.png) no-repeat;
+            background: url(../../../../../images/dnnSpinnerDownArrow.png) no-repeat;
             background-position: right center;
             height: 22px;
         }
 
             div.dnnTagsInput div.dnnTags_filter > .dnnTags_filter_label.dnnExpanded {
                 color: #666;
-                background: url(../../../images/dnnSpinnerUpArrow.png) no-repeat;
+                background: url(../../../../../images/dnnSpinnerUpArrow.png) no-repeat;
                 background-position: right center;
             }
 
@@ -1731,7 +1731,7 @@ div.dnnTagsInput div.dnnTags_filter a.dnnSearchButton {
     display: inline-block;
     width: 18px;
     height: 18px;
-    background-image: url(../../../images/search/searchButton.png);
+    background-image: url(../../../../../images/search/searchButton.png);
     background-repeat: no-repeat;
     background-position: center center;
     vertical-align: top;
@@ -1887,7 +1887,7 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
 
 .dnnButtonArrow {
     width: 10px;
-    background: transparent url(../../images/dnnSpinnerDownArrow.png) no-repeat center;
+    background: transparent url(../../../../../images/dnnSpinnerDownArrow.png) no-repeat center;
 }
 
 .dnnButtonDropdown-clicked {
@@ -2331,14 +2331,14 @@ ul.dnnButtonGroup {
 	        outline: none;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
-            background: #585858 url(../../images/closeBtn.png) no-repeat;
+            background: #585858 url(../../../../../images/closeBtn.png) no-repeat;
             background-position: 8px 4px;
             text-indent: -9999em;
 	        min-width: 0 !important;
         }
 
             .dnnFormPopup .dnnModalCtrl .ui-dialog-titlebar-close:hover {
-                background: #358EEA url(../../images/closeBtn.png) no-repeat;
+                background: #358EEA url(../../../../../images/closeBtn.png) no-repeat;
                 background-position: 8px 4px;
 	            cursor: pointer;
             }
@@ -2354,13 +2354,13 @@ ul.dnnButtonGroup {
             -webkit-border-bottom-left-radius: 8px;
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
-            background: #585858 url(../../images/resizeBtn.png) no-repeat;
+            background: #585858 url(../../../../../images/resizeBtn.png) no-repeat;
             background-position: 10px 2px;
             text-indent: -9999em;
         }
 
             .dnnFormPopup .dnnModalCtrl a.dnnToggleMax:hover {
-                background: #358EEA url(../../images/resizeBtn.png) no-repeat;
+                background: #358EEA url(../../../../../images/resizeBtn.png) no-repeat;
                 background-position: 10px 2px;
             }
 
@@ -2375,7 +2375,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     overflow: hidden;
     -webkit-border-radius: 12px;
     border-radius: 12px;
-    background: #585858 url(../../images/closeBtn.png) no-repeat;
+    background: #585858 url(../../../../../images/closeBtn.png) no-repeat;
     background-position: 4px 4px;
     border: 3px solid #fff;
     text-indent: -9999em;
@@ -2419,7 +2419,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     float: right;
     height: 24px;
     width: 24px;
-    background: url(../../images/modal-resize-icn.png) no-repeat bottom;
+    background: url(../../../../../images/modal-resize-icn.png) no-repeat bottom;
 }
 
 .dnnFormPopup .dnnDialog {
@@ -2427,7 +2427,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 }
 
 .dnnLoading {
-    background: #fff url(../../images/loading.gif) no-repeat center center;
+    background: #fff url(../../../../../images/loading.gif) no-repeat center center;
     position: absolute;
     z-index: 9999;
 }
@@ -2512,7 +2512,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
         height: 46px;
         margin: 0;
         padding: 0;
-        background: transparent url(../../images/InstallWizardBG.png) repeat-x;
+        background: transparent url(../../../../../images/InstallWizardBG.png) repeat-x;
     }
 
         .dnnWizardTab.ui-tabs .ui-tabs-nav li {
@@ -2564,7 +2564,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 .dnnWizardStep {
     height: 46px;
     padding: 0 0 0 20px;
-    background: transparent url(../../images/InstallWizardBG.png) repeat-x;
+    background: transparent url(../../../../../images/InstallWizardBG.png) repeat-x;
     background-position: 0 0;
     cursor: pointer;
 }
@@ -2593,7 +2593,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 .dnnWizardStepArrow {
     width: 25px;
     height: 46px;
-    background: transparent url(../../images/InstallWizardBG.png) no-repeat;
+    background: transparent url(../../../../../images/InstallWizardBG.png) no-repeat;
     background-position: 0 -401px;
 }
 
@@ -3016,7 +3016,7 @@ h2.dnnFormSectionHead {
     h2.dnnFormSectionHead a {
         display: block;
         padding-left: 3px;
-        background: url(../../images/down-icn.png) no-repeat right 50%;
+        background: url(../../../../../images/down-icn.png) no-repeat right 50%;
         text-decoration: none;
         color: #333;
         font-size: 18px;
@@ -3026,17 +3026,17 @@ h2.dnnFormSectionHead {
 
         h2.dnnFormSectionHead a:hover {
             color: #222;
-            background: rgba(2,139,255,0.05) /* blue */ url(../../images/down-icn.png) no-repeat right 50%;
+            background: rgba(2,139,255,0.05) /* blue */ url(../../../../../images/down-icn.png) no-repeat right 50%;
         }
 
         h2.dnnFormSectionHead a.dnnSectionExpanded {
-            background: url(../../images/up-icn.png) no-repeat right 50%;
+            background: url(../../../../../images/up-icn.png) no-repeat right 50%;
             color: #222;
         }
 
             h2.dnnFormSectionHead a.dnnSectionExpanded:hover {
                 color: #222;
-                background: rgba(2,139,255,0.05) /* blue */ url(../../images/up-icn.png) no-repeat right 50%; /* ACTIVE BLUE */
+                background: rgba(2,139,255,0.05) /* blue */ url(../../../../../images/up-icn.png) no-repeat right 50%; /* ACTIVE BLUE */
             }
 
 /*-------------------------------------*/
@@ -3285,7 +3285,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	position:absolute;
 	margin-top:-32px;
 	white-space:nowrap;
-	background:url(../../images/eip_toolbar.png) repeat-x;
+	background:url(../../../../../images/eip_toolbar.png) repeat-x;
 	height:32px;
 	z-index: 1;
 }
@@ -3408,7 +3408,7 @@ input[type="button"].rspCollapseBarSpacer
     padding: 10px 8px 10px 40px;
     margin: 0;
     border-bottom: solid 1px #fff;
-    background: url('../../images/arrow-right-white.png') 18px center no-repeat;
+    background: url('../../../../images/arrow-right-white.png') 18px center no-repeat;
     color: #eee;
     font-size: 13px;
     line-height: 1;
