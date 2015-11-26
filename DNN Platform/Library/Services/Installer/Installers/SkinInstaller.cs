@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Installers
             get
             {
                 string _RootPath = Null.NullString;
-                if (Package.InstallerInfo.PortalID == Null.NullInteger)
+                if (Package.InstallerInfo.PortalID == Null.NullInteger && Package.PortalID == Null.NullInteger)
                 {
                     _RootPath = Globals.HostMapPath;
                 }
