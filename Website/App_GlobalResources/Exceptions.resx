@@ -492,4 +492,10 @@
   <data name="ContentTypeDoesNotExist.Text" xml:space="preserve">
     <value>The specified content type is not valid.</value>
   </data>
+  <data name="UserDoesNotExist.Text" xml:space="preserve">
+    <value>The user you are trying to follow no longer exists.</value>
+  </data>
+  <data name="AlreadyFollowingUser.Text" xml:space="preserve">
+    <value>You are already following this user.</value>
+  </data>
 </root>
