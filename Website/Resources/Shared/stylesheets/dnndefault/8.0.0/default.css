@@ -861,6 +861,7 @@ ul.dnnAdminTabNav {
         position: relative;
         margin-bottom: 18px;
         text-align: left;
+        border: none;
     }
 
         .dnnForm fieldset fieldset {
