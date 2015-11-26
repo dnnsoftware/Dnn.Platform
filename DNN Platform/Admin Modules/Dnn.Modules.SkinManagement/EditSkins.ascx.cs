@@ -238,7 +238,7 @@ namespace Dnn.Modules.SkinManagement
 			//load portal skins
 			if (chkSite.Checked)
 			{
-				AddSkinstoCombo(cboSkins, PortalSettings.HomeDirectoryMapPath + SkinController.RootSkin);
+				AddSkinstoCombo(cboSkins, PortalSettings.HomeSystemDirectoryMapPath + SkinController.RootSkin);
 			}
 
 			cboContainers.Items.Clear();
@@ -254,7 +254,7 @@ namespace Dnn.Modules.SkinManagement
 			//load portal containers
 			if (chkSite.Checked)
 			{
-				AddSkinstoCombo(cboContainers, PortalSettings.HomeDirectoryMapPath + SkinController.RootContainer);
+				AddSkinstoCombo(cboContainers, PortalSettings.HomeSystemDirectoryMapPath + SkinController.RootContainer);
 			}
 		}
 

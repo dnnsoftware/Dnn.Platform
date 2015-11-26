@@ -180,7 +180,7 @@ namespace Dnn.Modules.SkinManagement
             }
 
             //load portal skins
-            strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootSkin;
+            strRoot = PortalSettings.HomeSystemDirectoryMapPath + SkinController.RootSkin;
             if (Directory.Exists(strRoot))
             {
                 arrFolders = Directory.GetDirectories(strRoot);
@@ -223,7 +223,7 @@ namespace Dnn.Modules.SkinManagement
             }
 
             //load portal containers
-            strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootContainer;
+            strRoot = PortalSettings.HomeSystemDirectoryMapPath + SkinController.RootContainer;
             if (Directory.Exists(strRoot))
             {
                 arrFolders = Directory.GetDirectories(strRoot);
