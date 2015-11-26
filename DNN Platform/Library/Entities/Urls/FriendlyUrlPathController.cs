@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Urls
                         foreach (ParameterReplaceAction parmReplace in parmReplaces)
                         {
                             //do a regex on the 'lookFor' in the parameter path
-                            var parmRegex = RegexUtils.GetCahcedRegex(parmReplace.LookFor,
+                            var parmRegex = RegexUtils.GetCachedRegex(parmReplace.LookFor,
                                                       RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             if (parmRegex.IsMatch(parameterPath))
                             {

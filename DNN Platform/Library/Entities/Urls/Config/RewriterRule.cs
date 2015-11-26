@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Urls.Config
         public Regex GetRuleRegex(string applicationPath)
         {
             return _matchRx ?? (_matchRx =
-                RegexUtils.GetCahcedRegex("^" + RewriterUtils.ResolveUrl(applicationPath, LookFor) + "$",
+                RegexUtils.GetCachedRegex("^" + RewriterUtils.ResolveUrl(applicationPath, LookFor) + "$",
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
         }
     }

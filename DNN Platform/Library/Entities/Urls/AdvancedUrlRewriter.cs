@@ -159,8 +159,8 @@ namespace DotNetNuke.Entities.Urls
             foreach (string regexPattern in portalRegexes.Keys)
             {
                 //split out the portal alias from the regex pattern representing that alias
-                //TODO: optimize Regex by caching the expressions
-                Match aliasMatch = Regex.Match(requestUrl, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var regex = RegexUtils.GetCachedRegex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var aliasMatch = regex.Match(requestUrl);
                 if (aliasMatch.Success)
                 {
                     //check for mobile browser and matching

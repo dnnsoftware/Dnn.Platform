@@ -1530,7 +1530,7 @@ namespace DesktopModules.Admin.Portals
                     {
                         try
                         {
-                            var regex = RegexUtils.GetCahcedRegex(item.Value.ToString());
+                            var regex = RegexUtils.GetCachedRegex(item.Value.ToString());
                             PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                         }
                         catch

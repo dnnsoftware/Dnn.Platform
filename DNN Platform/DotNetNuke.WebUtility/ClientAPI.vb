@@ -552,7 +552,6 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
             If Len(strString) > 0 Then
-                'Return Regex.Replace(strString, "(['""])", "\$1")
                 Return UnsafeJsRegex.Replace(strString, "\$1")
             Else
                 Return strString

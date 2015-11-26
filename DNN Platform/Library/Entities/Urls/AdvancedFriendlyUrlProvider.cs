@@ -547,7 +547,7 @@ namespace DotNetNuke.Entities.Urls
             bool done = false;
             string httpAliasFull = null;
             //this regex identifies if the correct http(s)://portalAlias already is in the path
-            var portalMatchRegex = RegexUtils.GetCahcedRegex("^https?://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            var portalMatchRegex = RegexUtils.GetCachedRegex("^https?://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             string cultureCode = GetCultureOfPath(path);
             if (portalSettings != null)
             {
@@ -653,13 +653,13 @@ namespace DotNetNuke.Entities.Urls
                         string originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString();
                         //confirming this portal was the original one requested, making all the generated aliases
                         //for the same portal
-                        var fullALiasRx = RegexUtils.GetCahcedRegex("^" + httpAliasFull, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var fullALiasRx = RegexUtils.GetCachedRegex("^" + httpAliasFull, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                         Match portalMatch = fullALiasRx.Match(originalUrl);
                         if (portalMatch.Success == false)
                         {
                             //Manage the special case where original url contains the alias as 
                             //http://www.domain.com/Default.aspx?alias=www.domain.com/child" 
-                            var httpAliasRx = RegexUtils.GetCahcedRegex("^?alias=" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var httpAliasRx = RegexUtils.GetCachedRegex("^?alias=" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             portalMatch = httpAliasRx.Match(originalUrl);
                             if (portalMatch.Success)
                             {
@@ -698,7 +698,7 @@ namespace DotNetNuke.Entities.Urls
                 if (String.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                 //take out the end page name, it will get re-added
                 {
-                    var pgNameRx = RegexUtils.GetCahcedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     friendlyPath = pgNameRx.Replace(friendlyPath, "");
                 }
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
@@ -738,7 +738,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             if (pair[1].Length > 0)
                             {
-                                var rx = RegexUtils.GetCahcedRegex(settings.RegexMatch);
+                                var rx = RegexUtils.GetCachedRegex(settings.RegexMatch);
                                 if (rx.IsMatch(pair[1]) == false)
                                 {
                                     // Contains Non-AlphaNumeric Characters 
@@ -895,7 +895,7 @@ namespace DotNetNuke.Entities.Urls
             //655 : no friendly url if matched with regex
             if (!string.IsNullOrEmpty(settings.NoFriendlyUrlRegex))
             {
-                var rx = RegexUtils.GetCahcedRegex(settings.NoFriendlyUrlRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var rx = RegexUtils.GetCachedRegex(settings.NoFriendlyUrlRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 if (rx.IsMatch(friendlyPath))
                 {
                     return friendlyPath;
@@ -914,7 +914,7 @@ namespace DotNetNuke.Entities.Urls
                 string customHttpAlias;
                 bool isHomePage = TabPathHelper.IsTabHomePage(tab, portalSettings);
                 //do a regex check on the base friendly Path, to see if there is parameters on the end or not
-                var tabOnlyRegex = RegexUtils.GetCahcedRegex("[^?]*/tabId/(?<tabid>\\d+)/" + pageName + "($|\\?(?<qs>.+$))",
+                var tabOnlyRegex = RegexUtils.GetCachedRegex("[^?]*/tabId/(?<tabid>\\d+)/" + pageName + "($|\\?(?<qs>.+$))",
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (tabOnlyRegex.IsMatch(friendlyPath))
@@ -981,7 +981,7 @@ namespace DotNetNuke.Entities.Urls
                     //this regex splits the incoming friendly path pagename/tabid/56/default.aspx into the non-tabid path, and individual parms for each /parm/ in the friendly path 
                     //550 : add in \. to allow '.' in the parameter path.
                     //667 : allow non-word characters (specifically %) in the path
-                    var rgx = RegexUtils.GetCahcedRegex("[^?]*(?<tabs>/tabId/(?<tabid>\\d+))(?<path>(?<parms>(?:(?:/[^/?]+){1})+))(?:/" + pageName + ")(?:$|\\?(?<qs>.+$))",
+                    var rgx = RegexUtils.GetCachedRegex("[^?]*(?<tabs>/tabId/(?<tabid>\\d+))(?<path>(?<parms>(?:(?:/[^/?]+){1})+))(?:/" + pageName + ")(?:$|\\?(?<qs>.+$))",
                         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     MatchCollection matches = rgx.Matches(friendlyPath);
                     if (matches.Count > 0)
@@ -1197,7 +1197,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        var re = RegexUtils.GetCahcedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var re = RegexUtils.GetCachedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                         if ((re.IsMatch(friendlyPath)))
                         {
                             Match sesMatch = re.Match(friendlyPath);
@@ -1298,7 +1298,7 @@ namespace DotNetNuke.Entities.Urls
 
             var pathBuilder = new StringBuilder();
             var queryStringBuilder = new StringBuilder();
-            var notInPath = RegexUtils.GetCahcedRegex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            var notInPath = RegexUtils.GetCachedRegex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
             // Iterate over each key/value parameter pair in path and test whether the parameter
             // should be excluded in the path and moved to the query string
@@ -1383,7 +1383,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (!string.IsNullOrEmpty(settings.ForceLowerCaseRegex))
                         {
-                            var rx = RegexUtils.GetCahcedRegex(settings.ForceLowerCaseRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var rx = RegexUtils.GetCachedRegex(settings.ForceLowerCaseRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             forceLowerCase = !rx.IsMatch(url);
                         }
                     }

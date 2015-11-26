@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
                             //regex test each replaced to see if there is a match between the parameter string
                             //and the parmRedirect
                             string compareWith = rewrittenUrl;
-                            var redirectRegex = RegexUtils.GetCahcedRegex(parmRedirect.LookFor,
+                            var redirectRegex = RegexUtils.GetCachedRegex(parmRedirect.LookFor,
                                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;

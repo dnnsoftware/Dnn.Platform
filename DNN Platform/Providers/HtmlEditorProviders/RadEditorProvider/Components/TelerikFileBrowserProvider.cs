@@ -845,7 +845,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 			foreach (var pattern in searchPatterns)
 			{
-				var rx = RegexUtils.GetCahcedRegex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase);
+				var rx = RegexUtils.GetCachedRegex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase);
 				if (rx.IsMatch(dnnFileName))
 				{
                     return true;

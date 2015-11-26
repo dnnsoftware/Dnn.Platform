@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Urls
                     return compiledRegex;
                 }
 
-                return _regexLookup[regexText] = RegexUtils.GetCahcedRegex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                return _regexLookup[regexText] = RegexUtils.GetCachedRegex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
         }
 

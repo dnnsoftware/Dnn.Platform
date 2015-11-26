@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 
 		private static bool InvalidFilename(string fileName)
 		{
-			var invalidFilenameChars = RegexUtils.GetCahcedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+			var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
 			return invalidFilenameChars.IsMatch(fileName);
 		}
 

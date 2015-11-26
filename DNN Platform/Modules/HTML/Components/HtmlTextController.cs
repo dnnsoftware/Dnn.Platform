@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = portalRoot + "/";
             }
-            var exp = RegexUtils.GetCahcedRegex(portalRoot, RegexOptions.IgnoreCase);
+            var exp = RegexUtils.GetCachedRegex(portalRoot, RegexOptions.IgnoreCase);
             return exp.Replace(content, PortalRootToken);
         }
 
