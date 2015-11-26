@@ -1,5 +1,4 @@
 ﻿@charset "UTF-8";
-@import url('./bootstrap/css/bootstrap.min.css');
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -494,7 +493,7 @@ a.altButton:hover {
         }
 
         #login .registerGroup .buttonGroup {
-            margin-right: 0;
+            margin: 0;
         }
 
         #login .registerGroup a,

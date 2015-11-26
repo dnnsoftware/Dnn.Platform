@@ -81,6 +81,21 @@ namespace DotNetNuke.Services.Tokens
                     ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider);
                 }
             }
+            else if (!String.IsNullOrEmpty(model.Path))
+            {
+                if (model.Priority == 0)
+                {
+                    model.Priority = (int)FileOrder.Js.DefaultPriority;
+                }
+                if (String.IsNullOrEmpty(model.Provider))
+                {
+                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, "", model.JsName, model.Version);
+                }
+                else
+                {
+                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
+                }
+            }
             else
             {
                 Version version = null;
