@@ -248,10 +248,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 foreach (var notification in notificationsDomainModel)
                 {
-                    var userObj =
-                        UserController.Instance.GetUser(PortalSettings.PortalId, notification.SenderUserID);
-                    var displayName = "";
-                    displayName = (userObj != null ? userObj.DisplayName : "");
+                    var user = UserController.Instance.GetUser(PortalSettings.PortalId, notification.SenderUserID);
+                    var displayName = (user != null ? user.DisplayName : "");
+
                     var notificationViewModel = new NotificationViewModel
                     {
                         NotificationId = notification.NotificationID,
