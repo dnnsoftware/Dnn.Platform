@@ -377,8 +377,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 throw new UserRelationshipExistsException(Localization.GetExceptionMessage(
                     "UserRelationshipExistsError",
-                    "Relationship already exists for Initiating User '{0}' Target User '{1}' RelationshipID '{2}'.",
-                    initiatingUser.UserID, targetUser.UserID, relationship.RelationshipId));
+                    "You are already following this user."));
             }
 
             //no existing UserRelationship record found 

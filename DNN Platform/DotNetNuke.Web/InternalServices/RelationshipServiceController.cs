@@ -113,6 +113,10 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
             }
+            catch (UserRelationshipExistsException exc)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+            }
             catch (Exception exc)
             {
                 Logger.Error(exc);

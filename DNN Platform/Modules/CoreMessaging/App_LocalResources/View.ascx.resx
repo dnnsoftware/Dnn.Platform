@@ -459,10 +459,4 @@
   <data name="DNNCorp_Wiki_Page.Text" xml:space="preserve">
     <value>Wiki Subscriptions</value>
   </data>
-  <data name="AlreadyFollowingUser.Text" xml:space="preserve">
-    <value>You are already following this user.</value>
-  </data>
-  <data name="UserDoesNotExist.Text" xml:space="preserve">
-    <value>This user no longer exists.</value>
-  </data>
 </root>
