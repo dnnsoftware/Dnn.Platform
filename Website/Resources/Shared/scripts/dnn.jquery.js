@@ -1969,6 +1969,8 @@
                 'min-height': settings.height
             });
 
+            $(data.fake_input).attr("maxlength", settings.maxChars);
+
             if ($(data.real_input).val() != '') {
                 $.fn.dnnTagsInput.importTags($(data.real_input), $(data.real_input).val());
             }
@@ -2044,8 +2046,15 @@
                     });
 
                 }
+                var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
-                $(data.fake_input).bind('keypress', data, function (event) {
+                $(data.fake_input).bind('keydown', data, function (event) {
+                    var currValLength = $(this).val().length;
+                    if (currValLength >= 50 && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13)) {
+                        tagTooLongErrMsg.insertAfter($(this)).show();
+                    } else {
+                        tagTooLongErrMsg.appendTo('body').hide();
+                    }
                     if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13) {
                         event.preventDefault();
                         var tagslist = $(event.data.real_input).val().split(delimiter[id]);
