@@ -211,7 +211,7 @@
     <value>Target User '{0}' has Blocked Relationship '{1}' from Target User '{2}'.</value>
   </data>
   <data name="UserRelationshipExistsError.Text" xml:space="preserve">
-    <value>You are already following this user.</value>
+    <value>Relationship already exists for Initiating User '{0}' Target User '{1}' RelationshipID '{2}'.</value>
   </data>
   <data name="UserRelationshipDoesNotExistError.Text" xml:space="preserve">
     <value>UserRelationshipID '{0}' does not exist.</value>
@@ -494,5 +494,8 @@
   </data>
   <data name="UserDoesNotExist.Text" xml:space="preserve">
     <value>The user you are trying to follow no longer exists.</value>
+  </data>
+  <data name="AlreadyFollowingUser.Text" xml:space="preserve">
+    <value>You are already following this user.</value>
   </data>
 </root>

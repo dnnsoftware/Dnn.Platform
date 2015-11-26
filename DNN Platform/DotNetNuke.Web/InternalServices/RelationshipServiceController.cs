@@ -115,7 +115,13 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (UserRelationshipExistsException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                Logger.Error(exc);
+                var response = new
+                {
+                    Message = Localization.GetExceptionMessage("AlreadyFollowingUser",
+                        "You are already following this user.")
+                };
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, response);
             }
             catch (Exception exc)
             {
