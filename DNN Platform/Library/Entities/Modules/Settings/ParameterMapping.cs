@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DotNetNuke.Entities.Modules.Settings
 {
+    [Serializable]
     public class ParameterMapping
     {
         #region Constructors

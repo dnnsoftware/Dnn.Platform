@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     /// Base class for attributes that are used to decorate properties (parameters) related to 
     /// application settings (storage) or parameters (control) like query string parameters.
     /// </summary>
+    [Serializable]
     public abstract class ParameterAttributeBase : Attribute
     {
         /// <summary>
