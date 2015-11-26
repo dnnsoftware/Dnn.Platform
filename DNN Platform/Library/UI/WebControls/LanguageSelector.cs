@@ -38,10 +38,6 @@ namespace DotNetNuke.UI.WebControls
 	/// <summary>
 	/// Language Selector control
 	/// </summary>
-	/// <history>
-	///     [sleupold]	2007-11-10 created
-	///     [sleupold]  2007-12-08 Support for Languages ("de", "en") and Locales ("de-DE", "en-US") added
-	/// </history>
 	public class LanguageSelector : Control, INamingContainer
 	{
 

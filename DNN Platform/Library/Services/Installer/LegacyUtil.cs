@@ -48,9 +48,6 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/23/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class LegacyUtil
     {

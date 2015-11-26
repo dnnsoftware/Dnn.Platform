@@ -799,9 +799,6 @@ namespace DotNetNuke.Entities.Tabs
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cathal]	28/05/2006	Created
-        /// </history>
         private string CheckIfDoctypeConfigExists()
         {
             if (string.IsNullOrEmpty(SkinSrc))
@@ -962,9 +959,6 @@ namespace DotNetNuke.Entities.Tabs
         /// Fills a TabInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {

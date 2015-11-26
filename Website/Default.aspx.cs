@@ -69,9 +69,6 @@ namespace DotNetNuke.Framework
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
@@ -89,9 +86,6 @@ namespace DotNetNuke.Framework
         /// <value></value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	3/23/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PageScrollTop
         {
@@ -194,9 +188,6 @@ namespace DotNetNuke.Framework
         /// - set the background image if there is one selected
         /// - set META tags, copyright, keywords and description
         /// </remarks>
-        /// <history>
-        /// 	[sun1]	1/19/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
@@ -458,10 +449,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <param name="Skin">The currently loading skin</param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cathal]	11/29/2006	Created
-        ///     [cniknet]   05/20/2009  Refactored to use HtmlAttributes collection
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
         {
@@ -532,9 +519,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <returns>localised error message</returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cathal]	2/28/2007	Created
-        /// </history>
         private string RenderDefaultsWarning()
         {
             var warningLevel = Request.QueryString["runningDefault"];

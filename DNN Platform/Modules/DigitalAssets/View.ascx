@@ -228,7 +228,7 @@
     
     <div id="dnnModuleDigitalAssetsGetUrlModal" style="display: none;">
         <br />
-        <span><%=LocalizeString("GetFileUrlLabel") %></span>
+        <span><%=LocalizeString("GetUrlLabel") %></span>
         <input type="text" readonly="readonly" onclick="this.select()" title="<%=LocalizeString("GetUrlAltText") %>" />
     </div>
     <dnnweb:DnnFileUpload ID="fileUpload" runat="server"/>
@@ -333,7 +333,8 @@
             invalidCharsErrorText: '<%= Localization.GetSafeJSString(InvalidCharactersErrorText) %>',
             getUrlTitle: '<%= Localization.GetSafeJSString(LocalizeString("GetUrl.Title")) %>',
             getUrlErrorTitle: '<%= Localization.GetSafeJSString(LocalizeString("GetUrlError.Title")) %>',
-            getFileUrlLabel: '<%= Localization.GetSafeJSString(LocalizeString("GetFileUrlLabel.Text")) %>',            
+            getUrlLabel: '<%= Localization.GetSafeJSString(LocalizeString("GetUrlLabel.Text")) %>',            
+            getFileUrlTitle: '<%= Localization.GetSafeJSString(LocalizeString("GetFileUrl.Title")) %>',     
             searchBreadcrumb: '<%= Localization.GetSafeJSString(LocalizeString("SearchBreadcrumb.Text")) %>',
             moving: '<%= Localization.GetSafeJSString(LocalizeString("Moving.Text")) %>',
             selectAll: '<%= Localization.GetSafeJSString(LocalizeString("SelectAll.Text")) %>',

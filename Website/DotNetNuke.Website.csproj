@@ -103,10 +103,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Bin\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -129,11 +125,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -1815,12 +1806,10 @@
     <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\default\8.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
+    <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
@@ -1876,6 +1865,10 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.23.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.25.SqlDataProvider" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />
@@ -3810,6 +3803,7 @@
     <Content Include="Portals\_default\Containers\Gravity\Title_h4.jpg" />
     <Content Include="Portals\_default\Containers\_default\No Container.ascx" />
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
+    <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />

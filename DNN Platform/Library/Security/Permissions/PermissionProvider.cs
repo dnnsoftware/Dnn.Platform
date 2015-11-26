@@ -160,9 +160,6 @@ namespace DotNetNuke.Security.Permissions
         /// Module.
         /// </summary>
         /// <param name="tabID">The ID of the tab</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
         {
@@ -178,9 +175,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -229,9 +223,6 @@ namespace DotNetNuke.Security.Permissions
         /// Tab.
         /// </summary>
         /// <param name="portalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
         {
@@ -247,9 +238,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -361,9 +349,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
         /// DesktopModule.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
         {
@@ -378,9 +363,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -393,9 +375,6 @@ namespace DotNetNuke.Security.Permissions
         /// dataReader
         /// </summary>
         /// <param name="dr">The IDataReader</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
         {
@@ -599,9 +578,6 @@ namespace DotNetNuke.Security.Permissions
         /// SaveFolderPermissions updates a Folder's permissions
         /// </summary>
         /// <param name="folder">The Folder to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void SaveFolderPermissions(IFolderInfo folder)
         {
@@ -760,9 +736,6 @@ namespace DotNetNuke.Security.Permissions
         /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database
         /// </summary>
         /// <param name="user">The user</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void DeleteModulePermissionsByUser(UserInfo user)
         {
@@ -1171,9 +1144,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
         /// </summary>
         /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionId)
         {
@@ -1185,9 +1155,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
         /// </summary>
         /// <param name="portalDesktopModuleId">The ID of the DesktopModule</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
         {
@@ -1211,9 +1178,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="desktopModulePermissions">The Permissions for the DesktopModule</param>
         /// <param name="permissionKey">The Permission to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
         {

@@ -25,9 +25,6 @@ namespace DotNetNuke.UI.Skins.EventListeners
     /// SkinEventType provides a custom enum for skin event types
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    ///     [cnurse]	05/19/2009	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public enum SkinEventType
     {

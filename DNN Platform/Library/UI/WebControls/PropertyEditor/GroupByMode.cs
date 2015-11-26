@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.WebControls
     /// GroupByMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
     /// to determine the grouping mode for displaying properties.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	04/07/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum GroupByMode
     {

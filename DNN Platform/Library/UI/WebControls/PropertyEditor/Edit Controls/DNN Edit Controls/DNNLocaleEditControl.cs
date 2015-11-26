@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
 	/// The DNNLocaleEditControl control provides a standard UI component for selecting
 	/// a Locale
 	/// </summary>
-	/// <history>
-	///     [cnurse]	02/23/2006	created
-	/// </history>
 	[ToolboxData("<{0}:DNNLocaleEditControl runat=server></{0}:DNNLocaleEditControl>")]
 	public class DNNLocaleEditControl : TextEditControl, IPostBackEventHandler
 	{
@@ -147,9 +144,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// OnAttributesChanged runs when the CustomAttributes property has changed.
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/18/2008	created
-		/// </history>
 		protected override void OnAttributesChanged()
 		{
 			//Get the List settings out of the "Attributes"
@@ -171,9 +165,6 @@ namespace DotNetNuke.UI.WebControls
 		/// RenderViewMode renders the View (readonly) mode of the control
 		/// </summary>
 		/// <param name="writer">A HtmlTextWriter.</param>
-		/// <history>
-		///     [cnurse]	05/02/2006	created
-		/// </history>
 		protected override void RenderViewMode(HtmlTextWriter writer)
 		{
 			Locale locale = LocaleController.Instance.GetLocale(StringValue);
@@ -191,9 +182,6 @@ namespace DotNetNuke.UI.WebControls
 		/// RenderEditMode renders the Edit mode of the control
 		/// </summary>
 		/// <param name="writer">A HtmlTextWriter.</param>
-		/// <history>
-		///     [cnurse]	02/27/2006	created
-		/// </history>
 		protected override void RenderEditMode(HtmlTextWriter writer)
 		{
 			//Render div

@@ -55,9 +55,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets or sets the CommandName for the Column
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/17/2006	Created
-        /// </history>
         public string CommandName { get; set; }
 
 
@@ -65,9 +62,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/24/2006	Created
-        /// </history>
         public bool DesignMode { get; set; }
 
 

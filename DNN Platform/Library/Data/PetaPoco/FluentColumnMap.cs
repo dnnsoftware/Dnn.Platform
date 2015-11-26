@@ -25,6 +25,7 @@ using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    [CLSCompliant(false)]
     public class FluentColumnMap
     {
         public ColumnInfo ColumnInfo { get; set; }

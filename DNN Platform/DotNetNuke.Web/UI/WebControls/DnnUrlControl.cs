@@ -892,7 +892,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         cboTabs.IncludeAllTabTypes = false;
                         cboTabs.IncludeActiveTab = IncludeActiveTab;
-                        cboTabs.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                        cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
                         PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                         var tabId = Int32.Parse(_Url);

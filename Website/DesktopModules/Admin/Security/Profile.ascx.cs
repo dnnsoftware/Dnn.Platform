@@ -40,9 +40,6 @@ namespace DesktopModules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/02/2006
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DNNProfile : ProfileUserControlBase
     {
@@ -52,9 +49,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets whether to display the Visibility controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool ShowVisibility
         {
@@ -73,9 +67,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets and sets the EditorMode
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/02/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditorMode
         {
@@ -93,9 +84,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets whether the User is valid
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsValid
         {
@@ -109,9 +97,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets and sets whether the Update button
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool ShowUpdate
         {
@@ -129,9 +114,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets the UserProfile associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/02/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public UserProfile UserProfile
         {
@@ -154,9 +136,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
@@ -193,9 +172,6 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -218,9 +194,6 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -234,9 +207,6 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object sender, EventArgs e)
         {

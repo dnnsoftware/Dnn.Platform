@@ -42,9 +42,6 @@ namespace DotNetNuke.Framework
     /// Project	 : DotNetNuke
     /// Class	 : CDefault
     /// -----------------------------------------------------------------------------
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CDefault : PageBase
     {

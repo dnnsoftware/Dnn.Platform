@@ -50,9 +50,6 @@ namespace DotNetNuke.UI.WebControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]	03/17/2006	created
-	/// </history>
 	[ToolboxData("<{0}:CaptchaControl Runat=\"server\" CaptchaHeight=\"100px\" CaptchaWidth=\"300px\" />")]
 	public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
 	{
@@ -123,9 +120,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the BackGroundColor
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Appearance"), Description("The Background Color to use for the Captcha Image.")]
 		public Color BackGroundColor
 		{
@@ -142,9 +136,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the BackGround Image
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Appearance"), Description("A Background Image to use for the Captcha Image.")]
 		public string BackGroundImage
 		{
@@ -161,9 +152,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the list of characters
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Behavior"), DefaultValue(CHARS_DEFAULT), Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
 		public string CaptchaChars
 		{
@@ -180,9 +168,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the height of the Captcha image
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	05/11/2006	Created
-		/// </history>
 		[Category("Appearance"), Description("Height of Captcha Image.")]
 		public Unit CaptchaHeight
 		{
@@ -199,9 +184,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the length of the Captcha string
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Behavior"), DefaultValue(LENGTH_DEFAULT), Description("Number of CaptchaChars used in the CAPTCHA text")]
 		public int CaptchaLength
 		{
@@ -218,9 +200,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the width of the Captcha image
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	05/11/2006	Created
-		/// </history>
 		[Category("Appearance"), Description("Width of Captcha Image.")]
 		public Unit CaptchaWidth
 		{
@@ -237,9 +216,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets whether the Viewstate is enabled
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Browsable(false)]
 		public override bool EnableViewState
 		{
@@ -256,18 +232,12 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the ErrorMessage to display if the control is invalid
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Behavior"), Description("The Error Message to display if invalid."), DefaultValue("")]
 		public string ErrorMessage { get; set; }
 
 		 /// <summary>
 		 /// Gets and sets the BackGroundColor
 		 /// </summary>
-		 /// <history>
-		 /// 	[cnurse]	03/20/2006	Created
-		 /// </history>
 		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
 		 Description("Set the Style for the Error Message Control.")]
 		public Style ErrorStyle
@@ -281,9 +251,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the Expiration time in seconds
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Behavior"), Description("The duration of time (seconds) a user has before the challenge expires."), DefaultValue(EXPIRATION_DEFAULT)]
 		public int Expiration
 		{
@@ -300,9 +267,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets whether the control is valid
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Validation"), Description("Returns True if the user was CAPTCHA validated after a postback.")]
 		public bool IsValid
 		{
@@ -315,9 +279,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the Url to use to render the control
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Behavior"), Description("The URL used to render the image to the client."), DefaultValue(RENDERURL_DEFAULT)]
 		public string RenderUrl
 		{
@@ -334,18 +295,12 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets and sets the Help Text to use
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		[Category("Captcha"), DefaultValue("Enter the code shown above:"), Description("Instructional text displayed next to CAPTCHA image.")]
 		public string Text { get; set; }
 
 		/// <summary>
 		/// Gets the Style to use for the Text Box
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	09/02/2008	Created
-		/// </history>
 		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
 		 Description("Set the Style for the Text Box Control.")]
 		public Style TextBoxStyle
@@ -364,9 +319,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="postDataKey">A key to the PostBack Data to load</param>
 		/// <param name="postCollection">A name value collection of postback data</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
@@ -383,9 +335,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// RaisePostDataChangedEvent runs when the PostBackData has changed. 
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public void RaisePostDataChangedEvent()
 		{
@@ -407,9 +356,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Builds the url for the Handler
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		private string GetUrl()
 		{
 			var url = ResolveUrl(RenderUrl);
@@ -424,9 +370,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Encodes the querystring to pass to the Handler
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/20/2006	Created
-		/// </history>
 		private string EncodeTicket()
 		{
 			var sb = new StringBuilder();
@@ -448,9 +391,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="width">The width of the image</param>
 		/// <param name="height">The height of the image</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		private static Bitmap CreateImage(int width, int height)
 		{
 			var bmp = new Bitmap(width, height);
@@ -485,9 +425,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="width">The width of the image</param>
 		/// <param name="height">The height of the image</param>
 		/// <param name="g">Graphic draw context.</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
 		{
 			var textPath = new GraphicsPath();
@@ -536,9 +473,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Decrypts the CAPTCHA Text
 		/// </summary>
 		/// <param name="encryptedContent">The encrypted text</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static string Decrypt(string encryptedContent)
 		{
@@ -565,9 +499,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="b">The Image to distort</param>
 		/// <param name="distortion">Distortion.</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static void DistortImage(ref Bitmap b, double distortion)
 		{
@@ -600,9 +531,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="content">The text to encrypt</param>
 		/// <param name="expiration">The time the ticket expires</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static string Encrypt(string content, DateTime expiration)
 		{
@@ -615,9 +543,6 @@ namespace DotNetNuke.UI.WebControls
 		/// GenerateImage generates the Captch Image
 		/// </summary>
 		/// <param name="encryptedText">The Encrypted Text to display</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		internal static Bitmap GenerateImage(string encryptedText)
 		{
@@ -666,9 +591,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// GetFont gets a random font to use for the Captcha Text
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/27/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static FontFamily GetFont()
 		{
@@ -697,9 +619,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="xmax">The maximum x value</param>
 		/// <param name="ymin">The minimum y value</param>
 		/// <param name="ymax">The maximum y value</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static PointF RandomPoint(int xmin, int xmax, int ymin, int ymax)
 		{
@@ -712,9 +631,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="textPath">The Graphics Path for the text</param>
 		/// <param name="rect">a rectangle which defines the image</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private static void WarpText(ref GraphicsPath textPath, Rectangle rect)
 		{
@@ -744,9 +660,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Creates the child controls
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected override void CreateChildControls()
 		{
 			base.CreateChildControls();
@@ -762,9 +675,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets the next Captcha
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected virtual string GetNextCaptcha()
 		{
             
@@ -788,9 +698,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Loads the previously saved Viewstate
 		/// </summary>
 		/// <param name="savedState">The saved state</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected override void LoadViewState(object savedState)
 		{
             if (savedState != null)
@@ -818,9 +725,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs just before the control is to be rendered
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected override void OnPreRender(EventArgs e)
 		{
 			//Generate Random Challenge Text
@@ -846,9 +750,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Render the  control
 		/// </summary>
 		/// <param name="writer">An Html Text Writer</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected override void Render(HtmlTextWriter writer)
 		{
 			ControlStyle.AddAttributesToRender(writer);
@@ -924,9 +825,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Save the controls Voewstate
 		/// </summary>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		protected override object SaveViewState()
 		{
 			var baseState = base.SaveViewState();
@@ -949,9 +847,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Validates the posted back data
 		/// </summary>
 		/// <param name="userData">The user entered data</param>
-		/// <history>
-		///     [cnurse]	03/17/2006	created
-		/// </history>
 		public bool Validate(string userData)
 		{
             var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);

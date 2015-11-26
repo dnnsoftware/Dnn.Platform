@@ -207,9 +207,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dancaron]	10/28/2004	Initial Version
-        /// </history>
         private string GetLink(int PageNum)
         {
             if (PageNum == CurrentPage)
@@ -226,9 +223,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dancaron]	10/28/2004	Initial Version
-        /// </history>
         private string GetPreviousLink()
         {
             return CurrentPage > 1 && _totalPages > 0
@@ -246,9 +240,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dancaron]	10/28/2004	Initial Version
-        /// </history>
         private string GetNextLink()
         {
             return CurrentPage != _totalPages && _totalPages > 0
@@ -266,9 +257,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dancaron]	10/28/2004	Initial Version
-        /// </history>
         private string GetFirstLink()
         {
             if (CurrentPage > 1 && _totalPages > 0)
@@ -287,9 +275,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[dancaron]	10/28/2004	Initial Version
-        /// </history>
         private string GetLastLink()
         {
             if (CurrentPage != _totalPages && _totalPages > 0)

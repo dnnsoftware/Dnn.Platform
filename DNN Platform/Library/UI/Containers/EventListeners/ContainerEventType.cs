@@ -25,9 +25,6 @@ namespace DotNetNuke.UI.Containers.EventListeners
     /// ContainerEventType provides a custom enum for Container event types
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    ///     [cnurse]	05/19/2009	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public enum ContainerEventType
     {

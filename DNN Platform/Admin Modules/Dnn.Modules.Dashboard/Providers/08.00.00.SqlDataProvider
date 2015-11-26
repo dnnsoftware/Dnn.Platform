@@ -16,27 +16,27 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
         )
 
         DECLARE @PackageId INT
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.WebServer', N'WebServer', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.WebServer', N'WebServer', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Server', 1, N'DesktopModules/Admin/Dashboard/Controls/Server.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Server.ServerController, Dnn.Modules.Dashboard', 1, @PackageId)
 
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Database', N'Database', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Database', N'Database', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Database', 1, N'DesktopModules/Admin/Dashboard/Controls/Database.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Database.DatabaseController, Dnn.Modules.Dashboard', 2, @PackageId)
 
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Host', N'Host', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Host', N'Host', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Host', 1, N'DesktopModules/Admin/Dashboard/Controls/Host.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Host.HostController, Dnn.Modules.Dashboard', 3, @PackageId)
 
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Portals', N'Portals', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Portals', N'Portals', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Portals', 1, N'DesktopModules/Admin/Dashboard/Controls/Portals.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Portals.PortalsController, Dnn.Modules.Dashboard', 4, @PackageId)
 
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Modules', N'Modules', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Modules', N'Modules', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Modules', 1, N'DesktopModules/Admin/Dashboard/Controls/Modules.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Modules.ModulesController, Dnn.Modules.Dashboard', 5, @PackageId)
 
-        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Skins', N'Skins', N'', N'DashboardControl', N'1.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
+        INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.Skins', N'Skins', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
         INSERT INTO {databaseOwner}[{objectQualifier}Dashboard_Controls] ([DashboardControlKey], [IsEnabled], [DashboardControlSrc], [DashboardControlLocalResources], [ControllerClass], [ViewOrder], [PackageID]) VALUES (N'Skins', 1, N'DesktopModules/Admin/Dashboard/Controls/Skins.ascx', N'DesktopModules/Admin/Dashboard/App_LocalResources/SharedResources.ascx', N'Dnn.Modules.Dashboard.Components.Skins.SkinsController, Dnn.Modules.Dashboard', 6, @PackageId)
 
@@ -44,34 +44,46 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
     ELSE
     BEGIN
         UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Server.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Server.ServerController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Server'
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Server.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Server.ServerController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Server'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Database.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Database.DatabaseController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Database'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Database.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Database.DatabaseController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Database'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Host.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Host.HostController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Host'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Host.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Host.HostController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Host'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Portals.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Portals.PortalsController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Portals'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Portals.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Portals.PortalsController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Portals'
 
-            UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Modules.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Modules.ModulesController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Modules'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Modules.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Modules.ModulesController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Modules'
 
-                        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
-            SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Skins.ascx',
-                [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Skins.SkinsController, Dnn.Modules.Dashboard'
-            WHERE [DashboardControlKey] = 'Skins'
+        UPDATE {databaseOwner}[{objectQualifier}Dashboard_Controls]
+        SET [DashboardControlSrc] = 'DesktopModules/Admin/Dashboard/Controls/Skins.ascx',
+            [ControllerClass] = 'Dnn.Modules.Dashboard.Components.Skins.SkinsController, Dnn.Modules.Dashboard'
+        WHERE [DashboardControlKey] = 'Skins'
+
+		UPDATE {databaseOwner}[{objectQualifier}Packages] SET [Version] = N'8.0.0'
+		WHERE [Name] IN
+		(
+			'DotNetNuke.Dashboard.WebServer',
+			'DotNetNuke.Dashboard.Database',
+			'DotNetNuke.Dashboard.Host',
+			'DotNetNuke.Dashboard.Portals',
+			'DotNetNuke.Dashboard.Modules',
+			'DotNetNuke.Dashboard.Skins'
+		)
+
     END
 GO
 

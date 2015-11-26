@@ -39,9 +39,6 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// DiskPageStatePersister provides a disk (stream) based page state peristence mechanism
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DiskPageStatePersister : PageStatePersister
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the DiskPageStatePersister
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DiskPageStatePersister(Page page) : base(page)
         {
@@ -64,9 +58,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 11/30/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CacheDirectory
         {
@@ -82,9 +73,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 11/30/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string StateFileName
         {
@@ -105,9 +93,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Loads the Page State from the Cache
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Load()
         {
@@ -140,9 +125,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Saves the Page State to the Cache
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Save()
         {

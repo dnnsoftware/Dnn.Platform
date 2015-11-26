@@ -249,7 +249,7 @@ namespace Dnn.Modules.Console
             tabs.ItemDataBound +=  tabs_ItemDataBound;
             modeList.SelectedIndexChanged += modeList_SelectedIndexChanged;
 
-            ParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
         }
 
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)

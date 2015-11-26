@@ -31,9 +31,6 @@ namespace DotNetNuke.UI.Containers.EventListeners
     /// ContainerEventArgs provides a custom EventARgs class for Container Events
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    ///     [cnurse]	05/20/2009	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class ContainerEventArgs : EventArgs
     {

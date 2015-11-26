@@ -114,7 +114,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void DeleteContentTemplate_Clears_Cache()
         {
             //Arrange
-            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 

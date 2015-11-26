@@ -55,9 +55,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/04/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Pane
     {
@@ -76,9 +73,6 @@ namespace DotNetNuke.UI.Skins
         /// Constructs a new Pane object from the Control in the Skin
         /// </summary>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Pane(HtmlContainerControl pane)
         {
@@ -94,9 +88,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="name">The name (ID) of the HtmlContainerControl</param>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Pane(string name, HtmlContainerControl pane)
         {
@@ -112,9 +103,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets a Dictionary of Containers.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected Dictionary<string, Containers.Container> Containers
         {
@@ -128,9 +116,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets and sets the name (ID) of the Pane
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string Name { get; set; }
 
@@ -138,9 +123,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets and sets the HtmlContainerControl
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected HtmlContainerControl PaneControl { get; set; }
 
@@ -148,9 +130,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets the PortalSettings of the Portal
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
         {
@@ -203,9 +182,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="containerPath">The Url to the Container control</param>
         /// <returns>A Container</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
@@ -249,9 +225,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="request">Current Http Request.</param>
         /// <returns>A Container</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerFromCookie(HttpRequest request)
         {
@@ -421,9 +394,6 @@ namespace DotNetNuke.UI.Skins
         /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop
         /// </summary>
         /// <param name="args">A ClientAPIPostBackEventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Moved from Skin.vb
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {
@@ -463,9 +433,6 @@ namespace DotNetNuke.UI.Skins
         /// InjectModule injects a Module (and its container) into the Pane
         /// </summary>
         /// <param name="module">The Module</param>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void InjectModule(ModuleInfo module)
         {
@@ -578,9 +545,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// ProcessPane processes the Attributes for the PaneControl
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ProcessPane()
         {

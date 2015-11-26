@@ -45,7 +45,6 @@ namespace DotNetNuke.Modules.Journal
 {
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
-    [ValidateAntiForgeryToken]
     public class ServicesController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));
@@ -87,6 +86,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Create(CreateDTO postData)
         {
@@ -206,6 +206,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Delete(JournalIdDTO postData)
         {
@@ -235,6 +236,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage SoftDelete(JournalIdDTO postData)
         {
@@ -317,6 +319,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 		[DnnAuthorize]
         public HttpResponseMessage PreviewUrl(PreviewDTO postData)
         {
@@ -382,6 +385,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
         {
             try
@@ -398,6 +402,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Like(JournalIdDTO postData)
         {
@@ -426,6 +431,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage CommentSave(CommentSaveDTO postData)
         {
@@ -461,6 +467,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
         {

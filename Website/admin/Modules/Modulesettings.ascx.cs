@@ -62,10 +62,6 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	10/18/2004	documented
-    /// 	[cnurse]	10/19/2004	modified to support custm module specific settings
-    /// </history>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));

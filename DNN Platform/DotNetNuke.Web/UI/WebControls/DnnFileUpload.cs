@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (Options.FolderPicker.InitialState == null)
             {
                 var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
-                var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+                var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
 
                 Options.FolderPicker.InitialState = new DnnDropDownListState
                 {

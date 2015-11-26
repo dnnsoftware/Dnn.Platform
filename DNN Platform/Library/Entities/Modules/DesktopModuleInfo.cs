@@ -50,9 +50,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// DesktopModuleInfo provides the Entity Layer for Desktop Modules
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
@@ -189,9 +186,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
@@ -200,9 +194,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Package for this Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
@@ -216,9 +207,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the BusinessControllerClass of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string BusinessControllerClass { get; set; }
 
@@ -249,9 +237,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the AppCode Folder Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	02/20/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CodeSubDirectory { get; set; }
 
@@ -261,9 +246,6 @@ namespace DotNetNuke.Entities.Modules
         /// that this module is compatible with
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CompatibleVersions { get; set; }
 
@@ -272,9 +254,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets a list of Dependencies for the module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Dependencies { get; set; }
 
@@ -283,9 +262,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the  Description of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
@@ -294,9 +270,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Folder Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
@@ -305,9 +278,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Friendly Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
@@ -321,9 +291,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is an Admin Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsAdmin { get; set; }
 
@@ -332,9 +299,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Portable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsPortable
         {
@@ -353,9 +317,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is a Premium Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsPremium { get; set; }
 
@@ -364,9 +325,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Searchable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsSearchable
         {
@@ -385,9 +343,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Upgradable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsUpgradeable
         {
@@ -415,9 +370,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Module Definitions for this Desktop Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
         {
@@ -443,9 +395,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the  Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ModuleName { get; set; }
 
@@ -454,9 +403,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets a list of Permissions for the module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Permissions { get; set; }
 
@@ -465,9 +411,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Supported Features of the Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int SupportedFeatures { get; set; }
 
@@ -476,9 +419,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Version of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Version { get; set; }
 
@@ -518,9 +458,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a DesktopModuleInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -554,9 +491,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the DesktopModule
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -568,9 +502,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a DesktopModuleInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -657,9 +588,6 @@ namespace DotNetNuke.Entities.Modules
         /// Writes a DesktopModuleInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 
         public void WriteXml(XmlWriter writer)
@@ -747,9 +675,6 @@ namespace DotNetNuke.Entities.Modules
         /// Clears a Feature from the Features
         /// </summary>
         /// <param name="feature">The feature to Clear</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
@@ -762,9 +687,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets a Feature from the Features
         /// </summary>
         /// <param name="feature">The feature to Get</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -776,9 +698,6 @@ namespace DotNetNuke.Entities.Modules
         /// Sets a Feature in the Features
         /// </summary>
         /// <param name="feature">The feature to Set</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -791,9 +710,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="feature">The feature to Set</param>
         /// <param name="isSet">A Boolean indicating whether to set or clear the feature</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UpdateFeature(DesktopModuleSupportedFeature feature, bool isSet)
         {
@@ -812,9 +728,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a Supported Features from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadSupportedFeatures(XmlReader reader)
         {
@@ -872,9 +785,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a Module Definitions from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadModuleDefinitions(XmlReader reader)
         {

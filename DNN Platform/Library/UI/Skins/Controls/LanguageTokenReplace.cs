@@ -227,9 +227,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// Basically it is just a call to NavigateUrl, with stripped qs parameters
         /// </summary>
         /// <param name="newLanguage"></param>
-        /// <history>
-        ///     [erikvb]   20070814    added
-        /// </history>
         private string NewUrl(string newLanguage)
         {
             var objSecurity = new PortalSecurity();

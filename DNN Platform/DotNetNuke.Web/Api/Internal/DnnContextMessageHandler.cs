@@ -63,11 +63,16 @@ namespace DotNetNuke.Web.Api.Internal
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
             return portalSettings;
         }
-
-        private static bool TabIsInPortal(int tabId, int portalId)
+        
+        private static bool TabIsInPortalOrHost(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
-            return tab != null && tab.PortalID == portalId;
+            return tab != null && (tab.PortalID == portalId || IsHostTab(tab));
+        }
+
+        private static bool IsHostTab(TabInfo tab)
+        {
+            return tab.PortalID == Null.NullInteger;
         }
 
         private static void ValidateTabAndModuleContext(HttpRequestMessage request, int portalId, out int tabId)
@@ -76,7 +81,7 @@ namespace DotNetNuke.Web.Api.Internal
 
             if (tabId != Null.NullInteger)
             {
-                if (!TabIsInPortal(tabId, portalId))
+                if (!TabIsInPortalOrHost(tabId, portalId))
                 {
                     throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("TabNotInPortal", Localization.ExceptionsResourceFile)));
                 }
