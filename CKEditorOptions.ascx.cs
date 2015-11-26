@@ -1564,7 +1564,6 @@ namespace DNNConnect.CKEditorProvider
             {
                 _portalSettings = GetPortalSettings();
 
-                btnCancel.Click += Cancel_Click;
                 btnOk.Click += OK_Click;
 
                 lnkRemove.Click += Remove_Click;
@@ -3063,17 +3062,6 @@ namespace DNNConnect.CKEditorProvider
             DefaultLinkMode.Items[1].Text = Localization.GetString("DefaultLinkMode1.Text", ResXFile, LangCode);
             DefaultLinkMode.Items[2].Text = Localization.GetString("DefaultLinkMode2.Text", ResXFile, LangCode);
             DefaultLinkMode.Items[3].Text = Localization.GetString("DefaultLinkMode3.Text", ResXFile, LangCode);
-        }
-
-        /// <summary>
-        /// Exit Dialog
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            Page.ClientScript.RegisterStartupScript(
-                GetType(), "closeScript", "javascript:self.close();", true);
         }
 
         /// <summary>
