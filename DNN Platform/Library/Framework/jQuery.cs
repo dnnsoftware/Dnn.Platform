@@ -259,15 +259,8 @@ namespace DotNetNuke.Framework
                         string jqueryFileName = JQueryFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryFileName);
                         Match verMatch = Regex.Match(jfiletext, jQueryVersionMatch);
-                        if (verMatch != null)
-                        {
-                            ver = verMatch.Value;
-                            DataCache.SetCache(jQueryVersionKey, ver, new CacheDependency(jqueryFileName));
-                        }
-                        else
-                        {
-                            ver = Localization.GetString("jQuery.UnknownVersion.Text");
-                        }
+                        ver = verMatch.Value;
+                        DataCache.SetCache(jQueryVersionKey, ver, new CacheDependency(jqueryFileName));
                     }
                     else
                     {
@@ -299,15 +292,8 @@ namespace DotNetNuke.Framework
                         string jqueryUIFileName = JQueryUIFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryUIFileName);
                         Match verMatch = Regex.Match(jfiletext, jQueryUIVersionMatch);
-                        if (verMatch != null)
-                        {
-                            ver = verMatch.Value;
-                            DataCache.SetCache(jQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
-                        }
-                        else
-                        {
-                            ver = Localization.GetString("jQueryUI.UnknownVersion.Text");
-                        }
+                        ver = verMatch.Value;
+                        DataCache.SetCache(jQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
                     }
                     else
                     {

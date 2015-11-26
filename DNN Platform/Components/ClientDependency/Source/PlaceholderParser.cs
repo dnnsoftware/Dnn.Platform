@@ -61,7 +61,7 @@ namespace ClientDependency.Core
                     
                     return m.ToString();
 
-                }, RegexOptions.Compiled);
+                });
 
             html = Regex.Replace(html, cssMarkupRegex,
                 (m) =>
@@ -88,7 +88,7 @@ namespace ClientDependency.Core
 
                     return m.ToString();
 
-                }, RegexOptions.Compiled);
+                });
 
 
             var replacedArgs = new PlaceholdersReplacedEventArgs(currentContext, html);

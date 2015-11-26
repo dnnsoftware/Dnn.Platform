@@ -430,7 +430,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RemoveAnyRedirectReasons(string rewritePath)
         {
-            return Regex.Replace(rewritePath, @"&rr=(?<rr>[^&].)", "");
+            return RewritePathRx.Replace(rewritePath, "");
         }
 
         /// <summary>

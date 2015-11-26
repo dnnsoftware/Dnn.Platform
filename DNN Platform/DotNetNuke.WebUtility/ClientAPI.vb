@@ -25,6 +25,7 @@ Imports System.Web.UI.WebControls
 Imports System.Reflection
 Imports System.Globalization
 Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 Imports DotNetNuke.Web.Client
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 
@@ -45,6 +46,8 @@ Namespace DotNetNuke.UI.Utilities
     ''' -----------------------------------------------------------------------------
     Public Class ClientAPI
 
+        Dim Shared ReadOnly UnsafeJsRegex As Regex = new Regex("(['""\\])", RegexOptions.Compiled)
+
 #Region "Public Constants"
 
         Public Const SCRIPT_CALLBACKID As String = "__DNNCAPISCI"
@@ -55,6 +58,7 @@ Namespace DotNetNuke.UI.Utilities
         Public Const SCRIPT_CALLBACKSTATUSDESCID As String = "__DNNCAPISCSDI"
 
         Public Const DNNVARIABLE_CONTROLID As String = "__dnnVariable"
+
 #End Region
 
 #Region "Public Enums"
@@ -548,8 +552,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
             If Len(strString) > 0 Then
-                'Return System.Text.RegularExpressions.Regex.Replace(strString, "(['""])", "\$1")
-                Return System.Text.RegularExpressions.Regex.Replace(strString, "(['""\\])", "\$1")
+                Return UnsafeJsRegex.Replace(strString, "\$1")
             Else
                 Return strString
             End If

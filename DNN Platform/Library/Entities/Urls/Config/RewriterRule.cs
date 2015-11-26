@@ -22,6 +22,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using DotNetNuke.Common.Utilities;
 
 #endregion
 
@@ -69,7 +70,7 @@ namespace DotNetNuke.Entities.Urls.Config
         public Regex GetRuleRegex(string applicationPath)
         {
             return _matchRx ?? (_matchRx =
-                new Regex("^" + RewriterUtils.ResolveUrl(applicationPath, LookFor) + "$",
+                RegexUtils.GetCachedRegex("^" + RewriterUtils.ResolveUrl(applicationPath, LookFor) + "$",
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
         }
     }

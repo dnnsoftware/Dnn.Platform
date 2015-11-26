@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </remarks>
     public class AssemblyInstaller : FileInstaller
     {
-        private readonly static Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
 		#region "Protected Properties"
 

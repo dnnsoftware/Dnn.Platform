@@ -91,10 +91,10 @@ namespace DotNetNuke.Services.Tokens
             get
             {
                 var cacheKey = (UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
-                var tokenizer = (Regex)DataCache.GetCache(cacheKey);
+                var tokenizer = DataCache.GetCache(cacheKey) as Regex;
                 if (tokenizer == null)
                 {
-                    tokenizer = new Regex((UseObjectLessExpression) ? ExpressionObjectLess : ExpressionDefault, RegexOptions.Compiled);
+                    tokenizer = RegexUtils.GetCachedRegex(UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
                     DataCache.SetCache(cacheKey, tokenizer);
                 }
                 return tokenizer;

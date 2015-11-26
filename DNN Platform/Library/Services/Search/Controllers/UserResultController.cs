@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class UserResultController : BaseResultController
     {
-        private readonly static Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
+        private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
 
         #region Private Properties
 
