@@ -18,18 +18,21 @@ namespace DotNetNuke.Entities.Modules.Settings
     {
         #region Properties
 
-        private IList<ParameterMapping> Mapping { get; set; }
+        private IList<ParameterMapping> Mapping { get; }
+
+        private readonly IModuleController _moduleController;
 
         #endregion
 
-        public SettingsRepository()
+        protected SettingsRepository()
         {
-            this.Mapping = this.LoadMapping();
+            Mapping = LoadMapping();
+            _moduleController = ModuleController.Instance;
         }
 
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
+            return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
                                                        Load,
                                                        true);
         }
@@ -40,8 +43,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             Requires.NotNull("settings", settings);
             Requires.NotNull("ctlModule", moduleContext);
 
-            var controller = new ModuleController();
-            this.Mapping.ForEach(mapping =>
+            Mapping.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
@@ -54,7 +56,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                         var settingValueAsString = "";
                         if (!string.IsNullOrEmpty(attribute.Serializer))
                         {
-                            ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
+                            var serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
                             if (serializer != null)
                             {
                                 settingValueAsString = serializer.Serialize((T)settingValue);
@@ -75,11 +77,11 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                         if (attribute is ModuleSettingAttribute)
                         {
-                            controller.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                            _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
                         }
                         else if (attribute is TabModuleSettingAttribute)
                         {
-                            controller.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                            _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         }
                         else if (attribute is PortalSettingAttribute)
                         {
@@ -88,7 +90,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
+            DataCache.SetCache(CacheKey(moduleContext.TabModuleID), settings);
         }
         #endregion
 
