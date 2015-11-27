@@ -2048,12 +2048,10 @@
                 }
                 var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
-                $(data.fake_input).bind('keydown', data, function (event) {
+                $(data.fake_input).bind('keypress', data, function (event) {
                     var currValLength = $(this).val().length;
-                    if (currValLength >= 50 && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13)) {
-                        tagTooLongErrMsg.insertAfter($(this)).show();
-                    } else {
-                        tagTooLongErrMsg.appendTo('body').hide();
+                    if ((currValLength >= 50) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
+                        tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
                     }
                     if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13) {
                         event.preventDefault();
