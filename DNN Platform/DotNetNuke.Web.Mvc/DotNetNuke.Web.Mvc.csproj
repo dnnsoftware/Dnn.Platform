@@ -131,6 +131,8 @@
     <Compile Include="Helpers\DnnUrlHelper.cs" />
     <Compile Include="Helpers\HtmlLinkExtensions.cs" />
     <Compile Include="Helpers\HtmlNameExtensions.cs" />
+    <Compile Include="Helpers\HtmlPartialExtensions.cs" />
+    <Compile Include="Helpers\HtmlRenderPartialExtensions.cs" />
     <Compile Include="Helpers\HtmlSelectExtensions.cs" />
     <Compile Include="Helpers\HtmlTextAreaExtensions.cs" />
     <Compile Include="Helpers\HtmlValidationExtensions.cs" />
