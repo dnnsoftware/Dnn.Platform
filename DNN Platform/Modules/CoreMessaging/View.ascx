@@ -110,12 +110,12 @@
                                     <input type="checkbox" data-bind="checked: messageSelected, id: MessageIDName, visible: $root.showInbox()" class="normalCheckBox" />
                                 </li>
                                 <li class="ListCol-2"><a class="profileImg" data-bind="attr: { href: SenderProfileUrl }"><span><em>
-                                    <img alt="" data-bind="attr: { src: SenderAvatar, alt: SenderDisplayName, title: SenderDisplayName }" /></em></span></a>
+                                    <img alt="" data-bind="attr: { src: SenderAvatar, alt: From, title: From }" /></em></span></a>
                                 </li>
                                 <li class="ListCol-3">
                                     <dl>
                                         <dt class="subject"><a href="#" data-bind="text: Subject, click: $root.getReplies"></a></dt>
-                                        <dd class="meta"><em><%=LocalizeString("From")%>: <a data-bind="text: SenderDisplayName, attr: { href: SenderProfileUrl }"></a></em><br/><em><%=LocalizeString("SentTo")%>: <span data-bind="    text: To"></span></em></dd>
+                                        <dd class="meta"><em><%=LocalizeString("From")%>: <a data-bind="text: From, attr: { href: SenderProfileUrl }"></a></em><br/><em><%=LocalizeString("SentTo")%>: <span data-bind="    text: To"></span></em></dd>
                                         <dd class="message" data-bind="text: MessageAbstract"></dd>
                                     </dl>
                                 </li>
