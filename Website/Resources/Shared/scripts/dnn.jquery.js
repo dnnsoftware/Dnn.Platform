@@ -2050,7 +2050,7 @@
                 // if user types a comma, create a new tag
                 $(data.fake_input).bind('keypress', data, function (event) {
                     var currValLength = $(this).val().length;
-                    if ((currValLength >= 50) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
+                    if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
                         tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
                     }
                     if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13) {
