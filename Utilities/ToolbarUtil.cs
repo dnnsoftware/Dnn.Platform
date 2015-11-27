@@ -750,10 +750,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Find",
                                                 "Replace",
                                                 "-",
-                                                "SelectAll",
-                                                "-",
-                                                "SpellChecker",
-                                                "Scayt"
+                                                "SelectAll"
                                             },
                                     name = "editing"
                                 });
