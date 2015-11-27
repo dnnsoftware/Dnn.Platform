@@ -378,7 +378,7 @@
     </form>
     <script type="text/javascript">
         $(function() {
-            'use strict';
+            //'use strict';
             var overrideFile = $('#<%= this.OverrideFile.ClientID %>').is(':checked');
             var maxFileSize = <%= this.MaxUploadSize %>;
 
