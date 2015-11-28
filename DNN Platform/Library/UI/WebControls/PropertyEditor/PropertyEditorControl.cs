@@ -664,7 +664,7 @@ namespace DotNetNuke.UI.WebControls
 		                            header.Attributes.Add("id", strGroup);
 		                            Controls.Add(header);
 
-		                            var localizedGroupName = Localization.GetString(strGroup, LocalResourceFile);
+                                    var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", LocalResourceFile);
 		                            if (string.IsNullOrEmpty(localizedGroupName))
 		                            {
 			                            localizedGroupName = strGroup;
