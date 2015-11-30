@@ -25,6 +25,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -132,6 +133,7 @@
     <Compile Include="Components\JournalItemPropertyAccess.cs" />
     <Compile Include="Components\JournalParser.cs" />
     <Compile Include="Components\LinkInfo.cs" />
+    <Compile Include="Components\ProfilePicPropertyAccess.cs" />
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="NotificationServicesController.cs" />
     <Compile Include="FilesStatus.cs" />
@@ -228,7 +230,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\SharedResources.resx" />
+    <Content Include="App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

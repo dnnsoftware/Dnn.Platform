@@ -15,11 +15,9 @@ namespace DotNetNuke.Modules.Journal.Components {
             }
             if (journalItem.JournalAuthor != null) {
                 PropertySource["journalauthor"] = journalItem.JournalAuthor;
+                PropertySource["journalprofile"] = new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id);
             }
-           
-            
-            
-
+             
         }
         public string ReplaceJournalItemTokens(string source) {
             return base.ReplaceTokens(source);
