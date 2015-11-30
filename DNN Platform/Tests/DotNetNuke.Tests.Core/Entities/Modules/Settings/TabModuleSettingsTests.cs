@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public class MyTabModuleSettingsRepository : SettingsRepository<MyTabModuleSettings> { }
 
         [Test]
-        [TestCaseSource("SettingsCases")]
+        [TestCaseSource(nameof(SettingsCases))]
         public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 BooleanProperty = booleanValue,
                 DateTimeProperty = datetimeValue,
                 TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue
+                EnumProperty = enumValue,
             };
 
             _mockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "StringProperty", stringValue));
@@ -130,20 +130,22 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-        [TestCaseSource("SettingsCases")]
+        [TestCaseSource(nameof(SettingsCases))]
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var tabModuleSettings = new Hashtable();
-            tabModuleSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
-            tabModuleSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
-            tabModuleSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
-            tabModuleSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
-            tabModuleSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
-            tabModuleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
-            tabModuleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
+            var tabModuleSettings = new Hashtable
+                                    {
+                                        { SettingNamePrefix + "StringProperty", stringValue },
+                                        { SettingNamePrefix + "IntegerProperty", integerValue.ToString() },
+                                        { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
+                                        { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
+                                        { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u") },
+                                        { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G") },
+                                        { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
+                                    };
 
             MockCache.Setup(c => c.GetItem("DNN_" + TabModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int, Hashtable> { { moduleInfo.TabModuleID, tabModuleSettings } });
             MockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));

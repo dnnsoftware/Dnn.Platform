@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
         
         [Test]
-        [TestCaseSource("SettingsCases")]
+        [TestCaseSource(nameof(SettingsCases))]
         public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 BooleanProperty = booleanValue,
                 DateTimeProperty = datetimeValue,
                 TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue
+                EnumProperty = enumValue,
             };
 
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "StringProperty", stringValue));
@@ -130,20 +130,22 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-        [TestCaseSource("SettingsCases")]
+        [TestCaseSource(nameof(SettingsCases))]
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var moduleSettings = new Hashtable();
-            moduleSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
-            moduleSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
-            moduleSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
-            moduleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
-            moduleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
+            var moduleSettings = new Hashtable
+                                 {
+                                     { SettingNamePrefix + "StringProperty", stringValue },
+                                     { SettingNamePrefix + "IntegerProperty", integerValue.ToString() },
+                                     { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
+                                     { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u") },
+                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G") },
+                                     { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
+                                 };
 
             MockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
             MockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
