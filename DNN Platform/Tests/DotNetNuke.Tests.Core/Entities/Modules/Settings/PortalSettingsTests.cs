@@ -2,30 +2,32 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Settings;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
-using System.Globalization;
 
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
     [TestFixture]
-    public class ModuleSettingsTests
+    public class PortalSettingsTests
     {
         private const string SettingNamePrefix = "UnitTestSetting_";
         private const int ModuleId = 1234;
         private const int TabModuleId = 653;
         private const int TabId = 344597;
+        private const int PortalId = 246;
 
         private MockRepository _mockRepository;
-        private Mock<IModuleController> _mockModuleController;
+        private Mock<IPortalController> _mockPortalController;
         private Mock<CachingProvider> _mockCache;
         private Mock<IHostController> _mockHostController;
 
@@ -44,8 +46,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             ComponentFactory.Container = new SimpleContainer();
 
             // Setup Mock
-            _mockModuleController = _mockRepository.Create<IModuleController>();
-            ModuleController.SetTestableInstance(_mockModuleController.Object);
+            _mockPortalController = _mockRepository.Create<IPortalController>();
+            PortalController.SetTestableInstance(_mockPortalController.Object);
             _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             HostController.RegisterInstance(_mockHostController.Object);
         }
@@ -53,7 +55,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [TearDown]
         public void TearDown()
         {
-            ModuleController.ClearInstance();
+            PortalController.ClearInstance();
             MockComponentProvider.ResetContainer();
         }
 
@@ -63,32 +65,32 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Value2
         }
 
-        public class ModulesSettings
+        public class MyPortalSettings
         {
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public string StringProperty { get; set; } = "";
 
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public int IntegerProperty { get; set; }
 
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public double DoubleProperty { get; set; }
-            
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public bool BooleanProperty { get; set; }
 
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public DateTime DateTimeProperty { get; set; } = DateTime.Now;
 
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public TimeSpan TimeSpanProperty { get; set; } = TimeSpan.Zero;
 
-            [ModuleSetting(Prefix = SettingNamePrefix)]
+            [PortalSetting(Prefix = SettingNamePrefix)]
             public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
         }
 
-        public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
-
+        public class MyPortalSettingsRepository : SettingsRepository<MyPortalSettings> { }
+        
         private static readonly object[] SettingsCases =
         {
             new object[] {"AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1},
@@ -97,12 +99,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         [Test]
         [TestCaseSource("SettingsCases")]
-        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var settings = new ModulesSettings
+            var settings = new MyPortalSettings
             {
                 StringProperty = stringValue,
                 IntegerProperty = integerValue,
@@ -113,15 +115,16 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 EnumProperty = enumValue
             };
 
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "StringProperty", stringValue));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "IntegerProperty", integerValue.ToString()));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture)));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString()));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u")));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G")));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "EnumProperty", enumValue.ToString()));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), 
+                true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
 
-            var settingsRepository = new ModulesSettingsRepository();
+            var settingsRepository = new MyPortalSettingsRepository();
 
             //Act
             settingsRepository.SaveSettings(moduleInfo, settings);
@@ -135,10 +138,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var settings = new ModulesSettings();
+            var settings = new MyPortalSettings();
 
             _mockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
-            var settingsRepository = new ModulesSettingsRepository();
+            var settingsRepository = new MyPortalSettingsRepository();
 
             //Act
             settingsRepository.SaveSettings(moduleInfo, settings);
@@ -146,15 +149,15 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             //Assert
             _mockRepository.VerifyAll();
         }
-        
+
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
 
-            _mockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
-            var settingsRepository = new ModulesSettingsRepository();
+            _mockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new MyPortalSettings());
+            var settingsRepository = new MyPortalSettingsRepository();
 
             //Act
             settingsRepository.GetSettings(moduleInfo);
@@ -165,26 +168,25 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         [Test]
         [TestCaseSource("SettingsCases")]
-        public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
+        public void GetSettings_GetsValuesFrom_PortalSettings(string stringValue, int integerValue, double doubleValue,
+           bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var moduleSettings = new Hashtable();
-            moduleSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
-            moduleSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
-            moduleSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
-            moduleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
-            moduleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
+            var portalSettings = new Dictionary<string, string>();
+            portalSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
+            portalSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
+            portalSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
+            portalSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
+            portalSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
+            portalSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
+            portalSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
 
-            _mockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
-            _mockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
+            _mockPortalController.Setup(pc => pc.GetPortalSettings(moduleInfo.PortalID)).Returns(portalSettings);
             _mockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
-            _mockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new ModulesSettings());
+            _mockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new MyPortalSettings());
 
-            var settingsRepository = new ModulesSettingsRepository();
+            var settingsRepository = new MyPortalSettingsRepository();
 
             //Act
             var settings = settingsRepository.GetSettings(moduleInfo);
@@ -200,10 +202,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             _mockRepository.VerifyAll();
         }
 
-        private static ModuleInfo GetModuleInfo => new ModuleInfo {ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId};
+        private static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId , PortalID = PortalId };
 
         private static string CacheKey(ModuleInfo moduleInfo) => $"SettingsModule{moduleInfo.TabModuleID}";
-
-        private static string ModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"ModuleSettings{moduleInfo.TabID}";
     }
 }

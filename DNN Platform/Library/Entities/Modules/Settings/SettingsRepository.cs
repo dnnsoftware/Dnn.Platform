@@ -32,9 +32,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
-                                                       Load,
-                                                       false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), Load, false);
         }
 
         #region Serialization
