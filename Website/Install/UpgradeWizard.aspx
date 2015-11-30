@@ -5,7 +5,7 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" class="needVer" href="../Portals/_default/default.css" />    
+    <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css" />    
     <link rel="stylesheet" type="text/css" class="needVer" href="Install.css" />
     <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>

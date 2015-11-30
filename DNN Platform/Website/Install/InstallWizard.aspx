@@ -8,7 +8,7 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" href="../Portals/_default/default.css?refresh" />    
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />    
     <link rel="stylesheet" type="text/css" href="Install.css?refresh" />    
     <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />    
      <!--[if IE]>
@@ -39,8 +39,8 @@
     <div id="languageFlags" style="float: right;">       
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
-        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton> 
-        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>             
+        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Espaï¿½ol (Espaï¿½a)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton> 
+        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Franï¿½ais (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>             
         <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="Italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton> 
         <asp:LinkButton  id="lang_nl_NL" class="flag" runat="server" value="nl-NL" title="Nederlands (Nederland)" OnClientClick="installWizard.changePageLocale('lang_nl_NL','nl-NL');" CausesValidation="false"><img src="../images/flags/nl-NL.gif" alt="nl-NL" class="flagimage"/></asp:LinkButton>
     </div>
