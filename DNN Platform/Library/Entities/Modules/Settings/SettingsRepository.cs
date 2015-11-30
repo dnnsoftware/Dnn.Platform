@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             var dateTimeValue = settingValue as DateTime?;
             if (dateTimeValue != null)
             {
-                return dateTimeValue.Value.ToString("u", CultureInfo.InvariantCulture);
+                return dateTimeValue.Value.ToString("o", CultureInfo.InvariantCulture);
             }
 
             var timeSpanValue = settingValue as TimeSpan?;
@@ -249,7 +249,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
 
                 DateTime dateTimeValue;
-                if (propertyType.IsAssignableFrom(typeof(DateTime)) && DateTime.TryParse(propertyValue, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dateTimeValue))
+                if (propertyType.IsAssignableFrom(typeof(DateTime)) && DateTime.TryParse(propertyValue, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out dateTimeValue))
                 {
                     property.SetValue(settings, dateTimeValue);
                     return;

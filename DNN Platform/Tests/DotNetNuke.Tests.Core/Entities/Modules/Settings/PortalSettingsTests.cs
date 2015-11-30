@@ -149,8 +149,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c"), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString));
 
@@ -270,8 +270,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                                      { SettingNamePrefix + "IntegerProperty", integerValue.ToString() },
                                      { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
                                      { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
-                                     { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u") },
-                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c") },
+                                     { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture) },
                                      { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
                                      { SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}" },
                                  };
