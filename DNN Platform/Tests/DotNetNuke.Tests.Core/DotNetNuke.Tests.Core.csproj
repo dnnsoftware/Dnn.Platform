@@ -155,6 +155,7 @@
     <Compile Include="Entities\Modules\Settings\ComplexType.cs" />
     <Compile Include="Entities\Modules\Settings\ComplexTypeSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\NullableSettingsTests.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingsTests.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingsTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />

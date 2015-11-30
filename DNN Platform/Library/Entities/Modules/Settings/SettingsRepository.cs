@@ -49,32 +49,29 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
                 {
-                    var settingValue = property.GetValue(settings, null);
-                    if (settingValue != null)
+                    var settingValue = property.GetValue(settings, null) ?? string.Empty;
+                    string settingValueAsString = null;
+                    if (!string.IsNullOrEmpty(attribute.Serializer))
                     {
-                        var settingValueAsString = "";
-                        if (!string.IsNullOrEmpty(attribute.Serializer))
-                        {
-                            settingValueAsString = (string)CallSerializerMethod(attribute.Serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
-                        }
+                        settingValueAsString = (string)CallSerializerMethod(attribute.Serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
+                    }
 
-                        if (string.IsNullOrEmpty(settingValueAsString))
-                        {
-                            settingValueAsString = GetSettingValueAsString(settingValue);
-                        }
+                    if (settingValueAsString == null)
+                    {
+                        settingValueAsString = GetSettingValueAsString(settingValue);
+                    }
 
-                        if (attribute is ModuleSettingAttribute)
-                        {
-                            _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
-                        }
-                        else if (attribute is TabModuleSettingAttribute)
-                        {
-                            _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
-                        }
-                        else if (attribute is PortalSettingAttribute)
-                        {
-                            PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.FullParameterName, settingValueAsString);
-                        }
+                    if (attribute is ModuleSettingAttribute)
+                    {
+                        _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                    }
+                    else if (attribute is TabModuleSettingAttribute)
+                    {
+                        _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                    }
+                    else if (attribute is PortalSettingAttribute)
+                    {
+                        PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.FullParameterName, settingValueAsString);
                     }
                 }
             });
@@ -157,10 +154,6 @@ namespace DotNetNuke.Entities.Modules.Settings
                 if (attribute is PortalSettingAttribute)
                 {
                     settingValue = PortalController.GetPortalSetting(mapping.FullParameterName, ctlModule.PortalID, null);
-                    if (string.IsNullOrWhiteSpace((string)settingValue))
-                    {
-                        settingValue = null;
-                    }
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
@@ -170,6 +163,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 {
                     settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
                 }
+
                 if (settingValue != null && property.CanWrite)
                 {
                     DeserializeProperty(settings, property, attribute, settingValue);
@@ -201,6 +195,11 @@ namespace DotNetNuke.Entities.Modules.Settings
                 {
                     // Nullable type
                     propertyType = propertyType.GetGenericArguments()[0];
+                    if (string.IsNullOrEmpty(propertyValue))
+                    {
+                        property.SetValue(settings, null, null);
+                        return;
+                    }
                 }
 
                 if (propertyType == valueType)
