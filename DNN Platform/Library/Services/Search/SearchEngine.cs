@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Search
                 try
                 {
                     indexedCount += indexer.IndexSearchDocuments(
-                        portal.PortalID, SchedulerItem.ScheduleID, indexSince, StoreSearchDocuments);
+                        portal.PortalID, SchedulerItem, indexSince, StoreSearchDocuments);
                 }
                 catch (NotImplementedException)
                 {
@@ -218,7 +218,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 indexedCount += indexer.IndexSearchDocuments(
-                    Null.NullInteger, SchedulerItem.ScheduleID, indexSince, StoreSearchDocuments);
+                    Null.NullInteger, SchedulerItem, indexSince, StoreSearchDocuments);
             }
             catch (NotImplementedException)
             {

@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -57,12 +58,12 @@ namespace DotNetNuke.Services.Search
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024;
             var totalIndexed = 0;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
@@ -82,7 +83,7 @@ namespace DotNetNuke.Services.Search
 
                         if (searchDocuments.Count >= saveThreshold)
                         {
-                            totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId);
+                            totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
                         }
                     }
                     catch (Exception ex)
@@ -93,7 +94,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId);
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
                 }
             }
 

@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -96,13 +97,12 @@ namespace DotNetNuke.Services.Search
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
             var totalIndexed = 0;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
-		    var localDateBeforeIndexing = DateTime.Now;
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
 			var searchModuleCollection = _searchModules.ContainsKey(portalId)
                 ? _searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Search
 
                             if (searchDocuments.Count >= saveThreshold)
                             {
-                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId, localDateBeforeIndexing);
+                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                                 searchDocuments.Clear();
                             }
                         }
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId, localDateBeforeIndexing);
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                 }
             }
 
@@ -177,11 +177,11 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId, DateTime date)
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
-            SetLocalTimeOfLastIndexedItem(portalId, scheduleId, date);
+            SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
             return total;
         }
 

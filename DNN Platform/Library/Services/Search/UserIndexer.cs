@@ -34,6 +34,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using Lucene.Net.QueryParsers;
@@ -80,13 +81,13 @@ namespace DotNetNuke.Services.Search
         /// <returns>Count of indexed records</returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = BatchSize;
             var totalIndexed = 0;
             var checkpointModified = false;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
@@ -108,7 +109,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 int startUserId;
-                var checkpointData = GetLastCheckpointData(portalId, scheduleId);
+                var checkpointData = GetLastCheckpointData(portalId, schedule.ScheduleID);
                 if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
                 {
                     startUserId = Null.NullInteger;
@@ -127,8 +128,8 @@ namespace DotNetNuke.Services.Search
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
                         totalIndexed += IndexCollectedDocs(indexer, values);
-                        SetLastCheckpointData(portalId, scheduleId, startUserId.ToString());
-                        SetLocalTimeOfLastIndexedItem(portalId, scheduleId, values.Last().ModifiedTimeUtc.ToLocalTime());
+                        SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
+                        SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
                         checkpointModified = true;
                     }
@@ -157,8 +158,8 @@ namespace DotNetNuke.Services.Search
             if (checkpointModified)
             {
                 // at last reset start user pointer
-                SetLastCheckpointData(portalId, scheduleId, Null.NullInteger.ToString());
-                SetLocalTimeOfLastIndexedItem(portalId, scheduleId, DateTime.Now);
+                SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
+                SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
             return totalIndexed;
         }

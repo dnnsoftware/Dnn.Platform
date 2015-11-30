@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing</param>
         /// <returns></returns>
         public virtual int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             throw new NotImplementedException();
         }
