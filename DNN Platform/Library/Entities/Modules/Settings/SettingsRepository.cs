@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         {
             return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
                                                        Load,
-                                                       true);
+                                                       false);
         }
 
         #region Serialization
@@ -65,14 +65,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                         if(string.IsNullOrEmpty(settingValueAsString))
                         {
-                            if (settingValue is DateTime)
-                            {
-                                settingValueAsString = ((DateTime)settingValue).ToString("u");
-                            }
-                            else
-                            {
-                                settingValueAsString = settingValue.ToString();
-                            }
+                            settingValueAsString = GetSettingValueAsString(settingValue);
                         }
 
                         if (attribute is ModuleSettingAttribute)
@@ -92,6 +85,37 @@ namespace DotNetNuke.Entities.Modules.Settings
             });
             DataCache.SetCache(CacheKey(moduleContext.TabModuleID), settings);
         }
+
+        private static string GetSettingValueAsString(object settingValue)
+        {
+            if (settingValue is DateTime)
+            {
+                return ((DateTime) settingValue).ToString("u");
+            }
+
+            if (settingValue is TimeSpan)
+            {
+                return ((TimeSpan) settingValue).ToString("G");
+            }
+
+            if (settingValue is float)
+            {
+                return ((float)settingValue).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (settingValue is double)
+            {
+                return ((double)settingValue).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (settingValue is decimal)
+            {
+                return ((decimal)settingValue).ToString(CultureInfo.InvariantCulture);
+            }
+
+            return settingValue.ToString();
+        }
+
         #endregion
 
         #region Mappings
@@ -142,7 +166,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var settings = new T();
 
-            this.Mapping.ForEach(mapping =>
+            Mapping.ForEach(mapping =>
             {
                 object settingValue = null;
 
@@ -166,7 +190,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 if (settingValue != null && property.CanWrite)
                 {
-                    this.DeserializeProperty(settings, property, attribute, settingValue);
+                    DeserializeProperty(settings, property, attribute, settingValue);
                 }
             });
 
@@ -230,6 +254,25 @@ namespace DotNetNuke.Entities.Modules.Settings
                             Exceptions.LogException(exception);
                         }
                     }
+                } else if (propertyType.FullName == "System.TimeSpan")
+                {
+                    property.SetValue(settings, TimeSpan.Parse(propertyValue.ToString()), null);
+                }
+                else if (propertyType.FullName == "System.Single")
+                {
+                    property.SetValue(settings, float.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
+                }
+                else if (propertyType.FullName == "System.Double")
+                {
+                    property.SetValue(settings, double.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
+                }
+                else if (propertyType.FullName == "System.Decimal")
+                {
+                    property.SetValue(settings, decimal.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
+                }
+                else if (propertyType.FullName == "System.DateTime")
+                {
+                    property.SetValue(settings, DateTime.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture).ToUniversalTime(), null);
                 }
                 else if (!(propertyValue is IConvertible))
                 {
