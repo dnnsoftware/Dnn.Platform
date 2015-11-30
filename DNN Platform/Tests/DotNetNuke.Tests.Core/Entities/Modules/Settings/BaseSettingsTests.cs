@@ -66,5 +66,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected static string CacheKey(ModuleInfo moduleInfo) => $"SettingsModule{moduleInfo.TabModuleID}";
 
         protected static string ModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"ModuleSettings{moduleInfo.TabID}";
+
+        protected static string TabModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"TabModuleSettings{moduleInfo.TabID}";
     }
 }

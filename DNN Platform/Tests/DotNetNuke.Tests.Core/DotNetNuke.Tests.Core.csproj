@@ -154,6 +154,7 @@
     <Compile Include="Entities\Modules\Settings\BaseSettingsTests.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingsTests.cs" />
     <Compile Include="Entities\Modules\Settings\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingsTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
