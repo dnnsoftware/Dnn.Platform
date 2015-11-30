@@ -55,14 +55,10 @@ namespace DotNetNuke.Entities.Modules.Settings
                         var settingValueAsString = "";
                         if (!string.IsNullOrEmpty(attribute.Serializer))
                         {
-                            var serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
-                            if (serializer != null)
-                            {
-                                settingValueAsString = serializer.Serialize((T)settingValue);
-                            }
+                            settingValueAsString = (string)CallSerializerMethod(attribute.Serializer, property.PropertyType, settingValue, nameof(ISettingsSerializer<T>.Serialize));
                         }
 
-                        if(string.IsNullOrEmpty(settingValueAsString))
+                        if (string.IsNullOrEmpty(settingValueAsString))
                         {
                             settingValueAsString = GetSettingValueAsString(settingValue);
                         }
@@ -216,12 +212,9 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (!string.IsNullOrEmpty(attribute.Serializer))
                 {
-                    ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
-                    if (serializer != null)
-                    {
-                        property.SetValue(settings, serializer.Deserialize(propertyValue), null);
-                        return;
-                    }
+                    var deserializedValue = CallSerializerMethod(attribute.Serializer, property.PropertyType, propertyValue, nameof(ISettingsSerializer<T>.Deserialize));
+                    property.SetValue(settings, deserializedValue, null);
+                    return;
                 }
 
                 if (propertyType.BaseType == typeof(Enum))
@@ -284,5 +277,24 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
         }
         #endregion
+
+        private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
+        {
+            var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
+            if (serializerType == null)
+            {
+                return null;
+            }
+
+            var serializer = Framework.Reflection.CreateInstance(serializerType);
+            if (serializer == null)
+            {
+                return null;
+            }
+
+            var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
+            var method = serializerInterfaceType.GetMethod(methodName);
+            return method.Invoke(serializer, new[] { value, });
+        }
     }
 }
