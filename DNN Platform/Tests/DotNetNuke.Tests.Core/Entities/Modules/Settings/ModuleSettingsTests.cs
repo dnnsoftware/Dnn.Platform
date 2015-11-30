@@ -4,12 +4,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Settings;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 using System.Globalization;
@@ -17,50 +13,26 @@ using System.Globalization;
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
     [TestFixture]
-    public class ModuleSettingsTests
+    public class ModuleSettingsTests : BaseSettingsTests
     {
-        private const string SettingNamePrefix = "UnitTestSetting_";
-        private const int ModuleId = 1234;
-        private const int TabModuleId = 653;
-        private const int TabId = 344597;
-
-        private MockRepository _mockRepository;
-        private Mock<IModuleController> _mockModuleController;
-        private Mock<CachingProvider> _mockCache;
-        private Mock<IHostController> _mockHostController;
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetUpAttribute()
-        {
-            _mockRepository = new MockRepository(MockBehavior.Default);
-            _mockHostController = _mockRepository.Create<IHostController>();
-        }
+       private Mock<IModuleController> _mockModuleController;
 
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
-            //Mock Repository and component factory
-            _mockRepository = new MockRepository(MockBehavior.Default);
-            ComponentFactory.Container = new SimpleContainer();
+            base.SetUp();
 
             // Setup Mock
-            _mockModuleController = _mockRepository.Create<IModuleController>();
+            _mockModuleController = MockRepository.Create<IModuleController>();
             ModuleController.SetTestableInstance(_mockModuleController.Object);
-            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
-            HostController.RegisterInstance(_mockHostController.Object);
         }
 
         [TearDown]
-        public void TearDown()
+        public override void TearDown()
         {
-            ModuleController.ClearInstance();
-            MockComponentProvider.ResetContainer();
-        }
+            base.TearDown();
 
-        public enum TestingEnum
-        {
-            Value1,
-            Value2
+            ModuleController.ClearInstance();
         }
 
         public class ModulesSettings
@@ -88,13 +60,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
-
-        private static readonly object[] SettingsCases =
-        {
-            new object[] {"AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1},
-            new object[] {"Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1,5,6,7), TestingEnum.Value2 }
-        };
-
+        
         [Test]
         [TestCaseSource("SettingsCases")]
         public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
@@ -127,7 +93,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             settingsRepository.SaveSettings(moduleInfo, settings);
 
             //Assert
-            _mockRepository.VerifyAll();
+            MockRepository.VerifyAll();
         }
 
         [Test]
@@ -137,14 +103,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             var moduleInfo = GetModuleInfo;
             var settings = new ModulesSettings();
 
-            _mockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
+            MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new ModulesSettingsRepository();
 
             //Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
             //Assert
-            _mockRepository.VerifyAll();
+            MockRepository.VerifyAll();
         }
         
         [Test]
@@ -153,14 +119,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             //Arrange
             var moduleInfo = GetModuleInfo;
 
-            _mockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
+            MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
             var settingsRepository = new ModulesSettingsRepository();
 
             //Act
             settingsRepository.GetSettings(moduleInfo);
 
             //Assert
-            _mockRepository.VerifyAll();
+            MockRepository.VerifyAll();
         }
 
         [Test]
@@ -179,10 +145,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             moduleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
             moduleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
 
-            _mockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
-            _mockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
-            _mockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
-            _mockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new ModulesSettings());
+            MockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
+            MockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
+            MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
+            MockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new ModulesSettings());
 
             var settingsRepository = new ModulesSettingsRepository();
 
@@ -197,13 +163,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(datetimeValue, settings.DateTimeProperty, "The retrieved datetime property value is not equal to the stored one");
             Assert.AreEqual(timeSpanValue, settings.TimeSpanProperty, "The retrieved timespan property value is not equal to the stored one");
             Assert.AreEqual(enumValue, settings.EnumProperty, "The retrieved enum property value is not equal to the stored one");
-            _mockRepository.VerifyAll();
+            MockRepository.VerifyAll();
         }
-
-        private static ModuleInfo GetModuleInfo => new ModuleInfo {ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId};
-
-        private static string CacheKey(ModuleInfo moduleInfo) => $"SettingsModule{moduleInfo.TabModuleID}";
-
-        private static string ModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"ModuleSettings{moduleInfo.TabID}";
     }
 }
