@@ -166,7 +166,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             Mapping.ForEach(mapping =>
             {
-                object settingValue = null;
+                string settingValue = null;
 
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
@@ -180,11 +180,11 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = ctlModule.TabModuleSettings[mapping.FullParameterName];
+                    settingValue = (string)ctlModule.TabModuleSettings[mapping.FullParameterName];
                 }
                 else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = ctlModule.ModuleSettings[mapping.FullParameterName];
+                    settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
                 }
                 if (settingValue != null && property.CanWrite)
                 {
@@ -207,7 +207,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>
         /// <exception cref="System.InvalidCastException"></exception>
-        private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, object propertyValue)
+        private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
         {
             try
             {
@@ -229,13 +229,13 @@ namespace DotNetNuke.Entities.Modules.Settings
                     ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
                     if (serializer != null)
                     {
-                        property.SetValue(settings, serializer.Deserialize((string)propertyValue), null);
+                        property.SetValue(settings, serializer.Deserialize(propertyValue), null);
                     }
                 }
                 else if (propertyType.BaseType == typeof(Enum))
                 {
                     // The property is an enum. Determine if the enum value is persisted as string or numeric.
-                    if (Regex.IsMatch(propertyValue.ToString(), "^\\d+$"))
+                    if (Regex.IsMatch(propertyValue, "^\\d+$"))
                     {
                         // The enum value is a number
                         property.SetValue(settings, Enum.ToObject(propertyType, Convert.ToInt32(propertyValue, CultureInfo.InvariantCulture)), null);
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     {
                         try
                         {
-                            property.SetValue(settings, Enum.Parse(propertyType, propertyValue.ToString(), true), null);
+                            property.SetValue(settings, Enum.Parse(propertyType, propertyValue, true), null);
                         }
                         catch (ArgumentException exception)
                         {
