@@ -1349,6 +1349,11 @@ div.dnnTagsInput span.tag {
     color: #888;
     cursor: pointer;
     background-color: #eee;
+    max-width: 99%;
+    max-width: calc(100% - 5px);
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    box-sizing: border-box;
 }
 
     div.dnnTagsInput span.tag:hover {
