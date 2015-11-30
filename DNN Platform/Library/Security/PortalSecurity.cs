@@ -272,9 +272,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the FormatDisableScripting function
         /// </remarks>
-        /// <history>
-        ///     [cathal]        3/06/2007   Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         private static string FilterStrings(string strInput)
         {
@@ -332,9 +329,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
-        /// <history>
-        /// 	[Cathal] 	6/1/2006	Created to fufill client request
-        /// </history>
         ///-----------------------------------------------------------------------------
         private static string FormatAngleBrackets(string strInput)
         {
@@ -404,9 +398,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a public function used for generating SHA1 keys
         /// </remarks>
-        /// <history>
-        /// </history>
-        ///-----------------------------------------------------------------------------
         public string CreateKey(int numBytes)
         {
             var rng = new RNGCryptoServiceProvider();

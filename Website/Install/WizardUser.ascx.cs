@@ -247,9 +247,6 @@ namespace DotNetNuke.Services.Install
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	02/15/2007	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void OnPreRender(EventArgs e)
 		{

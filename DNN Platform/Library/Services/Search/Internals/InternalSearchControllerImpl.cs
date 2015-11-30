@@ -533,7 +533,7 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
         }
 
-        private const string HtmlTagsWithAttrs = "<[A-Za-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
+        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
         private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private const string AttrText = "[\"'](?<text>.*?)[\"']";

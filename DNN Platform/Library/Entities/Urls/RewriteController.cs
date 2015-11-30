@@ -50,12 +50,12 @@ namespace DotNetNuke.Entities.Urls
         internal const int SiteRootRewrite = -3;
         internal const int AllTabsRewrite = -1;
 
-        private readonly static Regex TabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
+        private static readonly Regex TabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        private readonly static Regex UrlParamsRegex = new Regex(@"&[^=]+(?:&|$)", RegexOptions.Compiled);
+        private static readonly Regex UrlParamsRegex = new Regex(@"&[^=]+(?:&|$)", RegexOptions.Compiled);
 
-        private readonly static Regex CultureMatchRegex = new Regex("([A-Za-z]{2})-([A-Za-z]{2})",
+        private static readonly Regex CultureMatchRegex = new Regex("([A-Za-z]{2})-([A-Za-z]{2})",
             RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)",
@@ -375,7 +375,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //Check for VanityUrl
-            var doNotRedirectRegex = new Regex(settings.DoNotRedirectRegex);
+            var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
             if (!found && !RewriterUtils.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
                 string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
@@ -1799,9 +1799,7 @@ namespace DotNetNuke.Entities.Urls
                         //process each one until a match is found
                         foreach (ParameterRewriteAction rewrite in tabRewrites)
                         {
-                            string lookFor = rewrite.LookFor;
-                            //debugInfo += " lookFor:" + lookFor;
-                            var parmRegex = new Regex(lookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var parmRegex = RegexUtils.GetCachedRegex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             //check the match, if a match found, do the replacement
                             if (parmRegex.IsMatch(parms))
                             {

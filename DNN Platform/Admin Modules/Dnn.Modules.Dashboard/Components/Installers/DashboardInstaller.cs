@@ -51,9 +51,6 @@ namespace Dnn.Modules.Dashboard.Components.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/05/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -137,9 +134,6 @@ namespace Dnn.Modules.Dashboard.Components.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file for the Authentication compoent.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {

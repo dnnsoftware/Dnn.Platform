@@ -60,10 +60,6 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	10/18/2004	documented
-    /// 	[cnurse]	10/19/2004	modified to support custm module specific settings
-    /// </history>
     public partial class ModulePermissions : PortalModuleBase
     {
 

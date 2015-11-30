@@ -2541,7 +2541,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     ItemId: item.ItemID,
                     IsFolder: item.IsFolder,
                     ParentFolderId: item.ParentFolderID,
-                    UnlinkAllowedStatus: item.UnlinkAllowedStatus
+                    UnlinkAllowedStatus: item.UnlinkAllowedStatus,
+                    ItemName: item.ItemName
                 });
             }
         }
@@ -3020,10 +3021,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function getUrl() {
-        var items = convertToItemsFromGridItems(grid.get_selectedItems());
-        var itemId = items[0].ItemId;
+        var items = convertToItemsFromGridItems(grid.get_selectedItems());        
         if (!items[0].IsFolder) {
-            getUrlFromFileId(itemId);
+            getUrlFromFileId(items[0]);
         }
     }
 
@@ -3042,12 +3042,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + relativePath;
     }
 
-    function getUrlFromFileId(fileId) {
+    function getUrlFromFileId(item) {
         $.ajax({
             type: 'POST',
             url: getContentServiceUrl() + 'GetUrl',
             data: {
-                fileId: fileId
+                fileId: item.ItemId
             },
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function(data) {
@@ -3057,15 +3057,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 url = getFullUrl(data);
             }
-            openGetUrlModal(url, resources.getFileUrlLabel);
-        }).fail(function(xhr) {
+            openGetUrlModal(url, resources.getFileUrlTitle, item.ItemName);
+        }).fail(function (xhr) {
             handledXhrError(xhr, resources.getUrlErrorTitle);
         });
     }
 
-    function openGetUrlModal(url, label) {
+    function openGetUrlModal(url, title, fileName) {
         $('#dnnModuleDigitalAssetsGetUrlModal input').val(url).select();
-        $('#dnnModuleDigitalAssetsGetUrlModal span').text(label);
+        $('#dnnModuleDigitalAssetsGetUrlModal span').text(resources.getUrlLabel);
         $('#dnnModuleDigitalAssetsGetUrlModal').dialog({
             modal: true,
             autoOpen: true,
@@ -3073,7 +3073,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             width: 500,
             height: 250,
             resizable: false,
-            title: resources.getUrlTitle,
+            title: title + " " + fileName,
             buttons:
                 [
                     {

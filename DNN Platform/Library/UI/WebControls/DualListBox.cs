@@ -121,9 +121,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Available List Box Style
         /// </summary>
         /// <value>A Style object</value>
-        /// <history>
-        ///     [cnurse]	02/15/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
          TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Available List Box.")]
@@ -140,9 +137,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Button Style
         /// </summary>
         /// <value>A Style object</value>
-        /// <history>
-        ///     [cnurse]	02/15/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
          TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Button.")]
@@ -159,9 +153,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Container Style
         /// </summary>
         /// <value>A Style object</value>
-        /// <history>
-        ///     [cnurse]	02/15/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
          TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Container.")]
@@ -178,9 +169,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Header Style
         /// </summary>
         /// <value>A Style object</value>
-        /// <history>
-        ///     [cnurse]	02/15/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
          TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Header.")]
@@ -197,9 +185,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Selected List Box Style
         /// </summary>
         /// <value>A Style object</value>
-        /// <history>
-        ///     [cnurse]	02/15/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
          TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Selected List Box.")]

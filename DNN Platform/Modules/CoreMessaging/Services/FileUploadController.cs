@@ -44,8 +44,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         private readonly IFileManager _fileManager = FileManager.Instance;
         private readonly IFolderManager _folderManager = FolderManager.Instance;
 
-        private static readonly Regex FileNameRegex = new Regex(@"\..+;", RegexOptions.Compiled);
-
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -83,7 +81,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
-                   && !FileNameRegex.IsMatch(fileName);
+                   && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
         // Upload entire file

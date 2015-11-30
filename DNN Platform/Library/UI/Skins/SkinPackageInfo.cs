@@ -43,9 +43,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/04/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable

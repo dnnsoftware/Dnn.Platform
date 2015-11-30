@@ -48,10 +48,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     public partial class EditSchedule : PortalModuleBase, IActionable
     {
 
@@ -108,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 {
                     ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement).Selected = true;
                 }
-                txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
+                txtRetryTimeLapse.Text = scheduleItem.RetryTimeLapse == Null.NullInteger ? string.Empty : Convert.ToString(scheduleItem.RetryTimeLapse);
                 if (ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement) != null)
                 {
                     ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement).Selected = true;
@@ -130,10 +126,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
                 txtServers.Text = scheduleItem.Servers.Trim(',');
-                if (Convert.ToInt32(txtRetryTimeLapse.Text) <= 0)
-                {
-                    ddlRetryTimeLapseMeasurement.Visible = false;
-                }
             }
             else
             {
@@ -148,10 +140,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = txtType.Text.Replace(" ", "");
             scheduleItem.FriendlyName = txtFriendlyName.Text;
-            //DNN-4964 - values for time lapse and retry frequency can't be set to 0, -1 or left empty (client side validation has been added)
+            //DNN-4964 - values for time lapse can't be set to 0, -1 or left empty (client side validation has been added)
             scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
             scheduleItem.TimeLapseMeasurement = ddlTimeLapseMeasurement.SelectedItem.Value;
-            scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
+            scheduleItem.RetryTimeLapse = string.IsNullOrWhiteSpace(txtRetryTimeLapse.Text) ? Null.NullInteger : Convert.ToInt32(txtRetryTimeLapse.Text);
             scheduleItem.RetryTimeLapseMeasurement = ddlRetryTimeLapseMeasurement.SelectedItem.Value;
             scheduleItem.RetainHistoryNum = Convert.ToInt32(ddlRetainHistoryNum.SelectedItem.Value);
             scheduleItem.AttachToEvent = ddlAttachToEvent.SelectedItem.Value;
@@ -195,9 +187,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -251,9 +240,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected void OnDeleteClick(Object sender, EventArgs e)
         {
             var objScheduleItem = new ScheduleItem { ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]) };
@@ -286,9 +272,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// [cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support and localisation
-        /// </history>
         protected void OnUpdateClick(Object sender, EventArgs e)
         {
             if (VerifyValidTimeLapseRetry() == false)
@@ -300,9 +283,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 objScheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
                 var scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
-                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || (chkEnabled.Checked) ||
+                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || 
+                    (chkEnabled.Checked) ||
                     (txtTimeLapse.Text != Convert.ToString(scheduleItem.TimeLapse)) ||
-                    (txtRetryTimeLapse.Text != Convert.ToString(scheduleItem.RetryTimeLapse)) ||
+                    (txtRetryTimeLapse.Text.Trim() != (scheduleItem.RetryTimeLapse == Null.NullInteger ? string.Empty : Convert.ToString(scheduleItem.RetryTimeLapse))) ||
                     (ddlRetryTimeLapseMeasurement.SelectedValue != scheduleItem.RetryTimeLapseMeasurement) ||
                     (ddlTimeLapseMeasurement.SelectedValue != scheduleItem.TimeLapseMeasurement))
                 {
@@ -330,6 +314,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 
         private bool VerifyValidTimeLapseRetry()
         {
+            // Do not validate, if retry time lapse is not defined
+            if (string.IsNullOrWhiteSpace(txtRetryTimeLapse.Text)) return true;
+            
             var timeLapse = CalculateTime(Convert.ToInt32(txtTimeLapse.Text), ddlTimeLapseMeasurement.SelectedItem.Value);
             var retry = CalculateTime(Convert.ToInt32(txtRetryTimeLapse.Text), ddlRetryTimeLapseMeasurement.SelectedItem.Value);
             if (retry > timeLapse)

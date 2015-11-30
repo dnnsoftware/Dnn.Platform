@@ -51,8 +51,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		public bool EnableDetailedLogging = true;
 
-        private static readonly Regex FileNameRegex = new Regex(@"\..+;", RegexOptions.Compiled);
-
         #region Public Folder Validate Methods
 
 		public virtual string OnCreateFolder(string virtualPath, string folderName)
@@ -802,7 +800,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			        string extension = rawExtension.Replace(".", "").ToLowerInvariant();
 			        string validExtensions = Entities.Host.Host.FileExtensions.ToLowerInvariant();
 
-                    if (string.IsNullOrEmpty(extension) || ("," + validExtensions + ",").IndexOf("," + extension + ",", StringComparison.Ordinal) == -1 || FileNameRegex.IsMatch(fileName))
+                    if (string.IsNullOrEmpty(extension) || ("," + validExtensions + ",").IndexOf("," + extension + ",", StringComparison.Ordinal) == -1 || Globals.FileExtensionRegex.IsMatch(fileName))
 			        {
 			            if (HttpContext.Current != null)
 			            {

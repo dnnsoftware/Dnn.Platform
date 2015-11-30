@@ -10,7 +10,7 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <dnn:META ID="META1" runat="server" Name="viewport" Content="width=device-width,initial-scale=1" />
 
-<dnn:DnnJsInclude ID="bootstrapJS" runat="server" FilePath="bootstrap/js/bootstrap.min.js" PathNameAlias="SkinPath" AddTag="false" />
+<dnn:DnnJsInclude ID="bootstrapJS" runat="server" FilePath="bootstrap/js/bootstrap.min.js" PathNameAlias="SkinPath" AddTag="false" Name="Bootstrap" Version="2.3.2" />
 <dnn:DnnJsInclude ID="customJS" runat="server" FilePath="js/scripts.js" PathNameAlias="SkinPath" AddTag="false" />
 
 <div id="siteWrapper">
@@ -83,7 +83,8 @@
         </div>
 	</div>
 </div>
-<dnn:DnnJsInclude ID="dttg" runat="server" FilePath="js/doubletaptogo.min.js" PathNameAlias="SkinPath" AddTag="false" />
+<dnn:DnnJsInclude ID="dttg" runat="server" FilePath="js/doubletaptogo.min.js" PathNameAlias="SkinPath" AddTag="false" Name="DoubleTapToGo" Version="01.00.00" />
+<dnn:DnnCssInclude ID="BootstrapCss" runat="server" FilePath="bootstrap/css/bootstrap.min.css" PathNameAlias="SkinPath" Name="Bootstrap" Version="2.3.2" />
 <script type="text/javascript">
      $(function () {
           $('#navdttg li:has(ul)').doubleTapToGo();

@@ -53,9 +53,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[willhsc]	3/3/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinFileProcessor
     {
@@ -92,9 +89,6 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         ///     This constructor parses a memory based skin
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/21/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public SkinFileProcessor(string ControlKey, string ControlSrc)
         {
@@ -124,9 +118,6 @@ namespace DotNetNuke.UI.Skins
         ///     tokens ("[TOKEN]").  The hashtable is required for speed as it will be
         ///     processed for each token found in the source file by the Control Parser.
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public SkinFileProcessor(string SkinPath, string SkinRoot, string SkinName)
         {
@@ -296,9 +287,6 @@ namespace DotNetNuke.UI.Skins
         /// <returns>HTML formatted string of informational messages.</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ProcessList(ArrayList FileList)
         {
@@ -346,9 +334,6 @@ namespace DotNetNuke.UI.Skins
         ///     be any alphanumeric string.  Generated control ID's all take the
         ///     form of "TOKENINSTANCE".
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private class ControlParser
         {
@@ -367,9 +352,6 @@ namespace DotNetNuke.UI.Skins
             /// <remarks>
             ///     The constructor processes accepts a hashtable of skin objects to process against.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public ControlParser(Hashtable ControlList)
             {
@@ -390,9 +372,6 @@ namespace DotNetNuke.UI.Skins
             ///     those directives.  Since they are properly formatted, it is better
             ///     to exclude them from being subject to parsing.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             internal ArrayList Registrations
             {
@@ -465,9 +444,6 @@ namespace DotNetNuke.UI.Skins
             ///     The attributes are first set because they will be referenced by the
             ///     match handler.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source, XmlDocument Attributes)
             {
@@ -498,9 +474,6 @@ namespace DotNetNuke.UI.Skins
             ///     is unmodified.  This can happen if a token is used for a skin object which
             ///     has not yet been installed.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             private string TokenMatchHandler(Match m)
             {
@@ -629,9 +602,6 @@ namespace DotNetNuke.UI.Skins
         ///     be any alphanumeric string.  Generated control ID's all take the
         ///     form of "OBJECTINSTANCE".
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private class ObjectParser
         {
@@ -652,9 +622,6 @@ namespace DotNetNuke.UI.Skins
             /// <remarks>
             ///     The constructor processes accepts a hashtable of skin objects to process against.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public ObjectParser(Hashtable ControlList)
             {
@@ -675,9 +642,6 @@ namespace DotNetNuke.UI.Skins
             ///     those directives.  Since they are properly formatted, it is better
             ///     to exclude them from being subject to parsing.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             internal ArrayList Registrations
             {
@@ -735,9 +699,6 @@ namespace DotNetNuke.UI.Skins
             /// <remarks>
             ///     This procedure invokes a handler for each match of a formatted object.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source)
             {
@@ -766,9 +727,6 @@ namespace DotNetNuke.UI.Skins
             ///     is unmodified.  This can happen if an object is a client-side object or 
             ///     has not yet been installed.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             private string ObjectMatchHandler(Match m)
             {
@@ -919,9 +877,6 @@ namespace DotNetNuke.UI.Skins
         ///     handle all the path replacement parsing needs for new skin files. Parsing
         ///     supported for CSS syntax and HTML syntax (which covers ASCX files also). 
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private class PathParser
         {
@@ -968,9 +923,6 @@ namespace DotNetNuke.UI.Skins
             ///     consideration, this list could be imported from a configuration file to
             ///     provide for greater flexibility.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public ArrayList HTMLList
             {
@@ -1000,9 +952,6 @@ namespace DotNetNuke.UI.Skins
             ///     consideration, this list could be imported from a configuration file to
             ///     provide for greater flexibility.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public ArrayList CSSList
             {
@@ -1055,9 +1004,6 @@ namespace DotNetNuke.UI.Skins
             ///     This procedure iterates through the list of regular expression objects
             ///     and invokes a handler for each match which uses the specified path.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source, ArrayList RegexList, string SkinPath, SkinParser ParseOption)
             {
@@ -1088,9 +1034,6 @@ namespace DotNetNuke.UI.Skins
             ///     original match.  So the handler properly formats the path information and
             ///     returns it in favor of the improperly formatted match.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             private string MatchHandler(Match m)
             {
@@ -1142,9 +1085,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[willhsc]	3/3/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private class SkinFile
         {
@@ -1167,7 +1107,7 @@ namespace DotNetNuke.UI.Skins
             private static readonly Regex PaneCheck2Regex = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             const string StrPattern = "<\\s*body[^>]*>(?<skin>.*)<\\s*/\\s*body\\s*>";
-            private readonly static Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            private static readonly Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -1180,9 +1120,6 @@ namespace DotNetNuke.UI.Skins
             ///     It also checks for the existentce of a skinfile level attribute file
             ///     and read it in, if found.  
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public SkinFile(string SkinContents, XmlDocument SkinAttributes)
             {
@@ -1202,9 +1139,6 @@ namespace DotNetNuke.UI.Skins
             ///     It also checks for the existentce of a skinfile level attribute file
             ///     and read it in, if found.  
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public SkinFile(string SkinRoot, string FileName, XmlDocument SkinAttributes)
             {
@@ -1348,9 +1282,6 @@ namespace DotNetNuke.UI.Skins
             ///     This procedure formats the @Control directive and prepends it and all
             ///     registration directives to the file contents.
             /// </remarks>
-            /// <history>
-            /// 	[willhsc]	3/3/2004	Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string PrependASCXDirectives(ArrayList Registrations)
             {

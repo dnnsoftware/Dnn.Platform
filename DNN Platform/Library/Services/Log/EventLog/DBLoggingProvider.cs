@@ -25,12 +25,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
@@ -289,19 +288,19 @@ namespace DotNetNuke.Services.Log.EventLog
             int intThresholdTime = -1;
             int intThresholdTimeType = -1;
             int intKeepMostRecent = -1;
-            if (Regex.IsMatch(threshold, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(threshold))
             {
                 intThreshold = Convert.ToInt32(threshold);
             }
-            if (Regex.IsMatch(thresholdTime, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
                 intThresholdTime = Convert.ToInt32(thresholdTime);
             }
-            if (Regex.IsMatch(thresholdTimeType, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
                 intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
             }
-            if (Regex.IsMatch(keepMostRecent, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }
@@ -508,23 +507,23 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
-            int intThreshold = -1;
-            int intThresholdTime = -1;
-            int intThresholdTimeType = -1;
-            int intKeepMostRecent = -1;
-            if (Regex.IsMatch(threshold, "^\\d+$"))
+            var intThreshold = -1;
+            var intThresholdTime = -1;
+            var intThresholdTimeType = -1;
+            var intKeepMostRecent = -1;
+            if (Globals.NumberMatchRegex.IsMatch(threshold))
             {
                 intThreshold = Convert.ToInt32(threshold);
             }
-            if (Regex.IsMatch(thresholdTime, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
                 intThresholdTime = Convert.ToInt32(thresholdTime);
             }
-            if (Regex.IsMatch(thresholdTimeType, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
                 intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
             }
-            if (Regex.IsMatch(keepMostRecent, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }

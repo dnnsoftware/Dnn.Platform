@@ -297,8 +297,8 @@
   <data name="GetUrlAltText.Text" xml:space="preserve">
     <value>Click and press CTRL+C to copy...</value>
   </data>
-  <data name="GetFileUrlLabel.Text" xml:space="preserve">
-    <value>File URL Is:</value>
+  <data name="GetUrlLabel.Text" xml:space="preserve">
+    <value>URL:</value>
   </data>
   <data name="GetUrlError.Title" xml:space="preserve">
     <value>An error occurred while getting the URL</value>
@@ -476,5 +476,8 @@
   </data>
   <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
     <value>Note: Selected folders include [COUNT] Remote Folders. These will be unlinked from this site and folders and files will remain at the remote location</value>
+  </data>
+  <data name="GetFileUrl.Title" xml:space="preserve">
+    <value>File:</value>
   </data>
 </root>

@@ -129,6 +129,10 @@
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SchwabenCode.QuickIO">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>
@@ -188,6 +192,7 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
@@ -195,6 +200,14 @@
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -748,6 +761,12 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryResponseFilter.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />

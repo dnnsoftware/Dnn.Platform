@@ -240,8 +240,6 @@ namespace Dnn.Module.ModuleCreator
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         private bool CreateModuleDefinition()
         {
             try

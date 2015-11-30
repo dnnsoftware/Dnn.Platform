@@ -1640,7 +1640,7 @@ namespace DotNetNuke.Services.FileSystem
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
-                   && !Regex.IsMatch(fileName, @"\..+;");
+                   && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

@@ -39,9 +39,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/14/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LanguagePackEditor : PackageEditorBase
     {

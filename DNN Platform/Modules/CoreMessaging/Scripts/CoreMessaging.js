@@ -104,6 +104,7 @@
         self.ConversationId = data.ConversationId;
         self.ReplyAllAllowed = data.ReplyAllAllowed;
         self.SenderUserID = data.SenderUserID;
+        self.SenderDisplayName = data.SenderDisplayName;
         self.RowNumber = data.RowNumber;
         self.AttachmentCount = ko.observable(data.AttachmentCount);
         self.NewThreadCount = ko.observable(data.NewThreadCount);
@@ -135,6 +136,7 @@
         self.ConversationId = data.Conversation.ConversationId;
         self.ReplyAllAllowed = data.Conversation.ReplyAllAllowed;
         self.SenderUserID = data.Conversation.SenderUserID;
+        self.SenderDisplayName = data.SenderDisplayName;
         self.RowNumber = data.Conversation.RowNumber;
         self.AttachmentCount = data.Conversation.AttachmentCount;
         self.NewThreadCount = ko.observable(data.Conversation.NewThreadCount);
@@ -169,6 +171,7 @@
         self.SenderAvatar = data.SenderAvatar;
         self.SenderProfileUrl = data.SenderProfileUrl;
         self.DisplayDate = data.DisplayDate;
+        self.SenderDisplayName = data.SenderDisplayName;
         self.Actions = $.map(data.Actions, function (action) { return new notificationActionViewModel(action, data.NotificationId); });
     }
 
@@ -823,8 +826,9 @@
                         displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
                     }
                 }
-            }).fail(function () {
-                displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
+            }).fail(function (data) {
+                var response = $.parseJSON(data.responseText);
+                displayMessage("#dnnCoreNotification", response.Message, "dnnFormWarning");
             });
         };
 

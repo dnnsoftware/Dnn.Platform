@@ -25,6 +25,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Modules.HTMLEditorProvider;
 
 #endregion
@@ -36,16 +37,11 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNRichTextEditControl control provides a standard UI component for editing
     /// RichText
     /// </summary>
-    /// <history>
-    ///     [cnurse]	03/31/2006	created
-    /// </history>
     /// <remarks>This is still being used in 6.0.0 (edit a profile, biography field).</remarks>
     [Obsolete("Deprecated in DNN 5.6.2.  Replaced by control of same name in DotNetNuke.Web assembly")]
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {
-        private readonly static Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private HtmlEditorProvider RichTextEditor;
 
         protected override void CreateChildControls()
@@ -105,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
 
         private string RemoveBaseTags(String strInput)
         {
-            return BaseTagRegex.Replace(strInput, " ");
+            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
         protected override void OnInit(EventArgs e)

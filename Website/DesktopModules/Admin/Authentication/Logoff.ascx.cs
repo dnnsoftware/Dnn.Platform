@@ -40,9 +40,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]        07/23/2007   Created
-	/// </history>
 	public partial class Logoff : UserModuleBase
 	{
 
@@ -81,9 +78,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	03/23/2006  Documented
-		/// </history>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);

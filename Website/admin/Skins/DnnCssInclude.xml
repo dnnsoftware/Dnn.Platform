@@ -1,0 +1,56 @@
+<Settings>
+  <Setting>
+    <Name>FilePath</Name>
+    <Type>String</Type>
+    <Help>Relative path to file</Help>
+    <Value></Value>
+  </Setting>
+ <Setting>
+  <Name>PathNameAlias</Name>
+  <Type>String</Type>
+  <Help>PathNameAlias is a reference to a common folder location. Right now we have established two: "SkinPath" (the path to the current skin) and "SharedScripts" (~/Resources/Shared/Scripts/).</Help>
+  <Value></Value>
+ </Setting>
+ <Setting>
+  <Name>Priority</Name>
+  <Type>Integer</Type>
+  <Help>Priority is an integer based scheme for determining the file load order. The default priority is 100. See the Relative Order section below for more information.</Help>
+  <Value></Value>
+ </Setting>
+ <Setting>
+  <Name>ForceProvider</Name>
+  <Type>String</Type>
+  <Help>ForceProvider is a string value that specifies what provider to be used. This corresponds to the location in the page where the script will be rendered. See the Providers section below for more information.</Help>
+  <Value></Value>
+ </Setting>
+ <Setting>
+  <Name>AddTag</Name>
+  <Type>Boolean</Type>
+  <Help>Adds tag in the HTML identifying the loaded resource</Help>
+  <Value>False</Value>
+ </Setting>
+ <Setting>
+  <Name>Name</Name>
+  <Type>String</Type>
+  <Help>Name of the framework (DnnDefault, Bootstrap, etc) or library to remove</Help>
+  <Value></Value>
+ </Setting>
+ <Setting>
+  <Name>Version</Name>
+  <Type>String</Type>
+  <Help>Version of this resource if it is a framework. Note this field is only used when Framework is specified.</Help>
+  <Value></Value>
+ </Setting>
+ <Setting>
+  <Name>ForceVersion</Name>
+  <Type>Boolean</Type>
+  <Help>Force this version to be used. Meant for skin designers that wish to override choices made by module developers or the framework.</Help>
+  <Value>False</Value>
+ </Setting>
+ <Setting>
+  <Name>ForceBundle</Name>
+  <Type>Boolean</Type>
+  <Help>If the resources is an external resource then normally it will be rendered as it's own download unless this is set to true. In that case the system will download the external resource and include it in the local bundle.</Help>
+  <Value>False</Value>
+ </Setting>
+</Settings>

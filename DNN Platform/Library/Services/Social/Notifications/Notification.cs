@@ -152,6 +152,9 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
+        /// <summary>
+        /// The notification is displayed on the UI as a toast notification
+        /// </summary>
 		[XmlAttribute]
 		public bool SendToast { get; set; }
 
@@ -159,6 +162,9 @@ namespace DotNetNuke.Services.Social.Notifications
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Notification()
         {
             SendToast = true;

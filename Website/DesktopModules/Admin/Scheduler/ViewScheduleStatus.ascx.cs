@@ -45,10 +45,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	/// </history>
 	public partial class ViewScheduleStatus : PortalModuleBase, IActionable
 	{
 
@@ -166,10 +162,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -212,10 +204,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		protected void OnStartClick(Object sender, EventArgs e)
 		{
 			SchedulingProvider.Instance().StartAndWaitForResponse();
@@ -228,10 +216,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		protected void OnStopClick(Object sender, EventArgs e)
 		{
 			SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", LocalResourceFile));

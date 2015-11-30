@@ -65,9 +65,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]        07/03/2007   Created
-	/// </history>
 	public partial class Login : UserModuleBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
@@ -1001,11 +998,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				//if a Login Page has not been specified for the portal
 				if (Globals.IsAdminControl())
 				{
-					//redirect to current page 
-					Response.Redirect(Globals.NavigateURL(), true);
+                    //redirect browser 
+                    Response.Redirect(RedirectURL, true);
 				}
 				else //make module container invisible if user is not a page admin
 				{
+                    var path = RedirectURL.Split('?')[0];
+                    if (path != Globals.NavigateURL() && path != Globals.NavigateURL(PortalSettings.HomeTabId))
+                    {
+                        Response.Redirect(RedirectURL, true);
+                    }
+
 					if (TabPermissionController.CanAdminPage())
 					{
 						ShowPanel();
@@ -1254,9 +1257,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	07/12/2007	created
-		/// </history>
 		protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
 		{
 			var strMessage = "";

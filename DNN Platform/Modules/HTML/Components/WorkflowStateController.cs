@@ -37,8 +37,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class WorkflowStateController
     {
@@ -56,8 +54,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "PortalID">The ID of the Portal</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflows(int PortalID)
         {
@@ -71,8 +67,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "WorkflowID">The ID of the Workflow</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflowStates(int WorkflowID)
         {
@@ -87,8 +81,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object GetWorkflowStatesCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -103,8 +95,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "WorkflowID">The ID of the Workflow</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int GetFirstWorkflowStateID(int WorkflowID)
         {
@@ -125,8 +115,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "WorkflowID">The ID of the Workflow</param>
         /// <param name = "StateID">The ID of the State</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int GetPreviousWorkflowStateID(int WorkflowID, int StateID)
         {
@@ -176,8 +164,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "WorkflowID">The ID of the Workflow</param>
         /// <param name = "StateID">The ID of the State</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int GetNextWorkflowStateID(int WorkflowID, int StateID)
         {
@@ -226,8 +212,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "WorkflowID">The ID of the Workflow</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int GetLastWorkflowStateID(int WorkflowID)
         {

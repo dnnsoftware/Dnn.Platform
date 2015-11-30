@@ -43,9 +43,6 @@ namespace DotNetNuke.Modules.Admin.Host
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/06/2006 Created
-    /// </history>
     public partial class RequestFilters : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RequestFilters));
@@ -66,9 +63,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// and allows the system to know to remove "blank" rules if the user cancels
         /// the edit.
         /// </returns>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool AddMode
         {
@@ -96,9 +90,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </value>
         /// <returns>
         /// </returns>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private List<RequestFilterRule> Rules
         {
@@ -125,9 +116,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         private static void AddConfirmActiontoDeleteButton(DataListItemEventArgs e)
         {
             var cmdDelete = (ImageButton) e.Item.FindControl("cmdDelete");
@@ -139,9 +127,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         private void BindDropDownValues(DataListItemEventArgs e)
         {
             var rule = (RequestFilterRule) e.Item.DataItem;
@@ -162,9 +147,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// BindRules updates the datalist with the values of the current list of rules.
         /// </summary>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         private void BindRules()
         {
             rptRules.DataSource = Rules;
@@ -181,9 +163,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <param name="savedState"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected override void LoadViewState(object savedState)
         {
             var myState = (object[]) savedState;
@@ -218,9 +197,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected override object SaveViewState()
         {
             var configRules = new List<RequestFilterRule>();
@@ -243,9 +219,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -270,9 +243,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void AddRule(object sender, EventArgs e)
         {
@@ -293,9 +263,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void DeleteRule(object source, DataListCommandEventArgs e)
         {
@@ -330,9 +297,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// <param name="source"></param>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected void EditRule(object source, DataListCommandEventArgs e)
         {
             lblErr.Visible = true;
@@ -356,9 +320,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// The Save button is displayed for a specific request filter rule
         /// when the user enters the edit mode.
         /// </remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected void SaveRule(object source, DataListCommandEventArgs e)
         {
             //Get the index of the row to save
@@ -410,9 +371,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// return the user to normal view mode with saving any of their changes
         /// to the specific Request Filter Rule.
         /// </remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected void CancelEdit(object source, DataListCommandEventArgs e)
         {
             if (AddMode)
@@ -435,9 +393,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected void rptRules_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             switch (e.Item.ItemType)
@@ -460,9 +415,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/28/2007  Created
-        /// </history>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

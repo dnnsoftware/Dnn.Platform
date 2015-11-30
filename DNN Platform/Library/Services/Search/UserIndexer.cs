@@ -54,16 +54,13 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [vnguyen]   05/27/2013 
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProvider
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
 
-        internal static Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
+        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
 
         #region Private Properties
 

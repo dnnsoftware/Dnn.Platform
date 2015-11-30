@@ -45,10 +45,6 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[DYNST]	   2/1/2004	   Created
-    ///     [vnguyen]  30/04/2010  Modified: Added Guid and VersionG
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 6.0.  It has been replaced by FileManager class.")]
     public class FileController

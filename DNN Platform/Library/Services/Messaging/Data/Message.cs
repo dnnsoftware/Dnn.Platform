@@ -37,9 +37,6 @@ namespace DotNetNuke.Services.Messaging.Data
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class Message : IHydratable
     {

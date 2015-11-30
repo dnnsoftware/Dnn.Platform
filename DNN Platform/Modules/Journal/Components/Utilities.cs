@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         private static readonly Regex HtmlTextRegex = new Regex("<(.|\\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        static internal Bitmap GetImageFromURL(string url) {
+        internal static Bitmap GetImageFromURL(string url) {
             string sImgName = string.Empty;
             System.Net.WebRequest myRequest = default(System.Net.WebRequest);
             Bitmap bmp = null;

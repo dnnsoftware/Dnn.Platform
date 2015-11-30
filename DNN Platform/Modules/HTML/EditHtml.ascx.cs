@@ -37,6 +37,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
 using Telerik.Web.UI;
+using DotNetNuke.Modules.Html.Components;
 
 #endregion
 
@@ -48,9 +49,7 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    public partial class EditHtml : PortalModuleBase
+    public partial class EditHtml : HtmlModuleBase
     {
 
         #region Private Members
@@ -90,24 +89,6 @@ namespace DotNetNuke.Modules.Html
                 }
 
                 return workflowID;
-            }
-        }
-
-        private int LockedByUserID
-        {
-            get
-            {
-                var userID = -1;
-                if ((Settings["Content_LockedBy"]) != null)
-                {
-                    userID = int.Parse(Settings["Content_LockedBy"].ToString());
-                }
-
-                return userID;
-            }
-            set
-            {
-                Settings["Content_LockedBy"] = value;
             }
         }
 
@@ -490,7 +471,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     var workflowStates = _workflowStateController.GetWorkflowStates(WorkflowID);
                     var maxVersions = _htmlTextController.GetMaximumVersionHistory(PortalId);
-                    var userCanEdit = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) || UserInfo.UserID == LockedByUserID;
+                    var userCanEdit = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
 
                     lblMaxVersions.Text = maxVersions.ToString();
                     dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); //min 5, max 10

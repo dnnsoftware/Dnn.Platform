@@ -46,10 +46,6 @@ namespace DotNetNuke.Services.FileSystem
     /// <summary>
     ///   Represents the File object and holds the Properties of that object
     /// </summary>
-    /// <history>
-    ///   [DYNST]     02/01/2004   Created
-    ///   [vnguyen]   04/28/2010   Modified: Added GUID and Version GUID properties
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]

@@ -393,7 +393,7 @@ DDRjQuery(function ($) {
 	}
 
 	DDR.Menu.getCSS = function (elt, css) {
-		return parseFloat("0" + $.curCSS(elt, css, true));
+	    return parseFloat("0" + $(elt).css(css));
 	};
 
 	if (!Array.prototype.each)

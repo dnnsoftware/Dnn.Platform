@@ -53,9 +53,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -140,9 +137,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void cmdCancel_Click(Object sender, EventArgs e)
         {
             try

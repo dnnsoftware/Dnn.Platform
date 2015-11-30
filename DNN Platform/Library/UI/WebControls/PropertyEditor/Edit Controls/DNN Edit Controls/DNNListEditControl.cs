@@ -46,9 +46,6 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNListEditControl control provides a standard UI component for selecting
     /// from Lists
     /// </summary>
-    /// <history>
-    ///     [cnurse]	05/04/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
@@ -69,9 +66,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Determines whether the List Auto Posts Back
         /// </summary>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool AutoPostBack { get; set; }
 
@@ -79,9 +73,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// If true the list will be sorted on the value of Text before rendering
         /// </summary>
-        /// <history>
-        ///     [pdonker]	07/18/2014	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool SortAlphabetically { get; set; }
         
@@ -92,9 +83,6 @@ namespace DotNetNuke.UI.WebControls
         /// IntegerValue returns the Integer representation of the Value
         /// </summary>
         /// <value>An integer representing the Value</value>
-        /// <history>
-        ///     [cnurse]	06/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected int IntegerValue
         {
@@ -160,9 +148,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// ListName is the name of the List to display
         /// </summary>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string ListName
         {
@@ -185,9 +170,6 @@ namespace DotNetNuke.UI.WebControls
         /// OldIntegerValue returns the Integer representation of the OldValue
         /// </summary>
         /// <value>An integer representing the OldValue</value>
-        /// <history>
-        ///     [cnurse]	06/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected int OldIntegerValue
         {
@@ -240,9 +222,6 @@ namespace DotNetNuke.UI.WebControls
         /// OldStringValue returns the Boolean representation of the OldValue
         /// </summary>
         /// <value>A String representing the OldValue</value>
-        /// <history>
-        ///     [cnurse]	06/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
@@ -257,9 +236,6 @@ namespace DotNetNuke.UI.WebControls
         /// StringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -327,9 +303,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	06/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnAttributesChanged()
         {
@@ -356,9 +329,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
@@ -369,9 +339,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnItemChanged runs when the Item has changed
         /// </summary>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemChanged(PropertyEditorEventArgs e)
         {
@@ -386,9 +353,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View (readonly) mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
@@ -438,9 +402,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

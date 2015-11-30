@@ -57,9 +57,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable
     {
 		public const int MAX_DESCRIPTION_LENGTH = 100;
@@ -92,9 +89,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name="objHtmlText">An HtmlTextInfo object</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void CreateUserNotifications(HtmlTextInfo objHtmlText)
         {
             var _htmlTextUserController = new HtmlTextUserController();
@@ -245,10 +239,8 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = portalRoot + "/";
             }
-            Regex exp = new Regex(portalRoot, RegexOptions.IgnoreCase);
-            content = exp.Replace(content, PortalRootToken);
-
-            return content;
+            var exp = RegexUtils.GetCachedRegex(portalRoot, RegexOptions.IgnoreCase);
+            return exp.Replace(content, PortalRootToken);
         }
 
         #endregion
@@ -263,9 +255,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "ModuleID">The ID of the Module</param>
         /// <param name = "ItemID">The ID of the Item</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void DeleteHtmlText(int ModuleID, int ItemID)
         {
             DataProvider.Instance().DeleteHtmlText(ModuleID, ItemID);
@@ -282,21 +271,14 @@ namespace DotNetNuke.Modules.Html
 		/// </remarks>
 		/// <param name="moduleId">The ModuleID</param>
 		/// <param name = "content">The HtmlText Content</param>
-		/// <param name = "settings">A Hashtable of Module Settings</param>
+		/// <param name = "settings">Module Settings</param>
 		/// <param name="portalSettings">The Portal Settings.</param>
 		/// <param name="page">The Page Instance.</param>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public static string FormatHtmlText(int moduleId, string content, Hashtable settings, PortalSettings portalSettings, Page page)
+		public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
 		{
 			// token replace
-			bool blnReplaceTokens = false;
-			if (!string.IsNullOrEmpty(Convert.ToString(settings["HtmlText_ReplaceTokens"])))
-			{
-				blnReplaceTokens = Convert.ToBoolean(settings["HtmlText_ReplaceTokens"]);
-			}
-			if (blnReplaceTokens)
+
+			if (settings.ReplaceTokens)
 			{
 			    var tr = new HtmlTokenReplace(page)
 			    {
@@ -325,9 +307,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "ModuleID">The ID of the Module</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public List<HtmlTextInfo> GetAllHtmlText(int ModuleID)
         {
             return CBO.FillCollection<HtmlTextInfo>(DataProvider.Instance().GetAllHtmlText(ModuleID));
@@ -341,9 +320,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "ModuleID">The ID of the Module</param>
         /// <param name = "ItemID">The ID of the Item</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public HtmlTextInfo GetHtmlText(int ModuleID, int ItemID)
         {
             return CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetHtmlText(ModuleID, ItemID));
@@ -358,9 +334,6 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "moduleId">The ID of the Module</param>
         /// <param name = "isPublished">Whether the content has been published or not</param>
         /// <param name="workflowId">The Workflow ID</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
             var htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished));
@@ -396,38 +369,36 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "ModuleId">The ID of the Module</param>
         /// <param name="TabId">The Tab ID</param>
         /// <param name = "PortalId">The ID of the Portal</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public KeyValuePair<string, int> GetWorkflow(int ModuleId, int TabId, int PortalId)
         {
             int workFlowId = Null.NullInteger;
             string workFlowType = Null.NullString;
 
-            // get from module settings
-            Hashtable settings;
+            // get module settings
+            HtmlModuleSettings settings;
             if (ModuleId > -1)
             {
                 var module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-                settings = module.ModuleSettings;
+                var repo = new HtmlModuleSettingsRepository();
+                settings = repo.GetSettings(module);
             }
             else
             {
-                settings = new Hashtable();
+                settings = new HtmlModuleSettings();
             }
 
-            if (settings["WorkflowID"] != null)
+            if (settings.WorkFlowID != Null.NullInteger)
             {
-                workFlowId = Convert.ToInt32(settings["WorkflowID"]);
+                workFlowId = settings.WorkFlowID;
                 workFlowType = "Module";
             }
             if (workFlowId == Null.NullInteger)
             {
                 // if undefined at module level, get from tab settings
-                settings = TabController.Instance.GetTabSettings(TabId);
-                if (settings["WorkflowID"] != null)
+                var tabSettings = TabController.Instance.GetTabSettings(TabId);
+                if (tabSettings["WorkflowID"] != null)
                 {
-                    workFlowId = Convert.ToInt32(settings["WorkflowID"]);
+                    workFlowId = Convert.ToInt32(tabSettings["WorkflowID"]);
                     workFlowType = "Page";
                 }
             }
@@ -498,7 +469,7 @@ namespace DotNetNuke.Modules.Html
                     }
 
                     // if we are linking internally
-                    if (strURL.Contains("://") == false)
+                    if (!strURL.Contains("://"))
                     {
                         // remove the leading portion of the path if the URL contains the upload directory structure
                         string strDirectory = uploadDirectory;
@@ -512,7 +483,8 @@ namespace DotNetNuke.Modules.Html
                             strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
                         }
                         // add upload directory
-                        if (strURL.StartsWith("/") == false)
+                        if (!strURL.StartsWith("/") 
+                            && !String.IsNullOrEmpty(strURL.Trim())) //We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
                         {
                             sbBuff.Append(uploadDirectory);
                         }
@@ -539,9 +511,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "htmlContent">An HtmlTextInfo object</param>
         /// <param name = "MaximumVersionHistory">The maximum number of versions to retain</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateHtmlText(HtmlTextInfo htmlContent, int MaximumVersionHistory)
         {
             var _workflowStateController = new WorkflowStateController();
@@ -620,9 +589,6 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "WorkflowID">The ID of the Workflow</param>
         /// <param name="ObjectID">The ID of the object to apply the update to (depends on WorkFlowType)</param>
         /// <param name="ReplaceExistingSettings">Should existing settings be overwritten?</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateWorkflow(int ObjectID, string WorkFlowType, int WorkflowID, bool ReplaceExistingSettings)
         {
             switch (WorkFlowType)
@@ -667,9 +633,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "PortalID">The ID of the Portal</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public int GetMaximumVersionHistory(int PortalID)
         {
             int intMaximumVersionHistory = -1;
@@ -696,9 +659,6 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "PortalID">The ID of the Portal</param>
         /// <param name = "MaximumVersionHistory">The MaximumVersionHistory</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void UpdateMaximumVersionHistory(int PortalID, int MaximumVersionHistory)
         {
             // data integrity check
@@ -729,9 +689,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "moduleId">The Id of the module to be exported</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string ExportModule(int moduleId)
         {
             string xml = "";
@@ -760,9 +717,6 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "Content">The Content being imported</param>
         /// <param name = "Version">The Version of the Module Content being imported</param>
         /// <param name = "UserId">The UserID of the User importing the Content</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void ImportModule(int ModuleID, string Content, string Version, int UserId)
         {
             ModuleInfo module = ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, true);
@@ -799,6 +753,8 @@ namespace DotNetNuke.Modules.Html
             var workflowId = GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
             var searchDocuments = new List<SearchDocument>();
             var htmlTextInfo = GetTopHtmlText(modInfo.ModuleID, true, workflowId);
+            var repo = new HtmlModuleSettingsRepository();
+            var settings = repo.GetSettings(modInfo);
 
             if (htmlTextInfo != null &&
                 (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&
@@ -807,12 +763,7 @@ namespace DotNetNuke.Modules.Html
                 var strContent = HtmlUtils.Clean(htmlTextInfo.Content, false);
 
                 // Get the description string
-                int maxLength;
-                if (!Int32.TryParse((string)modInfo.ModuleSettings["HtmlText_SearchDescLength"], out maxLength))
-                {
-                    maxLength = MAX_DESCRIPTION_LENGTH;
-                }
-                var description = strContent.Length <= maxLength ? strContent : HtmlUtils.Shorten(strContent, maxLength, "...");
+                var description = strContent.Length <= settings.SearchDescLength ? strContent : HtmlUtils.Shorten(strContent, settings.SearchDescLength, "...");
 
                 var searchDoc = new SearchDocument
                 {

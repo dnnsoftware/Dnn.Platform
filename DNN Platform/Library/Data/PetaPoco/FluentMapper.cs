@@ -28,6 +28,7 @@ using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    [CLSCompliant(false)]
     public class FluentMapper<TModel> : IMapper
     {
         private readonly string _tablePrefix;

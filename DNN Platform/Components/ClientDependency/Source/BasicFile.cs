@@ -18,11 +18,14 @@ namespace ClientDependency.Core
 		    HtmlAttributes = new Dictionary<string, string>();
 		    Priority = Constants.DefaultPriority;
 		    Group = Constants.DefaultGroup;
-		}
+            Name = "";
+            Version = "";
+            ForceVersion = false;
+        }
 
-		#region IClientDependencyFile Members
+        #region IClientDependencyFile Members
 
-		public string FilePath { get; set; }
+        public string FilePath { get; set; }
 		public ClientDependencyType DependencyType { get; private set; }
 		public int Priority { get; set; }
 		public int Group { get; set; }
@@ -41,7 +44,24 @@ namespace ClientDependency.Core
         /// </remarks>
         public IDictionary<string, string> HtmlAttributes { get; private set; }
 
-		#endregion
+        /// <summary>
+        /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Version of this resource if it is a framework
+        /// Note this field is only used when Framework is specified
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// Force this version to be used. Meant for skin designers that wish to override
+        /// choices made by module developers or the framework.
+        /// </summary>
+        public bool ForceVersion { get; set; }
+
+        #endregion
 
         protected bool Equals(BasicFile other)
         {

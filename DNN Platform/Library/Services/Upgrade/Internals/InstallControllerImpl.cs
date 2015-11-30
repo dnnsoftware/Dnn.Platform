@@ -51,9 +51,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     internal class InstallControllerImpl : IInstallController
     {
         #region IInstallController Members
@@ -584,8 +581,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();

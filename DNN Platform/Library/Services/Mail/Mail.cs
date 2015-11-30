@@ -248,10 +248,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="settings">Portal Settings</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        ///     [cnurse]        09/29/2005  Moved to Mail class
-        ///     [sLeupold]      02/07/2008 language used for admin mails corrected
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SendMail(UserInfo user, MessageType msgType, PortalSettings settings)
         {
@@ -340,9 +336,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpPassword"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        ///     [cnurse]        09/29/2005  Moved to Mail class
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SendMail(string mailFrom, string mailTo, string bcc, string subject, string body, string attachment, string bodyType, string smtpServer, string smtpAuthentication,
                                       string smtpUsername, string smtpPassword)
@@ -381,10 +374,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpPassword"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[Nik Kalyani]	10/15/2004	Replaced brackets in member names
-        ///     [cnurse]        09/29/2005  Moved to Mail class
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body,
                                       string attachment, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword)

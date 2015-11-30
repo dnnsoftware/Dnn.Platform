@@ -50,9 +50,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	11/08/2004	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class XmlUtils
     {
@@ -225,9 +222,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="nav">Parent XPathNavigator</param>
         /// <param name="attributeName">Thename of the Attribute</param>
         /// <returns></returns>
-        /// <history>
-        /// 	[cnurse]	05/14/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetAttributeValue(XPathNavigator nav, string attributeName)
         {
@@ -327,10 +321,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Created
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetNodeValue(XmlNode objNode, string nodeName, string defaultValue)
         {
@@ -356,10 +346,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (False) will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName)
         {
@@ -377,10 +363,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName, bool defaultValue)
         {
@@ -438,10 +420,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
@@ -499,10 +477,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (0) will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int GetNodeValueInt(XmlNode node, string nodeName)
         {
@@ -520,10 +494,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
@@ -580,10 +550,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (0) will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static float GetNodeValueSingle(XmlNode node, string nodeName)
         {
@@ -601,10 +567,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	09/09/2004	Added new method to return converted values
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static float GetNodeValueSingle(XmlNode node, string nodeName, float defaultValue)
         {
@@ -657,10 +619,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="conformance">Conformance Level</param>
         /// <returns>An XmlWriterSettings</returns>
-        /// <history>
-        /// 	[cnurse]	08/22/2008	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
+       /// -----------------------------------------------------------------------------
         public static XmlWriterSettings GetXmlWriterSettings(ConformanceLevel conformance)
         {
             var settings = new XmlWriterSettings();
@@ -748,9 +707,6 @@ namespace DotNetNuke.Common.Utilities
         ///</summary>
         ///<param name = "html">The HTML to encode</param>
         ///<returns></returns>
-        ///<history>
-        ///  [cnurse]	09/29/2005	moved from Globals
-        ///</history>
         ///-----------------------------------------------------------------------------
         public static string XMLEncode(string html)
         {
