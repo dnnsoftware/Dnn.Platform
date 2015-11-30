@@ -102,6 +102,7 @@ namespace DotNetNuke.Services.Search
             const int saveThreshold = 1024 * 2;
             var totalIndexed = 0;
             startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
+		    var localDateBeforeIndexing = DateTime.Now;
             var searchDocuments = new List<SearchDocument>();
 			var searchModuleCollection = _searchModules.ContainsKey(portalId)
                 ? _searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
@@ -116,10 +117,8 @@ namespace DotNetNuke.Services.Search
 
             if (modulesInDateRange.Any())
             {
-                ModuleInfo lastModule = null;
                 foreach (var module in modulesInDateRange)
                 {
-                    lastModule = module;
                     try
                     {
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
@@ -139,7 +138,7 @@ namespace DotNetNuke.Services.Search
 
                             if (searchDocuments.Count >= saveThreshold)
                             {
-                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, module);
+                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId, localDateBeforeIndexing);
                                 searchDocuments.Clear();
                             }
                         }
@@ -152,7 +151,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, lastModule);
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, scheduleId, localDateBeforeIndexing);
                 }
             }
 
@@ -178,12 +177,11 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int scheduleId, ModuleInfo module)
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId, DateTime date)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
-            // no way for module to be null when searchDocuments is not empty
-            SetLocalTimeOfLastIndexedItem(module.PortalID, scheduleId, module.LastContentModifiedOnDate);
+            SetLocalTimeOfLastIndexedItem(portalId, scheduleId, date);
             return total;
         }
 
