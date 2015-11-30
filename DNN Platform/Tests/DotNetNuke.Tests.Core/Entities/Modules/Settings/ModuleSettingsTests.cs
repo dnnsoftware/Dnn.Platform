@@ -57,6 +57,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             MockComponentProvider.ResetContainer();
         }
 
+        public enum TestingEnum
+        {
+            Value1,
+            Value2
+        }
+
         public class ModulesSettings
         {
             [ModuleSetting(Prefix = SettingNamePrefix)]
@@ -76,20 +82,23 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public TimeSpan TimeSpanProperty { get; set; } = TimeSpan.Zero;
+
+            [ModuleSetting(Prefix = SettingNamePrefix)]
+            public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
         }
 
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
 
         private static readonly object[] SettingsCases =
         {
-            new object[] {"AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero},
-            new object[] {"Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1,5,6,7) }
+            new object[] {"AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1},
+            new object[] {"Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1,5,6,7), TestingEnum.Value2 }
         };
 
         [Test]
         [TestCaseSource("SettingsCases")]
         public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue)
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
@@ -100,7 +109,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 DoubleProperty = doubleValue,
                 BooleanProperty = booleanValue,
                 DateTimeProperty = datetimeValue,
-                TimeSpanProperty = timeSpanValue
+                TimeSpanProperty = timeSpanValue,
+                EnumProperty = enumValue
             };
 
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "StringProperty", stringValue));
@@ -109,7 +119,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString()));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u")));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G")));
-            
+            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "EnumProperty", enumValue.ToString()));
+
             var settingsRepository = new ModulesSettingsRepository();
 
             //Act
@@ -157,7 +168,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource("SettingsCases")]
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue)
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
@@ -168,6 +179,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             moduleSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
             moduleSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
             moduleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
+            moduleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
 
             _mockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
             _mockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
@@ -186,6 +198,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(booleanValue, settings.BooleanProperty, "The retrieved boolean property value is not equal to the stored one");
             Assert.AreEqual(datetimeValue, settings.DateTimeProperty, "The retrieved datetime property value is not equal to the stored one");
             Assert.AreEqual(timeSpanValue, settings.TimeSpanProperty, "The retrieved timespan property value is not equal to the stored one");
+            Assert.AreEqual(enumValue, settings.EnumProperty, "The retrieved enum property value is not equal to the stored one");
             _mockRepository.VerifyAll();
         }
 
