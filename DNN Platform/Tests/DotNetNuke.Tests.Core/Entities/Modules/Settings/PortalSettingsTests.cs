@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c"), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
 
             var settingsRepository = new MyPortalSettingsRepository();
@@ -143,7 +143,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                                      { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
                                      { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
                                      { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u") },
-                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G") },
+                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c") },
                                      { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
                                  };
 

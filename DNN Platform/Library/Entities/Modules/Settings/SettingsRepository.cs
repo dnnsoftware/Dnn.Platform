@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -86,32 +87,19 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private static string GetSettingValueAsString(object settingValue)
         {
-            if (settingValue is DateTime)
+            var dateTimeValue = settingValue as DateTime?;
+            if (dateTimeValue != null)
             {
-                return ((DateTime) settingValue).ToString("u");
+                return dateTimeValue.Value.ToString("u", CultureInfo.InvariantCulture);
             }
 
-            if (settingValue is TimeSpan)
+            var timeSpanValue = settingValue as TimeSpan?;
+            if (timeSpanValue != null)
             {
-                return ((TimeSpan) settingValue).ToString("G");
+                return timeSpanValue.Value.ToString("c", CultureInfo.InvariantCulture);
             }
 
-            if (settingValue is float)
-            {
-                return ((float)settingValue).ToString(CultureInfo.InvariantCulture);
-            }
-
-            if (settingValue is double)
-            {
-                return ((double)settingValue).ToString(CultureInfo.InvariantCulture);
-            }
-
-            if (settingValue is decimal)
-            {
-                return ((decimal)settingValue).ToString(CultureInfo.InvariantCulture);
-            }
-
-            return settingValue.ToString();
+            return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -223,16 +211,20 @@ namespace DotNetNuke.Entities.Modules.Settings
                 {
                     // The property and settingsValue have the same type - no conversion needed - just update!
                     property.SetValue(settings, propertyValue, null);
+                    return;
                 }
-                else if (!string.IsNullOrEmpty(attribute.Serializer))
+
+                if (!string.IsNullOrEmpty(attribute.Serializer))
                 {
                     ISettingsSerializer<T> serializer = (ISettingsSerializer<T>)Framework.Reflection.CreateType(attribute.Serializer, true);
                     if (serializer != null)
                     {
                         property.SetValue(settings, serializer.Deserialize(propertyValue), null);
+                        return;
                     }
                 }
-                else if (propertyType.BaseType == typeof(Enum))
+
+                if (propertyType.BaseType == typeof(Enum))
                 {
                     // The property is an enum. Determine if the enum value is persisted as string or numeric.
                     if (Regex.IsMatch(propertyValue, "^\\d+$"))
@@ -252,34 +244,34 @@ namespace DotNetNuke.Entities.Modules.Settings
                             Exceptions.LogException(exception);
                         }
                     }
-                } else if (propertyType.FullName == "System.TimeSpan")
-                {
-                    property.SetValue(settings, TimeSpan.Parse(propertyValue.ToString()), null);
+
+                    return;
                 }
-                else if (propertyType.FullName == "System.Single")
+
+                TimeSpan timeSpanValue;
+                if (propertyType.IsAssignableFrom(typeof(TimeSpan)) && TimeSpan.TryParse(propertyValue, CultureInfo.InvariantCulture, out timeSpanValue))
                 {
-                    property.SetValue(settings, float.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
+                    property.SetValue(settings, timeSpanValue);
+                    return;
                 }
-                else if (propertyType.FullName == "System.Double")
+
+                DateTime dateTimeValue;
+                if (propertyType.IsAssignableFrom(typeof(DateTime)) && DateTime.TryParse(propertyValue, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dateTimeValue))
                 {
-                    property.SetValue(settings, double.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
+                    property.SetValue(settings, dateTimeValue);
+                    return;
                 }
-                else if (propertyType.FullName == "System.Decimal")
-                {
-                    property.SetValue(settings, decimal.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture), null);
-                }
-                else if (propertyType.FullName == "System.DateTime")
-                {
-                    property.SetValue(settings, DateTime.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture).ToUniversalTime(), null);
-                }
-                else if (!(propertyValue is IConvertible))
-                {
-                    // The property value does not support IConvertible interface - assign the value direct.
-                    property.SetValue(settings, propertyValue, null);
-                }
-                else
+
+                if (propertyType.GetInterface(typeof(IConvertible).FullName) != null)
                 {
                     property.SetValue(settings, Convert.ChangeType(propertyValue, propertyType, CultureInfo.InvariantCulture), null);
+                    return;
+                }
+
+                var converter = TypeDescriptor.GetConverter(propertyType);
+                if (converter.IsValid(propertyValue))
+                {
+                    converter.ConvertFromInvariantString(propertyValue);
                 }
             }
             catch (Exception exception)
@@ -292,8 +284,5 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
         }
         #endregion
-
-
-
     }
 }
