@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is installed
+        /// Gets whether the Package is already installed with the same version
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
