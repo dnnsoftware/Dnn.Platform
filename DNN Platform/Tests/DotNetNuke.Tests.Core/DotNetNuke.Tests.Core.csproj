@@ -151,6 +151,13 @@
     <Compile Include="Controllers\Messaging\NotificationsControllerTests.cs" />
     <Compile Include="Controllers\Search\SearchQueryStringParserTests.cs" />
     <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
+    <Compile Include="Entities\Modules\Settings\BaseSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexType.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexTypeSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\NullableSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingsTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
