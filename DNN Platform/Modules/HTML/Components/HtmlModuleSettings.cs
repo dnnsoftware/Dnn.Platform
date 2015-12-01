@@ -1,6 +1,7 @@
 ﻿using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Settings;
 using System.Web.Caching;
+using System;
 
 namespace DotNetNuke.Modules.Html.Components
 {
@@ -12,6 +13,7 @@ namespace DotNetNuke.Modules.Html.Components
     /// the HTML module.  Settings will automatically be serialized and deserialized
     /// for storage in the underlying settings table.
     /// </remarks>
+    [Serializable]
     public class HtmlModuleSettings
     {
         [ModuleSetting(Prefix = "HtmlText_")]
@@ -25,7 +27,6 @@ namespace DotNetNuke.Modules.Html.Components
 
         [ModuleSetting()]
         public int WorkFlowID { get; set; } = -1;
-
     }
 
     /// <summary>
