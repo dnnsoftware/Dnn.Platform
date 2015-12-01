@@ -40,5 +40,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         /// <summary>Gets or sets the editor panel.</summary>
         /// <value>The editor panel.</value>
         PlaceHolder Editor { get; set; }
+
+        void Refresh();
     }
 }

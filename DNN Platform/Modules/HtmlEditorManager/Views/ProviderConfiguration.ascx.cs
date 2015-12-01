@@ -68,5 +68,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         {
             this.EditorChanged(this, new EditorEventArgs(this.ProvidersDropDownList.SelectedValue));
         }
+
+        public void Refresh()
+        {
+            Response.Redirect(Request.RawUrl, true);
+        }
     }
 }
