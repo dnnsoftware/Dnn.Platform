@@ -87,7 +87,11 @@ namespace Dnn.Modules.Languages
 
                 if (!string.IsNullOrEmpty(Request.QueryString["locale"]))
                 {
-                    _Locale = Request.QueryString["locale"];
+                    var localeValues = Request.QueryString["locale"].Split('-');
+                    if (localeValues.Length == 2)
+                    {
+                        _Locale = localeValues[0].ToLower() + "-" + localeValues[1].ToUpper();
+                    }
                 }
 
                 return _Locale;
@@ -488,7 +492,7 @@ namespace Dnn.Modules.Languages
                     LoadRootNodes();
 
                     Locale language = LocaleController.Instance.GetLocale(Locale);
-                    languageLabel.Language = language.Code;
+                    languageLabel.Language = language != null ? language.Code : PortalSettings.DefaultLanguage;
 
                     if (UserInfo.IsSuperUser)
                     {
