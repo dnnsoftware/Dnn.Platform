@@ -12,11 +12,11 @@
     window.SwitchView = function(n) {
         $("#ListViewState").val(n);
         var t = $("#FilesBox ul");
-        t.attr("class", "Files" + n),
-            $(".SwitchDetailView").css("font-weight", "normal"),
-            $(".SwitchListView").css("font-weight", "normal"),
-            $(".SwitchIconsView").css("font-weight", "normal"),
-            $(".Switch" + n).css("font-weight", "bold");
+        t.attr("class", "Files" + n);
+        $(".SwitchDetailView").css("font-weight", "normal");
+        $(".SwitchListView").css("font-weight", "normal");
+        $(".SwitchIconsView").css("font-weight", "normal");
+        $(".Switch" + n).css("font-weight", "bold");
     };
 
     $(document).ready(function () {
@@ -35,13 +35,13 @@
             }
         });
         $("#BrowserMode td").addClass("ui-state-default ui-corner-top");
-            $("#BrowserMode label").addClass("ui-tabs-anchor"),
-            $(".SelectedPager").addClass("ui-tabs-active ui-state-active ui-state-focus"),
-            $("#BrowserMode td").hover(function () {
-                $(this).addClass("ui-state-hover");
-            }, function() {
-                $(this).removeClass("ui-state-hover");
-            });
+        $("#BrowserMode label").addClass("ui-tabs-anchor");
+        $(".SelectedPager").addClass("ui-tabs-active ui-state-active ui-state-focus");
+        $("#BrowserMode td").hover(function () {
+            $(this).addClass("ui-state-hover");
+        }, function() {
+            $(this).removeClass("ui-state-hover");
+        });
 
         $("#panUploadDiv .MessageBox").draggable({ cursor: "move", handle: "div.modalHeader" });
     });
