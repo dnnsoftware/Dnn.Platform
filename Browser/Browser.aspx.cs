@@ -212,6 +212,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             set
             {
                 ViewState["SortFilesDescending"] = value;
+                FilesTable = null;
             }
         }
 
