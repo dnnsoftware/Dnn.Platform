@@ -78,7 +78,6 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/dotnetnuke/htmlEditor" action="updateattribute" name="defaultProvider" value="DNNConnect.CKE" />
                   <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="ignore">
                     <add name="DNNConnect.CKE" type="DNNConnect.CKEditorProvider.CKHtmlEditorProvider, DNNConnect.CKEditorProvider" providerPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/" settingsControlPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx" />
                   </node>
@@ -88,7 +87,7 @@
             <uninstall>
               <configuration>
                 <nodes>
-                  <node path="/configuration/dotnetnuke/htmlEditor" action="updateattribute" name="defaultProvider" value="DotNetNuke.RadEditorProvider" />
+                  <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='DNNConnect.CKE']" action="updateattribute" name="defaultProvider" value="DotNetNuke.RadEditorProvider" />
                   <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DNNConnect.CKE']" action="remove" />
                 </nodes>
               </configuration>
