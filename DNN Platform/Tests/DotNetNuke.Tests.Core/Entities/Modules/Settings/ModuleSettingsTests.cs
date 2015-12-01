@@ -57,14 +57,79 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
+
+            [ModuleSetting(Prefix = SettingNamePrefix, Serializer = "DotNetNuke.Tests.Core.Entities.Modules.Settings.ComplexTypeSerializer,DotNetNuke.Tests.Core")]
+            public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
         }
 
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
-        
+
         [Test]
-        [TestCaseSource("SettingsCases")]
-        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh-CN")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("en-US")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("fr-FR")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("he-IL")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ru-RU")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("tr-TR")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
@@ -76,16 +141,18 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 BooleanProperty = booleanValue,
                 DateTimeProperty = datetimeValue,
                 TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue
+                EnumProperty = enumValue,
+                ComplexProperty = complexValue,
             };
 
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "StringProperty", stringValue));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "IntegerProperty", integerValue.ToString()));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture)));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString()));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u")));
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G")));
+            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture)));
+            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture)));
             _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "EnumProperty", enumValue.ToString()));
+            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}"));
 
             var settingsRepository = new ModulesSettingsRepository();
 
@@ -130,20 +197,85 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-        [TestCaseSource("SettingsCases")]
-        public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh_CN")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("en-US")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("fr-FR")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("he-IL")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ru-RU")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("tr-TR")]
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_ModuleSettingsCollection(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        private void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var moduleSettings = new Hashtable();
-            moduleSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
-            moduleSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
-            moduleSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
-            moduleSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
-            moduleSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
-            moduleSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
+            var moduleSettings = new Hashtable
+                                 {
+                                     { SettingNamePrefix + "StringProperty", stringValue },
+                                     { SettingNamePrefix + "IntegerProperty", integerValue.ToString() },
+                                     { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
+                                     { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
+                                     { SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}" },
+                                 };
 
             MockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int,Hashtable>{ { moduleInfo.ModuleID, moduleSettings }});
             MockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
@@ -163,6 +295,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(datetimeValue, settings.DateTimeProperty, "The retrieved datetime property value is not equal to the stored one");
             Assert.AreEqual(timeSpanValue, settings.TimeSpanProperty, "The retrieved timespan property value is not equal to the stored one");
             Assert.AreEqual(enumValue, settings.EnumProperty, "The retrieved enum property value is not equal to the stored one");
+            Assert.AreEqual(complexValue, settings.ComplexProperty, "The retrieved complex property value is not equal to the stored one");
             MockRepository.VerifyAll();
         }
     }

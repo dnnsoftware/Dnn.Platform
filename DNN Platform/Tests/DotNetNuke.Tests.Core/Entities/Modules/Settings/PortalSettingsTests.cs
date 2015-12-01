@@ -57,14 +57,79 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             [PortalSetting(Prefix = SettingNamePrefix)]
             public TestingEnum EnumProperty { get; set; } = TestingEnum.Value1;
+
+            [PortalSetting(Prefix = SettingNamePrefix, Serializer = "DotNetNuke.Tests.Core.Entities.Modules.Settings.ComplexTypeSerializer,DotNetNuke.Tests.Core")]
+            public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
         }
 
         public class MyPortalSettingsRepository : SettingsRepository<MyPortalSettings> { }
-        
+
         [Test]
-        [TestCaseSource("SettingsCases")]
-        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
-            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh-CN")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("en-US")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("fr-FR")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("he-IL")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ru-RU")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("tr-TR")]
+        public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        private void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
+            bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
@@ -76,17 +141,18 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 BooleanProperty = booleanValue,
                 DateTimeProperty = datetimeValue,
                 TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue
+                EnumProperty = enumValue,
+                ComplexProperty = complexValue,
             };
 
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), 
-                true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString));
             _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
+            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString));
 
             var settingsRepository = new MyPortalSettingsRepository();
 
@@ -131,20 +197,84 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-        [TestCaseSource("SettingsCases")]
-        public void GetSettings_GetsValuesFrom_PortalSettings(string stringValue, int integerValue, double doubleValue,
-           bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue)
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh-CN")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("en-US")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("fr-FR")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("he-IL")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ru-RU")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("tr-TR")]
+        public void GetSettings_GetsValuesFrom_PortalSettings_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        private void GetSettings_GetsValuesFrom_PortalSettings(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             //Arrange
             var moduleInfo = GetModuleInfo;
-            var portalSettings = new Dictionary<string, string>();
-            portalSettings.Add(SettingNamePrefix + "StringProperty", stringValue);
-            portalSettings.Add(SettingNamePrefix + "IntegerProperty", integerValue.ToString());
-            portalSettings.Add(SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture));
-            portalSettings.Add(SettingNamePrefix + "BooleanProperty", booleanValue.ToString());
-            portalSettings.Add(SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("u"));
-            portalSettings.Add(SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("G"));
-            portalSettings.Add(SettingNamePrefix + "EnumProperty", enumValue.ToString());
+            var portalSettings = new Dictionary<string, string>
+                                 {
+                                     { SettingNamePrefix + "StringProperty", stringValue },
+                                     { SettingNamePrefix + "IntegerProperty", integerValue.ToString() },
+                                     { SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "BooleanProperty", booleanValue.ToString() },
+                                     { SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture) },
+                                     { SettingNamePrefix + "EnumProperty", enumValue.ToString() },
+                                     { SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}" },
+                                 };
 
             _mockPortalController.Setup(pc => pc.GetPortalSettings(moduleInfo.PortalID)).Returns(portalSettings);
             MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
@@ -163,6 +293,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             Assert.AreEqual(datetimeValue, settings.DateTimeProperty, "The retrieved datetime property value is not equal to the stored one");
             Assert.AreEqual(timeSpanValue, settings.TimeSpanProperty, "The retrieved timespan property value is not equal to the stored one");
             Assert.AreEqual(enumValue, settings.EnumProperty, "The retrieved enum property value is not equal to the stored one");
+            Assert.AreEqual(complexValue, settings.ComplexProperty, "The retrieved complex property value is not equal to the stored one");
             MockRepository.VerifyAll();
         }
     }
