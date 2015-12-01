@@ -1190,7 +1190,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Role
-                var role = RoleController.Instance.GetRoleById(roleToolbar.RoleId, _portalSettings.PortalId);
+                var role = RoleController.Instance.GetRoleById(_portalSettings.PortalId, roleToolbar.RoleId);
 
                 if (role == null)
                 {
