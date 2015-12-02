@@ -165,4 +165,7 @@
   <data name="AllPagesTranslatable.Text" xml:space="preserve">
     <value>Make all pages Translatable</value>
   </data>
+  <data name="ControlTitle_enablecontent.Text" xml:space="preserve">
+    <value>Enable Localized Content</value>
+  </data>
 </root>
