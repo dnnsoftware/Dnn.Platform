@@ -73,7 +73,7 @@ BEGIN
               @CreateUpdateUserID , -- LastModifiedBy - int
               GETDATE() -- LastModifiedOn - datetime
            FROM {databaseOwner}[{objectQualifier}vw_UserRoles] ur
-			INNER JOIN dbo.SplitStrings_CTE(@RoleIDs,',') m on ur.RoleID = m.Item
+			INNER JOIN {databaseOwner}[{objectQualifier}SplitStrings_CTE](@RoleIDs,',') m on ur.RoleID = m.Item
 END
 GO
 
