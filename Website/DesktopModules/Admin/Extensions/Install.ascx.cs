@@ -768,6 +768,20 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     Globals.DeleteFolderRecursive(TempInstallFolder);
                 }
+
+                if (PackageType != null)
+                {
+                    if (PackageType.PackageType == "CoreLanguagePack" || PackageType.PackageType == "ExtensionLanguagePack")
+                    {
+                        var lpInstallFileName = String.Format("{0}\\Install\\{1}\\{2}", Globals.ApplicationMapPath,
+                            "Language", "installlanguage.resources");
+                        if (File.Exists(lpInstallFileName))
+                        {
+                            File.Delete(lpInstallFileName);
+                        }
+                    }
+                }
+
 				//Redirect to Definitions page
                 Response.Redirect(ReturnURL, true);
             }
