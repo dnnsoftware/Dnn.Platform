@@ -1,0 +1,7 @@
+/*
+DNN Custom Override Styles to fix issues with other modules
+*/
+div.cke_contents textarea, span.cke_contents textarea
+{
+    max-width: 100%;
+}

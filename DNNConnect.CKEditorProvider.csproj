@@ -218,6 +218,7 @@
     <Content Include="Browser\js\jquery.ImageSlider.js" />
     <Content Include="Browser\js\jquery.pagemethod.js" />
     <Content Include="CKEditorConfig.png" />
+    <Content Include="css\CKEditorOverride.css" />
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
     <Content Include="Install\CKEditorDefaultSettings.xml" />
