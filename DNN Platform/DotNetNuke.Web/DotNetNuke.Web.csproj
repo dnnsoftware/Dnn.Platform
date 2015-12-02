@@ -175,6 +175,8 @@
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\Auth\JwtAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\Auth\JwtComponents.cs" />
     <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
@@ -210,6 +212,7 @@
     <Compile Include="InternalServices\EventLogServiceController.cs" />
     <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
+    <Compile Include="InternalServices\MobileController.cs" />
     <Compile Include="InternalServices\NotificationDTO.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
@@ -405,6 +408,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

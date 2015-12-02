@@ -115,6 +115,7 @@ namespace DotNetNuke.Web.Api.Internal
                 //authentication message handlers
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new BasicAuthMessageHandler());
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new DigestAuthMessageHandler());
+                GlobalConfiguration.Configuration.MessageHandlers.Add(new JwtAuthMessageHandler());
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new WebFormsAuthMessageHandler());
 
                 //media type formatter for text/html, text/plain

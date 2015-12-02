@@ -22,6 +22,7 @@
 using System;
 using System.Linq;
 using DotNetNuke.Web.Api.Internal;
+using DotNetNuke.Web.Api.Internal.Auth;
 
 namespace DotNetNuke.Web.Api
 {
@@ -31,10 +32,15 @@ namespace DotNetNuke.Web.Api
         {
             try
             {
-                string cookieValue = GetAntiForgeryCookieValue(context);
-                var token = context.ActionContext.Request.Headers.GetValues("RequestVerificationToken").FirstOrDefault();
-
-                AntiForgery.Instance.Validate(cookieValue, token);
+                var headers = context.ActionContext.Request.Headers;
+                // bypass anti-forgery for JWT authentication. We MUST make sure it is JWT authentication
+                var authorization = JwtAuthMessageHandler.ValidateAuthHeader(headers.Authorization);
+                if (string.IsNullOrEmpty(authorization))
+                {
+                    var token = headers.GetValues("RequestVerificationToken").FirstOrDefault();
+                    var cookieValue = GetAntiForgeryCookieValue(context);
+                    AntiForgery.Instance.Validate(cookieValue, token);
+                }
             }
             catch(Exception e)
             {
