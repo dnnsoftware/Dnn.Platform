@@ -1287,6 +1287,8 @@ namespace DNNConnect.CKEditorProvider.Web
                     Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"));
             }
 
+            ClientResourceManager.RegisterScript(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
+
             // Load Custom JS File
             if (!string.IsNullOrEmpty(currentSettings.CustomJsFile)
                 && !cs.IsClientScriptIncludeRegistered(csType, "CKCustomJSFile"))
