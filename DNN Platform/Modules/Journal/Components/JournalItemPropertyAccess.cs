@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Services.Journal;
+﻿using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.Journal.Components {
     public class JournalItemTokenReplace : Services.Tokens.BaseCustomTokenReplace {
@@ -20,7 +15,7 @@ namespace DotNetNuke.Modules.Journal.Components {
              
         }
         public string ReplaceJournalItemTokens(string source) {
-            return base.ReplaceTokens(source);
+            return ReplaceTokens(source);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 if (String.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
                 if (!Directory.Exists(value))
                 {
@@ -46,11 +46,11 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
                 if (value.Ticks < 0)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
                 _purgeInterval = value;
             }
@@ -74,7 +74,6 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
                 return lastPurge;
             }
-            
             set
             {
                 File.WriteAllText(CachePath + "_lastpurge", "");
@@ -88,17 +87,8 @@ namespace DotNetNuke.Services.GeneratedImage
             CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
-        //internal IPCount()
-        //{
-        //    if (CachePath != null && !Directory.Exists(CachePath))
-        //    {
-        //        Directory.CreateDirectory(CachePath);
-        //    }
-        //}
-
         public static bool CheckIp(string ipAddress)
         {
-
             DateTime now = DateTime.Now;
             if (!_purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
             {
@@ -177,7 +167,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             string visitorIPAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
-            if (String.IsNullOrEmpty(visitorIPAddress))
+            if (string.IsNullOrEmpty(visitorIPAddress))
                 visitorIPAddress = context.Request.ServerVariables["REMOTE_ADDR"];
 
             if (string.IsNullOrEmpty(visitorIPAddress))

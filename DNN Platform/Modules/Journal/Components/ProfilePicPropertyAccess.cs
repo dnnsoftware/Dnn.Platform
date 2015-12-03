@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DotNetNuke.Services.Journal;
-using System.Globalization;
+﻿using System.Globalization;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Common;
@@ -14,21 +9,16 @@ namespace DotNetNuke.Modules.Journal.Components
 {
     public class ProfilePicPropertyAccess: IPropertyAccess
     {
-        private int userId;
+        private readonly int _userId;
+
         public int Size { get; set; } = 32;
 
-        public ProfilePicPropertyAccess(int UserId)
+        public ProfilePicPropertyAccess(int userId)
         {
-            this.userId = UserId;
+            _userId = userId;
         }
 
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -40,8 +30,8 @@ namespace DotNetNuke.Modules.Journal.Components
                     Size = size;
                 }
                 var settings = PortalController.Instance.GetCurrentPortalSettings();
-                var userInfo = UserController.GetUserById(settings.PortalId, userId);
-                var url = string.Format(Globals.UserProfilePicRelativeUrl(false), userId, Size, Size);
+                var userInfo = UserController.GetUserById(settings.PortalId, _userId);
+                var url = string.Format(Globals.UserProfilePicRelativeUrl(false), _userId, Size, Size);
 
                 if (userInfo.Profile != null)
                 {
@@ -56,7 +46,6 @@ namespace DotNetNuke.Modules.Journal.Components
                             return url + "&cdv=" + photoFile.LastModificationTime.Ticks;
                         }
                     }
-
                     else
                     {
                         return url;
@@ -66,6 +55,5 @@ namespace DotNetNuke.Modules.Journal.Components
             propertyNotFound = true;
             return string.Empty;
         }
-
     }
 }

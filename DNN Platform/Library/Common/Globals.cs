@@ -3772,11 +3772,10 @@ namespace DotNetNuke.Common
             return avatarUrl;
         }
 
-
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>        
-        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
@@ -3790,7 +3789,7 @@ namespace DotNetNuke.Common
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>        
         /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
-        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
@@ -3808,10 +3807,10 @@ namespace DotNetNuke.Common
                 cdv = "&cdv=" + DateTime.Now.Ticks;
             }
 
-            if (childPortalAlias.StartsWith(Globals.ApplicationPath))
+            if (childPortalAlias.StartsWith(ApplicationPath))
                 return childPortalAlias + query + cdv;
 
-            return Globals.ApplicationPath + childPortalAlias + query + cdv;
+            return ApplicationPath + childPortalAlias + query + cdv;
 
         }
 
