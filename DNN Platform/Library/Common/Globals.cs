@@ -3749,7 +3749,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.
         /// </summary>        
-        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&userid={0}&amp;h={1}&amp;w={2} 
+        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2} 
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
@@ -3780,6 +3780,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.UserProfilePictureUrl")]
         public static string UserProfilePicRelativeUrl()
         {
             return UserProfilePicRelativeUrl(true);
@@ -3794,6 +3795,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.UserProfilePictureUrl")]
         public static string UserProfilePicRelativeUrl(bool includeCdv)
         {
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
@@ -3813,7 +3815,7 @@ namespace DotNetNuke.Common
             return ApplicationPath + childPortalAlias + query + cdv;
 
         }
-
+        
         #region "Obsolete - retained for Binary Compatability"
 
         // TODO:  These constants are deprecated but cannot be removed until the next batch of breaking change

@@ -89,5 +89,17 @@ namespace DotNetNuke.Entities.Users
         /// <returns>Users as a list of UserInfo objects</returns>
         IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                                 bool sortAscending, string propertyName, string propertyValue);
+
+        /// <summary>
+        /// Return User Profile Picture relative Url
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="width">Width in pixel</param>
+        /// <param name="height">Height in pixel</param>
+        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32)
+        /// </remarks>
+        string GetUserProfilePictureUrl(int userId, int width, int height);
     }
 }

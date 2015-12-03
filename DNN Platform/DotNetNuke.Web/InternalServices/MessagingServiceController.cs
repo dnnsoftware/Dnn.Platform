@@ -120,7 +120,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32)
                     }).ToList();
 
                 //Roles should be visible to Administrators or User in the Role.

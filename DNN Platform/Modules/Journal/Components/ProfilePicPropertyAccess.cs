@@ -2,8 +2,6 @@
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Modules.Journal.Components
 {
@@ -29,28 +27,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 if (int.TryParse(format, out size)) {
                     Size = size;
                 }
-                var settings = PortalController.Instance.GetCurrentPortalSettings();
-                var userInfo = UserController.GetUserById(settings.PortalId, _userId);
-                var url = string.Format(Globals.UserProfilePicRelativeUrl(false), _userId, Size, Size);
-
-                if (userInfo.Profile != null)
-                {
-                    var photoProperty = userInfo.Profile.GetProperty("Photo");
-
-                    int photoFileId;
-                    if (photoProperty != null && int.TryParse(photoProperty.PropertyValue, out photoFileId))
-                    {
-                        var photoFile = FileManager.Instance.GetFile(photoFileId);
-                        if (photoFile != null)
-                        {
-                            return url + "&cdv=" + photoFile.LastModificationTime.Ticks;
-                        }
-                    }
-                    else
-                    {
-                        return url;
-                    }
-                }
+                return UserController.Instance.GetUserProfilePictureUrl(_userId, Size, Size);
             }
             propertyNotFound = true;
             return string.Empty;
