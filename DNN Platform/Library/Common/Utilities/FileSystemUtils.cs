@@ -462,7 +462,7 @@ namespace DotNetNuke.Common.Utilities
             {
 				//Open File Stream
                 var crc = new Crc32();
-                fs = File.OpenRead(filePath);
+                fs = File.OpenRead(filePath.Replace("/", "\\"));
 				
 				//Read file into byte array buffer
                 var buffer = new byte[fs.Length];
