@@ -51,15 +51,15 @@
         <basePath>Portals\_default</basePath>
         <file>
           <path>Install</path>
-          <name>CKEditorDefaultSettings.xml</name>
+          <name>Dnn.CKEditorDefaultSettings.xml</name>
         </file>
         <file>
           <path>Install</path>
-          <name>CKToolbarButtons.xml</name>
+          <name>Dnn.CKToolbarButtons.xml</name>
         </file>
         <file>
           <path>Install</path>
-          <name>CKToolbarSets.xml</name>
+          <name>Dnn.CKToolbarSets.xml</name>
         </file>
       </files>
     </component>
