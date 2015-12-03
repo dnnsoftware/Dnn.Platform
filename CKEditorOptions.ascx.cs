@@ -888,7 +888,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(uploadSizeRole.RoleId, _portalSettings.PortalId);
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings.PortalId, uploadSizeRole.RoleId);
 
                     if (objRole == null)
                     {
