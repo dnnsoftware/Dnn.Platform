@@ -6,8 +6,9 @@ using System.Globalization;
 namespace DotNetNuke.Services.GeneratedImage
 {
     [Bindable(true)]
-    public class ImageParameter : IDataBindingsAccessor {
-        private DataBindingCollection _dataBindings = new DataBindingCollection();
+    public class ImageParameter : IDataBindingsAccessor
+    {
+        private readonly DataBindingCollection _dataBindings = new DataBindingCollection();
 
         public string Name { get; set; }
 
@@ -15,39 +16,30 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public event EventHandler DataBinding;
 
-        internal void DataBind() {
-            if (DataBinding != null) {
+        internal void DataBind()
+        {
+            if (DataBinding != null)
+            {
                 DataBinding(this, EventArgs.Empty);
             }
         }
 
-        public override string ToString() {
-            if (String.IsNullOrEmpty(Name) && String.IsNullOrEmpty(Value)) {
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Value))
+            {
                 return base.ToString();
             }
-            else {
-                return String.Format(CultureInfo.InvariantCulture, "{0} = {1}", Name, Value);
-            }
+            return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", Name, Value);
         }
 
-        public Control BindingContainer {
-            get;
-            internal set;
-        }
+        public Control BindingContainer { get; internal set; }
 
         #region IDataBindingsAccessor Members
 
-        DataBindingCollection IDataBindingsAccessor.DataBindings {
-            get {
-                return _dataBindings;
-            }
-        }
+        DataBindingCollection IDataBindingsAccessor.DataBindings => _dataBindings;
 
-        bool IDataBindingsAccessor.HasDataBindings {
-            get {
-                return _dataBindings.Count != 0;
-            }
-        }
+        bool IDataBindingsAccessor.HasDataBindings => _dataBindings.Count != 0;
 
         #endregion
     }

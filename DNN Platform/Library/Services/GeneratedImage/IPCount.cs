@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.GeneratedImage
             get { return _cachePath; }
             set
             {
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public static bool CheckIp(string ipAddress)
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             if (!_purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
             {
                 lock (PurgeQueuedLock)
@@ -99,8 +99,8 @@ namespace DotNetNuke.Services.GeneratedImage
                         _purgeQueued = true;
 
                         var files = new DirectoryInfo(CachePath).GetFiles();
-                        DateTime threshold = DateTime.Now.Subtract(PurgeInterval);
-                        List<FileInfo> toTryDeleteAgain = new List<FileInfo>();
+                        var threshold = DateTime.Now.Subtract(PurgeInterval);
+                        var toTryDeleteAgain = new List<FileInfo>();
                         foreach (var fileinfo in files)
                         {
                             if (fileinfo.Name.ToLower() != "_lastpurge" && fileinfo.LastWriteTime < threshold)

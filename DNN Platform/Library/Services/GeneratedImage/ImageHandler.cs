@@ -7,6 +7,9 @@ using System.Web;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    /// <summary>
+    /// Image Handler abstract class
+    /// </summary>
     public abstract class ImageHandler : IHttpHandler
     {
         private ImageHandlerInternal Implementation { get; set; }
@@ -105,14 +108,10 @@ namespace DotNetNuke.Services.GeneratedImage
             set { Implementation.IpCountPurgeInterval = value; }
         }
 
-
         /// <summary>
         /// A list of image transforms that will be applied successively to the image
         /// </summary>
-        protected List<ImageTransform> ImageTransforms
-        {
-            get { return Implementation.ImageTransforms; }
-        }
+        protected List<ImageTransform> ImageTransforms => Implementation.ImageTransforms;
 
         protected ImageHandler()
             : this(new ImageHandlerInternal())
@@ -129,34 +128,24 @@ namespace DotNetNuke.Services.GeneratedImage
         {
         }
 
-
         public abstract ImageInfo GenerateImage(NameValueCollection parameters);
 
-        public virtual bool IsReusable
-        {
-            get { return false; }
-        }
+        public virtual bool IsReusable => false;
 
         public void ProcessRequest(HttpContext context)
         {
             if (context == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
             }
-            bool process = true;
-            
-            if (process)
-            {
-                HttpContextBase contextWrapper = new HttpContextWrapper(context);
-                ProcessRequest(contextWrapper);
-            }
+            HttpContextBase contextWrapper = new HttpContextWrapper(context);
+            ProcessRequest(contextWrapper);
         }
 
         internal void ProcessRequest(HttpContextBase context)
         {
             Debug.Assert(context != null);
-            Implementation.HandleImageRequest(context, GenerateImage, this.ToString());
+            Implementation.HandleImageRequest(context, GenerateImage, ToString());
         }
-
     }
 }
