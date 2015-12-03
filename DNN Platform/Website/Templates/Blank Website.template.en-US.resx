@@ -168,4 +168,37 @@
   <data name="Tab.404ErrorPage.Title.Text" xml:space="preserve">
     <value>404 Error Page</value>
   </data>
+  <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Tab.Extensions.Title.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.PortalAdministration.Title.Text" xml:space="preserve">
+    <value>Website Administration</value>
+  </data>
+  <data name="Tab.MyFriends.Title.Text" xml:space="preserve">
+    <value>My Friends</value>
+  </data>
+  <data name="Tab.MyMessages.Title.Text" xml:space="preserve">
+    <value>My Messages</value>
+  </data>
+  <data name="Tab.SecurityRoles.Title.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.SiteSettings.Title.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.UserAccounts.Title.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.SearchResultsCE.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+    <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
+  </data>
 </root>
