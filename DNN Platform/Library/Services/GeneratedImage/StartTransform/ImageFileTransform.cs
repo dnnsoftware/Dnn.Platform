@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Net;
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    /// <summary>
+    /// Image File ImageTransform class
+    /// </summary>
     public class ImageFileTransform : ImageTransform
 	{
 		/// <summary>
@@ -18,13 +20,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// </summary>
         public Image EmptyImage { get; set; }
 
-		public override string UniqueString
-		{
-			get
-			{
-				return base.UniqueString + "-" +  this.ImageFile;
-			}
-		}
+        /// <summary>
+        /// Provides an Unique String for the image transformation
+        /// </summary>
+        public override string UniqueString => base.UniqueString + "-" +  ImageFile;
 
         public ImageFileTransform()
 		{
@@ -34,17 +33,23 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             CompositingQuality = CompositingQuality.HighQuality;
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image applying a file image transformation.
+        /// This will return an image after read the stream from the <param name="ImageFile">ImageFile</param> Path or Url
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after file image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
 		    if (ImageFile.StartsWith("http"))
 		    {
-		        HttpWebRequest httpWebRequest = (HttpWebRequest) WebRequest.Create(ImageFile);
+		        var httpWebRequest = (HttpWebRequest) WebRequest.Create(ImageFile);
 
 		        try
 		        {
-		            using (HttpWebResponse httpWebReponse = (HttpWebResponse) httpWebRequest.GetResponse())
+		            using (var httpWebReponse = (HttpWebResponse) httpWebRequest.GetResponse())
 		            {
-		                using (Stream stream = httpWebReponse.GetResponseStream())
+		                using (var stream = httpWebReponse.GetResponseStream())
 		                {
 		                    return Image.FromStream(stream);
 		                }
@@ -55,10 +60,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		            return EmptyImage;
 		        }
 		    }
-		    else
-		    {
-                return new Bitmap(ImageFile);
-		    }
+		    return new Bitmap(ImageFile);
 		}
 	}
 }

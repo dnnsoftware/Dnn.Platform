@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -10,10 +9,12 @@ using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    /// <summary>
+    /// Secure File ImageTransform class
+    /// </summary>
 	public class SecureFileTransform : ImageTransform
     {
         #region Properties
-
         /// <summary>
         /// Set IFileInfo object of given FileId
         /// </summary>
@@ -24,12 +25,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// </summary>
         public Image EmptyImage { get; set; }
 
-        public override string UniqueString
-		{
-            get{ return base.UniqueString + this.SecureFile.FileId.ToString() ;}
-		}
-
-        #endregion 
+        /// <summary>
+        /// Provides an Unique String for the image transformation
+        /// </summary>
+        public override string UniqueString => base.UniqueString + SecureFile.FileId;
+	    #endregion 
        
         public SecureFileTransform()
 		{
@@ -39,23 +39,32 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             CompositingQuality = CompositingQuality.HighQuality;
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image returing a secure file image
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        /// <remarks>
+        /// If the secure file is not an image, it returns an image representing the file extension
+        /// </remarks>
+        public override Image ProcessImage(Image image)
 		{
 		    // if SecureFile is no ImageFile return FileType-Image instead
             if (!IsImageExtension(SecureFile.Extension))
 		    {
-		        string replaceFile = Globals.ApplicationMapPath +"\\" + 
+		        var replaceFile = Globals.ApplicationMapPath +"\\" + 
                     PortalSettings.Current.DefaultIconLocation.Replace("/","\\") + "\\"+
                     "Ext" + SecureFile.Extension + "_32x32_Standard.png";
 
-                if(File.Exists(replaceFile))
-                    return new Bitmap(replaceFile);
-
+		        if (File.Exists(replaceFile))
+		        {
+		            return new Bitmap(replaceFile);
+		        }
 		        return EmptyImage;
 		    }
 
-            IFolderInfo folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
-            FolderPermissionCollection folderPermissions = folder.FolderPermissions;
+            var folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
+            var folderPermissions = folder.FolderPermissions;
 
             if (FileManager.Instance.FileExists(folder, SecureFile.FileName) &&
                 FolderPermissionController.HasFolderPermission(folderPermissions, "Read"))
@@ -64,16 +73,15 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		    return EmptyImage;
 		}
 
-        private bool IsImageExtension(string extension)
+        private static bool IsImageExtension(string extension)
         {
             if (!extension.StartsWith("."))
             {
-                extension = string.Format(".{0}", extension);
+                extension = $".{extension}";
             }
 
-            List<string> imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
+            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
         }
-        
     }
 }
