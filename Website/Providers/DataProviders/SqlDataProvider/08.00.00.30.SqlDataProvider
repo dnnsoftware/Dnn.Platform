@@ -1,0 +1,4 @@
+/* DNN-5820 */
+INSERT INTO {databaseOwner}[{objectQualifier}Assemblies] (PackageID, AssemblyName, Version)
+VALUES (NULL, 'Newtonsoft.Json.dll', '7.0.1')
+GO
