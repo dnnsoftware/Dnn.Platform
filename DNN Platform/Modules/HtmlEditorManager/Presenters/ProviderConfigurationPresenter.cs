@@ -137,6 +137,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         {
             this.View.Editor.Controls.Clear();
             this.View.Model.SelectedEditor = e.Editor;
+            this.View.Model.CanSave = true;
         }
 
         /// <summary>Handles the SaveEditorChoice event of the View control.</summary>
