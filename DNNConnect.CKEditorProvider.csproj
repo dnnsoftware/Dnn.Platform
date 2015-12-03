@@ -220,7 +220,7 @@
     <Content Include="CKEditorConfig.png" />
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
-    <Content Include="Install\CKEditorDefaultSettings.xml" />
+    <Content Include="Install\Dnn.CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -234,8 +234,8 @@
     <Content Include="CKFinder\config.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Install\CKToolbarButtons.xml" />
-    <Content Include="Install\CKToolbarSets.xml" />
+    <Content Include="Install\Dnn.CKToolbarButtons.xml" />
+    <Content Include="Install\Dnn.CKToolbarSets.xml" />
     <Content Include="Install\license.txt" />
     <Content Include="Install\releaseNotes.txt" />
     <Content Include="LogoCKEditor.png" />
