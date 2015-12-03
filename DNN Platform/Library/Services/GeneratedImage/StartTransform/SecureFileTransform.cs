@@ -56,22 +56,29 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                     PortalSettings.Current.DefaultIconLocation.Replace("/","\\") + "\\"+
                     "Ext" + SecureFile.Extension + "_32x32_Standard.png";
 
-		        if (File.Exists(replaceFile))
-		        {
-		            return new Bitmap(replaceFile);
-		        }
-		        return EmptyImage;
+		        return File.Exists(replaceFile) ? 
+                    new Bitmap(replaceFile) : 
+                    EmptyImage;
 		    }
 
             var folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
-            var folderPermissions = folder.FolderPermissions;
+            var file = FileManager.Instance.GetFile(folder, SecureFile.FileName);
 
-            if (FileManager.Instance.FileExists(folder, SecureFile.FileName) &&
-                FolderPermissionController.HasFolderPermission(folderPermissions, "Read"))
-                return new Bitmap(folder.PhysicalPath + SecureFile.FileName);
+            if (file == null || !DoesHaveReadFolderPermission(folder))
+            {
+                return EmptyImage;
+            }
 
-		    return EmptyImage;
+            using (var content = FileManager.Instance.GetFileContent(file))
+            {
+                return new Bitmap(content);
+            }
 		}
+
+        private static bool DoesHaveReadFolderPermission(IFolderInfo folder)
+        {
+            return FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "Read");
+        }
 
         private static bool IsImageExtension(string extension)
         {

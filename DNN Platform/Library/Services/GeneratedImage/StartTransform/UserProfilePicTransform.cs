@@ -56,8 +56,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		        if (!IsImageExtension(photoFile.Extension))
                     return noAvatar;
 
-		        var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
-                return new Bitmap(folder.PhysicalPath + photoFile.FileName);
+                using(var content = FileManager.Instance.GetFileContent(photoFile))
+		        {
+		            return new Bitmap(content);
+		        }
 		    }
 		    return noAvatar;
 		}
