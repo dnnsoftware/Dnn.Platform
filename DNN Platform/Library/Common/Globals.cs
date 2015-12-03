@@ -3780,7 +3780,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.UserProfilePictureUrl")]
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl")]
         public static string UserProfilePicRelativeUrl()
         {
             return UserProfilePicRelativeUrl(true);
@@ -3795,7 +3795,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.UserProfilePictureUrl")]
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl")]
         public static string UserProfilePicRelativeUrl(bool includeCdv)
         {
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
