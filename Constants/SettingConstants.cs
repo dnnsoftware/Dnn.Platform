@@ -13,27 +13,27 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The Legacy Toolbar Setting XML File Name
         /// </summary>
         [Obsolete("Legacy XML File")]
-        public const string ToolbarXmlFileName = "CKToolbar.xml";
+        public const string ToolbarXmlFileName = "Dnn.CKToolbar.xml";
 
         /// <summary>
         /// The Legacy Toolbar Setting XML File Name
         /// </summary>
-        public const string ToolbarSetXmlFileName = "CKToolbarSets.xml";
+        public const string ToolbarSetXmlFileName = "Dnn.CKToolbarSets.xml";
 
         /// <summary>
         /// The Toolbar Buttons XML File Name
         /// </summary>
-        public const string ToolbarButtonXmlFileName = "CKToolbarButtons.xml";
+        public const string ToolbarButtonXmlFileName = "Dnn.CKToolbarButtons.xml";
 
         /// <summary>
         /// The Default Setting XML File Name
         /// </summary>
-        public const string XmlDefaultFileName = "CKEditorDefaultSettings.xml";
+        public const string XmlDefaultFileName = "Dnn.CKEditorDefaultSettings.xml";
 
         /// <summary>
         /// The Default Setting XML File Name
         /// </summary>
-        public const string XmlSettingsFileName = "CKEditorSettings.xml";
+        public const string XmlSettingsFileName = "Dnn.CKEditorSettings.xml";
 
         /// <summary>
         /// The blank text setting name.
