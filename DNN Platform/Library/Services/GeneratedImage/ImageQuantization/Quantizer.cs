@@ -10,7 +10,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     /// </summary>
     public abstract class Quantizer
     {
-
         /// <summary>
         /// Construct the quantizer
         /// </summary>
@@ -231,9 +230,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </summary>
         private bool _singlePass;
         private int _pixelSize;
-
-     
-
+        
         /// <summary>
         /// Struct that defines a 32 bpp colour
         /// </summary>

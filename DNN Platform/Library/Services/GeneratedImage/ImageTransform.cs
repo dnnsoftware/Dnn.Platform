@@ -28,6 +28,11 @@ namespace DotNetNuke.Services.GeneratedImage
 		/// </summary>
 		public CompositingQuality CompositingQuality { get; set; }
 
+        /// <summary>
+        /// Process an input image applying the image transformation
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image processed</returns>
 		public abstract Image ProcessImage(Image image);
         
         // REVIEW: should this property be abstract?

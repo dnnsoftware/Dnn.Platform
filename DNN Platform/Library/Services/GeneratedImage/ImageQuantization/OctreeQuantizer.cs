@@ -22,10 +22,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		public OctreeQuantizer ( int maxColors , int maxColorBits ) : base ( false )
 		{
 			if ( maxColors > 255 )
-				throw new ArgumentOutOfRangeException ( "maxColors" , maxColors , "The number of colors should be less than 256" ) ;
+				throw new ArgumentOutOfRangeException ( nameof(maxColors) , maxColors , "The number of colors should be less than 256" ) ;
 
 			if ( ( maxColorBits < 1 ) | ( maxColorBits > 8 ) )
-				throw new ArgumentOutOfRangeException ( "maxColorBits" , maxColorBits , "This should be between 1 and 8" ) ;
+				throw new ArgumentOutOfRangeException ( nameof(maxColorBits) , maxColorBits , "This should be between 1 and 8" ) ;
 
 			// Construct the octree
 			_octree = new Octree ( maxColorBits  ) ;
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// <summary>
 			/// Mask used when getting the appropriate pixels for a given node
 			/// </summary>
-			private static int[] mask = new int[8] { 0x80 , 0x40 , 0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01 } ;
+			private static readonly int[] mask = new int[8] { 0x80 , 0x40 , 0x20 , 0x10 , 0x08 , 0x04 , 0x02 , 0x01 } ;
 
 			/// <summary>
 			/// The root of the octree

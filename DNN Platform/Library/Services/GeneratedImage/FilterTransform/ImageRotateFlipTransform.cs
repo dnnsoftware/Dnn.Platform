@@ -3,6 +3,9 @@ using System.Drawing.Drawing2D;
 
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
+    /// <summary>
+    /// Rotation ImageTransform class
+    /// </summary>
 	public class ImageRotateFlipTransform : ImageTransform
 	{
 		/// <summary>
@@ -10,24 +13,29 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		/// </summary>
 		public RotateFlipType RotateFlip { get; set; }
 
-		public override string UniqueString
-		{
-			get { return base.UniqueString + "-" + this.RotateFlip; }
-		}
+        /// <summary>
+        /// Provides an Unique String for this transformation
+        /// </summary>
+        public override string UniqueString => base.UniqueString + "-" + RotateFlip;
 
-		public ImageRotateFlipTransform()
+	    public ImageRotateFlipTransform()
 		{
             InterpolationMode = InterpolationMode.HighQualityBicubic;
             SmoothingMode = SmoothingMode.HighQuality;
             PixelOffsetMode = PixelOffsetMode.HighQuality;
             CompositingQuality = CompositingQuality.HighQuality;
-			this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
+			RotateFlip = RotateFlipType.RotateNoneFlipNone;
 		}
-
-		public override Image ProcessImage(Image image)
+        
+        /// <summary>
+        /// Processes an input image applying a rotation image transformation
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
-			Bitmap temp = (Bitmap)image;
-			Bitmap bmap = (Bitmap)temp.Clone();
+			var temp = (Bitmap)image;
+			var bmap = (Bitmap)temp.Clone();
 			bmap.RotateFlip(RotateFlip);
 			return (Bitmap)bmap.Clone();
 		}
