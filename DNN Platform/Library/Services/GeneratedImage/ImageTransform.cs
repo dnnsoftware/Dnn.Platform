@@ -6,8 +6,8 @@ namespace DotNetNuke.Services.GeneratedImage
     /// <summary>
     /// An abstract ImageTransform class
     /// </summary>
-    public abstract class ImageTransform {
-
+    public abstract class ImageTransform
+    {
 		/// <summary>
 		/// Sets the interpolation mode used for resizing images. The default is HighQualityBicubic.
 		/// </summary>
@@ -28,13 +28,17 @@ namespace DotNetNuke.Services.GeneratedImage
 		/// </summary>
 		public CompositingQuality CompositingQuality { get; set; }
 
+        /// <summary>
+        /// Process an input image applying the image transformation
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image processed</returns>
 		public abstract Image ProcessImage(Image image);
-        
+
         // REVIEW: should this property be abstract?
-        public virtual string UniqueString {
-            get {
-                return GetType().FullName;
-            }
-        }
+        /// <summary>
+        /// Provides an Unique String for the image transformation
+        /// </summary>
+        public virtual string UniqueString => GetType().FullName;
     }
 }

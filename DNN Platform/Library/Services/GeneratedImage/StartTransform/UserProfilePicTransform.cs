@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotNetNuke.Common;
@@ -9,22 +8,28 @@ using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    /// <summary>
+    /// User Profile Picture ImageTransform class
+    /// </summary>
 	public class UserProfilePicTransform : ImageTransform
     {
         #region Properties
-
         /// <summary>
 		/// Sets the UserID of the profile pic
 		/// </summary>
 		public int UserID { get; set; }
 
-        public override string UniqueString
-		{
-			get { return base.UniqueString + this.UserID.ToString(); }
-		}
+        /// <summary>
+        /// Provides an Unique String for the image transformation
+        /// </summary>
+        public override string UniqueString => base.UniqueString + UserID;
 
-        #endregion 
-       
+        /// <summary>
+        /// Is reusable
+        /// </summary>
+        public bool IsReusable => false;
+        #endregion
+
         public UserProfilePicTransform()
 		{
             InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -33,37 +38,49 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             CompositingQuality = CompositingQuality.HighQuality;
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image returning the user profile picture
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var user = UserController.Instance.GetUser(settings.PortalId, UserID);
 
-            IFileInfo photoFile = null;
+            IFileInfo photoFile;
 
-            Bitmap noAvatar = new Bitmap(Globals.ApplicationMapPath +  @"\images\no_avatar.gif");
+            var noAvatar = new Bitmap(Globals.ApplicationMapPath +  @"\images\no_avatar.gif");
 		    if (user != null && TryGetPhotoFile(user, out photoFile))
 		    {
 		        if (!IsImageExtension(photoFile.Extension))
                     return noAvatar;
 
-		        var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
-                return new Bitmap(folder.PhysicalPath + photoFile.FileName);
+                using(var content = FileManager.Instance.GetFileContent(photoFile))
+		        {
+		            return new Bitmap(content);
+		        }
 		    }
 		    return noAvatar;
 		}
-
-        //whether current user has permission to view target user's photo.
+        
+        /// <summary>
+        /// whether current user has permission to view target user's photo.
+        /// </summary>
+        /// <param name="targetUser"></param>
+        /// <param name="photoFile"></param>
+        /// <returns></returns>
         private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
-            bool isVisible = false;
+            var isVisible = false;
             photoFile = null;
 
-            UserInfo user = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
-                isVisible = (user.UserID == targetUser.UserID);
+                isVisible = user.UserID == targetUser.UserID;
                 if (!isVisible)
                 {
                     switch (photoProperty.ProfileVisibility.VisibilityMode)
@@ -98,25 +115,16 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             return isVisible;
         }
-
         
-        private bool IsImageExtension(string extension)
+        private static bool IsImageExtension(string extension)
         {
             if (!extension.StartsWith("."))
             {
-                extension = string.Format(".{0}", extension);
+                extension = $".{extension}";
             }
 
-            List<string> imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
+            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
         }
     }
 }

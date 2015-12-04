@@ -5,109 +5,106 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Services.GeneratedImage 
+namespace DotNetNuke.Services.GeneratedImage
 {
-    public class GeneratedImage : Image {
+    public class GeneratedImage : Image
+    {
         private const string TimestampField = "__timestamp";
         private string _timestamp;
-        private Control _bindingContainer;
+        private readonly Control _bindingContainer;
         private readonly HttpContextBase _context;
         private string _imageHandlerUrl;
 
-        public string ImageHandlerUrl {
-            get {
-                return _imageHandlerUrl ?? String.Empty;
+        public string ImageHandlerUrl
+        {
+            get
+            {
+                return _imageHandlerUrl ?? string.Empty;
             }
-            set {
+            set
+            {
                 _imageHandlerUrl = value;
             }
         }
 
-        public string Timestamp {
-            get {
-                return _timestamp ?? String.Empty;
+        public string Timestamp
+        {
+            get
+            {
+                return _timestamp ?? string.Empty;
             }
-            set {
+            set
+            {
                 _timestamp = value;
             }
         }
 
-        public List<ImageParameter> Parameters {
-            get;
-            private set;
-        }
+        public List<ImageParameter> Parameters { get; }
 
-        private new HttpContextBase Context {
-            get {
-                return _context ?? new HttpContextWrapper(HttpContext.Current);
-            }
-        }
+        private new HttpContextBase Context => _context ?? new HttpContextWrapper(HttpContext.Current);
 
-        private new Control BindingContainer {
-            get {
-                return _bindingContainer ?? base.BindingContainer;
-            }
-        }
+        private new Control BindingContainer => _bindingContainer ?? base.BindingContainer;
 
-        public GeneratedImage() {
+        public GeneratedImage()
+        {
             Parameters = new List<ImageParameter>();
         }
 
-        internal GeneratedImage(HttpContextBase context, Control bindingContainer)
-            : this() {
+        internal GeneratedImage(HttpContextBase context, Control bindingContainer) : this()
+        {
             _context = context;
             _bindingContainer = bindingContainer;
         }
 
-        protected override void OnDataBinding(EventArgs e) {
+        protected override void OnDataBinding(EventArgs e)
+        {
             base.OnDataBinding(e);
 
             Control bindingContainer = BindingContainer;
-            foreach (var parameter in Parameters) {
+            foreach (var parameter in Parameters)
+            {
                 parameter.BindingContainer = bindingContainer;
                 parameter.DataBind();
             }
         }
 
-        protected override void OnPreRender(EventArgs e) {
+        protected override void OnPreRender(EventArgs e)
+        {
             base.OnPreRender(e);
 
-            if (DesignMode) {
+            if (DesignMode)
+            {
                 return;
             }
 
             ImageUrl = BuildImageUrl();
         }
 
-        private string BuildImageUrl() {
-            StringBuilder stringBuilder = new StringBuilder();
+        private string BuildImageUrl()
+        {
+            var stringBuilder = new StringBuilder();
             stringBuilder.Append(ImageHandlerUrl);
 
-            bool paramAlreadyAdded = false;
+            var paramAlreadyAdded = false;
 
-            foreach (var parameter in Parameters) {
+            foreach (var parameter in Parameters)
+            {
                 AddQueryStringParameter(stringBuilder, paramAlreadyAdded, parameter.Name, parameter.Value);
                 paramAlreadyAdded = true;
             }
 
-            if (Timestamp != null) {
-                string timeStamp = Timestamp.Trim();
-                if (!String.IsNullOrEmpty(timeStamp)) {
-                    AddQueryStringParameter(stringBuilder, paramAlreadyAdded, TimestampField, timeStamp);
-                    paramAlreadyAdded = true;
-                }
+            string timeStamp = Timestamp?.Trim();
+            if (!string.IsNullOrEmpty(timeStamp))
+            {
+                AddQueryStringParameter(stringBuilder, paramAlreadyAdded, TimestampField, timeStamp);
             }
 
             return stringBuilder.ToString();
         }
 
-        private static void AddQueryStringParameter(StringBuilder stringBuilder, bool paramAlreadyAdded, string name, string value) {
-            if (paramAlreadyAdded) {
-                stringBuilder.Append('&');
-            }
-            else {
-                stringBuilder.Append('?');
-            }
+        private static void AddQueryStringParameter(StringBuilder stringBuilder, bool paramAlreadyAdded, string name, string value)
+        {
+            stringBuilder.Append(paramAlreadyAdded ? '&' : '?');
             stringBuilder.Append(HttpUtility.UrlEncode(name));
             stringBuilder.Append('=');
             stringBuilder.Append(HttpUtility.UrlEncode(value));

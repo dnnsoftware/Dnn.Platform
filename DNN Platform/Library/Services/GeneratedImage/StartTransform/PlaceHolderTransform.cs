@@ -4,6 +4,9 @@ using System.Drawing.Text;
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    /// <summary>
+    /// Placeholder ImageTransform class
+    /// </summary>
 	public class PlaceholderTransform : ImageTransform
 	{
 		/// <summary>
@@ -31,12 +34,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		/// </summary>
 		public string Text { get; set; }
 
-		public override string UniqueString
-		{
-			get { return base.UniqueString + this.Width.ToString() + "-" + this.Height.ToString() + "-" + this.Color.ToString() + "-" + this.BackColor.ToString() + "-" + this.Text; }
-		}
+        /// <summary>
+        /// Provides an Unique String for the image transformation
+        /// </summary>
+        public override string UniqueString => base.UniqueString + Width + "-" + Height + "-" + Color + "-" + BackColor + "-" + Text;
 
-		public PlaceholderTransform()
+        public PlaceholderTransform()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.HighQuality;
@@ -49,7 +52,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 			Text = "";
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image returning a placeholder image
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
 			// Check dimensions
 			if (Width == 0 && Height > 0)
@@ -57,13 +65,13 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 			if (Width > 0 && Height == 0)
 				Height = Width;
 			
-			Bitmap bitmap = new Bitmap(Width, Height);
+			var bitmap = new Bitmap(Width, Height);
 			Brush backColorBrush = new SolidBrush(BackColor);
 			Brush colorBrush = new SolidBrush(Color);
-			Pen colorPen = new Pen(Color,2);
-			string text = (string.IsNullOrEmpty(this.Text) ? string.Format("{0}x{1}", this.Width, this.Height) : this.Text);
+			var colorPen = new Pen(Color,2);
+			var text = string.IsNullOrEmpty(Text) ? $"{Width}x{Height}" : Text;
 
-			using (Graphics objGraphics = Graphics.FromImage(bitmap))
+			using (var objGraphics = Graphics.FromImage(bitmap))
 			{
 				// Initialize graphics
 				objGraphics.Clear(Color.White);
@@ -78,7 +86,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 				objGraphics.DrawRectangle(colorPen,1,1,Width-3,Height-3);
 
 				// Determine fontsize
-				int fontSize = 13;
+				var fontSize = 13;
 				if (Width < 101)
 					fontSize = 8;
 				else if (Width < 151)
@@ -93,17 +101,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 				// Draw text on image
 				// Use rectangle for text and align text to center of rectangle
 				var font = new Font("Arial", fontSize, FontStyle.Bold);
-				StringFormat stringFormat = new StringFormat();
-				stringFormat.Alignment = StringAlignment.Center;
-				stringFormat.LineAlignment = StringAlignment.Center;
+			    var stringFormat = new StringFormat
+			    {
+			        Alignment = StringAlignment.Center,
+			        LineAlignment = StringAlignment.Center
+			    };
 
-				Rectangle rectangle = new Rectangle(5, 5, Width - 10, Height - 10);
+			    var rectangle = new Rectangle(5, 5, Width - 10, Height - 10);
 				objGraphics.DrawString(text, font, colorBrush, rectangle, stringFormat);
 
 				// Save indicator to file
 				objGraphics.Flush();
 			}
-			return (Image)bitmap;
+			return bitmap;
 		}
 	}
 }

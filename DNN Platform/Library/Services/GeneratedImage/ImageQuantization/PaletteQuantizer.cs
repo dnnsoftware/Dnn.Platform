@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <summary>
 		/// Lookup table for colors
 		/// </summary>
-		private Hashtable _colorMap ;
+		private readonly Hashtable _colorMap ;
 
 		/// <summary>
 		/// List of all colors in the palette

@@ -553,6 +553,61 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
                                                        sortAscending, propertyName, propertyValue);
         }
+        
+        /// <summary>
+        /// Return User Profile Picture relative Url
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="width">Width in pixel</param>
+        /// <param name="height">Height in pixel</param>
+        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32)
+        /// </remarks>
+        public string GetUserProfilePictureUrl(int userId, int width, int height)
+        {
+            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
+
+            var childPortalAlias = GetChildPortalAlias();
+            var cdv = GetProfilePictureCdv(userId);
+
+            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+                ? childPortalAlias + url + cdv
+                : Globals.ApplicationPath + childPortalAlias + url + cdv;
+        }
+
+        private static string GetChildPortalAlias()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentAlias = settings.PortalAlias.HTTPAlias;
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+            return childPortalAlias;
+        }
+
+        private static string GetProfilePictureCdv(int userId)
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var userInfo = GetUserById(settings.PortalId, userId);
+            if (userInfo?.Profile == null)
+            {
+                return string.Empty;
+            }
+
+            var cdv = string.Empty;
+            var photoProperty = userInfo.Profile.GetProperty("Photo");
+
+            int photoFileId;
+            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
+            {
+                var photoFile = FileManager.Instance.GetFile(photoFileId);
+                if (photoFile != null)
+                {
+                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
+                }
+            }
+            return cdv;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

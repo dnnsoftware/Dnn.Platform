@@ -3,20 +3,22 @@ using System.Drawing.Drawing2D;
 
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
+    /// <summary>
+    /// Brightness ImageTransform class
+    /// </summary>
 	public class ImageBrightnessTransform : ImageTransform
 	{
 		/// <summary>
 		/// Sets the brightness value. Defaultvalue is 0. Range is -255 .. 255
 		/// </summary>
 		public int Brightness { get; set; }
+        
+        /// <summary>
+        /// Provides an Unique String for this class
+        /// </summary>
+		public override string UniqueString => base.UniqueString + "-" + Brightness;
 
-
-		public override string UniqueString
-		{
-			get { return base.UniqueString + "-" + this.Brightness.ToString(); }
-		}
-
-		public ImageBrightnessTransform()
+        public ImageBrightnessTransform()
 		{
 			InterpolationMode = InterpolationMode.HighQualityBicubic;
 			SmoothingMode = SmoothingMode.HighQuality;
@@ -25,10 +27,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 			Brightness = 0;
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image applying a brightness image transformation
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
-			Bitmap temp = (Bitmap)image;
-			Bitmap bmap = (Bitmap)temp.Clone();
+			var temp = (Bitmap)image;
+			var bmap = (Bitmap)temp.Clone();
 			if (Brightness < -255) Brightness = -255;
 			if (Brightness > 255) Brightness = 255;
 			Color c;

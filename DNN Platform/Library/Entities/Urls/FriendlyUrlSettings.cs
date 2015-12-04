@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return _doNotRewriteRegex ??
                        (_doNotRewriteRegex =
-                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/__browserLink/"));
+                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/"));
             }
             internal set { _doNotRewriteRegex = value; }
         }

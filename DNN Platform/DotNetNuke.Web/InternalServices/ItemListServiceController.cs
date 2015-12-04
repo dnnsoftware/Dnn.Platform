@@ -1343,7 +1343,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
                     }).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));

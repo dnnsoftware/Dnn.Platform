@@ -3,32 +3,39 @@ using System.Drawing.Drawing2D;
 
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
+    /// <summary>
+    /// Constrast ImageTransform class
+    /// </summary>
 	public class ImageContrastTransform : ImageTransform
 	{
 		/// <summary>
 		/// Sets the contrast value. Defaultvalue is 0. Range is -100 .. 100
 		/// </summary>
 		public double Contrast { get; set; }
+        
+        /// <summary>
+        /// Provides an Unique String for this class
+        /// </summary>
+        public override string UniqueString => base.UniqueString + "-" + Contrast;
 
-
-		public override string UniqueString
-		{
-			get { return base.UniqueString + "-" + this.Contrast.ToString(); }
-		}
-
-		public ImageContrastTransform()
+	    public ImageContrastTransform()
 		{
             InterpolationMode = InterpolationMode.HighQualityBicubic;
             SmoothingMode = SmoothingMode.HighQuality;
             PixelOffsetMode = PixelOffsetMode.HighQuality;
             CompositingQuality = CompositingQuality.HighQuality;
-			this.Contrast = 0;
+			Contrast = 0;
 		}
 
-		public override Image ProcessImage(Image image)
+        /// <summary>
+        /// Processes an input image applying a contrast image transformation
+        /// </summary>
+        /// <param name="image">Input image</param>
+        /// <returns>Image result after image transformation</returns>
+        public override Image ProcessImage(Image image)
 		{
-			Bitmap temp = (Bitmap)image;
-			Bitmap bmap = (Bitmap)temp.Clone();
+			var temp = (Bitmap)image;
+			var bmap = (Bitmap)temp.Clone();
 			if (Contrast < -100) Contrast = -100;
 			if (Contrast > 100) Contrast = 100;
 			Contrast = (100.0 + Contrast) / 100.0;
