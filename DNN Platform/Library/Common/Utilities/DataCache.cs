@@ -215,6 +215,11 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority ResourceFileLookupDictionaryCachePriority = CacheItemPriority.NotRemovable;
         public const int ResourceFileLookupDictionaryTimeOut = 200;
 
+        public const string SpaModulesContentHtmlFileCacheKey = "SpaModulesContentHtmlFile|{0}";
+        public const string SpaModulesFileExistsCacheKey = "SpaModulesFileExists|{0}";
+        public const CacheItemPriority SpaModulesHtmlFileCachePriority = CacheItemPriority.Normal;
+        public const int SpaModulesHtmlFileTimeOut = 200;
+
         public const string SkinsCacheKey = "GetSkins{0}";
 
         public const string BannersCacheKey = "Banners:{0}:{1}:{2}";

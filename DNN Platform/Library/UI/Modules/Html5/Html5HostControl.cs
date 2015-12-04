@@ -23,6 +23,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Entities.Modules;
@@ -51,22 +52,19 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 //Check if css file exists
                 var cssFile = Path.ChangeExtension(_html5File, ".css");
-                if (File.Exists(Page.Server.MapPath(cssFile)))
+                if (FileExists(cssFile))
                 {
                     ClientResourceManager.RegisterStyleSheet(Page, cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 //Check if js file exists
                 var jsFile = Path.ChangeExtension(_html5File, ".js");
-                if (File.Exists(Page.Server.MapPath(jsFile)))
+                if (FileExists(jsFile))
                 {
                     ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
                 }
 
-                using (var reader = new StreamReader(Page.Server.MapPath(_html5File)))
-                {
-                    _fileContent = reader.ReadToEnd();
-                }
+                _fileContent = GetFileContent(_html5File);
 
                 ModuleActions = new ModuleActionCollection();
                 var tokenReplace = new Html5ModuleTokenReplace(Page, _html5File, ModuleContext, ModuleActions);
@@ -75,6 +73,32 @@ namespace DotNetNuke.UI.Modules.Html5
 
             //Register for Services Framework
             ServicesFramework.Instance.RequestAjaxScriptSupport();
+        }
+
+        private string GetFileContent(string filepath)
+        {
+            var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
+            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey,
+                                                                DataCache.SpaModulesHtmlFileTimeOut,
+                                                                DataCache.SpaModulesHtmlFileCachePriority),
+                                                                        c => GetFileContentInternal(filepath));
+        }
+
+        private bool FileExists(string filepath)
+        {
+            var cacheKey = string.Format(DataCache.SpaModulesFileExistsCacheKey, filepath);
+            return CBO.GetCachedObject<bool>(new CacheItemArgs(cacheKey,
+                                                                DataCache.SpaModulesHtmlFileTimeOut,
+                                                                DataCache.SpaModulesHtmlFileCachePriority),
+                                                                        c => File.Exists(Page.Server.MapPath(filepath)));
+        }
+
+        private object GetFileContentInternal(string filepath)
+        {
+            using (var reader = new StreamReader(Page.Server.MapPath(filepath)))
+            {
+                return reader.ReadToEnd();
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
