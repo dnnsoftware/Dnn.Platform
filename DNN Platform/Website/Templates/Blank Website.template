@@ -1134,7 +1134,7 @@
       <skinsrc>[G]Skins/Gravity/3-Col-Social.ascx</skinsrc>
       <startdate>0001-01-01T00:00:00</startdate>
       <name>My Profile</name>
-      <title>My Profile</title>
+      <title>[Tab.MyProfile.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -1655,7 +1655,7 @@
       <skinsrc>[G]Skins/Gravity/3-Col-Social.ascx</skinsrc>
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Friends</name>
-      <title>My Friends</title>
+      <title>[Tab.MyFriends.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2176,7 +2176,7 @@
       <skinsrc>[G]Skins/Gravity/3-Col-Social.ascx</skinsrc>
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Messages</name>
-      <title>My Messages</title>
+      <title>[Tab.MyMessages.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2664,7 +2664,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Admin</name>
-      <title>Website Administration</title>
+      <title>[Tab.PortalAdministration.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2788,7 +2788,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Site Settings</name>
-      <title>Site Settings</title>
+      <title>[Tab.SiteSettings.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2876,7 +2876,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Extensions</name>
-      <title>Extensions</title>
+      <title>[Tab.Extensions.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -2964,7 +2964,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Security Roles</name>
-      <title>Security Roles</title>
+      <title>[Tab.SecurityRoles.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3052,7 +3052,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>User Accounts</name>
-      <title>User Accounts</title>
+      <title>[Tab.UserAccounts.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3226,7 +3226,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Taxonomy</name>
-      <title>Taxonomy</title>
+      <title>[Tab.Taxonomy.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3475,7 +3475,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Search Results</name>
-      <title>Search Results</title>
+      <title>[Tab.SearchResultsCE.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3756,7 +3756,7 @@
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
       <name>Dynamic Content Type Manager</name>
-      <title>Dynamic Content Type Manager</title>
+      <title>[Tab.DCCManager.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
