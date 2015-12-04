@@ -5293,6 +5293,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.16":
                             UpgradeToVersion80016();
                             break;
+                        case "8.0.0.26":
+                            UpgradeToVersion80026();
+                            break;
                     }
                 }
             }
@@ -5391,6 +5394,11 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Skin Designer", "Module");
             
             RemoveGettingStartedPages();
+        }
+
+        private static void UpgradeToVersion80026()
+        {
+            UninstallPackage("DotNetNuke.Banners", "Module");
         }
 
         private static int MaxIncremental(Version version)
