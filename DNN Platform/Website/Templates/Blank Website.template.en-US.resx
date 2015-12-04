@@ -201,4 +201,7 @@
     <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
     <value>Dynamic Content Type Manager</value>
   </data>
+  <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
 </root>
