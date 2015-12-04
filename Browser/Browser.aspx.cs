@@ -2925,118 +2925,100 @@ namespace DNNConnect.CKEditorProvider.Browser
         private void ResizeNow_Click(object sender, EventArgs e)
         {
             var filePath = Path.Combine(lblCurrentDir.Text, lblFileName.Text);
-
             var extension = Path.GetExtension(filePath);
-
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-            var oldImage = Image.FromStream(fileStream);
-
             string imageFullPath;
 
-            int newWidth, newHeight;
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var oldImage = Image.FromStream(fileStream);
+                int newWidth, newHeight;
 
-            try
-            {
-                newWidth = int.Parse(txtWidth.Text);
-            }
-            catch (Exception)
-            {
-                newWidth = oldImage.Width;
-            }
-
-            try
-            {
-                newHeight = int.Parse(txtHeight.Text);
-            }
-            catch (Exception)
-            {
-                newHeight = oldImage.Height;
-            }
-
-            if (!string.IsNullOrEmpty(txtThumbName.Text))
-            {
-                imageFullPath = Path.Combine(lblCurrentDir.Text, txtThumbName.Text + extension);
-            }
-            else
-            {
-                imageFullPath = Path.Combine(
-                    lblCurrentDir.Text,
-                    string.Format("{0}_resized{1}", Path.GetFileNameWithoutExtension(filePath), extension));
-            }
-
-            // Create an Resized Thumbnail
-            if (chkAspect.Checked)
-            {
-                var finalHeight = Math.Abs(oldImage.Height * newWidth / oldImage.Width);
-
-                if (finalHeight > newHeight)
+                if (!int.TryParse(txtWidth.Text, out newWidth))
                 {
-                    // Height resize if necessary
-                    newWidth = oldImage.Width * newHeight / oldImage.Height;
-                    finalHeight = newHeight;
+                    newWidth = oldImage.Width;
                 }
 
-                newHeight = finalHeight;
-            }
-
-            var counter = 0;
-
-            while (File.Exists(imageFullPath))
-            {
-                counter++;
-
-                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(imageFullPath);
-
-                imageFullPath = Path.Combine(
-                    lblCurrentDir.Text,
-                    string.Format("{0}_{1}{2}", fileNameWithoutExtension, counter, Path.GetExtension(imageFullPath)));
-            }
-
-            // Add Compression to Jpeg Images
-            if (oldImage.RawFormat.Equals(ImageFormat.Jpeg))
-            {
-                ImageCodecInfo jgpEncoder = GetEncoder(oldImage.RawFormat);
-
-                Encoder myEncoder = Encoder.Quality;
-                EncoderParameters encodParams = new EncoderParameters(1);
-                EncoderParameter encodParam = new EncoderParameter(myEncoder, long.Parse(dDlQuality.SelectedValue));
-                encodParams.Param[0] = encodParam;
-
-                using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                if (!int.TryParse(txtHeight.Text, out newHeight))
                 {
-                    using (Graphics g = Graphics.FromImage(dst))
+                    newHeight = oldImage.Height;
+                }
+
+                if (!string.IsNullOrEmpty(txtThumbName.Text))
+                {
+                    imageFullPath = Path.Combine(lblCurrentDir.Text, txtThumbName.Text + extension);
+                }
+                else
+                {
+                    imageFullPath = Path.Combine(
+                        lblCurrentDir.Text,
+                        string.Format("{0}_resized{1}", Path.GetFileNameWithoutExtension(filePath), extension));
+                }
+
+                // Create an Resized Thumbnail
+                if (chkAspect.Checked)
+                {
+                    var finalHeight = Math.Abs(oldImage.Height*newWidth/oldImage.Width);
+
+                    if (finalHeight > newHeight)
                     {
-                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                        g.DrawImage(oldImage, 0, 0, dst.Width, dst.Height);
+                        // Height resize if necessary
+                        newWidth = oldImage.Width*newHeight/oldImage.Height;
+                        finalHeight = newHeight;
                     }
 
-                    dst.Save(imageFullPath, jgpEncoder, encodParams);
+                    newHeight = finalHeight;
                 }
-            }
-            else
-            {
-                // Finally Create a new Resized Image
-                Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
-                oldImage.Dispose();
 
-                newImage.Save(imageFullPath);
-                newImage.Dispose();
+                var counter = 0;
+
+                while (File.Exists(imageFullPath))
+                {
+                    counter++;
+
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(imageFullPath);
+
+                    imageFullPath = Path.Combine(
+                        lblCurrentDir.Text,
+                        string.Format("{0}_{1}{2}", fileNameWithoutExtension, counter, Path.GetExtension(imageFullPath)));
+                }
+
+                // Add Compression to Jpeg Images
+                if (oldImage.RawFormat.Equals(ImageFormat.Jpeg))
+                {
+                    ImageCodecInfo jgpEncoder = GetEncoder(oldImage.RawFormat);
+
+                    Encoder myEncoder = Encoder.Quality;
+                    EncoderParameters encodParams = new EncoderParameters(1);
+                    EncoderParameter encodParam = new EncoderParameter(myEncoder, long.Parse(dDlQuality.SelectedValue));
+                    encodParams.Param[0] = encodParam;
+
+                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                    {
+                        using (Graphics g = Graphics.FromImage(dst))
+                        {
+                            g.SmoothingMode = SmoothingMode.AntiAlias;
+                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                            g.DrawImage(oldImage, 0, 0, dst.Width, dst.Height);
+                        }
+
+                        dst.Save(imageFullPath, jgpEncoder, encodParams);
+                    }
+                }
+                else
+                {
+                    // Finally Create a new Resized Image
+                    Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
+                    oldImage.Dispose();
+
+                    newImage.Save(imageFullPath);
+                    newImage.Dispose();
+                }
             }
 
             // Add new file to database
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(lblCurrentDir.Text, _portalSettings);
 
             FolderManager.Instance.Synchronize(_portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
-
-            /*else if (OldImage.RawFormat.Equals(ImageFormat.Gif))
-            {
-                // Finally Create a new Resized Gif Image
-                GifHelper gifHelper = new GifHelper();
-
-                gifHelper.GetThumbnail(sFilePath,new Size(iNewWidth, iNewHeight), sImageFullPath);
-            }*/
 
             // Hide Image Editor Panels
             panImagePreview.Visible = false;
