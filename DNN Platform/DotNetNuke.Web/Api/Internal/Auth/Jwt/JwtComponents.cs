@@ -21,7 +21,7 @@
 
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth
+namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
 {
     // ReSharper disable InconsistentNaming
 
@@ -32,8 +32,10 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     {
         Unsupported,
         HS256,
+        /*
         HS384,
         HS512
+         */
     }
 
     /// <summary>

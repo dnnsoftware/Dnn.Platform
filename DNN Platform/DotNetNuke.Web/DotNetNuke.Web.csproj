@@ -175,8 +175,11 @@
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
-    <Compile Include="Api\Internal\Auth\JwtAuthMessageHandler.cs" />
-    <Compile Include="Api\Internal\Auth\JwtComponents.cs" />
+    <Compile Include="Api\Internal\Auth\Jwt\JwtAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\Auth\Jwt\JwtComponents.cs" />
+    <Compile Include="Api\Internal\Auth\Jwt\DenyJwtAttribute.cs" />
+    <Compile Include="Api\RequireJwtAttribute.cs" />
+    <Compile Include="Api\Internal\Auth\Jwt\JwtUtil.cs" />
     <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
@@ -206,6 +209,9 @@
     <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
     <Compile Include="Components\LocalizationHelper.cs" />
+    <Compile Include="Models\ModuleDetail.cs" />
+    <Compile Include="Models\ModuleInstance.cs" />
+    <Compile Include="Models\SiteDetail.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
     <Compile Include="InternalServices\CountryRegionController.cs" />
@@ -213,6 +219,7 @@
     <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
     <Compile Include="InternalServices\MobileController.cs" />
+    <Compile Include="InternalServices\MobileHelperController.cs" />
     <Compile Include="InternalServices\NotificationDTO.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
@@ -230,6 +237,7 @@
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
     <Compile Include="InternalServices\Views\Search\BasicView.cs" />
     <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
+    <Compile Include="Models\TabModule.cs" />
     <Compile Include="Mvp\ModuleSettingsPresenterOfT.cs" />
     <Compile Include="Mvp\ISettingsViewOfT.cs" />
     <Compile Include="Mvp\ProfileModuleViewBase.cs">

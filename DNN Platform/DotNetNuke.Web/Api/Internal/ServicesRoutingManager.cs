@@ -34,6 +34,7 @@ using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 
 namespace DotNetNuke.Web.Api.Internal
 {

@@ -22,7 +22,7 @@
 using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -40,12 +40,16 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
         {
-            var token = JwtAuthMessageHandler.LoginUser(Request, loginData);
-            return string.IsNullOrEmpty(token) ? (IHttpActionResult)Unauthorized() : Ok(new { token });
+            var tuple = JwtUtil.LoginUser(Request, loginData);
+
+            return tuple == null
+                ? (IHttpActionResult)Unauthorized()
+                : Ok(new { name = tuple.Item1, token = tuple.Item2 });
         }
 
         // Test API Method 1
         [HttpGet]
+        [RequireJwt]
         public IHttpActionResult Hello()
         {
             var identity = Thread.CurrentPrincipal.Identity;
@@ -56,6 +60,7 @@ namespace DotNetNuke.Web.InternalServices
 
         // Test API Method 2
         [HttpPost]
+        [RequireJwt]
         [ValidateAntiForgeryToken]
         public IHttpActionResult HelloPost(PostDate something)
         {

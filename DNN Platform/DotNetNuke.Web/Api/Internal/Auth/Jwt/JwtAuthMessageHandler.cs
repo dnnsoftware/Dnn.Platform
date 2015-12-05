@@ -20,13 +20,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -34,7 +32,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth
+namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
 {
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
@@ -42,18 +40,9 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     /// <para>- JTW standard https://tools.ietf.org/html/rfc7519 </para>
     /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/ </para>
     /// </summary>
-    public class JwtAuthMessageHandler : AuthMessageHandlerBase
+    internal class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
-
-        private const string AuthScheme = "Bearer";
-        private const string DefaultType = "JWT";
-        private const string DefaultAlgorithm = "HMACSHA256";
-        private static readonly Encoding TextEncoder = Encoding.UTF8;
-
-        private const int ClockSkew = 300; // in seconds; default for clock skew
-        private const int TimeToLive = 3600; // in seconds; default token time is 1 hour
-        private static readonly DateTime EpochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -69,6 +58,16 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
+        public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsJwt(response.RequestMessage))
+            {
+                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(JwtUtil.AuthScheme));
+            }
+
+            return base.OnOutboundResponse(response, cancellationToken);
+        }
+
         private static bool SupportsJwt(HttpRequestMessage request)
         {
             return !IsXmlHttpRequest(request);
@@ -82,7 +81,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 if (!string.IsNullOrEmpty(username))
                 {
                     if (Logger.IsTraceEnabled) Logger.TraceFormat("Authenticated user {0} in portal {1}", username, portalId);
-                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, DefaultType), null), request);
+                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, JwtUtil.JwtSchemeName), null), request);
                 }
             }
             catch (Exception ex)
@@ -98,29 +97,34 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return null;
 
             var parts = authorization.Split(':');
-            if (parts.Length < 3)
+            if (parts.Length != 3)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:payload:signature] parts at least");
+                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:payload:signature] parts exactly");
                 return null;
             }
 
-            var header = JsonConvert.DeserializeObject<JwtHeader>(DecodeBase64(parts[0]));
+            var header = JsonConvert.DeserializeObject<JwtHeader>(JwtUtil.DecodeBase64(parts[0]));
             var algorithm = ValidateTokenHeader(header);
             if (algorithm == JwtSupportedAlgorithms.Unsupported)
                 return null;
 
-            var payload = JsonConvert.DeserializeObject<DnnJwtPayload>(DecodeBase64(parts[1]));
+            var payload = JsonConvert.DeserializeObject<DnnJwtPayload>(JwtUtil.DecodeBase64(parts[1]));
             var userInfo = ValidateTokenPayload(payload, portalId);
             if (userInfo == null)
                 return null;
 
-            var secret = ObtainSecret(payload, userInfo);
+            var secret = JwtUtil.ObtainSecret(payload, userInfo);
             if (!ValidateSignature(algorithm, secret, parts))
                 return null;
 
             return payload.Username;
         }
 
+        /// <summary>
+        /// Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.
+        /// </summary>
+        /// <param name="authHdr">The request auhorization header.</param>
+        /// <returns>The JWT passed in the request; otherwise, it returns null.</returns>
         public static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
         {
             if (authHdr == null)
@@ -129,9 +133,9 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return null;
             }
 
-            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(authHdr.Scheme, JwtUtil.AuthScheme, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + AuthScheme);
+                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + JwtUtil.AuthScheme);
                 return null;
             }
 
@@ -152,7 +156,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return null;
             }
 
-            if (DecodeBase64(parts[0]).IndexOf("\"JWT\"", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (JwtUtil.DecodeBase64(parts[0]).IndexOf("\"JWT\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("This is not a JWT autentication scheme.");
                 return null;
@@ -163,7 +167,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private static JwtSupportedAlgorithms ValidateTokenHeader(JwtHeader header)
         {
-            if (!DefaultType.Equals(header.Type, StringComparison.OrdinalIgnoreCase))
+            if (!JwtUtil.JwtSchemeName.Equals(header.Type, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication type " + header.Type);
                 return JwtSupportedAlgorithms.Unsupported;
@@ -189,8 +193,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return null;
             }
 
-            var validFrom = EpochStart.AddSeconds(payload.NotBefore);
-            var validTill = EpochStart.AddSeconds(payload.Expiration);
+            var validFrom = JwtUtil.EpochStart.AddSeconds(payload.NotBefore);
+            var validTill = JwtUtil.EpochStart.AddSeconds(payload.Expiration);
             var now = DateTime.UtcNow;
 
             if (now < validFrom || now > validTill)
@@ -228,20 +232,22 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             switch (algorithm)
             {
                 case JwtSupportedAlgorithms.HS256:
-                    algName = DefaultAlgorithm;
+                    algName = JwtUtil.DefaultJwtAlgorithm;
                     break;
+                /*
                 case JwtSupportedAlgorithms.HS384:
                     algName = "HMACSHA384";
                     break;
                 case JwtSupportedAlgorithms.HS512:
                     algName = "HMACSHA512";
                     break;
+                 */
                 default:
                     if (Logger.IsTraceEnabled) Logger.Trace("Invalid algorithm value " + algorithm);
                     return false;
             }
 
-            var computed = ComputeSignature(algName, secret, tokenParts.Take(tokenParts.Length - 1));
+            var computed = JwtUtil.ComputeSignature(algName, secret, tokenParts.Take(tokenParts.Length - 1));
             var tokenSig = tokenParts.Last();
             if (tokenSig.Equals(computed)) return true;
             if (Logger.IsTraceEnabled)
@@ -251,113 +257,6 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                     Environment.NewLine + "  Computed signature = " + computed);
             }
             return false;
-        }
-
-        private static string ComputeSignature(string algorithmName, byte[] secret, IEnumerable<string> tokenParts)
-        {
-            using (var enc = HMAC.Create(algorithmName))
-            {
-                enc.Key = secret;
-                var body = TextEncoder.GetBytes(string.Join(".", tokenParts));
-                var sig =  Convert.ToBase64String(enc.ComputeHash(body)).TrimEnd('=');
-                //if (Logger.IsTraceEnabled)
-                //{
-                //    Logger.Trace("Authorization Info:" +
-                //        Environment.NewLine + "  SECRET => " + TextEncoder.GetString(secret) +
-                //        Environment.NewLine + "  BODY   => " + string.Join(".", tokenParts) +
-                //        Environment.NewLine + "  SIG.   => " + sig);
-                //}
-                return sig;
-            }
-        }
-
-        private static byte[] ObtainSecret(DnnJwtPayload payload, UserInfo userInfo)
-        {
-            //TODO: change this to a more secure scheme after the proof of concept is established
-            // This is just a proof of concept; the secret should contain components that
-            // are not easily predicted and passed with the request of each session. It is better
-            // to create and encrypt such keys and make them accessible only to the application.
-            // moreover, we canuser the hashed password in the database as part of the secret.
-            var stext = string.Join(":", payload.SessionId, payload.PortalId.ToString("x8"),
-                userInfo.UserID.ToString("x8"), userInfo.CreatedOnDate.ToUniversalTime().ToString("O"));
-            return TextEncoder.GetBytes(stext);
-        }
-
-        internal static string DecodeBase64(string b64Str)
-        {
-            // fix Base64 string padding
-            var mod = b64Str.Length % 4;
-            if (mod != 0) b64Str += new string('=', 4 - mod);
-            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
-        }
-
-        internal static string EncodeBase64(string plainStr)
-        {
-            return EncodeBase64(TextEncoder.GetBytes(plainStr)).TrimEnd('=');
-        }
-
-        internal static string EncodeBase64(byte[] data)
-        {
-            return Convert.ToBase64String(data).TrimEnd('=');
-        }
-
-        internal static string LoginUser(HttpRequestMessage request, LoginData loginData)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null)
-            {
-                Logger.Trace("portalSettings = null");
-                return null;
-            }
-
-            var status = UserLoginStatus.LOGIN_FAILURE;
-            var ipAddress = request.GetIPAddress() ?? "";
-            var user = UserController.ValidateUser(portalSettings.PortalId,
-                loginData.Username, loginData.Password, "DNN", "", AuthScheme, ipAddress, ref status);
-
-            if (user == null)
-            {
-                Logger.Trace("user = null");
-                return null;
-            }
-
-            var valid =
-                status == UserLoginStatus.LOGIN_SUCCESS ||
-                status == UserLoginStatus.LOGIN_SUPERUSER ||
-                status == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD ||
-                status == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
-
-            if (!valid)
-            {
-                Logger.Trace("login status = " + status);
-                return null;
-            }
-
-            SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(loginData.Username, DefaultType), null), request);
-
-            var notBefore = (long)(DateTime.UtcNow - EpochStart).TotalSeconds;
-            var payload = new DnnJwtPayload
-            {
-                Username = loginData.Username,
-                Issuer = portalSettings.PortalAlias.HTTPAlias,
-                NotBefore = notBefore - ClockSkew, // this is necessary in a web farm
-                Expiration = notBefore + TimeToLive,
-                SessionId = Guid.NewGuid().ToString("N"),
-                PortalId = user.PortalID
-            };
-
-            var header = new JwtHeader
-            {
-                Type = DefaultType,
-                Algorithm = JwtSupportedAlgorithms.HS256.ToString()
-            };
-
-            var parts = new object[] { header, payload }
-                .Select(JsonConvert.SerializeObject).Select(EncodeBase64).ToArray();
-
-            var secret = ObtainSecret(payload, user);
-            var signature = ComputeSignature(DefaultAlgorithm, secret, parts);
-            return string.Join(":", parts.Union(new[] { signature }));
         }
     }
 }

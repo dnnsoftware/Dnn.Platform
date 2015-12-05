@@ -22,7 +22,7 @@
 using System;
 using System.Linq;
 using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 
 namespace DotNetNuke.Web.Api
 {
