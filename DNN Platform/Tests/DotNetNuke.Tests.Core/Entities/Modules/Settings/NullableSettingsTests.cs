@@ -20,13 +20,13 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             public string StringProperty { get; set; } = "Default Value";
 
             [PortalSetting]
-            public int? IntegerProperty { get; set; }
+            public int? IntegerProperty { get; set; } = 500;
 
             [ModuleSetting]
-            public DateTime? DateTimeProperty { get; set; }
+            public DateTime? DateTimeProperty { get; set; } = DateTime.MaxValue;
 
             [TabModuleSetting]
-            public TimeSpan? TimeSpanProperty { get; set; }
+            public TimeSpan? TimeSpanProperty { get; set; } = TimeSpan.FromHours(12);
         }
 
         public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings> { }
