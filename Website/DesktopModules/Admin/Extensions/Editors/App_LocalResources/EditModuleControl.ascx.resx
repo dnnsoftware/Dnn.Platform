@@ -154,7 +154,7 @@
     <value>Choose the type of the control from the list.</value>
   </data>
   <data name="Skin.Text" xml:space="preserve">
-    <value>Skin Object</value>
+    <value>Theme Object</value>
   </data>
   <data name="Anonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
