@@ -20,6 +20,8 @@
     border-bottom: 0 none;
     height: 35px;
     padding: 0;
+    -moz-padding-start: 0;
+    -webkit-padding-start: 0;
 }
 
 #dnnModuleDigitalAssetsLeftPane ul.dnnAdminTabNav li {    
