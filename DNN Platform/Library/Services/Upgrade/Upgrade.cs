@@ -5399,7 +5399,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion80026()
         {
-            FixTabsMissingLocalizedTitle();
+            FixTabsMissingLocalizedFields();
         }
 
         private static int MaxIncremental(Version version)
@@ -5808,11 +5808,11 @@ namespace DotNetNuke.Services.Upgrade
             return activationResult;
         }
 
-        private static void FixTabsMissingLocalizedTitle()
+        private static void FixTabsMissingLocalizedFields()
         {
             var portals = PortalController.Instance.GetPortals();
-            var resourcesDict = new Dictionary<string, XmlDocument>();
-            var titleRegex = new Regex("^\\[Tab[\\w\\.]+?\\.Text\\]$", RegexOptions.Compiled);
+            IDictionary<string, XmlDocument> resourcesDict = new Dictionary<string, XmlDocument>();
+            var localizeFieldRegex = new Regex("^\\[Tab[\\w\\.]+?\\.Text\\]$", RegexOptions.Compiled);
             foreach (PortalInfo portal in portals)
             {
                 if (portal.AdminTabId > Null.NullInteger)
@@ -5820,35 +5820,54 @@ namespace DotNetNuke.Services.Upgrade
                     var adminTabs = TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID);
                     foreach (var tab in adminTabs)
                     {
-                        if (!string.IsNullOrEmpty(tab.Title) && titleRegex.IsMatch(tab.Title))
+                        var tabChanged = false;
+                        if (!string.IsNullOrEmpty(tab.Title) && localizeFieldRegex.IsMatch(tab.Title))
                         {
-                            var xmlDocument = FindLanguageXmlDocument(portal.CultureCode, ref resourcesDict);
-                            if (xmlDocument != null)
-                            {
-                                var key = tab.Title.Substring(1, tab.Title.Length - 2);
-                                var localizedTitleNode = xmlDocument.SelectSingleNode("//data[@name=\"" + key + "\"]");
-                                if (localizedTitleNode != null)
-                                {
-                                    var valueNode = localizedTitleNode.SelectSingleNode("value");
-                                    if (valueNode != null)
-                                    {
-                                        var title = valueNode.InnerText;
+                            tab.Title = FindLocalizedContent(tab.Title, portal.CultureCode, ref resourcesDict);
+                            tabChanged = true;
+                        }
 
-                                        if (!string.IsNullOrEmpty(title))
-                                        {
-                                            tab.Title = title;
-                                            TabController.Instance.UpdateTab(tab);
-                                        }
-                                    }
-                                }
-                            }
+                        if (!string.IsNullOrEmpty(tab.Description) && localizeFieldRegex.IsMatch(tab.Description))
+                        {
+                            tab.Description = FindLocalizedContent(tab.Description, portal.CultureCode, ref resourcesDict);
+                            tabChanged = true;
+                        }
+
+                        if (tabChanged)
+                        {
+                            TabController.Instance.UpdateTab(tab);
                         }
                     }
                 }
             }
         }
 
-        private static XmlDocument FindLanguageXmlDocument(string cultureCode, ref Dictionary<string, XmlDocument> resourcesDict)
+        private static string FindLocalizedContent(string field, string cultureCode, ref IDictionary<string, XmlDocument> resourcesDict)
+        {
+            var xmlDocument = FindLanguageXmlDocument(cultureCode, ref resourcesDict);
+            if (xmlDocument != null)
+            {
+                var key = field.Substring(1, field.Length - 2);
+                var localizedTitleNode = xmlDocument.SelectSingleNode("//data[@name=\"" + key + "\"]");
+                if (localizedTitleNode != null)
+                {
+                    var valueNode = localizedTitleNode.SelectSingleNode("value");
+                    if (valueNode != null)
+                    {
+                        var content = valueNode.InnerText;
+
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            return content;
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        private static XmlDocument FindLanguageXmlDocument(string cultureCode, ref IDictionary<string, XmlDocument> resourcesDict)
         {
             if (string.IsNullOrEmpty(cultureCode))
             {
