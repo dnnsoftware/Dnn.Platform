@@ -36,6 +36,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public AutoCompleteType AutoCompleteType { get; set; }
 
+        public int MaxLength { get; set; }
+
         public int Columns { get; set; }
 
         public int Rows { get; set; }
@@ -82,6 +84,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 _textBox.Attributes.Add("autocomplete", "off");
             }
+            if (MaxLength > 0)
+            {
+                _textBox.MaxLength = MaxLength;
+            }
+
             container.Controls.Add(_textBox);
 
             return _textBox;

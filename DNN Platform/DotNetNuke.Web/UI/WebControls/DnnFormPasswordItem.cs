@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ID = ID + "_TextBox",
                 TextMode = TextBoxMode.Password,
                 CssClass = TextBoxCssClass,
-                MaxLength = 20, //ensure password cannot be cut if too long
+                MaxLength = 50, //ensure password cannot be cut if too long
                 Text = Convert.ToString(Value) // Load from ControlState
             };
             _password.Attributes.Add("autocomplete", "off");
