@@ -30,6 +30,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Xml;
@@ -5293,6 +5294,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.16":
                             UpgradeToVersion80016();
                             break;
+                        case "8.0.0.26":
+                            UpgradeToVersion80026();
+                            break;
                     }
                 }
             }
@@ -5391,6 +5395,11 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Skin Designer", "Module");
             
             RemoveGettingStartedPages();
+        }
+
+        private static void UpgradeToVersion80026()
+        {
+            FixTabsMissingLocalizedTitle();
         }
 
         private static int MaxIncremental(Version version)
@@ -5797,6 +5806,83 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return activationResult;
+        }
+
+        private static void FixTabsMissingLocalizedTitle()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            var resourcesDict = new Dictionary<string, XmlDocument>();
+            var titleRegex = new Regex("^\\[Tab[\\w\\.]+?\\.Text\\]$", RegexOptions.Compiled);
+            foreach (PortalInfo portal in portals)
+            {
+                if (portal.AdminTabId > Null.NullInteger)
+                {
+                    var adminTabs = TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID);
+                    foreach (var tab in adminTabs)
+                    {
+                        if (!string.IsNullOrEmpty(tab.Title) && titleRegex.IsMatch(tab.Title))
+                        {
+                            var xmlDocument = FindLanguageXmlDocument(portal.CultureCode, ref resourcesDict);
+                            if (xmlDocument != null)
+                            {
+                                var key = tab.Title.Substring(1, tab.Title.Length - 2);
+                                var localizedTitleNode = xmlDocument.SelectSingleNode("//data[@name=\"" + key + "\"]");
+                                if (localizedTitleNode != null)
+                                {
+                                    var valueNode = localizedTitleNode.SelectSingleNode("value");
+                                    if (valueNode != null)
+                                    {
+                                        var title = valueNode.InnerText;
+
+                                        if (!string.IsNullOrEmpty(title))
+                                        {
+                                            tab.Title = title;
+                                            TabController.Instance.UpdateTab(tab);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static XmlDocument FindLanguageXmlDocument(string cultureCode, ref Dictionary<string, XmlDocument> resourcesDict)
+        {
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = Localization.Localization.SystemLocale;
+            }
+
+            if (resourcesDict.ContainsKey(cultureCode))
+            {
+                return resourcesDict[cultureCode];
+            }
+
+            try
+            {
+                var languageFilePath = Path.Combine(Globals.HostMapPath,
+                    string.Format("Default Website.template.{0}.resx", cultureCode));
+                if (!File.Exists(languageFilePath))
+                {
+                    languageFilePath = Path.Combine(Globals.HostMapPath,
+                        string.Format("Default Website.template.{0}.resx", Localization.Localization.SystemLocale));
+                }
+
+                var xmlDocument = new XmlDocument();
+                xmlDocument.Load(languageFilePath);
+
+                resourcesDict.Add(cultureCode, xmlDocument);
+
+                return xmlDocument;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                return null;
+            }
         }
 
         #endregion
