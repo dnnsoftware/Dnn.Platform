@@ -19,30 +19,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
-        private Mock<IModuleController> _mockModuleController;
-        private Mock<IPortalController> _mockPortalController;
-        
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            // Setup Mocks
-            _mockPortalController = MockRepository.Create<IPortalController>();
-            PortalController.SetTestableInstance(_mockPortalController.Object);
-            _mockModuleController = MockRepository.Create<IModuleController>();
-            ModuleController.SetTestableInstance(_mockModuleController.Object);
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
-
-            PortalController.ClearInstance();
-            ModuleController.ClearInstance();
-        }
-
         public class MyNullableSettings
         {
             [PortalSetting]
@@ -133,11 +109,11 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             };
 
             var integerString = integerValue?.ToString() ?? string.Empty;
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, "IntegerProperty", integerString, true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, "IntegerProperty", integerString, true, Null.NullString));
             var dateTimeString = datetimeValue?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty;
-            _mockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, "DateTimeProperty", dateTimeString));
+            MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, "DateTimeProperty", dateTimeString));
             var timeSpanString = timeSpanValue?.ToString("c", CultureInfo.InvariantCulture) ?? string.Empty;
-            _mockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, "TimeSpanProperty", timeSpanString));
+            MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, "TimeSpanProperty", timeSpanString));
 
             var settingsRepository = new MyNullableSettingsRepository();
 
@@ -253,12 +229,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             var moduleSettings = new Hashtable { { "DateTimeProperty", datetimeValue?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty }, };
             var tabModuleSettings = new Hashtable { { "TimeSpanProperty", timeSpanValue?.ToString("c", CultureInfo.InvariantCulture) ?? string.Empty }, };
 
-            _mockPortalController.Setup(pc => pc.GetPortalSettings(moduleInfo.PortalID)).Returns(portalSettings);
-            MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
-            MockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int, Hashtable> { { moduleInfo.ModuleID, moduleSettings } });
-            MockCache.Setup(c => c.GetItem("DNN_" + TabModuleSettingsCacheKey(moduleInfo))).Returns(new Dictionary<int, Hashtable> { { moduleInfo.TabModuleID, tabModuleSettings } });
-            MockCache.Setup(c => c.Insert("DNN_" + CacheKey(moduleInfo), It.IsAny<object>()));
-            MockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new MyNullableSettings());
+            MockPortalSettings(moduleInfo, portalSettings);
+            MockModuleSettings(moduleInfo, moduleSettings);
+            MockTabModuleSettings(moduleInfo, tabModuleSettings);
 
             var settingsRepository = new MyNullableSettingsRepository();
 
