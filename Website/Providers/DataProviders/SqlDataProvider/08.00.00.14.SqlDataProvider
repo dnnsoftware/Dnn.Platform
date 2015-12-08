@@ -18,8 +18,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]
 AS
 BEGIN
 	SELECT DISTINCT m.*
-	FROM dbo.CoreMessaging_MessageRecipients mr
-		INNER JOIN dbo.CoreMessaging_Messages m 
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m 
 			ON (mr.MessageID = m.MessageID)
 	WHERE mr.UserID = @UserID
 		AND m.PortalID = @PortalID
