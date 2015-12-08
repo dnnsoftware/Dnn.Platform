@@ -148,27 +148,27 @@
     <value>Update Rule</value>
   </data>
   <data name="unauthorized.Text" xml:space="preserve">
-    <value>The application account does not have authorization to change the DotNetNuke.config file.  This error may occur if DotNetNuke.config file is marked as ReadOnly or if the configured application account does not have permission to edit the file.</value>
+    <value>The application account does not have authorization to change the DotNetNuke.config file. This error may occur if DotNetNuke.config file is marked as ReadOnly or if the configured application account does not have permissions to edit the file.</value>
   </data>
   <data name="plAction.Help" xml:space="preserve">
     <value>Select the action to perform if the incoming request matches this rule.</value>
   </data>
   <data name="plLocation.Help" xml:space="preserve">
-    <value>Enter the URL to redirect the user if the incoming request matches this rule.  This value is only used for Redirect and PermanentRedirect actions</value>
+    <value>Enter the URL to redirect the user to if the incoming request matches this rule. This value is only used for redirect and permanent redirect actions.</value>
   </data>
   <data name="plOperator.Help" xml:space="preserve">
     <value>Select the operator to use when comparing the incoming request against the specified server variable and value list.</value>
   </data>
   <data name="plServerVar.Help" xml:space="preserve">
-    <value>Specifies the Server Variable to use when filtering incoming requests.  A complete list of valid Server Variables can be found on MSDN. </value>
+    <value>Specifies the server variable to use when filtering incoming requests. A complete list of valid server variables can be found on MSDN.</value>
   </data>
   <data name="plValue.Help" xml:space="preserve">
-    <value>Defines the value of the servervar that triggers the rule.  For a regex rule, the value should be a regular expression that used as a matching expression. If this is not a regex operation, then value can be a semicolon delimited list of values.</value>
+    <value>Defines the value of the servervar that triggers the rule. For a regex rule, the value should be a regular expression that is used as a matching expression. If this is not a regex operation, then value can be a semicolon delimited list of values.</value>
   </data>
   <data name="lblServerVarLink.Text" xml:space="preserve">
     <value>Goto &lt;a href="http://msdn.microsoft.com/en-us/library/ms524602(v=vs.90).aspx" target="_blank" &gt;MSDN&lt;/a&gt; for a list of variables.</value>
   </data>
   <data name="lblWarning.Text" xml:space="preserve">
-    <value>WARNING:  Adding an incorrect request filter rule may prevent you or your customers from being able to access your DotNetNuke website, and may require you to manually edit the DotNetNuke.config file to remove the incorrectly configured rule.</value>
+    <value>Warning: Adding an incorrect request filter rule may prevent you or your customers from being able to access your DNN site, and may require you to manually edit the DotNetNuke.config file to remove the incorrectly configured rule.</value>
   </data>
 </root>

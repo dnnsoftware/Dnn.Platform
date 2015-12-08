@@ -139,13 +139,13 @@
     <value>You cannot add or move pages before or after the host tab.</value>
   </data>
   <data name="Err.PageEditorPermissionError" xml:space="preserve">
-    <value>You do not have permissions to add or move pages to that location. You can only add or move pages as children of pages you can edit.</value>
+    <value>You do not have permissions to add or move pages to that location.  You can only add or move pages as children of pages you can edit.</value>
   </data>
   <data name="Err.PageExists" xml:space="preserve">
-    <value>A page with the same name already exists. Please choose a different name.</value>
+    <value>A page with the same name already exists.  Please choose a different name.</value>
   </data>
   <data name="Err.PageNameInvalid" xml:space="preserve">
-    <value>Page name is invalid. Please choose a different name.</value>
+    <value>Page name is invalid.  Please choose a different name.</value>
   </data>
   <data name="Err.PageNameRequired" xml:space="preserve">
     <value>Page name is required.</value>
@@ -154,7 +154,7 @@
     <value>Error</value>
   </data>
   <data name="ExceededQuota.Text" xml:space="preserve">
-    <value>It's not allowed to add page because adding a page will exceed the Page Quota for this site. Please contact your hosting provider for inquiries related to increasing your Page Quota.</value>
+    <value>This page cannot be added because the Page Quota for this site has been reached.  Please contact your hosting provider for inquiries related to increasing your Page Quota.</value>
   </data>
   <data name="IncludeInMenu.Text" xml:space="preserve">
     <value>Include in menu</value>

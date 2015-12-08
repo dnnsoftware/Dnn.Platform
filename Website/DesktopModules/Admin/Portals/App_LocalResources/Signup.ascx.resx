@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>There are two types of websites which can be created using this application:&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Parent Websites&lt;/b&gt; are sites which have a unique URL ( ie. www.domain.com ) associated to them. This generally involves purchasing a Domain Name from an Internet Registrar, setting the Primary/Secondary DNS entries to point to the Hosting Provider's DNS Server, and having your Hosting Provider map the Domain Name to the IP Address of your account. An example of a valid Parent Portal Name is &lt;b&gt;www.mydomain.com&lt;/b&gt;. You can also use the IP Address of your site without a Domain Name ( ie. &lt;b&gt;65.174.86.217&lt;/b&gt; ). If you need to have multiple Domain Names pointing to the same portal then you can seperate them with commas ( ie. &lt;b&gt;www.domain1.com,www.domain2.com&lt;/b&gt; ). Do not create a Parent Portal until all of the DNS mappings are in place or else you will not be able to access your portal.&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Child Portals&lt;/b&gt; are subhosts of your Hosting Provider account. Essentially this means a directory is created on the web server which allows the site to be accessed through a URL address which includes a Parent domain name as well as the directory name ( ie. www.domain.com/directory ). A Child Portal can be converted into a Parent Portal at any time by simply modifying the Portal Alias entry.&lt;br&gt;&lt;br&gt;*Please Note: Portals will be created using the default properties defined in the Host Settings module ( HostFee, HostSpace, DemoPeriod ) or in the selected template file. Once the portal is created, these properties can be modified in the Admin tab Site Settings module.&lt;br&gt;&lt;br&gt;</value>
+    <value>There are two types of websites which can be created using this application:&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Parent Websites&lt;/b&gt; are sites which have a unique URL ( ie. www.domain.com ) associated to them. This generally involves purchasing a Domain Name from an Internet Registrar, setting the Primary/Secondary DNS entries to point to the Hosting Provider's DNS Server, and having your Hosting Provider map the Domain Name to the IP Address of your account. An example of a valid Parent Site Name is &lt;b&gt;www.mydomain.com&lt;/b&gt;. You can also use the IP Address of your site without a Domain Name ( ie. &lt;b&gt;65.174.86.217&lt;/b&gt; ). If you need to have multiple Domain Names pointing to the same site then you can seperate them with commas ( ie. &lt;b&gt;www.domain1.com,www.domain2.com&lt;/b&gt; ). Do not create a Parent Site until all of the DNS mappings are in place or else you will not be able to access your site.&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Child Sites&lt;/b&gt; are subhosts of your Hosting Provider account. Essentially this means a directory is created on the web server which allows the site to be accessed through a URL address which includes a Parent domain name as well as the directory name ( ie. www.domain.com/directory ). A Child Site can be converted into a Parent Site at any time by simply modifying the Site Alias entry.&lt;br&gt;&lt;br&gt;*Please Note: Sites will be created using the default properties defined in the Host Settings module ( HostFee, HostSpace, DemoPeriod ) or in the selected template file. Once the site is created, these properties can be modified via Admin > Site Settings page.&lt;br&gt;&lt;br&gt;</value>
   </data>
   <data name="plType.Text" xml:space="preserve">
     <value>Site Type:</value>
@@ -127,46 +127,46 @@
     <value>There are two types of sites which can be created using this application (see the Module Help available on the Action Menu for more details).</value>
   </data>
   <data name="DemoMessage.Text" xml:space="preserve">
-    <value>Demo Site Signup allows you to create your very own Website and experiment with its advanced features {0}. At any time during or after the trial period, you can convert your Demo Site into a Registered Site by logging in as the Administrator and selecting the Renew/Extend Your Site Subscription link in the Admin tab. Registered Sites have the added benefit of using their own domain name ( ie. www.yourdomain.com ) as their Web address.&lt;br&gt;&lt;br&gt;&lt;b&gt;*Note:&lt;/b&gt; Your Site Name must be a simple name for your site and cannot contain spaces or punctuation characters. The URL for your site will take the form of &lt;b&gt; {1}/sitename&lt;/b&gt;&lt;br&gt;&lt;br&gt;</value>
+    <value>Demo Site Signup allows you to create a site and experiment with its advanced features {0}. At any time during or after the trial period, you can convert your Demo Site into a Registered Site by logging in as the Administrator and selecting the Renew/Extend Your Site Subscription link in the Admin tab. Registered Sites have the added benefit of using their own domain name ( ie. www.yourdomain.com ) as their Web address.&lt;br&gt;&lt;br&gt;&lt;b&gt;*Note:&lt;/b&gt; Your Site Name must be a simple name for your site and cannot contain spaces or punctuation characters. The URL for your site will take the form of &lt;b&gt; {1}/sitename&lt;/b&gt;&lt;br&gt;&lt;br&gt;</value>
   </data>
   <data name="AdminMissing.Text" xml:space="preserve">
-    <value>Your admin.template File Is Missing And Must be Uploaded To The Site.&lt;br&gt;</value>
+    <value>Your admin.template file is missing and must be uploaded to the site.&lt;br&gt;</value>
   </data>
   <data name="PortalMissing.Text" xml:space="preserve">
-    <value>Your site  template File Is Missing And Must be Uploaded To The Site.&lt;br&gt;</value>
+    <value>Your site template file is missing and must be uploaded to the site.&lt;br&gt;</value>
   </data>
   <data name="plPortalName.Text" xml:space="preserve">
     <value>Site Name:</value>
   </data>
   <data name="plPortalName.Help" xml:space="preserve">
-    <value>Enter a name for the Site</value>
+    <value>The name for the site.</value>
   </data>
   <data name="valPortalName.ErrorMessage" xml:space="preserve">
-    <value>Site Title Is Required.</value>
+    <value>Site title is required.</value>
   </data>
   <data name="plTitle.Text" xml:space="preserve">
     <value>Title:</value>
   </data>
   <data name="plTitle.Help" xml:space="preserve">
-    <value>Give your site a title.</value>
+    <value>The title for the site.</value>
   </data>
   <data name="plDescription.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="plDescription.Help" xml:space="preserve">
-    <value>Enter a description for your site.</value>
+    <value>A description of the site.</value>
   </data>
   <data name="plKeyWords.Text" xml:space="preserve">
     <value>Keywords:</value>
   </data>
   <data name="plKeyWords.Help" xml:space="preserve">
-    <value>Enter some keywords separated by a comma.  These are added to the Html page as MetaData and help Search Engines index your site.</value>
+    <value>Enter some keywords separated by a comma.  These are added to the HTML page as MetaData and will help Search Engines index your site.</value>
   </data>
   <data name="plTemplate.Text" xml:space="preserve">
     <value>Template:</value>
   </data>
   <data name="plTemplate.Help" xml:space="preserve">
-    <value>Choose a template for the new Site.</value>
+    <value>Choose a template for the site.</value>
   </data>
   <data name="plFirstName.Text" xml:space="preserve">
     <value>First Name:</value>
@@ -181,16 +181,16 @@
     <value>Enter your last name.</value>
   </data>
   <data name="valFirstName.ErrorMessage" xml:space="preserve">
-    <value>First Name Is Required.</value>
+    <value>First name is required.</value>
   </data>
   <data name="valLastName.ErrorMessage" xml:space="preserve">
-    <value>Last Name Is Required.</value>
+    <value>Last name is required.</value>
   </data>
   <data name="plUsername.Text" xml:space="preserve">
     <value>Administrator User Name:</value>
   </data>
   <data name="plUsername.Help" xml:space="preserve">
-    <value>Enter a username for the Administrator Account for this site.</value>
+    <value>Enter a user name for the Administrator Account for this site.</value>
   </data>
   <data name="plPassword.Text" xml:space="preserve">
     <value>Password:</value>
@@ -202,16 +202,16 @@
     <value>Confirm:</value>
   </data>
   <data name="plConfirm.Help" xml:space="preserve">
-    <value>Repeat your password to confirm it was typed correctly.</value>
+    <value>Re-enter your password to confirm it was typed correctly.</value>
   </data>
   <data name="valUsername.ErrorMessage" xml:space="preserve">
-    <value>Username Is Required.</value>
+    <value>User name is required.</value>
   </data>
   <data name="valPassword.ErrorMessage" xml:space="preserve">
-    <value>Password Is Required.</value>
+    <value>Password is required.</value>
   </data>
   <data name="valConfirm.ErrorMessage" xml:space="preserve">
-    <value>Password Confirmation Is Required.</value>
+    <value>Password confirmation is required.</value>
   </data>
   <data name="plEmail.Text" xml:space="preserve">
     <value>Email:</value>
@@ -220,28 +220,28 @@
     <value>Enter an email address for the Administrator Account for this site.</value>
   </data>
   <data name="valEmail.ErrorMessage" xml:space="preserve">
-    <value>Email Is Required.</value>
+    <value>Email is required.</value>
   </data>
   <data name="cmdUpdate.Text" xml:space="preserve">
     <value>Create Site</value>
   </data>
   <data name="Note.Text" xml:space="preserve">
-    <value>&lt;strong&gt;*Note:&lt;/strong&gt; Once your Site is created, you will need to login using the Administrator information specified below.</value>
+    <value>&lt;strong&gt;*Note:&lt;/strong&gt; Once your site is created, you will need to login using the Administrator information specified below.</value>
   </data>
   <data name="InvalidTemplate.Text" xml:space="preserve">
     <value>{0} is not a valid Site Template File.</value>
   </data>
   <data name="InvalidName.Text" xml:space="preserve">
-    <value>The Site Alias Must Not Contain Spaces Or Punctuation.</value>
+    <value>The site alias must not contain spaces or punctuation.</value>
   </data>
   <data name="InvalidPassword.Text" xml:space="preserve">
-    <value>The Password Values Entered Do Not Match.</value>
+    <value>The password values entered do not match.</value>
   </data>
   <data name="ChildExists.Text" xml:space="preserve">
-    <value>The Child Site Name You Specified Already Exists. Please Choose A Different Child Site Name.</value>
+    <value>The child site name you specified already exists.  Please enter a different child site name.</value>
   </data>
   <data name="CreateError.Text" xml:space="preserve">
-    <value>An Error Was Encountered During The Creation Of Your Site. This May Have Been Caused By Specifying An Incorrect Password For An Existing User Account. Please Verify Your Details Before You Try Again.</value>
+    <value>An error was encountered during the creation of your site. This may have been caused by specifying an incorrect password for an existing user account.  Please verify your details before trying again.</value>
   </data>
   <data name="PortalSetup.Text" xml:space="preserve">
     <value>Site Setup</value>
@@ -253,19 +253,19 @@
     <value>Site Alias:</value>
   </data>
   <data name="plPortalAlias.Help" xml:space="preserve">
-    <value>Enter the Alias for this Site</value>
+    <value>Enter the alias for this site.</value>
   </data>
   <data name="plHomeDirectory.Text" xml:space="preserve">
     <value>Home Directory:</value>
   </data>
   <data name="plHomeDirectory.Help" xml:space="preserve">
-    <value>Enter the Home Directory for this Site</value>
+    <value>Enter the home directory for this site.</value>
   </data>
   <data name="Customize.Text" xml:space="preserve">
     <value>Customize</value>
   </data>
   <data name="valTemplate.ErrorMessage" xml:space="preserve">
-    <value>Please select a template file</value>
+    <value>Please select a template file.</value>
   </data>
   <data name="Parent.Text" xml:space="preserve">
     <value>Parent</value>
@@ -280,19 +280,19 @@
     <value>Add Site</value>
   </data>
   <data name="SendMail.Error" xml:space="preserve">
-    <value>There was an error sending confirmation emails - {0}  However, the website was created. &lt;a href='{1}' {2}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+    <value>There was an error sending confirmation emails - {0}  However, the site was created. &lt;a href='{1}' {2}&gt;Click Here To Access The New Site&lt;/a&gt;</value>
   </data>
   <data name="AddPortal.Text" xml:space="preserve">
     <value>Add New Site</value>
   </data>
   <data name="InvalidHomeFolder.Text" xml:space="preserve">
-    <value>The Home Folder you specified is not valid.</value>
+    <value>The home folder you specified is not valid.</value>
   </data>
   <data name="DuplicatePortalAlias.Text" xml:space="preserve">
-    <value>The Site Alias Name You Specified Already Exists. Please Choose A Different Site Alias.</value>
+    <value>The site alias name you specified already exists. Please choose a different site alias.</value>
   </data>
   <data name="UnknownSendMail.Error" xml:space="preserve">
-    <value>There was an error sending confirmation emails.  However, the website was created. &lt;a href='{0}' {1}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+    <value>There was an error sending confirmation emails, however the site was still created. &lt;a href='{0}' {1}&gt;Click Here To Access The New Site&lt;/a&gt;</value>
   </data>
   <data name="UnknownEmailAddress.Error" xml:space="preserve">
     <value>There is no email address set on Site and/or Host level.</value>
@@ -301,7 +301,7 @@
     <value>Validation Results</value>
   </data>
   <data name="plAnswer.Help" xml:space="preserve">
-    <value>Enter the answer to the above question. </value>
+    <value>Enter the answer to the above question.</value>
   </data>
   <data name="plAnswer.Text" xml:space="preserve">
     <value>Password Answer:</value>
@@ -313,10 +313,10 @@
     <value>Password Question:</value>
   </data>
   <data name="valEmail2.ErrorMessage" xml:space="preserve">
-    <value>Email address is invalid</value>
+    <value>Email address is invalid.</value>
   </data>
   <data name="useCurrentLabel.Help" xml:space="preserve">
-    <value>Check this box if you want to use the current SuperUser as the Administrator for the site.  If this box is unchecked you will be able to enter user credentials for the Administrator.</value>
+    <value>Check this box to use the current Super User as the Administrator for the new site or uncheck this box to enter user credentials for the Administrator.</value>
   </data>
   <data name="useCurrentLabel.Text" xml:space="preserve">
     <value>Use Current User as Administrator:</value>
@@ -325,13 +325,13 @@
     <value>Site Alias is required.</value>
   </data>
   <data name="DuplicateWithTab.Text" xml:space="preserve">
-    <value>There is already a page with the same name as you entered for the site alias for this site. Please change the site alias and try again.</value>
+    <value>There is already a page with the same name as you entered for the site alias for this site.  Please change the site alias and try again.</value>
   </data>
   <data name="DisallowedExtension.Warning" xml:space="preserve">
-    <value>The template contains the following extensions that are not normally authorized – {0}.  As they are an integral part of the template they have been copied to your site.  For more information please check the Event Viewer.</value>
+    <value>The template contains the following extensions that are not normally authorized – {0}.  As they are an integral part of the template they have been copied to the new site.  For more information please check the Event Viewer.</value>
   </data>
   <data name="plSiteGroups.Help" xml:space="preserve">
-    <value>You can optionally add your new site to an existing site group</value>
+    <value>Optionally add the new site to an existing site group.</value>
   </data>
   <data name="plSiteGroups.Text" xml:space="preserve">
     <value>Add to Site Group:</value>

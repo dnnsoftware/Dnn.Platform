@@ -151,6 +151,6 @@
     <value>Detach from Default Culture</value>
   </data>
   <data name="BindConfirm.Text" xml:space="preserve">
-    <value>Binding to the default culture version will delete the content from the sub culture versions.  This action is irreversible.  Are you sure you wish to proceed?</value>
+    <value>Binding to the default culture version will delete the content from the sub culture versions.  This action is irreversible.  Are you sure you want to proceed?</value>
   </data>
 </root>

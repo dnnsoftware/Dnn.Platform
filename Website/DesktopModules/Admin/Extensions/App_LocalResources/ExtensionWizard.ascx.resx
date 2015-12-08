@@ -130,60 +130,60 @@
     <value>The name - {0} - already exists.  Please provide another name and try again.</value>
   </data>
   <data name="IntroductionHelp.Text" xml:space="preserve">
-    <value>In the first step please provide a unique name for the new Extension, - it is recommended that you use the format CompanyName.Name to avoid potential clashes if you intend to distribute the extension.  In addition, you should provide a friendly name for the Extension,  a description for the Extension and you should select a version (or the default version No.  0.0.0 will be used)</value>
+    <value>In the first step please provide a unique name for the new extension.  It is recommended that you use the format CompanyName.Name to avoid potential clashes if you intend to distribute the extension.  In addition, you should provide a friendly name and a description for the extension and a version should be selected. If no version is selected then the default version No. 0.0.0 will be used.</value>
   </data>
   <data name="Introduction.Help" xml:space="preserve">
-    <value>The Create New Extension Wizard allows you to create new Extensions.  Enter the information requested in each step.  Please select the type of Extension to create.</value>
+    <value>The Create New Extension Wizard allows you to create new extensions.  Enter the information requested in each step.  Please select the type of extension to create.</value>
   </data>
   <data name="Introduction.Title" xml:space="preserve">
     <value>Create New Extension</value>
   </data>
   <data name="OwnerInfo.Help" xml:space="preserve">
-    <value>In this last step you can optional provide details about the owner of the Extension.  This information is very useful if you plan on distributing your extension.</value>
+    <value>In this last step you can optional provide details about the owner of the extension.  This information is very useful if you plan on distributing your extension.</value>
   </data>
   <data name="OwnerInfo.Title" xml:space="preserve">
     <value>Owner Details</value>
   </data>
   <data name="Package.Text" xml:space="preserve">
-    <value>Extension Language </value>
+    <value>Extension Language</value>
   </data>
   <data name="PackageType.Error" xml:space="preserve">
-    <value>You must select a Language Pack Type</value>
+    <value>You must select a language pack type.</value>
   </data>
   <data name="plExtensionType.Help" xml:space="preserve">
-    <value>Select the type of Extension to create</value>
+    <value>Select the type of extension to create.</value>
   </data>
   <data name="plExtensionType.Text" xml:space="preserve">
     <value>Select Extension Type:</value>
   </data>
   <data name="plPackageType.Help" xml:space="preserve">
-    <value>Select whether this is a Core language Pack or a Language Pack for another Extension.</value>
+    <value>Select whether this is a Core Language Pack or a Language Pack for another extension.</value>
   </data>
   <data name="plPackageType.Text" xml:space="preserve">
     <value>Select Language Pack Type:</value>
   </data>
   <data name="Specific_CoreLanguagePack.Help" xml:space="preserve">
-    <value>In this step please choose the language for the Package.</value>
+    <value>Choose the language for the package.</value>
   </data>
   <data name="Specific_CoreLanguagePack.Title" xml:space="preserve">
     <value>Language Pack Specific Details</value>
   </data>
   <data name="Specific_Module.Help" xml:space="preserve">
-    <value>In this step please provide any module specific information.</value>
+    <value>Provide any module specific information.</value>
   </data>
   <data name="Specific_Module.Title" xml:space="preserve">
     <value>Module Specific Details</value>
   </data>
   <data name="Specific_ExtensionLanguagePack.Help" xml:space="preserve">
-    <value>In this step please choose the language and extension for the Package.</value>
+    <value>Choose the language and extension for the package.</value>
   </data>
   <data name="Specific_ExtensionLanguagePack.Title" xml:space="preserve">
     <value>Language Pack Specific Details</value>
   </data>
   <data name="ExtensionLanguageHelp.Text" xml:space="preserve">
-    <value>&lt;b&gt;Note:&lt;/b&gt; If you are creating an Extension Language Pack the Extension must already be defined.</value>
+    <value>&lt;b&gt;Note:&lt;/b&gt; If you are creating an Extension Language Pack the extension must already be defined.</value>
   </data>
   <data name="LanguageHelp.Text" xml:space="preserve">
-    <value>&lt;b&gt;Note:&lt;/b&gt; If you are creating a Language Pack the Language must already be defined in the Admin/Languages module.</value>
+    <value>&lt;b&gt;Note:&lt;/b&gt; If you are creating a Language Pack the Language must already be defined in the Admin >> Languages page.</value>
   </data>
 </root>

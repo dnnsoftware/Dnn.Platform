@@ -148,7 +148,7 @@
     <value>Parse Theme Package</value>
   </data>
   <data name="lblApply.Text" xml:space="preserve">
-    <value>Apply To</value>
+    <value>Apply to</value>
   </data>
   <data name="ParseOptions.Text" xml:space="preserve">
     <value>Parse Options</value>
@@ -160,7 +160,7 @@
     <value>Portable</value>
   </data>
   <data name="NoSkin.ErrorMessage" xml:space="preserve">
-    <value>No Theme Files Exist In Folder</value>
+    <value>No theme files exist in folder.</value>
   </data>
   <data name="cmdPreview.Text" xml:space="preserve">
     <value>Preview</value>
@@ -169,13 +169,13 @@
     <value>Apply</value>
   </data>
   <data name="NoContainer.ErrorMessage" xml:space="preserve">
-    <value>No Container Files Exist in Folder</value>
+    <value>No container files exist in folder.</value>
   </data>
   <data name="plSkins.Help" xml:space="preserve">
-    <value>Select the theme package</value>
+    <value>Select the theme package.</value>
   </data>
   <data name="plContainers.Help" xml:space="preserve">
-    <value>Select the container package</value>
+    <value>Select the container package.</value>
   </data>
   <data name="SkinUpload.Action" xml:space="preserve">
     <value>Upload Theme</value>
@@ -196,19 +196,19 @@
     <value>About {0}</value>
   </data>
   <data name="SkinDeleteFailure.Text" xml:space="preserve">
-    <value>Only Super Users can delete Host Themes</value>
+    <value>Only Super Users can delete host themes.</value>
   </data>
   <data name="CannotDeleteContainer.ErrorMessage" xml:space="preserve">
-    <value>This set of containers cannot be deleted because it is being used</value>
+    <value>This set of containers cannot be deleted because it is being used.</value>
   </data>
   <data name="CannotDeleteSkin.ErrorMessage" xml:space="preserve">
-    <value>This set of themes cannot be deleted because it is being used</value>
+    <value>This set of themes cannot be deleted because it is being used.</value>
   </data>
   <data name="LegacySkin.Text" xml:space="preserve">
-    <value>This is a Legacy Theme</value>
+    <value>This is a legacy theme.</value>
   </data>
   <data name="UsePackageUnInstall.Text" xml:space="preserve">
-    <value>This theme is part of a Theme Package.  Use the Uninstall Package option in the list of Themes in the main Grid.</value>
+    <value>This theme is part of a theme package.  Use the Uninstall Package option in the list of themes.</value>
   </data>
   <data name="lblApply.Help" xml:space="preserve">
     <value />

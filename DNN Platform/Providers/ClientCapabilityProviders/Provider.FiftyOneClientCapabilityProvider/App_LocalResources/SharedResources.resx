@@ -127,6 +127,6 @@
     <value>Device Detection Management</value>
   </data>
   <data name="SuccessMessage.Text" xml:space="preserve">
-    <value>Device data upgrade successful</value>
+    <value>Device data upgrade successful.</value>
   </data>
 </root>

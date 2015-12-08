@@ -130,22 +130,22 @@
     <value>Enable Photo Attachments</value>
   </data>
   <data name="AllowFiles.Help" xml:space="preserve">
-    <value>Choose whether or not users should be allowed to attach files to journal posts.</value>
+    <value>Check this box to allow users to attach files to journal posts.</value>
   </data>
   <data name="AllowPhotos.Help" xml:space="preserve">
-    <value>Choose whether or not users should be able to attach photos to journal posts.</value>
+    <value>Check this box to allow users to attach photos to journal posts.</value>
   </data>
   <data name="DefaultPageSize.Help" xml:space="preserve">
-    <value>Select the number of journal items that should be displayed on a page.</value>
+    <value>Select the number of journal items displayed per page.</value>
   </data>
   <data name="MaxMessageLength.Help" xml:space="preserve">
-    <value>Select the maximum number of characters that journal message can contain.</value>
+    <value>Select the maximum number of characters per journal entry.</value>
   </data>
   <data name="MaxMessageLength.Text" xml:space="preserve">
-    <value>Maximum Characters per message</value>
+    <value>Maximum Characters per Message</value>
   </data>
   <data name="JournalFilters.Help" xml:space="preserve">
-    <value>Select the Journal Types that you would like to be displayed.</value>
+    <value>Select the type of items to be displayed in the journal.</value>
   </data>
   <data name="JournalFilters.Text" xml:space="preserve">
     <value>Journal Types</value>
@@ -160,9 +160,9 @@
     <value>Unlimited</value>
   </data>
   <data name="AllowResize.Help" xml:space="preserve">
-    <value>Choose whether or not uploaded big photos are going to be re-sized. Only those photos with at least one size dimension bigger than 400px, will be re-sized</value>
+    <value>Check this box to resize photos that have least one size dimension bigger than 400px.</value>
   </data>
   <data name="AllowResize.Text" xml:space="preserve">
-    <value>Re-size Photos</value>
+    <value>Re-Size Photos</value>
   </data>
 </root>

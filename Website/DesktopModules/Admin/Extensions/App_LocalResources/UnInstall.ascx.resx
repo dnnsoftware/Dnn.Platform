@@ -124,27 +124,27 @@
     <value>Return</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Package UnInstall&lt;/h1&gt;&lt;p&gt;Allows you to uninstall packages from the website.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Package Uninstall&lt;/h1&gt;&lt;p&gt;Allows you to uninstall packages from the site.&lt;/p&gt;</value>
   </data>
   <data name="cmdUninstall.Text" xml:space="preserve">
-    <value>UnInstall Package</value>
+    <value>Uninstall Package</value>
   </data>
   <data name="ControlTitle_uninstall.Text" xml:space="preserve">
-    <value>UnInstall Package</value>
+    <value>Uninstall Package</value>
   </data>
   <data name="plDelete.Text" xml:space="preserve">
-    <value>Delete Files?</value>
+    <value>Delete Files</value>
   </data>
   <data name="CannotDeleteContainer.ErrorMessage" xml:space="preserve">
-    <value>This set of containers cannot be deleted because it is being used</value>
+    <value>This set of containers cannot be deleted because it is being used.</value>
   </data>
   <data name="CannotDeleteSkin.ErrorMessage" xml:space="preserve">
-    <value>This set of themes cannot be deleted because it is being used</value>
+    <value>This set of themes cannot be deleted because it is being used.</value>
   </data>
   <data name="CannotDeleteProvider.ErrorMessage" xml:space="preserve">
-    <value>This provider cannot be deleted because it is being used</value>
+    <value>This provider cannot be deleted because it is being used.</value>
   </data>
   <data name="plDelete.Help" xml:space="preserve">
-    <value>Check this box to delete the files associated with this Extension</value>
+    <value>Check this box to delete the files associated with this extension.</value>
   </data>
 </root>

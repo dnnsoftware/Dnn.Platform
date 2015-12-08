@@ -148,7 +148,7 @@
     <value>RSVP Code:</value>
   </data>
   <data name="plRSVPCode.Help" xml:space="preserve">
-    <value>You can subscribe to some Services by entering an RSVP Code.  If you have been given a code please enter it and click Subscribe</value>
+    <value>You can subscribe to some services by entering an RSVP Code.  If you have been given a code please enter it and click Subscribe.</value>
   </data>
   <data name="cmdRSVP.Text" xml:space="preserve">
     <value>Subscribe</value>

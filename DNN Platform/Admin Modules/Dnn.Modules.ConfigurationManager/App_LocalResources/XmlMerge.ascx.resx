@@ -148,13 +148,13 @@
     <value>Configuration File</value>
   </data>
   <data name="SaveWarning.Text" xml:space="preserve">
-    <value>Changing the web.config will cause your website to reload and may decrease site performance while the application is reloaded by the webserver.  Would you like to continue?</value>
+    <value>Changing the web.config will cause your website to reload and may decrease site performance while the application is reloaded by the webserver.  Do you want to continue?</value>
   </data>
   <data name="ERROR_ConfigurationFormat.Text" xml:space="preserve">
     <value>Your configuration file is not a valid XML file.  Please correct the formatting issue and try again. {0}</value>
   </data>
   <data name="LoadConfigWarning.Text" xml:space="preserve">
-    <value>You will lose your current changes if you load a new config file!</value>
+    <value>Warning: You will lose your current changes if you load a new config file.</value>
   </data>
   <data name="MergeConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to merge these changes to this config file?</value>

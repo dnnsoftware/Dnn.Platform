@@ -124,13 +124,13 @@
     <value>In this section, you can set up the basic settings for this role.</value>
   </data>
   <data name="RoleName.Text" xml:space="preserve">
-    <value>Role Name</value>
+    <value>Role Name:</value>
   </data>
   <data name="RoleName.Help" xml:space="preserve">
     <value>Enter the name of the role.</value>
   </data>
   <data name="Description.Text" xml:space="preserve">
-    <value>Description</value>
+    <value>Description:</value>
   </data>
   <data name="Description.Help" xml:space="preserve">
     <value>Enter a description of the role.</value>
@@ -139,13 +139,13 @@
     <value>Public Role:</value>
   </data>
   <data name="PublicRole.Help" xml:space="preserve">
-    <value>Is this Role a Public Role?</value>
+    <value>Check this box if users can subscribe to this role via the Manage Services page of their user account.</value>
   </data>
   <data name="AutoAssignment.Text" xml:space="preserve">
     <value>Auto Assignment:</value>
   </data>
   <data name="AutoAssignment.Help" xml:space="preserve">
-    <value>Is this role automatically assigned to users?</value>
+    <value>Check this box if users are automatically assigned to this role</value>
   </data>
   <data name="AdvancedSettings.Text" xml:space="preserve">
     <value>Advanced Settings</value>
@@ -157,19 +157,19 @@
     <value>Service Fee</value>
   </data>
   <data name="ServiceFee.Help" xml:space="preserve">
-    <value>Enter the Fee charged for users in this role.</value>
+    <value>Enter the fee charged for users in this role.</value>
   </data>
   <data name="BillingPeriod.Text" xml:space="preserve">
     <value>Billing Period (Every)</value>
   </data>
   <data name="BillingPeriod.Help" xml:space="preserve">
-    <value>These two fields are used in conjunction to enter a Billing Period. e.g 2 weeks, or 1 month</value>
+    <value>These two fields are used in conjunction to enter a Billing Period. E.g 2 weeks, or 1 month</value>
   </data>
   <data name="TrialFee.Text" xml:space="preserve">
     <value>Trial Fee</value>
   </data>
   <data name="TrialFee.Help" xml:space="preserve">
-    <value>Enter the trial fee charged for users in this role</value>
+    <value>Enter the trial fee charged for users in this role.</value>
   </data>
   <data name="TrialPeriod.Text" xml:space="preserve">
     <value>Trial Period (Every)</value>
@@ -181,55 +181,55 @@
     <value>Manage Users in this Role</value>
   </data>
   <data name="valRoleName.Text" xml:space="preserve">
-    <value>&lt;br&gt;You Must Enter a Valid Name</value>
+    <value>&lt;br&gt;You must enter a valid name.</value>
   </data>
   <data name="valServiceFee1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Service Fee Value Entered Is Not Valid</value>
+    <value>&lt;br&gt;Service fee value entered is not valid.</value>
   </data>
   <data name="valServiceFee2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Service Fee Must Be Greater Than or Equal to Zero</value>
+    <value>&lt;br&gt;Service fee must be greater than or equal to zero.</value>
   </data>
   <data name="valBillingPeriod1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Billing Period Value Entered Is Not Valid</value>
+    <value>&lt;br&gt;Billing period value entered is not valid.</value>
   </data>
   <data name="valBillingPeriod2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Billing Period Must Be Greater Than Zero</value>
+    <value>&lt;br&gt;Billing period must be greater than zero.</value>
   </data>
   <data name="valTrialFee1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Trial Fee Value Entered Is Not Valid</value>
+    <value>&lt;br&gt;Trial fee value entered is not valid.</value>
   </data>
   <data name="valTrialFee2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Trial Fee Must Be Greater Than or Equal to Zero</value>
+    <value>&lt;br&gt;Trial fee must be greater than or equal to zero.</value>
   </data>
   <data name="valTrialPeriod1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Trial Period Value Entered Is Not Valid</value>
+    <value>&lt;br&gt;Trial period value entered is not valid.</value>
   </data>
   <data name="valTrialPeriod2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Trial Period Must Be Greater Than Zero</value>
+    <value>&lt;br&gt;Trial period must be greater than zero.</value>
   </data>
   <data name="ControlTitle_edit.Text" xml:space="preserve">
     <value>Edit Security Roles</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Edit Security Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their website. The module allows you to add new security roles, modify existing security roles, delete security roles, and manage the users assigned to security roles.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Edit Security Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their site. The module allows you to add new security roles, modify existing security roles, delete security roles, and manage the users assigned to security roles.&lt;/p&gt;</value>
   </data>
   <data name="plRoleGroups.Text" xml:space="preserve">
     <value>Role Group:</value>
   </data>
   <data name="plRoleGroups.Help" xml:space="preserve">
-    <value>Select the Role Group to which this role belongs.</value>
+    <value>Select the role group to which this role belongs.</value>
   </data>
   <data name="plRSVPCode.Text" xml:space="preserve">
     <value>RSVP Code:</value>
   </data>
   <data name="plRSVPCode.Help" xml:space="preserve">
-    <value>Enter an RSVP Code for the role.  This code can be used to provide a convenient method for users to subscribe to one or more roles.</value>
+    <value>Enter an RSVP Code for the role.  Users can easily subscribe to this role by entering this code on the Manage Services page of their user account.</value>
   </data>
   <data name="plRSVPLink.Text" xml:space="preserve">
     <value>RSVP Link:</value>
   </data>
   <data name="plRSVPLink.Help" xml:space="preserve">
-    <value>If an RSVP Code is supplied you can share the following URL.</value>
+    <value>A link that allows users to subscribe to this role will be displayed when an RSVP Code is saved for this role.</value>
   </data>
   <data name="plIcon.Text" xml:space="preserve">
     <value>Icon:</value>
@@ -238,13 +238,13 @@
     <value>Select an icon for the role.</value>
   </data>
   <data name="DuplicateRole.Text" xml:space="preserve">
-    <value>A role with the same name already exists. The role was not added.</value>
+    <value>A role with the same name already exists.  The role was not added.</value>
   </data>
   <data name="ProcessorWarning.Text" xml:space="preserve">
-    <value>&lt;b&gt;Warning:&lt;/b&gt; You will need to configure the Payment Processor under SiteSettings, in order to enable fee-base roles/services.</value>
+    <value>&lt;b&gt;Warning:&lt;/b&gt; The Payment Processor settings on the Admin > Site Settings page must be configured to enable fee-base roles/services.</value>
   </data>
   <data name="IncompatibleFee.Text" xml:space="preserve">
-    <value>You must select a billing frequency if you wish to enter a fee for this role</value>
+    <value>You must select a billing frequency if you want to enter a fee for this role.</value>
   </data>
   <data name="valRoleName2.Text" xml:space="preserve">
     <value>&lt;br&gt;The Name is invalid - roles can not contain the following characters: &amp; $ + , / ? ~ # &lt; &gt; ¿ ¡ « » !  . :  * ' [ ]</value>
@@ -256,7 +256,7 @@
     <value>Security Mode:</value>
   </data>
   <data name="statusListLabel.Help" xml:space="preserve">
-    <value>Select the status for this role/group</value>
+    <value>Select the status for this role/group.</value>
   </data>
   <data name="statusListLabel.Text" xml:space="preserve">
     <value>Status:</value>
