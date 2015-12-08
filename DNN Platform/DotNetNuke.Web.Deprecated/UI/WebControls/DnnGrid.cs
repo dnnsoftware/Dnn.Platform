@@ -29,6 +29,7 @@ using DotNetNuke.Framework;
 
 using DotNetNuke.Framework.JavaScriptLibraries;
 using Telerik.Web.UI;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -56,6 +57,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             this.PreRender += new EventHandler(DnnGrid_PreRender);
+
+            this.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", Localization.SharedResourceFile);
         }
 
         void DnnGrid_PreRender(object sender, EventArgs e)
@@ -79,7 +82,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.ClientSettings.Scrolling.AllowScroll = false;                
             }
-
         }
     }
 }

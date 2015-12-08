@@ -1944,4 +1944,7 @@
   <data name="DataType.Text" xml:space="preserve">
     <value>Data Type</value>
   </data>
+  <data name="NoRecords.Text" xml:space="preserve">
+    <value>No records to display</value>
+  </data>
 </root>
