@@ -121,6 +121,8 @@
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
     <Compile Include="Helpers\DnnHelperOfT.cs" />
     <Compile Include="Helpers\DnnLabelExtensions.cs" />
+    <Compile Include="Helpers\HtmlDisplayTextExtensions.cs" />
+    <Compile Include="Helpers\HtmlDisplayNameExtensions.cs" />
     <Compile Include="Helpers\HtmlEditorExtensions.cs" />
     <Compile Include="Helpers\HtmlInputExtensions.cs" />
     <Compile Include="Helpers\HtmlLabelExtensions.cs" />
