@@ -124,7 +124,7 @@
     <value>Edit Script</value>
   </data>
   <data name="scriptListLabel.Help" xml:space="preserve">
-    <value>Select the Script to use for this instance of the Razor Host Module</value>
+    <value>Select the Script to use for this instance of the Razor Host module.</value>
   </data>
   <data name="scriptListLabel.Text" xml:space="preserve">
     <value>Script:</value>

@@ -124,13 +124,13 @@
     <value>Description</value>
   </data>
   <data name="Description.ToolTip" xml:space="preserve">
-    <value>The description for the vocabulary</value>
+    <value>The description for the vocabulary.</value>
   </data>
   <data name="Hierarchy.Text" xml:space="preserve">
     <value>Hierarchy</value>
   </data>
   <data name="Name.Required" xml:space="preserve">
-    <value>A name is required for a vocabulary</value>
+    <value>A name is required for a vocabulary.</value>
   </data>
   <data name="Name.Text" xml:space="preserve">
     <value>Name</value>

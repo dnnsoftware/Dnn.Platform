@@ -136,10 +136,10 @@
     <value>Add Synonyms Group</value>
   </data>
   <data name="SynonymsTagDuplicated.Text" xml:space="preserve">
-    <value>is already being used in another synonyms group</value>
+    <value>is already being used in another synonyms group.</value>
   </data>
   <data name="SynonymsTagRequired.Text" xml:space="preserve">
-    <value>At least one synonyms tag required</value>
+    <value>At least one synonyms tag required.</value>
   </data>
   <data name="AddStopWords.Text" xml:space="preserve">
     <value>Add Word</value>
@@ -148,7 +148,7 @@
     <value>No ignore words found for your selected portal/language setting</value>
   </data>
   <data name="lblStopwordsCultureList.Help" xml:space="preserve">
-    <value>Select a language culture for search ignore words</value>
+    <value>Select a language culture for search ignore words.</value>
   </data>
   <data name="lblStopwordsCultureList.Text" xml:space="preserve">
     <value>Select Culture:</value>
@@ -160,7 +160,7 @@
     <value>When performing a search we want to avoid certain words that may decrease the value of the search results.  This feature allows you to add words that will be ignored by search queries.</value>
   </data>
   <data name="introSynonyms.Text" xml:space="preserve">
-    <value>Many times when searching for something we don’t know exactly what it is we are looking for. Sometimes we look for words that are synonymous in hopes of finding our term. This feature allows you to create those synonymous relationships between terms.</value>
+    <value>Many times when searching for something users don't know exactly what they are looking for and  so they look for words that are synonymous in hopes of finding the term.  This feature allows you to create those synonymous relationships between terms.</value>
   </data>
   <data name="General.Text" xml:space="preserve">
     <value>General</value>
@@ -171,14 +171,14 @@
   <data name="MessageReIndexWarning.Text" xml:space="preserve">
     <value>&lt;div align="left"&gt;
         &lt;p&gt;&lt;b&gt;Re-Index&lt;/b&gt; deletes existing content from the Index Store and then re-indexes everything. &lt;br/&gt;
-        Re-Indexing is done as part of search crawler(s) scheduled job. &lt;br/&gt;The search crawler(s) should be run manually under Host &gt; Schedule to re-index immediately. Re-indexing is done for the current site only.&lt;/p&gt;
+        Re-Indexing is done as part of search crawler(s) scheduled job. &lt;br/&gt;The search crawler(s) should be run manually under Host &gt; Schedule to re-index immediately.  Re-indexing is done for the current site only.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Caution&lt;/b&gt; - This should be done during non-peak hours as the process can be CPU intensive.&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="ReIndexConfirmationCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="ReIndexConfirmationMessage.Text" xml:space="preserve">
-    <value>Re-Index will cause existing content in the Index Store to be deleted. Re-index is done by search crawler(s) and depends on their scheduling frequency. Are you sure you want to continue?</value>
+    <value>Re-Index will cause existing content in the Index Store to be deleted.  Re-index is done by search crawler(s) and depends on their scheduling frequency.  Are you sure you want to continue?</value>
   </data>
   <data name="ReIndexConfirmationTitle.Text" xml:space="preserve">
     <value>Confirm Re-Indexing</value>
@@ -187,7 +187,7 @@
     <value>Continue</value>
   </data>
   <data name="lblSynonymsCultureList.Help" xml:space="preserve">
-    <value>Select a language culture for synonyms groups</value>
+    <value>Select a language culture for synonyms groups </value>
   </data>
   <data name="lblSynonymsCultureList.Text" xml:space="preserve">
     <value>Select Culture:</value>

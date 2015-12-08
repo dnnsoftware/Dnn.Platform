@@ -122,8 +122,8 @@
   </data>
   <data name="Introduction.Help" xml:space="preserve">
     <value>
-			The Site Configuration Wizard provides an Administrator with a User-Friendly
-			way to set up the more common features of a Website.
+			The Site Configuration Wizard provides Administrators with a user-friendly
+			way to set up the most common features of a site.
 			You can step through the Wizard using the Next/Back buttons at the bottom
 			of the Wizard Page.
 			Once enough detail has been collected to complete the Wizard, the Finish Button will be
@@ -135,15 +135,15 @@
   </data>
   <data name="Template.Help" xml:space="preserve">
     <value>								
-				You can optionally choose to build your site from a preexisting template.  To choose a template
-				click the checkbox to enable the list of templates, and choose a template from the list.
-				If you elect to build your site using a template, you need to choose
-				how to deal with duplicate Modules (Modules that are in the Template and
-				also already on your site).
+				You can optionally choose to build your site from a pre-existing template.  To choose a template
+				click the check box to enable the list of templates, and choose a template from the list.
+				If you choose to build your site using a template, you must decide 
+				how to handle duplicate modules. These are module that are in the Template and
+				are already on your site.
 		</value>
   </data>
   <data name="lblMergeModule.Help" xml:space="preserve">
-    <value>Choose how to deal with duplicate Modules (Modules that are in the Template and also already on your site).</value>
+    <value>Choose how to duplicate modules with be handled: "Ignore" will place a copy of any duplicated modules on the same page; "Replace" will delete the existing content and replace it with the template content; or merge to combine the content.</value>
   </data>
   <data name="Ignore.Text" xml:space="preserve">
     <value>Ignore</value>
@@ -163,13 +163,13 @@
 		</value>
   </data>
   <data name="TemplateRequired.Text" xml:space="preserve">
-    <value>You must select a Template before you can proceed.</value>
+    <value>You must select a template before you can proceed.</value>
   </data>
   <data name="InvalidTemplate.Text" xml:space="preserve">
-    <value>{0} is not a valid Website Template File.</value>
+    <value>{0} is not a valid site template file.</value>
   </data>
   <data name="Skin.Title" xml:space="preserve">
-    <value>Select a Theme for your Site</value>
+    <value>Select a Theme for Your Site</value>
   </data>
   <data name="Skin.Help" xml:space="preserve">
     <value>
@@ -179,7 +179,7 @@
 		</value>
   </data>
   <data name="Container.Title" xml:space="preserve">
-    <value>Choose a Default Container for your site</value>
+    <value>Choose a Default Container for Your Site</value>
   </data>
   <data name="Container.Help" xml:space="preserve">
     <value>
@@ -201,7 +201,7 @@
 			These are used by search engines, together with the site's name to help identify and index your site.
 			The keywords need to be separated by commas.
 			&lt;p&gt;
-			Some themes support a Logo, usually in the top left hand corner.  If you are
+			Some themes support a Logo, usually displayed in the top left hand corner.  If you are
 			using a theme that supports logos you can choose it on this page.
 			If the file you would like is not on this site, you can upload one from
 			your local computer.
@@ -212,16 +212,16 @@
     <value>Name/Title:</value>
   </data>
   <data name="lblPortalName.Help" xml:space="preserve">
-    <value>The site Name will display in the TitleBar of the Browser.</value>
+    <value>The site name will display in the TitleBar of the browser.</value>
   </data>
   <data name="lblDescription.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="lblDescription.Help" xml:space="preserve">
-    <value>Enter a description for your site</value>
+    <value>Enter a description for your site.</value>
   </data>
   <data name="lblKeyWords.Text" xml:space="preserve">
-    <value>KeyWords:</value>
+    <value>Keywords:</value>
   </data>
   <data name="lblKeyWords.Help" xml:space="preserve">
     <value>Enter some keywords for your site (separated by a comma).</value>
@@ -230,7 +230,7 @@
     <value>Logo:</value>
   </data>
   <data name="lblLogo.Help" xml:space="preserve">
-    <value>Select a Logo.</value>
+    <value>Select or upload a logo.</value>
   </data>
   <data name="Complete.Title" xml:space="preserve">
     <value>Site Configuration Completed</value>
@@ -261,10 +261,10 @@
     <value>Previous</value>
   </data>
   <data name="EditOnly.Text" xml:space="preserve">
-    <value>This module is only available for users who have been given Edit permission.  Please contact the site administrator if you think you should have this permission.</value>
+    <value>This module is only available for users who have been given Edit permission.  Please contact the Site Administrator if you think you should have this permission.</value>
   </data>
   <data name="lblMergeModule.Text" xml:space="preserve">
-    <value>How to deal with duplicate Modules</value>
+    <value>How to Deal With Duplicate Modules</value>
   </data>
   <data name="lblTemplateList.Help" xml:space="preserve">
     <value>You can select a template which you want to build the site with.</value>
@@ -276,7 +276,7 @@
     <value>If you want to rebuild your site with a template, please select this checkbox.</value>
   </data>
   <data name="lblTemplateMessage.Text" xml:space="preserve">
-    <value>Build your site from a template</value>
+    <value>Build Your Site From a Template</value>
   </data>
   <data name="ModulesNotInstalled.Text" xml:space="preserve">
     <value>This template has the following modules that are not installed.&lt;br /&gt;{0}</value>

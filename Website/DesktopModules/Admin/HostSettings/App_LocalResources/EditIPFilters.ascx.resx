@@ -145,7 +145,7 @@
     <value>This will either be the single IP to filter, or else will be used with the subnet mask to calculate a range of IP addresses.</value>
   </data>
   <data name="CannotDeleteIPInUse.Text" xml:space="preserve">
-    <value>You cannot delete that filter as it would block the current IP address</value>
+    <value>You cannot delete that filter as it would block the current IP address.</value>
   </data>
   <data name="plSubnet.Text" xml:space="preserve">
     <value>Mask</value>
@@ -154,7 +154,7 @@
     <value>The subnet mask will be combined with the first IP address to calculate a range of IP addresses for filtering.</value>
   </data>
     <data name="valFirstIP.ErrorMessage" xml:space="preserve">
-    <value>An initial IP address is required</value>
+    <value>An initial IP address is required.</value>
   </data>
   <data name="CannotDeleteLocalhost.Text" xml:space="preserve">
     <value>You cannot create a deny rule for localhost (127.0.0.1)</value>
@@ -172,19 +172,19 @@
     <value>Single IP</value>
   </data>
   <data name="plRuleSpecifity.Help" xml:space="preserve">
-    <value>Determines whether the rule applies to a single IP address or a range of IP addresses</value>
+    <value>Determines whether the rule applies to a single IP address or a range of IP addresses.</value>
   </data>
   <data name="plRuleSpecifity.Text" xml:space="preserve">
     <value>Rule Specificity</value>
   </data>
   <data name="plRuleType.Help" xml:space="preserve">
-    <value>Determines whether this rule allows or denys access</value>
+    <value>Determines whether this rule allows or denies access.</value>
   </data>
   <data name="plRuleType.Text" xml:space="preserve">
     <value>Rule Type</value>
   </data>
   <data name="IPValidation.ErrorMessage" xml:space="preserve">
-    <value>Please use a valid IP address/mask</value>
+    <value>Please use a valid IP address/mask.</value>
   </data>
 
 </root>

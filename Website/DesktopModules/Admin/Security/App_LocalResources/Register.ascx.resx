@@ -121,13 +121,13 @@
     <value>Register</value>
   </data>
   <data name="RegisterWarning.Text" xml:space="preserve">
-    <value> - &lt;em&gt;(&lt;strong&gt;Note:&lt;/strong&gt; - Registration may take several seconds.  Once you click the Register button please wait until the system responds.)&lt;/em&gt;</value>
+    <value> &lt;em&gt;(&lt;strong&gt;Note:&lt;/strong&gt; - Registration may take several seconds.  Once you click the Register button please wait until the system responds.)&lt;/em&gt;</value>
   </data>
   <data name="ControlTitle_register.Text" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="captchaLabel.Help" xml:space="preserve">
-    <value>Enter the security code</value>
+    <value>Enter the security code.</value>
   </data>
   <data name="captchaLabel.Text" xml:space="preserve">
     <value>Security Code:</value>

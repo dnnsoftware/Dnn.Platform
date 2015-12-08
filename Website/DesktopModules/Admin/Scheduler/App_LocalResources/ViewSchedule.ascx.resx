@@ -199,15 +199,15 @@
     <value>Server Name:</value>
   </data>
   <data name="plServers.Help" xml:space="preserve">
-    <value>The particular server (or All) that a scheduled task will run on.</value>
+    <value>Filter scheduled tasks by a single server or choose All to view all tasks.</value>
   </data>
   <data name="plScheduleAppStartDelay.Text" xml:space="preserve">
-    <value>Delay Schedule At Start:</value>
+    <value>Delay Schedule at Start:</value>
   </data>
   <data name="plScheduleAppStartDelay.Help" xml:space="preserve">
     <value>Number of minutes the system should wait before it runs any scheduled jobs after a restart. Default is 1 min.</value>
   </data>
   <data name="ScheduleAppStartDelayValidation.Text" xml:space="preserve">
-    <value>Value should be in minutes!</value>
+    <value>Value should be in minutes.</value>
   </data>
 </root>

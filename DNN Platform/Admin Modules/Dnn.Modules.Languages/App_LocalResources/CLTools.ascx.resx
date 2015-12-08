@@ -133,7 +133,7 @@
     <value>Delete this translated page</value>
   </data>
   <data name="DeleteTranslation.Confirm" xml:space="preserve">
-    <value>You are about to permanently &lt;b&gt;remove&lt;/b&gt; the '&lt;b&gt;{0}&lt;/b&gt;' translation of this page. Are you sure about this?</value>
+    <value>You are about to permanently &lt;b&gt;remove&lt;/b&gt; the '&lt;b&gt;{0}&lt;/b&gt;' translation of this page.  Are you sure you want to proceed?</value>
   </data>
   <data name="Detached.Header" xml:space="preserve">
     <value>Detached? Click to (un)detach all modules.</value>
@@ -145,13 +145,13 @@
     <value>Page Modules</value>
   </data>
   <data name="ModuleDeleted.Text" xml:space="preserve">
-    <value>This module is deleted, and exists in the recycle bin</value>
+    <value>This module is deleted, and exists in the recycle bin.</value>
   </data>
   <data name="ModuleInfo.Text" xml:space="preserve">
     <value>Module: {0}&lt;br/&gt;ModuleTitle: {1}&lt;br/&gt;Pane: {2}</value>
   </data>
   <data name="ModuleInfoForNonAdmins.Text" xml:space="preserve">
-    <value>You do not have enough permissions to edit the title of this module</value>
+    <value>You do not have enough permissions to edit the title of this module.</value>
   </data>
   <data name="ModuleTitle.Text" xml:space="preserve">
     <value>Module Title</value>

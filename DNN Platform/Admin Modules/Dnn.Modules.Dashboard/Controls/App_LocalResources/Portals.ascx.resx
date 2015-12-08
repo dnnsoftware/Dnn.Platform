@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="plPortals.Help" xml:space="preserve">
-    <value>Displays a list of Websites for this DotNetNuke Installation.</value>
+    <value>Displays a list of the sites within this DNN Installation.</value>
   </data>
   <data name="plPortals.Text" xml:space="preserve">
     <value>Websites:</value>

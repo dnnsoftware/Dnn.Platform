@@ -136,7 +136,7 @@
     <value>My Folder</value>
   </data>
   <data name="NoPermission.Text" xml:space="preserve">
-    <value>You do not have permissions to view any files on the file system</value>
+    <value>You do not have permissions to view any files on the file system.</value>
   </data>
   <data name="Ok.Text" xml:space="preserve">
     <value>Ok</value>
@@ -211,7 +211,7 @@
     <value>Decompressing File</value>
   </data>
   <data name="FileUpload.FileIsTooLarge.Error" xml:space="preserve">
-    <value>File size bigger than {0}</value>
+    <value>File size bigger than {0}.</value>
   </data>
   <data name="FileUpload.FileUploadCancelled.Error" xml:space="preserve">
     <value>Upload cancelled</value>
@@ -223,16 +223,16 @@
     <value>File uploaded</value>
   </data>
   <data name="FileUpload.EmptyFileUpload.Error" xml:space="preserve">
-    <value>Your browser does not support empty file uploads</value>
+    <value>Your browser does not support empty file uploads.</value>
   </data>
   <data name="FileUpload.FileAlreadyExists.Error" xml:space="preserve">
-    <value>The file you want to upload already exists in this folder</value>
+    <value>The file you want to upload already exists in this folder.</value>
   </data>
   <data name="FileUpload.UploadStopped.Text" xml:space="preserve">
     <value>File upload stopped</value>
   </data>
   <data name="FileUpload.UrlTooltip.Text" xml:space="preserve">
-    <value>Enter Resource Url like http://SomeWebSite.com/Images/About.png</value>
+    <value>Enter Resource URL like http://SomeWebSite.com/Images/About.png</value>
   </data>
   <data name="FileUpload.KeepButton.Text" xml:space="preserve">
     <value>Keep</value>
@@ -256,7 +256,7 @@
     <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
   <data name="FileUpload.TooManyFiles.Error" xml:space="preserve">
-    <value>You connot upload more than {0} file(s) at once.</value>
+    <value>You cannot upload more than {0} file(s) at once.</value>
   </data>
   <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
     <value>Some selected files with invalid extensions are excluded from upload.  You can only upload files with the following extensions: {0}.</value>

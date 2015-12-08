@@ -127,13 +127,13 @@
     <value>Edit Language</value>
   </data>
     <data name="languageLabel.Help" xml:space="preserve">
-    <value>Select the language</value>
+    <value>Select the language.</value>
   </data>
     <data name="languageLabel.Text" xml:space="preserve">
     <value>Language:</value>
   </data>
     <data name="fallBackLabel.Help" xml:space="preserve">
-    <value>Select the fallback language</value>
+    <value>Select the fallback language to be used if the selected language is not available.</value>
   </data>
     <data name="fallBackLabel.Text" xml:space="preserve">
     <value>Fallback Language:</value>
@@ -145,6 +145,6 @@
     <value>Localized Content Translators:</value>
   </data>
     <data name="localizationNotEnabled.Text" xml:space="preserve">
-    <value>Localized content is not enabled for this site</value>
+    <value>Localized content is not enabled for this site.</value>
   </data>
 </root>

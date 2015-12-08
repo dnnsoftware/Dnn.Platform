@@ -121,7 +121,7 @@
     <value>Export Template</value>
   </data>
   <data name="valFileName.ErrorMessage" xml:space="preserve">
-    <value>Template File Name Is Required</value>
+    <value>Template file name is required.</value>
   </data>
   <data name="plTemplateName.Text" xml:space="preserve">
     <value>Template File Name:</value>
@@ -133,25 +133,25 @@
     <value>The new site template has been saved in folder: &lt;b&gt;{0}&lt;/b&gt;</value>
   </data>
   <data name="plPortals.Help" xml:space="preserve">
-    <value>Select The SiteTo Export</value>
+    <value>Select the site to export.</value>
   </data>
   <data name="plTemplateName.Help" xml:space="preserve">
-    <value>Provide a name for the Template File to be created</value>
+    <value>Enter a name for the template file to be created.</value>
   </data>
   <data name="plContent.Text" xml:space="preserve">
-    <value>Include Content?</value>
+    <value>Include Content:</value>
   </data>
   <data name="plContent.Help" xml:space="preserve">
-    <value>Check this option if you want to export all module content when creating the new template</value>
+    <value>Check this box to include the content within iPortable modules.</value>
   </data>
   <data name="plDescription.Text" xml:space="preserve">
     <value>Template Description:</value>
   </data>
   <data name="plDescription.Help" xml:space="preserve">
-    <value>Enter a description for the template file</value>
+    <value>Enter a description for the template file.</value>
   </data>
   <data name="valDescription.ErrorMessage" xml:space="preserve">
-    <value>Template Description Is Required</value>
+    <value>Template description is required.</value>
   </data>
   <data name="ControlTitle_template.Text" xml:space="preserve">
     <value>Export Template</value>
@@ -169,40 +169,40 @@
     <value>You must select at least one page to be exported.</value>
   </data>
   <data name="lblFiles.Help" xml:space="preserve">
-    <value>Check this option if you want to export all site files and folders when creating the new template.</value>
+    <value>Check this box to export all site files and folders when creating the new template.</value>
   </data>
   <data name="lblFiles.Text" xml:space="preserve">
-    <value>Include Files?</value>
+    <value>Include Files:</value>
   </data>
   <data name="lblMultilanguage.Help" xml:space="preserve">
-    <value>If the site being exported has content localization enabled you can decide whether to create a template for a multilanguage site or just create a single language template. </value>
+    <value>Check this box to create a template for a multi-language site and select each language to be included in addition to the default language.</value>
   </data>
   <data name="lblMultilanguage.Text" xml:space="preserve">
-    <value>Export As Multilingual Site?</value>
+    <value>Export As Multilingual Site:</value>
   </data>
   <data name="lblPages.Help" xml:space="preserve">
-    <value>Select the pages that must be exported to the template. &lt;br /&gt;&lt;b&gt;NB: &lt;/b&gt;If you intend to use the exported template to create a new site, please be sure to select all, or selected Admin pages. If no Admin pages are available in the template, the new site will not have an Admin menu. </value>
+    <value>Select the pages to be exported. &lt;br /&gt;&lt;b&gt;NB: &lt;/b&gt;If you intend to use the exported template to create a new site, please be sure to select all, or selected Admin pages. If no Admin pages are available in the template, the new site will not have an Admin menu.</value>
   </data>
   <data name="lblPages.Text" xml:space="preserve">
-    <value>Pages to export:</value>
+    <value>Pages to Export:</value>
   </data>
   <data name="lblProfile.Help" xml:space="preserve">
-    <value>Check this option if you want to export profile property definitions when creating the new template.</value>
+    <value>Check this box to include custom profile property definitions in the template.</value>
   </data>
   <data name="lblProfile.Text" xml:space="preserve">
-    <value>Include Profile Properties?</value>
+    <value>Include Profile Properties:</value>
   </data>
   <data name="lblRoles.Help" xml:space="preserve">
-    <value>Check this option if you want to export roles when creating the new template.</value>
+    <value>Check this box to export all security roles when creating the new template.</value>
   </data>
   <data name="lblRoles.Text" xml:space="preserve">
-    <value>Include Roles?</value>
+    <value>Include Roles:</value>
   </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Advanced Configuration</value>
   </data>
   <data name="lblLanguages.Help" xml:space="preserve">
-    <value>This option allows you to select which languages will be included in the template when exporting pages.</value>
+    <value>Select each of the secondary languages to be included in a multi-language template, or select the language of a single language site.</value>
   </data>
   <data name="lblLanguages.Text" xml:space="preserve">
     <value>Export pages in selected languages:</value>
@@ -211,19 +211,19 @@
     <value>You must select all ancestors from root level in order to include a child page.</value>
   </data>
   <data name="lblModules.Help" xml:space="preserve">
-    <value>Check this option to include module deploy permissions into the exported template. Please be aware that if you check this option, it may also be necessary to export Roles as well.</value>
+    <value>Check this box to include module deploy permissions in the exported template. If this option is selected, it may also be necessary to export Roles if any custom roles has deployment permissions.</value>
   </data>
   <data name="lblModules.Text" xml:space="preserve">
-    <value>Include Module Deployment Permissions?</value>
+    <value>Include Module Deployment Permissions:</value>
   </data>
   <data name="lblNote.Text" xml:space="preserve">
-    <value>Note: the default language ({0}) will always be exported</value>
+    <value>Note: the default language ({0}) will always be exported.</value>
   </data>
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Basic configuration</value>
   </data>
   <data name="lblAdminOnly.Text" xml:space="preserve">
-    <value>Visible to administrators only</value>
+    <value>Visible to Administrators only</value>
   </data>
   <data name="lblDisabled.Text" xml:space="preserve">
     <value>Page is disabled</value>
@@ -235,7 +235,7 @@
     <value>Page is hidden in menu</value>
   </data>
   <data name="lblHome.Text" xml:space="preserve">
-    <value>Homepage of the website</value>
+    <value>Homepage of the site</value>
   </data>
   <data name="lblRegistered.Text" xml:space="preserve">
     <value>Visible to registered users</value>

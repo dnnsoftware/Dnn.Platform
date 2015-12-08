@@ -130,7 +130,7 @@
     <value>Key</value>
   </data>
   <data name="DashboardControlsHelp.Text" xml:space="preserve">
-    <value>You can manage which Dashboard Controls are visible and the order of the controls.</value>
+    <value>Manage which Dashboard Controls are visible and the order of the controls.</value>
   </data>
   <data name="DashboardControlSrc.Header" xml:space="preserve">
     <value>Control Source</value>

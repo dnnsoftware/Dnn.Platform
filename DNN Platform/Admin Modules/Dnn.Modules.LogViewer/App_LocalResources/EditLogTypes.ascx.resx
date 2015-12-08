@@ -139,19 +139,19 @@
     <value>Logging Enabled</value>
   </data>
   <data name="plIsActive.Help" xml:space="preserve">
-    <value>Do you want Logging enabled</value>
+    <value>Check this box to enable logging.</value>
   </data>
   <data name="plLogTypeKey.Text" xml:space="preserve">
     <value>Log Type</value>
   </data>
   <data name="plLogTypeKey.Help" xml:space="preserve">
-    <value>What type of event is this Log Type</value>
+    <value>The type of event being logged.</value>
   </data>
   <data name="plLogTypePortalID.Text" xml:space="preserve">
     <value>Website</value>
   </data>
   <data name="plLogTypePortalID.Help" xml:space="preserve">
-    <value>Which Website is this Log Event Associated with</value>
+    <value>The site which this log event is associated with.</value>
   </data>
   <data name="plKeepMostRecent.Text" xml:space="preserve">
     <value>Keep Most Recent</value>
@@ -160,13 +160,13 @@
     <value>FileName</value>
   </data>
   <data name="plFileName.Help" xml:space="preserve">
-    <value>Enter the filename of the log file.</value>
+    <value>The file name of the log file.</value>
   </data>
   <data name="plEmailNotificationStatus.Text" xml:space="preserve">
     <value>Email Notification Enabled</value>
   </data>
   <data name="plEmailNotificationStatus.Help" xml:space="preserve">
-    <value>Would you like a message sent when this event occurs?</value>
+    <value>Check this box to send an email message when this event occurs.</value>
   </data>
   <data name="plThreshold.Text" xml:space="preserve">
     <value>Occurence Threshold</value>
@@ -175,13 +175,13 @@
     <value>Mail From Address</value>
   </data>
   <data name="plMailFromAddress.Help" xml:space="preserve">
-    <value>Email Address to send the Notification from</value>
+    <value>The email address that the notification will be sent from.</value>
   </data>
   <data name="plMailToAddress.Text" xml:space="preserve">
     <value>Mail To Address</value>
   </data>
   <data name="plMailToAddress.Help" xml:space="preserve">
-    <value>Email Address to send the Notification to</value>
+    <value>The email address to send the notification to</value>
   </data>
   <data name="EmailSettings.Text" xml:space="preserve">
     <value>Email Notification Settings</value>
@@ -190,13 +190,13 @@
     <value>Add Log Setting</value>
   </data>
   <data name="ConfigDeleted.Text" xml:space="preserve">
-    <value>The selected log setting has been deleted.</value>
+    <value>The log setting has been deleted.</value>
   </data>
   <data name="ConfigUpdated.Text" xml:space="preserve">
-    <value>Log setting has been updated.</value>
+    <value>The log setting has been updated.</value>
   </data>
   <data name="ConfigAdded.Text" xml:space="preserve">
-    <value>Log setting has been added.</value>
+    <value>The log setting has been added.</value>
   </data>
   <data name="LogEntry.Text" xml:space="preserve">
     <value> Log Entry</value>
@@ -220,7 +220,7 @@
     <value>&lt;h1&gt;About Log Viewer&lt;/h1&gt;&lt;p&gt;Allows you to edit website events to log.&lt;/p&gt;</value>
   </data>
   <data name="DeleteError.Text" xml:space="preserve">
-    <value>The selected log setting could not be deleted. You should delete all existing log entries for this logtype first.</value>
+    <value>The selected log setting could not be deleted.  You should delete all existing log entries for this log type first.</value>
   </data>
   <data name="TimeType_1.Text" xml:space="preserve">
     <value>Seconds</value>

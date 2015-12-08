@@ -124,16 +124,16 @@
     <value>Data Provider:</value>
   </data>
   <data name="HostInfo_HostGUID.Help" xml:space="preserve">
-    <value>The site's unique identifier.</value>
+    <value>The globally unique identifier of the Host site.</value>
   </data>
   <data name="HostInfo_HostGUID.Text" xml:space="preserve">
     <value>Host GUID:</value>
   </data>
   <data name="HostInfo_HtmlEditorProvider.Help" xml:space="preserve">
-    <value>The default Html editor provider for the site.</value>
+    <value>The default HTML Editor provider for the site.</value>
   </data>
   <data name="HostInfo_HtmlEditorProvider.Text" xml:space="preserve">
-    <value>Html Editor Provider:</value>
+    <value>HTML Editor Provider:</value>
   </data>
   <data name="HostInfo_LoggingProvider.Help" xml:space="preserve">
     <value>The default logging provider for the site.</value>
@@ -142,7 +142,7 @@
     <value>Logging Provider:</value>
   </data>
   <data name="HostInfo_Version.Help" xml:space="preserve">
-    <value>The version of product.</value>
+    <value>The product version.</value>
   </data>
   <data name="HostInfo_Version.Text" xml:space="preserve">
     <value>Version:</value>
@@ -154,7 +154,7 @@
     <value>Caching Provider:</value>
   </data>
   <data name="HostInfo_FriendlyUrlProvider.Help" xml:space="preserve">
-    <value>The default friendly URL provider for the site.</value>
+    <value>The default Friendly URL provider for the site.</value>
   </data>
   <data name="HostInfo_FriendlyUrlProvider.Text" xml:space="preserve">
     <value>Friendy URL Provider:</value>
@@ -178,37 +178,37 @@
     <value>Friendly URL Type:</value>
   </data>
   <data name="HostInfo_SchedulerMode.Help" xml:space="preserve">
-    <value>The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive. Alternatively, the Request Method executes tasks when HTTP Requests are made. You can also disable the scheduler by selecting Disabled.</value>
+    <value>The mode set for the Schedule. The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive.  Alternatively, the Request Method executes tasks when HTTP Requests are made.  The scheduler can also be disabled.</value>
   </data>
   <data name="HostInfo_SchedulerMode.Text" xml:space="preserve">
     <value>Scheduler Mode:</value>
   </data>
   <data name="HostInfo_WebFarmEnabled.Help" xml:space="preserve">
-    <value>This setting determines whether the site operates in Web Farm mode. </value>
+    <value>Indicates whether the site operates in Web Farm mode. </value>
   </data>
   <data name="HostInfo_WebFarmEnabled.Text" xml:space="preserve">
     <value>Web Farm Enabled:</value>
   </data>
   <data name="plHost.Help" xml:space="preserve">
-    <value>Displays selected settings that affect all websites in this installation.</value>
+    <value>Displays selected settings that affect all sites in this installation.</value>
   </data>
   <data name="plHost.Text" xml:space="preserve">
-    <value>DotNetNuke Host Settings:</value>
+    <value>DNN Host Settings:</value>
   </data>
   <data name="HostInfo_Product.Help" xml:space="preserve">
-    <value>The application you are running</value>
+    <value>The DNN product this installation is using.</value>
   </data>
   <data name="HostInfo_Product.Text" xml:space="preserve">
     <value>Product:</value>
   </data>
   <data name="HostInfo_JQueryUIVersion.Help" xml:space="preserve">
-    <value>This is the version of jQuery UI this DotNetNuke installation is running.</value>
+    <value>The version of jQuery UI this DNN installation is running.</value>
   </data>
   <data name="HostInfo_JQueryUIVersion.Text" xml:space="preserve">
     <value>jQuery UI Version:</value>
   </data>
   <data name="HostInfo_JQueryVersion.Help" xml:space="preserve">
-    <value>This is the version of jQuery this DotNetNuke installation is running.</value>
+    <value>The version of jQuery this DNN installation is running.</value>
   </data>
   <data name="HostInfo_JQueryVersion.Text" xml:space="preserve">
     <value>jQuery Version:</value>

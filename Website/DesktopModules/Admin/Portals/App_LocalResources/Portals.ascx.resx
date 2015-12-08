@@ -145,7 +145,7 @@
     <value>Site Management</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Site Management&lt;/h1&gt;&lt;p&gt;The Super User can manage the various parent and child Sites within the installation. This module allows you to add a new site, modify an existing site, and delete a site.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Site Management&lt;/h1&gt;&lt;p&gt;Super Users can manage the various parent and child sites within this installation.  This Site Management module allows Super Users to add new sites and modify or delete existing sites.&lt;/p&gt;</value>
   </data>
   <data name="ExportTemplate.Action" xml:space="preserve">
     <value>Export Site Template</value>
@@ -157,7 +157,7 @@
     <value>Pages</value>
   </data>
   <data name="PortalDeleted.Text" xml:space="preserve">
-    <value>Site deleted successfully</value>
+    <value>Site deleted successfully.</value>
   </data>
   <data name="Expired.Text" xml:space="preserve">
     <value>Expired</value>

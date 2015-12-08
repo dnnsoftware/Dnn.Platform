@@ -130,61 +130,61 @@
     <value>Show Address Column:</value>
   </data>
   <data name="Column_Address.Help" xml:space="preserve">
-    <value>Show Address Column</value>
+    <value>Show the Address column.</value>
   </data>
   <data name="Column_Authorized.Text" xml:space="preserve">
     <value>Show Authorized Column:</value>
   </data>
   <data name="Column_Authorized.Help" xml:space="preserve">
-    <value>Show Authorized Column</value>
+    <value>Show the Authorized column.</value>
   </data>
   <data name="Column_CreatedDate.Text" xml:space="preserve">
     <value>Show Created Date Column:</value>
   </data>
   <data name="Column_CreatedDate.Help" xml:space="preserve">
-    <value>Show Created Date Column</value>
+    <value>Show the Created Date column.</value>
   </data>
   <data name="Column_DisplayName.Text" xml:space="preserve">
     <value>Show Name Column:</value>
   </data>
   <data name="Column_DisplayName.Help" xml:space="preserve">
-    <value>Show Name Column</value>
+    <value>Show the Name column.</value>
   </data>
   <data name="Column_Email.Text" xml:space="preserve">
     <value>Show Email Column:</value>
   </data>
   <data name="Column_Email.Help" xml:space="preserve">
-    <value>Show Email Column</value>
+    <value>Show the Email column.</value>
   </data>
   <data name="Column_FirstName.Text" xml:space="preserve">
     <value>Show First Name Column:</value>
   </data>
   <data name="Column_FirstName.Help" xml:space="preserve">
-    <value>Show First Name Column</value>
+    <value>Show the First Name column.</value>
   </data>
   <data name="Column_LastLogin.Text" xml:space="preserve">
     <value>Show Last Login Column:</value>
   </data>
   <data name="Column_LastLogin.Help" xml:space="preserve">
-    <value>Show Last Login Column</value>
+    <value>Show the Last Login column.</value>
   </data>
   <data name="Column_LastName.Text" xml:space="preserve">
     <value>Show Last Name Column:</value>
   </data>
   <data name="Column_LastName.Help" xml:space="preserve">
-    <value>Show Last Name Column</value>
+    <value>Show the Last Name column.</value>
   </data>
   <data name="Column_Telephone.Text" xml:space="preserve">
     <value>Show Telephone Column:</value>
   </data>
   <data name="Column_Telephone.Help" xml:space="preserve">
-    <value>Show Telephone Column</value>
+    <value>Show the Telephone column.</value>
   </data>
   <data name="Records_PerPage.Text" xml:space="preserve">
     <value>Users per Page:</value>
   </data>
   <data name="Records_PerPage.Help" xml:space="preserve">
-    <value>Enter the number of users to display on a page</value>
+    <value>Enter the number of users to display on a page.</value>
   </data>
   <data name="ProviderSettingsHelp.Text" xml:space="preserve">
     <value>In this section you can review the membership provider's settings.  Some providers may allow you to edit the settings.  The default provider based on the ASP.NET MemberRole requires you to edit web.config, so the settings can not be updated here.</value>
@@ -199,13 +199,13 @@
     <value>Default Display Mode:</value>
   </data>
   <data name="Display_Mode.Help" xml:space="preserve">
-    <value>Select the default display mode for the Users Grid</value>
+    <value>Select the default display mode for the Users Grid.</value>
   </data>
   <data name="Security_UsersControl.Text" xml:space="preserve">
-    <value>Users display mode in Manage Roles:</value>
+    <value>Users Display Mode in Manage Roles:</value>
   </data>
   <data name="Security_UsersControl.Help" xml:space="preserve">
-    <value>Select the Users Control to use in the Manage Roles module control</value>
+    <value>Select the Users Control to use in the Manage Roles module control.</value>
   </data>
   <data name="FirstLetter.Text" xml:space="preserve">
     <value>First Letter</value>
@@ -217,13 +217,13 @@
     <value>Text Box</value>
   </data>
   <data name="Display_SuppressPager.Help" xml:space="preserve">
-    <value>Check to hide the page in the user accounts grid if only one page of records</value>
+    <value>Check this box to hide the page in the user accounts grid if only one page of records</value>
   </data>
   <data name="Display_SuppressPager.Text" xml:space="preserve">
     <value>Disable Results Paging:</value>
   </data>
   <data name="Profile_ManageServices.Help" xml:space="preserve">
-    <value>Check to display the Manage Services section in the Users profile</value>
+    <value>Check this box to display the Manage Services section in the Users profile.</value>
   </data>
   <data name="Profile_ManageServices.Text" xml:space="preserve">
     <value>Display Manage Services:</value>
@@ -232,7 +232,7 @@
     <value>Members Only</value>
   </data>
   <data name="Security_DisplayNameFormat.Help" xml:space="preserve">
-    <value>You can optionally specify a format for the users display name. The format can include tokens for dynamic substitution such as [FIRSTNAME] [LASTNAME]. If a display name format is specified, the display name will no longer be editable through the user interface.</value>
+    <value>Optionally specify a format for the users display name. The format can include tokens for dynamic substitution such as [FIRSTNAME] [LASTNAME]. If a display name format is specified, the display name will no longer be editable through the user interface.</value>
   </data>
   <data name="Security_DisplayNameFormat.Text" xml:space="preserve">
     <value>Display Name Format:</value>

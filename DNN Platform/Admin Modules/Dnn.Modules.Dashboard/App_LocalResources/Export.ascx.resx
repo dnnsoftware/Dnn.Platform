@@ -121,21 +121,21 @@
     <value>Return</value>
   </data>
   <data name="cmdSave.Text" xml:space="preserve">
-    <value>Create Xml File</value>
+    <value>Create XML File</value>
   </data>
   <data name="ControlTitle_export.Text" xml:space="preserve">
     <value>Export Dashboard</value>
   </data>
   <data name="plFileName.Help" xml:space="preserve">
-    <value>Enter a filename for the xml file</value>
+    <value>Enter a file name for the XML file.</value>
   </data>
   <data name="plFileName.Text" xml:space="preserve">
     <value>File Name:</value>
   </data>
   <data name="Success.Text" xml:space="preserve">
-    <value>Dashboard exported as xml Successfully.  The file - {0} - can be found in the Host Root Folder in the File Manager</value>
+    <value>Dashboard successfully exported as XML.  The file - {0} - can be found in the Root folder of the Host File Management page.</value>
   </data>
   <data name="valFileName.Error" xml:space="preserve">
-    <value>A file name is required</value>
+    <value>A file name is required.</value>
   </data>
 </root>

@@ -136,10 +136,10 @@
     <value>Security</value>
   </data>
   <data name="Permissions.Help" xml:space="preserve">
-    <value>Check the checkboxes to set permissions for this package.</value>
+    <value>Check the check boxes to set permissions for this package.</value>
   </data>
   <data name="Permissions.Text" xml:space="preserve">
-    <value>Package Permisisons:</value>
+    <value>Package Permissions:</value>
   </data>
   <data name="chkDelete.Text" xml:space="preserve">
     <value>Delete Files</value>
@@ -202,16 +202,16 @@
     <value>Update Theme</value>
   </data>
   <data name="EditLanguageHelp.Text" xml:space="preserve">
-    <value>In this section you can configure the package information for this Language Pack.</value>
+    <value>In this section you can configure the package information for this language pack.</value>
   </data>
   <data name="EditModuleHelp.Text" xml:space="preserve">
-    <value>In this section you can configure the package information for this Module.</value>
+    <value>In this section you can configure the package information for this module.</value>
   </data>
   <data name="EditSkinHelp.Text" xml:space="preserve">
-    <value>In this section you can configure the package information for this Theme.</value>
+    <value>In this section you can configure the package information for this theme.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
-    <value>Packages must have a unique name</value>
+    <value>Packages must have a unique name.</value>
   </data>
   <data name="Core.Text" xml:space="preserve">
     <value>Core</value>
@@ -220,33 +220,33 @@
     <value>Package</value>
   </data>
   <data name="plPackageType.Help" xml:space="preserve">
-    <value>Select the type of Language Pack you would like to create</value>
+    <value>Select the type of language pack you want to create.</value>
   </data>
   <data name="plPackageType.Text" xml:space="preserve">
     <value>Language Pack Type:</value>
   </data>
   <data name="PackageType.Error" xml:space="preserve">
-    <value>You must select a Language Pack Type.</value>
+    <value>You must select a language pack type.</value>
   </data>
   <data name="cmdCreateContainer.Text" xml:space="preserve">
     <value>Add New Container</value>
   </data>
   <data name="PackageUpdated.Text" xml:space="preserve">
-    <value>Extension Updated succesfully</value>
+    <value>Extension updated succesfully.</value>
   </data>
   <data name="UpgradeMessage.Text" xml:space="preserve">
-    <value>Click Here To Get The Upgrade</value>
+    <value>Click Here to Get the Upgrade</value>
   </data>
   <data name="LanguageMessage.Text" xml:space="preserve">
-    <value>Click Here To Get The Language Pack</value>
+    <value>Click Here to Get the Language Pack</value>
   </data>
   <data name="AdminHeading.Text" xml:space="preserve">
-    <value>Configure {0} Extension Settings for this Website</value>
+    <value>Configure {0} Extension Settings for This Site</value>
   </data>
   <data name="HostHeading.Text" xml:space="preserve">
     <value>Configure {0} Extension Settings</value>
   </data>
   <data name="Controls.Help" xml:space="preserve">
-    <value>Displays the Module Definition's Module Controls</value>
+    <value>Displays the Module Definition's Module Controls.</value>
   </data>
 </root>

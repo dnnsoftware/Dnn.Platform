@@ -130,7 +130,7 @@
     <value>User Name</value>
   </data>
   <data name="plUsers.Help" xml:space="preserve">
-    <value>Enter The User Name and click Validate to confirm</value>
+    <value>Enter the user name and click Validate to confirm.</value>
   </data>
   <data name="cmdValidate.Text" xml:space="preserve">
     <value>Validate</value>
@@ -139,16 +139,16 @@
     <value>Security Role</value>
   </data>
   <data name="plRoles.Help" xml:space="preserve">
-    <value>Select The Security Role</value>
+    <value>Select the security role.</value>
   </data>
   <data name="plExpiryDate.Text" xml:space="preserve">
     <value>Expiry Date</value>
   </data>
   <data name="plExpiryDate.Help" xml:space="preserve">
-    <value>Specify The Date This Role Assignment Should Expire ( Optional ). Entering No Value Will Indicate No Expiry Date.</value>
+    <value>Choose the date that access to this role will expire or leave blank for no expiry.</value>
   </data>
   <data name="SendNotification.Text" xml:space="preserve">
-    <value>Send Email?</value>
+    <value>Send Email</value>
   </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add Role</value>
@@ -157,7 +157,7 @@
     <value>Invalid expiry date</value>
   </data>
   <data name="RoleRemoveError.Text" xml:space="preserve">
-    <value>You Can Not Remove The Website Administrator Or The Registered Users Role</value>
+    <value>You cannot remove the Administrators or the Registered Users roles.</value>
   </data>
   <data name="ControlTitle_user roles.Text" xml:space="preserve">
     <value>User Roles</value>
@@ -169,7 +169,7 @@
     <value>Manage Users in Role: {0}</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Manage Security Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their website. The module allows you to manage the users assigned to security roles.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Manage Security Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their site. The module allows you to manage the users assigned to security roles.&lt;/p&gt;</value>
   </data>
   <data name="AddUser.Text" xml:space="preserve">
     <value>Add User to Role</value>
@@ -184,13 +184,13 @@
     <value>Effective Date</value>
   </data>
   <data name="plEffectiveDate.Help" xml:space="preserve">
-    <value>Specify The Date This Role Assignment Should Start ( Optional ). Entering No Value Will Indicate that the role will start immediately.</value>
+    <value>Select the date this user can first access this role or leave blank for immediate access.</value>
   </data>
   <data name="valEffectiveDate.Text" xml:space="preserve">
     <value>Invalid effective date</value>
   </data>
   <data name="valDates.Text" xml:space="preserve">
-    <value>Expiry Date must be Greater than Effective Date</value>
+    <value>Expiry date must be greater than effective date.</value>
   </data>
   <data name="UpdateRole.Text" xml:space="preserve">
     <value>Update User Role</value>

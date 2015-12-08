@@ -121,31 +121,31 @@
     <value>Web Server</value>
   </data>
   <data name="ServerInfo_DBVersion.Help" xml:space="preserve">
-    <value>The version of SQL Server</value>
+    <value>The version of SQL Server.</value>
   </data>
   <data name="ServerInfo_DBVersion.Text" xml:space="preserve">
     <value>Database Version:</value>
   </data>
   <data name="ServerInfo_Framework.Help" xml:space="preserve">
-    <value>The version of .NET</value>
+    <value>The version of .NET.</value>
   </data>
   <data name="ServerInfo_Framework.Text" xml:space="preserve">
     <value>.NET Framework Version:</value>
   </data>
   <data name="ServerInfo_HostName.Help" xml:space="preserve">
-    <value>The name of the Host Computer</value>
+    <value>The name of the Host computer.</value>
   </data>
   <data name="ServerInfo_HostName.Text" xml:space="preserve">
     <value>Host Name:</value>
   </data>
   <data name="ServerInfo_Identity.Help" xml:space="preserve">
-    <value>The Windows user account under which the application is running. This is the account which needs to be granted folder permissions on the server.</value>
+    <value>The Windows user account under which the application is running.  This is the account which needs to be granted folder permissions on the server.</value>
   </data>
   <data name="ServerInfo_Identity.Text" xml:space="preserve">
     <value>ASP.NET Identity:</value>
   </data>
   <data name="ServerInfo_IISVersion.Help" xml:space="preserve">
-    <value>The version of Internet Information Server (IIS)</value>
+    <value>The version of Internet Information Server (IIS).</value>
   </data>
   <data name="ServerInfo_IISVersion.Text" xml:space="preserve">
     <value>Web Server Version:</value>
