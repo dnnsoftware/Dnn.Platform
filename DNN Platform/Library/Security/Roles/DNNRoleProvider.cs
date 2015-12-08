@@ -90,8 +90,8 @@ namespace DotNetNuke.Security.Roles
                 role.RoleID =
                     Convert.ToInt32(dataProvider.AddRole(role.PortalID,
                                                          role.RoleGroupID,
-                                                         role.RoleName,
-                                                         role.Description,
+                                                         role.RoleName.Trim(),
+                                                         role.Description.Trim(),
                                                          role.ServiceFee,
                                                          role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                                          role.BillingFrequency,
@@ -169,8 +169,8 @@ namespace DotNetNuke.Security.Roles
         {
             dataProvider.UpdateRole(role.RoleID,
                                     role.RoleGroupID,
-                                    role.RoleName,
-                                    role.Description,
+                                    role.RoleName.Trim(),
+                                    role.Description.Trim(),
                                     role.ServiceFee,
                                     role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                     role.BillingFrequency,
@@ -354,8 +354,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
-            var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName,
-                                                        roleGroup.Description,
+            var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
+                                                        roleGroup.Description.Trim(),
                                                         UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
@@ -422,7 +422,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
-            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName, roleGroup.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(), roleGroup.Description.Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
         }
 		
