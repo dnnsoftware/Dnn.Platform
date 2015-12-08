@@ -16,13 +16,15 @@ namespace DotNetNuke.Web.Mvc.Helpers
     {
         private readonly ViewContext _viewContext;
 
+        private readonly IDnnController controller;
+
         public DnnUrlHelper(ViewContext viewContext)
         {
             Requires.NotNull("viewContext", viewContext); 
             
             _viewContext = viewContext;
 
-            var controller = viewContext.Controller as IDnnController;
+            controller = viewContext.Controller as IDnnController;
 
             if (controller == null)
             {
@@ -76,7 +78,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            routeValues["controller"] = controllerName;
+            routeValues["controller"] = controllerName ?? controller.ControllerContext.RouteData.Values["controller"];
             routeValues["action"] = actionName;
             return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, ModuleContext);
         }
