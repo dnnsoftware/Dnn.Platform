@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            routeValues["controller"] = controllerName ?? _controller.ControllerContext.RouteData.Values["controller"];
+            routeValues["controller"] = controllerName ?? _controller.ControllerContext?.RouteData.Values["controller"];
             routeValues["action"] = actionName;
             return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, ModuleContext);
         }
