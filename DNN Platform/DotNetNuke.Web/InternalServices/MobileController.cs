@@ -22,6 +22,8 @@
 using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api.Auth.Jwt;
+using DotNetNuke.Web.Api.Internal.Auth;
 using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 
 namespace DotNetNuke.Web.InternalServices

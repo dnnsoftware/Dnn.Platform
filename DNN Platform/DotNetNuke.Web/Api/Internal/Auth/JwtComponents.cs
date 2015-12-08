@@ -19,9 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Web.Api.Auth;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
+namespace DotNetNuke.Web.Api.Internal.Auth
 {
     // ReSharper disable InconsistentNaming
 
@@ -32,10 +33,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
     {
         Unsupported,
         HS256,
-        /*
         HS384,
         HS512
-         */
     }
 
     /// <summary>
@@ -71,10 +70,10 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
     }
 
     /// <summary>
-    /// DNN specific JWT payload
+    /// DNN specific JWT claim object
     /// </summary>
     [JsonObject]
-    public class DnnJwtPayload
+    public class DnnJwtClaim
     {
         /// <summary>
         /// The user name this token issued for.

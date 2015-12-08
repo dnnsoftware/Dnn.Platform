@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
@@ -30,11 +31,14 @@ using System.Web.Routing;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.Api.Internal.Auth;
 using DotNetNuke.Web.Api.Internal.Auth.Jwt;
+using DotNetNuke.Web.ConfigSection;
 
 namespace DotNetNuke.Web.Api.Internal
 {
@@ -112,11 +116,9 @@ namespace DotNetNuke.Web.Api.Internal
                 //dnnContext message handler
                 //this must run before any auth message handlers
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new DnnContextMessageHandler());
-                
-                //authentication message handlers
-                GlobalConfiguration.Configuration.MessageHandlers.Add(new BasicAuthMessageHandler());
-                GlobalConfiguration.Configuration.MessageHandlers.Add(new DigestAuthMessageHandler());
-                GlobalConfiguration.Configuration.MessageHandlers.Add(new JwtAuthMessageHandler());
+
+                RegisterAuthenticationHandlers();
+                //this must run after aall other auth message handlers
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new WebFormsAuthMessageHandler());
 
                 //media type formatter for text/html, text/plain
@@ -145,7 +147,60 @@ namespace DotNetNuke.Web.Api.Internal
             Logger.TraceFormat("Registered a total of {0} routes", _routes.Count);
         }
 
-        private bool IsTracingEnabled()
+        private static void RegisterAuthenticationHandlers()
+        {
+            //authentication message handlers from web.config file
+            var authSvcCfg = AuthServicesConfiguration.GetConfig();
+            if (authSvcCfg?.MessageHandlers == null || authSvcCfg.MessageHandlers.Count <= 0)
+                return;
+
+            var registeredSchemes = new List<string>();
+            foreach (var handlerEntry in authSvcCfg.MessageHandlers.Cast<MessageHandlerEntry>())
+            {
+                if (!handlerEntry.Enabled)
+                {
+                    Logger.Trace("The following handler is disabled " + handlerEntry.ClassName);
+                    continue;
+                }
+
+                try
+                {
+                    var type = Reflection.CreateType(handlerEntry.ClassName, false);
+                    var handler = Activator.CreateInstance(type,
+                        new object[] { handlerEntry.DefaultInclude, handlerEntry.SslMode }) as AuthMessageHandlerBase;
+                    if (handler == null)
+                    {
+                        throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");
+                    }
+
+                    var schemeName = handler.AuthScheme.ToUpperInvariant();
+                    if (!registeredSchemes.Contains(schemeName))
+                    {
+                        Logger.Trace($"The following handler scheme '{handlerEntry.ClassName}' is already added and will be skipped");
+                        continue;
+                    }
+
+                    GlobalConfiguration.Configuration.MessageHandlers.Add(handler);
+                    registeredSchemes.Add(schemeName);
+                    Logger.Trace($"Instantiated/Activated instance of {handler.AuthScheme}, class: {handler.GetType().FullName}");
+
+                    if (handlerEntry.DefaultInclude)
+                    {
+                        DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
+                    }
+                    if (handlerEntry.BypassAntiForgeryToken)
+                    {
+                        ValidateAntiForgeryTokenAttribute.AppendToBypassAuthTypes(handler.AuthScheme);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Cannot instantiate/activate instance of " + handlerEntry.ClassName + Environment.NewLine + ex);
+                }
+            }
+        }
+
+        private static bool IsTracingEnabled()
         {
             var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
 

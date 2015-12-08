@@ -23,15 +23,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Web.Api.Internal.Auth;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
+namespace DotNetNuke.Web.Api.Auth.Jwt
 {
     internal static class JwtUtil
     {
@@ -42,9 +44,55 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
 
         internal static readonly DateTime EpochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
         internal const string AuthScheme = "Bearer";
-        internal const string JwtSchemeName = "JWT";
+        internal const string SchemeType = "JWT";
+        internal const string JwtCombiner = ".";
         internal const string DefaultJwtAlgorithm = "HMACSHA256";
         internal static readonly Encoding TextEncoder = Encoding.UTF8;
+
+        /// <summary>
+        /// Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.
+        /// </summary>
+        /// <param name="authHdr">The request auhorization header.</param>
+        /// <returns>The JWT passed in the request; otherwise, it returns null.</returns>
+        public static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
+        {
+            if (authHdr == null)
+            {
+                //if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
+                return null;
+            }
+
+            if (!string.Equals(authHdr.Scheme, JwtUtil.SchemeType, StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + JwtUtil.SchemeType);
+                return null;
+            }
+
+            var authorization = authHdr.Parameter;
+            if (string.IsNullOrEmpty(authorization))
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Missing authorization header value in the request");
+                return null;
+            }
+
+            if (Logger.IsTraceEnabled) Logger.Trace("Authorization header received: " + authorization);
+
+
+            var parts = authorization.Split('.');
+            if (parts.Length < 3)
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:claims:signature] parts at least");
+                return null;
+            }
+
+            if (JwtUtil.DecodeBase64(parts[0]).IndexOf("\"JWT\"", StringComparison.InvariantCultureIgnoreCase) < 0)
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("This is not a JWT autentication scheme.");
+                return null;
+            }
+
+            return authorization;
+        }
 
         internal static Tuple<string, string> LoginUser(HttpRequestMessage request, LoginData loginData)
         {
@@ -81,7 +129,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
             //SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(loginData.Username, DefaultType), null), request);
 
             var notBefore = (long)(DateTime.UtcNow - EpochStart).TotalSeconds;
-            var payload = new DnnJwtPayload
+            var claim = new DnnJwtClaim
             {
                 Username = loginData.Username,
                 Issuer = portalSettings.PortalAlias.HTTPAlias,
@@ -93,16 +141,16 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
 
             var header = new JwtHeader
             {
-                Type = JwtSchemeName,
+                Type = SchemeType,
                 Algorithm = JwtSupportedAlgorithms.HS256.ToString()
             };
 
-            var parts = new object[] { header, payload }
+            var parts = new object[] { header, claim }
                 .Select(JsonConvert.SerializeObject).Select(EncodeBase64).ToArray();
 
-            var secret = ObtainSecret(payload, user);
+            var secret = ObtainSecret(claim, portalSettings.GUID, user.CreatedOnDate);
             var signature = ComputeSignature(DefaultJwtAlgorithm, secret, parts);
-            var token = string.Join(":", parts.Union(new[] { signature }));
+            var token = string.Join(JwtCombiner, parts.Union(new[] { signature }));
             return new Tuple<string, string>(user.DisplayName, token);
         }
 
@@ -111,28 +159,27 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
             using (var enc = HMAC.Create(algorithmName))
             {
                 enc.Key = secret;
-                var body = TextEncoder.GetBytes(string.Join(".", tokenParts));
+                var body = TextEncoder.GetBytes(string.Join(JwtCombiner, tokenParts));
                 var sig = Convert.ToBase64String(enc.ComputeHash(body)).TrimEnd('=');
                 //if (Logger.IsTraceEnabled)
                 //{
                 //    Logger.Trace("Authorization Info:" +
                 //        Environment.NewLine + "  SECRET => " + TextEncoder.GetString(secret) +
-                //        Environment.NewLine + "  BODY   => " + string.Join(".", tokenParts) +
+                //        Environment.NewLine + "  BODY   => " + string.Join(JwtCombiner, tokenParts) +
                 //        Environment.NewLine + "  SIG.   => " + sig);
                 //}
                 return sig;
             }
         }
 
-        internal static byte[] ObtainSecret(DnnJwtPayload payload, UserInfo userInfo)
+        internal static byte[] ObtainSecret(DnnJwtClaim claim, Guid portalGuid, DateTime userCreationDate)
         {
             //TODO: change this to a more secure scheme after the proof of concept is established
             // This is just a proof of concept; the secret should contain components that
             // are not easily predicted and passed with the request of each session. It is better
             // to create and encrypt such keys and make them accessible only to the application.
             // moreover, we canuser the hashed password in the database as part of the secret.
-            var stext = string.Join(":", payload.SessionId, payload.PortalId.ToString("x8"),
-                userInfo.UserID.ToString("x8"), userInfo.CreatedOnDate.ToUniversalTime().ToString("O"));
+            var stext = string.Join(JwtCombiner, claim.SessionId, portalGuid.ToString("N"), userCreationDate.ToUniversalTime().ToString("O"));
             return TextEncoder.GetBytes(stext);
         }
 

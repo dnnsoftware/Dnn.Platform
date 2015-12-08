@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Tests.Utilities.Mocks;
+using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.Api.Internal.Auth;
 using Moq;
 using NUnit.Framework;

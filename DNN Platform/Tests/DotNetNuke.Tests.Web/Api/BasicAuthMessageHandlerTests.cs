@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.Api.Internal.Auth;
 using NUnit.Framework;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using DotNetNuke.Web.Api.Internal.Auth.Jwt;
+using DotNetNuke.Web.Api.Auth.Jwt;
 
 namespace DotNetNuke.Web.Api
 {
@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.Api
             try
             {
                 var headers = context.ActionContext.Request.Headers;
-                var authorization = JwtAuthMessageHandler.ValidateAuthHeader(headers.Authorization);
+                var authorization = JwtUtil.ValidateAuthHeader(headers.Authorization);
                 return !string.IsNullOrEmpty(authorization); // aprove the request only if it has a JWT auth scheme
             }
             catch (Exception e)

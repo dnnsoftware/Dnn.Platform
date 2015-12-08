@@ -1,6 +1,6 @@
 #region Copyright
 //
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 //
@@ -30,9 +30,12 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Web.Api.Auth.Jwt;
+using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.ConfigSection;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
+namespace DotNetNuke.Web.Api.Auth
 {
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
@@ -40,18 +43,25 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
     /// <para>- JTW standard https://tools.ietf.org/html/rfc7519 </para>
     /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/ </para>
     /// </summary>
-    internal class JwtAuthMessageHandler : AuthMessageHandlerBase
+    public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
+        public override string AuthScheme => JwtUtil.SchemeType;
+
+        public JwtAuthMessageHandler(bool includeByDefault, SslModes sslMode)
+            : base(includeByDefault, sslMode)
+        {
+        }
+
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (NeedsAuthentication())
+            if (NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
                 {
-                    TryToAuthenticate(request, portalSettings.PortalId);
+                    TryToAuthenticate(request, portalSettings);
                 }
             }
 
@@ -62,7 +72,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsJwt(response.RequestMessage))
             {
-                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(JwtUtil.AuthScheme));
+                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthScheme));
             }
 
             return base.OnOutboundResponse(response, cancellationToken);
@@ -73,33 +83,33 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
             return !IsXmlHttpRequest(request);
         }
 
-        private static void TryToAuthenticate(HttpRequestMessage request, int portalId)
+        private void TryToAuthenticate(HttpRequestMessage request, PortalSettings portalSettings)
         {
             try
             {
-                var username = ValidateToken(request, portalId);
+                var username = ValidateToken(request, portalSettings);
                 if (!string.IsNullOrEmpty(username))
                 {
-                    if (Logger.IsTraceEnabled) Logger.TraceFormat("Authenticated user {0} in portal {1}", username, portalId);
-                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, JwtUtil.JwtSchemeName), null), request);
+                    if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user {username} in portal {portalSettings.PortalId}");
+                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, AuthScheme), null), request);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Unexpected problem in authenticating the user. " + ex);
+                Logger.Error("Unexpected error in authenticating the user. " + ex);
             }
         }
 
-        private static string ValidateToken(HttpRequestMessage request, int portalId)
+        private string ValidateToken(HttpRequestMessage request, PortalSettings portalSettings)
         {
-            var authorization = ValidateAuthHeader(request.Headers.Authorization);
+            var authorization = JwtUtil.ValidateAuthHeader(request.Headers.Authorization);
             if (string.IsNullOrEmpty(authorization))
                 return null;
 
-            var parts = authorization.Split(':');
+            var parts = authorization.Split('.');
             if (parts.Length != 3)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:payload:signature] parts exactly");
+                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:claims:signature] parts exactly");
                 return null;
             }
 
@@ -108,66 +118,21 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
             if (algorithm == JwtSupportedAlgorithms.Unsupported)
                 return null;
 
-            var payload = JsonConvert.DeserializeObject<DnnJwtPayload>(JwtUtil.DecodeBase64(parts[1]));
-            var userInfo = ValidateTokenPayload(payload, portalId);
+            var claims = JsonConvert.DeserializeObject<DnnJwtClaim>(JwtUtil.DecodeBase64(parts[1]));
+            var userInfo = ValidateTokenClaim(claims, portalSettings.PortalId);
             if (userInfo == null)
                 return null;
 
-            var secret = JwtUtil.ObtainSecret(payload, userInfo);
+            var secret = JwtUtil.ObtainSecret(claims, portalSettings.GUID, userInfo.CreatedOnDate);
             if (!ValidateSignature(algorithm, secret, parts))
                 return null;
 
-            return payload.Username;
+            return claims.Username;
         }
 
-        /// <summary>
-        /// Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.
-        /// </summary>
-        /// <param name="authHdr">The request auhorization header.</param>
-        /// <returns>The JWT passed in the request; otherwise, it returns null.</returns>
-        public static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
+        private JwtSupportedAlgorithms ValidateTokenHeader(JwtHeader header)
         {
-            if (authHdr == null)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request");
-                return null;
-            }
-
-            if (!string.Equals(authHdr.Scheme, JwtUtil.AuthScheme, StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + JwtUtil.AuthScheme);
-                return null;
-            }
-
-            var authorization = authHdr.Parameter;
-            if (string.IsNullOrEmpty(authorization))
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Missing authorization header value in the request");
-                return null;
-            }
-
-            if (Logger.IsTraceEnabled) Logger.Trace("Authorization header received: " + authorization);
-
-
-            var parts = authorization.Split(':');
-            if (parts.Length < 3)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:payload:signature] parts at least");
-                return null;
-            }
-
-            if (JwtUtil.DecodeBase64(parts[0]).IndexOf("\"JWT\"", StringComparison.InvariantCultureIgnoreCase) < 0)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("This is not a JWT autentication scheme.");
-                return null;
-            }
-
-            return authorization;
-        }
-
-        private static JwtSupportedAlgorithms ValidateTokenHeader(JwtHeader header)
-        {
-            if (!JwtUtil.JwtSchemeName.Equals(header.Type, StringComparison.OrdinalIgnoreCase))
+            if (!AuthScheme.Equals(header.Type, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication type " + header.Type);
                 return JwtSupportedAlgorithms.Unsupported;
@@ -183,18 +148,18 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
             return algorithm;
         }
 
-        private static UserInfo ValidateTokenPayload(DnnJwtPayload payload, int portalId)
+        private static UserInfo ValidateTokenClaim(DnnJwtClaim claim, int portalId)
         {
-            if (portalId != payload.PortalId)
+            if (portalId != claim.PortalId)
             {
                 if (Logger.IsTraceEnabled)
                     Logger.TraceFormat(
-                        "Invalid authentication. Portal ID passed ({0}) <> payload one ({1})", portalId, payload.PortalId);
+                        "Invalid authentication. Portal ID passed ({0}) <> claim one ({1})", portalId, claim.PortalId);
                 return null;
             }
 
-            var validFrom = JwtUtil.EpochStart.AddSeconds(payload.NotBefore);
-            var validTill = JwtUtil.EpochStart.AddSeconds(payload.Expiration);
+            var validFrom = JwtUtil.EpochStart.AddSeconds(claim.NotBefore);
+            var validTill = JwtUtil.EpochStart.AddSeconds(claim.Expiration);
             var now = DateTime.UtcNow;
 
             if (now < validFrom || now > validTill)
@@ -204,10 +169,10 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
                 return null;
             }
 
-            var userInfo = UserController.GetUserByName(portalId, payload.Username);
-            if (userInfo == null || userInfo.Username != payload.Username)
+            var userInfo = UserController.GetUserByName(portalId, claim.Username);
+            if (userInfo == null || userInfo.Username != claim.Username)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Invalid user name " + payload.Username);
+                if (Logger.IsTraceEnabled) Logger.Trace("Invalid user name " + claim.Username);
                 return null;
             }
 
@@ -234,14 +199,12 @@ namespace DotNetNuke.Web.Api.Internal.Auth.Jwt
                 case JwtSupportedAlgorithms.HS256:
                     algName = JwtUtil.DefaultJwtAlgorithm;
                     break;
-                /*
                 case JwtSupportedAlgorithms.HS384:
                     algName = "HMACSHA384";
                     break;
                 case JwtSupportedAlgorithms.HS512:
                     algName = "HMACSHA512";
                     break;
-                 */
                 default:
                     if (Logger.IsTraceEnabled) Logger.Trace("Invalid algorithm value " + algorithm);
                     return false;

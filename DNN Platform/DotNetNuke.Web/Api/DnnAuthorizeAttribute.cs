@@ -35,6 +35,19 @@ namespace DotNetNuke.Web.Api
         private string _denyRoles;
         private string[] _denyRolesSplit = new string[0];
 
+        private string _authTypes;
+        private string[] _authTypesSplit = new string[0];
+
+        private static readonly List<string> DefaultAuthTypes = new List<string>();
+
+        internal static void AppendToDefaultAuthTypes(string authType)
+        {
+            if (!string.IsNullOrEmpty(authType))
+            {
+                DefaultAuthTypes.Add(authType.Trim());
+            }
+        }
+
         /// <summary>
         /// Gets or sets the authorized roles (separated by comma) 
         /// </summary>
@@ -58,6 +71,19 @@ namespace DotNetNuke.Web.Api
             { 
                 _denyRoles = value;
                 _denyRolesSplit = SplitString(_denyRoles);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the allowed authentication types (separated by comma)
+        /// </summary>
+        public string AuthTypes
+        {
+            get { return _authTypes; }
+            set 
+            {
+                _authTypes = value;
+                _authTypesSplit = SplitString(_authTypes);
             }
         }
 
@@ -89,20 +115,32 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
+            // if the attribute opted in explicitly for specific authentication types, then 
+            // use it; otherwise use the defaults according to settings in the web.config.
+            var currentAuthType = (principal.Identity.AuthenticationType ?? "").Trim();
+            if (currentAuthType.Length > 0)
+            {
+                if (_authTypesSplit.Any())
+                {
+                    return _authTypesSplit.Contains(currentAuthType);
+                }
+
+                return DefaultAuthTypes.Contains(currentAuthType);
+            }
+
             return true;
         }
 
-        private string[] SplitString(string original)
+        private static readonly string[] EmptyArray = new string[0];
+        private static string[] SplitString(string original)
         {
-            if (String.IsNullOrEmpty(original))
+            if (string.IsNullOrEmpty(original))
             {
-                return new string[0];
+                return EmptyArray;
             }
 
-            IEnumerable<string> split = from piece in original.Split(',')
-                                        let trimmed = piece.Trim()
-                                        where !String.IsNullOrEmpty(trimmed)
-                                        select trimmed;
+            var split = from piece in original.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                        select piece.Trim();
             return split.ToArray();
         }
     }
