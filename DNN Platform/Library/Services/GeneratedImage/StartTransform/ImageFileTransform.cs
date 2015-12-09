@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         /// <summary>
         /// Processes an input image applying a file image transformation.
-        /// This will return an image after read the stream from the <param name="ImageFile">ImageFile</param> Path or Url
+        /// This will return an image after read the stream from the <see cref="ImageFile"/> Path or Url
         /// </summary>
         /// <param name="image">Input image</param>
         /// <returns>Image result after file image transformation</returns>
