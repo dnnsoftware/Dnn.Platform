@@ -140,7 +140,6 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
         {
-
             context.Response.Clear();
             context.Response.ContentType = GetImageMimeType(ContentType);
 

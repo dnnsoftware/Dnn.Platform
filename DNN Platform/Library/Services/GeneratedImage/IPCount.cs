@@ -156,8 +156,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static string BuildFilePath(string ipAddress)
         {
-            // : is not a valid symbol for a file name
-            var fileName = ipAddress.Replace(":", "_");
+            // it takes only the IP address without PORT for the file name
+            var fileName = ipAddress.Split(':')[0];
             return CachePath + fileName + TempFileExtension;
         }
 
