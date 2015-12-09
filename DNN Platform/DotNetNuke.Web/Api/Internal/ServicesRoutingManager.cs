@@ -19,16 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.Filters;
 using System.Web.Http.Tracing;
 using System.Web.Routing;
-using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
@@ -37,7 +34,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.Api.Internal.Auth;
-using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 using DotNetNuke.Web.ConfigSection;
 
 namespace DotNetNuke.Web.Api.Internal
@@ -75,7 +71,7 @@ namespace DotNetNuke.Web.Api.Internal
 
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            url = url.Trim(new[] { '/', '\\' });
+            url = url.Trim('/', '\\');
 
             IEnumerable<int> prefixCounts = _portalAliasRouteManager.GetRoutePrefixCounts();
             var routes = new List<Route>();
@@ -166,15 +162,14 @@ namespace DotNetNuke.Web.Api.Internal
                 try
                 {
                     var type = Reflection.CreateType(handlerEntry.ClassName, false);
-                    var handler = Activator.CreateInstance(type,
-                        new object[] { handlerEntry.DefaultInclude, handlerEntry.SslMode }) as AuthMessageHandlerBase;
+                    var handler = Activator.CreateInstance(type, handlerEntry.DefaultInclude, handlerEntry.SslMode) as AuthMessageHandlerBase;
                     if (handler == null)
                     {
                         throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");
                     }
 
                     var schemeName = handler.AuthScheme.ToUpperInvariant();
-                    if (!registeredSchemes.Contains(schemeName))
+                    if (registeredSchemes.Contains(schemeName))
                     {
                         Logger.Trace($"The following handler scheme '{handlerEntry.ClassName}' is already added and will be skipped");
                         continue;
@@ -188,7 +183,7 @@ namespace DotNetNuke.Web.Api.Internal
                     {
                         DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
                     }
-                    if (handlerEntry.BypassAntiForgeryToken)
+                    if (handler.BypassAntiForgeryToken)
                     {
                         ValidateAntiForgeryTokenAttribute.AppendToBypassAuthTypes(handler.AuthScheme);
                     }

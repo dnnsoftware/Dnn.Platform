@@ -12,7 +12,6 @@ namespace DotNetNuke.Web.ConfigSection
         private const string EnabledNameTag = "enabled";
         private const string DefaultIncludeTag = "defaultInclude";
         private const string SslModeTag = "sslMode";
-        private const string BypassAFT = "bypassAntiForgeryToken";
 
         [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
         //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
@@ -86,23 +85,5 @@ namespace DotNetNuke.Web.ConfigSection
                 this[SslModeTag] = value;
             }
         }
-
-        /// <summary>
-        /// This property specifies whether to bypass the <see cref="ValidateAntiForgeryTokenAttribute"/> setting on the API.
-        /// </summary>
-        [ConfigurationProperty(BypassAFT, DefaultValue = false, IsRequired = false)]
-        public bool BypassAntiForgeryToken
-        {
-            get
-            {
-                var b = (bool?)this[BypassAFT];
-                return b.Value;
-            }
-            set
-            {
-                this[BypassAFT] = value;
-            }
-        }
-
     }
 }

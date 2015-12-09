@@ -19,14 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Threading;
 using System.Web.Http;
+using Dnn.AuthServices.Jwt.Internal;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Auth.Jwt;
-using DotNetNuke.Web.Api.Internal.Auth;
-using DotNetNuke.Web.Api.Internal.Auth.Jwt;
 
-namespace DotNetNuke.Web.InternalServices
+namespace Dnn.AuthServices.Jwt.Services
 {
     [DnnAuthorize]
     public class MobileController : DnnApiController
@@ -34,7 +31,7 @@ namespace DotNetNuke.Web.InternalServices
         /// <summary>
         /// Clients that want to go cookie-less should call this API to login and receive
         /// a Json Web Token (JWT) that allows them to authenticate the users to other
-        ///  API methods afterwards.
+        /// secure API endpoints afterwards.
         /// </summary>
         /// <param name="loginData"></param>
         /// <returns></returns>
@@ -42,36 +39,36 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
         {
-            var tuple = JwtUtil.LoginUser(Request, loginData);
-
-            return tuple == null
-                ? (IHttpActionResult)Unauthorized()
-                : Ok(new { name = tuple.Item1, token = tuple.Item2 });
+            var result = JwtUtil.LoginUser(Request, loginData);
+            return result != null ? (IHttpActionResult) Ok(result) : Unauthorized();
         }
 
+        [HttpGet]
+        public IHttpActionResult Logout()
+        {
+            return JwtUtil.LogutUser(Request) ? (IHttpActionResult) Ok() : Unauthorized();
+        }
+#if DEBUG //TODO: remove from production code
         // Test API Method 1
         [HttpGet]
-        [RequireJwt]
         public IHttpActionResult Hello()
         {
-            var identity = Thread.CurrentPrincipal.Identity;
-            var reply = $"Hello {identity.Name}! " +
-                        $"You are authenticated through {identity.AuthenticationType}";
+            var identity = System.Threading.Thread.CurrentPrincipal.Identity;
+            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}";
             return Ok(new { reply });
         }
 
         // Test API Method 2
         [HttpPost]
-        [RequireJwt]
         [ValidateAntiForgeryToken]
         public IHttpActionResult HelloPost(PostDate something)
         {
-            var identity = Thread.CurrentPrincipal.Identity;
-            var reply = $"Hello {identity.Name}! " +
-                        $"You are authenticated through {identity.AuthenticationType}" +
-                        $"You said: ({something.Text})";
+            var identity = System.Threading.Thread.CurrentPrincipal.Identity;
+            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}" +
+                        $" You said: ({something.Text})";
             return Ok(new { reply });
         }
+#endif
     }
 
     public class PostDate

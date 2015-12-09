@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Api.Auth
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthMessageHandlerBase));
 
         public abstract string AuthScheme { get; }
+        public virtual bool BypassAntiForgeryToken => false;
         public bool DefaultInclude { get; }
         public SslModes SslMode { get; }
 

@@ -91,8 +91,8 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNull("context", context);
 
-            var principal = Thread.CurrentPrincipal;
-            if(!principal.Identity.IsAuthenticated)
+            var identity = Thread.CurrentPrincipal.Identity;
+            if(!identity.IsAuthenticated)
             {
                 return false;
             }
@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.Api
 
             // if the attribute opted in explicitly for specific authentication types, then 
             // use it; otherwise use the defaults according to settings in the web.config.
-            var currentAuthType = (principal.Identity.AuthenticationType ?? "").Trim();
+            var currentAuthType = (identity.AuthenticationType ?? "").Trim();
             if (currentAuthType.Length > 0)
             {
                 if (_authTypesSplit.Any())

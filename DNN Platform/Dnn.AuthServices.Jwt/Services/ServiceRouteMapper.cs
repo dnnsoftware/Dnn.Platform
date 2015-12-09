@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -17,31 +18,19 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
-#region Usings
-
-using System.Reflection;
 
 #endregion
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+using DotNetNuke.Web.Api;
 
-// Review the values of the assembly attributes
-
-[assembly: AssemblyCompany("DNN Corporation")]
-[assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2015 by DNN Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DNN")]
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("8.0.0.622")]
-[assembly: AssemblyFileVersion("8.0.0.622")]
+namespace Dnn.AuthServices.Jwt.Services
+{
+    public class ServiceRouteMapper : IServiceRouteMapper
+    {
+        public void RegisterRoutes(IMapRoute mapRouteManager)
+        {
+            mapRouteManager.MapHttpRoute(
+                "JwtAuth", "default", "{controller}/{action}", new[] { GetType().Namespace });
+        }
+    }
+}

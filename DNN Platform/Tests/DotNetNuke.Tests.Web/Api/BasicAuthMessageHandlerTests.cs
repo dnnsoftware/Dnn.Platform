@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using DotNetNuke.Web.Api.Auth;
-using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.ConfigSection;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.Api
@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) {RequestMessage = new HttpRequestMessage()};
 
             //Act
-            var handler = new BasicAuthMessageHandler();
+            var handler = new BasicAuthMessageHandler(true, SslModes.Default);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert
@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Web.Api
             response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "XmlHttpRequest");
 
             //Act
-            var handler = new BasicAuthMessageHandler();
+            var handler = new BasicAuthMessageHandler(true, SslModes.Default);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert

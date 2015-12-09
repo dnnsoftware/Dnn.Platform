@@ -30,31 +30,36 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Auth.Jwt
+namespace Dnn.AuthServices.Jwt.Internal
 {
     internal static class JwtUtil
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtUtil));
 
         private const int ClockSkew = 300; // in seconds; default for clock skew
-        private const int TimeToLive = 3600; // in seconds; default token time is 1 hour
+        private const int SessionTokenTtl = 3600; // in seconds; 1 hour
+        private const int RenewalTokenTtl = 3600 * 24 * 14; // in seconds; = 2 weeks
 
-        internal static readonly DateTime EpochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-        internal const string AuthScheme = "Bearer";
-        internal const string SchemeType = "JWT";
-        internal const string JwtCombiner = ".";
-        internal const string DefaultJwtAlgorithm = "HMACSHA256";
-        internal static readonly Encoding TextEncoder = Encoding.UTF8;
+        public static readonly DateTime EpochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
+        public static long SecondsSinceEpoch => (long) (DateTime.UtcNow - EpochStart).TotalSeconds;
+
+        public const string AuthScheme = "Bearer";
+        public const string SchemeType = "JWT";
+        public const string JwtCombiner = ".";
+        public const string DefaultJwtAlgorithm = "HMACSHA256";
+        public static readonly Encoding TextEncoder = Encoding.UTF8;
+
+        internal static bool IsEnabled { get; set; }
 
         /// <summary>
         /// Checks for Authorization header and validates it is JWT scheme. If successful, it returns the token string.
         /// </summary>
         /// <param name="authHdr">The request auhorization header.</param>
         /// <returns>The JWT passed in the request; otherwise, it returns null.</returns>
-        public static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
+        internal static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
         {
             if (authHdr == null)
             {
@@ -62,9 +67,9 @@ namespace DotNetNuke.Web.Api.Auth.Jwt
                 return null;
             }
 
-            if (!string.Equals(authHdr.Scheme, JwtUtil.SchemeType, StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + JwtUtil.SchemeType);
+                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + SchemeType);
                 return null;
             }
 
@@ -85,17 +90,34 @@ namespace DotNetNuke.Web.Api.Auth.Jwt
                 return null;
             }
 
-            if (JwtUtil.DecodeBase64(parts[0]).IndexOf("\"JWT\"", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (DecodeBase64(parts[0]).IndexOf("\"" + SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("This is not a JWT autentication scheme.");
+                if (Logger.IsTraceEnabled) Logger.Trace($"This is not a {SchemeType} autentication scheme.");
                 return null;
             }
 
             return authorization;
         }
 
-        internal static Tuple<string, string> LoginUser(HttpRequestMessage request, LoginData loginData)
+        internal static bool LogutUser(HttpRequestMessage request)
         {
+            if (!IsEnabled)
+            {
+                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                return false;
+            }
+            //TODO: remove the database record
+            return true;
+        }
+
+        internal static LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)
+        {
+            if (!IsEnabled)
+            {
+                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                return null;
+            }
+
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings == null)
             {
@@ -128,13 +150,13 @@ namespace DotNetNuke.Web.Api.Auth.Jwt
 
             //SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(loginData.Username, DefaultType), null), request);
 
-            var notBefore = (long)(DateTime.UtcNow - EpochStart).TotalSeconds;
+            var notBefore = SecondsSinceEpoch;
             var claim = new DnnJwtClaim
             {
                 Username = loginData.Username,
                 Issuer = portalSettings.PortalAlias.HTTPAlias,
                 NotBefore = notBefore - ClockSkew, // this is necessary in a web farm
-                Expiration = notBefore + TimeToLive,
+                Expiration = notBefore + SessionTokenTtl,
                 SessionId = Guid.NewGuid().ToString("N"),
                 PortalId = user.PortalID
             };
@@ -151,7 +173,12 @@ namespace DotNetNuke.Web.Api.Auth.Jwt
             var secret = ObtainSecret(claim, portalSettings.GUID, user.CreatedOnDate);
             var signature = ComputeSignature(DefaultJwtAlgorithm, secret, parts);
             var token = string.Join(JwtCombiner, parts.Union(new[] { signature }));
-            return new Tuple<string, string>(user.DisplayName, token);
+            return new LoginResultData
+            {
+                DisplayName = user.DisplayName,
+                SessionToken = token,
+                RenewalToken = "TODO"
+            };
         }
 
         internal static string ComputeSignature(string algorithmName, byte[] secret, IEnumerable<string> tokenParts)

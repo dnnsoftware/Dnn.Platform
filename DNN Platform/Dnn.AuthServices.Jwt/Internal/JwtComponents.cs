@@ -19,10 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Web.Api.Auth;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Internal.Auth
+namespace Dnn.AuthServices.Jwt.Internal
 {
     // ReSharper disable InconsistentNaming
 
@@ -107,7 +106,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         /// <summary>
         /// This is used as a random value which is part of the algorithm's "secret" value.
-        /// See token validation in <see cref="JwtAuthMessageHandler"/>
+        /// See token validation in <see cref="Auth.JwtAuthMessageHandler"/>
         /// </summary>
         [JsonProperty("session")]
         public string SessionId { get; set; }

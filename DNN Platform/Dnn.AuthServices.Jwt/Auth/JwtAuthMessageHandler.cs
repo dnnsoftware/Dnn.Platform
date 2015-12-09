@@ -1,6 +1,6 @@
 #region Copyright
 //
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 //
@@ -21,21 +21,19 @@
 
 using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Threading;
+using Dnn.AuthServices.Jwt.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.Api.Auth.Jwt;
-using DotNetNuke.Web.Api.Internal.Auth;
+using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.ConfigSection;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Web.Api.Auth
+namespace Dnn.AuthServices.Jwt.Auth
 {
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
@@ -48,10 +46,12 @@ namespace DotNetNuke.Web.Api.Auth
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
         public override string AuthScheme => JwtUtil.SchemeType;
-
+        public override bool BypassAntiForgeryToken => true;
         public JwtAuthMessageHandler(bool includeByDefault, SslModes sslMode)
             : base(includeByDefault, sslMode)
         {
+            // once an instance is registered, this scheme gets marked as enabled
+            JwtUtil.IsEnabled = true;
         }
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -66,21 +66,6 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             return base.OnInboundRequest(request, cancellationToken);
-        }
-
-        public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsJwt(response.RequestMessage))
-            {
-                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthScheme));
-            }
-
-            return base.OnOutboundResponse(response, cancellationToken);
-        }
-
-        private static bool SupportsJwt(HttpRequestMessage request)
-        {
-            return !IsXmlHttpRequest(request);
         }
 
         private void TryToAuthenticate(HttpRequestMessage request, PortalSettings portalSettings)
@@ -158,14 +143,10 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            var validFrom = JwtUtil.EpochStart.AddSeconds(claim.NotBefore);
-            var validTill = JwtUtil.EpochStart.AddSeconds(claim.Expiration);
-            var now = DateTime.UtcNow;
-
-            if (now < validFrom || now > validTill)
+            var now = JwtUtil.SecondsSinceEpoch;
+            if (now < claim.NotBefore || now > claim.Expiration)
             {
-                if (Logger.IsTraceEnabled)
-                    Logger.TraceFormat("Token is outside allowed timeslot (from {0:O} to {1:O})", validFrom, validTill);
+                if (Logger.IsTraceEnabled) Logger.Trace("Token is expired");
                 return null;
             }
 

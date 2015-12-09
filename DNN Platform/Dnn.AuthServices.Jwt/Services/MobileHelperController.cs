@@ -36,9 +36,8 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Models;
 
-namespace DotNetNuke.Web.InternalServices
+namespace Dnn.AuthServices.Jwt.Services
 {
-    [RequireJwt]
     public class MobileHelperController : DnnApiController
     {
         private readonly string _dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);

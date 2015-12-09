@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -4319,6 +4319,9 @@
     <None Include="Install\Config\07.02.00.config" />
     <None Include="Install\Config\07.02.01.config" />
     <None Include="Install\Config\07.03.00.config" />
+    <None Include="Install\Config\07.04.01.config" />
+    <None Include="Install\Config\07.04.02.config" />
+    <None Include="Install\Config\08.00.00.config" />
     <None Include="Install\Config\Net35.config" />
     <None Include="Install\Config\Net40.config" />
     <None Include="Install\Template\UserProfile.page.template" />

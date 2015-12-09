@@ -175,11 +175,6 @@
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
-    <Compile Include="Api\Auth\JwtAuthMessageHandler.cs" />
-    <Compile Include="Api\Internal\Auth\JwtComponents.cs" />
-    <Compile Include="Api\Auth\Jwt\DenyJwtAttribute.cs" />
-    <Compile Include="Api\RequireJwtAttribute.cs" />
-    <Compile Include="Api\Auth\Jwt\JwtUtil.cs" />
     <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
@@ -221,8 +216,6 @@
     <Compile Include="InternalServices\EventLogServiceController.cs" />
     <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
-    <Compile Include="InternalServices\MobileController.cs" />
-    <Compile Include="InternalServices\MobileHelperController.cs" />
     <Compile Include="InternalServices\NotificationDTO.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
