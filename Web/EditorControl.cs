@@ -1165,7 +1165,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </returns>
         private string SetUserToolbar(string alternateConfigSubFolder)
         {
-            string toolbarName = HttpContext.Current.Request.IsAuthenticated ? "Full" : "Basic";
+            string toolbarName = HttpContext.Current.Request.IsAuthenticated && PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName) ? "Full" : "Basic";
 
             var listToolbarSets = ToolbarUtil.GetToolbars(
                 _portalSettings.HomeDirectoryMapPath, alternateConfigSubFolder);
