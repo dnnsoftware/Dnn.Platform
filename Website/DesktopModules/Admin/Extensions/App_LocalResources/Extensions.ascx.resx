@@ -124,19 +124,19 @@
     <value>Create New Extension</value>
   </data>
   <data name="Delete.Text" xml:space="preserve">
-    <value>UnInstall this Extension</value>
+    <value>Uninstall this Extension</value>
   </data>
   <data name="ExtensionInstall.Action" xml:space="preserve">
     <value>Install Extension Wizard</value>
   </data>
   <data name="Language.Header" xml:space="preserve">
-    <value>Language?</value>
+    <value>Language</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="plPackageTypes.Help" xml:space="preserve">
-    <value>Choose a type from this list, to show only extensions of the selected type.</value>
+    <value>Select a single type of extension to be displayed.</value>
   </data>
   <data name="plPackageTypes.Text" xml:space="preserve">
     <value>Filter by Type:</value>
@@ -184,10 +184,10 @@
     <value>Install New Theme</value>
   </data>
   <data name="plLocales.Text" xml:space="preserve">
-    <value>Find available language packs:</value>
+    <value>Find Available Language Packs:</value>
   </data>
   <data name="plLocales.Help" xml:space="preserve">
-    <value>Choose a language from this list, to show what extensions have a language pack available in the selected language. If a language pack exists, follow the link to download and install the language pack.</value>
+    <value>Choose a language to display a list of the extensions that have a language pack available in the selected language.  If a language pack exists, follow the link to download and install the language pack.</value>
   </data>
   <data name="CreateContainer.Action" xml:space="preserve">
     <value>Create New Container</value>
@@ -214,7 +214,7 @@
     <value>Website</value>
   </data>
   <data name="lblUpdate.Text" xml:space="preserve">
-    <value>This application contains an Update Service which displays an icon when a new version of an Extension is available. The icon displayed will contain a visual indication if a currently installed Extension contains a potential security vulnerability. If a security vulnerability is identified, it is highly recommended that you upgrade to the newer version of the Extension. Clicking the icon will redirect you to a location where you will be able to acquire the Extension for immediate installation.</value>
+    <value>This application contains an Update Service which displays an icon when a new version of an Extension is available.  The icon displayed will contain a visual indication if a currently installed Extension contains a potential security vulnerability.  If a security vulnerability is identified, it is highly recommended that you upgrade to the newer version of the Extension.  Clicking the icon will redirect you to a location where you will be able to acquire the Extension for immediate installation.</value>
   </data>
   <data name="CheckLanguage.Text" xml:space="preserve">
     <value>Use Update Service to check for updated Language Packs for Extensions</value>
@@ -301,13 +301,13 @@
     <value>Theme</value>
   </data>
   <data name="SearchLabel.Help" xml:space="preserve">
-    <value>Hit Enter to Search, Esc will clear and Cancel</value>
+    <value>Hit Enter to search or Esc to clear and cancel.</value>
   </data>
   <data name="SearchLabel.Text" xml:space="preserve">
     <value>Search:</value>
   </data>
   <data name="TypeLabel.Help" xml:space="preserve">
-    <value>Select type of extension</value>
+    <value>Select the type of extension.</value>
   </data>
   <data name="TypeLabel.Text" xml:space="preserve">
     <value>Type:</value>

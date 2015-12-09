@@ -124,25 +124,25 @@
     <value>Owner Name:</value>
   </data>
   <data name="plOwner.Help" xml:space="preserve">
-    <value>Developers are encouraged to use a unique namespace for their modules to avoid potential clashes with other developers. Specify the name of your organization or company and it will be used as a prefix.</value>
+    <value>Developers are encouraged to use a unique namespace for their modules to avoid potential clashes with other developers.  Specify the name of your organization or company and it will be used as a prefix.</value>
   </data>
   <data name="plModule.Text" xml:space="preserve">
     <value>Module Name:</value>
   </data>
   <data name="plModule.Help" xml:space="preserve">
-    <value>Enter a unique name for your module.</value>
+    <value>A unique name for the module.</value>
   </data>
   <data name="plDescription.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="plDescription.Help" xml:space="preserve">
-    <value>You can optionally provide a description for your module.</value>
+    <value>Optionally provide a description for the module.</value>
   </data>
   <data name="plLanguage.Text" xml:space="preserve">
     <value>Language:</value>
   </data>
   <data name="plLanguage.Help" xml:space="preserve">
-    <value>Select your preferred language for developing the module</value>
+    <value>Select your preferred language for developing the module.</value>
   </data>
   <data name="C#.Text" xml:space="preserve">
     <value>C#</value>
@@ -154,27 +154,27 @@
     <value>Template:</value>
   </data>
   <data name="plTemplate.Help" xml:space="preserve">
-    <value>Select your preferred module development template. Module development templates are stored in the Modules subfolder within the Host Root folder.</value>
+    <value>Select your preferred module development template.  Module development templates are stored in the Modules subfolder within the Host Root folder.</value>
   </data>
   <data name="plControl.Text" xml:space="preserve">
     <value>Control Name:</value>
   </data>
   <data name="plControl.Help" xml:space="preserve">
-    <value>Enter a unique name for your module control.</value>
+    <value>Enter a unique name for the module control.</value>
   </data>
   <data name="cmdCreate.Text" xml:space="preserve">
     <value>Create Module</value>
   </data>
   <data name="InputValidation.ErrorMessage" xml:space="preserve">
-    <value>You must provide the Owner Name and Module Name and select a Module Template</value>
+    <value>You must provide the Owner Name and Module Name and select a Module Template.</value>
   </data>
   <data name="SuperUser.ErrorMessage" xml:space="preserve">
-    <value>You must be a Host User to create new modules</value>
+    <value>You must be a Super User to create new modules.</value>
   </data>
   <data name="AlreadyExists.ErrorMessage" xml:space="preserve">
-    <value>A module already exists with the name specified</value>
+    <value>A module already exists with the name specified.</value>
   </data>
   <data name="TemplateProblem.ErrorMessage" xml:space="preserve">
-    <value>An error occurred when reading the selected module template files</value>
+    <value>An error occurred when reading the selected module template files.</value>
   </data>
 </root>

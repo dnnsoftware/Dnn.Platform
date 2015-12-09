@@ -127,7 +127,7 @@
     <value>List Name:</value>
   </data>
   <data name="plListName.Help" xml:space="preserve">
-    <value>List Name</value>
+    <value>Ener a name for this list.</value>
   </data>
   <data name="plEntryCount.Text" xml:space="preserve">
     <value>Total:</value>
@@ -160,37 +160,37 @@
     <value>Parent List:</value>
   </data>
   <data name="plSelectList.Help" xml:space="preserve">
-    <value>Select parent list of this list</value>
+    <value>Select the parent list of this list.</value>
   </data>
   <data name="plSelectParent.Text" xml:space="preserve">
     <value>Parent Entry:</value>
   </data>
   <data name="plSelectParent.Help" xml:space="preserve">
-    <value>Select parent entry of this list</value>
+    <value>Select the parent entry of this list.</value>
   </data>
   <data name="plEntryName.Text" xml:space="preserve">
     <value>List Name:</value>
   </data>
   <data name="plEntryName.Help" xml:space="preserve">
-    <value>List name</value>
+    <value>The list name.</value>
   </data>
   <data name="plEntryText.Text" xml:space="preserve">
     <value>Entry Text:</value>
   </data>
   <data name="plEntryText.Help" xml:space="preserve">
-    <value>Displayed text</value>
+    <value>The name of this list entry.</value>
   </data>
   <data name="plEntryValue.Text" xml:space="preserve">
     <value>Entry Value:</value>
   </data>
   <data name="plEntryValue.Help" xml:space="preserve">
-    <value>Entry value</value>
+    <value>A value for this entry.</value>
   </data>
   <data name="plEnableSortOrder.Text" xml:space="preserve">
     <value>Enable Sort Order:</value>
   </data>
   <data name="plEnableSortOrder.Help" xml:space="preserve">
-    <value>Select to enable custom sort order for this list</value>
+    <value>Check this box to enable custom sorting of entries in this list.</value>
   </data>
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Save</value>
@@ -202,10 +202,10 @@
     <value>Cancel</value>
   </data>
   <data name="valEntryText.ErrorMessage" xml:space="preserve">
-    <value>&lt;br&gt;Text Is Required</value>
+    <value>&lt;br&gt;Text is required</value>
   </data>
   <data name="valEntryValue.ErrorMessage" xml:space="preserve">
-    <value>&lt;br&gt;Value Is Required</value>
+    <value>&lt;br&gt;Value is required</value>
   </data>
   <data name="Entries.Text" xml:space="preserve">
     <value>entries</value>
@@ -214,7 +214,7 @@
     <value>Item is already present</value>
   </data>
   <data name="valEntryName.ErrorMessage" xml:space="preserve">
-    <value>&lt;br&gt;Name Is Required</value>
+    <value>&lt;br&gt;Name is required</value>
   </data>
   <data name="Text.Header" xml:space="preserve">
     <value>Text</value>

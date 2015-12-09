@@ -121,16 +121,16 @@
     <value>Extensions</value>
   </data>
   <data name="LanguageMessage.Text" xml:space="preserve">
-    <value>Click Here To Get The Language Pack</value>
+    <value>Click Here to Get the Language Pack</value>
   </data>
   <data name="lblUpdate.Text" xml:space="preserve">
-    <value>This application contains an Update Service which displays an icon when a new version of an Extension is available. The icon displayed will contain a visual indication if a currently installed Extension contains a potential security vulnerability. If a security vulnerability is identified, it is highly recommended that you upgrade to the newer version of the Extension. Clicking the icon will redirect you to a location where you will be able to acquire the Extension for immediate installation.</value>
+    <value>This application contains an Update Service which displays an icon when a new version of an Extension is available. The icon displayed will contain a visual indication if a currently installed extension contains a potential security vulnerability. If a security vulnerability is identified, it is highly recommended that you upgrade to the newer version of the extension. Clicking the icon will redirect you to a location where you will be able to acquire the extension for immediate installation.</value>
   </data>
   <data name="CheckLanguage.Text" xml:space="preserve">
-    <value>Use Update Service to check for updated Language Packs for Extensions</value>
+    <value>Use Update Service to Check for Updated Language Packs for Extensions</value>
   </data>
   <data name="NoResults.Text" xml:space="preserve">
-    <value>No Extensions were found</value>
+    <value>No extensions were found.</value>
   </data>
   <data name="InstalledOnHost.Tooltip" xml:space="preserve">
     <value>Installed on Host</value>
@@ -145,7 +145,7 @@
     <value>Install</value>
   </data>
   <data name="LanguagePacksDetail.Text" xml:space="preserve">
-    <value>Language Packs allow users to view certain information in their preferred Language. This information includes DNN field names and help information, messages such as welcome emails or password reminders, or data like the current date and time. Here you can see any additional Language Packs you have created. Select the optional Languages you wish to install for use in your website.</value>
+    <value>Language Packs allow users to view certain information in their preferred language.  This information includes DNN field names and help information, messages such as welcome emails or password reminders, or data like the current date and time.  Here you can see any additional language packs you have created.  Select the optional languages you want to install for use in this site.</value>
   </data>
   <data name="Description.Header" xml:space="preserve">
     <value>Description</value>

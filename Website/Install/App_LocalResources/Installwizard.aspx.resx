@@ -304,7 +304,7 @@
     <value>The name of your database server.</value>
   </data>
   <data name="DatabaseSetup.Help" xml:space="preserve">
-    <value>Standard or Advanced Database Setup.</value>
+    <value>Choose a Standard or Advanced Database Setup.</value>
   </data>
   <data name="DatabaseType.Help" xml:space="preserve">
     <value>Type of database you want to use for installation.</value>
@@ -319,7 +319,7 @@
     <value>The password for the SuperUser account.</value>
   </data>
   <data name="UserName.Help" xml:space="preserve">
-    <value>The username for the SuperUser account.</value>
+    <value>The username for the Super User account.</value>
   </data>
   <data name="WebsiteName.Help" xml:space="preserve">
     <value>Enter the name you want to use for your website.</value>
@@ -343,7 +343,7 @@
     <value>See Logs</value>
   </data>
   <data name="SuperUserCreation.Text" xml:space="preserve">
-    <value>SuperUser Creation</value>
+    <value>Super User Creation</value>
   </data>
   <data name="VisitWebsite.Text" xml:space="preserve">
     <value>Visit Website</value>
@@ -352,13 +352,13 @@
     <value>Website Creation</value>
   </data>
   <data name="CreateSuperUser.Text" xml:space="preserve">
-    <value>Create SuperUser</value>
+    <value>Create Super User</value>
   </data>
   <data name="CreatingSite.Text" xml:space="preserve">
     <value>Creating Site [{0}]</value>
   </data>
   <data name="CreatingSuperUser.Text" xml:space="preserve">
-    <value>Creating SuperUser</value>
+    <value>Creating Super User</value>
   </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Deleting Older Files for </value>

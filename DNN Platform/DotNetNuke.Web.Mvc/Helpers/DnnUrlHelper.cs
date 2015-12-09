@@ -16,20 +16,22 @@ namespace DotNetNuke.Web.Mvc.Helpers
     {
         private readonly ViewContext _viewContext;
 
+        private readonly IDnnController _controller;
+
         public DnnUrlHelper(ViewContext viewContext)
         {
             Requires.NotNull("viewContext", viewContext); 
             
             _viewContext = viewContext;
 
-            var controller = viewContext.Controller as IDnnController;
+            _controller = viewContext.Controller as IDnnController;
 
-            if (controller == null)
+            if (_controller == null)
             {
                 throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
 
-            ModuleContext = controller.ModuleContext;
+            ModuleContext = _controller.ModuleContext;
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }
@@ -76,7 +78,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            routeValues["controller"] = controllerName;
+            routeValues["controller"] = controllerName ?? _controller.ControllerContext?.RouteData.Values["controller"];
             routeValues["action"] = actionName;
             return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, ModuleContext);
         }

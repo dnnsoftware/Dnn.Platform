@@ -175,7 +175,7 @@
     <value>No members were found that satisfy the search conditions.</value>
   </data>
   <data name="ServerError.Text" xml:space="preserve">
-    <value>An error occurred while processing the request. Please try again later.</value>
+    <value>An error occurred while processing the request.  Please try again later.</value>
   </data>
   <data name="ServerErrorWithDescription.Text" xml:space="preserve">
     <value>An error occurred while processing the request:</value>
@@ -187,7 +187,7 @@
     <value>Refresh Results</value>
   </data>
   <data name="SearchError.Text" xml:space="preserve">
-    <value>Searches can only contain alphanumeric characters and spaces</value>
+    <value>Searches can only contain alphanumeric characters and spaces.</value>
   </data>
   <data name="Attachments.Text" xml:space="preserve">
     <value>Attachment(s)</value>
@@ -202,7 +202,7 @@
     <value>Cancel</value>
   </data>
   <data name="CreateMessageError.Text" xml:space="preserve">
-    <value>An error occurred while creating the message. Please try again later.</value>
+    <value>An error occurred while creating the message.  Please try again later.</value>
   </data>
   <data name="CreateMessageErrorWithDescription.Text" xml:space="preserve">
     <value>An error occurred while creating the message:</value>

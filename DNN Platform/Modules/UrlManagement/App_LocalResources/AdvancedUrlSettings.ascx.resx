@@ -127,7 +127,7 @@
     <value>Extension URL Providers</value>
   </data>
   <data name="moduleProvidersLabel.Help" xml:space="preserve">
-    <value>This list shows the currently installed Extension URL Providers.  To enable/disable an Extension URL Provider, click the checkbox in the 'Enabled' column.  To change specific settings for a provider, click the 'Edit' icon in the 'Actions' column.</value>
+    <value>This list shows the currently installed Extension URL Providers.  To enable/disable an Extension URL Provider, click the check box in the 'Enabled' column.  To change specific settings for a provider, click the 'Edit' icon in the 'Actions' column.</value>
   </data>
   <data name="moduleProvidersLabel.Text" xml:space="preserve">
     <value>Extension URL Provider Management</value>

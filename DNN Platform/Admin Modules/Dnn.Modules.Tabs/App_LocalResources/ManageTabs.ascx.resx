@@ -127,13 +127,13 @@
     <value>Page Name</value>
   </data>
   <data name="TabNameHelp.Text" xml:space="preserve">
-    <value>This is the name of the Page.  The text you enter will be displayed in the menu system.</value>
+    <value>This is the name of the page.  The text you enter will be displayed in the menu system.</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Page Title</value>
   </data>
   <data name="TitleHelp.Text" xml:space="preserve">
-    <value>Enter a title for the Page here. The text you enter will be displayed in the browser window title.</value>
+    <value>Enter a title for the page here. The text you enter will be displayed in the browser window title.</value>
   </data>
   <data name="Description.Text" xml:space="preserve">
     <value>Description</value>
@@ -154,7 +154,7 @@
     <value>Link URL</value>
   </data>
   <data name="UrlHelp.Text" xml:space="preserve">
-    <value>If you would like this page to behave as a navigation link to another resource, you can specify the Link URL value here. Please note that this field is optional.</value>
+    <value>Optional specify the Link URL value to allow this page to behave as a navigation link to another resource.</value>
   </data>
   <data name="Copy.Text" xml:space="preserve">
     <value>Copy Page</value>

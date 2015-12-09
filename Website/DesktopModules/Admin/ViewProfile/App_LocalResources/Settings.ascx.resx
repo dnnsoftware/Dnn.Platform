@@ -127,13 +127,13 @@
     <value>Include Edit Button:</value>
   </data>
   <data name="LoadDefault.Confirm" xml:space="preserve">
-    <value>This will overwrite the existing template.  Are you sure you wish to continue?</value>
+    <value>This will overwrite the existing template.  Are you sure you want to continue?</value>
   </data>
   <data name="LoadDefault.Text" xml:space="preserve">
     <value>Load Default</value>
   </data>
   <data name="plTemplate.Help" xml:space="preserve">
-    <value>Enter Template for User Profile display.</value>
+    <value>Enter template for user profile display.</value>
   </data>
   <data name="plTemplate.Text" xml:space="preserve">
     <value>Profile Template:</value>

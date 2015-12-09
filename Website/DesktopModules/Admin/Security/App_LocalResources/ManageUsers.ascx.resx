@@ -128,28 +128,28 @@
 </value>
   </data>
   <data name="UserLockedOut.Text" xml:space="preserve">
-    <value>This account is currently locked out due to too many unsuccessful login attempts.</value>
+    <value>This account is currently locked out following too many unsuccessful login attempts.</value>
   </data>
   <data name="InvalidUser.Text" xml:space="preserve">
-    <value>This account is not a User in the current Website.</value>
+    <value>This account is not a user in the current site.</value>
   </data>
   <data name="SuperUser.Text" xml:space="preserve">
-    <value>This account represents a SuperUser.  You do not have the rights to edit a SuperUser Account.</value>
+    <value>This account represents a Super User.  You do not have the rights to edit a Super User Account.</value>
   </data>
   <data name="NoUser.Text" xml:space="preserve">
-    <value>This account doesn't exist</value>
+    <value>This account doesn't exist.</value>
   </data>
   <data name="plNewPassword.Text" xml:space="preserve">
     <value>New Password:</value>
   </data>
   <data name="plNewPassword.Help" xml:space="preserve">
-    <value>Enter the New Password</value>
+    <value>Enter the new password.</value>
   </data>
   <data name="plNewConfirm.Text" xml:space="preserve">
     <value>Confirm New Password:</value>
   </data>
   <data name="plNewConfirm.Help" xml:space="preserve">
-    <value>Re-Enter the new password to make sure you haven't made a typing mistake</value>
+    <value>Re-enter the new password to confirm.</value>
   </data>
   <data name="ResetPassword.Text" xml:space="preserve">
     <value>Reset Password</value>
@@ -191,13 +191,13 @@
     <value>Add New User</value>
   </data>
   <data name="UserUnAuthorized.Text" xml:space="preserve">
-    <value>User successfully Un-Authorized</value>
+    <value>User successfully un-authorized.</value>
   </data>
   <data name="UserAuthorized.Text" xml:space="preserve">
-    <value>User successfully Authorized</value>
+    <value>User successfully authorized.</value>
   </data>
   <data name="PasswordQAChanged.Text" xml:space="preserve">
-    <value>Password Question and Answer successfully updated.</value>
+    <value>Password question and answer successfully updated.</value>
   </data>
   <data name="ControlTitle_profile.Text" xml:space="preserve">
     <value>Manage Profile</value>
@@ -218,10 +218,10 @@
     <value>Register</value>
   </data>
   <data name="ExceededRegisterQuota.Text" xml:space="preserve">
-    <value>You cannot register at this time for this site. Please contact your the site Administrator to find out when Registration will be reopened.</value>
+    <value>You cannot register at this time for this site.  Please contact the Site Administrator to find out when registration will be reopened.</value>
   </data>
   <data name="ExceededUserQuota.Text" xml:space="preserve">
-    <value>Adding this user will exceed the User Quota for this site. Please contact your hosting provider for inquiries related to increasing your User Quota.</value>
+    <value>Adding this user will exceed the user quota for this site.  Please contact your hosting provider for inquiries related to increasing your user quota.</value>
   </data>
   <data name="UserSubscribed.Text" xml:space="preserve">
     <value>You have successfully subscribed to the {0} role.</value>
@@ -233,19 +233,19 @@
     <value>This website requires a unique Email Address.  The Email Address you entered has already been used.</value>
   </data>
   <data name="CannotAddUser.Text" xml:space="preserve">
-    <value>Your configuration requires the user to enter a Password reminder Question and Answer.  This is incompatible with Administrators adding users, so has been disabled for this website.</value>
+    <value>This site is configured to require users to enter a Question and Answer receive password reminders.  This configuration is incompatible with Administrators adding users, so has been disabled for this site.</value>
   </data>
   <data name="cmdLogin.Text" xml:space="preserve">
     <value>Proceed to Login</value>
   </data>
   <data name="plCaptcha.Help" xml:space="preserve">
-    <value>Enter the security code</value>
+    <value>Enter the security code.</value>
   </data>
   <data name="plCaptcha.Text" xml:space="preserve">
     <value>Security Code:</value>
   </data>
   <data name="UserPasswordUpdateChanged.Text" xml:space="preserve">
-    <value>User must update password on next login</value>
+    <value>User must update password on next login.</value>
   </data>
   <data name="RegisterWarning.Text" xml:space="preserve">
     <value> - &lt;em&gt;(&lt;strong&gt;Note:&lt;/strong&gt; - Registration may take several seconds.  Once you click the Register button please wait until the system responds.)&lt;/em&gt;</value>
@@ -266,7 +266,7 @@
     <value>Account Information</value>
   </data>
   <data name="UserPromotedToSuperuser.Text" xml:space="preserve">
-    <value>User has been updated to be a SuperUser.</value>
+    <value>User has been updated to be a Super User.</value>
   </data>
   <data name="UserDemotedFromSuperuser.Text" xml:space="preserve">
     <value>User has been updated to be a regular user.</value>

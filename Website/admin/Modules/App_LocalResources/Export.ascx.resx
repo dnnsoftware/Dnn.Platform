@@ -43,13 +43,13 @@
 	<value>Folder</value>
     </data>
     <data name="plFolder.Help">
-	<value>Select the export folder</value>
+	<value>Select the folder to export the file to.</value>
     </data>
     <data name="plFile.Text">
         <value>File</value>
     </data>
     <data name="plFile.Help">
-        <value>Enter the export filename</value>
+        <value>Enter a name for the export file.</value>
     </data>
     <data name="cmdExport.Text">
         <value>Export</value>
@@ -61,16 +61,16 @@
         <value>&lt;h1&gt;Export Module&lt;/h1&gt;&lt;p&gt;Administrators can export content for the specified module.&lt;/p&gt;</value>
     </data>
     <data name="NoContent.Text">
-        <value>The module specified does not have any content</value>
+        <value>The module specified does not have any content.</value>
     </data>
     <data name="ExportNotSupported.Text">
-        <value>The module specified does not support the exporting of content</value>
+        <value>The module specified does not support the exporting of content.</value>
     </data>
     <data name="Error.Text">
-        <value>An error occurred during the export</value>
+        <value>An error occurred during the export.</value>
     </data>
     <data name="Validation.Text">
-        <value>You must specify a folder and file for export</value>
+        <value>You must specify a folder and file for export.</value>
     </data>
     <data name="Root.Text">
 	<value>Root</value>

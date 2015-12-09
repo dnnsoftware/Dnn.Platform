@@ -121,10 +121,10 @@
     <value>Add Page(s)</value>
   </data>
   <data name="CanNotDeleteHomeTab.Text" xml:space="preserve">
-    <value>You must not delete the home page of your website!</value>
+    <value>You must not delete the home page of your website.</value>
   </data>
   <data name="CanNotDeleteSpecialTab.Text" xml:space="preserve">
-    <value>This is a special tab and cannot be deleted!</value>
+    <value>This is a special tab and cannot be deleted.</value>
   </data>
   <data name="Collapse.Text" xml:space="preserve">
     <value>Collapse all Nodes</value>
@@ -142,22 +142,22 @@
     <value>Expand all Nodes</value>
   </data>
   <data name="InvalidTabName.Text" xml:space="preserve">
-    <value>{0} is an invalid Page Title!</value>
+    <value>{0} is an invalid Page Title.</value>
   </data>
   <data name="lblDisabled.Text" xml:space="preserve">
-    <value>Page is disabled</value>
+    <value>Page Is Disabled</value>
   </data>
   <data name="lblHidden.Text" xml:space="preserve">
-    <value>Page is hidden in menu</value>
+    <value>Page Is Hidden in Menu</value>
   </data>
   <data name="lblHome.Text" xml:space="preserve">
-    <value>Homepage of the website</value>
+    <value>Home Page of the Site</value>
   </data>
   <data name="lblSecure.Text" xml:space="preserve">
-    <value>Visible to dedicated roles only</value>
+    <value>Visible to Dedicated Roles Only</value>
   </data>
   <data name="lblEveryone.Text" xml:space="preserve">
-    <value>Page is visible to everyone</value>
+    <value>Page Is Visible to Everyone</value>
   </data>
   <data name="MovePageDown.Text" xml:space="preserve">
     <value>Move Down</value>
@@ -178,34 +178,34 @@
     <value>View Page</value>
   </data>
   <data name="DisablePage.Text" xml:space="preserve">
-    <value>Disable link in navigation</value>
+    <value>Disable Link in Navigation</value>
   </data>
   <data name="EnablePage.Text" xml:space="preserve">
-    <value>Enable link in navigation</value>
+    <value>Enable Link in Navigation</value>
   </data>
   <data name="HidePage.Text" xml:space="preserve">
-    <value>Hide from navigation</value>
+    <value>Hide From Navigation</value>
   </data>
   <data name="lblHostOnly.Text" xml:space="preserve">
     <value>Manage:</value>
   </data>
   <data name="ShowPage.Text" xml:space="preserve">
-    <value>Show in navigation</value>
+    <value>Show in Navigation</value>
   </data>
   <data name="lblAdminOnly.Text" xml:space="preserve">
-    <value>Visible to administrators only</value>
+    <value>Visible to Administrators Only</value>
   </data>
   <data name="lblRegistered.Text" xml:space="preserve">
-    <value>Visible to registered users</value>
+    <value>Visible to Registered Users</value>
   </data>
   <data name="btnBulkCreate.Text" xml:space="preserve">
     <value>Create Page(s)</value>
   </data>
   <data name="BulkCreateIntro.Text" xml:space="preserve">
-    <value>This will create one page per line below the selected page. For creating hierarchies, you may prepend lines with "&gt;".</value>
+    <value>This will create one page per line below the selected page.  For creating hierarchies, you may prepend lines with "&gt;".</value>
   </data>
   <data name="MakeHome.Text" xml:space="preserve">
-    <value>Make Homepage</value>
+    <value>Make Home Page</value>
   </data>
   <data name="cmdMore.Text" xml:space="preserve">
     <value>More Settings</value>
@@ -292,7 +292,7 @@
     <value>Page Tags</value>
   </data>
   <data name="cmdCopySkin.Text" xml:space="preserve">
-    <value>Copy selected Theme to Childpages</value>
+    <value>Copy Selected Theme to Child Pages</value>
   </data>
   <data name="DefaultContainer.Text" xml:space="preserve">
     <value>[Default Container]</value>
@@ -313,7 +313,7 @@
     <value>Site</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Pages&lt;/h1&gt;&lt;p&gt;The Admin user can manage pages in the site.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Pages&lt;/h1&gt;&lt;p&gt;The Administrator can manage pages in the site.&lt;/p&gt;</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
     <value>Link</value>
@@ -388,7 +388,7 @@
     <value>This is the name of the Page.  The text you enter will be displayed in the menu system.</value>
   </data>
   <data name="lblPageSSL.Help" xml:space="preserve">
-    <value>Specify whether or not this page should be forced to use a secure connection (SSL). This option will only be enabled if the administrator has Enabled SSL in the site settings.</value>
+    <value>Specify whether or not this page should be forced to use a secure connection (SSL).  This option will only be enabled if the administrator has enabled SSL in the Site Settings.</value>
   </data>
   <data name="lblPermanentRedirect.Help" xml:space="preserve">
     <value>Check this box if you want to notify the client that this page should be considered as permanently moved.  This would allow SearchEngines to modify their URLs to directly link to the resource.  This is ignored if the LinkType is None.</value>
@@ -403,16 +403,16 @@
     <value>Select items from the drop-down to tag this Page.</value>
   </data>
   <data name="lblTitle.Help" xml:space="preserve">
-    <value>Enter a title for the Page here. The text you enter will be displayed in the browser window title.</value>
+    <value>Enter a title for the page. The title will be displayed in the browser window title.</value>
   </data>
   <data name="lblUrl.Help" xml:space="preserve">
-    <value>If you would like this page to behave as a navigation link to another resource, you can specify the Link URL value here. Please note that this field is optional.</value>
+    <value>Optionally set a URL link if this page is a navigation link to another resource.</value>
   </data>
   <data name="lblVisible.Help" xml:space="preserve">
-    <value>You have the choice on whether or not to include the page in the main navigation menu. If a page is not included in the menu, you can still link to it based on its page URL.</value>
+    <value>You have the choice on whether or not to include the page in the main navigation menu.  If a page is not included in the menu, you can still link to it based on its page URL.</value>
   </data>
   <data name="valName.ErrorMessage" xml:space="preserve">
-    <value>Page Name is required</value>
+    <value>Page name is required.</value>
   </data>
   <data name="bulkPagesLabel.Text" xml:space="preserve">
     <value>Pages:</value>
@@ -421,19 +421,19 @@
     <value>There is a site domain identical to your page path.</value>
   </data>
   <data name="ExceededQuota.Text" xml:space="preserve">
-    <value>It's not allowed to add page because adding a page will exceed the Page Quota for this site. Please contact your hosting provider for inquiries related to increasing your Page Quota.</value>
+    <value>Page cannot be added as adding this page will exceed the Page Quota for this site.  Please contact your hosting provider for inquiries related to increasing your Page Quota.</value>
   </data>
   <data name="valRefresh.ErrorMessage" xml:space="preserve">
-    <value>Invalid number</value>
+    <value>Invalid number.</value>
   </data>
   <data name="valPriority.ErrorMessage" xml:space="preserve">
-    <value>Invalid value for priority</value>
+    <value>Invalid value for priority.</value>
   </data>
   <data name="valPriorityRequired.ErrorMessage" xml:space="preserve">
-    <value>Priority is Required</value>
+    <value>Priority is required.</value>
   </data>
   <data name="lblAllowIndex.Help" xml:space="preserve">
-    <value>This setting controls whether a page should be indexed by search crawlers. It uses the INDEX/NOINDEX values for ROBOTS meta tag.</value>
+    <value>This setting controls whether a page should be indexed by search crawlers.  It uses the INDEX/NOINDEX values for ROBOTS meta tag.</value>
   </data>
   <data name="lblAllowIndex.Text" xml:space="preserve">
     <value>Allow Indexing:</value>

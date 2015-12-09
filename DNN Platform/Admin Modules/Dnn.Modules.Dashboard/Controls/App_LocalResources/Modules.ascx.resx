@@ -124,7 +124,7 @@
     <value>Module</value>
   </data>
   <data name="plModules.Help" xml:space="preserve">
-    <value>Displays a list of the Installed Modules</value>
+    <value>Displays a list of the installed modules.</value>
   </data>
   <data name="plModules.Text" xml:space="preserve">
     <value>Installed Modules:</value>

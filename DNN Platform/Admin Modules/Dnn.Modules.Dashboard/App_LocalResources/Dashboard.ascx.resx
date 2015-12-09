@@ -124,7 +124,7 @@
     <value>Dashboard</value>
   </data>
   <data name="Export.Action" xml:space="preserve">
-    <value>Export as Xml File</value>
+    <value>Export as XML File</value>
   </data>
   <data name="Install.Action" xml:space="preserve">
     <value>Install Dashboard Control</value>
