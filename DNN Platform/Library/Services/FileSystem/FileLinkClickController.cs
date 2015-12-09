@@ -56,10 +56,16 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return Null.NullInteger;
             }
+
             if (queryParams["portalid"] != null)
             {
-                return Convert.ToInt32(queryParams["portalid"]);
+                int portalId;
+                if (int.TryParse(queryParams["portalid"], out portalId))
+                {
+                    return portalId;
+                }
             }
+
             return PortalSettings.Current.PortalId;
         }
 
