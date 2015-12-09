@@ -847,7 +847,7 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 
 .dnnModuleDigitalAssetsGeneralProperties {
     min-height: 300px;
-    width: 600px;
+    width: 600px !important;
     margin-top: 7px;
     margin-bottom: 25px;    
     float: left;
