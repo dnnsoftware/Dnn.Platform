@@ -1650,7 +1650,7 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
     display: none;
     position: absolute;
     z-index: 99;
-    top: 29px;
+    top: 18px;
     left: 0;
     width: 200px;
     margin-left: 0;
@@ -1661,6 +1661,9 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
     -webkit-box-shadow: 0px 2px 0px 0px #bbb;
     box-shadow: 0px 2px 0px 0px #bbb;
     list-style-type: none;
+    -moz-padding-start: 0;
+    -webkit-padding-start: 0;
+
 }
 
     .dnnButtonDropdown-ul > li, .dnnButtonDropdown-ul > ul > li {
