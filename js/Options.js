@@ -111,7 +111,7 @@ jQuery('#' + id).dialog("open");
 			}
 			
 			jQuery(".groups").sortable({
-				connectWith: ".groups",
+			    connectWith: ".groups, .availableButtons",
 				placeholder: "ui-state-highlight",
 				update: function () {
 					jQuery('[id*="CKEditor_Options_ToolbarSet"]').val(jQuery('.groups').SerializeToolbars());
@@ -120,7 +120,7 @@ jQuery('#' + id).dialog("open");
 
 
 jQuery(".groupButtons").sortable({
-    connectWith: ".groupButtons",
+    connectWith: ".groupButtons, .availableButtons",
     placeholder: "ui-state-highlight",
     start: function (e, ui) {
         jQuery('.groupButtons').css('min-height', '50px');
