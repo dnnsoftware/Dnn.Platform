@@ -387,4 +387,19 @@
   <data name="StartUploads.Text" xml:space="preserve">
     <value>Start upload(s)</value>
   </data>
+  <data name="BrowserModus.Image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="BrowserModus.Link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="lblBrowserModus.Text" xml:space="preserve">
+    <value>Browser-Modus: {0}</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
 </root>

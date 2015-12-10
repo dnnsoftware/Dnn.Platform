@@ -317,10 +317,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                 dr["Info"] =
                                     string.Format(
-                                        "<span class=\"FileName\">{0}</span><br /><span class=\"FileInfo\">Size: {1}</span><br /><span class=\"FileInfo\">Created: {2}</span>",
-                                        name,
-                                        fileItem.Size,
-                                        fileItem.LastModificationTime);
+                                        "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
+                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            name,
+                                            fileItem.Size,
+                                            fileItem.LastModificationTime);
 
                                 filesTable.Rows.Add(dr);
                             }
@@ -338,10 +340,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                 dr["Info"] =
                                     string.Format(
-                                        "<span class=\"FileName\">{0}</span><br /><span class=\"FileInfo\">Size: {1}</span><br /><span class=\"FileInfo\">Created: {2}</span>",
-                                        name,
-                                        fileItem.Size,
-                                        fileItem.LastModificationTime);
+                                        "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
+                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            name,
+                                            fileItem.Size,
+                                            fileItem.LastModificationTime);
 
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
@@ -396,10 +400,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                             dr["Info"] =
                                 string.Format(
-                                    "<span class=\"FileName\">{0}</span><br /><span class=\"FileInfo\">Size: {1}</span><br /><span class=\"FileInfo\">Created: {2}</span>",
-                                    name,
-                                    fileItem.Size,
-                                    fileItem.LastModificationTime);
+                                    "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                        Localization.GetString("Size.Text", ResXFile, LanguageCode),
+                                        Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                        name,
+                                        fileItem.Size,
+                                        fileItem.LastModificationTime);
 
                             filesTable.Rows.Add(dr);
                         }
@@ -935,7 +941,10 @@ namespace DNNConnect.CKEditorProvider.Browser
                     if (request.QueryString["Type"] != null)
                     {
                         browserModus = request.QueryString["Type"];
-                        lblModus.Text = string.Format("Browser-Modus: {0}", browserModus);
+                        var browserModusText = Localization.GetString("lblBrowserModus.Text", ResXFile, LanguageCode);
+                        var browserModusTypeKey = string.Format("BrowserModus.{0}.Text", browserModus);
+                        var browserModusTypeText = Localization.GetString(browserModusTypeKey, ResXFile, LanguageCode);
+                        lblModus.Text = string.Format(browserModusText, browserModusTypeText);
 
                         if (!IsPostBack)
                         {
