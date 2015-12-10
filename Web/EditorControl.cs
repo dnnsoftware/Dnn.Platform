@@ -1413,6 +1413,10 @@ namespace DNNConnect.CKEditorProvider.Web
             editorScript.Append("});");
             editorScript.Append("});");
 
+            editorScript.Append("if(CKEDITOR && CKEDITOR.config){");
+            editorScript.Append("  CKEDITOR.config.portalId = " + _portalSettings.PortalId);
+            editorScript.Append("};");
+
             // End of LoadScript
             editorScript.Append("}");
 
