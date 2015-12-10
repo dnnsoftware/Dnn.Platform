@@ -144,31 +144,31 @@
     <value>Directories:</value>
   </data>
   <data name="cmdDownload.Help" xml:space="preserve">
-    <value>Download selected a file</value>
+    <value>Download the selected file.</value>
   </data>
   <data name="cmdDownload.Text" xml:space="preserve">
     <value>Download File</value>
   </data>
   <data name="cmdUpload.Help" xml:space="preserve">
-    <value>Upload a new file</value>
+    <value>Upload a new file.</value>
   </data>
   <data name="cmdUpload.Text" xml:space="preserve">
     <value>Upload File</value>
   </data>
   <data name="Error1.Text" xml:space="preserve">
-    <value>You are Not Authorized!</value>
+    <value>The user does not have permission to perform this task.</value>
   </data>
   <data name="Error2.Text" xml:space="preserve">
-    <value>Not allowed File Extension!</value>
+    <value>This file extension is not permitted.</value>
   </data>
   <data name="Error3.Text" xml:space="preserve">
-    <value>Not allowed File Extension!</value>
+    <value>This file extension is not permitted.</value>
   </data>
   <data name="Error4.Text" xml:space="preserve">
-    <value>You have no Authorization to View this folder!</value>
+    <value>The user does not have permission to view this folder.</value>
   </data>
   <data name="Error5.Text" xml:space="preserve">
-    <value>No File selected.</value>
+    <value>No file selected.</value>
   </data>
   <data name="cmdUploadCancel.Text" xml:space="preserve">
     <value>Cancel Upload</value>
@@ -177,19 +177,19 @@
     <value>Upload Now</value>
   </data>
   <data name="lblUrlType.Text" xml:space="preserve">
-    <value>Choose Url Type:</value>
+    <value>Choose URL Type:</value>
   </data>
   <data name="lblChoosetab.Text" xml:space="preserve">
     <value>Choose a Page:</value>
   </data>
   <data name="cmdCreate.Help" xml:space="preserve">
-    <value>Create a New Sub folder</value>
+    <value>Create a new sub folder</value>
   </data>
   <data name="cmdCreate.Text" xml:space="preserve">
     <value>Create New Folder</value>
   </data>
   <data name="cmdDelete.Help" xml:space="preserve">
-    <value>Delete the selected file</value>
+    <value>Delete the selected file.</value>
   </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Delete File</value>
@@ -210,7 +210,7 @@
     <value>Resize Now</value>
   </data>
   <data name="cmdResizer.Help" xml:space="preserve">
-    <value>Edit the Selected Image</value>
+    <value>Edit the selected image.</value>
   </data>
   <data name="cmdResizer.Text" xml:space="preserve">
     <value>Image Editor</value>
@@ -219,13 +219,13 @@
     <value>New Height:</value>
   </data>
   <data name="lblThumbName.Text" xml:space="preserve">
-    <value>New Filename:</value>
+    <value>New File Name:</value>
   </data>
   <data name="lblWidth.Text" xml:space="preserve">
     <value>New Width:</value>
   </data>
   <data name="AreYouSure.Text" xml:space="preserve">
-    <value>Are you sure you want to delete this File?</value>
+    <value>Are you sure you want to delete this file?</value>
   </data>
   <data name="lblImgQuality.Text" xml:space="preserve">
     <value>Image Quality (Compression):</value>
@@ -258,7 +258,7 @@
     <value>Clear Preview</value>
   </data>
   <data name="lblCropInfo.Text" xml:space="preserve">
-    <value>Here you will see the edited New image</value>
+    <value>Here you will see the edited new image</value>
   </data>
   <data name="lblOriginal.Text" xml:space="preserve">
     <value>Original:</value>
@@ -288,7 +288,7 @@
     <value>Select an Page Anchor:</value>
   </data>
   <data name="TrackClicks.Text" xml:space="preserve">
-    <value>Track Number of Times this Link is Clicked?</value>
+    <value>Track Number of Times This Link Is Clicked:</value>
   </data>
   <data name="absLnk.Text" xml:space="preserve">
     <value>Absolute URL  - &lt;em&gt;'http://www.MyWebsite.com/Images/MyImage.jpg'&lt;/em&gt;</value>
@@ -324,19 +324,19 @@
     <value>Detail View</value>
   </data>
   <data name="DetailViewTitle.Text" xml:space="preserve">
-    <value>Shows Every File with an Large Image Preview, Filename and File Information</value>
+    <value>Shows Every File With an Large Image Preview, Filename and File Information.</value>
   </data>
   <data name="IconsView.Text" xml:space="preserve">
     <value>Icons View</value>
   </data>
   <data name="IconsViewTitle.Text" xml:space="preserve">
-    <value>Shows all Files with Image Preview as Tiles.</value>
+    <value>Shows All Files With Image Preview as Tiles.</value>
   </data>
   <data name="ListView.Text" xml:space="preserve">
     <value>List View</value>
   </data>
   <data name="ListViewTitle.Text" xml:space="preserve">
-    <value>Shows small Image Preview, Filename and File Information</value>
+    <value>Shows Small Image Preview, Filename and File Information.</value>
   </data>
   <data name="FirstPage.Text" xml:space="preserve">
     <value>First Page</value>
@@ -354,13 +354,13 @@
     <value>Previous Page</value>
   </data>
   <data name="SortAscending.Help" xml:space="preserve">
-    <value>Sort File List by File Names in Ascending Order</value>
+    <value>Sort file list by file names in ascending order.</value>
   </data>
   <data name="SortAscending.Text" xml:space="preserve">
     <value>Sort Ascending</value>
   </data>
   <data name="SortDescending.Help" xml:space="preserve">
-    <value>Sort Files List By File Names in Descending Order</value>
+    <value>Sort file list by file names in descending order.</value>
   </data>
   <data name="SortDescending.Text" xml:space="preserve">
     <value>Sort Descending</value>
@@ -384,13 +384,13 @@
     <value>The File Upload Limit is {0} MB. &lt;br /&gt; The Allowed Filetypes are: "{1}"</value>
   </data>
   <data name="FileToBig.Text" xml:space="preserve">
-    <value>File is to big to upload.</value>
+    <value>File is too big to upload.</value>
   </data>
   <data name="OverrideFile.Text" xml:space="preserve">
-    <value>Override File if exists, otherwise a new File with underscore _1 will be created?</value>
+    <value>Override file if it already exists, otherwise a new file with underscore _1 will be created?</value>
   </data>
   <data name="FileToBigMessage.Text" xml:space="preserve">
-    <value>Uploaded File is bigger then the allowed file size!</value>
+    <value>Uploaded file is bigger then the allowed file size.</value>
   </data>
   <data name="AddFiles.Text" xml:space="preserve">
     <value>Add file(s)...</value>

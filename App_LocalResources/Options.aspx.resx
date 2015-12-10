@@ -132,7 +132,7 @@
     <value>Informations</value>
   </data>
   <data name="lblModType.Text" xml:space="preserve">
-    <value>Module type:</value>
+    <value>Module Type:</value>
   </data>
   <data name="lblModName.Text" xml:space="preserve">
     <value>Module Name:</value>
@@ -153,7 +153,7 @@
     <value>Close</value>
   </data>
   <data name="Error1.Text" xml:space="preserve">
-    <value>You Are not Authorized to View this Page!</value>
+    <value>The user does not have permissions to view this page.</value>
   </data>
   <data name="lblPage.Text" xml:space="preserve">
     <value>Page:</value>
@@ -171,7 +171,7 @@
     <value>File Browser Settings</value>
   </data>
   <data name="lblCSSURL.Text" xml:space="preserve">
-    <value>Editor area CSS:</value>
+    <value>Editor Area CSS:</value>
   </data>
   <data name="lblPortal.Text" xml:space="preserve">
     <value>Portal Name:</value>
@@ -186,7 +186,7 @@
     <value>Remove Settings</value>
   </data>
   <data name="lblInfo.Text" xml:space="preserve">
-    <value>Settings saved, Refresh the Editor or reload the Page to see the Changes!</value>
+    <value>Settings saved. Refresh the Editor or reload the page to see the changes.</value>
   </data>
   <data name="lblInfoDel.Text" xml:space="preserve">
     <value>Settings deleted</value>
@@ -207,7 +207,7 @@
     <value>Main Settings</value>
   </data>
   <data name="lblBrowserDirs.Text" xml:space="preserve">
-    <value>Use Subdirs for non Admins (..\Portals\0\userfiles\username)?</value>
+    <value>Use Subdirs for non Admins (..\Portals\0\userfiles\username):</value>
   </data>
   <data name="lblTemplates.Text" xml:space="preserve">
     <value>Editor Templates</value>
@@ -240,7 +240,7 @@
     <value>Toolbar Name:</value>
   </data>
   <data name="lblToolbSet.Text" xml:space="preserve">
-    <value>Available Toolbar Buttons:</value>
+    <value>Available Toolbar Buttons</value>
   </data>
   <data name="SaveToolbar.Text" xml:space="preserve">
     <value>Save the Toolbar Set</value>
@@ -270,7 +270,7 @@
     <value>Import</value>
   </data>
   <data name="BadImportXml.Text" xml:space="preserve">
-    <value>Wrong or Bad XML File!</value>
+    <value>Incorrect or bad XML file.</value>
   </data>
   <data name="Export.Text" xml:space="preserve">
     <value>Current Editor Settings Exported</value>
@@ -279,7 +279,7 @@
     <value>Editor Settings Imported for</value>
   </data>
   <data name="lblInjectSyntaxJs.Text" xml:space="preserve">
-    <value>Inject Link to SyntaxHighlighter Js?</value>
+    <value>Inject Link to SyntaxHighlighter JS:</value>
   </data>
   <data name="UploadFolderLabel.Text" xml:space="preserve">
     <value>Default Upload Folder:</value>
@@ -294,7 +294,7 @@
     <value>Show Page Links Tab First:</value>
   </data>
   <data name="lblUseAnchorSelector.Text" xml:space="preserve">
-    <value>Use Anchor Selector (Automatically Finds all Anchors on the Selected Page):</value>
+    <value>Use Anchor Selector (Automatically Finds All Anchors on the Selected Page):</value>
   </data>
   <data name="FileListViewModeLabel.Text" xml:space="preserve">
     <value>Default File List View Mode:</value>
@@ -321,7 +321,7 @@
     <value>Remove {0} Settings</value>
   </data>
   <data name="RemoveAll.Help" xml:space="preserve">
-    <value>Removes the {0} Settings of the Entire Portal</value>
+    <value>Removes the {0} settings of the entire portal.</value>
   </data>
   <data name="RemoveAll.Text" xml:space="preserve">
     <value>Remove All {0} Settings</value>
@@ -330,7 +330,7 @@
     <value>Create New Group</value>
   </data>
   <data name="CreateGroupTitle.Text" xml:space="preserve">
-    <value>Add new Group to Toolbar Set?</value>
+    <value>Add New Group to Toolbar Set?</value>
   </data>
   <data name="DeleteGroup.Text" xml:space="preserve">
     <value>Delete this Toolbar Group?</value>
@@ -351,13 +351,13 @@
     <value>Toolbar Set Priority:</value>
   </data>
   <data name="ToolbarGroupsLabel.Text" xml:space="preserve">
-    <value>Toolbar Groups:</value>
+    <value>Toolbar Groups</value>
   </data>
   <data name="CodeMirrorLabel.Text" xml:space="preserve">
     <value>CodeMirror Theme (for Source Syntax Highlighting):</value>
   </data>
   <data name="lblSkin.Text" xml:space="preserve">
-    <value>Skin</value>
+    <value>Skin:</value>
   </data>
   <data name="NoJava.Text" xml:space="preserve">
     <value>&lt;strong&gt;CKEditor requires JavaScript to run&lt;/strong&gt;. In a browser with no JavaScript support, like yours, you should still see the contents (HTML data) and you should be able to edit it normally, without a rich editor interface.</value>
@@ -366,13 +366,16 @@
     <value>Editor Config</value>
   </data>
   <data name="ModuleError.Text" xml:space="preserve">
-    <value>The Editor Settings for an Module Instance can only be viewed and loaded from within the Module Instance!</value>
+    <value>The Editor Settings for an Module Instance can only be viewed and loaded from within the Module Instance.</value>
   </data>
   <data name="ModuleHeader.Text" xml:space="preserve">
     <value>CKEditor Provider Config Manager</value>
   </data>
   <data name="PortalOnlyLabel.Text" xml:space="preserve">
-    <value>Show Settings only for this Portal or for all Portals?</value>
+    <value>Show Settings Only for This Portal or for All Portals?</value>
+  </data>
+  <data name="PortalOnly.Text" xml:space="preserve">
+    <value>This Portal Only</value>
   </data>
   <data name="Wait.Text" xml:space="preserve">
     <value>Please Wait...</value>
@@ -380,9 +383,7 @@
   <data name="WaitMessage.Text" xml:space="preserve">
     <value>Loading Options Page.</value>
   </data>
-  <data name="PortalOnly.Text" xml:space="preserve">
-    <value>This Portal Only</value>
-  </data>
+
   <data name="ModuleHasSettingLabel.Text" xml:space="preserve">
     <value>Contains Module Settings</value>
   </data>
@@ -405,7 +406,7 @@
     <value>Icon Legend</value>
   </data>
   <data name="EditorConfigWarning.Text" xml:space="preserve">
-    <value>&lt;strong&gt;Info:&lt;/strong&gt; The Settings below are only for Experts, please modify them only if you are know what you are doing. To find out more about the Settings below visit the &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;CKEditor JavaScript API Documentation Page&lt;/strong&gt;&lt;/a&gt;. You can leave the Settings blank to load the default Settings, when the Editor is loaded.</value>
+    <value>&lt;strong&gt;Information:&lt;/strong&gt; The Settings below are only for Experts, please modify them only if you are know what you are doing. To find out more about the Settings below visit the &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;CKEditor JavaScript API Documentation Page&lt;/strong&gt;&lt;/a&gt;. You can leave the Settings blank to load the default Settings, when the Editor is loaded.</value>
   </data>
   <data name="ModuleInstance.Text" xml:space="preserve">
     <value>Module</value>
@@ -423,7 +424,7 @@
     <value>Remove All Module Settings on Page</value>
   </data>
   <data name="RemovePageChild.Help" xml:space="preserve">
-    <value>Removes all Child Page Settings of the Current Page</value>
+    <value>Removes all child page settings for the current page.</value>
   </data>
   <data name="RemovePageChild.Text" xml:space="preserve">
     <value>Remove All Child Page Settings</value>
@@ -450,7 +451,7 @@
     <value>Absolute Secured URL</value>
   </data>
   <data name="DefaultLinkModeLabel.Text" xml:space="preserve">
-    <value>Default Link Mode</value>
+    <value>Default Link Mode:</value>
   </data>
   <data name="DetailView.Text" xml:space="preserve">
     <value>Detail View</value>
@@ -462,7 +463,7 @@
     <value>List View</value>
   </data>
   <data name="BlanktextTT.Text" xml:space="preserve">
-    <value>This is the Default Text displayed when the Content of the Module is empty.</value>
+    <value>This is the default text displayed when the content of the module is empty.</value>
   </data>
   <data name="NewsArcticlesArticlesList.Text" xml:space="preserve">
     <value>Select an Article:</value>
@@ -471,36 +472,36 @@
     <value>Select the Page and the News Articles Module Instance:</value>
   </data>
   <data name="ToolbarNameMissing.Text" xml:space="preserve">
-    <value>You must enter a Toolbar Name</value>
+    <value>You must enter a toolbar name.</value>
   </data>
   <data name="ToolbarSetCreated.Text" xml:space="preserve">
-    <value>New Toolbar Set "{0}" created!</value>
+    <value>New toolbar set "{0}" created.</value>
   </data>
   <data name="ToolbarSetDeleted.Text" xml:space="preserve">
-    <value>Selected Toolbar Set deleted!</value>
+    <value>Selected toolbar set deleted.</value>
   </data>
   <data name="ToolbarSetSaved.Text" xml:space="preserve">
-    <value>Toolbar Set saved!</value>
+    <value>Toolbar set saved.</value>
   </data>
   <data name="CustomJsFileLabel.Text" xml:space="preserve">
-    <value>Custom JS File</value>
+    <value>Custom JS File:</value>
   </data>
   <data name="OverrideFileOnUploadLabel.Text" xml:space="preserve">
-    <value>Override File if exists on upload, otherwise a new File with underscore _1 will be created?</value>
+    <value>Override File If Exists on Upload, Otherwise a New File With Underscore _1 Will Be Created:</value>
   </data>
   <data name="CopyPageChild.Help" xml:space="preserve">
-    <value>Copy current Page Settings to all Child Pages</value>
+    <value>Copy current page dettings to all child pages.</value>
   </data>
   <data name="CopyPageChild.Text" xml:space="preserve">
     <value>Copy Settings to Child Pages</value>
   </data>
   <data name="lblInfoCopyAll.Text" xml:space="preserve">
-    <value>Settings copied to all Child Pages.</value>
+    <value>Settings copied to all child pages.</value>
   </data>
   <data name="SizeLimitLabel.Text" xml:space="preserve">
     <value>Upload File Size Limit</value>
   </data>
   <data name="UploadFileLimitLabel.Text" xml:space="preserve">
-    <value>Upload File Limits:</value>
+    <value>Upload File Limits</value>
   </data>
 </root>
