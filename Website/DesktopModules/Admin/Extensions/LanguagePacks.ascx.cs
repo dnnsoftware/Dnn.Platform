@@ -253,7 +253,7 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             extensionTypeRepeater.DataBind();
         }
 
-        private void ProcessDownload()
+        private void ProcessDownload(string cultureCode)
         {
             // make sure only host users can download the packge.
             if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
@@ -286,11 +286,21 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
 
             try
             {
-                var fileName = packageName;
+                string fileName = string.Empty;
+                if (!string.IsNullOrEmpty(cultureCode))
+                {
+                    string downloadUrl = UpdateService.GetLanguageDownloadUrl(cultureCode);
+                    fileName = Path.GetFileName(downloadUrl);
+                }
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = packageName;
+                }
                 if (fileName.EndsWith(".resources"))
                 {
                     fileName = fileName.Replace(".resources", "") + ".zip";
                 }
+
                 Response.Clear();
                 Response.AppendHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
                 Response.AppendHeader("Content-Length", packageFile.Length.ToString());
@@ -374,7 +384,7 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             if (Request.QueryString["action"] != null
                 && Request.QueryString["action"].ToLowerInvariant() == "download")
             {
-                ProcessDownload();
+                ProcessDownload(Request.QueryString["culturecode"]);
             }
         }
 
@@ -454,15 +464,17 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
         protected void DownloadLanguage(object sender, EventArgs e)
         {
             var thisButton = (LinkButton) sender;
-            if (thisButton.Attributes["data-id"] != null)
+            string cultureCode = thisButton.Attributes["data-id"];
+            if (!string.IsNullOrEmpty(cultureCode))
             {
-                InstallController.Instance.IsAvailableLanguagePack(thisButton.Attributes["data-id"]);
+                InstallController.Instance.IsAvailableLanguagePack(cultureCode);
             }
 
             thisButton.Attributes["popupurl"] = Globals.NavigateURL(TabId, string.Empty,
                     "action=download",
                     "ptype=LanguagePack",
-                    "package=installlanguage.resources");
+                    "package=installlanguage.resources",
+                    "culturecode=" + cultureCode);
         }
 
         public bool ShowDescription { get; set; }
