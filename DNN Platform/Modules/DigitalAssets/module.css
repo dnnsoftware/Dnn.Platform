@@ -20,8 +20,6 @@
     border-bottom: 0 none;
     height: 35px;
     padding: 0;
-    -moz-padding-start: 0;
-    -webkit-padding-start: 0;
 }
 
 #dnnModuleDigitalAssetsLeftPane ul.dnnAdminTabNav li {    
@@ -652,7 +650,8 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 #dnnModuleDigitalAssetsBreadcrumb ul {
     list-style: none outside none;
     margin-bottom: 0;
-    margin-left: 7px;  
+    margin-left: 7px;
+    padding: 0;
 }
 
 #dnnModuleDigitalAssetsBreadcrumb li {
