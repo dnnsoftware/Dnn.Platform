@@ -351,7 +351,6 @@ namespace DNNConnect.CKEditorProvider
                 lnkRemoveAll.Visible = false;
                 InfoTabLi.Visible = false;
                 InfoTabHolder.Visible = false;
-                btnCancel.Visible = false;
 
                 if (DefaultHostLoadMode.Equals(0))
                 {
@@ -460,6 +459,7 @@ namespace DNNConnect.CKEditorProvider
                         Localization.GetString("Error1.Text", ResXFile, LangCode)),
                     true);
             }
+            LocalResourceFile = ResXFile;
         }
 
         /// <summary>
@@ -3041,7 +3041,6 @@ namespace DNNConnect.CKEditorProvider
             lnkImportNow.Text = Localization.GetString("ImportNow.Text", ResXFile, LangCode);
 
             btnOk.Text = Localization.GetString("btnOK.Text", ResXFile, LangCode);
-            btnCancel.Text = Localization.GetString("btnCancel.Text", ResXFile, LangCode);
 
             rBlSetMode.Items[0].Text = Localization.GetString("Portal.Text", ResXFile, LangCode);
             rBlSetMode.Items[1].Text = Localization.GetString("Page.Text", ResXFile, LangCode);
