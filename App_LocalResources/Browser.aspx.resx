@@ -401,4 +401,7 @@
   <data name="StartUploads.Text" xml:space="preserve">
     <value>Start upload(s)</value>
   </data>
+  <data name="RootFolder.Text" xml:space="preserve">
+    <value>Root Folder</value>
+  </data>
 </root>

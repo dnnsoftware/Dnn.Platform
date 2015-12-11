@@ -404,4 +404,7 @@
   <data name="Root.Text" xml:space="preserve">
     <value>Root</value>
   </data>
+  <data name="RootFolder.Text" xml:space="preserve">
+    <value>Root Folder</value>
+  </data>
 </root>
