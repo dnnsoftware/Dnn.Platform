@@ -953,6 +953,9 @@ a.dnnFormHelp {
     margin-right: 18px;
     overflow: visible;
     text-align: right;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .dnnFormItem > .dnnLabel {
