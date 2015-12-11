@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Mvc
             mockRequest.Setup(r => r.Url)
                        .Returns(new Uri(requestUrl));
             mockRequest.Setup(r => r.ApplicationPath)
-                       .Returns("/");
+                       .Returns(new Uri(requestUrl).AbsolutePath);
             mockRequest.Setup(r => r.RawUrl)
                        .Returns(requestUrl);
 
@@ -99,6 +99,11 @@ namespace DotNetNuke.Tests.Web.Mvc
         public static ControllerContext CreateMockControllerContext(RouteData routeDatae)
         {
             return new ControllerContext(CreateMockHttpContext(), routeDatae, new Mock<ControllerBase>().Object);
+        }
+
+        public static ControllerContext CreateMockControllerContext(HttpContextBase httpContext, RouteData routeData)
+        {
+            return new ControllerContext(httpContext?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
         }
 
         public static ViewContext CreateViewContext(string url)

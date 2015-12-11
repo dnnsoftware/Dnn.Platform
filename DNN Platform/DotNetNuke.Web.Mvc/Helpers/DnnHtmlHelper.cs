@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return new MvcHtmlString(String.Empty);
         }
 
-        public HtmlHelper HtmlHelper { get; set; }
+        internal HtmlHelper HtmlHelper { get; set; }
 
         public ModuleInstanceContext ModuleContext { get; set; }
 
