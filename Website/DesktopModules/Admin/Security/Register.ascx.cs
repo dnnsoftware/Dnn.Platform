@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
 				ClearContentInPasswordMode = true,
-                MaxLength = 50
+                MaxLength = 39
 			};
 			userForm.Items.Add(formItem);
 
