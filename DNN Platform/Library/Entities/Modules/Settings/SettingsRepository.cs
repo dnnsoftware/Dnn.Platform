@@ -151,9 +151,10 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
-                if (attribute is PortalSettingAttribute)
+
+                if (attribute is PortalSettingAttribute && PortalController.Instance.GetPortalSettings(ctlModule.PortalID).ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = PortalController.GetPortalSetting(mapping.FullParameterName, ctlModule.PortalID, null);
+                    settingValue = PortalController.Instance.GetPortalSettings(ctlModule.PortalID)[mapping.FullParameterName];
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
@@ -162,6 +163,11 @@ namespace DotNetNuke.Entities.Modules.Settings
                 else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
+                }
+                else
+                {
+                    // TODO: Make more extensible
+                    throw new InvalidOperationException("Setting attribute of type " + attribute.GetType().Name + " is not supported");
                 }
 
                 if (settingValue != null && property.CanWrite)
