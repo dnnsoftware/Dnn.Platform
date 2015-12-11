@@ -8,6 +8,7 @@
 .divCurrentVersion{min-height:61px;}
 .ehActions {height:60px;}
 .ehccContent fieldset:last-child {margin-bottom:0;}
+.ehCurrentContent {overflow: scroll;}
 .dnnTextEditor {margin-bottom:0;}
 .dnnTextPanelView-basic {padding-right: 0 !important;border: 0 !important;}
 .ehActions .dnnFormItem select {width:auto;margin:0;}
