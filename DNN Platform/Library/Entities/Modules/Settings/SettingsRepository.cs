@@ -152,6 +152,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
 
+                // TODO: Make more extensible, enable other attributes to be defined
                 if (attribute is PortalSettingAttribute && PortalController.Instance.GetPortalSettings(ctlModule.PortalID).ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = PortalController.Instance.GetPortalSettings(ctlModule.PortalID)[mapping.FullParameterName];
@@ -163,11 +164,6 @@ namespace DotNetNuke.Entities.Modules.Settings
                 else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
-                }
-                else
-                {
-                    // TODO: Make more extensible
-                    throw new InvalidOperationException("Setting attribute of type " + attribute.GetType().Name + " is not supported");
                 }
 
                 if (settingValue != null && property.CanWrite)
