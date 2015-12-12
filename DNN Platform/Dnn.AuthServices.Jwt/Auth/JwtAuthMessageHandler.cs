@@ -20,18 +20,13 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
-using Dnn.AuthServices.Jwt.Internal;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+using Dnn.AuthServices.Jwt.Components.Common.Controllers;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
 using DotNetNuke.Web.Api.Auth;
 using DotNetNuke.Web.ConfigSection;
-using Newtonsoft.Json;
 
 namespace Dnn.AuthServices.Jwt.Auth
 {
@@ -43,39 +38,51 @@ namespace Dnn.AuthServices.Jwt.Auth
     /// </summary>
     public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
+        #region constants, properties, etc.
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
-        public override string AuthScheme => JwtUtil.SchemeType;
+        public override string AuthScheme => _jwtController.SchemeType;
         public override bool BypassAntiForgeryToken => true;
+
+        internal static bool IsEnabled { get; set; }
+        private readonly IJwtController _jwtController = JwtController.Instance;
+
+        #endregion
+
+        #region constructor
+
         public JwtAuthMessageHandler(bool includeByDefault, SslModes sslMode)
             : base(includeByDefault, sslMode)
         {
-            // once an instance is registered, this scheme gets marked as enabled
-            JwtUtil.IsEnabled = true;
+            // Once an instance is enabled and gets registered in
+            // ServicesRoutingManager.RegisterAuthenticationHandlers()
+            // this scheme gets marked as enabled.
+            IsEnabled = true;
         }
+
+        #endregion
+
+        #region implementation
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (NeedsAuthentication(request))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                if (portalSettings != null)
-                {
-                    TryToAuthenticate(request, portalSettings);
-                }
+                TryToAuthenticate(request);
             }
 
             return base.OnInboundRequest(request, cancellationToken);
         }
 
-        private void TryToAuthenticate(HttpRequestMessage request, PortalSettings portalSettings)
+        private void TryToAuthenticate(HttpRequestMessage request)
         {
             try
             {
-                var username = ValidateToken(request, portalSettings);
+                var username = _jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
-                    if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user {username} in portal {portalSettings.PortalId}");
+                    if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user '{username}'");
                     SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, AuthScheme), null), request);
                 }
             }
@@ -85,122 +92,6 @@ namespace Dnn.AuthServices.Jwt.Auth
             }
         }
 
-        private string ValidateToken(HttpRequestMessage request, PortalSettings portalSettings)
-        {
-            var authorization = JwtUtil.ValidateAuthHeader(request.Headers.Authorization);
-            if (string.IsNullOrEmpty(authorization))
-                return null;
-
-            var parts = authorization.Split('.');
-            if (parts.Length != 3)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:claims:signature] parts exactly");
-                return null;
-            }
-
-            var header = JsonConvert.DeserializeObject<JwtHeader>(JwtUtil.DecodeBase64(parts[0]));
-            var algorithm = ValidateTokenHeader(header);
-            if (algorithm == JwtSupportedAlgorithms.Unsupported)
-                return null;
-
-            var claims = JsonConvert.DeserializeObject<DnnJwtClaim>(JwtUtil.DecodeBase64(parts[1]));
-            var userInfo = ValidateTokenClaim(claims, portalSettings.PortalId);
-            if (userInfo == null)
-                return null;
-
-            var secret = JwtUtil.ObtainSecret(claims, portalSettings.GUID, userInfo.CreatedOnDate);
-            if (!ValidateSignature(algorithm, secret, parts))
-                return null;
-
-            return claims.Username;
-        }
-
-        private JwtSupportedAlgorithms ValidateTokenHeader(JwtHeader header)
-        {
-            if (!AuthScheme.Equals(header.Type, StringComparison.OrdinalIgnoreCase))
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication type " + header.Type);
-                return JwtSupportedAlgorithms.Unsupported;
-            }
-
-            JwtSupportedAlgorithms algorithm;
-            if (!Enum.TryParse(header.Algorithm, true, out algorithm))
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication algorithm " + algorithm);
-                return JwtSupportedAlgorithms.Unsupported;
-            }
-
-            return algorithm;
-        }
-
-        private static UserInfo ValidateTokenClaim(DnnJwtClaim claim, int portalId)
-        {
-            if (portalId != claim.PortalId)
-            {
-                if (Logger.IsTraceEnabled)
-                    Logger.TraceFormat(
-                        "Invalid authentication. Portal ID passed ({0}) <> claim one ({1})", portalId, claim.PortalId);
-                return null;
-            }
-
-            var now = JwtUtil.SecondsSinceEpoch;
-            if (now < claim.NotBefore || now > claim.Expiration)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token is expired");
-                return null;
-            }
-
-            var userInfo = UserController.GetUserByName(portalId, claim.Username);
-            if (userInfo == null || userInfo.Username != claim.Username)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Invalid user name " + claim.Username);
-                return null;
-            }
-
-            var status = UserController.ValidateUser(userInfo, portalId, false);
-            var valid =
-                status == UserValidStatus.VALID ||
-                status == UserValidStatus.UPDATEPROFILE ||
-                status == UserValidStatus.UPDATEPASSWORD;
-
-            if (!valid && Logger.IsTraceEnabled)
-            {
-                Logger.Trace("Inactive user status: " + status);
-                return null;
-            }
-
-            return userInfo;
-        }
-
-        private static bool ValidateSignature(JwtSupportedAlgorithms algorithm, byte[] secret, string[] tokenParts)
-        {
-            string algName;
-            switch (algorithm)
-            {
-                case JwtSupportedAlgorithms.HS256:
-                    algName = JwtUtil.DefaultJwtAlgorithm;
-                    break;
-                case JwtSupportedAlgorithms.HS384:
-                    algName = "HMACSHA384";
-                    break;
-                case JwtSupportedAlgorithms.HS512:
-                    algName = "HMACSHA512";
-                    break;
-                default:
-                    if (Logger.IsTraceEnabled) Logger.Trace("Invalid algorithm value " + algorithm);
-                    return false;
-            }
-
-            var computed = JwtUtil.ComputeSignature(algName, secret, tokenParts.Take(tokenParts.Length - 1));
-            var tokenSig = tokenParts.Last();
-            if (tokenSig.Equals(computed)) return true;
-            if (Logger.IsTraceEnabled)
-            {
-                Logger.Trace("Received and computed token signatuers are not equal!" +
-                    Environment.NewLine + "  Received signature = " + tokenSig +
-                    Environment.NewLine + "  Computed signature = " + computed);
-            }
-            return false;
-        }
+        #endregion
     }
 }

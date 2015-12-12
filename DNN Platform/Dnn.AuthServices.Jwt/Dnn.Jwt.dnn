@@ -20,15 +20,24 @@
               <path>bin</path>
               <name>Dnn.AuthServices.Jwt.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.IdentityModel.Tokens.Jwt.dll</name>
+            </assembly>
           </assemblies>
         </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>DesktopModules/AuthenticationServices/JWTAuth</basePath>
-            <resourceFile>
-              <name>Resources.zip</name>
-            </resourceFile>
-          </resourceFiles>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\AuthenticationServices\JWTAuth\Data\Scripts</basePath>
+            <script type="Install">
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
         </component>
         <component type="Config">
           <config>

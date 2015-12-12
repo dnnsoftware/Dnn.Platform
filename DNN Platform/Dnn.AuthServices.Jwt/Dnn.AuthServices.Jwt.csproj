@@ -40,10 +40,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
@@ -54,9 +61,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\JwtAuthMessageHandler.cs" />
-    <Compile Include="Internal\JwtComponents.cs" />
-    <Compile Include="Internal\JwtUtil.cs" />
-    <Compile Include="Internal\LoginResultData.cs" />
+    <Compile Include="Components\Common\Controllers\IJwtController.cs" />
+    <Compile Include="Components\Common\Controllers\JwtController.cs" />
+    <Compile Include="Components\Entity\LoginData.cs" />
+    <Compile Include="Components\Entity\PersistedToken.cs" />
+    <Compile Include="Components\Entity\RenewalDto.cs" />
+    <Compile Include="Data\IDataService.cs" />
+    <Compile Include="Data\DataService.cs" />
+    <Compile Include="Components\Entity\LoginResultData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MobileController.cs" />
     <Compile Include="Services\MobileHelperController.cs" />
@@ -68,6 +80,8 @@
     </None>
     <None Include="Library.build" />
     <None Include="packages.config" />
+    <Content Include="Data\Scripts\01.00.00.SqlDataProvider" />
+    <None Include="Data\Scripts\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />

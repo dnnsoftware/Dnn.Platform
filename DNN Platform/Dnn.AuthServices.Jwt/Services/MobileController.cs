@@ -19,8 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Net.Http.Headers;
 using System.Web.Http;
-using Dnn.AuthServices.Jwt.Internal;
+using Dnn.AuthServices.Jwt.Components.Common.Controllers;
+using Dnn.AuthServices.Jwt.Components.Entity;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.AuthServices.Jwt.Services
@@ -28,26 +30,54 @@ namespace Dnn.AuthServices.Jwt.Services
     [DnnAuthorize]
     public class MobileController : DnnApiController
     {
+        [HttpGet]
+        public IHttpActionResult Logout()
+        {
+            return JwtController.Instance.LogoutUser(Request) ? (IHttpActionResult)Ok() : Unauthorized();
+        }
+
         /// <summary>
         /// Clients that want to go cookie-less should call this API to login and receive
         /// a Json Web Token (JWT) that allows them to authenticate the users to other
         /// secure API endpoints afterwards.
         /// </summary>
-        /// <param name="loginData"></param>
-        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
         {
-            var result = JwtUtil.LoginUser(Request, loginData);
-            return result != null ? (IHttpActionResult) Ok(result) : Unauthorized();
+            var result = JwtController.Instance.LoginUser(Request, loginData);
+            return ReplyWith(result);
         }
 
-        [HttpGet]
-        public IHttpActionResult Logout()
+        /// <summary>
+        /// Extends the token expiry. A new JWT is returned to the caller which must be used in
+        /// new API requests. The caller must pass the renewal token received at the login time.
+        /// The header still needs to pass the current token even if it is expired for validation.
+        /// </summary>
+        [HttpPost]
+        [AllowAnonymous]
+        public IHttpActionResult ExtendToken(RenewalDto rtoken)
         {
-            return JwtUtil.LogutUser(Request) ? (IHttpActionResult) Ok() : Unauthorized();
+            var result = JwtController.Instance.RenewToken(Request, rtoken.RenewalToken);
+            return ReplyWith(result);
         }
+
+        private IHttpActionResult ReplyWith(LoginResultData result)
+        {
+            if (result == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                //HACK: this will return the scheme with the error message as a challenge; non-standard method
+                return Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
+            }
+
+            return Ok(result);
+        }
+
 #if DEBUG //TODO: remove from production code
         // Test API Method 1
         [HttpGet]
