@@ -151,9 +151,11 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
-                if (attribute is PortalSettingAttribute)
+
+                // TODO: Make more extensible, enable other attributes to be defined
+                if (attribute is PortalSettingAttribute && PortalController.Instance.GetPortalSettings(ctlModule.PortalID).ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = PortalController.GetPortalSetting(mapping.FullParameterName, ctlModule.PortalID, null);
+                    settingValue = PortalController.Instance.GetPortalSettings(ctlModule.PortalID)[mapping.FullParameterName];
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {

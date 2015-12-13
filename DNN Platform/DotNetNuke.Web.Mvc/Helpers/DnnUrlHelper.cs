@@ -17,10 +17,16 @@ namespace DotNetNuke.Web.Mvc.Helpers
         private readonly ViewContext _viewContext;
 
         private readonly IDnnController _controller;
-
-        public DnnUrlHelper(ViewContext viewContext)
+        public DnnUrlHelper(ViewContext viewContext) 
+            : this(viewContext , RouteTable.Routes)
         {
-            Requires.NotNull("viewContext", viewContext); 
+        }
+
+        public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
+        {
+            Requires.NotNull("viewContext", viewContext);
+
+            UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
             
             _viewContext = viewContext;
 
@@ -34,11 +40,39 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ModuleContext = _controller.ModuleContext;
         }
 
+        internal UrlHelper UrlHelper { get; set; }
+
         public ModuleInstanceContext ModuleContext { get; set; }
 
         public virtual string Encode(string url)
         {
             return HttpUtility.UrlEncode(url);
+        }
+
+        /// <summary>
+        /// Converts a virtual (relative) path to an application absolute path.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// The application absolute path.
+        /// </returns>
+        /// <param name="contentPath">The virtual path of the content.</param>
+        public virtual string Content(string contentPath)
+        {
+            return UrlHelper.Content(contentPath);
+        }
+
+        /// <summary>
+        /// Returns a value that indicates whether the URL is local.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the URL is local; otherwise, false.
+        /// </returns>
+        /// <param name="url">The URL.</param>
+        public virtual bool IsLocalUrl(string url)
+        {
+            return UrlHelper.IsLocalUrl(url);
         }
 
         public virtual string Action()

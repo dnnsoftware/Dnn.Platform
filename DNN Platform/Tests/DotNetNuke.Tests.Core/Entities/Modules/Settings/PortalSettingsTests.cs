@@ -15,26 +15,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class PortalSettingsTests : BaseSettingsTests
     {
-        private Mock<IPortalController> _mockPortalController;
-        
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            // Setup Mock
-            _mockPortalController = MockRepository.Create<IPortalController>();
-            PortalController.SetTestableInstance(_mockPortalController.Object);
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
-
-            PortalController.ClearInstance();
-        }
-
         public class MyPortalSettings
         {
             [PortalSetting(Prefix = SettingNamePrefix)]
@@ -145,14 +125,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 ComplexProperty = complexValue,
             };
 
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
-            _mockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "StringProperty", stringValue, true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "IntegerProperty", integerValue.ToString(), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString(), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "EnumProperty", enumValue.ToString(), true, Null.NullString));
+            MockPortalController.Setup(pc => pc.UpdatePortalSetting(PortalId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}", true, Null.NullString));
 
             var settingsRepository = new MyPortalSettingsRepository();
 
@@ -276,9 +256,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                                      { SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}" },
                                  };
 
-            _mockPortalController.Setup(pc => pc.GetPortalSettings(moduleInfo.PortalID)).Returns(portalSettings);
-            MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
-            MockCache.SetupSequence(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(null).Returns(null).Returns(new MyPortalSettings());
+            MockPortalSettings(moduleInfo, portalSettings);
 
             var settingsRepository = new MyPortalSettingsRepository();
 

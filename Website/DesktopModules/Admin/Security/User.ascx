@@ -47,12 +47,12 @@
         <div class="dnnFormItem">
             <dnn:label id="plPassword" runat="server" controlname="txtPassword" cssclass="dnnFormRequired"  />
             <asp:Panel ID="passwordContainer" runat="server">
-    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="20" AutoCompleteType="Disabled" />
+    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="39" AutoCompleteType="Disabled" />
             </asp:Panel>
         </div>
         <div class="dnnFormItem">
             <dnn:label id="plConfirm" runat="server" controlname="txtConfirm" text="Confirm Password:" cssclass="dnnFormRequired"  ></dnn:label>
-			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="20" CssClass="password-confirm" />
+			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="39" CssClass="password-confirm" />
             <asp:CompareValidator ID="ComparePasswordsValidator" runat="server"
                                   resourcekey = "ComparePasswordsValidator.ErrorMessage" 
                                   CssClass="dnnFormMessage dnnFormError"    

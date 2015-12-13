@@ -488,6 +488,12 @@ namespace Dnn.Modules.Languages
                     LoadRootNodes();
 
                     Locale language = LocaleController.Instance.GetLocale(Locale);
+
+                    if (language == null)
+                    {
+                        throw new ModuleLoadException(string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourceFile), Locale));
+                    }
+
                     languageLabel.Language = language.Code;
 
                     if (UserInfo.IsSuperUser)
