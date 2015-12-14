@@ -1844,12 +1844,10 @@
     <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.10.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.15.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.16.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.17.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.18.SqlDataProvider" />
@@ -1857,16 +1855,17 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.20.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.21.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.22.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.23.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.25.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.27.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.23.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.25.SqlDataProvider" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

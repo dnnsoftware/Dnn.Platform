@@ -5,5 +5,5 @@ IF EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_{objectQualifier}Conten
 	DROP INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes
 GO
 
-CREATE UNIQUE INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes (ContentType, PortalID)
+CREATE UNIQUE INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes (ContentType)
 GO
