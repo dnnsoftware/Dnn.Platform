@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Web.Caching;
 using Dnn.AuthServices.Jwt.Components.Entity;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 
 namespace Dnn.AuthServices.Jwt.Data
@@ -32,22 +33,13 @@ namespace Dnn.AuthServices.Jwt.Data
     /// <summary>
     ///  This class provides the Data Access Layer for the JWT Authentication library
     /// </summary>
-    internal class DataService : IDataService
+    public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
-        private readonly DataProvider _dataProvider;
-
-        public DataService() : this(DataProvider.Instance())
-        {
-        }
-
-        public DataService(DataProvider dataProvider)
-        {
-            _dataProvider = dataProvider;
-        }
+        private readonly DataProvider _dataProvider = DataProvider.Instance();
 
         #region implementation
 
-        public PersistedToken GetTokenById(string tokenId)
+        public virtual PersistedToken GetTokenById(string tokenId)
         {
             try
             {
@@ -62,31 +54,31 @@ namespace Dnn.AuthServices.Jwt.Data
             }
         }
 
-        public IList<PersistedToken> GetUserTokens(int userId)
+        public virtual IList<PersistedToken> GetUserTokens(int userId)
         {
             return CBO.FillCollection<PersistedToken>(_dataProvider.ExecuteReader("JsonWebTokens_GetByUserId", userId));
         }
 
-        public void AddToken(PersistedToken token)
+        public virtual void AddToken(PersistedToken token)
         {
             _dataProvider.ExecuteReader("JsonWebTokens_Add", token.TokenId, token.UserId,
                 token.TokenExpiry, token.RenewalExpiry, token.TokenHash, token.RenewalHash);
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
-        public void UpdateToken(PersistedToken token)
+        public virtual void UpdateToken(PersistedToken token)
         {
             _dataProvider.ExecuteNonQuery("JsonWebTokens_Update", token.TokenId, token.TokenExpiry, token.TokenHash);
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
-        public void DeleteToken(string tokenId)
+        public virtual void DeleteToken(string tokenId)
         {
             _dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteById", tokenId);
             DataCache.RemoveCache(GetCacheKey(tokenId));
         }
 
-        public void DeleteUserTokens(int userId)
+        public virtual void DeleteUserTokens(int userId)
         {
             _dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteByUser", userId);
             foreach (var token in GetUserTokens(userId))
@@ -95,7 +87,7 @@ namespace Dnn.AuthServices.Jwt.Data
             }
         }
 
-        public void DeleteExpiredTokens()
+        public virtual void DeleteExpiredTokens()
         {
             // don't worry aabout caching; these will already be invalidated by cache manager
             _dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteExpired");

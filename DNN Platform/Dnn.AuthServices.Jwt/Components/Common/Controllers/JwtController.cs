@@ -66,16 +66,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return () => new JwtController();
         }
 
-        public readonly IDataService _dataProvider;
-
-        public JwtController() : this(new DataService())
-        {
-        }
-
-        private JwtController(IDataService dataProvider)
-        {
-            _dataProvider = dataProvider;
-        }
+        public readonly IDataService DataProvider = DataService.Instance;
 
         #endregion
 
@@ -90,26 +81,9 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             if (string.IsNullOrEmpty(authorization))
                 return null;
 
-            var parts = authorization.Split('.');
-            if (parts.Length != 3)
-            {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token must have [header:claims:signature] parts exactly");
-                return null;
-            }
+            if (Logger.IsTraceEnabled) Logger.Trace("Authorization header received: " + authorization);
 
-            var header = JsonConvert.DeserializeObject<JwtHeader>(DecodeBase64(parts[0]));
-            if (!IsValidSchemeType(header))
-                return null;
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null)
-            {
-                Logger.Trace("Unable to retrieve portal settings");
-                return null;
-            }
-
-            var tuple = ValidateJwtAndGetUser(authorization, portalSettings, true);
-            return tuple?.Item2?.Username; // item2 holds user info
+            return ValidateAuthorizationValue(authorization);
         }
 
         public bool LogoutUser(HttpRequestMessage request)
@@ -135,7 +109,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return false;
             }
 
-            _dataProvider.DeleteToken(sessionId);
+            DataProvider.DeleteToken(sessionId);
             return true;
         }
 
@@ -198,7 +172,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 RenewalHash = GetHashedStr(renewalToken),
             };
 
-            _dataProvider.AddToken(ptoken);
+            DataProvider.AddToken(ptoken);
 
             return new LoginResultData
             {
@@ -219,20 +193,14 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var rawToken = ValidateAuthHeader(request.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
-                //Logger.Trace("Invalid authorization header."); // already logged something in validation call
                 return EmptyWithError("bad-credentials");
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null)
+            var jwt = GetAndValidateJwt(rawToken, false);
+            if (jwt == null)
             {
-                Logger.Trace("Unable to retrieve portal settings");
-                return null;
+                return EmptyWithError("bad-jwt");
             }
-
-            var tuple = ValidateJwtAndGetUser(rawToken, portalSettings, false);
-            var jwt = tuple?.Item1;
-            var userInfo = tuple?.Item2;
 
             var sessionId = GetJwtSessionValue(jwt);
             if (string.IsNullOrEmpty(sessionId))
@@ -241,22 +209,34 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-claims");
             }
 
-            var ptoken = _dataProvider.GetTokenById(sessionId);
+            var ptoken = DataProvider.GetTokenById(sessionId);
             if (ptoken == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
                 return EmptyWithError("not-found");
             }
 
-            if ((ptoken.TokenHash != GetHashedStr(rawToken)) ||
-                (ptoken.UserId != userInfo?.UserID))
+            var userInfo = TryGetUser(jwt);
+            if (userInfo == null)
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
+                return EmptyWithError("not-found");
+            }
+
+            if ((ptoken.TokenHash != GetHashedStr(rawToken)) || (ptoken.UserId != userInfo.UserID))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Mismatch in received token");
                 return EmptyWithError("bad-token");
             }
 
+            return CreateLoginResult(renewalToken, sessionId, ptoken, userInfo);
+        }
+
+        private LoginResultData CreateLoginResult(string renewalToken, string sessionId, PersistedToken ptoken, UserInfo userInfo)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.CreatedOnDate);
-            jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, sessionId, userInfo.Roles);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, sessionId, userInfo.Roles);
             var accessToken = jwt.RawData;
             var now = DateTime.UtcNow;
             var expiry = now.AddMinutes(SessionTokenTtl);
@@ -273,7 +253,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 RenewalHash = ptoken.RenewalHash,
             };
 
-            _dataProvider.UpdateToken(newptoken);
+            DataProvider.UpdateToken(newptoken);
 
             return new LoginResultData
             {
@@ -340,9 +320,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            if (Logger.IsTraceEnabled) Logger.Trace("Authorization header received: " + authorization);
+            return authorization;
+        }
 
-
+        private string ValidateAuthorizationValue(string authorization)
+        {
             var parts = authorization.Split('.');
             if (parts.Length < 3)
             {
@@ -350,29 +332,48 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            if (DecodeBase64(parts[0]).IndexOf("\"" + SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
+            var decoded = DecodeBase64(parts[0]);
+            if (decoded.IndexOf("\"" + SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace($"This is not a {SchemeType} autentication scheme.");
                 return null;
             }
 
-            return authorization;
+            var header = JsonConvert.DeserializeObject<JwtHeader>(decoded);
+            if (!IsValidSchemeType(header))
+                return null;
+
+            var jwt = GetAndValidateJwt(authorization, true);
+            if (jwt == null)
+                return null;
+
+            var userInfo = TryGetUser(jwt);
+            return userInfo?.Username;
         }
 
         private bool IsValidSchemeType(JwtHeader header)
         {
-            if (!SchemeType.Equals(header.Typ, StringComparison.OrdinalIgnoreCase))
+            if (!SchemeType.Equals(header["type"] as string, StringComparison.OrdinalIgnoreCase))
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication type " + header.Typ);
+                if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication scheme type " + header.Typ);
                 return false;
             }
 
             return true;
         }
 
-        private Tuple<JwtSecurityToken, UserInfo> ValidateJwtAndGetUser(string rawToken, PortalSettings portalSettings, bool checkExpiry)
+        private JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
         {
-            var jwt = new JwtSecurityToken(rawToken);
+            JwtSecurityToken jwt;
+            try
+            {
+                jwt = new JwtSecurityToken(rawToken);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Unable to construct JWT objet from authorization value. " + ex.Message);
+                return null;
+            }
 
             if (checkExpiry)
             {
@@ -391,17 +392,30 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
+            return jwt;
+        }
+
+        private UserInfo TryGetUser(JwtSecurityToken jwt)
+        {
             // validate against DB saved data
-            var ptoken = _dataProvider.GetTokenById(sessionId);
+            var sessionId = GetJwtSessionValue(jwt);
+            var ptoken = DataProvider.GetTokenById(sessionId);
             if (ptoken == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
                 return null;
             }
 
-            if (ptoken.TokenHash != GetHashedStr(rawToken))
+            if (ptoken.TokenHash != GetHashedStr(jwt.RawData))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Mismatch data in received token");
+                return null;
+            }
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings == null)
+            {
+                Logger.Trace("Unable to retrieve portal settings");
                 return null;
             }
 
@@ -424,7 +438,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            return new Tuple<JwtSecurityToken, UserInfo>(jwt, userInfo);
+            return userInfo;
         }
 
         private static string GetJwtSessionValue(JwtSecurityToken jwt)
