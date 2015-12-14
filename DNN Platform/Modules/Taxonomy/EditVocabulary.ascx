@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="dnn" TagName="EditTermControl" Src="Controls/EditTermControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client"%>
 <dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/Admin/Taxonomy/scripts/TaxonomyEditor.js" />
+<dnn:DnnCssInclude runat="server" FilePath="~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css"/>
 <div class="dnnForm dnnEditVocab dnnClear">
     <asp:Panel ID="pnlVocabTerms" runat="server" class="dnnForm">
         <dnn:EditVocabularyControl ID="editVocabularyControl" runat="server" IsAddMode="false" />
