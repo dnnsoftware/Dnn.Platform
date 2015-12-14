@@ -743,3 +743,118 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/*********************************************************************/
+/* DNN-8058 - Remove HMAC code from Platform */
+/*********************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByHmacAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByHmacAppId]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
+GO
+
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT  U.UserId,
+        UP.PortalId,
+        U.Username,
+        U.FirstName,
+        U.LastName,
+        U.DisplayName,
+        U.IsSuperUser,
+        U.Email,
+        UP.VanityUrl,
+        U.AffiliateId,
+        IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
+        UP.RefreshRoles,
+        U.LastIPAddress,
+        U.UpdatePassword,
+        U.PasswordResetToken,
+        U.PasswordResetExpiration,
+        UP.Authorised,
+        U.CreatedByUserId,
+        U.CreatedOnDate,
+        U.LastModifiedByUserId,
+        U.LastModifiedOnDate
+	FROM       {databaseOwner}[{objectQualifier}Users]       AS U
+		LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] AS UP 
+			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
+	@UserID         int,
+	@PortalID		int,
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@VanityUrl		nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit,
+	@RefreshRoles	bit,
+	@LastIPAddress	nvarchar(50),
+	@passwordResetToken uniqueidentifier,
+	@passwordResetExpiration datetime,
+	@IsDeleted		bit,
+	@LastModifiedByUserID int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Users
+		SET
+			FirstName = @FirstName,
+			LastName = @LastName,
+			IsSuperUser = @IsSuperUser,
+			Email = @Email,
+			DisplayName = @DisplayName,
+			UpdatePassword = @UpdatePassword,
+			PasswordResetToken=@passwordResetToken,
+			PasswordResetExpiration=@passwordResetExpiration,
+			LastIPAddress = @LastIPAddress,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate()
+		WHERE  UserId = @UserID
+	
+	IF @PortalID IS NULL
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Users
+				SET
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}UserPortals
+				SET
+					Authorised = @Authorised,
+					RefreshRoles = @RefreshRoles,
+					VanityUrl = @VanityUrl,
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+					AND PortalId = @PortalID
+		END
+GO
+
+IF EXISTS (SELECT * FROM Sys.columns 
+			WHERE name = N'HmacAppId'
+			AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users]
+	DROP COLUMN HmacAppId
+GO
+
+IF EXISTS (SELECT * FROM Sys.columns 
+			WHERE name = N'HmacAppSecret'
+			AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users]
+	DROP COLUMN HmacAppSecret
+GO 
+/*********************************************************************/

@@ -76,69 +76,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem email;
         
         /// <summary>
-        /// HMACRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel HMACRow;
-        
-        /// <summary>
-        /// HMACAppIdLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl HMACAppIdLabel;
-        
-        /// <summary>
-        /// HMACAppId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label HMACAppId;
-        
-        /// <summary>
-        /// HMACAppSecretLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl HMACAppSecretLabel;
-        
-        /// <summary>
-        /// HMACAppSecret control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label HMACAppSecret;
-        
-        /// <summary>
-        /// Ul1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Ul1;
-        
-        /// <summary>
-        /// cmdHMACGenerate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdHMACGenerate;
-        
-        /// <summary>
         /// VanityUrlRow control.
         /// </summary>
         /// <remarks>

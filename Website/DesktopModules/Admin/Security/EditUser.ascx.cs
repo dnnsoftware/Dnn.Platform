@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -32,7 +31,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Admin.Security;
@@ -381,9 +379,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
-            cmdHMACGenerate.Click += cmdHMACGenerate_Click;
-            //updateProfileUrl.Click += updateProfileUrl_Click;
-
+            
             ctlServices.SubscriptionUpdated += SubscriptionUpdated;
             ctlProfile.ProfileUpdateCompleted += ProfileUpdateCompleted;
             ctlPassword.PasswordUpdated += PasswordUpdated;
@@ -420,39 +416,9 @@ namespace DotNetNuke.Modules.Admin.Users
             if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
             {
                 displayName.Enabled = false;
-            }
-
-            //hmac values
-           HMACAppId.Text= User.HmacAppId;
-           if (!String.IsNullOrEmpty(HMACAppId.Text))
-           {
-               cmdHMACGenerate.Visible = false;
-           }
-           HMACAppSecret.Text = User.HmacAppSecret;
+            }            
         }
-
-        private void cmdHMACGenerate_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(HMACAppId.Text))
-            {
-                Guid hmacAppId;
-                hmacAppId = Guid.NewGuid();
-                using (var cryptoProvider = new RNGCryptoServiceProvider())
-                {
-                    byte[] secretKeyByteArray = new byte[32]; //256 bit
-                    cryptoProvider.GetBytes(secretKeyByteArray);
-                    var APIKey = Convert.ToBase64String(secretKeyByteArray);
-                    UserInfo user = User;
-                    user.HmacAppId = hmacAppId.ToString();
-                    user.HmacAppSecret = APIKey;
-                    UserController.UpdateUser(UserPortalID, User);
-                }
-                
-            }
-            Response.Redirect(Request.RawUrl, true);
-            
-        }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
