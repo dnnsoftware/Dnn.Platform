@@ -108,12 +108,7 @@ namespace DotNetNuke.Security.Membership
         {
             return null;
         }
-
-        public virtual UserInfo GetUserByHmacAppId(int portalId, string appId)
-        {
-            return null;
-        }
-
+        
         public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             return null;
