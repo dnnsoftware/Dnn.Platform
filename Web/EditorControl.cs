@@ -22,6 +22,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
@@ -1165,7 +1166,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </returns>
         private string SetUserToolbar(string alternateConfigSubFolder)
         {
-            string toolbarName = HttpContext.Current.Request.IsAuthenticated ? "Full" : "Basic";
+            string toolbarName = CanUseFullToolbarAsDefault() ? "Full" : "Basic";
 
             var listToolbarSets = ToolbarUtil.GetToolbars(
                 _portalSettings.HomeDirectoryMapPath, alternateConfigSubFolder);
@@ -1230,6 +1231,17 @@ namespace DNNConnect.CKEditorProvider.Web
             int iHighestPrio = listUserToolbarSets.Max(toolb => toolb.Priority);
 
             return ToolbarUtil.FindHighestToolbar(listUserToolbarSets, iHighestPrio).Name;
+        }
+
+        private bool CanUseFullToolbarAsDefault()
+        {
+            if (!HttpContext.Current.Request.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return currentUser.IsSuperUser || PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName);
         }
 
         /// <summary>
