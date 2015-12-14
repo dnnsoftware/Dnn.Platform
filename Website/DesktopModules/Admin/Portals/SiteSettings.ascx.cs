@@ -67,7 +67,6 @@ using System.Web;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Web.Client;
-using OAuth.AuthorizationServer.Core.Server;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -435,40 +434,8 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
-            BindOAuth(portal);
         }
-
-        private void BindOAuth(PortalInfo portal)
-        {
-            if (Host.EnableOAuthAuthorization == false)
-            {
-                OAuthStatus.Visible = true;
-                OAuthClient.Visible = false;
-                OAuthSecret.Visible = false;
-                cmdOAuth.Visible = false;
-                return;
-            }
-            else
-            {
-                var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DNNOAuth");
-                if (package == null)
-                {
-                    plOAuthWarning.Visible = true;
-                    plOAuthWarning.Text = Localization.GetString("plOAuthWarning", "DesktopModules/Admin/HostSettings/App_LocalResources/HostSettings.ascx.resx"); 
-                }
-               
-            }
-
-            var btnstatus=PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", portal.PortalID, false);
-            cmdOAuth.Text = Localization.GetString(btnstatus ? "DisableOAuth" : "EnableOAuth", LocalResourceFile);
-
-            OAuthSitesettingsClientLabel.Text=PortalController.GetPortalSetting("OAuthClient",_portalId, string.Empty);
-            OAuthSitesettingsSecretLabel.Text = PortalController.GetPortalSetting("OAuthSecret", _portalId, string.Empty);
-            OAuthStatus.Visible = !btnstatus;
-            OAuthClient.Visible = btnstatus;
-            OAuthSecret.Visible = btnstatus;
-        }
-
+        
         private void BindCustomSettings(PortalInfo portal)
         {
             var portalId = portal.PortalID;
@@ -926,7 +893,6 @@ namespace DesktopModules.Admin.Portals
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;
-            cmdOAuth.Click += UpdateOAuth;
             rblSMTPmode.SelectedIndexChanged += OnSmtpModeChanged;
             chkPayPalSandboxEnabled.CheckedChanged += OnChkPayPalSandboxChanged;
             IncrementCrmVersionButton.Click += IncrementCrmVersion;
@@ -936,32 +902,7 @@ namespace DesktopModules.Admin.Portals
             InitializeDropDownLists();
 
         }
-
-        private void UpdateOAuth(object sender, EventArgs e)
-        {
-            var btnstatus = PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", PortalSettings.PortalId, false);
-            if (btnstatus==false)
-            {
-                var existingClientId = PortalController.GetPortalSetting("OAuthClient", _portalId, string.Empty);
-                if (existingClientId == string.Empty)
-                {
-                    //create oauth portal specific settings
-                    var rnd = new Random(DateTime.Now.Millisecond);
-                    int ticks = rnd.Next(0, 3000);
-                    var clientId = "Client-" + ticks.ToString();
-                    PortalController.UpdatePortalSetting(_portalId, "OAuthClient", clientId, false);
-                    Guid id = Guid.NewGuid();
-
-                    PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", id.ToString(), false);
-                    OAUTHDataController.ClientInsert(clientId, id.ToString(), string.Empty, PortalSettings.PortalName, 1);
-                }
-               
-            }
-            
-            PortalController.UpdatePortalSetting(_portalId, "EnableOAuthAuthorization", (!btnstatus).ToString(), true);
-            Response.Redirect(Request.RawUrl, true);
-        }
-
+        
         /// <summary>
         /// Initializes DropDownLists
         /// </summary>

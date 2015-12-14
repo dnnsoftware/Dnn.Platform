@@ -1217,12 +1217,6 @@ The host-level settings are currently set as follows:
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
     <value>You must specify the host email address</value>
   </data>
-  <data name="EnableOAuth.Text" xml:space="preserve">
-    <value>Enable OAuth</value>
-  </data>
-  <data name="DisableOAuth.Text" xml:space="preserve">
-    <value>Disable OAuth</value>
-  </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
   </data>
@@ -1258,12 +1252,6 @@ The host-level settings are currently set as follows:
   </data>
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
-  </data>
-  <data name="OAuthSite.Text" xml:space="preserve">
-    <value>OAuth Settings</value>
-  </data>
-  <data name="OAuthNotEnabled.Text" xml:space="preserve">
-    <value>OAuth is currently not enabled for this site.</value>
   </data>
   <data name="plPageHeadText.Help" xml:space="preserve">
     <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>

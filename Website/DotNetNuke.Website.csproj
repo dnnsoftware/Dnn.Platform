@@ -1114,17 +1114,6 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OAUTHAuthorize.aspx.cs">
-      <DependentUpon>OAUTHAuthorize.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OAUTHLogin.aspx.cs">
-      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OAUTHLogin.aspx.designer.cs">
-      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="admin\Skins\DnnJsInclude.xml">
       <SubType>Designer</SubType>
@@ -1802,8 +1791,6 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
     <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
     <Content Include="Resources\Shared\scripts\dnn.utility.js" />
-    <Content Include="OAUTHAuthorize.aspx" />
-    <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
@@ -1858,6 +1845,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.21.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.22.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -4544,10 +4532,6 @@
     <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
-      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
-      <Name>Dnn.OAuth.AuthorizationServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
