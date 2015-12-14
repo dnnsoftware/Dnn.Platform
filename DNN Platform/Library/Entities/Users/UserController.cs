@@ -525,14 +525,7 @@ namespace DotNetNuke.Entities.Users
         {
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
-
         
-        public UserInfo GetUserByHmacAppId(string appId)
-        {
-            return MembershipProvider.Instance().GetUserByHmacAppId(PortalSettings.Current.PortalId, appId);
-            
-        }
-
         UserInfo IUserController.GetUserById(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
