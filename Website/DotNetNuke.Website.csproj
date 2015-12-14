@@ -1800,8 +1800,6 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery-ui.css" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
-    <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
-    <Content Include="Resources\Shared\scripts\dnn.utility.js" />
     <Content Include="OAUTHAuthorize.aspx" />
     <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
@@ -4043,7 +4041,6 @@
     <Content Include="Resources\Shared\scripts\dnn.PasswordStrength.js" />
     <Content Include="Resources\Shared\scripts\dnn.searchBox.js" />
     <Content Include="Resources\Shared\scripts\dnn.WebResourceUrl.js" />
-    <Content Include="Resources\Shared\scripts\init.js" />
     <Content Include="Resources\Shared\scripts\initTooltips.js" />
     <Content Include="Resources\Shared\scripts\jquery.history.js" />
     <Content Include="Resources\Shared\scripts\jquery\dnn.jScrollbar.css" />
