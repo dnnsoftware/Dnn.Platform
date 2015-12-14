@@ -29,6 +29,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
@@ -78,24 +79,27 @@ namespace DotNetNuke.UI.Modules.Html5
         private string GetFileContent(string filepath)
         {
             var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
-            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey,
-                                                                DataCache.SpaModulesHtmlFileTimeOut,
-                                                                DataCache.SpaModulesHtmlFileCachePriority),
-                                                                        c => GetFileContentInternal(filepath));
+            var absoluteFilePath = Page.Server.MapPath(filepath);
+            var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut,
+                DataCache.SpaModulesHtmlFileCachePriority)
+            {
+                CacheDependency = new DNNCacheDependency(absoluteFilePath)
+            };
+            return CBO.GetCachedObject<string>(cacheItemArgs, c => GetFileContentInternal(absoluteFilePath));
         }
 
         private bool FileExists(string filepath)
         {
             var cacheKey = string.Format(DataCache.SpaModulesFileExistsCacheKey, filepath);
             return CBO.GetCachedObject<bool>(new CacheItemArgs(cacheKey,
-                                                                DataCache.SpaModulesHtmlFileTimeOut,
-                                                                DataCache.SpaModulesHtmlFileCachePriority),
-                                                                        c => File.Exists(Page.Server.MapPath(filepath)));
+                DataCache.SpaModulesHtmlFileTimeOut,
+                DataCache.SpaModulesHtmlFileCachePriority), 
+                c => File.Exists(Page.Server.MapPath(filepath)));
         }
 
-        private object GetFileContentInternal(string filepath)
+        private static string GetFileContentInternal(string filepath)
         {
-            using (var reader = new StreamReader(Page.Server.MapPath(filepath)))
+            using (var reader = new StreamReader(filepath))
             {
                 return reader.ReadToEnd();
             }
