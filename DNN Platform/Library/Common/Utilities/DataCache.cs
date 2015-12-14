@@ -289,7 +289,7 @@ namespace DotNetNuke.Common.Utilities
 
         public const string HmacCacheKey = "HMAC_{0}";
         public const CacheItemPriority HmacCachePriority = CacheItemPriority.NotRemovable;
-        public const int HmacCacheTimeout =5;
+        public const int HmacCacheTimeout = 5 * 60; // in seconds
 
         private static string _CachePersistenceEnabled = "";
 

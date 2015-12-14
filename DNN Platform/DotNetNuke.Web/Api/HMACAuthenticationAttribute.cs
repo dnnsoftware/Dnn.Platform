@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,64 +11,62 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.Api
 {
     public class HmacAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
+        private const string AuthenticationScheme = "AMX";
 
-        
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HmacAuthenticationAttribute));
+        private static readonly MD5 Md5 = MD5.Create();
+        private static readonly DateTime EpochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
         private readonly DataProvider _dataProvider = DataProvider.Instance();
-        
-        private readonly string authenticationScheme = "amx";
+        private readonly UserController _usrController = new UserController();
+
+        public bool AllowMultiple => false;
 
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
+            context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
             var req = context.Request;
-
-            if (req.Headers.Authorization != null && authenticationScheme.Equals(req.Headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+            var authHdr = req.Headers.Authorization;
+            if (authHdr != null && AuthenticationScheme.Equals(authHdr.Scheme, StringComparison.OrdinalIgnoreCase))
             {
-                var rawAuthzHeader = req.Headers.Authorization.Parameter;
-
-                var autherizationHeaderArray = GetAutherizationHeaderValues(rawAuthzHeader);
-
+                var autherizationHeaderArray = GetAutherizationHeaderValues(authHdr.Parameter ?? "");
                 if (autherizationHeaderArray != null)
                 {
-                    var APPId = autherizationHeaderArray[0];
-                    var incomingBase64Signature = autherizationHeaderArray[1];
-                    var nonce = autherizationHeaderArray[2];
-                    var requestTimeStamp = autherizationHeaderArray[3];
-
-                    var isValid = IsValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
-
+                    var isValid = IsValidRequest(req, autherizationHeaderArray);
                     if (isValid.Result)
                     {
-                        var uc = new UserController();
-                        UserInfo validatedUser = uc.GetUserByHmacAppId(APPId);
+                        var validatedUser = _usrController.GetUserByHmacAppId(autherizationHeaderArray[0]);
                         if (validatedUser != null)
                         {
                             var currentPrincipal = new GenericPrincipal(new GenericIdentity(validatedUser.Username), null);
                             context.Principal = currentPrincipal;
-                        }                      
-                    }
-                    else
-                    {
-                        context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
+                            context.ErrorResult = null;
+                        }
+                        else if (Logger.IsTraceEnabled)
+                        {
+                            Logger.Trace("Couldn't find HMAC user");
+                        }
                     }
                 }
-                else
+                else if (Logger.IsTraceEnabled)
                 {
-                    context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
+                    Logger.Trace("Invalid authentication header value (must have 4 separate parts joined by ':')");
                 }
             }
-            else
+            else if (Logger.IsTraceEnabled)
             {
-                context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
+                Logger.Trace(authHdr == null
+                    ? "Missing authentication header"
+                    : "Invalid authentication header scheme");
             }
-
             return Task.FromResult(0);
         }
 
@@ -80,126 +76,105 @@ namespace DotNetNuke.Web.Api
             return Task.FromResult(0);
         }
 
-        public bool AllowMultiple
+        private static string[] GetAutherizationHeaderValues(string rawAuthzHeader)
         {
-            get { return false; }
-        }
-
-        private string[] GetAutherizationHeaderValues(string rawAuthzHeader)
-        {
-
             var credArray = rawAuthzHeader.Split(':');
-
-            if (credArray.Length == 4)
-            {
-                return credArray;
-            }
-            else
-            {
-                return null;
-            }
-
+            return credArray.Length == 4 ? credArray : null;
         }
 
-#pragma warning disable 1998
-        private async Task<bool> IsValidRequest(HttpRequestMessage req, string APPId, string incomingBase64Signature, string nonce, string requestTimeStamp)
-#pragma warning restore 1998
+        private async Task<bool> IsValidRequest(HttpRequestMessage req, string[] autherizationHeaderArray)
         {
-            string requestContentBase64String = "";
-            string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
-            string requestHttpMethod = req.Method.Method;
-
-            
-            var sharedKey = _dataProvider.GetHmacSecretByHmacAppId(APPId);
-
-            if (isReplayRequest(nonce, requestTimeStamp))
+            var appId = autherizationHeaderArray[0];
+            var incomingBase64Signature = autherizationHeaderArray[1];
+            var nonce = autherizationHeaderArray[2];
+            var requestTimeStamp = autherizationHeaderArray[3];
+            if (IsReplayRequest(appId, nonce))
             {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Replay request");
+                }
+                return false;
+            }
+            if (IsStaleRequest(requestTimeStamp))
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Stale request (came too late). If this is repeated, check the server time.");
+                }
                 return false;
             }
 
-            byte[] hash = ComputeHash(req.Content);
-
+            var requestContentBase64String = "";
+            var hash = await ComputeMd5Hash(req.Content);
             if (hash != null)
             {
                 requestContentBase64String = Convert.ToBase64String(hash);
             }
-
-            string data = String.Format("{0}{1}{2}{3}{4}{5}", APPId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
-
-            var secretKeyBytes = Convert.FromBase64String(sharedKey);
-
-            byte[] signature = Encoding.UTF8.GetBytes(data);
-
-            using (HMACSHA256 hmac = new HMACSHA256(secretKeyBytes))
+            var requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
+            var requestHttpMethod = req.Method.Method.ToUpper();
+            var sharedSecret = _dataProvider.GetHmacSecretByHmacAppId(appId);
+            var data = string.Concat(appId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            var signature = Encoding.UTF8.GetBytes(data);
+            var sharedSecretBytes = Convert.FromBase64String(sharedSecret);
+            using (var hmac = new HMACSHA256(sharedSecretBytes))
             {
-                byte[] signatureBytes = hmac.ComputeHash(signature);
-
-                return (incomingBase64Signature.Equals(Convert.ToBase64String(signatureBytes), StringComparison.Ordinal));
+                var signatureBytes = hmac.ComputeHash(signature);
+                var comoutedSignature = Convert.ToBase64String(signatureBytes);
+                var areSigsEqual = incomingBase64Signature.Equals(comoutedSignature, StringComparison.Ordinal);
+                if (!areSigsEqual && Logger.IsTraceEnabled)
+                {
+                    Logger.TraceFormat("Received signature [{0}] and computed signature [{1}] are different\nRequest: {2}",
+                        incomingBase64Signature, comoutedSignature, req);
+                }
+                return areSigsEqual;
             }
-
         }
 
-        private bool isReplayRequest(string nonce, string requestTimeStamp)
+        private static bool IsReplayRequest(string appId, string nonce)
         {
-            var cacheKey = string.Format(DataCache.HmacCacheKey, nonce);
+            var cacheKey = string.Format(DataCache.HmacCacheKey, appId + nonce);
             var cacheObj = DataCache.GetCache(cacheKey);
-
             if (cacheObj != null)
             {
                 return true;
             }
-            
-
-            DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan currentTs = DateTime.UtcNow - epochStart;
-
-            var serverTotalSeconds = Convert.ToUInt64(currentTs.TotalSeconds);
-            var requestTotalSeconds = Convert.ToUInt64(requestTimeStamp);
-
-            if ((serverTotalSeconds - requestTotalSeconds) > DataCache.HmacCacheTimeout)
-            {
-                return true;
-            }
-
-            DataCache.SetCache(cacheKey, nonce, TimeSpan.FromMinutes(DataCache.HmacCacheTimeout));
+            DataCache.SetCache(cacheKey, nonce, TimeSpan.FromSeconds(DataCache.HmacCacheTimeout));
             return false;
         }
 
-        private static byte[] ComputeHash(HttpContent httpContent)
+        private static async Task<byte[]> ComputeMd5Hash(HttpContent httpContent)
         {
-            using (MD5 md5 = MD5.Create())
+            var content = await httpContent.ReadAsByteArrayAsync();
+            return content.Length == 0 ? null : Md5.ComputeHash(content);
+        }
+
+        private static bool IsStaleRequest(string requestTimeStamp)
+        {
+            long requestTotalSeconds;
+            // if parsing fails, it will be 0 and fails the time difference check
+            long.TryParse(requestTimeStamp, out requestTotalSeconds);
+            var timeDifference = (long)(DateTime.UtcNow - EpochStart).TotalSeconds;
+            return Math.Abs(timeDifference - requestTotalSeconds) > DataCache.HmacCacheTimeout;
+        }
+        private class ResultWithChallenge : IHttpActionResult
+        {
+            private readonly IHttpActionResult _next;
+
+            public ResultWithChallenge(IHttpActionResult next)
             {
-                byte[] hash = null;
-                var content = httpContent.ReadAsByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                if (content.Length != 0)
+                _next = next;
+            }
+
+            public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+            {
+                var response = await _next.ExecuteAsync(cancellationToken);
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    hash = md5.ComputeHash(content);
+                    response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthenticationScheme));
                 }
-                return hash;
+                return response;
             }
-        }
-    }
-
-    public class ResultWithChallenge : IHttpActionResult
-    {
-        private readonly string authenticationScheme = "amx";
-        private readonly IHttpActionResult next;
-
-        public ResultWithChallenge(IHttpActionResult next)
-        {
-            this.next = next;
-        }
-
-        public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
-        {
-            var response = await next.ExecuteAsync(cancellationToken);
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(authenticationScheme));
-            }
-
-            return response;
         }
     }
 }
