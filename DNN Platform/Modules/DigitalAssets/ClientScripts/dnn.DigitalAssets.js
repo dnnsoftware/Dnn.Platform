@@ -2573,21 +2573,51 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
+    function listItemsToDelete(itemsToDelete, outputStr) {
+        for (var y = 0; y < itemsToDelete.length; y++) {
+            var delimiter = ", ";
+            if (y == (itemsToDelete.length - 1)) {
+                delimiter = "";
+            }
+
+            outputStr += itemsToDelete[y].ItemName + delimiter;
+        }
+        return outputStr;
+    }
+
     function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
         var folderAndFileText = selectionText(items);
         var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
         var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
 
         var dialogNote = "";
-        var dialogHeight = 190;
+        var dialogHeight = 260;
         if (mappedSubfoldersCount > 0) {
             dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
                                                     : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
             dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
-            dialogHeight = 230;
+            dialogHeight = 280;
+        }        
+        var foldersToDelete = [];
+        var filesToDelete = [];
+
+        for (var x = 0; x < items.length; x++) {
+            if (items[x].IsFolder) {
+                foldersToDelete.push(items[x]);
+            } else {
+                filesToDelete.push(items[x]);
+            }
         }
 
-        $("<div class='dnnDialog'></div>").html(dialogText+dialogNote).dialog({
+        var foldersString = (foldersToDelete.length > 0 ? (foldersToDelete.length == 1 ? "Folder: " : "Folders: ") : "");
+        var filesString = (filesToDelete.length > 0 ? (filesToDelete.length == 1 ? "File: " : "Files: ") : "");
+
+        foldersString = listItemsToDelete(foldersToDelete, foldersString);
+        filesString = listItemsToDelete(filesToDelete, filesString);
+
+        var dialogTextFinal = dialogText + dialogNote + "<br/><br/> " + foldersString + (foldersString != "" ? "<br/>" : "") + filesString;
+
+        $("<div class='dnnDialog'></div>").html(dialogTextFinal).dialog({
             modal: true,
             autoOpen: true,
             dialogClass: "dnnFormPopup",
