@@ -5297,6 +5297,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.26":
                             UpgradeToVersion80026();
                             break;
+                        case "8.0.0.27":
+                            UpgradeToVersion80027();
+                            break;
                     }
                 }
             }
@@ -5400,6 +5403,13 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion80026()
         {
             FixTabsMissingLocalizedFields();
+        }
+
+        private static void UpgradeToVersion80027()
+        {
+            RemoveAdminPages("//Admin//DynamicContentTypeManager");
+            UninstallPackage("Dnn.DynamicContentManager", "Module");
+            UninstallPackage("Dnn.DynamicContentViewer", "Module");
         }
 
         private static int MaxIncremental(Version version)
