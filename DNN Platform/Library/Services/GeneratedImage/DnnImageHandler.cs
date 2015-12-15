@@ -174,9 +174,9 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     case "file":
-                        string imgFile = string.Empty;
+                        var imgFile = string.Empty;
 
-                        // Lets determine the 3 types of Image Source: Single file, file_in_directory[index], file url  
+                        // Lets determine the 2 types of Image Source: Single file, file url  
                         if (!string.IsNullOrEmpty(parameters["File"]))
                         {
                             imgFile = parameters["File"].Trim();
@@ -184,27 +184,6 @@ namespace DotNetNuke.Services.GeneratedImage
                             if (!File.Exists(imgFile))
                             {
                                 imgFile = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgFile);
-                                if (!File.Exists(imgFile))
-                                    return new ImageInfo(EmptyImage);
-                            }
-                        }
-                        else if (!string.IsNullOrEmpty(parameters["Path"]))
-                        {
-                            int imgIndex = Convert.ToInt32(parameters["Index"]);
-                            string imgPath = parameters["Path"];
-
-                            if (!Directory.Exists(imgPath))
-                            {
-                                imgPath = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgPath);
-                                if (!Directory.Exists(imgPath))
-                                    return new ImageInfo(EmptyImage);
-                            }
-
-                            string[] files = Directory.GetFiles(imgPath, "*.*");
-                            if (files.Length > 0 && files.Length - 1 >= imgIndex)
-                            {
-                                Array.Sort(files);
-                                imgFile = files[imgIndex];
                                 if (!File.Exists(imgFile))
                                     return new ImageInfo(EmptyImage);
                             }
@@ -231,7 +210,6 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                         var imageFileTrans = new ImageFileTransform { ImageFile = imgFile };
                         ImageTransforms.Add(imageFileTrans);
-
                         break;
 
                     default:
