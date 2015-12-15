@@ -140,15 +140,6 @@ namespace DotNetNuke.Services.GeneratedImage
                         ImageTransforms.Add(uppTrans);
                         break;
 
-                    case "modinfo":
-                        var modInfoTrans = new ModInfoTransform
-                        {
-                            TabID = Convert.ToInt32(parameters["tabid"]),
-                            ModuleID = Convert.ToInt32(parameters["moduleid"])
-                        };
-                        ImageTransforms.Add(modInfoTrans);
-                        break;
-
                     case "placeholder":
                         var placeHolderTrans = new PlaceholderTransform();
                         int width, height;
