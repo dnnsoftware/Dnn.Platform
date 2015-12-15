@@ -374,7 +374,6 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
                     deployLink.Attributes["data-id"] = package.Description;
                     installLink.Visible = false;
                     downloadLink.Attributes["data-id"] = package.Description;
-                    downloadLink.Attributes["href"] = UpdateService.GetLanguageDownloadUrl(package.Description);
                 }
 
                 downloadLink.Visible = ModuleContext.PortalSettings.UserInfo.IsSuperUser;
@@ -393,6 +392,25 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             else
             {
                 thisButton.Attributes["popupUrl"] = Util.InstallURL(ModuleContext.TabId, Globals.NavigateURL(), "CoreLanguagePack", "installlanguage.resources");                
+            }
+        }
+
+        protected void DownloadLanguage(object sender, EventArgs e)
+        {
+            var thisButton = (LinkButton)sender;
+            if (thisButton.Attributes["data-id"] != null)
+            {
+                string downloadUrl = UpdateService.GetLanguageDownloadUrl(thisButton.Attributes["data-id"]);
+                string downloadScript = string.Format("$('#download_frame').attr('src', '{0}');", downloadUrl);
+
+                if (ScriptManager.GetCurrent(Page) != null)
+                {
+                    ScriptManager.RegisterStartupScript(Page, GetType(), "DownloadLanguagePack", downloadScript, true);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "DownloadLanguagePack", downloadScript, true);
+                }
             }
         }
 
