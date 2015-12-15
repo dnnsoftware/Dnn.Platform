@@ -5396,7 +5396,8 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//Skins");
             UninstallPackage("DotNetNuke.Skins", "Module");
             UninstallPackage("DotNetNuke.Skin Designer", "Module");
-            
+            UninstallPackage("DotNetNuke.Banners", "Module");
+
             RemoveGettingStartedPages();
         }
 
