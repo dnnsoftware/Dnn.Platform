@@ -81,6 +81,9 @@ GO
 
 IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsDynamic')
 BEGIN
+	EXEC sp_executesql N'DELETE FROM {databaseOwner}{objectQualifier}ContentItems 
+      WHERE ContentTypeID IN (SELECT ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE IsDynamic = 1)'
+
 	EXEC sp_executesql N'DELETE FROM {databaseOwner}{objectQualifier}ContentTypes WHERE IsDynamic = 1'
 
 	ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [IsDynamic]    
