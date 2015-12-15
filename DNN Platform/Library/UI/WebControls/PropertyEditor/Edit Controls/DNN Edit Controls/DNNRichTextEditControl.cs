@@ -42,7 +42,45 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {
-        private HtmlEditorProvider RichTextEditor;
+        private HtmlEditorProvider _richTextEditor;
+        private TextBox _defaultTextEditor;
+
+        protected Control TextEditControl
+        {
+            get
+            {
+                if (_richTextEditor != null)
+                {
+                    return _richTextEditor.HtmlEditorControl;
+                }
+
+                return _defaultTextEditor;
+            }
+        }
+
+        protected string EditorText
+        {
+            get
+            {
+                if (_richTextEditor != null)
+                {
+                    return _richTextEditor.Text;
+                }
+
+                return _defaultTextEditor.Text;
+            }
+            set
+            {
+                if (_richTextEditor != null)
+                {
+                    _richTextEditor.Text = value;
+                }
+                else
+                {
+                    _defaultTextEditor.Text = value;
+                }
+            }
+        }
 
         protected override void CreateChildControls()
         {
@@ -57,23 +95,31 @@ namespace DotNetNuke.UI.WebControls
                 {
                     pnlEditor.CssClass = string.Format("{0} dnnLeft", CssClass);
                 }
-                
 
-                RichTextEditor = HtmlEditorProvider.Instance();
-                RichTextEditor.ControlID = ID + "edit";
-                RichTextEditor.Initialize();
-                RichTextEditor.Height = ControlStyle.Height;
-                RichTextEditor.Width = ControlStyle.Width;
-                if (RichTextEditor.Height.IsEmpty)
+
+                _richTextEditor = HtmlEditorProvider.Instance();
+                if (_richTextEditor != null)
                 {
-                    RichTextEditor.Height = new Unit(250);
+                    _richTextEditor.ControlID = ID + "edit";
+                    _richTextEditor.Initialize();
+                    _richTextEditor.Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height;
+                    _richTextEditor.Width = ControlStyle.Width.IsEmpty ? new Unit(400) : ControlStyle.Width;
+                }
+                else
+                {
+                    _defaultTextEditor = new TextBox
+                                         {
+                                             ID = ID + "edit",
+                                             Width = ControlStyle.Width.IsEmpty ? new Unit(300) : ControlStyle.Width,
+                                             Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height,
+                                             TextMode = TextBoxMode.MultiLine
+                                         };
                 }
 
-                RichTextEditor.Width = new Unit(400);
-
                 Controls.Clear();
-                pnlEditor.Controls.Add(RichTextEditor.HtmlEditorControl);
+                pnlEditor.Controls.Add(TextEditControl);
                 Controls.Add(pnlEditor);
+                
             }
             base.CreateChildControls();
         }
@@ -82,7 +128,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var dataChanged = false;
             var presentValue = StringValue;
-            var postedValue = RichTextEditor.Text;
+            var postedValue = EditorText;
             if (!presentValue.Equals(postedValue))
             {
                 Value = postedValue;
@@ -115,7 +161,7 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
             if (EditMode == PropertyEditorMode.Edit)
             {
-                RichTextEditor.Text = Page.Server.HtmlDecode(Convert.ToString(Value));
+                EditorText = Page.Server.HtmlDecode(Convert.ToString(Value));
             }
             if (Page != null && EditMode == PropertyEditorMode.Edit)
             {

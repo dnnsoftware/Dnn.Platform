@@ -139,6 +139,11 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strMode = DefaultMode;
                 }
+
+                if (strMode == "RICH" && !IsRichEditorAvailable)
+                {
+                    strMode = "BASIC";
+                }
                 return strMode;
             }
             set
@@ -187,13 +192,16 @@ namespace DotNetNuke.UI.UserControls
                                 //break;
                         }
                     default:
-                        return Encode(RemoveBaseTags(_richTextEditor.Text));
+                        return IsRichEditorAvailable ? Encode(RemoveBaseTags(_richTextEditor.Text)) : Encode(RemoveBaseTags(TxtDesktopHTML.Text));
                 }
             }
             set
             {
 				TxtDesktopHTML.Text = HtmlUtils.ConvertToText(Decode(value));
-				_richTextEditor.Text = Decode(value);
+                if (IsRichEditorAvailable)
+                {
+                    _richTextEditor.Text = Decode(value);
+                }
             }
         }
 
@@ -217,6 +225,14 @@ namespace DotNetNuke.UI.UserControls
 
         ///<summary>Gets/Sets the Width of the control</summary>
 		public Unit Width { get; set; }
+
+        public bool IsRichEditorAvailable
+        {
+            get
+            {
+                return _richTextEditor != null;
+            }
+        }
 
         ///<summary>Allows public access ot the HtmlEditorProvider</summary>
 		public HtmlEditorProvider RichText
@@ -301,7 +317,10 @@ namespace DotNetNuke.UI.UserControls
             if (OptView.Items.Count == 0)
             {
                 OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
-                OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                if (IsRichEditorAvailable)
+                {
+                    OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                }
             }
         }
 
@@ -382,8 +401,12 @@ namespace DotNetNuke.UI.UserControls
             base.OnInit(e);
 
             _richTextEditor = HtmlEditorProvider.Instance();
-            _richTextEditor.ControlID = ID;
-            _richTextEditor.Initialize();
+
+            if (IsRichEditorAvailable)
+            {
+                _richTextEditor.ControlID = ID;
+                _richTextEditor.Initialize();
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -409,8 +432,12 @@ namespace DotNetNuke.UI.UserControls
                 //UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //Set the width and height of the controls
-                _richTextEditor.Width = Width;
-                _richTextEditor.Height = Height;
+                if (IsRichEditorAvailable)
+                {
+                    _richTextEditor.Width = Width;
+                    _richTextEditor.Height = Height;
+                }
+
                 TxtDesktopHTML.Height = Height;
                 TxtDesktopHTML.Width = Width;
                 PanelView.Width = Width;
@@ -425,9 +452,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     DivBasicRender.Visible = false;
                 }
-				
+
                 //Load the editor
-                PlcEditor.Controls.Add(_richTextEditor.HtmlEditorControl);
+                if (IsRichEditorAvailable)
+                {
+                    PlcEditor.Controls.Add(_richTextEditor.HtmlEditorControl);
+                }
+
                 SetPanels();
             }
             catch (Exception exc) //Module failed to load

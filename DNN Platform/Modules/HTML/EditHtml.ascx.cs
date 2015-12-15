@@ -501,8 +501,9 @@ namespace DotNetNuke.Modules.Html
                     phCurrentVersion.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
                     phPreviewVersion.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
                     //DisplayVersions();
+
+                    BindRenderItems();
                     ddlRender.SelectedValue = txtContent.Mode;
-                    
                 }
                 
             }
@@ -779,6 +780,16 @@ namespace DotNetNuke.Modules.Html
         protected void OnVersionsGridPageIndexChanged(object source, GridPageChangedEventArgs e)
         {
             DisplayVersions();
+        }
+
+        private void BindRenderItems()
+        {
+            if (txtContent.IsRichEditorAvailable)
+            {
+                ddlRender.Items.Add(new ListItem(LocalizeString("liRichText"), "RICH"));
+            }
+
+            ddlRender.Items.Add(new ListItem(LocalizeString("liBasicText"), "BASIC"));
         }
 
         #endregion
