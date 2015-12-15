@@ -253,56 +253,6 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             extensionTypeRepeater.DataBind();
         }
 
-        private void ProcessDownload()
-        {
-            // make sure only host users can download the packge.
-            if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
-            {
-                return;
-            }
-
-            var packageType = Request.QueryString["ptype"];
-            var packageName = Request.QueryString["package"];
-            if (string.IsNullOrEmpty(packageType) || string.IsNullOrEmpty(packageName))
-            {
-                return;
-            }
-
-            if (packageType == "LanguagePack")
-            {
-                packageType = "Language";
-            }
-
-            if (!PackageTypesList.ContainsKey(packageType))
-            {
-                return;
-            }
-
-            var packageFile = new FileInfo(Path.Combine(PackageTypesList[packageType], packageName));
-            if (!packageFile.Exists)
-            {
-                return;
-            }
-
-            try
-            {
-                var fileName = packageName;
-                if (fileName.EndsWith(".resources"))
-                {
-                    fileName = fileName.Replace(".resources", "") + ".zip";
-                }
-                Response.Clear();
-                Response.AppendHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-                Response.AppendHeader("Content-Length", packageFile.Length.ToString());
-                Response.ContentType = "application/zip, application/octet-stream";
-                Response.WriteFile(packageFile.FullName);
-            }
-            catch (Exception)
-            {
-                //do nothing here, just ignore the error.
-            }
-        }
-
         protected string FormatVersion(object version)
         {
             var package = version as PackageInfo;
@@ -370,12 +320,6 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             base.OnLoad(e);
 
             extensionTypeRepeater.ItemDataBound += extensionTypeRepeater_ItemDataBound;
-
-            if (Request.QueryString["action"] != null
-                && Request.QueryString["action"].ToLowerInvariant() == "download")
-            {
-                ProcessDownload();
-            }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -430,6 +374,7 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
                     deployLink.Attributes["data-id"] = package.Description;
                     installLink.Visible = false;
                     downloadLink.Attributes["data-id"] = package.Description;
+                    downloadLink.Attributes["href"] = UpdateService.GetLanguageDownloadUrl(package.Description);
                 }
 
                 downloadLink.Visible = ModuleContext.PortalSettings.UserInfo.IsSuperUser;
@@ -449,20 +394,6 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             {
                 thisButton.Attributes["popupUrl"] = Util.InstallURL(ModuleContext.TabId, Globals.NavigateURL(), "CoreLanguagePack", "installlanguage.resources");                
             }
-        }
-
-        protected void DownloadLanguage(object sender, EventArgs e)
-        {
-            var thisButton = (LinkButton) sender;
-            if (thisButton.Attributes["data-id"] != null)
-            {
-                InstallController.Instance.IsAvailableLanguagePack(thisButton.Attributes["data-id"]);
-            }
-
-            thisButton.Attributes["popupurl"] = Globals.NavigateURL(TabId, string.Empty,
-                    "action=download",
-                    "ptype=LanguagePack",
-                    "package=installlanguage.resources");
         }
 
         public bool ShowDescription { get; set; }

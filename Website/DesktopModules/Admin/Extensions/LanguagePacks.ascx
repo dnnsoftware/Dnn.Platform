@@ -37,7 +37,7 @@
                         <ItemTemplate>
                             <asp:HyperLink id="cmdInstall"  runat="server" CssClass="dnnSecondaryAction installAction" ResourceKey="installExtension" />
                             <asp:LinkButton runat="server" OnClick="DeployLanguage" ID="downloadLanguage" CssClass="dnnSecondaryAction installAction" Text="Deploy" Visible="False"></asp:LinkButton>
-                            <asp:LinkButton id="cmdDownload"  runat="server" CssClass="dnnSecondaryAction" ResourceKey="Download" OnClick="DownloadLanguage" />
+                            <asp:LinkButton id="cmdDownload"  runat="server" CssClass="dnnSecondaryAction" ResourceKey="Download" />
                         </ItemTemplate>
                     </asp:TemplateColumn>
                 </Columns>
