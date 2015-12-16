@@ -2585,19 +2585,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return outputStr;
     }
 
-    function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
-        var folderAndFileText = selectionText(items);
-        var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
-        var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
-
-        var dialogNote = "";
-        var dialogHeight = 260;
-        if (mappedSubfoldersCount > 0) {
-            dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
-                                                    : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
-            dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
-            dialogHeight = 280;
-        }        
+    function getDeletionDialogText(items, dialogText, dialogNote) {
         var foldersToDelete = [];
         var filesToDelete = [];
 
@@ -2609,14 +2597,35 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             }
         }
 
-        var foldersString = (foldersToDelete.length > 0 ? (foldersToDelete.length == 1 ? "Folder: " : "Folders: ") : "");
-        var filesString = (filesToDelete.length > 0 ? (filesToDelete.length == 1 ? "File: " : "Files: ") : "");
+        var folderLabel = (foldersToDelete.length == 1 ? resources.folderLabel : resources.folderMultLabel) + ": ";
+        var fileLabel = (filesToDelete.length == 1 ? resources.fileLabel : resources.fileMultLabel) + ": ";
+
+        var foldersString = (foldersToDelete.length > 0 ? folderLabel : "");
+        var filesString = (filesToDelete.length > 0 ? fileLabel : "");
 
         foldersString = listItemsToDelete(foldersToDelete, foldersString);
         filesString = listItemsToDelete(filesToDelete, filesString);
 
         var dialogTextFinal = dialogText + dialogNote + "<br/><br/> " + foldersString + (foldersString != "" ? "<br/>" : "") + filesString;
 
+        return dialogTextFinal;
+    }
+
+    function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
+        var folderAndFileText = selectionText(items);
+        var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
+        var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
+
+        var dialogNote = "";
+        var dialogHeight = "auto";
+        if (mappedSubfoldersCount > 0) {
+            dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
+                                                    : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
+            dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
+            dialogHeight = "auto";
+        }
+
+        var dialogTextFinal = getDeletionDialogText(items, dialogText, dialogNote);
         $("<div class='dnnDialog'></div>").html(dialogTextFinal).dialog({
             modal: true,
             autoOpen: true,
