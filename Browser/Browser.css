@@ -244,6 +244,8 @@ img {border:0}
 
 #FoldersBox  a {color:Black;}
 
+#FoldersTree img{ width: 16px;height: 16px; }
+
 #TabsBox {
 	border: 1px solid #ccc;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
 	-ms-border-radius: 0.4em;
