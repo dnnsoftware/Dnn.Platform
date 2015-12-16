@@ -7,7 +7,7 @@
         icons: 'anchor,anchor-rtl,link,unlink', // %REMOVE_LINE_CORE%
         hidpi: true, // %REMOVE_LINE_CORE%
         onLoad: function () {
-            CKEDITOR.scriptLoader.load(CKEDITOR.basePath + '../../../Tabs.ashx');
+            CKEDITOR.scriptLoader.load(CKEDITOR.basePath + '../../../Tabs.ashx?portalid=' + CKEDITOR.config.portalId);
 
             // Add the CSS styles for anchor placeholders.
             var iconPath = CKEDITOR.getUrl(this.path + 'images' + (CKEDITOR.env.hidpi ? '/hidpi' : '') + '/anchor.png'),
