@@ -42,7 +42,7 @@
     </asp:Panel>
 </fieldset>
 <asp:Panel ID="pnlDefinitions" runat="server" Visible="False">
-    <h2 class="dnnFormSectionHead"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Definitions")%></a></h2>
+    <h2 class="dnnFormSectionHead" id="dnnPanel-ExtensionPackageSettings"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Definitions")%></a></h2>
     <fieldset>
         <div id="definitionSelectRow" class="dnnFormItem" runat="server">
             <dnn:label id="plSelectDefinition" controlname="cboDefinitions" runat="server" />
