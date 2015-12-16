@@ -7,6 +7,9 @@
 .dnnLanguageEditor .dnnLangEditorTree {
     width: 20%;
 }
+.dnnLanguageEditor .dnnLangEditorTree > .dnnLabel {
+    width: 85px;
+}
 .dnnLanguageEditor .dnnLangEditorContent {
     width: 80%;
 }
