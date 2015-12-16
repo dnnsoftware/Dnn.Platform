@@ -2046,15 +2046,8 @@
                     });
 
                 }
-                var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
-                // if user types a comma, create a new tag
-                $(data.fake_input).bind('keypress', data, function (event) {
-                    var currValLength = $(this).val().length;
-                    if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
-                        tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
-                    }
-                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13) {
-                        event.preventDefault();
+
+                function tagItems(data, event) {
                         var tagslist = $(event.data.real_input).val().split(delimiter[id]);
                         if (tagslist[0] == '') {
                             tagslist = new Array();
@@ -2074,15 +2067,33 @@
                                 triggerOnError(event.data.onErrorMoreThanMaxTags);
                             $(data.fake_input).val('');
                         }
-                        else{
-							var tags = $(event.data.fake_input).val().split(delimiter[id]);
-							for(var i = 0; i < tags.length; i++){
-								$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
-							}
-						}
+                        else {
+                            var tags = $(event.data.fake_input).val().split(delimiter[id]);
+                            for (var i = 0; i < tags.length; i++) {
+                                $(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
+                            }
+                        }
 
                         $(event.data.fake_input).dnnResetAutosize(settings);
                         return false;
+                }
+
+                $('#dnnModuleDigitalAssetsButtonPane .dnnActions .dnnPrimaryAction').click(data, function (event) {
+                    if ($(data.fake_input).val() !== "") {
+                        tagItems(data, event);
+                    }
+                });
+
+                var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
+                // if user types a comma, create a new tag
+                $(data.fake_input).bind('keypress keydown', data, function (event) {
+                    var currValLength = $(this).val().length;
+                    if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
+                        tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
+                    }
+                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9) {
+                        event.preventDefault();
+                        tagItems(data, event);
                     } else if (event.data.autosize) {
                         $(event.data.fake_input).dnnDoAutosize(settings);
                     }
