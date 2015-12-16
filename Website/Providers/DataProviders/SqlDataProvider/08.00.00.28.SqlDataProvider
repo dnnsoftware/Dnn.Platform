@@ -1,4 +1,4 @@
-/* DNN-7928 */
+/* DNN-8068 */
 IF NOT EXISTS(SELECT PackageID FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNCSSINCLUDESkinObject')
 BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.DNNCSSINCLUDESkinObject', N'DNNCSSINCLUDE SkinObject', N'', N'SkinObject', N'07.00.00', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL);
