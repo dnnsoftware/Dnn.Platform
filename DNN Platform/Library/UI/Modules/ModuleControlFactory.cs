@@ -22,7 +22,6 @@ using System.Web.UI;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules.Html5;
 
@@ -70,8 +69,6 @@ namespace DotNetNuke.UI.Modules
 
         public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-
             Control control = null;
             IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
 
@@ -94,13 +91,11 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
             return control;
         }
 
         public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
             Control control = null;
             IModuleControlFactory controlFactory = GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
 
@@ -123,14 +118,11 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
             return control;
         }
 
         public static Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-
             Control control = null;
             IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
 
@@ -157,7 +149,6 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            DnnLogger.GetLogger("DNN.Trace").Debug($"ModuleControlFactory.LoadSettingsControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
             return control;
         }
 

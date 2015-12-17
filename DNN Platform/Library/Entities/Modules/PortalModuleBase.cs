@@ -33,7 +33,6 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
@@ -306,20 +305,6 @@ namespace DotNetNuke.Entities.Modules
         }
 
         #endregion
-
-        protected override void OnInit(EventArgs e)
-        {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnInit Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
-            base.OnInit(e);
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnInit End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
-        }
-        protected override void OnLoad(EventArgs e)
-        {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnLoad Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
-
-            base.OnLoad(e);
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnLoad End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
-        }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()

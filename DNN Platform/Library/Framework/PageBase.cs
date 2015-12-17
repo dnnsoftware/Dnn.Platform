@@ -216,7 +216,6 @@ namespace DotNetNuke.Framework
             foreach (Control c in controls)
             {
                 ProcessControl(c, affectedControls, true, resourceFileRoot);
-                DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.IterateControls Info (TabId:{PortalSettings.ActiveTab.TabID},ControlId: {c.ID})");
             }
         }
 
@@ -328,8 +327,8 @@ namespace DotNetNuke.Framework
             //{
             //    jQuery.RegisterHoverIntent(Page);
             //}
-            
-            if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
+
+            if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);
             }

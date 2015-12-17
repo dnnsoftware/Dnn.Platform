@@ -38,7 +38,6 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -338,8 +337,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessModule()
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-
             if (ContentPane != null)
             {
 				//Process Content Pane Attributes
@@ -360,8 +357,6 @@ namespace DotNetNuke.UI.Containers
 
                 //Try to load the module control
                 _moduleHost = new ModuleHost(ModuleConfiguration, ParentSkin, this);
-                DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule Info (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{_moduleHost.ID})");
-
                 ContentPane.Controls.Add(ModuleHost);
 
                 //Process Module Footer
@@ -376,7 +371,6 @@ namespace DotNetNuke.UI.Containers
 				//Add Module Stylesheets
                 ProcessStylesheets(ModuleHost != null);
             }
-            DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule End (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
         }
 
 		/// -----------------------------------------------------------------------------

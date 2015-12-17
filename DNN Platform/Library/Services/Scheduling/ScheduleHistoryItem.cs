@@ -225,7 +225,6 @@ namespace DotNetNuke.Services.Scheduling
             set
             {
                 _Succeeded = value;
-                DnnLogger.GetLogger("DNN.Trace").Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {FriendlyName}");
             }
         }
 
