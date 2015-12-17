@@ -1,5 +1,7 @@
 ﻿.subscription-table-container {    
-    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
     position: relative;
     background-color: white;
 }
