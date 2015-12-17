@@ -34,23 +34,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     try
                     {
                         var fi = new System.IO.FileInfo(_defaultImageFile);
-                        string format = fi.Extension;
-                        switch (format)
-                        {
-                            case "jpg":
-                            case "jpeg":
-                                ContentType = ImageFormat.Jpeg;
-                                break;
-                            case "bmp":
-                                ContentType = ImageFormat.Bmp;
-                                break;
-                            case "gif":
-                                ContentType = ImageFormat.Gif;
-                                break;
-                            case "png":
-                                ContentType = ImageFormat.Png;
-                                break;
-                        }
+                        ContentType = GetImageFormat(fi.Extension);
 
                         _defaultImageFile = HttpContext.Current.Server.MapPath(_defaultImageFile);
                         if (File.Exists(_defaultImageFile))
@@ -143,9 +127,9 @@ namespace DotNetNuke.Services.GeneratedImage
                     case "placeholder":
                         var placeHolderTrans = new PlaceholderTransform();
                         int width, height;
-                        if (int.TryParse(parameters["w"], out width))
+                        if (TryParseDimension(parameters["w"], out width))
                             placeHolderTrans.Width = width;
-                        if (int.TryParse(parameters["h"], out height))
+                        if (TryParseDimension(parameters["h"], out height))
                             placeHolderTrans.Height = height;
                         if (!string.IsNullOrEmpty(parameters["Color"]))
                             placeHolderTrans.Color = color;
@@ -263,9 +247,12 @@ namespace DotNetNuke.Services.GeneratedImage
             // Resize-Transformation
             if (mode != "placeholder")
             {
-                int width = string.IsNullOrEmpty(parameters["w"]) ? 0 : Convert.ToInt32(parameters["w"]);
-                int height = string.IsNullOrEmpty(parameters["h"]) ? 0 : Convert.ToInt32(parameters["h"]);
-                string size = string.IsNullOrEmpty(parameters["size"]) ? "" : parameters["size"];
+                int width, height;
+
+                TryParseDimension(parameters["w"], out width);
+                TryParseDimension(parameters["h"], out height);
+
+                var size = string.IsNullOrEmpty(parameters["size"]) ? "" : parameters["size"];
 
                 switch (size)
                 {
@@ -299,7 +286,9 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     resizeMode = ImageResizeMode.FitSquare;
                     if (!string.IsNullOrEmpty(parameters["w"]) && !string.IsNullOrEmpty(parameters["h"]) && width != height)
+                    {
                         resizeMode = ImageResizeMode.Fill;
+                    }
                 }
 
                 if (width > 0 || height > 0)
@@ -387,52 +376,76 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        private bool TryParseDimension(string value, out int sizeValue)
+        {
+            const int maxSize = 9999;
+            sizeValue = 0;
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(value, out sizeValue))
+            {
+                return false;
+            };
+
+            if (sizeValue > maxSize)
+            {
+                sizeValue = 0;
+                return false;
+            }
+            return true;
+        }
+
         private void ReadSettings()
         {
-            string settings = ConfigurationManager.AppSettings["DnnImageHandler"];
-            if (!string.IsNullOrEmpty(settings))
+            var settings = ConfigurationManager.AppSettings["DnnImageHandler"];
+            if (string.IsNullOrEmpty(settings))
             {
-                string[] values = settings.Split(';');
-                foreach (string value in values)
+                return;
+            }
+
+            string[] values = settings.Split(';');
+            foreach (string value in values)
+            {
+                string[] setting = value.Split('=');
+                string name = setting[0].ToLower();
+                switch (name)
                 {
-                    string[] setting = value.Split('=');
-                    string name = setting[0].ToLower();
-                    switch (name)
-                    {
-                        case "enableclientcache":
-                            EnableClientCache = Convert.ToBoolean(setting[1]);
-                            break;
-                        case "clientcacheexpiration":
-                            ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                            break;
-                        case "enableservercache":
-                            EnableServerCache = Convert.ToBoolean(setting[1]);
-                            break;
-                        case "servercacheexpiration":
-                            DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                            break;
-                        case "allowstandalone":
-                            AllowStandalone = Convert.ToBoolean(setting[1]);
-                            break;
-                        case "logsecurity":
-                            LogSecurity = Convert.ToBoolean(setting[1]);
-                            break;
-                        case "imagecompression":
-                            ImageCompression = Convert.ToInt32(setting[1]);
-                            break;
-                        case "alloweddomains":
-                            AllowedDomains = setting[1].Split(',');
-                            break;
-                        case "enableipcount":
-                            EnableIPCount = Convert.ToBoolean(setting[1]);
-                            break;
-                        case "ipcountmax":
-                            IPCountMaxCount = Convert.ToInt32(setting[1]);
-                            break;
-                        case "ipcountpurgeinterval":
-                            IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                            break;
-                    }
+                    case "enableclientcache":
+                        EnableClientCache = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "clientcacheexpiration":
+                        ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
+                    case "enableservercache":
+                        EnableServerCache = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "servercacheexpiration":
+                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
+                    case "allowstandalone":
+                        AllowStandalone = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "logsecurity":
+                        LogSecurity = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "imagecompression":
+                        ImageCompression = Convert.ToInt32(setting[1]);
+                        break;
+                    case "alloweddomains":
+                        AllowedDomains = setting[1].Split(',');
+                        break;
+                    case "enableipcount":
+                        EnableIPCount = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "ipcountmax":
+                        IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        break;
+                    case "ipcountpurgeinterval":
+                        IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
                 }
             }
         }
