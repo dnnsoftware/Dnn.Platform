@@ -313,7 +313,8 @@
                 noSelectionMessage: '<%= Localization.GetSafeJSString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
-                useComboBox: true
+                useComboBox: true,
+                ModuleId: '<%= ModuleId %>'
             });
 
             toggleShareableRowViewOnly(false);
