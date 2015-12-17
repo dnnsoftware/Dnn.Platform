@@ -2078,22 +2078,26 @@
                         return false;
                 }
 
-                $('#dnnModuleDigitalAssetsButtonPane .dnnActions .dnnPrimaryAction').click(data, function (event) {
-                    if ($(data.fake_input).val() !== "") {
-                        tagItems(data, event);
+                var clickedOnAutoComplete = false;
+                $(document).mousedown(function(e) {
+                    if ($(e.target).hasClass("dnn_acSelect")) {
+                        clickedOnAutoComplete = true;
                     }
                 });
 
                 var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
-                $(data.fake_input).bind('keypress keydown', data, function (event) {
+                $(data.fake_input).bind('keypress keydown blur', data, function (event) {
                     var currValLength = $(this).val().length;
                     if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
                         tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
                     }
-                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9) {
+                    if (event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9 || event.type == "blur") {
                         event.preventDefault();
-                        tagItems(data, event);
+                        if (!clickedOnAutoComplete) {
+                            tagItems(data, event);
+                        }
+                        clickedOnAutoComplete = false;
                     } else if (event.data.autosize) {
                         $(event.data.fake_input).dnnDoAutosize(settings);
                     }
