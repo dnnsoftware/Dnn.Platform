@@ -312,7 +312,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(uniqueIdStringSeed);
             foreach (var key in context.Request.QueryString.AllKeys.OrderBy(k => k))
             {

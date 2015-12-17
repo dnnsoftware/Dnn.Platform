@@ -376,23 +376,25 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        private bool TryParseDimension(string value, out int sizeValue)
+        private static bool TryParseDimension(string value, out int dimension)
         {
-            const int maxSize = 9999;
-            sizeValue = 0;
+            dimension = 0;
             if (string.IsNullOrEmpty(value))
             {
                 return false;
             }
 
-            if (!int.TryParse(value, out sizeValue))
+            if (!int.TryParse(value, out dimension))
             {
                 return false;
-            };
+            }
 
-            if (sizeValue > maxSize)
+            // The system won't allow a resize for an image bigger than 4K pixels
+            const int maxDimension = 4000;
+
+            if (dimension > maxDimension)
             {
-                sizeValue = 0;
+                dimension = 0;
                 return false;
             }
             return true;
