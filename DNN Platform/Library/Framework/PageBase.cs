@@ -216,10 +216,20 @@ namespace DotNetNuke.Framework
             foreach (Control c in controls)
             {
                 ProcessControl(c, affectedControls, true, resourceFileRoot);
-                DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.IterateControls Info (TabId:{PortalSettings.ActiveTab.TabID},ControlId: {c.ID})");
+                LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
             }
         }
 
+        private void LogDnnTrace(string origin, string action, string message)
+        {
+            var tabId = -1;
+            if (PortalSettings?.ActiveTab != null)
+            {
+                tabId = PortalSettings.ActiveTab.TabID;
+            }
+            DnnLogger.GetLogger("DNN.Trace").Debug($"{origin} {action} (TabId:{tabId},{message})");
+        }
+        
         private void Handle404Exception()
         {
             if (PortalSettings.ErrorPage404 > Null.NullInteger)
@@ -339,14 +349,14 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.Render Start (TabId:{PortalSettings.ActiveTab.TabID}) {Page.Request.Url.AbsoluteUri}");
+            LogDnnTrace("PageBase.Render", "Start", $"{Page.Request.Url.AbsoluteUri}");
 
             IterateControls(Controls, _localizedControls, LocalResourceFile);
             RemoveKeyAttribute(_localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
 
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.Render End (TabId:{PortalSettings.ActiveTab.TabID}) {Page.Request.Url.AbsoluteUri}");
+            LogDnnTrace("PageBase.Render", "End", $"{Page.Request.Url.AbsoluteUri}");            
         }
 
 
