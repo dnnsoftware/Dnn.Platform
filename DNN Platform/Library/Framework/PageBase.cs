@@ -339,14 +339,10 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.Render Start (TabId:{PortalSettings.ActiveTab.TabID}) {Page.Request.Url.AbsoluteUri}");
-
             IterateControls(Controls, _localizedControls, LocalResourceFile);
             RemoveKeyAttribute(_localizedControls);
             AJAX.RemoveScriptManager(this);
-            base.Render(writer);
-
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PageBase.Render End (TabId:{PortalSettings.ActiveTab.TabID}) {Page.Request.Url.AbsoluteUri}");
+            base.Render(writer);            
         }
 
 
