@@ -31,36 +31,36 @@ namespace DotNetNuke.Services.GeneratedImage
 
                 if (!string.IsNullOrEmpty(_defaultImageFile))
                 {
-                    var fi = new System.IO.FileInfo(_defaultImageFile);
-                    string format = fi.Extension;
-                    switch (format)
+                    try
                     {
-                        case "jpg":
-                        case "jpeg":
-                            ContentType = ImageFormat.Jpeg;
-                            break;
-                        case "bmp":
-                            ContentType = ImageFormat.Bmp;
-                            break;
-                        case "gif":
-                            ContentType = ImageFormat.Gif;
-                            break;
-                        case "png":
-                            ContentType = ImageFormat.Png;
-                            break;
-                    }
+                        var fi = new System.IO.FileInfo(_defaultImageFile);
+                        string format = fi.Extension;
+                        switch (format)
+                        {
+                            case "jpg":
+                            case "jpeg":
+                                ContentType = ImageFormat.Jpeg;
+                                break;
+                            case "bmp":
+                                ContentType = ImageFormat.Bmp;
+                                break;
+                            case "gif":
+                                ContentType = ImageFormat.Gif;
+                                break;
+                            case "png":
+                                ContentType = ImageFormat.Png;
+                                break;
+                        }
 
-                    if (File.Exists(_defaultImageFile))
-                    {
-                        emptyBmp = new Bitmap(Image.FromFile(_defaultImageFile, true));
-                    }
-                    else
-                    {
-                        _defaultImageFile = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + _defaultImageFile);
+                        _defaultImageFile = HttpContext.Current.Server.MapPath(_defaultImageFile);
                         if (File.Exists(_defaultImageFile))
                         {
                             emptyBmp = new Bitmap(Image.FromFile(_defaultImageFile, true));
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.Exceptions.LogException(ex);
                     }
                 }
                 return emptyBmp;
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.GeneratedImage
             int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"]);
 
             // Do we have a resizemode defined ?
-            ImageResizeMode resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
+            var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
 
             // Maximum sizes 
             int maxWidth = string.IsNullOrEmpty(parameters["MaxWidth"]) ? 0 : Convert.ToInt32(parameters["MaxWidth"]);
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.GeneratedImage
             string text = string.IsNullOrEmpty(parameters["text"]) ? "" : parameters["text"];
 
             // Default Image
-            _defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? "" : parameters["NoImage"];
+            _defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
 
             // Do we override caching for this image ?
             if (!string.IsNullOrEmpty(parameters["NoCache"]))
@@ -179,14 +179,13 @@ namespace DotNetNuke.Services.GeneratedImage
                         // Lets determine the 2 types of Image Source: Single file, file url  
                         if (!string.IsNullOrEmpty(parameters["File"]))
                         {
-                            imgFile = parameters["File"].Trim();
-
-                            if (!File.Exists(imgFile))
+                            var fileParameter = parameters["File"].Trim();
+                            var absoluteFilePath = HttpContext.Current.Server.MapPath(fileParameter);
+                            if (!File.Exists(absoluteFilePath))
                             {
-                                imgFile = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgFile);
-                                if (!File.Exists(imgFile))
-                                    return new ImageInfo(EmptyImage);
+                                return new ImageInfo(EmptyImage);
                             }
+                            imgFile = absoluteFilePath;
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
@@ -255,8 +254,9 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Exceptions.Exceptions.LogException(ex);
                 return new ImageInfo(EmptyImage);
             }
 
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Gamma adjustment
             if (!string.IsNullOrEmpty(parameters["Gamma"]))
             {
-                ImageGammaTransform gammaTrans = new ImageGammaTransform();
+                var gammaTrans = new ImageGammaTransform();
                 double gamma;
                 if (double.TryParse(parameters["Gamma"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out gamma) && gamma >= 0.2 && gamma <= 5)
                 {
