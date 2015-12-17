@@ -30,9 +30,28 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/"
         };
 
-        private static bool IsAllowedFilePathImage(string fullFilePath)
+        private static bool IsAllowedFilePathImage(string filePath)
         {
-            return WhiteListFolderPaths.Any(fullFilePath.StartsWith);
+            var normalizeFilePath = NormalizeFilePath(filePath.Trim());
+
+            // Resources file cannot be served
+            if (filePath.EndsWith(".resources"))
+            {
+                return false;
+            }
+
+            // File outside the white list cannot be served
+            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
+        }
+
+        private static string NormalizeFilePath(string filePath)
+        {
+            var normalizeFilePath = filePath.Replace("\\", "/");
+            if (!normalizeFilePath.StartsWith("/"))
+            {
+                normalizeFilePath = "/" + normalizeFilePath;
+            }
+            return normalizeFilePath;
         }
 
         private string _defaultImageFile = string.Empty;
@@ -54,7 +73,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var fullFilePath = HttpContext.Current.Server.MapPath(_defaultImageFile);
 
-                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(fullFilePath))
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(_defaultImageFile))
                     {
                         return emptyBmp;
                     }
@@ -187,7 +206,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             filePath = filePath.Trim();
                             var fullFilePath = HttpContext.Current.Server.MapPath(filePath);
-                            if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(fullFilePath))
+                            if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(filePath))
                             {
                                 return new ImageInfo(EmptyImage);
                             }
