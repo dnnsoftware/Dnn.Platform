@@ -77,6 +77,10 @@
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -91,6 +95,13 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -107,6 +118,36 @@
     <Compile Include="Data\PetaPocoMapperTests.cs" />
     <Compile Include="Data\PetaPocoRepositoryTests.cs" />
     <Compile Include="Data\PetaPocoIntegrationTests.cs" />
+    <Compile Include="Framework\EvoqConstants.cs" />
+    <Compile Include="Framework\Controllers\PermissionController.cs" />
+    <Compile Include="Framework\Controllers\PortalController.cs" />
+    <Compile Include="Framework\Helpers\EvoqWebApiTestHelper.cs" />
+    <Compile Include="Framework\Helpers\ContentItemHelper.cs" />
+    <Compile Include="Framework\Helpers\FileHelper.cs" />
+    <Compile Include="Framework\Helpers\FolderHelper.cs" />
+    <Compile Include="Framework\Helpers\MockComponentHelper.cs" />
+    <Compile Include="Framework\Helpers\PortalInfoHelper.cs" />
+    <Compile Include="Framework\Controllers\SolutionController.cs" />
+    <Compile Include="Framework\Helpers\AppConfigHelper.cs" />
+    <Compile Include="Framework\CachedWebPage.cs" />
+    <Compile Include="Framework\Helpers\PortalSettingsHelper.cs" />
+    <Compile Include="Framework\Helpers\StoredProcedureStatsHelper.cs" />
+    <Compile Include="Framework\IntegrationConstants.cs" />
+    <Compile Include="Framework\Helpers\DatabaseHelper.cs" />
+    <Compile Include="Framework\Helpers\DnnDataHelper.cs" />
+    <Compile Include="Framework\FileParameter.cs" />
+    <Compile Include="Framework\Helpers\HostSettingsHelper.cs" />
+    <Compile Include="Framework\IntegrationTestBase.cs" />
+    <Compile Include="Framework\IWebApiConnector.cs" />
+    <Compile Include="Framework\Controllers\ModuleController.cs" />
+    <Compile Include="Framework\Controllers\RoleController.cs" />
+    <Compile Include="Framework\Controllers\SchedulerController.cs" />
+    <Compile Include="Framework\Scripts\SqlScripts.cs" />
+    <Compile Include="Framework\Controllers\TabController.cs" />
+    <Compile Include="Framework\Controllers\UserController.cs" />
+    <Compile Include="Framework\WebApiConnector.cs" />
+    <Compile Include="Framework\WebApiException.cs" />
+    <Compile Include="Framework\Helpers\WebApiTestHelper.cs" />
     <Compile Include="Services\Installer\XmlMergeTests.cs" />
     <Compile Include="TestSetup.cs" />
   </ItemGroup>
