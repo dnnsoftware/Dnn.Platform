@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Web;
 using DotNetNuke.Common;
@@ -19,6 +20,21 @@ namespace DotNetNuke.Services.GeneratedImage
 {
     public class DnnImageHandler : ImageHandler
     {
+        /// <summary>
+        /// While list of server folders where the system allow the dnn image handler to 
+        /// read to serve image files from it and its subfolders
+        /// </summary>
+        private static readonly string[] WhiteListFolderPaths = {
+            Globals.DesktopModulePath,
+            Globals.ImagePath,
+            Globals.ApplicationPath + "/Portals/"
+        };
+
+        private static bool IsAllowedFilePathImage(string fullFilePath)
+        {
+            return WhiteListFolderPaths.Any(fullFilePath.StartsWith);
+        }
+
         private string _defaultImageFile = string.Empty;
 
         private Image EmptyImage
@@ -29,25 +45,29 @@ namespace DotNetNuke.Services.GeneratedImage
                 emptyBmp.MakeTransparent();
                 ContentType = ImageFormat.Png;
 
-                if (!string.IsNullOrEmpty(_defaultImageFile))
+                if (string.IsNullOrEmpty(_defaultImageFile))
                 {
-                    try
-                    {
-                        var fi = new System.IO.FileInfo(_defaultImageFile);
-                        ContentType = GetImageFormat(fi.Extension);
-
-                        _defaultImageFile = HttpContext.Current.Server.MapPath(_defaultImageFile);
-                        if (File.Exists(_defaultImageFile))
-                        {
-                            emptyBmp = new Bitmap(Image.FromFile(_defaultImageFile, true));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.Exceptions.LogException(ex);
-                    }
+                    return emptyBmp;
                 }
-                return emptyBmp;
+
+                try
+                {
+                    var fullFilePath = HttpContext.Current.Server.MapPath(_defaultImageFile);
+
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(fullFilePath))
+                    {
+                        return emptyBmp;
+                    }
+
+                    var fi = new System.IO.FileInfo(_defaultImageFile);
+                    ContentType = GetImageFormat(fi.Extension);
+                    return new Bitmap(Image.FromFile(fullFilePath, true));
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.Exceptions.LogException(ex);
+                    return emptyBmp;
+                }
             }
         }
 
@@ -159,21 +179,27 @@ namespace DotNetNuke.Services.GeneratedImage
 
                     case "file":
                         var imgFile = string.Empty;
+                        var imgUrl = string.Empty;
 
                         // Lets determine the 2 types of Image Source: Single file, file url  
-                        if (!string.IsNullOrEmpty(parameters["File"]))
+                        var filePath = parameters["File"];
+                        if (!string.IsNullOrEmpty(filePath))
                         {
-                            var fileParameter = parameters["File"].Trim();
-                            var absoluteFilePath = HttpContext.Current.Server.MapPath(fileParameter);
-                            if (!File.Exists(absoluteFilePath))
+                            filePath = filePath.Trim();
+                            var fullFilePath = HttpContext.Current.Server.MapPath(filePath);
+                            if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(fullFilePath))
                             {
                                 return new ImageInfo(EmptyImage);
                             }
-                            imgFile = absoluteFilePath;
+                            imgFile = fullFilePath;
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
-                            imgFile = parameters["Url"];
+                            if (!parameters["Url"].StartsWith("http"))
+                            {
+                                return new ImageInfo(EmptyImage);
+                            }
+                            imgUrl = parameters["Url"];
                         }
 
                         if (string.IsNullOrEmpty(parameters["format"]))
@@ -191,7 +217,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             }
                             ContentType = GetImageFormat(extension);
                         }
-                        var imageFileTrans = new ImageFileTransform { ImageFile = imgFile };
+                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl};
                         ImageTransforms.Add(imageFileTrans);
                         break;
 
