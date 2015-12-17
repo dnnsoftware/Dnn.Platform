@@ -340,7 +340,7 @@ namespace Dnn.Modules.LogViewer
             ddlLogType.SelectedIndexChanged += DdlLogTypeSelectedIndexChanged;
             ddlPortalid.SelectedIndexChanged += DdlPortalIDSelectedIndexChanged;
             ddlRecordsPerPage.SelectedIndexChanged += DdlRecordsPerPageSelectedIndexChanged;
-
+            
             if (Request.QueryString["CurrentPage"] != null)
             {
                 _pageIndex = Convert.ToInt32(Request.QueryString["CurrentPage"]);
@@ -365,6 +365,8 @@ namespace Dnn.Modules.LogViewer
 				// If this is the first visit to the page, populate the site data
                 if (Page.IsPostBack == false)
                 {
+                    txtSubject.Text = Localization.GetString("LogEntryDefaultSubject", LocalResourceFile);
+                    txtMessage.Text = Localization.GetString("LogEntryDefaultMsg", LocalResourceFile);
                     LogController.Instance.PurgeLogBuffer();
                     if (Request.QueryString["PageRecords"] != null)
                     {

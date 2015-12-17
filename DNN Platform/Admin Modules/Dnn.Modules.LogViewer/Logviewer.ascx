@@ -153,8 +153,9 @@
 	<h2 class="dnnFormSectionHead" id="dnnPanel-LogSendExceptions"><a href="" class="dnnSectionExpanded"><%=LocalizeString("SendExceptions")%></a></h2>
 	<fieldset id="dnnSendExceptions">
 		<div class="dnnFormItem">
-			<dnn:Label ID="plEmailAddress" runat="server" ControlName="txtEmailAddress" Suffix=":" />
-			<asp:TextBox ID="txtEmailAddress" runat="server" />
+			<dnn:Label ID="plEmailAddress" runat="server" ControlName="txtEmailAddress" Suffix=":" CssClass="dnnFormRequired"/>
+			<asp:TextBox ID="txtEmailAddress" runat="server"/>
+            <asp:RequiredFieldValidator ID="reqEmailAddress" runat="server" ControlToValidate="txtEmailAddress" CssClass="dnnFormMessage dnnFormError" ResourceKey="plEmailAddress.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
 			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" />
