@@ -48,8 +48,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// If the secure file is not an image, it returns an image representing the file extension
         /// </remarks>
         public override Image ProcessImage(Image image)
-		{
-		    // if SecureFile is no ImageFile return FileType-Image instead
+        {
+            if (SecureFile == null)
+            {
+                return EmptyImage;
+            }
+
+            var folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
+            if (!DoesHaveReadFolderPermission(folder))
+            {
+                return EmptyImage;
+            }
+
+            // if SecureFile is no ImageFile return FileType-Image instead
             if (!IsImageExtension(SecureFile.Extension))
 		    {
 		        var replaceFile = Globals.ApplicationMapPath +"\\" + 
@@ -61,15 +72,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                     EmptyImage;
 		    }
 
-            var folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
-            var file = FileManager.Instance.GetFile(folder, SecureFile.FileName);
-
-            if (file == null || !DoesHaveReadFolderPermission(folder))
-            {
-                return EmptyImage;
-            }
-
-            using (var content = FileManager.Instance.GetFileContent(file))
+            using (var content = FileManager.Instance.GetFileContent(SecureFile))
             {
                 return new Bitmap(content);
             }
