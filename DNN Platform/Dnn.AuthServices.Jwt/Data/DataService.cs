@@ -45,7 +45,7 @@ namespace Dnn.AuthServices.Jwt.Data
             {
                 return CBO.GetCachedObject<PersistedToken>(
                     new CacheItemArgs(GetCacheKey(tokenId), 60, CacheItemPriority.Default),
-                    _ => _dataProvider.ExecuteReader("JsonWebTokens_GetById", tokenId));
+                    _ => CBO.FillObject<PersistedToken>(_dataProvider.ExecuteReader("JsonWebTokens_GetById", tokenId)));
             }
             catch (InvalidCastException)
             {

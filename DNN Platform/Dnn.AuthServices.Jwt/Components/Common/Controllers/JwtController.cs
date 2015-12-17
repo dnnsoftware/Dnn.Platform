@@ -77,13 +77,14 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// </summary>
         public string ValidateToken(HttpRequestMessage request)
         {
-            var authorization = ValidateAuthHeader(request.Headers.Authorization);
-            if (string.IsNullOrEmpty(authorization))
+            if (!JwtAuthMessageHandler.IsEnabled)
+            {
+                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
                 return null;
+            }
 
-            if (Logger.IsTraceEnabled) Logger.Trace("Authorization header received: " + authorization);
-
-            return ValidateAuthorizationValue(authorization);
+            var authorization = ValidateAuthHeader(request.Headers.Authorization);
+            return string.IsNullOrEmpty(authorization) ? null : ValidateAuthorizationValue(authorization);
         }
 
         public bool LogoutUser(HttpRequestMessage request)
@@ -97,7 +98,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var rawToken = ValidateAuthHeader(request.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
-                //Logger.Trace("Invalid authorization header."); // already logged something in validation call
                 return false;
             }
 
@@ -154,24 +154,25 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-credentials");
             }
 
-            var sessionId = NewGuid;
-            var renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
-            var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.CreatedOnDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, sessionId, userInfo.Roles);
-            var accessToken = jwt.RawData;
-            var now = DateTime.UtcNow;
-
             // save hash values in DB so no one with access can create JWT header from existing data
+            var sessionId = NewGuid;
+            var now = DateTime.UtcNow;
+            var renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
             var ptoken = new PersistedToken
             {
                 TokenId = sessionId,
                 UserId = userInfo.UserID,
                 TokenExpiry = now.AddMinutes(SessionTokenTtl),
                 RenewalExpiry = now.AddDays(RenewalTokenTtl),
-                TokenHash = GetHashedStr(accessToken),
+                //TokenHash = GetHashedStr(accessToken), -- not computed yet
                 RenewalHash = GetHashedStr(renewalToken),
             };
 
+            var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var accessToken = jwt.RawData;
+
+            ptoken.TokenHash = GetHashedStr(accessToken);
             DataProvider.AddToken(ptoken);
 
             return new LoginResultData
@@ -216,7 +217,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("not-found");
             }
 
-            var userInfo = TryGetUser(jwt);
+            if (ptoken.RenewalExpiry <= DateTime.UtcNow)
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Token can't bwe renewed anymore");
+                return EmptyWithError("not-more-renewal");
+            }
+
+            var userInfo = TryGetUser(jwt, false);
             if (userInfo == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
@@ -229,31 +236,27 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-token");
             }
 
-            return CreateLoginResult(renewalToken, sessionId, ptoken, userInfo);
+            return UpdateLoginRecord(renewalToken, ptoken, userInfo);
         }
 
-        private LoginResultData CreateLoginResult(string renewalToken, string sessionId, PersistedToken ptoken, UserInfo userInfo)
+        private LoginResultData UpdateLoginRecord(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.CreatedOnDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, sessionId, userInfo.Roles);
-            var accessToken = jwt.RawData;
-            var now = DateTime.UtcNow;
-            var expiry = now.AddMinutes(SessionTokenTtl);
-            if (expiry > ptoken.RenewalExpiry) expiry = ptoken.RenewalExpiry; // don't extend beyond renewal expiry
-
-            // save hash values in DB so no one with access can create JWT header from existing data
-            var newptoken = new PersistedToken
+            var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
+            if (expiry > ptoken.RenewalExpiry)
             {
-                TokenId = sessionId,
-                UserId = userInfo.UserID,
-                TokenExpiry = expiry,
-                RenewalExpiry = ptoken.RenewalExpiry,
-                TokenHash = GetHashedStr(accessToken),
-                RenewalHash = ptoken.RenewalHash,
-            };
+                // don't extend beyond renewal expiry and make sure it is marked in UTC
+                expiry = new DateTime(ptoken.RenewalExpiry.Ticks, DateTimeKind.Utc);
+            }
+            ptoken.TokenExpiry = expiry;
 
-            DataProvider.UpdateToken(newptoken);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var accessToken = jwt.RawData;
+            
+            // save hash values in DB so no one with access can create JWT header from existing data
+            ptoken.TokenHash = GetHashedStr(accessToken);
+            DataProvider.UpdateToken(ptoken);
 
             return new LoginResultData
             {
@@ -274,7 +277,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return new LoginResultData { Error = error };
         }
 
-        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, string sessionId, IEnumerable<string> roles)
+        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken ptoken, IEnumerable<string> roles)
         {
             //var key = Convert.FromBase64String(symmetricKey);
             var credentials = new SigningCredentials(
@@ -283,12 +286,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 "http://www.w3.org/2001/04/xmlenc#sha256");
 
             var claimsIdentity = new ClaimsIdentity();
-            claimsIdentity.AddClaim(new Claim(SessionClaimType, sessionId));
+            claimsIdentity.AddClaim(new Claim(SessionClaimType, ptoken.TokenId));
             claimsIdentity.AddClaims(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-            var now = DateTime.UtcNow;
-            var notBefore = now.AddMinutes(-ClockSkew);
-            var notAfter = now.AddMinutes(SessionTokenTtl);
+            var notBefore = DateTime.UtcNow.AddMinutes(-ClockSkew);
+            var notAfter = ptoken.TokenExpiry;
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(issuer, null, claimsIdentity, notBefore, notAfter, credentials);
             return token;
@@ -347,13 +349,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             if (jwt == null)
                 return null;
 
-            var userInfo = TryGetUser(jwt);
+            var userInfo = TryGetUser(jwt, true);
             return userInfo?.Username;
         }
 
         private bool IsValidSchemeType(JwtHeader header)
         {
-            if (!SchemeType.Equals(header["type"] as string, StringComparison.OrdinalIgnoreCase))
+            if (!SchemeType.Equals(header["typ"] as string, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication scheme type " + header.Typ);
                 return false;
@@ -362,7 +364,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return true;
         }
 
-        private JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
+        private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
         {
             JwtSecurityToken jwt;
             try
@@ -395,7 +397,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return jwt;
         }
 
-        private UserInfo TryGetUser(JwtSecurityToken jwt)
+        private UserInfo TryGetUser(JwtSecurityToken jwt, bool checkExpiry)
         {
             // validate against DB saved data
             var sessionId = GetJwtSessionValue(jwt);
@@ -404,6 +406,16 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
                 return null;
+            }
+
+            if (checkExpiry)
+            {
+                var now = DateTime.UtcNow;
+                if (now > ptoken.TokenExpiry || now > ptoken.RenewalExpiry)
+                {
+                    if (Logger.IsTraceEnabled) Logger.Trace("DB Token is expired");
+                    return null;
+                }
             }
 
             if (ptoken.TokenHash != GetHashedStr(jwt.RawData))
@@ -447,9 +459,9 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return sessionClaim?.Value;
         }
 
-        private byte[] ObtainSecret(string sessionId, Guid portalGuid, DateTime userCreationDate)
+        private static byte[] ObtainSecret(string sessionId, Guid portalGuid, DateTime userCreationDate)
         {
-            // The secret should contain unpredicted components htat can't be inferred from the auth-header of requests.
+            // The secret should contain unpredictable components that can't be inferred from the JWT string.
             var stext = string.Join(".", sessionId, portalGuid.ToString("N"), userCreationDate.ToUniversalTime().ToString("O"));
             return TextEncoder.GetBytes(stext);
         }

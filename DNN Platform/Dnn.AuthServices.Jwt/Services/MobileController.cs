@@ -24,6 +24,7 @@ using System.Web.Http;
 using Dnn.AuthServices.Jwt.Components.Common.Controllers;
 using Dnn.AuthServices.Jwt.Components.Entity;
 using DotNetNuke.Web.Api;
+using Newtonsoft.Json;
 
 namespace Dnn.AuthServices.Jwt.Services
 {
@@ -78,31 +79,31 @@ namespace Dnn.AuthServices.Jwt.Services
             return Ok(result);
         }
 
-#if DEBUG //TODO: remove from production code
         // Test API Method 1
         [HttpGet]
-        public IHttpActionResult Hello()
+        public IHttpActionResult TestGet()
         {
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
-            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}";
+            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}.";
             return Ok(new { reply });
         }
 
         // Test API Method 2
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IHttpActionResult HelloPost(PostDate something)
+        public IHttpActionResult TestPost(TestPostData something)
         {
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
-            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}" +
+            var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}." +
                         $" You said: ({something.Text})";
             return Ok(new { reply });
         }
-#endif
-    }
 
-    public class PostDate
-    {
-        public string Text;
+        [JsonObject]
+        public class TestPostData
+        {
+            [JsonProperty("text")]
+            public string Text;
+        }
     }
 }

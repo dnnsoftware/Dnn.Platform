@@ -115,7 +115,9 @@ namespace DotNetNuke.Web.Api.Internal
 
                 RegisterAuthenticationHandlers();
                 //this must run after aall other auth message handlers
-                GlobalConfiguration.Configuration.MessageHandlers.Add(new WebFormsAuthMessageHandler());
+                var handler = new WebFormsAuthMessageHandler();
+                GlobalConfiguration.Configuration.MessageHandlers.Add(handler);
+                DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
 
                 //media type formatter for text/html, text/plain
                 GlobalConfiguration.Configuration.Formatters.Add(new StringPassThroughMediaTypeFormatter());

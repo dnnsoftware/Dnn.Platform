@@ -17,6 +17,8 @@ BEGIN
 	(
 		[TokenId]           VARCHAR(36) NOT NULL,   -- this is not a unicode string!
 		[UserId]            INT NOT NULL,
+		[CreatedOn]         SMALLDATETIME DEFAULT (GETUTCDATE()),
+		[RenewCount]        INT DEFAULT (0),
 		[TokenExpiry]       SMALLDATETIME NOT NULL, -- access token expiry UTC timestamp
 		[RenewalExpiry]     SMALLDATETIME NOT NULL, -- renewal token expiry UTC timestamp
 		[TokenHash]         VARCHAR(96) NOT NULL,   -- access token SHA1 (for validation)
@@ -113,7 +115,7 @@ ALTER PROCEDURE {databaseOwner}[{objectQualifier}JsonWebTokens_Update]
 AS
 BEGIN
 	UPDATE {databaseOwner}[{objectQualifier}JsonWebTokens]
-	SET TokenExpiry=@TokenExpiry, TokenHash=@TokenHash
+	SET TokenExpiry=@TokenExpiry, TokenHash=@TokenHash, RenewCount=RenewCount+1
 	WHERE TokenId=@TokenId
 END
 GO
