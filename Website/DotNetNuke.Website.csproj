@@ -167,6 +167,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="admin\Containers\DropDownActions.ascx.cs">
       <DependentUpon>dropdownactions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
