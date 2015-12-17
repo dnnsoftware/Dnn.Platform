@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Net;
 using System.Net.Http;
@@ -28,17 +29,24 @@ using System.Threading;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Web.ConfigSection;
 
-namespace DotNetNuke.Web.Api.Internal.Auth
+namespace DotNetNuke.Web.Api.Auth
 {
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
-        private const string AuthScheme = "Basic";
+        public override string AuthScheme => "Basic";
+
         private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
+
+        public BasicAuthMessageHandler(bool includeByDefault, SslModes sslMode)
+            : base(includeByDefault, sslMode)
+        {
+        }
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(NeedsAuthentication())
+            if(NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)

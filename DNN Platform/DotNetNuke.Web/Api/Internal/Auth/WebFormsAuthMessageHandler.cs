@@ -27,6 +27,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 {
     public class WebFormsAuthMessageHandler : MessageProcessingHandler
     {
+        public string AuthScheme => "Forms";
+
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);

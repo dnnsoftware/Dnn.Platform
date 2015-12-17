@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BasicAuthMessageHandlerTests.cs" />
+    <Compile Include="Api\JwtAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DigestAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DnnActionFilterProviderTests.cs" />
     <Compile Include="Api\DnnHttpControllerSelectorTests.cs" />
@@ -106,6 +107,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dnn.AuthServices.Jwt\Dnn.AuthServices.Jwt.csproj">
+      <Project>{3b2fa1d9-ec7d-4cec-8ff5-a7700cf5cb40}</Project>
+      <Name>Dnn.AuthServices.Jwt</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
       <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
       <Name>DotNetNuke.Log4Net</Name>
@@ -122,9 +127,6 @@
       <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
       <Name>DotNetNuke.Tests.Utilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

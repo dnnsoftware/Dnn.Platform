@@ -20,21 +20,38 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Web.Api.Internal;
+using System.Threading;
 
 namespace DotNetNuke.Web.Api
 {
     public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
     {
+        private static readonly List<string> BypassedAuthTypes = new List<string>();
+
+        internal static void AppendToBypassAuthTypes(string authType)
+        {
+            if (!string.IsNullOrEmpty(authType))
+            {
+                BypassedAuthTypes.Add(authType.Trim());
+            }
+        }
+
         public override bool IsAuthorized(AuthFilterContext context)
         {
             try
             {
-                string cookieValue = GetAntiForgeryCookieValue(context);
-                var token = context.ActionContext.Request.Headers.GetValues("RequestVerificationToken").FirstOrDefault();
-
-                AntiForgery.Instance.Validate(cookieValue, token);
+                var headers = context.ActionContext.Request.Headers;
+                // bypass anti-forgery for those who request so.
+                var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
+                if (string.IsNullOrEmpty(authType) && !BypassedAuthTypes.Contains(authType))
+                {
+                    var token = headers.GetValues("RequestVerificationToken").FirstOrDefault();
+                    var cookieValue = GetAntiForgeryCookieValue(context);
+                    AntiForgery.Instance.Validate(cookieValue, token);
+                }
             }
             catch(Exception e)
             {
@@ -55,24 +72,13 @@ namespace DotNetNuke.Web.Api
                 {
                     var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
                     var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
-
-                    if (valueEndIndex > -1)
-                    {
-                        return cookieValue.Substring(valueIndex, valueEndIndex);
-                    }
-                    else
-                    {
-                        return cookieValue.Substring(valueIndex);
-                    }
+                    return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
                 }
             }
             
             return "";
         }
 
-        public override bool AllowMultiple
-        {
-            get { return false; }
-        }
+        public override bool AllowMultiple => false;
     }
 }
