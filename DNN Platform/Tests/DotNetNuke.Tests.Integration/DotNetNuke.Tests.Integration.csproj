@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Tests\JwtAuthTest.cs" />
     <Compile Include="Data\FluentMapperTests.cs" />
     <Compile Include="Data\PetaPocoDataContextTests.cs" />
     <Compile Include="Data\PetaPocoMapperTests.cs" />
