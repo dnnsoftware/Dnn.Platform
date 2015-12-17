@@ -1,7 +1,6 @@
 ﻿.subscription-table-container {    
-    margin-left: auto;
-    margin-right: auto;
     display: table;
+    width: 100%;
     position: relative;
     background-color: white;
 }
@@ -21,6 +20,7 @@
     border-spacing: 0;
     border-collapse: collapse;
     margin-bottom: 0;
+    width: 100%;
 }
 
 #subscription-table tfoot {
