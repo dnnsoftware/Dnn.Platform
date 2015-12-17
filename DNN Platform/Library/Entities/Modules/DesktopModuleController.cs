@@ -630,12 +630,12 @@ namespace DotNetNuke.Entities.Modules
                                                         true);
                 }
 
-                if (desktopModule.Page.IsCommon)
-                {
-                    TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
-                }
-
                 createdNewPage = true;
+            }
+
+            if (desktopModule.Page.IsCommon)
+            {
+                TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
             }
 
             AddDesktopModuleToPage(desktopModule, existTab, ref addedNewModule);

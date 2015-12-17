@@ -3675,7 +3675,9 @@ namespace DotNetNuke.Services.Upgrade
 						DisplayTitle = displayTitle
 					};
 
-				    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
+                    ModuleController.Instance.InitialModulePermission(moduleInfo, moduleInfo.TabID, inheritPermissions ? 0 : 1);
+
+                    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
 
                     try
 					{
