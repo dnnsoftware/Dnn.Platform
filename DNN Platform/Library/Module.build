@@ -108,5 +108,20 @@
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
+
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn">
+      <Output TaskParameter="Value" PropertyName="DotNetCompilerVersion" />
+    </XmlRead>
+    <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package\bin" />
+    <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\roslyn.zip" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" />
+    <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" />
+    <CreateItem Include="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="DotNetCompilerContent" />
+    </CreateItem>
+    <Zip Files="@(DotNetCompilerContent)" WorkingDirectory="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" ZipFileName="$(WebsiteInstallPath)\Module\Microsoft.CodeDom.Providers.DotNetCompilerPlatform_$(DotNetCompilerVersion)_Install.zip" />
+    <RemoveDir Directories ="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" />
   </Target>
 </Project>
