@@ -116,7 +116,7 @@ namespace Dnn.AuthServices.Jwt.Services
             //must get each tab, they parent may not exist
             foreach (var tab in allPortalTabs.Values)
             {
-                AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
+                AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);
             }
 
             foreach (var tab in tabsInOrder.Values)
@@ -135,8 +135,8 @@ namespace Dnn.AuthServices.Jwt.Services
             return tabModules;
         }
 
-        private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs,
-            ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
+        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,
+            IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
         {
             if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {
@@ -145,7 +145,7 @@ namespace Dnn.AuthServices.Jwt.Services
                 //add children of current tab
                 foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
-                    AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
+                    AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);
                 }
             }
         }

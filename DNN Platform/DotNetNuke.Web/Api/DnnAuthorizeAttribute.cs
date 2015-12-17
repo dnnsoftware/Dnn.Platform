@@ -139,8 +139,8 @@ namespace DotNetNuke.Web.Api
                 return EmptyArray;
             }
 
-            var split = from piece in original.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-                        select piece.Trim();
+            var split = original.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s));
             return split.ToArray();
         }
     }
