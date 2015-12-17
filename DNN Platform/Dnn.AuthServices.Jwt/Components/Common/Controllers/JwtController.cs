@@ -114,7 +114,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         }
 
         /// <summary>
-        /// Validates user login credentials and reurns result when successful
+        /// Validates user login credentials and returns result when successful
         /// </summary>
         public LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)
         {
@@ -373,7 +373,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error("Unable to construct JWT objet from authorization value. " + ex.Message);
+                Logger.Error("Unable to construct JWT object from authorization value. " + ex.Message);
                 return null;
             }
 
