@@ -24,6 +24,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 
+        public bool IsEmptyImage { get; set; } = false;
+
         public ImageInfo(HttpStatusCode statusCode)
         {
             HttpStatusCode = statusCode;

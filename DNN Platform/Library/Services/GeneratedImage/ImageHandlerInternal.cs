@@ -210,6 +210,24 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
             }
 
+            // Generate Image
+            var imageMethodData = imageGenCallback(context.Request.QueryString);
+            if (imageMethodData == null)
+            {
+                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
+            }
+            if (imageMethodData.IsEmptyImage)
+            {
+                using (var imageOutputBuffer = new MemoryStream())
+                {
+                    RenderImage(imageMethodData.Image, imageOutputBuffer);
+                    var buffer = imageOutputBuffer.GetBuffer();
+                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    context.Response.End();
+                    return;
+                }
+            }
+
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
             // Handle client cache
@@ -235,7 +253,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 cachePolicy.SetExpires(DateTime_Now + ClientCacheExpiration);
                 cachePolicy.SetETag(cacheId);
             }
-
+            
             // Handle Server cache
             if (EnableServerCache)
             {
@@ -272,14 +290,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     return;
                 }
             }
-
-            // Generate Image
-            var imageMethodData = imageGenCallback(context.Request.QueryString);
-            if (imageMethodData == null)
-            {
-                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
-            }
-
+            
             if (imageMethodData.HttpStatusCode != null)
             {
                 context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
@@ -325,10 +336,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 builder.Append(tran.UniqueString);
             }
-            if (PortalSettings.Current.UserId > -1)
-                builder.Append("uid" + PortalSettings.Current.UserId);
-            else
-                builder.Append("uid0");
 
             return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
         }
