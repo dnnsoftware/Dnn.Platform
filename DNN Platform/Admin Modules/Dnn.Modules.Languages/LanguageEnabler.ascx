@@ -307,10 +307,10 @@
 <script type="text/javascript">
     var serviceFramework;
     var baseServicepath;
-    var closeText = '<%= LocalizeString("Close")%>';
-    var titleText = '<%= LocalizeString("NonLocalizedPagesTitle")%> ';
-    var view = '<%= LocalizeString("ViewPage")%> ';
-    var edit = '<%= LocalizeString("EditPage")%> ';
+    var closeText = '<%= LocalizeSafeJsString("Close")%>';
+    var titleText = '<%= LocalizeSafeJsString("NonLocalizedPagesTitle")%> ';
+    var view = '<%= LocalizeSafeJsString("ViewPage")%> ';
+    var edit = '<%= LocalizeSafeJsString("EditPage")%> ';
 
     function getNonTranslatedPages(code, lang) {
         $.ajax({

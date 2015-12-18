@@ -356,6 +356,13 @@
                     }
                     params += "ContainerSrc=" + container;
                 }
+                if (opts.ModuleId) {
+                    if (params !== "?") {
+                        params += "&ModuleID=" + opts.ModuleId;
+                    } else {
+                        params += "ModuleID=" + opts.ModuleId;
+                    }
+                }
                 if (params != "?") {
                     window.open(encodeURI(opts.baseUrl + params.replace(/.ascx/gi, '')), "skinpreview");
                 }
