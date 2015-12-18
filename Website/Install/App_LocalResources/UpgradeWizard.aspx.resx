@@ -152,7 +152,7 @@
   <data name="IntroDetail.Text" xml:space="preserve">
     <value>&lt;p&gt;Welcome to the DotNetNuke Upgrade Page.&lt;/p&gt;
 
-&lt;p&gt;The first step is to choose the language you wish to use for the Upgrade.&lt;/p&gt;
+&lt;p&gt;The first step is to choose the language you want to use for the upgrade.&lt;/p&gt;
 
 </value>
   </data>
@@ -166,7 +166,7 @@
     <value>No Installation Log</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
-    <value>The password for the super user account.</value>
+    <value>The password for the Super User account.</value>
   </data>
   <data name="Password.Text" xml:space="preserve">
     <value>Password:</value>
@@ -193,7 +193,7 @@
     <value>Upgrading Database</value>
   </data>
   <data name="Username.Help" xml:space="preserve">
-    <value>The username for the super user account.</value>
+    <value>The username for the Super User account.</value>
   </data>
   <data name="Username.Text" xml:space="preserve">
     <value>Host (SuperUser) Username:</value>

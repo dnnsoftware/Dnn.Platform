@@ -215,6 +215,11 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority ResourceFileLookupDictionaryCachePriority = CacheItemPriority.NotRemovable;
         public const int ResourceFileLookupDictionaryTimeOut = 200;
 
+        public const string SpaModulesContentHtmlFileCacheKey = "SpaModulesContentHtmlFile|{0}";
+        public const string SpaModulesFileExistsCacheKey = "SpaModulesFileExists|{0}";
+        public const CacheItemPriority SpaModulesHtmlFileCachePriority = CacheItemPriority.Normal;
+        public const int SpaModulesHtmlFileTimeOut = 200;
+
         public const string SkinsCacheKey = "GetSkins{0}";
 
         public const string BannersCacheKey = "Banners:{0}:{1}:{2}";
@@ -286,11 +291,7 @@ namespace DotNetNuke.Common.Utilities
         public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
-
-        public const string HmacCacheKey = "HMAC_{0}";
-        public const CacheItemPriority HmacCachePriority = CacheItemPriority.NotRemovable;
-        public const int HmacCacheTimeout =5;
-
+        
         private static string _CachePersistenceEnabled = "";
 
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();

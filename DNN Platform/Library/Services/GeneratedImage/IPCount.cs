@@ -62,10 +62,10 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                DateTime lastPurge = DateTime.Now;
+                var lastPurge = DateTime.Now;
                 if (File.Exists(CachePath + "_lastpurge"))
                 {
-                    FileInfo fi = new FileInfo(CachePath + "_lastpurge");
+                    var fi = new FileInfo(CachePath + "_lastpurge");
                     lastPurge = fi.LastWriteTime;
                 }
                 else
@@ -133,15 +133,15 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
             }
-
-            string path = BuildFilePath(ipAddress);
-            int count = 1;
+            
+            var path = BuildFilePath(ipAddress);
+            var count = 1;
             lock (FileLock)
             {
                 if (File.Exists(path))
                 {
-                    string strCount = File.ReadAllText(path);
-                    if (Int32.TryParse(strCount, out count))
+                    var strCount = File.ReadAllText(path);
+                    if (int.TryParse(strCount, out count))
                     {
                         if (count > MaxCount)
                             return false;
@@ -156,7 +156,9 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static string BuildFilePath(string ipAddress)
         {
-            return CachePath + ipAddress + TempFileExtension;
+            // it takes only the IP address without PORT for the file name
+            var fileName = ipAddress.Split(':')[0];
+            return CachePath + fileName + TempFileExtension;
         }
 
         /// <summary>
@@ -165,13 +167,17 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <returns>IP Address of visitor</returns>
         public static string GetVisitorIPAddress(HttpContextBase context)
         {
-            string visitorIPAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            var visitorIPAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
             if (string.IsNullOrEmpty(visitorIPAddress))
+            {
                 visitorIPAddress = context.Request.ServerVariables["REMOTE_ADDR"];
+            }
 
             if (string.IsNullOrEmpty(visitorIPAddress))
+            {
                 visitorIPAddress = context.Request.UserHostAddress;
+            }
 
             if (string.IsNullOrEmpty(visitorIPAddress) || visitorIPAddress.Trim() == "::1")
             {
@@ -181,9 +187,8 @@ namespace DotNetNuke.Services.GeneratedImage
             if (string.IsNullOrEmpty(visitorIPAddress))
             {
                 //This is for Local(LAN) Connected ID Address
-                string stringHostName = Dns.GetHostName();
+                var stringHostName = Dns.GetHostName();
                 visitorIPAddress = NetworkUtils.GetAddress(stringHostName, AddressType.IPv4);
-
             }
             return visitorIPAddress;
         }

@@ -4,15 +4,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Configuration.Provider;
 using System.Web;
 using System.Linq;
 using ClientDependency.Core.CompositeFiles.Providers;
-using ClientDependency.Core.Controls;
 using ClientDependency.Core.Config;
-using ClientDependency.Core;
-using ClientDependency.Core.CompositeFiles;
 
 namespace ClientDependency.Core.FileRegistration.Providers
 {
@@ -256,8 +252,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 if (!string.IsNullOrEmpty(dependency.PathNameAlias))
                 {
                     var d = dependency;
-                    var path = paths.Find(
-                        (p) => p.Name == d.PathNameAlias);
+                    var path = paths.Find(p => p.Name == d.PathNameAlias);
                     if (path == null)
                     {
                         throw new NullReferenceException("The PathNameAlias specified for dependency " + dependency.FilePath + " does not exist in the ClientDependencyPathCollection");
@@ -466,10 +461,10 @@ namespace ClientDependency.Core.FileRegistration.Providers
             {
                 //sort both the js and css dependencies properly
 
-                var jsDependencies = DependencySorter.FilterDependencies(DependencySorter.SortItems(
+                var jsDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
                     group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList()));
 
-                var cssDependencies = DependencySorter.FilterDependencies(DependencySorter.SortItems(
+                var cssDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
                     group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList()));
 
                 //render

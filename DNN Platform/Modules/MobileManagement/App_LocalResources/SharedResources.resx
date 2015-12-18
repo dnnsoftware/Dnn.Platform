@@ -127,34 +127,34 @@
     <value>Redirection Settings</value>
   </data>
   <data name="lblRedirectName.Text" xml:space="preserve">
-    <value>Site redirection name</value>
+    <value>Site Redirection Name</value>
   </data>
   <data name="lblRedirectName.Help" xml:space="preserve">
-    <value>The name of your redirect</value>
+    <value>The name of this redirect.</value>
   </data>
   <data name="lblRedirectSource.Help" xml:space="preserve">
-    <value>Determines if you redirect is website or page level</value>
+    <value>Determines if you redirect is site or page level.</value>
   </data>
   <data name="lblRedirectTarget.Help" xml:space="preserve">
-    <value>The target destination for the redirect</value>
+    <value>The target destination for this redirect.</value>
   </data>
   <data name="lblRedirectTarget.Text" xml:space="preserve">
     <value>To</value>
   </data>
   <data name="lblRedirectType.Help" xml:space="preserve">
-    <value>Determines the type of source the user is browsing from</value>
+    <value>Choose the type of device the user is browsing from.</value>
   </data>
   <data name="lblRedirectType.Text" xml:space="preserve">
-    <value>Select user device</value>
+    <value>Select User Device</value>
   </data>
   <data name="lblTargetUrl.Help" xml:space="preserve">
-    <value>Destination URL for the redirect</value>
+    <value>Destination URL for the redirect.</value>
   </data>
   <data name="lblTargetUrl.Text" xml:space="preserve">
     <value>URL</value>
   </data>
   <data name="lnkPortalAlias.Text" xml:space="preserve">
-    <value>Enter new website alias</value>
+    <value>Enter the new site alias.</value>
   </data>
   <data name="optBoth.Text" xml:space="preserve">
     <value>Mobile and Tablet</value>
@@ -178,10 +178,10 @@
     <value>URL</value>
   </data>
   <data name="OtherType.Text" xml:space="preserve">
-    <value>Define your rules below. Add multiple rules by clicking the ADD button.</value>
+    <value>Define your rules below. Add multiple rules by clicking the Add button.</value>
   </data>
   <data name="valRedirectName.Text" xml:space="preserve">
-    <value>You must enter a name for your redirection</value>
+    <value>You must enter a name for your redirection.</value>
   </data>
   <data name="lblCapability.Text" xml:space="preserve">
     <value>Capability</value>
@@ -202,10 +202,10 @@
     <value>Create site redirection</value>
   </data>
   <data name="RedirectManagerMessage.Text" xml:space="preserve">
-    <value>Below is a list of site redirections. To add a new one, click &lt;b&gt;"Create"&lt;/b&gt; to start.</value>
+    <value>Below is a list of site redirections. Click Create to add a new redirection.</value>
   </data>
   <data name="lblEnable.Help" xml:space="preserve">
-    <value>Enable the redirection rule</value>
+    <value>Enable the redirection rule.</value>
   </data>
   <data name="lblEnable.Text" xml:space="preserve">
     <value>Enable</value>
@@ -220,7 +220,7 @@
     <value>Select a page</value>
   </data>
   <data name="lblRedirect.Help" xml:space="preserve">
-    <value>This is your current home page that will be redirected</value>
+    <value>This is the current home page that will be redirected.</value>
   </data>
   <data name="lblRedirect.Text" xml:space="preserve">
     <value>Redirecting</value>
@@ -229,7 +229,7 @@
     <value>Create a Mobile Site Redirection</value>
   </data>
   <data name="lblTarget.Help" xml:space="preserve">
-    <value>The destination where you will be redirected</value>
+    <value>The destination where you will be redirected.</value>
   </data>
   <data name="lblTarget.Text" xml:space="preserve">
     <value>To</value>
@@ -238,7 +238,7 @@
     <value>Default Redirect</value>
   </data>
   <data name="EnableItem.Text" xml:space="preserve">
-    <value>Are you sure you want to Toggle the Enable Setting for this Item?</value>
+    <value>Are you sure you want to Toggle the Enable Setting for this item?</value>
   </data>
   <data name="chkChildPages.Text" xml:space="preserve">
     <value>Include all child pages</value>
@@ -256,7 +256,7 @@
     <value>Destination: {0}</value>
   </data>
   <data name="DuplicateNameError.Text" xml:space="preserve">
-    <value>Redirection with that name already exists, please use a different name</value>
+    <value>Redirection with that name already exists, please use a different name.</value>
   </data>
   <data name="addCapability.Text" xml:space="preserve">
     <value>Add Capability</value>

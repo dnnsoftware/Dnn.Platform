@@ -140,7 +140,6 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
         {
-
             context.Response.Clear();
             context.Response.ContentType = GetImageMimeType(ContentType);
 
@@ -288,32 +287,34 @@ namespace DotNetNuke.Services.GeneratedImage
                 return;
             }
 
-            var imageOutputBuffer = new MemoryStream();
-
-            Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
-            if (imageMethodData.Image != null)
+            using (var imageOutputBuffer = new MemoryStream())
             {
-                RenderImage(GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
-            }
-            else if (imageMethodData.ImageByteBuffer != null)
-            {
-                RenderImage(GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
-            }
+                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
+                if (imageMethodData.Image != null)
+                {
+                    RenderImage(GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
+                }
+                else if (imageMethodData.ImageByteBuffer != null)
+                {
+                    RenderImage(GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
+                }
 
-            byte[] buffer = imageOutputBuffer.GetBuffer();
-            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                byte[] buffer = imageOutputBuffer.GetBuffer();
 
-            if (EnableServerCache)
-            {
-                ImageStore.Add(cacheId, buffer);
+                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+
+                if (EnableServerCache)
+                {
+                    ImageStore.Add(cacheId, buffer);
+                }
+
+                context.Response.End();
             }
-
-            context.Response.End();
         }
 
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(uniqueIdStringSeed);
             foreach (var key in context.Request.QueryString.AllKeys.OrderBy(k => k))
             {

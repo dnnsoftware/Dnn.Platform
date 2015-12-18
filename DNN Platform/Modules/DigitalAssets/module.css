@@ -650,7 +650,8 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 #dnnModuleDigitalAssetsBreadcrumb ul {
     list-style: none outside none;
     margin-bottom: 0;
-    margin-left: 7px;  
+    margin-left: 7px;
+    padding: 0;
 }
 
 #dnnModuleDigitalAssetsBreadcrumb li {
@@ -847,7 +848,7 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 
 .dnnModuleDigitalAssetsGeneralProperties {
     min-height: 300px;
-    width: 600px;
+    width: 600px !important;
     margin-top: 7px;
     margin-bottom: 25px;    
     float: left;

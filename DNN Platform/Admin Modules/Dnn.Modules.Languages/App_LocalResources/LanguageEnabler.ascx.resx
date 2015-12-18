@@ -136,19 +136,19 @@
     <value>Fallback language</value>
   </data>
   <data name="siteDefaultLabel.Help" xml:space="preserve">
-    <value>You can select the default language for the site here. If the language is not enabled yet, it will be enabled automatically.  Also, once Content Localization is enabled this can no longer be changed.</value>
+    <value>Select the default language for the site here.  If the language is not enabled yet, it will be enabled automatically.  The default language cannot be changed once Content Localization is enabled.</value>
   </data>
   <data name="siteDefaultLabel.Text" xml:space="preserve">
     <value>Site Default:</value>
   </data>
   <data name="viewTypeLabel.Help" xml:space="preserve">
-    <value>Select the display type for languages on this page</value>
+    <value>Select the display type for languages on this page.</value>
   </data>
   <data name="plEnabled.Help" xml:space="preserve">
-    <value>Below you can enable or disable languages for this site</value>
+    <value>Below you can enable or disable languages for this site.</value>
   </data>
   <data name="Host.Help" xml:space="preserve">
-    <value>Edit resourcekeys for the host installation</value>
+    <value>Edit resourcekeys for the host installation.</value>
   </data>
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
@@ -157,13 +157,13 @@
     <value>This is a list of all available &lt;br /&gt;languages in the installation.</value>
   </data>
   <data name="Portal.Help" xml:space="preserve">
-    <value>Edit resourcekeys for this website</value>
+    <value>Edit resourcekeys for this site.</value>
   </data>
   <data name="Portal.Text" xml:space="preserve">
     <value>Site</value>
   </data>
   <data name="System.Help" xml:space="preserve">
-    <value>Edit system resourcekeys</value>
+    <value>Edit system resourcekeys.</value>
   </data>
   <data name="System.Text" xml:space="preserve">
     <value>System</value>
@@ -238,16 +238,16 @@
     <value>Host User Required</value>
   </data>
   <data name="HostOnlyMessage.Text" xml:space="preserve">
-    <value>DNN's security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
+    <value>As a Site Administrator you can manage existing languages, however DNN's security model restricts adding new languages to Host Users. Please contact your Host if you want more languages.</value>
   </data>
   <data name="systemDefaultLabel.Help" xml:space="preserve">
-    <value>The SystemDefault Language is language that the application uses if no other language is available.  It is the ultimate fallback.</value>
+    <value>The SystemDefault Language is the language that the application uses if no other language is available.  It is the ultimate fallback.</value>
   </data>
   <data name="systemDefaultLabel.Text" xml:space="preserve">
     <value>System Default:</value>
   </data>
   <data name="detectBrowserLable.Help" xml:space="preserve">
-    <value>Should the user's browser language be used to detect the user's preferred language?</value>
+    <value>Check this box to detect the language selected on the user's browser and switch the site to that language.</value>
   </data>
   <data name="detectBrowserLable.Text" xml:space="preserve">
     <value>Enable Browser Language Detection?</value>
@@ -262,7 +262,7 @@
     <value>Would you like to publish all pages in the {0} language?</value>
   </data>
   <data name="allowUserCulture.Help" xml:space="preserve">
-    <value>When enabled will allow user to select a different language for the interface than the one used for content</value>
+    <value>Check this box to allow site users to select a different language for the interface than the one used for content.</value>
   </data>
   <data name="allowUserCulture.Text" xml:space="preserve">
     <value>Allow users to choose interface language?</value>
@@ -289,7 +289,7 @@
     <value>Remove all translations for this language</value>
   </data>
   <data name="DeleteTranslations.Confirm" xml:space="preserve">
-    <value>You are about to permanently &lt;b&gt;remove&lt;/b&gt; all translations for the '&lt;b&gt;{0}&lt;/b&gt;' language. Are you sure about this?</value>
+    <value>You are about to permanently &lt;b&gt;remove&lt;/b&gt; all translations for the '&lt;b&gt;{0}&lt;/b&gt;' language. Are you sure you want to continue?</value>
   </data>
   <data name="MakeNeutral.Text" xml:space="preserve">
     <value>Convert page to Neutral Language</value>
@@ -298,22 +298,22 @@
     <value>Make Page Translatable</value>
   </data>
   <data name="ChildrenExistWhenConvertingToNeutral.Text" xml:space="preserve">
-    <value>Page can not be converted to a neutral culture, because there are child pages.</value>
+    <value>Page cannot be converted to a neutral culture, because there are child pages.</value>
   </data>
   <data name="AddMissingLanguages.Text" xml:space="preserve">
     <value>Add Missing Languages</value>
   </data>
   <data name="Page.Help" xml:space="preserve">
-    <value>Select a page here to filter the information below</value>
+    <value>Select a page here to filter the information below.</value>
   </data>
   <data name="Page.Text" xml:space="preserve">
     <value>Select a Page:</value>
   </data>
   <data name="DisableLocalization.Confirm" xml:space="preserve">
-    <value>Are you sure you want to disable Content Localization for this web site? This action will &lt;b&gt;delete&lt;/b&gt; all translated pages, and &lt;b&gt;cannot&lt;/b&gt; be undone.</value>
+    <value>Are you sure you want to disable Content Localization for this site?  This action will &lt;b&gt;delete&lt;/b&gt; all translated pages, and &lt;b&gt;cannot&lt;/b&gt; be undone.</value>
   </data>
   <data name="MakeNeutral.Confirm" xml:space="preserve">
-    <value>This will delete all translations of the page. Only the default language version of the page will remain. Are you sure you want to do this?</value>
+    <value>This will delete all translations of the page.  Only the default language version of the page will remain.  Are you sure you want to continue?</value>
   </data>
   <data name="plUrl.Help" xml:space="preserve">
     <value>Check this box to enable the Language Parameter in the URL.</value>
@@ -322,13 +322,13 @@
     <value>Enable Language Parameter in URLs?</value>
   </data>
   <data name="NeutralMessage.Text" xml:space="preserve">
-    <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
+    <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site.  Language Neutral pages cannot be translated.</value>
   </data>
   <data name="Disable.Confirm" xml:space="preserve">
-    <value>Are you sure you would like to disable the language {0}?</value>
+    <value>Are you sure you want to disable the language {0}?</value>
   </data>
   <data name="Unpublish.Confirm" xml:space="preserve">
-    <value>Are you sure you would like to deactivate the language {0}?</value>
+    <value>Are you sure you want to deactivate the language {0}?</value>
   </data>
   <data name="Delete.Header" xml:space="preserve">
     <value>Delete</value>

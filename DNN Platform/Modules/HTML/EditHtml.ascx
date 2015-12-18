@@ -154,8 +154,6 @@
             <li>
                 <div class="dnnFormItem">
                     <asp:DropDownList ID="ddlRender" runat="server" AutoPostBack="true">
-                        <asp:ListItem resourcekey="liRichText" Value="RICH"></asp:ListItem>
-                        <asp:ListItem resourcekey="liBasicText" Value="BASIC"></asp:ListItem>
                     </asp:DropDownList>
                 </div>
             </li>

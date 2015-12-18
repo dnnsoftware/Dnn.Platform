@@ -127,13 +127,13 @@
     <value>{0} Folder Info</value>
   </data>
   <data name="FolderNameLabel.Help" xml:space="preserve">
-    <value>Edit the current Folder Name</value>
+    <value>Edit the current folder name.</value>
   </data>
   <data name="FolderNameLabel.Text" xml:space="preserve">
     <value>Folder Name</value>
   </data>
   <data name="FolderTypeLabel.Help" xml:space="preserve">
-    <value>This value indicates the Folder Type of the current folder</value>
+    <value>The folder type of the current folder.</value>
   </data>
   <data name="FolderTypeLabel.Text" xml:space="preserve">
     <value>Folder Type</value>
@@ -148,10 +148,10 @@
     <value>Copy Permissions to Subfolders:</value>
   </data>
   <data name="PermissionCopyError.Text" xml:space="preserve">
-    <value>There was an error copying the permissions</value>
+    <value>There was an error copying the permissions.</value>
   </data>
   <data name="PermissionsCopied.Text" xml:space="preserve">
-    <value>Permissions copied successfully</value>
+    <value>Permissions copied successfully.</value>
   </data>
   <data name="PermissionsTab.Text" xml:space="preserve">
     <value>Permissions</value>
@@ -160,12 +160,12 @@
     <value>Save</value>
   </data>
   <data name="UserCannotChangePermissionsError.Text" xml:space="preserve">
-    <value>You cannot change the permissions of this folder</value>
+    <value>You cannot change the permissions of this folder.</value>
   </data>
   <data name="UserCannotEditFolderError.Text" xml:space="preserve">
-    <value>You do not have permission to edit this folder</value>
+    <value>The user does not have permission to edit this folder.</value>
   </data>
   <data name="UserCannotReadFolderError.Text" xml:space="preserve">
-    <value>You do not have permission to read this folder</value>
+    <value>The user does not have permission to read this folder.</value>
   </data>
 </root>

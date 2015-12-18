@@ -118,31 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Description.Help" xml:space="preserve">
-    <value>Description of the Package</value>
+    <value>A description of the package.</value>
   </data>
   <data name="Description.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="Name.Help" xml:space="preserve">
-    <value>The Package Name  (eg. CompanyName.Name)</value>
+    <value>The package name (e.g. CompanyName.Name).</value>
   </data>
   <data name="Name.Text" xml:space="preserve">
     <value>Name:</value>
   </data>
   <data name="PackageType.Help" xml:space="preserve">
-    <value>The Package Type</value>
+    <value>The type of package.</value>
   </data>
   <data name="PackageType.Text" xml:space="preserve">
     <value>Type:</value>
   </data>
   <data name="Version.Help" xml:space="preserve">
-    <value>The version of the Package</value>
+    <value>The version of the package.</value>
   </data>
   <data name="Version.Text" xml:space="preserve">
     <value>Version:</value>
   </data>
   <data name="FriendlyName.Help" xml:space="preserve">
-    <value>The friendly name for this package</value>
+    <value>The friendly name of the package.</value>
   </data>
   <data name="FriendlyName.Text" xml:space="preserve">
     <value>Friendly Name:</value>
@@ -154,43 +154,43 @@
     <value>License:</value>
   </data>
   <data name="ReleaseNotes.Help" xml:space="preserve">
-    <value>The release notes for this version</value>
+    <value>The release notes for this version.</value>
   </data>
   <data name="ReleaseNotes.Text" xml:space="preserve">
     <value>Release Notes:</value>
   </data>
   <data name="Name.Required" xml:space="preserve">
-    <value>The name is a required field</value>
+    <value>The name is a required field.</value>
   </data>
   <data name="Version.Required" xml:space="preserve">
-    <value>The version is a required field</value>
+    <value>The version is a required field.</value>
   </data>
   <data name="PackageType.Required" xml:space="preserve">
     <value>The package type is a required field.</value>
   </data>
   <data name="Version.Validation" xml:space="preserve">
-    <value>A Package must have a Version number in the form of ##.##.##</value>
+    <value>A package must have a version number in the form of ##.##.##</value>
   </data>
   <data name="Owner.Help" xml:space="preserve">
-    <value>The Owner of the Package</value>
+    <value>The owner of the package.</value>
   </data>
   <data name="Owner.Text" xml:space="preserve">
     <value>Owner:</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
-    <value>The Package Author's Email Address</value>
+    <value>The email address of the package's author.</value>
   </data>
   <data name="Email.Text" xml:space="preserve">
     <value>Email Address:</value>
   </data>
   <data name="Organization.Help" xml:space="preserve">
-    <value>The Organization responsible for the Package</value>
+    <value>The organization responsible for the package.</value>
   </data>
   <data name="Organization.Text" xml:space="preserve">
     <value>Organization:</value>
   </data>
   <data name="URL.Help" xml:space="preserve">
-    <value>The Author's URL</value>
+    <value>The author's URL.</value>
   </data>
   <data name="URL.Text" xml:space="preserve">
     <value>URL:</value>
@@ -199,7 +199,7 @@
     <value>The friendly name is required.</value>
   </data>
   <data name="Email.Validation" xml:space="preserve">
-    <value>The email address must be valid</value>
+    <value>The email address must be valid.</value>
   </data>
   <data name="IconFile.Help" xml:space="preserve">
     <value>The icon filename for this package.</value>
@@ -211,13 +211,13 @@
     <value>catalog.dotnetnuke.com</value>
   </data>
   <data name="setupCredentials.Text" xml:space="preserve">
-    <value>Enter Store credentials</value>
+    <value>Enter Store Credentials</value>
   </data>
   <data name="WebserviceFailure.Text" xml:space="preserve">
-    <value>We cannot connect to the webservice</value>
+    <value>We cannot connect to the web service.</value>
   </data>
   <data name="WebservicePermission.Text" xml:space="preserve">
-    <value>This site does not allow external webservice connections</value>
+    <value>This site does not allow external web service connections.</value>
   </data>
   <data name="StoreFile.Text" xml:space="preserve">
     <value>https://www.snowcovered.com/Snowcovered2/AppGalleryHandler.ashx?PortalID=0</value>
@@ -226,16 +226,16 @@
     <value>Fetch List of Extensions</value>
   </data>
   <data name="PurchasedHelp.Text" xml:space="preserve">
-    <value>Here you can view the extensions you have purchased from the Store, and optionally download and deploy them to your site.  You will need to provide your Store credentials to view your purchases.</value>
+    <value>Here you can view the extensions you have purchased from the DNN Store and optionally download and deploy them to the site.  You will need to provide your Store credentials to view your purchases.</value>
   </data>
   <data name="PurchasedTitle.Text" xml:space="preserve">
     <value>Purchased Extensions</value>
   </data>
   <data name="deleteCredentials.Text" xml:space="preserve">
-    <value>Change Store details</value>
+    <value>Change Store Details</value>
   </data>
   <data name="updateCredentials.Text" xml:space="preserve">
-    <value>Update Store credentials</value>
+    <value>Update Store Credentials</value>
   </data>
   <data name="deploy.Text" xml:space="preserve">
     <value>Deploy</value>
@@ -247,19 +247,19 @@
     <value>Download</value>
   </data>
   <data name="extensionDescLabel.Help" xml:space="preserve">
-    <value>The description of the extension you have selected for deployment.</value>
+    <value>The description of the extension that has been selected for deployment.</value>
   </data>
   <data name="extensionDescLabel.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="extensionNamelabel.Help" xml:space="preserve">
-    <value>The name of the extension you have selected for deployment.</value>
+    <value>The name of the extension that has been selected for deployment.</value>
   </data>
   <data name="extensionNamelabel.Text" xml:space="preserve">
     <value>Extension Name:</value>
   </data>
   <data name="extensionTypeLabel.Help" xml:space="preserve">
-    <value>The type of extension you have selected for deployment.</value>
+    <value>The type of extension that has been selected for deployment.</value>
   </data>
   <data name="extensionTypeLabel.Text" xml:space="preserve">
     <value>Extension Type:</value>
@@ -277,7 +277,7 @@
     <value>An attempt was made to access an unexpected external file.</value>
   </data>
   <data name="NoData.Text" xml:space="preserve">
-    <value>There is no data to display</value>
+    <value>There is no data to display.</value>
   </data>
   <data name="PackageErrors.Text" xml:space="preserve">
     <value>&lt;u&gt;The following packages are invalid:&lt;/u&gt;&lt;br/&gt;</value>

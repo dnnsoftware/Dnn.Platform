@@ -157,7 +157,7 @@
     <value>Profile URL:</value>
   </data>
   <data name="ErrorDialogTitle.Text" xml:space="preserve">
-    <value>Unexpected Error</value>
+    <value>Unexpected error.</value>
   </data>
   <data name="SuccessMessage.Text" xml:space="preserve">
     <value>Profile URL was updated successfully.</value>
@@ -171,20 +171,10 @@
   <data name="cmdCommunications.Text" xml:space="preserve">
     <value>Communications</value>
   </data>
-    <data name="cmdHMACGenerate.Text" xml:space="preserve">
-    <value>Generate HMAC id's</value>
-  </data>
-     <data name="HMACAppIdLabel.Text" xml:space="preserve">
-    <value>HMAC App Id</value>
-  </data>
-       <data name="HMACAppSecretLabel.Text" xml:space="preserve">
-    <value>HMAC App Secret</value>
-  </data>
- 
   <data name="ControlTitle_profile.Text" xml:space="preserve">
     <value>Profile</value>
   </data>
   <data name="DisplayNameNotUnique.Text" xml:space="preserve">
-    <value>The Display Name you have entered is already in use, please choose a different one.</value>
+    <value>The display name you have entered is already in use, please choose a different one.</value>
   </data>
 </root>

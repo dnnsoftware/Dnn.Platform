@@ -118,28 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTrackingId.Help" xml:space="preserve">
-    <value>Website tracking ID obtained from Google</value>
+    <value>Enter the website tracking ID obtained from Google.</value>
   </data>
   <data name="lblTrackingId.Text" xml:space="preserve">
-    <value>Tracking ID</value>
+    <value>Tracking ID:</value>
   </data>
   <data name="lblUrlParameter.Help" xml:space="preserve">
-    <value>[OPTIONAL] Javascript code fragment that will be passed as a parameter to the page tracker (used to customize the value tracked in Google Analytics instead of the default location.href value)</value>
+    <value>[OPTIONAL] JavaScript code fragment that will be passed as a parameter to the page tracker.  This will be used to customize the value tracked in Google Analytics instead of the default location.href value.</value>
   </data>
   <data name="lblUrlParameter.Text" xml:space="preserve">
-    <value>URLParameter</value>
+    <value>URL Parameter</value>
   </data>
   <data name="Updated.Text" xml:space="preserve">
-    <value>Updated Google Analytics Configuration.</value>
+    <value>Google Analytics configuration is updated.</value>
   </data>
   <data name="valTrackingId.Text" xml:space="preserve">
-    <value>Tracking ID is Required!</value>
+    <value>Tracking ID is required.</value>
   </data>
   <data name="lblTrackForAdmin.Help" xml:space="preserve">
-    <value>Select this option to include Administrator and SuperUsers in results or disable to exclude these users.</value>
+    <value>Check this box to include Administrators and Super Users in results.</value>
   </data>
   <data name="lblTrackForAdmin.Text" xml:space="preserve">
-    <value>Track For Administrators?</value>
+    <value>Track for Administrators:</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Google Analytics</value>

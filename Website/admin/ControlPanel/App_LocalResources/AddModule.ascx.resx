@@ -133,13 +133,13 @@
     <value>Copy Module (with content)</value>
   </data>
   <data name="CopyModuleWcontent.ToolTip" xml:space="preserve">
-    <value>This creates an independent instance of the module which will contain both the settings and module content from the original.</value>
+    <value>This creates an independent instance of the module which will contain both the settings and module content from the original module.</value>
   </data>
   <data name="CopyModuleWOcontent.Text" xml:space="preserve">
     <value>Copy Module (without content)</value>
   </data>
   <data name="CopyModuleWOcontent.ToolTip" xml:space="preserve">
-    <value>This creates an independent instance of the module which will contain only the settings from the original. The content cannot be copied because the module does not support the IPortable interface.</value>
+    <value>This creates an independent instance of the module which will contain only the settings from the original module.  The content cannot be copied because the module does not support the IPortable interface.</value>
   </data>
   <data name="DefaultModule.Text" xml:space="preserve">
     <value>DNN_HTML</value>

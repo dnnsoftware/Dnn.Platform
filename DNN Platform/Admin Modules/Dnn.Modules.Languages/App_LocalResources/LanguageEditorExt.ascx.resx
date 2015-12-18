@@ -121,13 +121,13 @@
     <value>Name:</value>
   </data>
   <data name="RequiredField.ErrorMessage" xml:space="preserve">
-    <value>You Must Enter A Value For The Translation</value>
+    <value>You must enter a value for the translation.</value>
   </data>
   <data name="plDefault.Text" xml:space="preserve">
     <value>Default Value:</value>
   </data>
   <data name="Save.ErrorMessage" xml:space="preserve">
-    <value>A File Operation Failed. Please Check Resource File Permissions So Files Can Be Edited.</value>
+    <value>A File Operation Failed. Please check resource file permissions so files can be edited.</value>
   </data>
   <data name="ControlTitle_editresourcekey.Text" xml:space="preserve">
     <value>Language Editor</value>
@@ -136,15 +136,15 @@
     <value>&lt;h1&gt;About Languages&lt;/h1&gt;&lt;p&gt;The Super User can manage the suported languages installed on the system.&lt;/p&gt;</value>
   </data>
   <data name="plDefault.Help" xml:space="preserve">
-    <value>The Default Value for the resource key</value>
+    <value>The default value for the resource key.</value>
   </data>
   <data name="plFile.Help" xml:space="preserve">
-    <value>The resource file which contains this resource key</value>
+    <value>The resource file which contains this resource key.</value>
   </data>
   <data name="plFile.Text" xml:space="preserve">
     <value>Resource File:</value>
   </data>
   <data name="plName.Help" xml:space="preserve">
-    <value>The Name of the Resource Key being edited</value>
+    <value>The name of the resource key being edited.</value>
   </data>
 </root>

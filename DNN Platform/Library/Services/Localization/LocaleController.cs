@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Localization
             var portalID = (int)cacheItemArgs.ParamList[0];
             Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
                                                                        ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>());
+                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
             return locales;
         }
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>());
+                    locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
                 }
             return locales;
             }

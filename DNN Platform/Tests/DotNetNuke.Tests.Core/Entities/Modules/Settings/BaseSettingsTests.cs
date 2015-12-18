@@ -12,6 +12,12 @@ using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Web.Caching;
+
+    using DotNetNuke.Entities.Portals;
+
     public abstract class BaseSettingsTests
     {
         protected const string SettingNamePrefix = "UnitTestSetting_";
@@ -21,8 +27,11 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected const int PortalId = 246;
 
         protected MockRepository MockRepository;
+        protected Hashtable MockCacheCollection;
         protected Mock<CachingProvider> MockCache;
         protected Mock<IHostController> MockHostController;
+        protected Mock<IModuleController> MockModuleController;
+        protected Mock<IPortalController> MockPortalController;
 
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()
@@ -41,12 +50,27 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             // Setup Mock
             MockCache = MockComponentProvider.CreateNew<CachingProvider>();
             HostController.RegisterInstance(MockHostController.Object);
+
+            MockPortalController = MockRepository.Create<IPortalController>();
+            PortalController.SetTestableInstance(MockPortalController.Object);
+            MockModuleController = MockRepository.Create<IModuleController>();
+            ModuleController.SetTestableInstance(MockModuleController.Object);
+
+            // Setup mock cache
+            MockCacheCollection = new Hashtable();
+            MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
+            MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>())).Callback((string cacheKey, object itemToCache) => MockCacheCollection[cacheKey] = itemToCache);
+            MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DNNCacheDependency>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>(), It.IsAny<CacheItemPriority>(), It.IsAny<CacheItemRemovedCallback>()))
+                     .Callback((string cacheKey, object itemToCache, DNNCacheDependency dcd, DateTime dt, TimeSpan ts, CacheItemPriority cip, CacheItemRemovedCallback circ) => MockCacheCollection[cacheKey] = itemToCache);
+            MockCache.Setup(c => c.GetItem(It.IsAny<string>())).Returns((string cacheKey) => MockCacheCollection[cacheKey]);
         }
 
         [TearDown]
         public virtual void TearDown()
         {
             MockComponentProvider.ResetContainer();
+            PortalController.ClearInstance();
+            ModuleController.ClearInstance();
         }
 
         public enum TestingEnum
@@ -68,5 +92,22 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected static string ModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"ModuleSettings{moduleInfo.TabID}";
 
         protected static string TabModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"TabModuleSettings{moduleInfo.TabID}";
+
+        protected void MockPortalSettings(ModuleInfo moduleInfo, Dictionary<string, string> portalSettings)
+        {
+            this.MockPortalController.Setup(pc => pc.GetPortalSettings(moduleInfo.PortalID)).Returns(portalSettings);
+        }
+
+        protected void MockTabModuleSettings(ModuleInfo moduleInfo, Hashtable tabModuleSettings)
+        {
+            this.MockCache.Setup(c => c.GetItem("DNN_" + TabModuleSettingsCacheKey(moduleInfo)))
+                .Returns(new Dictionary<int, Hashtable> { { moduleInfo.TabModuleID, tabModuleSettings } });
+        }
+
+        protected void MockModuleSettings(ModuleInfo moduleInfo, Hashtable moduleSettings)
+        {
+            this.MockCache.Setup(c => c.GetItem("DNN_" + ModuleSettingsCacheKey(moduleInfo)))
+                .Returns(new Dictionary<int, Hashtable> { { moduleInfo.ModuleID, moduleSettings } });
+        }
     }
 }

@@ -705,6 +705,7 @@ ul.dnnAdminTabNav {
     width: 100%;
     height: 37px;
     border-bottom: 1px solid #c2c2c2;
+    padding: 0;
 }
 
     ul.dnnAdminTabNav li {
@@ -951,6 +952,9 @@ a.dnnFormHelp {
     margin-right: 18px;
     overflow: visible;
     text-align: right;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .dnnFormItem > .dnnLabel {
@@ -1650,7 +1654,7 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
     display: none;
     position: absolute;
     z-index: 99;
-    top: 29px;
+    top: 18px;
     left: 0;
     width: 200px;
     margin-left: 0;
@@ -1661,6 +1665,9 @@ div.dnnTagsInput > div > input.dnnTagsInvalid {
     -webkit-box-shadow: 0px 2px 0px 0px #bbb;
     box-shadow: 0px 2px 0px 0px #bbb;
     list-style-type: none;
+    -moz-padding-start: 0;
+    -webkit-padding-start: 0;
+
 }
 
     .dnnButtonDropdown-ul > li, .dnnButtonDropdown-ul > ul > li {
@@ -3064,7 +3071,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	height: 32px; 
 	cursor: pointer;
 	float:left;
-	background: url(../../images/eip_toolbar.png) no-repeat;
+	background: url(../../../../../images/eip_toolbar.png) no-repeat;
 	
 }
 .eipbackimg.editMode .eipbuttonbackimg {
@@ -3096,12 +3103,12 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 }
 
 .eipbutton_edit {
-	background: url(../../images/eip_edit.png) no-repeat 100% center;
+	background: url(../../../../../images/eip_edit.png) no-repeat 100% center;
 	float:left;
 }
 
 .eipbutton_save {
-	background: url(../../images/eip_save.png) no-repeat 100% center;
+	background: url(../../../../../images/eip_save.png) no-repeat 100% center;
 	float:left;
 }
 .eipbackimg.containerTitle .eipbutton_save {

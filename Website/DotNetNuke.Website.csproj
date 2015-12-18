@@ -167,6 +167,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="admin\Containers\DropDownActions.ascx.cs">
       <DependentUpon>dropdownactions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1114,17 +1117,6 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OAUTHAuthorize.aspx.cs">
-      <DependentUpon>OAUTHAuthorize.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OAUTHLogin.aspx.cs">
-      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OAUTHLogin.aspx.designer.cs">
-      <DependentUpon>OAUTHLogin.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="admin\Skins\DnnJsInclude.xml">
       <SubType>Designer</SubType>
@@ -1800,10 +1792,6 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery-ui.css" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
-    <Content Include="Resources\Shared\scripts\dnn.kopager.js" />
-    <Content Include="Resources\Shared\scripts\dnn.utility.js" />
-    <Content Include="OAUTHAuthorize.aspx" />
-    <Content Include="OAUTHLogin.aspx" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
@@ -1844,12 +1832,10 @@
     <Content Include="Portals\_default\Content Templates\ViewHtml.cshtml" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.10.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.11.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.13.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.15.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.14.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.12.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.16.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.17.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.18.SqlDataProvider" />
@@ -1857,16 +1843,12 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.20.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.21.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.22.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.23.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.24.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.25.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.27.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.28.SqlDataProvider" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -4044,7 +4026,6 @@
     <Content Include="Resources\Shared\scripts\dnn.PasswordStrength.js" />
     <Content Include="Resources\Shared\scripts\dnn.searchBox.js" />
     <Content Include="Resources\Shared\scripts\dnn.WebResourceUrl.js" />
-    <Content Include="Resources\Shared\scripts\init.js" />
     <Content Include="Resources\Shared\scripts\initTooltips.js" />
     <Content Include="Resources\Shared\scripts\jquery.history.js" />
     <Content Include="Resources\Shared\scripts\jquery\dnn.jScrollbar.css" />
@@ -4119,131 +4100,131 @@
     <Content Include="Robots.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddModule.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\AddPage.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx">
+    <Content Include="admin\ControlPanel\App_LocalResources\AddModule.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\AddPage.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\RibbonBar.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SiteAddPage.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\SwitchSite.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\UpdatePage.ascx.resx" />
-    <EmbeddedResource Include="admin\ControlPanel\App_LocalResources\WebUpload.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\Export.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\Import.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\ModuleLocalization.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\ModulePermissions.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\ModuleSettings.ascx.resx" />
-    <EmbeddedResource Include="admin\Modules\App_LocalResources\ViewSource.ascx.resx" />
-    <EmbeddedResource Include="admin\Portal\App_LocalResources\Privacy.ascx.resx" />
-    <EmbeddedResource Include="admin\Portal\App_LocalResources\Terms.ascx.resx" />
-    <EmbeddedResource Include="admin\Security\App_LocalResources\AccessDenied.ascx.resx" />
-    <EmbeddedResource Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
-    <EmbeddedResource Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToMobileSite.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\LinkToTabletSite.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Login.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Privacy.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Search.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Tags.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Terms.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\Toast.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\TreeViewMenu.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\User.ascx.resx" />
-    <EmbeddedResource Include="admin\Skins\App_LocalResources\UserAndLogin.ascx.resx" />
-    <EmbeddedResource Include="admin\Tabs\App_LocalResources\Export.ascx.resx" />
-    <EmbeddedResource Include="admin\Tabs\App_LocalResources\Import.ascx.resx" />
-    <EmbeddedResource Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
-    <EmbeddedResource Include="App_GlobalResources\Exceptions.resx" />
-    <EmbeddedResource Include="App_GlobalResources\FileUpload.resx" />
-    <EmbeddedResource Include="App_GlobalResources\GlobalResources.resx">
+    </Content>
+    <Content Include="admin\ControlPanel\App_LocalResources\RibbonBar.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\SiteAddPage.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\SwitchSite.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\UpdatePage.ascx.resx" />
+    <Content Include="admin\ControlPanel\App_LocalResources\WebUpload.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\Export.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\Import.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\ModuleLocalization.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\ModulePermissions.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\ModuleSettings.ascx.resx" />
+    <Content Include="admin\Modules\App_LocalResources\ViewSource.ascx.resx" />
+    <Content Include="admin\Portal\App_LocalResources\Privacy.ascx.resx" />
+    <Content Include="admin\Portal\App_LocalResources\Terms.ascx.resx" />
+    <Content Include="admin\Security\App_LocalResources\AccessDenied.ascx.resx" />
+    <Content Include="admin\Security\App_LocalResources\PasswordReset.ascx.resx" />
+    <Content Include="admin\Security\App_LocalResources\SendPassword.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Copyright.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Language.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\LinkToFullSite.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\LinkToMobileSite.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\LinkToTabletSite.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Login.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Privacy.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Search.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Tags.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Terms.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\Toast.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\TreeViewMenu.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\User.ascx.resx" />
+    <Content Include="admin\Skins\App_LocalResources\UserAndLogin.ascx.resx" />
+    <Content Include="admin\Tabs\App_LocalResources\Export.ascx.resx" />
+    <Content Include="admin\Tabs\App_LocalResources\Import.ascx.resx" />
+    <Content Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
+    <Content Include="App_GlobalResources\Exceptions.resx" />
+    <Content Include="App_GlobalResources\FileUpload.resx" />
+    <Content Include="App_GlobalResources\GlobalResources.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\SharedResources.resx">
+    </Content>
+    <Content Include="App_GlobalResources\SharedResources.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\WebControls.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\Address.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\DualListControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\filepickeruploader.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\Help.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\LocaleSelectorControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\ModuleAuditControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\SkinControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\TextEditor.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\URLControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\UrlTrackingControl.ascx.resx" />
-    <EmbeddedResource Include="controls\App_LocalResources\User.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
+    </Content>
+    <Content Include="App_GlobalResources\WebControls.resx" />
+    <Content Include="controls\App_LocalResources\Address.ascx.resx" />
+    <Content Include="controls\App_LocalResources\DualListControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\filepickeruploader.ascx.resx" />
+    <Content Include="controls\App_LocalResources\Help.ascx.resx" />
+    <Content Include="controls\App_LocalResources\LocaleSelectorControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\ModuleAuditControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\SkinControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\TextEditor.ascx.resx" />
+    <Content Include="controls\App_LocalResources\URLControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\UrlTrackingControl.ascx.resx" />
+    <Content Include="controls\App_LocalResources\User.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Authentication.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Login.ascx.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
+    </Content>
+    <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
     <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\LanguagePacks.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\App_LocalResources\UsageDetails.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\AuthenticationEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleControl.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleDefinition.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\JavaScriptLibraryEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\LanguagePackEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\ModuleEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UsageDetails.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\AuthenticationEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleControl.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleDefinition.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\JavaScriptLibraryEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\LanguagePackEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\ModuleEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
+    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
+    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
+    </Content>
+    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
+    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
+    <Content Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleStatus.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchResults.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\EditGroups.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\EditProfileDefinition.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\EditRoles.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\EditUser.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\ManageUsers.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\MemberServices.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Membership.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Password.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Profile.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\ProfileDefinitions.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Register.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Roles.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\SecurityRoles.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
-    <EmbeddedResource Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
-    <EmbeddedResource Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
+    </Content>
+    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleStatus.ascx.resx" />
+    <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
+    <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
+    <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
+    <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchResults.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\EditGroups.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\EditProfileDefinition.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\EditRoles.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\EditUser.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\ManageUsers.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\MemberServices.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Membership.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Password.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Profile.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\ProfileDefinitions.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Register.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Roles.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\SecurityRoles.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\SharedResources.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\User.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\Users.ascx.resx" />
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\UserSettings.ascx.resx" />
+    <Content Include="DesktopModules\Admin\ViewProfile\App_LocalResources\Settings.ascx.resx" />
+    <Content Include="DesktopModules\Admin\ViewProfile\App_LocalResources\SharedResources.resx" />
+    <Content Include="DesktopModules\Admin\ViewProfile\App_LocalResources\ViewProfile.ascx.resx" />
+    <Content Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Login.ascx.resx" />
+    <Content Include="DesktopModules\AuthenticationServices\DNN\App_LocalResources\Settings.ascx.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.de-DE.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.es-ES.resx" />
     <None Include="Install\App_LocalResources\Installwizard.aspx.fr-FR.resx" />
@@ -4256,10 +4237,10 @@
     <None Include="Install\App_LocalResources\UpgradeWizard.aspx.it-IT.resx" />
     <None Include="Install\App_LocalResources\UpgradeWizard.aspx.nl-NL.resx" />
     <None Include="Install\App_LocalResources\UpgradeWizard.aspx.resx" />
-    <EmbeddedResource Include="Install\DotNetNuke.install.config.resources" />
-    <EmbeddedResource Include="Portals\_default\Logs\LogConfig\CacheErrorTemplate.xml.resources" />
-    <EmbeddedResource Include="Portals\_default\Logs\LogConfig\LogConfigTemplate.xml.resources" />
-    <EmbeddedResource Include="Portals\_default\Logs\LogConfig\SecurityExceptionTemplate.xml.resources" />
+    <Content Include="Install\DotNetNuke.install.config.resources" />
+    <Content Include="Portals\_default\Logs\LogConfig\CacheErrorTemplate.xml.resources" />
+    <Content Include="Portals\_default\Logs\LogConfig\LogConfigTemplate.xml.resources" />
+    <Content Include="Portals\_default\Logs\LogConfig\SecurityExceptionTemplate.xml.resources" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Browsers\ie.browser" />
@@ -4547,10 +4528,6 @@
     <ProjectReference Include="..\DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj">
-      <Project>{c7dab16c-365f-4e43-af8a-d50087df7c49}</Project>
-      <Name>Dnn.OAuth.AuthorizationServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

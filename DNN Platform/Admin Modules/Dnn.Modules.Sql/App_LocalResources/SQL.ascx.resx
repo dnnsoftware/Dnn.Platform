@@ -127,7 +127,7 @@
     <value>There is an error in your query!</value>
   </data>
   <data name="QuerySuccess.Text" xml:space="preserve">
-    <value>The Query completed successfully!</value>
+    <value>The query completed successfully!</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>SQL</value>
@@ -139,7 +139,7 @@
     <value>SQL File:</value>
   </data>
   <data name="plSqlScript.Help" xml:space="preserve">
-    <value>Upload a file into the SQL Query window (Optional).</value>
+    <value>Optionally upload a file into the SQL Query window.</value>
   </data>
   <data name="cmdUpload.Text" xml:space="preserve">
     <value>Load File</value>
@@ -151,16 +151,16 @@
     <value>Connection:</value>
   </data>
   <data name="plConnection.Help" xml:space="preserve">
-    <value>Select the Connection String you wish to use ( loaded from the list in the web.config file )</value>
+    <value>Select the Connection String to use. This is loaded from the list in the web.config file.</value>
   </data>
   <data name="NoDataReturned.Text" xml:space="preserve">
-    <value>The query did not return any data</value>
+    <value>The query did not return any data.</value>
   </data>
   <data name="scriptLabel.Text" xml:space="preserve">
     <value>Script</value>
   </data>
   <data name="scriptLabel.Help" xml:space="preserve">
-    <value>Enter the SQL you wish to execute. You can use more than one SELECT statement to return multiple result sets.</value>
+    <value>Enter the SQL to execute. Use more than one SELECT statement to return multiple result sets.</value>
   </data>
   <data name="errorLabel.Help" xml:space="preserve">
     <value>This is the error returned by SQL server after executing your SQL script.</value>
@@ -169,13 +169,13 @@
     <value>Error Details</value>
   </data>
   <data name="CnnStringNotFound.Text" xml:space="preserve">
-    <value>The query has been loaded but the associated Connection ("{0}") was not found. Default "SiteSqlServer" Connection has been selected instead.</value>
+    <value>The query has been loaded but the associated Connection ("{0}") was not found.  Default "SiteSqlServer" Connection has been selected instead.</value>
   </data>
   <data name="Deleted.Text" xml:space="preserve">
     <value>The query has been successfully deleted.</value>
   </data>
   <data name="lblSavedQuery.Help" xml:space="preserve">
-    <value>You can select a saved query and run or modify and save it again. Or you can select to create a new query.</value>
+    <value>Choose to create a new query or select a saved query and run or modify and save it again.</value>
   </data>
   <data name="lblSavedQuery.Text" xml:space="preserve">
     <value>Queries:</value>
@@ -208,7 +208,7 @@
     <value>Save</value>
   </data>
   <data name="NoName.Text" xml:space="preserve">
-    <value>You have to provide a name for the query</value>
+    <value>You have to provide a name for the query.</value>
   </data>
   <data name="Saved.Text" xml:space="preserve">
     <value>The query has been successfully saved.</value>
@@ -280,6 +280,6 @@
     <value>Search:</value>
   </data>
   <data name="sInfoEmpty.Text" xml:space="preserve">
-    <value>There are no entries to display</value>
+    <value>There are no entries to display.</value>
   </data>
 </root>

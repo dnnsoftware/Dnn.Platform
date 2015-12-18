@@ -187,7 +187,7 @@
     <value>Disabled</value>
   </data>
   <data name="ManuallyStopped.Text" xml:space="preserve">
-    <value>Manually Stopped From Scheduler Status Page</value>
+    <value>Manually stopped from scheduler status page</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>

@@ -3675,7 +3675,9 @@ namespace DotNetNuke.Services.Upgrade
 						DisplayTitle = displayTitle
 					};
 
-				    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
+                    ModuleController.Instance.InitialModulePermission(moduleInfo, moduleInfo.TabID, inheritPermissions ? 0 : 1);
+
+                    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
 
                     try
 					{
@@ -5297,6 +5299,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "8.0.0.26":
                             UpgradeToVersion80026();
                             break;
+                        case "8.0.0.27":
+                            UpgradeToVersion80027();
+                            break;
                     }
                 }
             }
@@ -5393,13 +5398,21 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//Skins");
             UninstallPackage("DotNetNuke.Skins", "Module");
             UninstallPackage("DotNetNuke.Skin Designer", "Module");
-            
+            UninstallPackage("DotNetNuke.Banners", "Module");
+
             RemoveGettingStartedPages();
         }
 
         private static void UpgradeToVersion80026()
         {
             FixTabsMissingLocalizedFields();
+        }
+
+        private static void UpgradeToVersion80027()
+        {
+            RemoveAdminPages("//Admin//DynamicContentTypeManager");
+            UninstallPackage("Dnn.DynamicContentManager", "Module");
+            UninstallPackage("Dnn.DynamicContentViewer", "Module");
         }
 
         private static int MaxIncremental(Version version)

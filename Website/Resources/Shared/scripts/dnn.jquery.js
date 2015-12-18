@@ -356,6 +356,13 @@
                     }
                     params += "ContainerSrc=" + container;
                 }
+                if (opts.ModuleId) {
+                    if (params !== "?") {
+                        params += "&ModuleID=" + opts.ModuleId;
+                    } else {
+                        params += "ModuleID=" + opts.ModuleId;
+                    }
+                }
                 if (params != "?") {
                     window.open(encodeURI(opts.baseUrl + params.replace(/.ascx/gi, '')), "skinpreview");
                 }
@@ -552,7 +559,7 @@
             if (parentCheckBoxHolder.length || parentRadioButtonHolder.length) return;
             var $ch = addEvents(ch);
             if (ch.wrapper) ch.wrapper.remove();
-            ch.wrapper = $('<span class="' + settings.cls + '"><span class="mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFAAAAAAAApWe5zwAAAAF0Uk5TAEDm2GYAAAAMSURBVHjaYmAACDAAAAIAAU9tWeEAAAAASUVORK5CYII=" /></span></span>');
+            ch.wrapper = $('<span class="' + settings.cls + '"><span class="mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFAAAAAAAApWe5zwAAAAF0Uk5TAEDm2GYAAAAMSURBVHjaYmAACDAAAAIAAU9tWeEAAAAASUVORK5CYII=" alt="checkbox" /></span></span>');
             ch.wrapperInner = ch.wrapper.children('span:eq(0)');
             ch.wrapper.hover(
                 function (e) { ch.wrapperInner.addClass(settings.cls + '-hover'); cb(e); },

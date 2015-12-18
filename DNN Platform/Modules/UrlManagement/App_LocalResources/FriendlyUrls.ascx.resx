@@ -121,9 +121,9 @@
     <value>Friendly URL Settings</value>
   </data>
   <data name="plUseFriendlyUrls.Help" xml:space="preserve">
-    <value>Check to enable search engine friendly URLs.</value>
+    <value>Check this box to enable search engine friendly URLs.</value>
   </data>
   <data name="plUseFriendlyUrls.Text" xml:space="preserve">
-    <value>Use Friendly URLs?</value>
+    <value>Use Friendly URLs:</value>
   </data>
 </root>

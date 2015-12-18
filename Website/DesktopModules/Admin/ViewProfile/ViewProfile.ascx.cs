@@ -185,8 +185,13 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     if (!string.IsNullOrEmpty(value))
                     {
                         value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
-                        value = value.Replace(";", string.Empty).Replace("//", string.Empty);
+                        value = value
+                            .Replace("\r", string.Empty)
+                            .Replace("\n", " ")
+                            .Replace(";", string.Empty)
+                            .Replace("://", ":||") //protect http protocols won't be replaced in next step
+                            .Replace("//", string.Empty)
+                            .Replace(":||", "://"); //restore http protocols
                     }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');

@@ -12,17 +12,17 @@
             <div class="dnnFormItem"><p><asp:label id="lblChangeHelp" runat="server" ViewStateMode="Disabled" /></p></div>
             <div id="oldPasswordRow" runat="server" class="dnnFormItem">
                 <dnn:label id="plOldPassword" runat="server" controlname="txtOldPassword" />
-                <asp:textbox id="txtOldPassword" runat="server" textmode="Password" size="25" maxlength="128" />
+                <asp:textbox id="txtOldPassword" runat="server" textmode="Password" size="25" maxlength="39" />
             </div>
             <div class="dnnFormItem">
                 <dnn:label id="plNewPassword" runat="server" controlname="txtNewPassword" />
                 <asp:Panel ID="passwordContainer" runat="server" ViewStateMode="Disabled">
-                    <asp:textbox id="txtNewPassword" runat="server" textmode="Password" size="25" maxlength="20" />
+                    <asp:textbox id="txtNewPassword" runat="server" textmode="Password" size="25" maxlength="39" />
                 </asp:Panel>
             </div>
             <div class="dnnFormItem">
                 <dnn:label id="plNewConfirm" runat="server" controlname="txtNewConfirm" />
-                <asp:textbox id="txtNewConfirm" runat="server" textmode="Password" size="25" maxlength="128" CssClass="password-confirm" />
+                <asp:textbox id="txtNewConfirm" runat="server" textmode="Password" size="25" maxlength="39" CssClass="password-confirm" />
             </div>
             <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
                 <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />

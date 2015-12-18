@@ -121,22 +121,22 @@
     <value>Landscape</value>
   </data>
   <data name="lblDimensions.Help" xml:space="preserve">
-    <value>Show dimensions.</value>
+    <value>Display the dimensions for this device.</value>
   </data>
   <data name="lblDimensions.Text" xml:space="preserve">
-    <value>Show Dimensions</value>
+    <value>Show Dimensions:</value>
   </data>
   <data name="lblOrientation.Help" xml:space="preserve">
-    <value>Device's orientation.</value>
+    <value>Choose the orientation of the device.</value>
   </data>
   <data name="lblOrientation.Text" xml:space="preserve">
-    <value>Orientation</value>
+    <value>Orientation:</value>
   </data>
   <data name="lblProfile.Help" xml:space="preserve">
-    <value>Select the profile want to preview.</value>
+    <value>Select the profile you want to preview.</value>
   </data>
   <data name="lblProfile.Text" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profile:</value>
   </data>
   <data name="PageTitle.Text" xml:space="preserve">
     <value>Preview Current Page</value>
@@ -145,12 +145,12 @@
     <value>Portrait</value>
   </data>
   <data name="lblSendAgent.Help" xml:space="preserve">
-    <value>Enabling this option will simulate the real device experience. Any module utilizing device capabilities will render device-appropriate content. Redirects will also happen as if user is consuming content using a real device</value>
+    <value>Enabling this option will simulate the real device experience.  Any module utilizing device capabilities will render device-appropriate content.  Redirects will also happen as if user is consuming content using a real device.</value>
   </data>
   <data name="lblSendAgent.Text" xml:space="preserve">
     <value>Enable Device Detection</value>
   </data>
   <data name="lblPreviewInfo.Text" xml:space="preserve">
-    <value>The preview functionality allows you to visualize the size of your content in relation to the device resolution. Mobile themes must adjust to fit the screen and line returns will be added to the content as needed.&lt;br/&gt;If you see a horizontal scrollbar, it means the content in the page is bigger than the resolution of the device and your content will scale if the browser supports it.</value>
+    <value>The preview functionality allows you to visualize the size of your content in relation to the device resolution.  Mobile themes must adjust to fit the screen and line returns will be added to the content as needed.&lt;br/&gt;&lt;br/&gt;If you see a horizontal scroll bar, it means the content in the page is bigger than the resolution of the device and your content will scale if the browser supports it.</value>
   </data>
 </root>
