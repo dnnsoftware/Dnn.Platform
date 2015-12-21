@@ -158,8 +158,9 @@
             <asp:RequiredFieldValidator ID="reqEmailAddress" runat="server" ControlToValidate="txtEmailAddress" CssClass="dnnFormMessage dnnFormError" ResourceKey="plEmailAddress.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
-			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" />
-			<asp:TextBox ID="txtSubject" runat="server" Rows="2" Columns="25" TextMode="MultiLine" />
+			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" CssClass="dnnFormRequired"/>
+			<asp:TextBox ID="txtSubject" runat="server" MaxLength="78"/>
+            <asp:RequiredFieldValidator ID="reqSubject" runat="server" ControlToValidate="txtSubject" CssClass="dnnFormMessage dnnFormError" ResourceKey="plSubject.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
 			<dnn:Label ID="plMessage" runat="server" ResourceKey="SendMessage" ControlName="txtMessage" Suffix=":" />
