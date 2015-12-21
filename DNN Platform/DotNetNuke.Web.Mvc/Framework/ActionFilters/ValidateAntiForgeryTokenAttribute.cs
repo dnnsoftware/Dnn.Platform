@@ -19,16 +19,18 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
                 {
                     var headers = httpContext.Request.Headers;
-                    var token = httpContext.Request.Headers.AllKeys.Contains("RequestVerificationToken")
-                        ? httpContext.Request.Headers.GetValues("RequestVerificationToken").FirstOrDefault()
-                        : (httpContext.Request.Params.AllKeys.Contains("__RequestVerificationToken")
-                            ? httpContext.Request.Params.GetValues("__RequestVerificationToken").FirstOrDefault()
-                            : null);
+                    var form = httpContext.Request.Form;
+                    //Try to fetch the token from Headers. (Used with Dnn service framework.). 
+                    //If not found then fetch it from form fields. (Would be used with standard MVC call).
+                    var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
+                        : (
+                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault(): null
+                        );
+
                     var cookieValue = GetAntiForgeryCookieValue(httpContext);
                     if (token != null)
                     {
-                        AntiForgery.Instance.Validate(cookieValue,
-                            token.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries)[0]);
+                        AntiForgery.Instance.Validate(cookieValue, token);
                     }
                     else
                     {
