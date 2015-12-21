@@ -89,13 +89,17 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         //return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://") &&
-                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-                                StringComparison.InvariantCultureIgnoreCase))
+
+                        //clean the return url to avoid possible XSS attack.
+                        var cleanUrl = new PortalSecurity().InputFilter(_RedirectURL, PortalSecurity.FilterFlag.NoScripting);
+                        if (_RedirectURL != cleanUrl)
                         {
-                            _RedirectURL = "";
+                            _RedirectURL = string.Empty;
                         }
+
+                        //clean the return url to avoid possible XSS attack.
+                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
                         if (_RedirectURL.Contains("?returnurl"))
                         {
                             string baseURL = _RedirectURL.Substring(0,
