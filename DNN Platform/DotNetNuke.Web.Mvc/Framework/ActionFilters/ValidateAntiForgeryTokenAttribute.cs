@@ -19,9 +19,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
                 {
                     var headers = httpContext.Request.Headers;
-                    var token = httpContext.Request.Params.AllKeys.Contains("__RequestVerificationToken")
-                        ? httpContext.Request.Params.GetValues("__RequestVerificationToken").FirstOrDefault()
-                        : null;
+                    var token = httpContext.Request.Headers.AllKeys.Contains("RequestVerificationToken")
+                        ? httpContext.Request.Headers.GetValues("RequestVerificationToken").FirstOrDefault()
+                        : (httpContext.Request.Params.AllKeys.Contains("__RequestVerificationToken")
+                            ? httpContext.Request.Params.GetValues("__RequestVerificationToken").FirstOrDefault()
+                            : null);
                     var cookieValue = GetAntiForgeryCookieValue(httpContext);
                     if (token != null)
                     {
