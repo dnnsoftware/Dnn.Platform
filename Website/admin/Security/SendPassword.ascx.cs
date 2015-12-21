@@ -91,13 +91,6 @@ namespace DotNetNuke.Modules.Admin.Security
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
 
                         //clean the return url to avoid possible XSS attack.
-                        var cleanUrl = new PortalSecurity().InputFilter(_RedirectURL, PortalSecurity.FilterFlag.NoScripting);
-                        if (_RedirectURL != cleanUrl)
-                        {
-                            _RedirectURL = string.Empty;
-                        }
-
-                        //clean the return url to avoid possible XSS attack.
                         _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
 
                         if (_RedirectURL.Contains("?returnurl"))
