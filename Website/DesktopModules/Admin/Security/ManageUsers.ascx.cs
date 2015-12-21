@@ -85,11 +85,10 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
 						//return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://"))
-                        {
-                            _RedirectURL = "";
-                        }
+
+                        //clean the return url to avoid possible XSS attack.
+                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
                         if (_RedirectURL.Contains("?returnurl"))
                         {
                             string baseURL = _RedirectURL.Substring(0, _RedirectURL.IndexOf("?returnurl"));

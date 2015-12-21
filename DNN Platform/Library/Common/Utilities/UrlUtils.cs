@@ -306,10 +306,39 @@ namespace DotNetNuke.Common.Utilities
 
         public static string ValidReturnUrl(string url)
         {
-            //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-            if (url != null && url.Contains("://"))
+            if (string.IsNullOrEmpty(url))
             {
-                url = "";
+                return url;
+            }
+
+            //clean the return url to avoid possible XSS attack.
+            var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                url = string.Empty;
+            }
+
+            //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+            if (url.Contains("://"))
+            {
+                var portalSettings = PortalSettings.Current;
+                if (portalSettings == null ||
+                        !url.StartsWith(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = string.Empty;
+                }
+            }
+
+            if (url.StartsWith("//"))
+            {
+                var urlWithNoProtocol = url.Substring(2);
+                var portalSettings = PortalSettings.Current;
+                if (portalSettings == null ||
+                        !urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = string.Empty;
+                }
+
             }
             return url;
         }
