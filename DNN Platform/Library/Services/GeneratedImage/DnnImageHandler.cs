@@ -160,6 +160,15 @@ namespace DotNetNuke.Services.GeneratedImage
                                 ? -1
                                 : Convert.ToInt32(parameters["userid"])
                         };
+                        IFileInfo photoFile;
+                        if (!uppTrans.TryGetPhotoFile(out photoFile))
+                        {
+                            var noAvatar = uppTrans.GetNoAvatarImage();
+                            return new ImageInfo(noAvatar)
+                            {
+                                IsEmptyImage = true
+                            };
+                        }
                         ImageTransforms.Add(uppTrans);
                         break;
 
@@ -186,13 +195,19 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             var fileId = Convert.ToInt32(parameters["FileId"]);
                             var file = FileManager.Instance.GetFile(fileId);
-                            if (file != null)
+                            if (file == null)
                             {
-                                ContentType = GetImageFormat(file.Extension);
-                                secureFileTrans.SecureFile = file;
-                                secureFileTrans.EmptyImage = EmptyImage;
-                                ImageTransforms.Add(secureFileTrans);
+                                return GetEmptyImageInfo();
                             }
+                            var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                            if (!secureFileTrans.DoesHaveReadFolderPermission(folder))
+                            {
+                                return GetEmptyImageInfo();
+                            }
+                            ContentType = GetImageFormat(file.Extension);
+                            secureFileTrans.SecureFile = file;
+                            secureFileTrans.EmptyImage = EmptyImage;
+                            ImageTransforms.Add(secureFileTrans);
                         }
                         break;
 
@@ -208,7 +223,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             var fullFilePath = HttpContext.Current.Server.MapPath(filePath);
                             if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(filePath))
                             {
-                                return new ImageInfo(EmptyImage);
+                                return GetEmptyImageInfo();
                             }
                             imgFile = fullFilePath;
                         }
@@ -216,7 +231,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             if (!parameters["Url"].StartsWith("http"))
                             {
-                                return new ImageInfo(EmptyImage);
+                                return GetEmptyImageInfo();
                             }
                             imgUrl = parameters["Url"];
                         }
@@ -286,7 +301,7 @@ namespace DotNetNuke.Services.GeneratedImage
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return new ImageInfo(EmptyImage);
+                return GetEmptyImageInfo();
             }
 
             // Resize-Transformation
@@ -419,6 +434,14 @@ namespace DotNetNuke.Services.GeneratedImage
                 dummy.Save(ms, ImageFormat.Jpeg);
                 return new ImageInfo(ms.ToArray());
             }
+        }
+
+        private ImageInfo GetEmptyImageInfo()
+        {
+            return new ImageInfo(EmptyImage)
+            {
+                IsEmptyImage = true
+            };
         }
 
         private static bool TryParseDimension(string value, out int dimension)

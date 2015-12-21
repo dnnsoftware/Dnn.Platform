@@ -45,72 +45,80 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns>Image result after image transformation</returns>
         public override Image ProcessImage(Image image)
 		{
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var user = UserController.Instance.GetUser(settings.PortalId, UserID);
-
             IFileInfo photoFile;
 
-            var noAvatar = new Bitmap(Globals.ApplicationMapPath +  @"\images\no_avatar.gif");
-		    if (user != null && TryGetPhotoFile(user, out photoFile))
+		    if (TryGetPhotoFile(out photoFile))
 		    {
 		        if (!IsImageExtension(photoFile.Extension))
-                    return noAvatar;
+		        {
+		            return GetNoAvatarImage();
+		        }
 
-                using(var content = FileManager.Instance.GetFileContent(photoFile))
+		        using(var content = FileManager.Instance.GetFileContent(photoFile))
 		        {
 		            return new Bitmap(content);
 		        }
 		    }
-		    return noAvatar;
+		    return GetNoAvatarImage();
 		}
-        
+
+        /// <summary>
+        /// Get the Bitmap of the No Avatar Image
+        /// </summary>
+        /// <returns></returns>
+        public Bitmap GetNoAvatarImage()
+        {
+            return new Bitmap(Globals.ApplicationMapPath + @"\images\no_avatar.gif");
+        }
+
         /// <summary>
         /// whether current user has permission to view target user's photo.
         /// </summary>
-        /// <param name="targetUser"></param>
         /// <param name="photoFile"></param>
         /// <returns></returns>
-        private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
+        public bool TryGetPhotoFile(out IFileInfo photoFile)
         {
-            var isVisible = false;
             photoFile = null;
 
-            var user = UserController.Instance.GetCurrentUserInfo();
             var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var targetUser = UserController.Instance.GetUser(settings.PortalId, UserID);
             var photoProperty = targetUser.Profile.GetProperty("Photo");
-            if (photoProperty != null)
+            if (photoProperty == null)
             {
-                isVisible = user.UserID == targetUser.UserID;
-                if (!isVisible)
-                {
-                    switch (photoProperty.ProfileVisibility.VisibilityMode)
-                    {
-                        case UserVisibilityMode.AllUsers:
-                            isVisible = true;
-                            break;
-                        case UserVisibilityMode.MembersOnly:
-                            isVisible = user.UserID > 0;
-                            break;
-                        case UserVisibilityMode.AdminOnly:
-                            isVisible = user.IsInRole(settings.AdministratorRoleName);
-                            break;
-                        case UserVisibilityMode.FriendsAndGroups:
-                            break;
-                    }
-                }
+                return false;
+            }
 
-                if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var isVisible = user.UserID == targetUser.UserID;
+            if (!isVisible)
+            {
+                switch (photoProperty.ProfileVisibility.VisibilityMode)
                 {
-                    photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
-                    if (photoFile == null)
-                    {
-                        isVisible = false;
-                    }
+                    case UserVisibilityMode.AllUsers:
+                        isVisible = true;
+                        break;
+                    case UserVisibilityMode.MembersOnly:
+                        isVisible = user.UserID > 0;
+                        break;
+                    case UserVisibilityMode.AdminOnly:
+                        isVisible = user.IsInRole(settings.AdministratorRoleName);
+                        break;
+                    case UserVisibilityMode.FriendsAndGroups:
+                        break;
                 }
-                else
+            }
+
+            if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
+            {
+                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                if (photoFile == null)
                 {
                     isVisible = false;
                 }
+            }
+            else
+            {
+                isVisible = false;
             }
 
             return isVisible;

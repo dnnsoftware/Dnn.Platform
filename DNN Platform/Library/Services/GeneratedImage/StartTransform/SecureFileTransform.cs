@@ -49,17 +49,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// </remarks>
         public override Image ProcessImage(Image image)
         {
-            if (SecureFile == null)
-            {
-                return EmptyImage;
-            }
-
-            var folder = FolderManager.Instance.GetFolder(SecureFile.FolderId);
-            if (!DoesHaveReadFolderPermission(folder))
-            {
-                return EmptyImage;
-            }
-
             // if SecureFile is no ImageFile return FileType-Image instead
             if (!IsImageExtension(SecureFile.Extension))
 		    {
@@ -78,7 +67,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
 		}
 
-        private static bool DoesHaveReadFolderPermission(IFolderInfo folder)
+        /// <summary>
+        /// Checks if the current user have READ permission on a given folder
+        /// </summary>
+        /// <param name="folder">Folder info object</param>
+        /// <returns>True if the user has READ permission, false otherwise</returns>
+        public bool DoesHaveReadFolderPermission(IFolderInfo folder)
         {
             return FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "Read");
         }
