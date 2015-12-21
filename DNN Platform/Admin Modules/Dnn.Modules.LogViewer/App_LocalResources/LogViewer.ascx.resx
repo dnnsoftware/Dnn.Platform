@@ -281,4 +281,10 @@
   <data name="SelectException.Text" xml:space="preserve">
     <value>Please select at least one log entry.</value>
   </data>
+  <data name="LogEntryDefaultMsg.Text" xml:space="preserve">
+    <value>Attached are my error log entries.</value>
+  </data>
+  <data name="LogEntryDefaultSubject.Text" xml:space="preserve">
+    <value>Error Logs</value>
+  </data>
 </root>
