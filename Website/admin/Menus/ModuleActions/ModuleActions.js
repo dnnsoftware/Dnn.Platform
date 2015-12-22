@@ -347,7 +347,6 @@
                     container.trigger("resize");
                 }
 
-                setTimeout(loopyFunc, 250);
             };
 
             container.trigger("resize", function () {
