@@ -395,7 +395,7 @@ namespace Dnn.Modules.Tabs
                 }
                 if (!Null.IsNull(Tab.EndDate))
                 {
-                    endDatePicker.SelectedDate = Tab.EndDate.Date.Equals(DateTime.MaxValue.Date) ? endDatePicker.MaxDate: Tab.EndDate;
+                    endDatePicker.SelectedDate = Tab.EndDate;
                 }
 
                 endDatePicker.MinDate = DateTime.Now;
