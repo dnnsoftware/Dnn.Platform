@@ -48,6 +48,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Blocker;
 
 #endregion
 
@@ -173,6 +174,13 @@ namespace DotNetNuke.Web.Common.Internal
                 return;
             }
 
+            if (IsInstallInProgress(app))
+            {
+                //TODO Remove after testing
+                Logger.Error("Installation in progress");
+                return;
+            }
+
             Initialize.Init(app);
             Initialize.RunSchedule(app.Request);
         }
@@ -185,6 +193,11 @@ namespace DotNetNuke.Web.Common.Internal
 				page.HeaderIsWritten = true;
 			}
 		}
+
+        private bool IsInstallInProgress(HttpApplication app)
+        {
+            return InstallBlocker.Instance.IsInstallInProgress();
+        }
 
     }
 }
