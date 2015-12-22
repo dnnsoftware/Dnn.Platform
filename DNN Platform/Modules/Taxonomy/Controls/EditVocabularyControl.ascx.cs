@@ -39,6 +39,10 @@ namespace DotNetNuke.Modules.Taxonomy.Views.Controls
 
         public string LocalResourceFile { get; set; }
 
+        public string descriptionFieldClientID { get; set; }
+
+        public string nameFieldClientID { get; set; }
+
         #endregion
 
         public void BindVocabulary(Vocabulary vocabulary, bool editEnabled, bool showScope)
@@ -76,6 +80,8 @@ namespace DotNetNuke.Modules.Taxonomy.Views.Controls
             scopeLabel.Visible = !(IsAddMode && showScope);
             typeList.Visible = IsAddMode;
             typeLabel.Visible = !IsAddMode;
+            descriptionFieldClientID = descriptionTextBox.ClientID;
+            nameFieldClientID = nameTextBox.ClientID;
         }
 
     }
