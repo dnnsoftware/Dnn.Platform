@@ -1254,35 +1254,31 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                ZipEntry objZipEntry;
-                string LocalFileName;
-                string RelativeDir;
-                string FileNamePath;
-                objZipEntry = zipStream.GetNextEntry();
-                while (objZipEntry != null)
+                var zipEntry = zipStream.GetNextEntry();
+                while (zipEntry != null)
                 {
                     HtmlUtils.WriteKeepAlive();
-                    LocalFileName = objZipEntry.Name;
-                    RelativeDir = Path.GetDirectoryName(objZipEntry.Name);
-                    if ((RelativeDir != string.Empty) && (!Directory.Exists(Path.Combine(destPath, RelativeDir))))
+                    var localFileName = zipEntry.Name;
+                    var relativeDir = Path.GetDirectoryName(zipEntry.Name);
+                    if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
                     {
-                        Directory.Create(Path.Combine(destPath, RelativeDir));
+                        Directory.Create(Path.Combine(destPath, relativeDir), true);
                     }
-                    if ((!objZipEntry.IsDirectory) && (!String.IsNullOrEmpty(LocalFileName)))
+                    if (!zipEntry.IsDirectory && (!string.IsNullOrEmpty(localFileName)))
                     {
-                        FileNamePath = Path.Combine(destPath, LocalFileName).Replace("/", "\\");
+                        var fileNamePath = Path.Combine(destPath, localFileName).Replace("/", "\\");
                         try
                         {
-                            if (File.Exists(FileNamePath))
+                            if (File.Exists(fileNamePath))
                             {
-                                File.SetAttributes(FileNamePath, FileAttributes.Normal);
-                                File.Delete(FileNamePath);
+                                File.SetAttributes(fileNamePath, FileAttributes.Normal);
+                                File.Delete(fileNamePath);
                             }
                             FileStream objFileStream = null;
                             try
                             {
-                                File.Create(FileNamePath);
-                                objFileStream = File.Open(FileNamePath);
+                                File.Create(fileNamePath);
+                                objFileStream = File.Open(fileNamePath);
                                 int intSize = 2048;
                                 var arrData = new byte[2048];
                                 intSize = zipStream.Read(arrData, 0, arrData.Length);
@@ -1306,7 +1302,7 @@ namespace DotNetNuke.Common.Utilities
 							Logger.Error(ex);
                         }
                     }
-                    objZipEntry = zipStream.GetNextEntry();
+                    zipEntry = zipStream.GetNextEntry();
                 }
             }
             finally
