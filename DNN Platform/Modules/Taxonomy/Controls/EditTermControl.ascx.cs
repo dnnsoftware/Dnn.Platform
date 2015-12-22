@@ -41,10 +41,6 @@ namespace DotNetNuke.Modules.Taxonomy.Views.Controls
 
         public string LocalResourceFile { get; set; }
 
-        public string descriptionFieldClientID { get; set; }
-
-        public string nameFieldClientID { get; set; }
-
         #endregion
 
         #region Public Methods
@@ -86,8 +82,6 @@ namespace DotNetNuke.Modules.Taxonomy.Views.Controls
                 nameTextBox.Enabled = editEnabled;
                 descriptionTextBox.Enabled = editEnabled;
                 parentTermCombo.Enabled = editEnabled;
-                nameFieldClientID = nameTextBox.ClientID;
-                descriptionFieldClientID = descriptionTextBox.ClientID;
             }
         }
 
