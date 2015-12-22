@@ -4,7 +4,7 @@
     <%--<div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=DotNetNuke.Services.Localization.Localization.GetString("RequiredFields")%></span></p></div>--%>
     <div class="dnnFormItem">
         <div class="dnnLabel">
-            <label>
+            <label for="<%= nameTextBox.ClientID %>">
                 <dnn:DnnFieldLabel id="nameFieldLabel" runat="server" Text="Name.Text" ToolTip="Name.ToolTip"  CssClass="dnnFormRequired" />
             </label>
         </div>        
@@ -14,7 +14,7 @@
     </div>
     <div class="dnnFormItem">
         <div class="dnnLabel">
-            <label>
+            <label for="<%= descriptionTextBox.ClientID %>">
                    <dnn:DnnFieldLabel id="descriptionFieldLabel" runat="server" Text="Description.Text" ToolTip="Description.ToolTip" />
             </label>
         </div>
