@@ -247,6 +247,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             input = Encoding.ASCII.GetString(Encoding.GetEncoding(1251).GetBytes(input));
 
+            input = input.Replace("?", string.Empty); //replace the unknown char which created in above.
             input = input.Replace("�", string.Empty);
             input = input.Replace("\t", string.Empty);
             input = input.Replace("@", "at");
