@@ -221,7 +221,7 @@ namespace DotNetNuke.Framework
 
         private void Handle404Exception()
         {
-            if (PortalSettings.ErrorPage404 > Null.NullInteger)
+            if (PortalSettings?.ErrorPage404 > Null.NullInteger)
             {
                 Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
             }

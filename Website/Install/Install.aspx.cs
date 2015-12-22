@@ -19,7 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Linq;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 
 #region Usings
 
@@ -63,7 +65,7 @@ namespace DotNetNuke.Services.Install
     public partial class Install : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        
+        private static readonly object installLocker = new object();
         #region Private Methods
 
         private void ExecuteScripts()
@@ -147,6 +149,17 @@ namespace DotNetNuke.Services.Install
                         return;
                     }
 
+                    lock (installLocker)
+                    {
+                        if (InstallBlocker.Instance.IsInstallInProgress())
+                        {
+                            WriteInstallInProgress();
+                            return;
+                        }
+                        RegisterInstallBegining();
+                    }
+                    
+
                     var installConfig = InstallController.Instance.GetInstallConfig();
                     //Create Folder Mappings config
                     if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
@@ -207,7 +220,22 @@ namespace DotNetNuke.Services.Install
 
                 //Write out Footer
                 HtmlUtils.WriteFooter(Response);
+                RegisterInstallEnd();
             }
+        }
+
+        private void RegisterInstallBegining()
+        {
+            InstallBlocker.Instance.RegisterInstallBegining();
+            Logger.Error("Application keys: " + String.Join(" | ", Application.AllKeys));
+            Logger.Error("Registered Install In Progress");
+        }
+
+        private void RegisterInstallEnd()
+        {
+            InstallBlocker.Instance.RegisterInstallEnd();
+            Logger.Error("Application keys: " + String.Join(" | ", Application.AllKeys));
+            Logger.Error("END Install");
         }
 
         private void UpgradeApplication()
@@ -261,6 +289,17 @@ namespace DotNetNuke.Services.Install
                     Response.Write("<br><br>");
                     Response.Write("<h2>Upgrade Status Report</h2>");
                     Response.Flush();
+
+                    lock (installLocker)
+                    {
+                        if (InstallBlocker.Instance.IsInstallInProgress())
+                        {
+                            WriteInstallInProgress();
+                            return;
+                        }
+                        RegisterInstallBegining();
+                    }
+
                     //stop scheduler
                     SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
 
@@ -302,6 +341,7 @@ namespace DotNetNuke.Services.Install
 
             //Write out Footer
             HtmlUtils.WriteFooter(Response);
+            RegisterInstallEnd();
         }
 
         private void AddPortal()
@@ -489,6 +529,7 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
+                
                 //Set Script timeout to MAX value
                 Server.ScriptTimeout = int.MaxValue;
 
@@ -529,6 +570,14 @@ namespace DotNetNuke.Services.Install
                 //restore Script timeout
                 Server.ScriptTimeout = scriptTimeOut;
             }
+        }
+
+        private void WriteInstallInProgress()
+        {
+            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
+                                    0,
+                                    "There is an existing installation in progress. Please wait and try again after a while." + "<br>");
+            Response.Flush();
         }
 
         private bool CheckPermissions()
