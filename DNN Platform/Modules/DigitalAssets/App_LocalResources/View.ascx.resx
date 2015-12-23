@@ -477,4 +477,16 @@
   <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
     <value>Note: Selected folders include [COUNT] Remote Folders.  These will be unlinked from this site and folders and files will remain at the remote location.</value>
   </data>
+  <data name="FileLabel.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileMultLabel.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="FolderLabel.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="FolderMultLabel.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
 </root>

@@ -2573,21 +2573,52 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
+    function getDeletionDialogText(items, dialogText, dialogNote) {
+        var foldersToDelete = [];
+        var filesToDelete = [];
+
+        for (var x = 0; x < items.length; x++) {
+            if (items[x].IsFolder) {
+                foldersToDelete.push(items[x]);
+            } else {
+                filesToDelete.push(items[x]);
+            }
+        }
+
+        var folderLabel = (foldersToDelete.length == 1 ? resources.folderLabel : resources.folderMultLabel) + ": ";
+        var fileLabel = (filesToDelete.length == 1 ? resources.fileLabel : resources.fileMultLabel) + ": ";
+
+        var foldersString = (foldersToDelete.length > 0 ? folderLabel : "");
+        var filesString = (filesToDelete.length > 0 ? fileLabel : "");
+
+        foldersString += foldersToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
+        filesString += filesToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
+
+        var dialogTextFinal = dialogText + dialogNote + "<br/><br/> " + foldersString + (foldersString != "" ? "<br/>" : "") + filesString;
+
+        return dialogTextFinal;
+    }
+
     function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
         var folderAndFileText = selectionText(items);
         var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
         var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
 
         var dialogNote = "";
-        var dialogHeight = 190;
+        var dialogHeight = "auto";
         if (mappedSubfoldersCount > 0) {
             dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
                                                     : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
             dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
-            dialogHeight = 230;
+            dialogHeight = "auto";
         }
 
-        $("<div class='dnnDialog'></div>").html(dialogText+dialogNote).dialog({
+        var dialogTextFinal = getDeletionDialogText(items, dialogText, dialogNote);
+        $("<div class='dnnDialog'></div>").html(dialogTextFinal).dialog({
             modal: true,
             autoOpen: true,
             dialogClass: "dnnFormPopup",
