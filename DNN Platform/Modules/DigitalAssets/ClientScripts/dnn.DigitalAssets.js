@@ -2573,18 +2573,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function listItemsToDelete(itemsToDelete, outputStr) {
-        for (var y = 0; y < itemsToDelete.length; y++) {
-            var delimiter = ", ";
-            if (y == (itemsToDelete.length - 1)) {
-                delimiter = "";
-            }
-
-            outputStr += itemsToDelete[y].ItemName + delimiter;
-        }
-        return outputStr;
-    }
-
     function getDeletionDialogText(items, dialogText, dialogNote) {
         var foldersToDelete = [];
         var filesToDelete = [];
@@ -2603,8 +2591,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var foldersString = (foldersToDelete.length > 0 ? folderLabel : "");
         var filesString = (filesToDelete.length > 0 ? fileLabel : "");
 
-        foldersString = listItemsToDelete(foldersToDelete, foldersString);
-        filesString = listItemsToDelete(filesToDelete, filesString);
+        foldersString += foldersToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
+        filesString += filesToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
 
         var dialogTextFinal = dialogText + dialogNote + "<br/><br/> " + foldersString + (foldersString != "" ? "<br/>" : "") + filesString;
 
