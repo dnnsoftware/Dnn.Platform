@@ -2088,6 +2088,9 @@
                 var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
                 $(data.fake_input).bind('keypress keydown blur', data, function (event) {
+                    if ($(data.fake_input).val() === "") {
+                        return;
+                    }
                     var currValLength = $(this).val().length;
                     if ((currValLength >= settings.maxChars) && !(event.which == event.data.delimiter.charCodeAt(0) || event.which == 13 || event.which == 9)) {
                         tagTooLongErrMsg.insertAfter($(this)).show().delay(1500).fadeOut(1000);
