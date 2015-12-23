@@ -238,8 +238,15 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 //save userinfo object in context
-                context.Items.Add("UserInfo", user);
-                
+                if (context.Items["UserInfo"] != null)
+                {
+                    context.Items["UserInfo"] = user;
+                }
+                else
+                {
+                    context.Items.Add("UserInfo", user);
+                }
+
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
