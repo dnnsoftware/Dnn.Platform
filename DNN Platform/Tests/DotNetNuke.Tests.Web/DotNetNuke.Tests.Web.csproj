@@ -104,7 +104,6 @@
     <Compile Include="Api\TypeLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
