@@ -580,7 +580,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 deleteItems([{
                     ItemId: node.get_value(),
                     IsFolder: true,
-                    UnlinkAllowedStatus: node.get_attributes().getAttribute("UnlinkAllowedStatus")
+                    UnlinkAllowedStatus: node.get_attributes().getAttribute("UnlinkAllowedStatus"),
+                    ItemName: node.get_text()
                 }], node.get_parent().get_value());
                 break;
             case "UnlinkFolder":
