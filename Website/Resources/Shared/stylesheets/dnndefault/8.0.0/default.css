@@ -3115,7 +3115,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 .eipbuttonbackimg.eipbutton_createlink{ background-position: -384px 0;}
 
 .eipbackimg.containerTitle .eipbutton_cancel {
-	background: url(../../images/eip_title_cancel.png) no-repeat center center;
+	background: url(../../../../../images/eip_title_cancel.png) no-repeat center center;
 }
 
 .eipbutton_edit {
@@ -3128,7 +3128,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	float:left;
 }
 .eipbackimg.containerTitle .eipbutton_save {
-	background-image: url(../../images/eip_title_save.png);
+	background-image: url(../../../../../images/eip_title_save.png);
 }
 
 .eipbackimg.editMode .eipborderhover {
