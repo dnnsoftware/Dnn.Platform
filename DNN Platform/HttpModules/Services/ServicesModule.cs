@@ -27,17 +27,34 @@ namespace DotNetNuke.HttpModules.Services
 {
     public class ServicesModule : IHttpModule
     {
-		public static readonly Regex ServiceApi = new Regex(@"DesktopModules/.+/API/", RegexOptions.Compiled);
+		public static readonly Regex ServiceApi = new Regex(@"/desktopmodules/.+/api/", RegexOptions.Compiled);
 
         public void Init(HttpApplication context)
         {
             context.BeginRequest += InitDnn;
+            context.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
-        private void InitDnn(object sender, EventArgs e)
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
-            if (app != null && ServiceApi.IsMatch(app.Context.Request.RawUrl))
+            if (app != null)
+            {
+                // WEB API should not send cookies and other specific headers in repsone;
+                // they reveal too much info and are security risk
+                var headers = app.Response.Headers;
+                headers.Remove("Server");
+                if (ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+                {
+                    headers.Remove("Set-Cookie");
+                }
+            }
+        }
+
+        private static void InitDnn(object sender, EventArgs e)
+        {
+            var app = sender as HttpApplication;
+            if (app != null && ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
             {
                 Initialize.Init(app);
             }
