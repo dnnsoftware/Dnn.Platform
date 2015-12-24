@@ -155,19 +155,19 @@
 		<div class="dnnFormItem">
 			<dnn:Label ID="plEmailAddress" runat="server" ControlName="txtEmailAddress" Suffix=":" CssClass="dnnFormRequired"/>
 			<asp:TextBox ID="txtEmailAddress" runat="server"/>
-            <asp:RequiredFieldValidator ID="reqEmailAddress" runat="server" ControlToValidate="txtEmailAddress" CssClass="dnnFormMessage dnnFormError" ResourceKey="plEmailAddress.Help" Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="reqEmailAddress" runat="server" ValidationGroup="SendLogEntry" ControlToValidate="txtEmailAddress" CssClass="dnnFormMessage dnnFormError" ResourceKey="plEmailAddress.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
 			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" CssClass="dnnFormRequired"/>
 			<asp:TextBox ID="txtSubject" runat="server" MaxLength="78"/>
-            <asp:RequiredFieldValidator ID="reqSubject" runat="server" ControlToValidate="txtSubject" CssClass="dnnFormMessage dnnFormError" ResourceKey="plSubject.Help" Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="reqSubject" runat="server" ValidationGroup="SendLogEntry" ControlToValidate="txtSubject" CssClass="dnnFormMessage dnnFormError" ResourceKey="plSubject.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
 			<dnn:Label ID="plMessage" runat="server" ResourceKey="SendMessage" ControlName="txtMessage" Suffix=":" />
 			<asp:TextBox ID="txtMessage" runat="server" Rows="6" Columns="25" TextMode="MultiLine" />
 		</div>        
 		<ul class="dnnActions dnnClear">
-			<li><asp:LinkButton ID="btnEmail" runat="server" CssClass="dnnPrimaryAction" resourcekey="btnEmail" /></li>
+			<li><asp:LinkButton ID="btnEmail" runat="server" CssClass="dnnPrimaryAction" ValidationGroup="SendLogEntry" resourcekey="btnEmail" /></li>
 		</ul>    
 	</fieldset>
 	<ul class="dnnActions dnnClear">
