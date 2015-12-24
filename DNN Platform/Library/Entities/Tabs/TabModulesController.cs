@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -35,6 +36,7 @@ namespace DotNetNuke.Entities.Tabs
     public class TabModulesController: ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
         #region Public Methods
+
         public ArrayList GetTabModules(TabInfo tab)
         {
             var objPaneModules = new Dictionary<string, int>();
@@ -64,10 +66,35 @@ namespace DotNetNuke.Entities.Tabs
 
             return configuredModules;
         }
+
+        public Dictionary<int,string> GetTabModuleSettingsByName(string settingName)
+        {
+            //TODO: caching and invalidation for this
+            var dataProvider = DataProvider.Instance();
+            using (var dr = dataProvider.GetTabModuleSettingsByName(PortalSettings.Current.PortalId, settingName))
+            {
+                var result = new Dictionary<int, string>();
+                while (dr.Read())
+                {
+                    result[dr.GetInt32(0)] = dr.GetString(1);
+                }
+                return result;
+            }
+        }
+
+        public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
+        {
+            //TODO: caching and invalidation for this
+            var dataProvider = DataProvider.Instance();
+            return CBO.FillCollection<int>(
+                dataProvider.GetTabModuleIdsBySettingNameAndValue(
+                    PortalSettings.Current.PortalId, settingName, expectedValue));
+        }
+
         #endregion
 
         #region Private Methods
-        private void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
+        private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
         {
             if (Null.IsNull(cloneModule.StartDate))
             {
@@ -86,7 +113,7 @@ namespace DotNetNuke.Entities.Tabs
             cloneModule.ContainerPath = SkinController.FormatSkinPath(cloneModule.ContainerSrc);
         }
 
-        private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
+        private static IEnumerable<ModuleInfo> GetModules(TabInfo tab)
         {
             int urlVersion;
             if (TabVersionUtils.TryGetUrlVersion(out urlVersion))

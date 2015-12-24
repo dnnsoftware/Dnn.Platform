@@ -204,7 +204,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = new HttpResponseMessage(HttpStatusCode.OK) {RequestMessage = new HttpRequestMessage()};
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response2 = handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert
@@ -218,7 +218,7 @@ namespace DotNetNuke.Tests.Web.Api
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
@@ -233,7 +233,7 @@ namespace DotNetNuke.Tests.Web.Api
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Basic ");
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
@@ -248,7 +248,7 @@ namespace DotNetNuke.Tests.Web.Api
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer ");
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
@@ -264,7 +264,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0");
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
@@ -280,7 +280,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "Bearer eyJ0eXBlIjoieHh4IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ");
 
             //Act
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
@@ -296,7 +296,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             //Act
             SetupMockServices();
-            var handler = new JwtAuthMessageHandler(true, SslModes.Default);
+            var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert

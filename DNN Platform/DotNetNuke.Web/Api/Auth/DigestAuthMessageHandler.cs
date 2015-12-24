@@ -36,8 +36,8 @@ namespace DotNetNuke.Web.Api.Auth
     {
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
-        public DigestAuthMessageHandler(bool includeByDefault, SslModes sslMode)
-            : base(includeByDefault, sslMode)
+        public DigestAuthMessageHandler(bool includeByDefault, bool forceSsl)
+            : base(includeByDefault, forceSsl)
         {
         }
 

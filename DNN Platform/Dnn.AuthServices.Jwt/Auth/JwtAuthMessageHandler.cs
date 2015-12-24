@@ -52,8 +52,8 @@ namespace Dnn.AuthServices.Jwt.Auth
 
         #region constructor
 
-        public JwtAuthMessageHandler(bool includeByDefault, SslModes sslMode)
-            : base(includeByDefault, sslMode)
+        public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
+            : base(includeByDefault, forceSsl)
         {
             // Once an instance is enabled and gets registered in
             // ServicesRoutingManager.RegisterAuthenticationHandlers()

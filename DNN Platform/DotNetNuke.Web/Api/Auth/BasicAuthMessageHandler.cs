@@ -39,8 +39,8 @@ namespace DotNetNuke.Web.Api.Auth
 
         private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
 
-        public BasicAuthMessageHandler(bool includeByDefault, SslModes sslMode)
-            : base(includeByDefault, sslMode)
+        public BasicAuthMessageHandler(bool includeByDefault, bool forceSsl)
+            : base(includeByDefault, forceSsl)
         {
         }
 

@@ -69,6 +69,7 @@ namespace Dnn.AuthServices.Jwt.Data
         public virtual void UpdateToken(PersistedToken token)
         {
             _dataProvider.ExecuteNonQuery("JsonWebTokens_Update", token.TokenId, token.TokenExpiry, token.TokenHash);
+            token.RenewCount += 1;
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 

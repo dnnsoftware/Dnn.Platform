@@ -7,6 +7,7 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
     {
         public string TokenId { get; set; }
         public int UserId { get; set; }
+        public int RenewCount { get; set; }
         public DateTime TokenExpiry { get; set; }
         public DateTime RenewalExpiry { get; set; }
         public string TokenHash { get; set; }

@@ -28,9 +28,14 @@ using Newtonsoft.Json;
 
 namespace Dnn.AuthServices.Jwt.Services
 {
-    [DnnAuthorize]
+    [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
+        #region API methods
+
+        /// <summary>
+        /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
+        /// </summary>
         [HttpGet]
         public IHttpActionResult Logout()
         {
@@ -53,8 +58,9 @@ namespace Dnn.AuthServices.Jwt.Services
         /// <summary>
         /// Extends the token expiry. A new JWT is returned to the caller which must be used in
         /// new API requests. The caller must pass the renewal token received at the login time.
-        /// The header still needs to pass the current token even if it is expired for validation.
+        /// The header still needs to pass the current token for validation even when it is expired.
         /// </summary>
+        /// <remarks>The access token is allowed to get renewed one time only.</remarks>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult ExtendToken(RenewalDto rtoken)
@@ -62,6 +68,10 @@ namespace Dnn.AuthServices.Jwt.Services
             var result = JwtController.Instance.RenewToken(Request, rtoken.RenewalToken);
             return ReplyWith(result);
         }
+
+        #endregion
+
+        #region helpers
 
         private IHttpActionResult ReplyWith(LoginResultData result)
         {
@@ -78,6 +88,10 @@ namespace Dnn.AuthServices.Jwt.Services
 
             return Ok(result);
         }
+
+        #endregion
+
+        #region Testing APIs
 
         // Test API Method 1
         [HttpGet]
@@ -105,5 +119,7 @@ namespace Dnn.AuthServices.Jwt.Services
             [JsonProperty("text")]
             public string Text;
         }
+
+        #endregion
     }
 }

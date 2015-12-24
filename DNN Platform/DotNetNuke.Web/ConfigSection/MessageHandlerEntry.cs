@@ -3,15 +3,13 @@ using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.ConfigSection
 {
-    public enum SslModes { Default, No, Yes }
-
     public class MessageHandlerEntry : ConfigurationElement
     {
         private const string NameTag = "name";
         private const string ClassNameTag = "type";
         private const string EnabledNameTag = "enabled";
         private const string DefaultIncludeTag = "defaultInclude";
-        private const string SslModeTag = "sslMode";
+        private const string ForceSslTag = "forceSSL";
 
         [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
         //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
@@ -72,17 +70,17 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
-        [ConfigurationProperty(SslModeTag, DefaultValue = SslModes.Default, IsRequired = true)]
-        //[RegexStringValidator("/^Yes$|^No$|^Default$/i")]
-        public SslModes SslMode
+        [ConfigurationProperty(ForceSslTag, DefaultValue = true, IsRequired = true)]
+        public bool ForceSsl
         {
             get
             {
-                return (SslModes)this[SslModeTag];
+                var b = (bool?)this[DefaultIncludeTag];
+                return b.Value;
             }
             set
             {
-                this[SslModeTag] = value;
+                this[ForceSslTag] = value;
             }
         }
     }
