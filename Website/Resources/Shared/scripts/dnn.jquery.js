@@ -1171,7 +1171,7 @@
         };
         $elem.blur(function () {
             if (self.finishOnBlur_) {
-                self.finishTimeout_ = setTimeout(onBlurFunction, 200);
+                self.finishTimeout_ = setTimeout(onBlurFunction, 1000);
             }
         });
 
@@ -2086,8 +2086,9 @@
                 }
 
                 var clickedOnAutoComplete = false;
-                $(document).mousedown(function(e) {
-                    if ($(e.target).hasClass("dnn_acSelect")) {
+
+                $(document).mousedown(function (e) {
+                    if ($(e.target).hasClass("dnn_acSelect") || $(e.target).parent().hasClass('dnn_acSelect')) {
                         clickedOnAutoComplete = true;
                     }
                 });
@@ -2095,7 +2096,7 @@
                 var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
                 $(data.fake_input).bind('keypress keydown blur', data, function (event) {
-                    if ($(this).val() === "") {
+                    if ($(this).val() === "" || clickedOnAutoComplete) {
                         return;
                     }
                     var currValLength = $(this).val().length;
