@@ -29,6 +29,7 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.Taxonomy.Presenters;
 using DotNetNuke.Modules.Taxonomy.Views.Models;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Mvp;
 using DotNetNuke.Web.UI.WebControls;
 using WebFormsMvp;
@@ -110,8 +111,8 @@ namespace DotNetNuke.Modules.Taxonomy.Views
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-
-			editVocabularyControl.LocalResourceFile = LocalResourceFile;
+            ClientResourceManager.EnableAsyncPostBackHandler();
+            editVocabularyControl.LocalResourceFile = LocalResourceFile;
 		}
 
         protected override void OnLoad(EventArgs e)
