@@ -340,6 +340,8 @@
         function watchResize(mId) {
             var container = $(".DnnModule-" + mId);
             container.data("o-size", { w: container.width(), h: container.height() });
+            var resizeThrottle;
+
             var loopyFunc = function () {
                 var data = container.data("o-size");
                 if (data.w !== container.width() || data.h !== container.height()) {
@@ -347,6 +349,12 @@
                     container.trigger("resize");
                 }
 
+                if (resizeThrottle) {
+                    clearTimeout(resizeThrottle);
+                    resizeThrottle = null;
+                }
+
+                resizeThrottle = setTimeout(loopyFunc, 250);
             };
 
             container.trigger("resize", function () {
