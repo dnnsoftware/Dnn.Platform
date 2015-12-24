@@ -31,10 +31,12 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>String without diacritics</returns>
 		public static string NormalizeString(this string input)
 		{
-			Encoding enc = Encoding.GetEncoding("iso-8859-8");
-			return enc.GetString(Encoding.Convert(Encoding.UTF8, enc, Encoding.UTF8.GetBytes(input))).ToLower();
+			return string.IsNullOrEmpty(input)
+                ? input
+                : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLower();
 		}
 
+        private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
     }
 
 }

@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Api
                 ModuleInfo moduleInfo;
                 if (TryFindByMoniker(request, out moduleInfo))
                 {
-                    moduleId = moduleInfo.ModuleDefID;
+                    moduleId = moduleInfo.ModuleID;
                     return true;
                 }
             }

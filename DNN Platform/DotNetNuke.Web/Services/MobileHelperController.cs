@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Services
         public IHttpActionResult Monikers(string moduleList)
         {
             var monikers = GetMonikersForList(moduleList);
-            return Ok(monikers.Select(kpv => new { tab = kpv.Key, moniker = kpv.Value }));
+            return Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
         }
 
         [HttpGet]

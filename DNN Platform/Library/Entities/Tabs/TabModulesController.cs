@@ -86,9 +86,15 @@ namespace DotNetNuke.Entities.Tabs
         {
             //TODO: caching and invalidation for this
             var dataProvider = DataProvider.Instance();
-            return CBO.FillCollection<int>(
-                dataProvider.GetTabModuleIdsBySettingNameAndValue(
-                    PortalSettings.Current.PortalId, settingName, expectedValue));
+            using (var dr = dataProvider.GetTabModuleIdsBySettingNameAndValue(PortalSettings.Current.PortalId, settingName, expectedValue))
+            {
+                var result = new List<int>();
+                while (dr.Read())
+                {
+                    result.Add(dr.GetInt32(0));
+                }
+                return result;
+            }
         }
 
         #endregion

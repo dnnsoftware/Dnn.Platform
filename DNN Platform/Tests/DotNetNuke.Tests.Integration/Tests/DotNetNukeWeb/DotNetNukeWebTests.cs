@@ -23,7 +23,6 @@ using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Web;
 using DotNetNuke.Tests.Integration.Framework;
 using NUnit.Framework;
@@ -37,7 +36,6 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
 
         private readonly HttpClient _httpClient;
 
-        private static readonly Encoding TextEncoder = Encoding.UTF8;
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 
         private const string GetMonikerQuery = "/DesktopModules/web/API/mobilehelper/monikers?moduleList=";
