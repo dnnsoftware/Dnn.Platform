@@ -4,7 +4,7 @@
 <div class="dnnForm dnnEditTermControl dnnClear">
     <div class="dnnFormItem">
         <div class="dnnLabel">
-            <label>
+            <label for="<%= nameTextBox.ClientID %>">
                 <dnn:DnnFieldLabel id="nameFieldLabel" runat="server" Text="TermName.Text" ToolTip="TermName.ToolTip" CssClass="dnnFormRequired" />    
             </label>
         </div>        
@@ -13,7 +13,7 @@
     </div>
     <div class="dnnFormItem">
         <div class="dnnLabel">
-            <label>
+            <label for="<%= descriptionTextBox.ClientID %>">
                 <dnn:DnnFieldLabel id="descriptionFieldLabel" runat="server" Text="Description.Text" ToolTip="Description.ToolTip" />        
             </label>
         </div>        

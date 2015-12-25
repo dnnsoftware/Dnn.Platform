@@ -1,0 +1,56 @@
+/* DNN-8068 */
+IF EXISTS(SELECT PackageID FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNCSSINCLUDESkinObject')
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNCSSINCLUDESkinObject'
+END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.DNNCSSINCLUDESkinObject', N'DNNCSSINCLUDE SkinObject', N'', N'SkinObject', N'07.00.00', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL); 
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+    SELECT TOP 1
+        p.PackageID, N'DNNCSSINCLUDE', N'Admin/Skins/DnnCssInclude.ascx', NULL, NULL, 0, NULL, GETDATE(), NULL, GETDATE()
+        FROM {databaseOwner}[{objectQualifier}Packages] p
+        WHERE p.Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+GO
+
+IF EXISTS(SELECT PackageID FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNCSSEXCLUDESkinObject')
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNCSSEXCLUDESkinObject'
+END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.DNNCSSEXCLUDESkinObject', N'DNNCSSEXCLUDE SkinObject', N'', N'SkinObject', N'07.00.00', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+    SELECT TOP 1
+        p.PackageID, N'DNNCSSEXCLUDE', N'Admin/Skins/DnnCssExclude.ascx', NULL, NULL, 0, NULL, GETDATE(), NULL, GETDATE()
+        FROM {databaseOwner}[{objectQualifier}Packages] p
+        WHERE p.Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+GO
+
+IF EXISTS(SELECT PackageID FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNJSINCLUDESkinObject')
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNJSINCLUDESkinObject'
+END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.DNNJSINCLUDESkinObject', N'DNNJSINCLUDE SkinObject', N'', N'SkinObject', N'07.00.00', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+    SELECT TOP 1
+        p.PackageID, N'DNNJSINCLUDE', N'Admin/Skins/DnnJsInclude.ascx', NULL, NULL, 0, NULL, GETDATE(), NULL, GETDATE()
+        FROM {databaseOwner}[{objectQualifier}Packages] p
+        WHERE p.Name='DotNetNuke.DNNJSINCLUDESkinObject'
+GO
+
+IF EXISTS(SELECT PackageID FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNJSEXCLUDESkinObject')
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}Packages] WHERE Name = 'DotNetNuke.DNNJSEXCLUDESkinObject'
+END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.DNNJSEXCLUDESkinObject', N'DNNJSEXCLUDE SkinObject', N'', N'SkinObject', N'07.00.00', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+    SELECT TOP 1
+        p.PackageID, N'DNNJSEXCLUDE', N'Admin/Skins/DnnJsExclude.ascx', NULL, NULL, 0, NULL, GETDATE(), NULL, GETDATE()
+        FROM {databaseOwner}[{objectQualifier}Packages] p
+        WHERE p.Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+GO

@@ -153,19 +153,21 @@
 	<h2 class="dnnFormSectionHead" id="dnnPanel-LogSendExceptions"><a href="" class="dnnSectionExpanded"><%=LocalizeString("SendExceptions")%></a></h2>
 	<fieldset id="dnnSendExceptions">
 		<div class="dnnFormItem">
-			<dnn:Label ID="plEmailAddress" runat="server" ControlName="txtEmailAddress" Suffix=":" />
-			<asp:TextBox ID="txtEmailAddress" runat="server" />
+			<dnn:Label ID="plEmailAddress" runat="server" ControlName="txtEmailAddress" Suffix=":" CssClass="dnnFormRequired"/>
+			<asp:TextBox ID="txtEmailAddress" runat="server"/>
+            <asp:RequiredFieldValidator ID="reqEmailAddress" runat="server" ValidationGroup="SendLogEntry" ControlToValidate="txtEmailAddress" CssClass="dnnFormMessage dnnFormError" ResourceKey="plEmailAddress.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
-			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" />
-			<asp:TextBox ID="txtSubject" runat="server" Rows="2" Columns="25" TextMode="MultiLine" />
+			<dnn:Label ID="plSubject" runat="server" ControlName="txtSubject" Suffix=":" CssClass="dnnFormRequired"/>
+			<asp:TextBox ID="txtSubject" runat="server" MaxLength="78"/>
+            <asp:RequiredFieldValidator ID="reqSubject" runat="server" ValidationGroup="SendLogEntry" ControlToValidate="txtSubject" CssClass="dnnFormMessage dnnFormError" ResourceKey="plSubject.Help" Display="Dynamic" />
 		</div>        
 		<div class="dnnFormItem">
 			<dnn:Label ID="plMessage" runat="server" ResourceKey="SendMessage" ControlName="txtMessage" Suffix=":" />
 			<asp:TextBox ID="txtMessage" runat="server" Rows="6" Columns="25" TextMode="MultiLine" />
 		</div>        
 		<ul class="dnnActions dnnClear">
-			<li><asp:LinkButton ID="btnEmail" runat="server" CssClass="dnnPrimaryAction" resourcekey="btnEmail" /></li>
+			<li><asp:LinkButton ID="btnEmail" runat="server" CssClass="dnnPrimaryAction" ValidationGroup="SendLogEntry" resourcekey="btnEmail" /></li>
 		</ul>    
 	</fieldset>
 	<ul class="dnnActions dnnClear">

@@ -68,6 +68,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="EditSkins.ascx.cs">
       <DependentUpon>editskins.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

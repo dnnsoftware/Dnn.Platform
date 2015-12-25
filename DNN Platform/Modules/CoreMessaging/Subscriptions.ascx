@@ -8,8 +8,9 @@
         <fieldset data-bind=" with: $root.subscriptionsViewModel">
             
             <div class="dnnFormItem">
-                <dnn:label id="lblSubscriptions" runat="server" />
-                
+                <div class="dnnFormMessage">
+                    <asp:label ID="lblSubscriptionsHelp" runat="server" resourcekey="lblSubscriptions.Help"/>
+                </div>         
                 <div class="subscription-table-container">
                     <div class="loading-panel" data-bind="visible: isLoading"></div>
 

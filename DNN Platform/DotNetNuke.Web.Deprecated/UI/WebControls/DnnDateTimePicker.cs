@@ -43,7 +43,9 @@ namespace DotNetNuke.Web.UI.WebControls
 			specialDay.ItemStyle.CssClass = "dnnCalendarToday";
 			this.Calendar.SpecialDays.Add(specialDay);
             this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
+            this.Calendar.RangeMaxDate = (DateTime)SqlDateTime.MaxValue;
             this.MinDate = (DateTime)SqlDateTime.MinValue;
+            this.MaxDate = (DateTime)SqlDateTime.MaxValue;
         }
     }
 }

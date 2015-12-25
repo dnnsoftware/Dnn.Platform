@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -74,5 +75,18 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public IHtmlString Raw(string value) => HtmlHelper.Raw(value);
 
         public IHtmlString Raw(object value) => HtmlHelper.Raw(value);
+
+        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name) => HtmlHelper.GetUnobtrusiveValidationAttributes(name);
+
+        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name, ModelMetadata metadata) => HtmlHelper.GetUnobtrusiveValidationAttributes(name, metadata);
+
+        public void EnableClientValidation() => HtmlHelper.EnableClientValidation();
+
+        public void EnableClientValidation(bool enabled) => HtmlHelper.EnableClientValidation(enabled);
+
+        public void EnableUnobtrusiveJavaScript() => HtmlHelper.EnableUnobtrusiveJavaScript();
+
+        public void EnableUnobtrusiveJavaScript(bool enabled) => HtmlHelper.EnableUnobtrusiveJavaScript(enabled);
+
     }
 }

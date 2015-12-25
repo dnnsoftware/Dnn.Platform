@@ -46,6 +46,7 @@
     </ItemTemplate>
 </asp:Repeater>
 
+<iframe id="download_frame" style="display:none;"></iframe>
 
 <script language="javascript" type="text/javascript">
 	/*globals jQuery, window, Sys */

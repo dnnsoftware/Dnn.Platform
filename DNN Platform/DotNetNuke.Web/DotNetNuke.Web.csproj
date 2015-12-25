@@ -100,7 +100,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -111,9 +111,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -128,13 +128,13 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.1.1\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
@@ -170,7 +170,6 @@
     <Compile Include="Api\DnnExceptionAttribute.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
-    <Compile Include="Api\HMACAuthenticationAttribute.cs" />
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
@@ -178,9 +177,9 @@
     <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
-    <Compile Include="Api\Internal\Auth\AuthMessageHandlerBase.cs" />
-    <Compile Include="Api\Internal\Auth\BasicAuthMessageHandler.cs" />
-    <Compile Include="Api\Internal\Auth\DigestAuthMessageHandler.cs" />
+    <Compile Include="Api\Auth\AuthMessageHandlerBase.cs" />
+    <Compile Include="Api\Auth\BasicAuthMessageHandler.cs" />
+    <Compile Include="Api\Auth\DigestAuthMessageHandler.cs" />
     <Compile Include="Api\Internal\Auth\WebFormsAuthMessageHandler.cs" />
     <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
     <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
@@ -204,6 +203,12 @@
     <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
     <Compile Include="Components\LocalizationHelper.cs" />
+    <Compile Include="ConfigSection\AuthServicesConfiguration.cs" />
+    <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
+    <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
+    <Compile Include="Models\ModuleDetail.cs" />
+    <Compile Include="Models\ModuleInstance.cs" />
+    <Compile Include="Models\SiteDetail.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
     <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
     <Compile Include="InternalServices\CountryRegionController.cs" />
@@ -227,6 +232,7 @@
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
     <Compile Include="InternalServices\Views\Search\BasicView.cs" />
     <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
+    <Compile Include="Models\TabModule.cs" />
     <Compile Include="Mvp\ModuleSettingsPresenterOfT.cs" />
     <Compile Include="Mvp\ISettingsViewOfT.cs" />
     <Compile Include="Mvp\ProfileModuleViewBase.cs">
@@ -405,6 +411,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

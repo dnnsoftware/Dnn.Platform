@@ -280,6 +280,10 @@
         {
             saveText: '<%= Localization.GetSafeJSString(LocalizeString("Save")) %>',
             cancelText: '<%= Localization.GetSafeJSString(LocalizeString("Cancel")) %>',
+            fileLabel: '<%= Localization.GetSafeJSString(LocalizeString("FileLabel")) %>',
+            folderLabel: '<%= Localization.GetSafeJSString(LocalizeString("FolderLabel")) %>',
+            fileMultLabel: '<%= Localization.GetSafeJSString(LocalizeString("FileMultLabel")) %>',
+            folderMultLabel: '<%= Localization.GetSafeJSString(LocalizeString("FolderMultLabel")) %>',
             createNewFolderTitleText: '<%= Localization.GetSafeJSString(LocalizeString("CreateNewFolderTitle")) %>',
             loadingAltText: '<%= Localization.GetSafeJSString(LocalizeString("Loading")) %>',
             uploadErrorText: '<%= Localization.GetSafeJSString(LocalizeString("UploadError")) %>',

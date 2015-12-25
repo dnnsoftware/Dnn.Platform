@@ -517,6 +517,10 @@ namespace DotNetNuke.UI.Skins
                 else
                 {
                     _containerWrapperControl.Controls.Add(container);
+                    if (Globals.IsAdminControl())
+                    {
+                        _containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
+                    }
                 }
 
                 //Attach Module to Container
