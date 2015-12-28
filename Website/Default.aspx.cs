@@ -192,10 +192,10 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
-            //There could be a pending installation process
+            //There could be a pending installation/upgrade process
             if (InstallBlocker.Instance.IsInstallInProgress())
             {
-                Exceptions.ProcessHttpException(new HttpException(503, "There could be an installation in progress. Please try again after a while."));
+                Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
             }
 
             //Configure the ActiveTab with Skin/Container information

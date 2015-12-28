@@ -1580,4 +1580,16 @@ Sincerely,
   <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Password Reminder</value>
   </data>
+  <data name="503.Error" xml:space="preserve">
+    <value>{0} - 503 Service Unavailable</value>
+  </data>
+  <data name="NoSitesForThisInstallation.Error" xml:space="preserve">
+    <value>No sites currently exist for this installation.</value>
+  </data>
+  <data name="SiteAccessedWhileInstallationWasInProgress.Error" xml:space="preserve">
+    <value>The site was accessed while an installation/upgrade was in progress.</value>
+  </data>
+  <data name="ThereIsAInstallationCurrentlyInProgress.Error" xml:space="preserve">
+    <value>There is an installation currently in progress. Please try again later.</value>
+  </data>
 </root>
