@@ -258,20 +258,31 @@ namespace DotNetNuke.Framework
             string strURL = Globals.ApplicationURL();
             if (exc is HttpException && !IsViewStateFailure(exc))
             {
-                //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
-                var statusCode = (exc as HttpException).GetHttpCode();
-                if (statusCode == 404)
+                try
                 {
-                    Handle404Exception();
-                }
+                    //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                    var statusCode = (exc as HttpException).GetHttpCode();
+                    if (statusCode == 404)
+                    {
+                        Handle404Exception();
+                    }
 
-                if (PortalSettings.ErrorPage500 != -1)
-                {
-                    var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc, false);
-                    HttpContext.Current.Response.Redirect(url);
+                    if (PortalSettings?.ErrorPage500 != -1)
+                    {
+                        var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc,
+                            false);
+                        HttpContext.Current.Response.Redirect(url);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Response.Clear();
+                        HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    Logger.Error("Error processing HttpException", exc);
+                    Logger.Error(ex);
                     HttpContext.Current.Response.Clear();
                     HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
                 }

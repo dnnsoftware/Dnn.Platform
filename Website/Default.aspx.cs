@@ -195,7 +195,7 @@ namespace DotNetNuke.Framework
             //There could be a pending installation process
             if (InstallBlocker.Instance.IsInstallInProgress())
             {
-                Exceptions.ProcessHttpException();
+                Exceptions.ProcessHttpException(new HttpException(503, "There could be an installation in progress. Please try again after a while."));
             }
 
             //Configure the ActiveTab with Skin/Container information
