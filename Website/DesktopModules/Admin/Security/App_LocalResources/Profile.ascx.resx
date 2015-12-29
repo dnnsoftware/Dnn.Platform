@@ -393,4 +393,7 @@
   <data name="ProfileProperties_Skype.Text" xml:space="preserve">
     <value>Skype ID</value>
   </data>
+  <data name="DisplayNameNotUnique.Text" xml:space="preserve">
+    <value>The display name you have entered is already in use, please choose a different one.</value>
+  </data>
 </root>

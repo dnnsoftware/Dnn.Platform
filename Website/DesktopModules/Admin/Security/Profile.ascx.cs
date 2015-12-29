@@ -21,14 +21,17 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.UI.Skins.Controls;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
 
@@ -210,14 +213,36 @@ namespace DesktopModules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
-			if (IsUserOrAdmin == false && UserId == Null.NullInteger)
+            if (IsUserOrAdmin == false && UserId == Null.NullInteger)
             {
                 return;
             }
 
             if (IsValid)
             {
-                var properties = (ProfilePropertyDefinitionCollection) ProfileProperties.DataSource;
+                if (User.UserID == PortalSettings.AdministratorId)
+                {
+                    //Clear the Portal Cache
+                    DataCache.ClearPortalCache(UserPortalID, true);
+                }
+
+                //Update DisplayName to conform to Format
+                UpdateDisplayName();
+
+                //update the user details
+                DataCache.ClearCache();
+
+                if (PortalSettings.Registration.RequireUniqueDisplayName)
+                {
+                    var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                    if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                    {
+                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                        return;
+                    }
+                }
+
+                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;
 
                 //Update User's profile
                 User = ProfileController.UpdateUserProfile(User, properties);
@@ -226,7 +251,15 @@ namespace DesktopModules.Admin.Security
                 OnProfileUpdateCompleted(EventArgs.Empty);
             }
         }
-		
-		#endregion
+
+        private void UpdateDisplayName()
+        {
+            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            {
+                User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+            }
+        }
+
+        #endregion
     }
 }
