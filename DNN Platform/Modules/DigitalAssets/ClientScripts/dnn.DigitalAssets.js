@@ -3070,8 +3070,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function getFullUrl(relativePath) {
-        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + relativePath;
+    function getFullUrl(relativePath, includePathname) {
+        var urlPathName = "";
+
+        if (includePathname) {
+            urlPathName = location.pathname;
+        }
+
+        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + urlPathName + relativePath;
     }
 
     function getUrlFromFileId(item) {
