@@ -42,6 +42,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI;
@@ -191,6 +192,12 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
+            //There could be a pending installation/upgrade process
+            if (InstallBlocker.Instance.IsInstallInProgress())
+            {
+                Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
+            }
+
             //Configure the ActiveTab with Skin/Container information
             PortalSettingsController.Instance().ConfigureActiveTab(PortalSettings);
 

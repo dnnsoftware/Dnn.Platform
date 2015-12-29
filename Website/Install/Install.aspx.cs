@@ -19,13 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Linq;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 
 #region Usings
 
 using System;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -35,7 +36,6 @@ using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Install
     public partial class Install : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
-        
+        private static readonly object installLocker = new object();
         #region Private Methods
 
         private void ExecuteScripts()
@@ -135,13 +135,16 @@ namespace DotNetNuke.Services.Install
                 string strProviderPath = DataProvider.Instance().GetProviderPath();
                 if (!strProviderPath.StartsWith("ERROR:"))
                 {
-                    Response.Write("<h2>Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
-                    Response.Flush();
-
-                    Response.Write("<br><br>");
-                    Response.Write("<h2>Installation Status Report</h2>");
-                    Response.Flush();
-
+                    lock (installLocker)
+                    {
+                        if (InstallBlocker.Instance.IsInstallInProgress())
+                        {
+                            WriteInstallationHeader();
+                            WriteInstallationInProgress();
+                            return;
+                        }
+                        RegisterInstallBegining();
+                    }
                     if (!CheckPermissions())
                     {
                         return;
@@ -160,8 +163,7 @@ namespace DotNetNuke.Services.Install
                         var locale = LocaleController.Instance.GetLocale("en-US");
                         Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId);
                     }
-
-
+                    
                     var licenseConfig = (installConfig != null) ? installConfig.License : null;
                     bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
                     if (IsProOrEnterprise && licenseConfig != null && !String.IsNullOrEmpty(licenseConfig.AccountEmail) && !String.IsNullOrEmpty(licenseConfig.InvoiceNumber))
@@ -207,19 +209,71 @@ namespace DotNetNuke.Services.Install
 
                 //Write out Footer
                 HtmlUtils.WriteFooter(Response);
+                RegisterInstallEnd();
             }
+        }
+        
+        private void RegisterInstallBegining()
+        {
+            InstallBlocker.Instance.RegisterInstallBegining();
+        }
+
+        private void RegisterInstallEnd()
+        {
+            InstallBlocker.Instance.RegisterInstallEnd();
+        }
+        
+        private void WriteInstallationHeader()
+        {
+            Response.Write("<h2>Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
+            Response.Flush();
+
+            Response.Write("<br><br>");
+            Response.Write("<h2>Installation Status Report</h2>");
+            Response.Flush();
+        }
+
+        private void WriteInstallationInProgress()
+        {
+            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
+                                    0,
+                                    Localization.Localization.GetString("ThereIsAInstallationCurrentlyInProgress.Error", Localization.Localization.GlobalResourceFile) + "<br>");
+            Response.Flush();
+        }
+
+        private bool CheckPermissions()
+        {
+            bool verified = new FileSystemPermissionVerifier(Server.MapPath("~")).VerifyAll();
+            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
+                                    0,
+                                    "Checking File and Folder permissions " + (verified ? "<font color='green'>Success</font>" : "<font color='red'>Error!</font>") + "<br>");
+            Response.Flush();
+
+            return verified;
         }
 
         private void UpgradeApplication()
         {
             var databaseVersion = DataProvider.Instance().GetVersion();
-
+            
             //Start Timer
             Upgrade.Upgrade.StartTimer();
 
             //Write out Header
             HtmlUtils.WriteHeader(Response, "upgrade");
 
+            //There could be an installation in progress
+            lock (installLocker)
+            {
+                if (InstallBlocker.Instance.IsInstallInProgress())
+                {
+                    WriteInstallationHeader();
+                    WriteInstallationInProgress();
+                    return;
+                }
+                RegisterInstallBegining();
+            }
+            
             Response.Write("<h2>Current Assembly Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
             Response.Flush();
 
@@ -261,6 +315,7 @@ namespace DotNetNuke.Services.Install
                     Response.Write("<br><br>");
                     Response.Write("<h2>Upgrade Status Report</h2>");
                     Response.Flush();
+                    
                     //stop scheduler
                     SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
 
@@ -302,6 +357,7 @@ namespace DotNetNuke.Services.Install
 
             //Write out Footer
             HtmlUtils.WriteFooter(Response);
+            RegisterInstallEnd();
         }
 
         private void AddPortal()
@@ -527,21 +583,9 @@ namespace DotNetNuke.Services.Install
                 }
 
                 //restore Script timeout
-                Server.ScriptTimeout = scriptTimeOut;
+                Server.ScriptTimeout = scriptTimeOut;                
             }
         }
-
-        private bool CheckPermissions()
-        {
-            bool verified = new FileSystemPermissionVerifier(Server.MapPath("~")).VerifyAll();
-            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
-                                    0,
-                                    "Checking File and Folder permissions " + (verified ? "<font color='green'>Success</font>" : "<font color='red'>Error!</font>") + "<br>");
-            Response.Flush();
-
-            return verified;
-        }
-
         #endregion
     }
 }

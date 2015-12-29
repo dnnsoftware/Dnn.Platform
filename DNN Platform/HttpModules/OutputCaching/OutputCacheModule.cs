@@ -27,6 +27,8 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.OutputCache;
 
@@ -37,6 +39,9 @@ namespace DotNetNuke.HttpModules.OutputCaching
     /// </summary>
     public class OutputCacheModule : IHttpModule
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OutputCacheModule));
+
+
         private const string ContextKeyResponseFilter = "OutputCache:ResponseFilter";
         private const string ContextKeyTabId = "OutputCache:TabId";
         private const string ContextKeyTabOutputCacheProvider = "OutputCache:TabOutputCacheProvider";
@@ -59,12 +64,30 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         #endregion
 
+
+        private bool IsInstallInProgress(HttpApplication app)
+        {
+            var result = InstallBlocker.Instance.IsInstallInProgress();
+            if (!result)
+            {
+                Logger.Error("Installation NOT in progress");
+            }
+            return result;
+        }
+
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
             if ((_app == null) || (_app.Context == null) || (_app.Context.Items == null) || _app.Response.ContentType.ToLower() != "text/html" || _app.Context.Request.IsAuthenticated ||
                 HttpContext.Current.Request.Browser.Crawler)
             {
+                return;
+            }
+            
+            if (IsInstallInProgress(_app))
+            {
+                //TODO Remove after testing
+                Logger.Error("Installation in progress");
                 return;
             }
 

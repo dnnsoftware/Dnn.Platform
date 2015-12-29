@@ -37,6 +37,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Application;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 
@@ -366,6 +367,11 @@ namespace DotNetNuke.Services.Install
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
+            if (InstallBlocker.Instance.IsInstallInProgress())
+            {
+                Response.Redirect("Install.aspx", true);
+            }
+
             base.OnLoad(e);
             LocalizePage();
 
