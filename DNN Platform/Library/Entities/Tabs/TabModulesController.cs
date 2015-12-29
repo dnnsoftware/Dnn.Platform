@@ -22,6 +22,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -69,22 +70,38 @@ namespace DotNetNuke.Entities.Tabs
 
         public Dictionary<int,string> GetTabModuleSettingsByName(string settingName)
         {
-            //TODO: caching and invalidation for this
+            var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();
-            using (var dr = dataProvider.GetTabModuleSettingsByName(PortalSettings.Current.PortalId, settingName))
-            {
-                var result = new Dictionary<int, string>();
-                while (dr.Read())
+            var cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
+            var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                c =>
                 {
-                    result[dr.GetInt32(0)] = dr.GetString(1);
-                }
-                return result;
-            }
+                    using (var dr = dataProvider.GetTabModuleSettingsByName(portalId, settingName))
+                    {
+                        var result = new Dictionary<int, string>();
+                        while (dr.Read())
+                        {
+                            result[dr.GetInt32(0)] = dr.GetString(1);
+                        }
+                        return result;
+                    }
+                });
+
+            return cachedItems;
         }
 
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
-            //TODO: caching and invalidation for this
+            var items = GetTabModuleSettingsByName(settingName);
+            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
+            var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
+            if (keyValuePairs.Any())
+            {
+                return keyValuePairs.Select(kpv => kpv.Key).ToList();
+            }
+
+            // this is fallback in case a new value was added but not in the cache yet
             var dataProvider = DataProvider.Instance();
             using (var dr = dataProvider.GetTabModuleIdsBySettingNameAndValue(PortalSettings.Current.PortalId, settingName, expectedValue))
             {

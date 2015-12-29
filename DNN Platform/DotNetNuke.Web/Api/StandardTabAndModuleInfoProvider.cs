@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.Api
             var id = FindIntInHeader(requestMessage, MonikerHeaderKey);
             if (id <= Null.NullInteger)
             {
-                FindIntInQueryString(requestMessage, MonikerQueryKey);
+                id = FindIntInQueryString(requestMessage, MonikerQueryKey);
             }
 
             moduleInfo = id > Null.NullInteger ? ModuleController.Instance.GetTabModule(id) : null;
@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.Api
             if (monikerValue.Length > 0)
             {
                 var ids = TabModulesController.Instance.GetTabModuleIdsBySetting(MonikerQueryKey, monikerValue);
-                if (ids.Any())
+                if (ids != null && ids.Any())
                 {
                     return ids.First();
                 }

@@ -32,7 +32,6 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
@@ -215,7 +214,7 @@ namespace DotNetNuke.Entities.Modules
             return IsInstance;
         }
 
-        private void ClearModuleSettingsCache(int moduleId)
+        private static void ClearModuleSettingsCache(int moduleId)
         {
             foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
             {
@@ -224,12 +223,20 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private void ClearTabModuleSettingsCache(int tabModuleId)
+        private static void ClearTabModuleSettingsCache(int tabModuleId, string settingName)
         {
+            var portalId = -1;
             foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
             {
-                string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
+                var cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
+
+                if (portalId != tab.PortalID)
+                {
+                    portalId = tab.PortalID;
+                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? "");
+                    DataCache.RemoveCache(cacheKey);
+                }
             }
         }
 
@@ -1271,7 +1278,7 @@ namespace DotNetNuke.Entities.Modules
             log.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             LogController.Instance.AddLog(log);
-            ClearTabModuleSettingsCache(tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId, settingName);
         }
 
         /// <summary>
@@ -1580,7 +1587,10 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An ModuleInfo object</returns>
         public ModuleInfo GetTabModule(int tabModuleID)
         {
-            return CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID));
+            var cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, tabModuleID);
+            return CBO.GetCachedObject<ModuleInfo>(
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                    c => CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID)));
         }
 
         /// <summary>
@@ -1590,7 +1600,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>Dictionary of ModuleID and ModuleInfo</returns>
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
-            string cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
+            var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
                                                                             DataCache.TabModuleCacheTimeOut,
                                                                             DataCache.TabModuleCachePriority),
@@ -2074,7 +2084,7 @@ namespace DotNetNuke.Entities.Modules
                 //Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
-            ClearTabModuleSettingsCache(tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId, settingName);
         }
 
         /// <summary>
