@@ -26,6 +26,7 @@ using System;
 
 namespace DotNetNuke.Common.Utilities
 {
+    [Serializable]
     public class UrlTrackingInfo
     {
         public int UrlTrackingID { get; set; }
