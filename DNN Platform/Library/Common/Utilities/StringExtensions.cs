@@ -1,10 +1,15 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace DotNetNuke.Common.Utilities
 {
     public static class StringExtensions
     {
+        public static string TrimToLength(this string source, int maxLength)
+        {
+            return source == null || source.Length <= maxLength
+                ? source :
+                source.Substring(0, maxLength);
+        }
 
         public static string Append(this string stringValue, string stringToLink, string delimiter)
         {
