@@ -12,8 +12,9 @@ namespace DotNetNuke.Web.Api
     {
         private const string ModuleIdKey = "ModuleId";
         private const string TabIdKey = "TabId";
-        public const string MonikerQueryKey = "Moniker";
-        public const string MonikerHeaderKey = "X-DNN-MONIKER";
+        private const string MonikerQueryKey = "Moniker";
+        private const string MonikerHeaderKey = "X-DNN-MONIKER";
+        private const string MonikerSettingsKey = "Moniker";
 
         public bool TryFindTabId(HttpRequestMessage request, out int tabId)
         {
@@ -139,7 +140,7 @@ namespace DotNetNuke.Web.Api
             monikerValue = (monikerValue ?? "").Trim();
             if (monikerValue.Length > 0)
             {
-                var ids = TabModulesController.Instance.GetTabModuleIdsBySetting(MonikerQueryKey, monikerValue);
+                var ids = TabModulesController.Instance.GetTabModuleIdsBySetting(MonikerSettingsKey, monikerValue);
                 if (ids != null && ids.Any())
                 {
                     return ids.First();

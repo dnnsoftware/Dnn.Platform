@@ -376,7 +376,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
         private static void ShowInfo(string info)
         {
-            // Don't write anything to cosole when we run in TeamCity
+            // Don't write anything to console when we run in TeamCity
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
                 Console.WriteLine(info);
         }
