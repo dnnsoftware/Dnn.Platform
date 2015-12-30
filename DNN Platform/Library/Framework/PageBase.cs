@@ -290,10 +290,8 @@ namespace DotNetNuke.Framework
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Logger.Error("Error processing HttpException", exc);
-                    Logger.Error(ex);
                     HttpContext.Current.Response.Clear();
                     var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
                     HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error="+errorMessage);
