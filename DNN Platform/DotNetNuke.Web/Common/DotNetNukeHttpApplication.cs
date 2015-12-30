@@ -176,8 +176,6 @@ namespace DotNetNuke.Web.Common.Internal
 
             if (IsInstallInProgress(app))
             {
-                //TODO Remove after testing
-                Logger.Error("Installation in progress");
                 return;
             }
 
