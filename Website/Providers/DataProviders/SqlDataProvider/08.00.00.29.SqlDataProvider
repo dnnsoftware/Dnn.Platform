@@ -44,3 +44,43 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_Subscription
 GO
 
 -- END DNN-7629
+
+-- DNN-8141	Implement Moniker API for Service Framework
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleSettingsByName
+	@PortalId INT,
+	@SettingName NVARCHAR(50)
+AS
+BEGIN
+	SELECT tms.TabModuleID, tms.SettingValue
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND t.PortalID = @PortalID
+	WHERE tms.SettingName = @SettingName
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleIdsBySettingNameAndValue
+	@PortalId INT,
+	@SettingName NVARCHAR(50),
+	@SettingValue NVARCHAR(max)
+AS
+BEGIN
+	SELECT DISTINCT tms.TabModuleID
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND t.PortalID = @PortalID
+	WHERE tms.SettingName = @SettingName
+	  AND tms.SettingValue = @SettingValue
+END
+GO
+
+-- DNN-8141 END

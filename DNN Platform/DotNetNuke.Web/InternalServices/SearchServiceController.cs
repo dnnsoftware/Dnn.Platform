@@ -474,7 +474,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
 
@@ -528,7 +528,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
 

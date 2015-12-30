@@ -155,7 +155,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             // save hash values in DB so no one with access can create JWT header from existing data
-            var sessionId = NewGuid;
+            var sessionId = NewSessionId;
             var now = DateTime.UtcNow;
             var renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
             var ptoken = new PersistedToken
@@ -236,10 +236,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-token");
             }
 
-            return UpdateLoginRecord(renewalToken, ptoken, userInfo);
+            return UpdateToken(renewalToken, ptoken, userInfo);
         }
 
-        private LoginResultData UpdateLoginRecord(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
+        private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
         {
             var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
             if (expiry > ptoken.RenewalExpiry)
@@ -270,7 +270,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         #region private methods
 
-        private static string NewGuid => Guid.NewGuid().ToString("N");
+        private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
         private static LoginResultData EmptyWithError(string error)
         {

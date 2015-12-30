@@ -26,7 +26,6 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.ConfigSection;
 
 namespace DotNetNuke.Web.Api.Auth
 {
@@ -37,12 +36,12 @@ namespace DotNetNuke.Web.Api.Auth
         public abstract string AuthScheme { get; }
         public virtual bool BypassAntiForgeryToken => false;
         public bool DefaultInclude { get; }
-        public SslModes SslMode { get; }
+        public bool ForceSsl { get; }
 
-        protected AuthMessageHandlerBase(bool includeByDefault, SslModes sslMode)
+        protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)
         {
             DefaultInclude = includeByDefault;
-            SslMode = sslMode;
+            ForceSsl = forceSsl;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -81,14 +80,14 @@ namespace DotNetNuke.Web.Api.Auth
 
         protected bool NeedsAuthentication(HttpRequestMessage request)
         {
-            if (SslModeMatchesRequest(request))
+            if (MustEnforceSslInRequest(request))
             {
                 return !Thread.CurrentPrincipal.Identity.IsAuthenticated;
             }
 
             if (Logger.IsTraceEnabled)
             {
-                Logger.Trace($"{AuthScheme}: Validating request vs. SSL mode ({SslMode}) failed. ");
+                Logger.Trace($"{AuthScheme}: Validating request vs. SSL mode ({ForceSsl}) failed. ");
             }
 
             // will let callers to return without authenticating the user
@@ -105,16 +104,12 @@ namespace DotNetNuke.Web.Api.Auth
         }
 
         /// <summary>
-        /// Validated the <see cref="SslMode"/> setting of the instane against the HTTP(S) request.
+        /// Validated the <see cref="ForceSsl"/> setting of the instane against the HTTP(S) request.
         /// </summary>
-        /// <returns>True if <see cref="SslMode"/> matcher the request scheme; false otherwise.</returns>
-        private bool SslModeMatchesRequest(HttpRequestMessage request)
+        /// <returns>True if <see cref="ForceSsl"/> matcher the request scheme; false otherwise.</returns>
+        private bool MustEnforceSslInRequest(HttpRequestMessage request)
         {
-            if (SslMode == SslModes.Default)
-                return true;
-
-            var isSsl = request.RequestUri.Scheme.Equals("https", StringComparison.InvariantCultureIgnoreCase);
-            return (isSsl && SslMode == SslModes.Yes) || (!isSsl && SslMode == SslModes.No);
+            return !ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected static void SetCurrentPrincipal(IPrincipal principal, HttpRequestMessage request)

@@ -36,15 +36,66 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Models;
 
-namespace Dnn.AuthServices.Jwt.Services
+namespace DotNetNuke.Web.Services
 {
+    [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
         private readonly string _dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
+        /// <summary>
+        /// Gets the various defined monikers for the various tab modules in the system
+        /// </summary>
         [HttpGet]
-        [AllowAnonymous]
+        public IHttpActionResult Monikers(string moduleList)
+        {
+            var monikers = GetMonikersForList(moduleList);
+            return Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
+        }
+
+        [HttpGet]
         public HttpResponseMessage ModuleDetails(string moduleList)
+        {
+            var siteDetails = GetSiteDetails(moduleList);
+            return Request.CreateResponse(HttpStatusCode.OK, siteDetails);
+        }
+
+        #region private methods
+
+        private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(string moduleList)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            var tabsController = TabController.Instance;
+            var modulesController = ModuleController.Instance;
+            var resultIds = new List<int>();
+
+            var monikers = TabModulesController.Instance.GetTabModuleSettingsByName("Moniker");
+            var modules = modulesController.GetAllTabsModules(portalId, false).OfType<ModuleInfo>()
+                .Where(tabmodule => monikers.ContainsKey(tabmodule.TabModuleID)).ToArray();
+
+            if (modules.Any())
+            {
+                foreach (var moduleName in (moduleList ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+                    if (dtmRecord != null)
+                    {
+                        var allowedTabs = modules.Where(m => m.DesktopModuleID == dtmRecord.DesktopModuleID)
+                            .Select(m => m.TabID).Distinct()
+                            .Where(tabId => TabPermissionController.CanViewPage(tabsController.GetTab(tabId, portalId)));
+
+                        var allowedTabModules = modules.Where(tabModule => allowedTabs.Contains(tabModule.TabID) &&
+                            ModulePermissionController.CanViewModule(modulesController.GetModule(tabModule.ModuleID, tabModule.TabID, false)));
+
+                        resultIds.AddRange(allowedTabModules.Select(tabModule => tabModule.TabModuleID));
+                    }
+                }
+            }
+
+            return monikers.Where(kpv => resultIds.Contains(kpv.Key));
+        }
+
+        private SiteDetail GetSiteDetails(string moduleList)
         {
             var siteDetails = new SiteDetail
             {
@@ -54,7 +105,7 @@ namespace Dnn.AuthServices.Jwt.Services
                 IsAdmin = UserInfo.IsInRole("Administrators")
             };
 
-            foreach (var moduleName in (moduleList ?? "").Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var moduleName in (moduleList ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 var modulesCollection = GetTabModules((moduleName ?? "").Trim())
                     .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&
@@ -78,10 +129,8 @@ namespace Dnn.AuthServices.Jwt.Services
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, siteDetails);
+            return siteDetails;
         }
-
-        #region private methods
 
         private static IEnumerable<TabModule> GetTabModules(string moduleName)
         {

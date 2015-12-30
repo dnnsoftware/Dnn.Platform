@@ -1159,7 +1159,17 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("DeleteTabModuleSettings", tabModuleId);
 		}
 
-		public virtual IDataReader GetAllModules()
+	    public virtual IDataReader GetTabModuleSettingsByName(int portalId, string settingName)
+	    {
+            return ExecuteReader("GetTabModuleSettingsByName", portalId, settingName);
+        }
+
+	    public virtual IDataReader GetTabModuleIdsBySettingNameAndValue(int portalId, string settingName, string expectedValue)
+	    {
+            return ExecuteReader("GetTabModuleIdsBySettingNameAndValue", portalId, settingName, expectedValue);
+        }
+
+        public virtual IDataReader GetAllModules()
 		{
 			return ExecuteReader("GetAllModules");
 		}
@@ -2449,9 +2459,10 @@ namespace DotNetNuke.Data
 			}
 			foreach (string key in userList.Keys)
 			{
-				if (userList[key] is AnonymousUserInfo)
+			    var info = userList[key] as AnonymousUserInfo;
+			    if (info != null)
 				{
-					var user = (AnonymousUserInfo)userList[key];
+					var user = info;
 					ExecuteNonQuery("UpdateAnonymousUser", user.UserID, user.PortalID, user.TabID, user.LastActiveDate);
 				}
 				else if (userList[key] is OnlineUserInfo)
@@ -3356,8 +3367,7 @@ namespace DotNetNuke.Data
 								   string logPortalName, DateTime logCreateDate, string logServerName,
 							string logProperties, int logConfigID, ExceptionInfo exception, bool notificationActive)
 		{
-            int logEventID;
-            if (exception != null)
+		    if (exception != null)
             {
                 if (!string.IsNullOrEmpty(exception.ExceptionHash))
                     ExecuteNonQuery("AddException",
@@ -3371,6 +3381,7 @@ namespace DotNetNuke.Data
 
                 // DNN-6218 + DNN-6239 + DNN-6242: Due to change in the AddEventLog stored
                 // procedure in 7.4.0, we need to try a fallback especially during upgrading
+                int logEventID;
                 try
                 {
                     logEventID = ExecuteScalar<int>("AddEventLog",
@@ -3421,7 +3432,7 @@ namespace DotNetNuke.Data
             }
             else
             {
-                logEventID = ExecuteScalar<int>("AddEventLog",
+                ExecuteScalar<int>("AddEventLog",
                                                 logGUID,
                                                 logTypeKey,
                                                 GetNull(logUserID),
@@ -4167,42 +4178,42 @@ namespace DotNetNuke.Data
 
 		public virtual void AddOutputCacheItem(int itemId, string cacheKey, string output, DateTime expiration)
 		{
-			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCacheAddItem", itemId, cacheKey, output, expiration);
+			Instance().ExecuteNonQuery("OutputCacheAddItem", itemId, cacheKey, output, expiration);
 		}
 
 		public virtual IDataReader GetOutputCacheItem(string cacheKey)
 		{
-			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetItem", cacheKey));
+			return Instance().ExecuteReader("OutputCacheGetItem", cacheKey);
 		}
 
 		public virtual int GetOutputCacheItemCount(int itemId)
 		{
-			return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>("OutputCacheGetItemCount", itemId);
+			return Instance().ExecuteScalar<int>("OutputCacheGetItemCount", itemId);
 		}
 
 		public virtual IDataReader GetOutputCacheKeys()
 		{
-			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetKeys", DBNull.Value));
+			return Instance().ExecuteReader("OutputCacheGetKeys", DBNull.Value);
 		}
 
 		public virtual IDataReader GetOutputCacheKeys(int itemId)
 		{
-			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetKeys", itemId));
+			return Instance().ExecuteReader("OutputCacheGetKeys", itemId);
 		}
 
 		public virtual void PurgeExpiredOutputCacheItems()
 		{
-			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCachePurgeExpiredItems", DateTime.UtcNow);
+			Instance().ExecuteNonQuery("OutputCachePurgeExpiredItems", DateTime.UtcNow);
 		}
 
 		public virtual void PurgeOutputCache()
 		{
-			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCachePurgeCache");
+			Instance().ExecuteNonQuery("OutputCachePurgeCache");
 		}
 
 		public virtual void RemoveOutputCacheItem(int itemId)
 		{
-			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCacheRemoveItem", itemId);
+			Instance().ExecuteNonQuery("OutputCacheRemoveItem", itemId);
 		}
 
 		#endregion
