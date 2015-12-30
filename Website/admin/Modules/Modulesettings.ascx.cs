@@ -547,24 +547,33 @@ namespace DotNetNuke.Modules.Admin.Modules
                         allTabsChanged = true;
                     }
                     Module.AllTabs = chkAllTabs.Checked;
+
+                    // collect these first as any settings update will clear the cache
                     var originalChecked = Settings["hideadminborder"] != null && bool.Parse(Settings["hideadminborder"].ToString());
+                    var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
+                    var oldMoniker = ((string)Settings["Moniker"] ?? "").TrimToLength(100);
+                    var newMoniker = txtMoniker.Text.TrimToLength(100);
+                    if (!oldMoniker.Equals(txtMoniker.Text))
+                    {
+                        var ids = TabModulesController.Instance.GetTabModuleIdsBySetting("Moniker", newMoniker);
+                        if (ids != null && ids.Count > 0)
+                        {
+                            //Warn user - duplicate moniker value
+                            Skin.AddModuleMessage(this, Localization.GetString("MonikerExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "Moniker", newMoniker);
+                    }
+
                     if (originalChecked != chkAdminBorder.Checked)
                     {
                         ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
                     }
 
                     //check whether allow index value is changed
-                    var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
                     if (allowIndex != chkAllowIndex.Checked)
                     {
                         ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
-                    }
-
-                    var oldMoniker = ((string)Settings["Moniker"] ?? "").TrimToLength(100);
-                    var newMoniker = txtMoniker.Text.TrimToLength(100);
-                    if (!oldMoniker.Equals(txtMoniker.Text))
-                    {
-                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "Moniker", newMoniker);
                     }
 
                     switch (Int32.Parse(cboVisibility.SelectedItem.Value))

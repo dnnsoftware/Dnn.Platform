@@ -226,7 +226,7 @@
     <value>Module Moniker:</value>
   </data>
   <data name="plMoniker.Help" xml:space="preserve">
-    <value>A unique identifier for this module on the page. This can be used by WEB API calls to set the context of the Tab and Module context.</value>
+    <value>A unique identifier for this module on the page. This can be used by WEB API callers to set the context of the Tab and Module context.</value>
   </data>
   <data name="plDefault.Text" xml:space="preserve">
     <value>Set as Default Settings</value>
@@ -464,5 +464,8 @@
   </data>
   <data name="isShareableViewOnlyLabel.Text" xml:space="preserve">
     <value>View Only</value>
+  </data>
+  <data name="MonikerExists.Text" xml:space="preserve">
+    <value>The new value of the moniker already exists; it must be unique in the portal.</value>
   </data>
 </root>
