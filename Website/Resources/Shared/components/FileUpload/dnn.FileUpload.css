@@ -271,9 +271,7 @@
 
 .fu-file-already-exists-prompt .fu-status-message {
     float: left;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     display: inline-block;
     max-width: 400px;
     line-height: 12px;
