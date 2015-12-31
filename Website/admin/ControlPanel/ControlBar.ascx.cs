@@ -48,6 +48,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Services.Personalization;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
@@ -149,7 +150,7 @@ namespace DotNetNuke.UI.ControlPanels
 
             if (ControlPanel.Visible && IncludeInControlHierarchy)
             {
-                ClientResourceManager.RegisterStyleSheet(Page, "~/admin/ControlPanel/ControlBar.css");
+                ClientResourceManager.RegisterStyleSheet(Page, "~/admin/ControlPanel/ControlBar.css", FileOrder.Css.ResourceCss);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.controlBar.js");
 

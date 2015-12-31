@@ -34,6 +34,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI;
 using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
@@ -174,7 +175,7 @@ namespace DotNetNuke.Web.UI
                     
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
                     {
-                        ClientResourceManager.RegisterStyleSheet(HttpContext.Current.Handler as Page, filePath);
+                        ClientResourceManager.RegisterStyleSheet(HttpContext.Current.Handler as Page, filePath, FileOrder.Css.ResourceCss);
                     }
 
                     if (((skinProperty != null) && (enableEmbeddedSkinsProperty != null)))

@@ -41,6 +41,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
@@ -287,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 

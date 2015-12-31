@@ -33,6 +33,7 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Client;
 
 #endregion
 
