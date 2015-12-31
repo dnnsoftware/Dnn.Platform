@@ -30,6 +30,7 @@ using System.Web;
 using DotNetNuke.Tests.Integration.Framework;
 using DotNetNuke.Tests.Integration.Framework.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Tests.Jwt
@@ -358,13 +359,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content => " + content);
-            if (query == GetMonikerQuery)
-                Assert.IsTrue(
-                    Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JArray>(content).Count > 0);
-            else
-            {
-                Assert.NotNull(content);
-            }
+            Assert.NotNull(content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 

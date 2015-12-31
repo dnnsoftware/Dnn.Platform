@@ -51,7 +51,7 @@ BEGIN
 		   [TokenExpiry],
 		   [RenewalExpiry],
 		   [TokenHash],
-		   [RenewalHash],
+		   [RenewalHash]
 	FROM {databaseOwner}[{objectQualifier}JsonWebTokens]
 	WHERE TokenId=@TokenId
 END
