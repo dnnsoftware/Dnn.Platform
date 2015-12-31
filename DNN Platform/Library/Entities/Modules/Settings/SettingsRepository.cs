@@ -258,6 +258,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (propertyType.GetInterface(typeof(IConvertible).FullName) != null)
                 {
+                    propertyValue = ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
                     property.SetValue(settings, Convert.ChangeType(propertyValue, propertyType, CultureInfo.InvariantCulture), null);
                     return;
                 }
@@ -277,6 +278,32 @@ namespace DotNetNuke.Entities.Modules.Settings
                                                              property.PropertyType), exception);
             }
         }
+
+        private string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
+        {
+            if (!propertyType.Name.Equals("Boolean"))
+            {
+                return propertyValue;
+            }
+
+            bool boolValue;
+            if (bool.TryParse(propertyValue, out boolValue))
+            {
+                return propertyValue;
+            }
+
+            if (propertyValue.Equals("1"))
+            {
+                return bool.TrueString;
+            }
+            if (propertyValue.Equals("0"))
+            {
+                return bool.FalseString;
+            }
+
+            return propertyValue;
+        }
+
         #endregion
 
         private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
