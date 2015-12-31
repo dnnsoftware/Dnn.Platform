@@ -86,13 +86,13 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0, 
             string searchText = "", int portalId = -1, bool includeDisabled = false, 
             bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false,
-            string roles = "", bool disabledSelectable = true)
+            string roles = "", bool disabledNotSelectable = false)
         {
             var response = new
             {
                 Success = true,
                 Items = GetPageDescendantsInternal(portalId, parentId, sortOrder, searchText, 
-                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable)
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -398,11 +398,11 @@ namespace DotNetNuke.Web.InternalServices
 
         private IEnumerable<ItemDto> GetPageDescendantsInternal(int portalId, string parentId, int sortOrder, 
             string searchText, bool includeDisabled = false, bool includeAllTypes = false,
-            bool includeActive = true, bool includeHostPages = false, string roles = "")
+            bool includeActive = true, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
             int id;
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
-            return GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled , includeAllTypes, includeActive, includeHostPages, roles);
+            return GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled , includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable);
         }
 
         private IEnumerable<ItemDto> GetPageDescendantsInternal(int portalId, int parentId, int sortOrder, 
