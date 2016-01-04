@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
-using ClientDependency.Core.Config;
 
 namespace ClientDependency.Core.Controls
 {
@@ -33,7 +32,6 @@ namespace ClientDependency.Core.Controls
             ForceVersion = false;
         }
 
-        private static DnnConfiguration dnnConfig = new DnnConfiguration();
         public ClientDependencyType DependencyType { get; internal set; }
 
         public string FilePath { get; set; }
@@ -79,7 +77,7 @@ namespace ClientDependency.Core.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (AddTag && (this.Context.IsDebuggingEnabled || dnnConfig.IsDebugMode()))
+            if (AddTag || this.Context.IsDebuggingEnabled)
             {
                 writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
             }
