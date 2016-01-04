@@ -5,11 +5,14 @@ using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.Api
 {
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
+
         private const string ModuleIdKey = "ModuleId";
         private const string TabIdKey = "TabId";
         private const string MonikerQueryKey = "Moniker";
@@ -145,6 +148,11 @@ namespace DotNetNuke.Web.Api
                 {
                     return ids.First();
                 }
+            }
+
+            if (Logger.IsWarnEnabled)
+            {
+                Logger.WarnFormat("The specified moniker ({0}) is not defined in the system", monikerValue);
             }
 
             return Null.NullInteger;

@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.ConfigSection
         {
             get
             {
-                var b = (bool?)this[DefaultIncludeTag];
+                var b = (bool?)this[ForceSslTag];
                 return b.Value;
             }
             set
