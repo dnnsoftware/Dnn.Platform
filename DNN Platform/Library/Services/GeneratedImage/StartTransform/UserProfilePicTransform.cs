@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -54,9 +56,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		            return GetNoAvatarImage();
 		        }
 
-		        using(var content = FileManager.Instance.GetFileContent(photoFile))
+		        using (var content = FileManager.Instance.GetFileContent(photoFile))
 		        {
-		            return new Bitmap(content);
+		            return CopyImage(content);
 		        }
 		    }
 		    return GetNoAvatarImage();
@@ -133,6 +135,23 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
+        }
+
+        private Image CopyImage(System.IO.Stream imgStream)
+        {
+            using (Image srcImage = new Bitmap(imgStream))
+            {
+                Image destImage = new Bitmap(srcImage.Width, srcImage.Height, srcImage.PixelFormat);
+                using (Graphics graph = Graphics.FromImage(destImage))
+                {
+                    graph.CompositingMode = CompositingMode.SourceCopy;
+                    graph.CompositingQuality = CompositingQuality;
+                    graph.InterpolationMode = InterpolationMode;
+                    graph.SmoothingMode = SmoothingMode;
+                    graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
+                }
+                return destImage;
+            }
         }
     }
 }
