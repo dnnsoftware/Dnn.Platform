@@ -84,3 +84,14 @@ END
 GO
 
 -- DNN-8141 END
+
+-- CONTENT-5617	Page Settings Error: 12/31/9999 11:59:59 PM' is not valid for 'SelectedDate'
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]', N'U') IS NOT NULL
+	UPDATE {databaseOwner}[{objectQualifier}Tabs]
+	SET EndDate = NULL
+	WHERE EndDate >= '9999-12-31'
+GO
+
+-- CONTENT-5617 END
+
