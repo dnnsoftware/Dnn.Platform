@@ -42,11 +42,8 @@
     <ItemGroup>
       <CKEditor Include="CKEditor\**\*.*" />
     </ItemGroup>
-	<ItemGroup>
-      <ConfigFiles Include="Config\*.*" />
-    </ItemGroup>
     <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);@(ConfigFiles);" />
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);" />
     </ItemGroup>
     <ItemGroup>
       <CleanupFiles Include="*.Cleanup.txt" />
