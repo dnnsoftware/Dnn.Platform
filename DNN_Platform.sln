@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -279,6 +279,124 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.SkinManagement", "DNN Platform\Admin Modules\Dnn.Modules.SkinManagement\Dnn.Modules.SkinManagement.csproj", "{63909AD9-4859-44C4-81C1-280E554E6983}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.AuthServices.Jwt", "DNN Platform\Dnn.AuthServices.Jwt\Dnn.AuthServices.Jwt.csproj", "{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website.Artifacts", "Website.Artifacts", "{FAEC4667-B1E7-403A-92EC-CEFA85542D8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\App_Data\Database.mdf = DNN Platform\Website\App_Data\Database.mdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RadSpell", "RadSpell", "{207FD10B-58FA-4892-BED0-2077D02CEDDF}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\App_Data\RadSpell\en-US.tdf = DNN Platform\Website\App_Data\RadSpell\en-US.tdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5467AF88-258B-48A4-B2AA-FE57CC156D98}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Config\DotNetNuke.config = DNN Platform\Website\Config\DotNetNuke.config
+		DNN Platform\Website\Config\DotNetNuke.log4net.config = DNN Platform\Website\Config\DotNetNuke.log4net.config
+		DNN Platform\Website\Config\InstallLog.Config = DNN Platform\Website\Config\InstallLog.Config
+		DNN Platform\Website\Config\SiteAnalytics.config = DNN Platform\Website\Config\SiteAnalytics.config
+		DNN Platform\Website\Config\SiteUrls.config = DNN Platform\Website\Config\SiteUrls.config
+		DNN Platform\Website\Config\SolutionsExplorer.opml.config = DNN Platform\Website\Config\SolutionsExplorer.opml.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Install", "Install", "{22307C17-79AA-48AF-B0DF-6EDDC13048F5}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\InstallWizard.aspx = DNN Platform\Website\Install\InstallWizard.aspx
+		DNN Platform\Website\Install\InstallWizard.aspx.cs = DNN Platform\Website\Install\InstallWizard.aspx.cs
+		DNN Platform\Website\Install\InstallWizard.aspx.designer.cs = DNN Platform\Website\Install\InstallWizard.aspx.designer.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Cleanup\03.00.08.txt = DNN Platform\Website\Install\Cleanup\03.00.08.txt
+		DNN Platform\Website\Install\Cleanup\03.00.12.txt = DNN Platform\Website\Install\Cleanup\03.00.12.txt
+		DNN Platform\Website\Install\Cleanup\03.01.00.txt = DNN Platform\Website\Install\Cleanup\03.01.00.txt
+		DNN Platform\Website\Install\Cleanup\03.02.00.txt = DNN Platform\Website\Install\Cleanup\03.02.00.txt
+		DNN Platform\Website\Install\Cleanup\03.02.01.txt = DNN Platform\Website\Install\Cleanup\03.02.01.txt
+		DNN Platform\Website\Install\Cleanup\03.03.00.txt = DNN Platform\Website\Install\Cleanup\03.03.00.txt
+		DNN Platform\Website\Install\Cleanup\04.03.03.txt = DNN Platform\Website\Install\Cleanup\04.03.03.txt
+		DNN Platform\Website\Install\Cleanup\04.05.00.txt = DNN Platform\Website\Install\Cleanup\04.05.00.txt
+		DNN Platform\Website\Install\Cleanup\04.05.01.txt = DNN Platform\Website\Install\Cleanup\04.05.01.txt
+		DNN Platform\Website\Install\Cleanup\04.06.00.txt = DNN Platform\Website\Install\Cleanup\04.06.00.txt
+		DNN Platform\Website\Install\Cleanup\04.07.00.txt = DNN Platform\Website\Install\Cleanup\04.07.00.txt
+		DNN Platform\Website\Install\Cleanup\04.08.00.txt = DNN Platform\Website\Install\Cleanup\04.08.00.txt
+		DNN Platform\Website\Install\Cleanup\04.08.01.txt = DNN Platform\Website\Install\Cleanup\04.08.01.txt
+		DNN Platform\Website\Install\Cleanup\04.08.02.txt = DNN Platform\Website\Install\Cleanup\04.08.02.txt
+		DNN Platform\Website\Install\Cleanup\04.09.00.txt = DNN Platform\Website\Install\Cleanup\04.09.00.txt
+		DNN Platform\Website\Install\Cleanup\05.00.00.txt = DNN Platform\Website\Install\Cleanup\05.00.00.txt
+		DNN Platform\Website\Install\Cleanup\05.00.01.txt = DNN Platform\Website\Install\Cleanup\05.00.01.txt
+		DNN Platform\Website\Install\Cleanup\05.01.00.txt = DNN Platform\Website\Install\Cleanup\05.01.00.txt
+		DNN Platform\Website\Install\Cleanup\05.03.00.txt = DNN Platform\Website\Install\Cleanup\05.03.00.txt
+		DNN Platform\Website\Install\Cleanup\05.06.00.txt = DNN Platform\Website\Install\Cleanup\05.06.00.txt
+		DNN Platform\Website\Install\Cleanup\06.00.00.txt = DNN Platform\Website\Install\Cleanup\06.00.00.txt
+		DNN Platform\Website\Install\Cleanup\07.00.00.txt = DNN Platform\Website\Install\Cleanup\07.00.00.txt
+		DNN Platform\Website\Install\Cleanup\07.00.01.txt = DNN Platform\Website\Install\Cleanup\07.00.01.txt
+		DNN Platform\Website\Install\Cleanup\07.02.01.txt = DNN Platform\Website\Install\Cleanup\07.02.01.txt
+		DNN Platform\Website\Install\Cleanup\07.03.01.txt = DNN Platform\Website\Install\Cleanup\07.03.01.txt
+		DNN Platform\Website\Install\Cleanup\07.04.01.txt = DNN Platform\Website\Install\Cleanup\07.04.01.txt
+		DNN Platform\Website\Install\Cleanup\07.04.02.txt = DNN Platform\Website\Install\Cleanup\07.04.02.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.06.txt = DNN Platform\Website\Install\Cleanup\08.00.00.06.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.13.txt = DNN Platform\Website\Install\Cleanup\08.00.00.13.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.16.txt = DNN Platform\Website\Install\Cleanup\08.00.00.16.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Config\04.06.00.config = DNN Platform\Website\Install\Config\04.06.00.config
+		DNN Platform\Website\Install\Config\04.07.00.config = DNN Platform\Website\Install\Config\04.07.00.config
+		DNN Platform\Website\Install\Config\04.08.00.config = DNN Platform\Website\Install\Config\04.08.00.config
+		DNN Platform\Website\Install\Config\04.09.00.config = DNN Platform\Website\Install\Config\04.09.00.config
+		DNN Platform\Website\Install\Config\05.01.00.config = DNN Platform\Website\Install\Config\05.01.00.config
+		DNN Platform\Website\Install\Config\05.02.00.config = DNN Platform\Website\Install\Config\05.02.00.config
+		DNN Platform\Website\Install\Config\05.02.01.config = DNN Platform\Website\Install\Config\05.02.01.config
+		DNN Platform\Website\Install\Config\05.03.00.config = DNN Platform\Website\Install\Config\05.03.00.config
+		DNN Platform\Website\Install\Config\05.05.00.config = DNN Platform\Website\Install\Config\05.05.00.config
+		DNN Platform\Website\Install\Config\05.06.00.config = DNN Platform\Website\Install\Config\05.06.00.config
+		DNN Platform\Website\Install\Config\05.06.01.config = DNN Platform\Website\Install\Config\05.06.01.config
+		DNN Platform\Website\Install\Config\05.06.03.config = DNN Platform\Website\Install\Config\05.06.03.config
+		DNN Platform\Website\Install\Config\06.00.00.config = DNN Platform\Website\Install\Config\06.00.00.config
+		DNN Platform\Website\Install\Config\06.01.00.config = DNN Platform\Website\Install\Config\06.01.00.config
+		DNN Platform\Website\Install\Config\06.01.01.config = DNN Platform\Website\Install\Config\06.01.01.config
+		DNN Platform\Website\Install\Config\06.02.00.config = DNN Platform\Website\Install\Config\06.02.00.config
+		DNN Platform\Website\Install\Config\07.00.00.config = DNN Platform\Website\Install\Config\07.00.00.config
+		DNN Platform\Website\Install\Config\07.00.05.config = DNN Platform\Website\Install\Config\07.00.05.config
+		DNN Platform\Website\Install\Config\07.00.06.config = DNN Platform\Website\Install\Config\07.00.06.config
+		DNN Platform\Website\Install\Config\07.01.01.config = DNN Platform\Website\Install\Config\07.01.01.config
+		DNN Platform\Website\Install\Config\07.01.02.config = DNN Platform\Website\Install\Config\07.01.02.config
+		DNN Platform\Website\Install\Config\07.02.00.config = DNN Platform\Website\Install\Config\07.02.00.config
+		DNN Platform\Website\Install\Config\07.02.01.config = DNN Platform\Website\Install\Config\07.02.01.config
+		DNN Platform\Website\Install\Config\07.03.00.config = DNN Platform\Website\Install\Config\07.03.00.config
+		DNN Platform\Website\Install\Config\07.04.01.config = DNN Platform\Website\Install\Config\07.04.01.config
+		DNN Platform\Website\Install\Config\08.00.00.01.config = DNN Platform\Website\Install\Config\08.00.00.01.config
+		DNN Platform\Website\Install\Config\08.00.00.02.config = DNN Platform\Website\Install\Config\08.00.00.02.config
+		DNN Platform\Website\Install\Config\08.00.00.03.config = DNN Platform\Website\Install\Config\08.00.00.03.config
+		DNN Platform\Website\Install\Config\08.00.00.12.config = DNN Platform\Website\Install\Config\08.00.00.12.config
+		DNN Platform\Website\Install\Config\08.00.00.22.config = DNN Platform\Website\Install\Config\08.00.00.22.config
+		DNN Platform\Website\Install\Config\08.00.00.26.config = DNN Platform\Website\Install\Config\08.00.00.26.config
+		DNN Platform\Website\Install\Config\08.00.00.30.config = DNN Platform\Website\Install\Config\08.00.00.30.config
+		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
+		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
+		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
+		DNN Platform\Website\Install\Config\RemoveBindingRedirect.config = DNN Platform\Website\Install\Config\RemoveBindingRedirect.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{C5955B6A-A368-4AF0-A752-198D403437CB}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Module\SecurityAnalyzer_08.00.00_Install.zip = DNN Platform\Website\Install\Module\SecurityAnalyzer_08.00.00_Install.zip
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider", "Provider", "{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip = DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skin", "Skin", "{140B6176-E045-4F86-ABCA-6C493068F6FA}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip = DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -760,5 +878,15 @@ Global
 		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{63909AD9-4859-44C4-81C1-280E554E6983} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
+		{FAEC4667-B1E7-403A-92EC-CEFA85542D8B} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
+		{2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{207FD10B-58FA-4892-BED0-2077D02CEDDF} = {2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8}
+		{5467AF88-258B-48A4-B2AA-FE57CC156D98} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{22307C17-79AA-48AF-B0DF-6EDDC13048F5} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{15EE268D-2073-4489-9BB2-26E34D65A8DC} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{C5955B6A-A368-4AF0-A752-198D403437CB} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{140B6176-E045-4F86-ABCA-6C493068F6FA} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 	EndGlobalSection
 EndGlobal
