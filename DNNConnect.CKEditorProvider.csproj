@@ -94,6 +94,7 @@
     <Compile Include="Browser\FileUploader.ashx.cs">
       <DependentUpon>FileUploader.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Components\UpgradeController.cs" />
     <Compile Include="Constants\Browser.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
@@ -279,6 +280,8 @@
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
     <Content Include="Install\01.00.00.SqlDataProvider" />
+    <Content Include="Config\DefaultProvider.config" />
+    <Content Include="Config\Install.config" />
     <None Include="Install\Uninstall.SqlDataProvider" />
     <None Include="DNNConnect.CKEditorProvider.dnn">
       <SubType>Designer</SubType>
