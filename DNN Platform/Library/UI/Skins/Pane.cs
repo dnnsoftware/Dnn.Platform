@@ -368,6 +368,17 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
 
+                //error loading container - load from tab
+                if (container == null)
+                {
+                    containerSrc = PortalSettings.ActiveTab.ContainerSrc;
+                    if (!String.IsNullOrEmpty(containerSrc))
+                    {
+                        containerSrc = SkinController.FormatSkinSrc(containerSrc, PortalSettings);
+                        container = LoadContainerByPath(containerSrc);
+                    }
+                }
+
                 //error loading container - load default
                 if (container == null)
                 {
