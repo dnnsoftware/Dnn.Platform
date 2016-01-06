@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Linq;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Blocker;
 
@@ -46,18 +45,8 @@ using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
-//********************************************
-//********************************************
-//********************************************
-//        IMPORTANT READ THIS
-//  During upgrades this file may run with plain old .net 2.0 compilers
-//  Be careful of the language features you use here.
-//  Do not use:
-//      var
-//      add more to the list as you find them
-//********************************************
-//********************************************
-//********************************************
+
+// ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Install
 {
     public partial class Install : Page
@@ -84,8 +73,7 @@ namespace DotNetNuke.Services.Install
             }
             Response.Write("<h2>Execution Complete</h2>");
             Response.Flush();
-
-
+            
             //Write out Footer
             HtmlUtils.WriteFooter(Response);
         }
@@ -222,12 +210,12 @@ namespace DotNetNuke.Services.Install
             }
         }
         
-        private void RegisterInstallBegining()
+        private static void RegisterInstallBegining()
         {
             InstallBlocker.Instance.RegisterInstallBegining();
         }
 
-        private void RegisterInstallEnd()
+        private static void RegisterInstallEnd()
         {
             InstallBlocker.Instance.RegisterInstallEnd();
         }
@@ -390,17 +378,18 @@ namespace DotNetNuke.Services.Install
             if (File.Exists(strNewFile))
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                XmlNodeList nodes;
-                int intPortalId;
                 xmlDoc.Load(strNewFile);
 
                 //parse portal(s) if available
-                nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");
-                foreach (XmlNode node in nodes)
+                var nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");
+                if (nodes != null)
                 {
-                    if (node != null)
+                    foreach (XmlNode node in nodes)
                     {
-                        intPortalId = Upgrade.Upgrade.AddPortal(node, true, 0);
+                        if (node != null)
+                        {
+                            Upgrade.Upgrade.AddPortal(node, true, 0);
+                        }
                     }
                 }
 
@@ -457,7 +446,6 @@ namespace DotNetNuke.Services.Install
             string strProviderPath = DataProvider.Instance().GetProviderPath();
             if (!strProviderPath.StartsWith("ERROR:"))
             {
-                string strDatabaseVersion;
                 //get current database version
                 try
                 {
@@ -478,7 +466,7 @@ namespace DotNetNuke.Services.Install
                             Response.Write("<h2>Current Assembly Version: " + currentAssembly + "</h2>");
                             //Call Upgrade with the current DB Version to upgrade an
                             //existing DNN installation
-                            strDatabaseVersion = ((int)dr["Major"]).ToString("00") + "." + ((int)dr["Minor"]).ToString("00") + "." + ((int)dr["Build"]).ToString("00");
+                            var strDatabaseVersion = ((int)dr["Major"]).ToString("00") + "." + ((int)dr["Minor"]).ToString("00") + "." + ((int)dr["Build"]).ToString("00");
                             Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
                         }
 
@@ -540,7 +528,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string test = Config.AddFCNMode(Config.FcnMode.Single);
+            Config.AddFCNMode(Config.FcnMode.Single);
             //Get current Script time-out
             int scriptTimeOut = Server.ScriptTimeout;
 
