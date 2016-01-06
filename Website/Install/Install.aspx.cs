@@ -117,99 +117,108 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
-                var synchConnectionString = new SynchConnectionStringStep();
-                synchConnectionString.Execute();
-                if (synchConnectionString.Status == StepStatus.AppRestart)
+
+                try
                 {
-                    //send a new request to the application to initiate step 2
-                    Response.Redirect(HttpContext.Current.Request.RawUrl, true);
-                }
-
-                //Start Timer
-                Upgrade.Upgrade.StartTimer();
-
-                //Write out Header
-                HtmlUtils.WriteHeader(Response, "install");
-
-                //get path to script files
-                string strProviderPath = DataProvider.Instance().GetProviderPath();
-                if (!strProviderPath.StartsWith("ERROR:"))
-                {
-                    lock (installLocker)
+                    var synchConnectionString = new SynchConnectionStringStep();
+                    synchConnectionString.Execute();
+                    if (synchConnectionString.Status == StepStatus.AppRestart)
                     {
-                        if (InstallBlocker.Instance.IsInstallInProgress())
+                        //send a new request to the application to initiate step 2
+                        Response.Redirect(HttpContext.Current.Request.RawUrl, true);
+                    }
+
+                    //Start Timer
+                    Upgrade.Upgrade.StartTimer();
+
+                    //Write out Header
+                    HtmlUtils.WriteHeader(Response, "install");
+
+                    //get path to script files
+                    string strProviderPath = DataProvider.Instance().GetProviderPath();
+                    if (!strProviderPath.StartsWith("ERROR:"))
+                    {
+                        lock (installLocker)
                         {
-                            WriteInstallationHeader();
-                            WriteInstallationInProgress();
+                            if (InstallBlocker.Instance.IsInstallInProgress())
+                            {
+                                WriteInstallationHeader();
+                                WriteInstallationInProgress();
+                                return;
+                            }
+                            RegisterInstallBegining();
+                        }
+                        if (!CheckPermissions())
+                        {
                             return;
                         }
-                        RegisterInstallBegining();
+
+                        var installConfig = InstallController.Instance.GetInstallConfig();
+                        //Create Folder Mappings config
+                        if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+                        {
+                            FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
+                        }
+                        Upgrade.Upgrade.InstallDNN(strProviderPath);
+                        //remove en-US from portal if installing in a different language
+                        if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            var locale = LocaleController.Instance.GetLocale("en-US");
+                            Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId);
+                        }
+
+                        var licenseConfig = installConfig.License;
+                        bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
+                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
+                        if (IsProOrEnterprise && licenseConfig != null && !String.IsNullOrEmpty(licenseConfig.AccountEmail) &&
+                            !String.IsNullOrEmpty(licenseConfig.InvoiceNumber))
+                        {
+                            Upgrade.Upgrade.ActivateLicense();
+                        }
+
+                        //Adding ClientDependency Resources config to web.config                    
+                        if (!ClientResourceManager.IsInstalled())
+                        {
+                            ClientResourceManager.AddConfiguration();
+                        }
+
+                        var installVersion = DataProvider.Instance().GetInstallVersion();
+                        string strError = Config.UpdateInstallVersion(installVersion);
+
+                        //Adding FCN mode to web.config
+                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        if (!string.IsNullOrEmpty(strError))
+                        {
+                            Logger.Error(strError);
+                        }
+
+                        Response.Write("<h2>Installation Complete</h2>");
+                        Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+                        Response.Flush();
+
+                        //remove installwizard files
+                        Upgrade.Upgrade.DeleteInstallerFiles();
+
+                        //log APPLICATION_START event
+                        Initialize.LogStart();
+
+                        //Start Scheduler
+                        Initialize.StartScheduler();
                     }
-                    if (!CheckPermissions())
+                    else
                     {
-                        return;
+                        //upgrade error
+                        Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
+                        Response.Flush();
                     }
 
-                    var installConfig = InstallController.Instance.GetInstallConfig();
-                    //Create Folder Mappings config
-                    if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
-                    {
-                        FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
-                    }
-                    Upgrade.Upgrade.InstallDNN(strProviderPath);
-                    //remove en-US from portal if installing in a different language
-                    if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var locale = LocaleController.Instance.GetLocale("en-US");
-                        Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId);
-                    }
-                    
-                    var licenseConfig = (installConfig != null) ? installConfig.License : null;
-                    bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
-                    if (IsProOrEnterprise && licenseConfig != null && !String.IsNullOrEmpty(licenseConfig.AccountEmail) && !String.IsNullOrEmpty(licenseConfig.InvoiceNumber))
-                    {
-                        Upgrade.Upgrade.ActivateLicense();
-                    }
-
-                    //Adding ClientDependency Resources config to web.config                    
-                    if (!ClientResourceManager.IsInstalled())
-                    {
-                        ClientResourceManager.AddConfiguration();
-                    }
-
-                    var installVersion = DataProvider.Instance().GetInstallVersion();
-                    string strError = Config.UpdateInstallVersion(installVersion);
-
-                    //Adding FCN mode to web.config
-                    strError += Config.AddFCNMode(Config.FcnMode.Single);
-                    if (!string.IsNullOrEmpty(strError))
-                    {
-                        Logger.Error(strError);
-                    }
-                    
-                    Response.Write("<h2>Installation Complete</h2>");
-                    Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
-                    Response.Flush();
-
-                    //remove installwizard files
-                    Upgrade.Upgrade.DeleteInstallerFiles();
-
-                    //log APPLICATION_START event
-                    Initialize.LogStart();
-
-                    //Start Scheduler
-                    Initialize.StartScheduler();
+                    //Write out Footer
+                    HtmlUtils.WriteFooter(Response);
                 }
-                else
+                finally
                 {
-                    //upgrade error
-                    Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
-                    Response.Flush();
+                    RegisterInstallEnd();
                 }
-
-                //Write out Footer
-                HtmlUtils.WriteFooter(Response);
-                RegisterInstallEnd();
             }
         }
         
@@ -253,111 +262,117 @@ namespace DotNetNuke.Services.Install
         }
 
         private void UpgradeApplication()
-        {
-            var databaseVersion = DataProvider.Instance().GetVersion();
-            
-            //Start Timer
-            Upgrade.Upgrade.StartTimer();
-
-            //Write out Header
-            HtmlUtils.WriteHeader(Response, "upgrade");
-
-            //There could be an installation in progress
-            lock (installLocker)
+        { 
+            try
             {
-                if (InstallBlocker.Instance.IsInstallInProgress())
+                var databaseVersion = DataProvider.Instance().GetVersion();
+
+                //Start Timer
+                Upgrade.Upgrade.StartTimer();
+
+                //Write out Header
+                HtmlUtils.WriteHeader(Response, "upgrade");
+
+                //There could be an installation in progress
+                lock (installLocker)
                 {
-                    WriteInstallationHeader();
-                    WriteInstallationInProgress();
-                    return;
+                    if (InstallBlocker.Instance.IsInstallInProgress())
+                    {
+                        WriteInstallationHeader();
+                        WriteInstallationInProgress();
+                        return;
+                    }
+                    RegisterInstallBegining();
                 }
-                RegisterInstallBegining();
-            }
-            
-            Response.Write("<h2>Current Assembly Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
-            Response.Flush();
 
-            //get path to script files
-            string strProviderPath = DataProvider.Instance().GetProviderPath();
-            if (!strProviderPath.StartsWith("ERROR:"))
-            {
-                //get current database version
-                var strDatabaseVersion = Globals.FormatVersion(databaseVersion);
-
-                Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
+                Response.Write("<h2>Current Assembly Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
                 Response.Flush();
 
-                string ignoreWarning = Null.NullString;
-                string strWarning = Null.NullString;
-                if ((databaseVersion.Major == 3 && databaseVersion.Minor < 3) || (databaseVersion.Major == 4 && databaseVersion.Minor < 3))
+                //get path to script files
+                string strProviderPath = DataProvider.Instance().GetProviderPath();
+                if (!strProviderPath.StartsWith("ERROR:"))
                 {
-                    //Users and profile have not been transferred
-                    //Get the name of the data provider
-                    ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
+                    //get current database version
+                    var strDatabaseVersion = Globals.FormatVersion(databaseVersion);
 
-                    //Execute Special Script
-                    Upgrade.Upgrade.ExecuteScript(strProviderPath + "Upgrade." + objProviderConfiguration.DefaultProvider);
-
-                    if ((Request.QueryString["ignoreWarning"] != null))
-                    {
-                        ignoreWarning = Request.QueryString["ignoreWarning"].ToLower();
-                    }
-                    strWarning = Upgrade.Upgrade.CheckUpgrade();
-                }
-                else
-                {
-                    ignoreWarning = "true";
-                }
-
-                //Check whether Upgrade is ok
-                if (strWarning == Null.NullString || ignoreWarning == "true")
-                {
-                    Response.Write("<br><br>");
-                    Response.Write("<h2>Upgrade Status Report</h2>");
+                    Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
                     Response.Flush();
-                    
-                    //stop scheduler
-                    SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
 
-                    Upgrade.Upgrade.UpgradeDNN(strProviderPath, databaseVersion);
-
-                    //Install optional resources if present
-                    var packages = Upgrade.Upgrade.GetInstallPackages();
-                    foreach (var package in packages)
+                    string ignoreWarning = Null.NullString;
+                    string strWarning = Null.NullString;
+                    if ((databaseVersion.Major == 3 && databaseVersion.Minor < 3) || (databaseVersion.Major == 4 && databaseVersion.Minor < 3))
                     {
-                        Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
+                        //Users and profile have not been transferred
+                        //Get the name of the data provider
+                        ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
+
+                        //Execute Special Script
+                        Upgrade.Upgrade.ExecuteScript(strProviderPath + "Upgrade." + objProviderConfiguration.DefaultProvider);
+
+                        if ((Request.QueryString["ignoreWarning"] != null))
+                        {
+                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLower();
+                        }
+                        strWarning = Upgrade.Upgrade.CheckUpgrade();
+                    }
+                    else
+                    {
+                        ignoreWarning = "true";
                     }
 
-                    //calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
-                    var installVersion = DataProvider.Instance().GetInstallVersion();
-                    string strError = Config.UpdateInstallVersion(installVersion);
-
-                    //Adding FCN mode to web.config
-                    strError += Config.AddFCNMode(Config.FcnMode.Single);
-                    if (!string.IsNullOrEmpty(strError))
+                    //Check whether Upgrade is ok
+                    if (strWarning == Null.NullString || ignoreWarning == "true")
                     {
-                        Logger.Error(strError);
+                        Response.Write("<br><br>");
+                        Response.Write("<h2>Upgrade Status Report</h2>");
+                        Response.Flush();
+
+                        //stop scheduler
+                        SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
+
+                        Upgrade.Upgrade.UpgradeDNN(strProviderPath, databaseVersion);
+
+                        //Install optional resources if present
+                        var packages = Upgrade.Upgrade.GetInstallPackages();
+                        foreach (var package in packages)
+                        {
+                            Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
+                        }
+
+                        //calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
+                        var installVersion = DataProvider.Instance().GetInstallVersion();
+                        string strError = Config.UpdateInstallVersion(installVersion);
+
+                        //Adding FCN mode to web.config
+                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        if (!string.IsNullOrEmpty(strError))
+                        {
+                            Logger.Error(strError);
+                        }
+                        Response.Write("<h2>Upgrade Complete</h2>");
+                        Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
                     }
-                    Response.Write("<h2>Upgrade Complete</h2>");
-                    Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+                    else
+                    {
+                        Response.Write("<h2>Warning:</h2>" + strWarning.Replace(Environment.NewLine, "<br />"));
+
+                        Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
+                    }
+                    Response.Flush();
                 }
                 else
                 {
-                    Response.Write("<h2>Warning:</h2>" + strWarning.Replace(Environment.NewLine, "<br />"));
-
-                    Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
+                    Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
+                    Response.Flush();
                 }
-                Response.Flush();
-            }
-            else
-            {
-                Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
-                Response.Flush();
-            }
 
-            //Write out Footer
-            HtmlUtils.WriteFooter(Response);
-            RegisterInstallEnd();
+                //Write out Footer
+                HtmlUtils.WriteFooter(Response);
+            }
+            finally
+            {
+                RegisterInstallEnd();
+            }
         }
 
         private void AddPortal()

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Services.Installer.Blocker
@@ -25,13 +26,6 @@ namespace DotNetNuke.Services.Installer.Blocker
         #region Members
         #endregion
 
-        #region Constructors
-        public InstallBlocker()
-        {
-
-        }
-        #endregion
-
         #region Public Methods
 
         public void RegisterInstallBegining()
@@ -46,7 +40,15 @@ namespace DotNetNuke.Services.Installer.Blocker
 
         public void RegisterInstallEnd()
         {
-            File.Delete(Globals.ApplicationMapPath + installBlockerFile);
+            var retryable = new RetryableAction(() =>
+            {
+                if (IsInstallInProgress())
+                {
+                    File.Delete(Globals.ApplicationMapPath + installBlockerFile);
+                }
+            }, "Deleting lock file", 60, TimeSpan.FromSeconds(1));
+
+            retryable.TryIt();
         }
 
         #endregion
