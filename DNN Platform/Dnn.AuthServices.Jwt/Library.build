@@ -1,6 +1,6 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Extension>zip</Extension>
+    <Extension>resources</Extension>
     <DNNFileName>Dnn.Jwt</DNNFileName>
     <PackageName>DnnJwtAuth</PackageName>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
