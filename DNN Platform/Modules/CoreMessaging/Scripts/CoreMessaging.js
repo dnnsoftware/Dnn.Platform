@@ -388,11 +388,11 @@
             var previousNewThreads = self.TotalNewThreads();
 
             if (messageconversationView.Read() === true) {
-                messageconversationView.NewThreadCount(messageconversationView.ThreadCount());
+                messageconversationView.NewThreadCount(0);
                 self.TotalNewThreads(previousNewThreads + messageconversationView.NewThreadCount());
             } else {
                 self.TotalNewThreads(previousNewThreads - messageconversationView.NewThreadCount());
-                messageconversationView.NewThreadCount(0);
+                messageconversationView.NewThreadCount(1);
             }
         };
 
@@ -416,10 +416,12 @@
         };
 
         self.markAsRead = function (messageconversationView) {
+            messageconversationView.NewThreadCount(0);
             self.changeState(messageconversationView, baseServicepath + 'MarkRead');
         };
 
         self.markAsUnread = function (messageconversationView) {
+            messageconversationView.NewThreadCount(1);
             self.changeState(messageconversationView, baseServicepath + 'MarkUnRead');
         };
 
