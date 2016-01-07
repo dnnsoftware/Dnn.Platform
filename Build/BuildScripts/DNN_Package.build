@@ -64,12 +64,16 @@
 
 
   <Target Name="CreateInstall" DependsOnTargets="Compile">
+    <!-- Copy CKEditor Provider assembly into bin folder -->
+    <Unzip ZipFileName="$(WebsitePath)\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip" TargetDirectory="$(WebsitePath)\..\CKEditorPackage"/>
+    <Copy SourceFiles="$(WebsitePath)\..\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <RemoveDir Directories ="$(WebsitePath)\..\CKEditorPackage" />
+      
     <ItemGroup>
       <InstallPackage Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
       <InstallPackage Include="$(WebsitePath)\bin\*.dll" Exclude="@(InstallAssemblyExclude)" />
       <InstallPackage Include="$(WebsitePath)\bin\Providers\*.dll" Exclude="@(InstallAssemblyExclude)" />
     </ItemGroup>
-
     <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Install.zip" />
     <Message Text="Creating Install Package" Importance="high" />
   </Target>
