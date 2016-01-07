@@ -62,6 +62,21 @@ namespace DotNetNuke.Modules.Admin.Portals
     /// -----------------------------------------------------------------------------
     public partial class Template : PortalModuleBase
     {
+        #region Private Properties
+
+        /// <summary>
+        /// Gets the file extension to use for protected files.
+        /// </summary>
+        private string ProtectedExtension
+        {
+            get
+            {
+                return Globals.glbProtectedExtension;
+            }
+        }
+        
+        #endregion
+
         #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
@@ -83,7 +98,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             foreach (FileInfo objFile in folderManager.GetFiles(objFolder))
             {
                 //verify that the file exists on the file system
-                var filePath = objportal.HomeDirectoryMapPath + folderPath + objFile.FileName;
+                var filePath = objportal.HomeDirectoryMapPath + folderPath + GetActualFileName(objFile);
                 if (File.Exists(filePath))
                 {
                     writer.WriteStartElement("file");
@@ -97,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
                     writer.WriteEndElement();
 
-                    FileSystemUtils.AddToZip(ref zipFile, filePath, objFile.FileName, folderPath);
+                    FileSystemUtils.AddToZip(ref zipFile, filePath, GetActualFileName(objFile), folderPath);
                 }
             }
             writer.WriteEndElement();
@@ -546,6 +561,14 @@ namespace DotNetNuke.Modules.Admin.Portals
                 lblNoteSingleLanguage.Text = string.Format(LocalizeString("lblNoteSingleLanguage"), new CultureInfo(portalInfo.DefaultLanguage).EnglishName);
 
             }
+        }
+
+        //Checks if the Storage location is secured then post append the protected extension to the file name.
+        private string GetActualFileName(FileInfo objFile)
+        {
+            return (objFile.StorageLocation == (int) FolderController.StorageLocationTypes.SecureFileSystem)
+                ? objFile.FileName + ProtectedExtension
+                : objFile.FileName;
         }
 
         #region Pages tree
