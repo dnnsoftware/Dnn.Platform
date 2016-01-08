@@ -733,24 +733,25 @@
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;intro-container row&amp;quot;&amp;gt;
+              <content type="DNNHTML" version="08.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;intro-container row&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;main col-md-12&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;col-md-8&amp;quot;&amp;gt;
-&amp;lt;h2&amp;gt;Join the Community to Interact and Learn&amp;lt;/h2&amp;gt;
+&amp;lt;h2&amp;gt;[Tab.Home.Main.Title]&amp;lt;/h2&amp;gt;
 
 &amp;lt;ul class=&amp;quot;row&amp;quot;&amp;gt;
- &amp;lt;li class=&amp;quot;qa col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.dnnsoftware.com/answers?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=q%26a&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;You can&amp;#39;t get to this point without a few questions.  You might even have a few answers to contribute.  Either way, you&amp;#39;re headed to the Q&amp;amp;amp;A page.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Visit Q&amp;amp;amp;A&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Q &amp;amp;amp; A&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;blog col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.dnnsoftware.com/community-blog?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=blog&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;Informative and entertaining, challenging and educational, the DNN Community Blog always has fresh content, fresh ideas and new opinions.  Dive right in.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Read the Community Blog&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Blog&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;video col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.dnnsoftware.com/videos?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=videos&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;Everyone is a visual learner.  What&amp;#39;s better is that you can watch online video and still be working.  The DNN Video library is a vast treasure of how-to information.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Watch DNN Videos&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Videos&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;shop col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://store.dnnsoftware.com/?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=shop&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;You could write lots of new code to make this new site great.  Or you can just buy your way to success in the DNN Store.  You&amp;#39;ll get there faster.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Shop at the DNN Store&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Shop&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;webinar col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.dnnsoftware.com/about/resources/webinars?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=webinars&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;Enter the world of DNN Webinars where knowledgeable people share their knowledge.  That&amp;#39;s a lot of knowledge, and it&amp;#39;s there for you to learn.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Attend a DNN Webinar&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Webinars&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;wiki col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.dnnsoftware.com/wiki?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=wiki&amp;amp;amp;utm_content=8.0-tile&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;The DNN Wiki is continually expanding, like the universe.  Unlike the universe you can visit it all of the Wiki and make a dent with your contribution.&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;Read the DNN Wiki&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Wiki&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;qa col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.QA.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.QA.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.QA.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.QA.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;blog col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.Blog.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.Blog.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.Blog.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Blog.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;video col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.Videos.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.Videos.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.Videos.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Videos.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;shop col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.Shop.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.Shop.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.Shop.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Shop.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;webinar col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.Webinars.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.Webinars.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.Webinars.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Webinars.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;wiki col-md-4 col-sm-6&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.Main.Wikis.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;overlay&amp;quot;&amp;gt;&amp;lt;p&amp;gt;[Tab.Home.Main.Wikis.Tooltip]&amp;lt;/p&amp;gt;&amp;lt;label&amp;gt;[Tab.Home.Main.Wikis.SubLink.Text]&amp;lt;/label&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;[Tab.Home.Main.Wikis.Title]&amp;lt;/span&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 
 &amp;lt;div class=&amp;quot;row&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;col-md-12&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;col-md-12 company-intro&amp;quot;&amp;gt;
-&amp;lt;p&amp;gt;DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. DNN products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS and Social Community solutions, DNN is the steward of the DotNetNuke Open Source Project.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;[Tab.Home.CompanyIntro.Text]&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
@@ -758,29 +759,27 @@
 
 &amp;lt;div class=&amp;quot;slide col-md-3 pull-right&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;social-links&amp;quot;&amp;gt;
-&amp;lt;h3&amp;gt;Keep in touch with DNN&amp;lt;/h3&amp;gt;
+&amp;lt;h3&amp;gt;[Tab.Home.SocialLinks.Title]&amp;lt;/h3&amp;gt;
 
 &amp;lt;ul class=&amp;quot;row&amp;quot;&amp;gt;
- &amp;lt;li class=&amp;quot;facebook col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://facebook.com/dotnetnuke&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;linkedin col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.linkedin.com/company/207975&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;twitter col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://twitter.com/dnncorp&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;youtube col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;http://www.youtube.com/user/dotnetnuke&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;facebook col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Facebook.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;linkedin col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.LinkedIn.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;twitter col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Twitter.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;youtube col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Youtube.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;
 
 &amp;lt;div class=&amp;quot;product social col-md-12 col-sm-6&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;Evoq Engage&amp;quot; class=&amp;quot;img-responsive&amp;quot; src=&amp;quot;{{PortalRoot}}images/logo-evoq-social.png&amp;quot; /&amp;gt;
-&amp;lt;p&amp;gt;Grow users, crowdsource content and engage your audience through online communities.&amp;lt;/p&amp;gt;
-&amp;lt;a class=&amp;quot;btn-action&amp;quot; href=&amp;quot;http://www.dnnsoftware.com/solutions/evoq-social-online-community-management?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=evoq-social&amp;amp;amp;utm_content=8.0-banner&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span&amp;gt;BUILD &amp;amp;amp; GROW COMMUNITIES&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;[Tab.Home.Product.Social.Text]&amp;lt;/p&amp;gt;
+&amp;lt;a class=&amp;quot;btn-action&amp;quot; href=&amp;quot;[Tab.Home.Product.Social.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span&amp;gt;[Tab.Home.Product.Social.Link.Title]&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
 
 &amp;lt;div class=&amp;quot;product content col-md-12 col-sm-6&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;Evoq Content&amp;quot; class=&amp;quot;img-responsive&amp;quot; src=&amp;quot;{{PortalRoot}}images/logo-evoq-content.png&amp;quot; /&amp;gt;
-&amp;lt;p&amp;gt;Richer content, stronger&amp;lt;br /&amp;gt;
-security and improved&amp;lt;br /&amp;gt;
-SEO is right at&amp;lt;br /&amp;gt;
-your fingertips&amp;lt;/p&amp;gt;
-&amp;lt;a class=&amp;quot;btn-action&amp;quot; href=&amp;quot;http://www.dnnsoftware.com/solutions/evoq-content-management-system?utm_source=dnn-platform-install&amp;amp;amp;utm_medium=web-link&amp;amp;amp;utm_term=evoq-content&amp;amp;amp;utm_content=8.0-banner&amp;amp;amp;utm_campaign=dnn-platform-home&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span&amp;gt;CREATE &amp;amp;amp; MANAGE CONTENT&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;[Tab.Home.Product.Content.Text]&amp;lt;/p&amp;gt;
+&amp;lt;a class=&amp;quot;btn-action&amp;quot; href=&amp;quot;[Tab.Home.Product.Content.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;span&amp;gt;[Tab.Home.Product.Content.Link.Title]&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              </content>
               <modulesettings />
               <tabmodulesettings />
               <definition>DNN_HTML</definition>
@@ -825,14 +824,16 @@ your fingertips&amp;lt;/p&amp;gt;
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;banner-container row-fluid&amp;quot;&amp;gt;
+              <content type="DNNHTML" version="08.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;banner-container row-fluid&amp;quot;&amp;gt;
 &amp;lt;div class=&amp;quot;col-md-7 col-md-offset-1&amp;quot;&amp;gt;
-&amp;lt;h2&amp;gt;Every journey begins with the first step.&amp;lt;/h2&amp;gt;
-&amp;lt;span&amp;gt;DNN&amp;lt;sup&amp;gt;&amp;amp;reg;&amp;lt;/sup&amp;gt; makes it easy for you to install and use the DNN&amp;lt;sup&amp;gt;&amp;amp;reg;&amp;lt;/sup&amp;gt; Platform. We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development. You are just a click away from getting started with DNN&amp;lt;sup&amp;gt;&amp;amp;reg;&amp;lt;/sup&amp;gt;. &amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;h2&amp;gt;[Tab.Home.Header.Title]&amp;lt;/h2&amp;gt;
+&amp;lt;span&amp;gt;[Tab.Home.Header.Content]&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;
 
 &amp;lt;div class=&amp;quot;col-md-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;&amp;quot; class=&amp;quot;hidden-phone&amp;quot; src=&amp;quot;{{PortalRoot}}Images/logo2.png&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;
-]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              </content>
               <modulesettings>
                 <modulesetting>
                   <settingname>HtmlText_ReplaceTokens</settingname>
@@ -1723,9 +1724,11 @@ your fingertips&amp;lt;/p&amp;gt;
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <content type="DNNHTML" version="08.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
+              <content type="DNNHTML" version="08.00.00">
+                <![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
 		Sorry, the page you are looking for cannot be found and might have been removed, had its name changed, or is temporarily unavailable. It is recommended that you start again from the homepage. Feel free to contact us if the problem persists or if you cannot find what you’re looking for.
-	]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+	]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]>
+              </content>
               <modulesettings>
                 <modulesetting>
                   <settingname>WorkflowID</settingname>
@@ -2086,11 +2089,11 @@ your fingertips&amp;lt;/p&amp;gt;
                     &lt;div class="pBio"&gt;
                     &lt;h3 data-bind="text: AboutMeText"&gt;&lt;/h3&gt;
                     &lt;span data-bind="text: EmptyAboutMeText, visible: Biography().length==0"&gt;&lt;/span&gt;
-          &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
+                    &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
                     &lt;/div&gt;
                     &lt;div class="pAddress"&gt;
                     &lt;h3 data-bind="text: LocationText"&gt;&lt;/h3&gt;
-          &lt;span data-bind="text: EmptyLocationText, visible: Street().length==0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0"&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: EmptyLocationText, visible: Street().length==0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0"&gt;&lt;/span&gt;
                     &lt;p&gt;&lt;span data-bind="text: Street()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Street().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
                     &lt;span data-bind="text: Location()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Location().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
                     &lt;span data-bind="text: Country()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Country().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
@@ -2099,7 +2102,7 @@ your fingertips&amp;lt;/p&amp;gt;
                     &lt;/div&gt;
                     &lt;div class="pContact"&gt;
                     &lt;h3 data-bind="text: GetInTouchText"&gt;&lt;/h3&gt;
-          &lt;span data-bind="text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0"&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0"&gt;&lt;/span&gt;
                     &lt;ul&gt;
                     &lt;li data-bind="visible: Telephone().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: TelephoneText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Telephone()"&gt;&lt;/span&gt;&lt;/li&gt;
                     &lt;li data-bind="visible: Email().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: EmailText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Email()"&gt;&lt;/span&gt;&lt;/li&gt;
@@ -2107,7 +2110,7 @@ your fingertips&amp;lt;/p&amp;gt;
                     &lt;li data-bind="visible: IM().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: IMText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: IM()"&gt;&lt;/span&gt;&lt;/li&gt;
                     &lt;/ul&gt;
                     &lt;/div&gt;
-                    &lt;div class="dnnClear"&gt;&lt;/div&gt;                  
+                    &lt;div class="dnnClear"&gt;&lt;/div&gt;
                   </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
