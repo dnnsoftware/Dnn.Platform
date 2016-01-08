@@ -330,7 +330,8 @@ namespace DNNConnect.CKEditorProvider.Web
                 cssFiles.Add("~/portals/_default/default.css");
                 cssFiles.Add(skinSrc.Replace(skinSrc.Substring(skinSrc.LastIndexOf('/'), skinSrc.Length - skinSrc.Substring(0, skinSrc.LastIndexOf('/')).Length), "/skin.css"));
                 cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
-                cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
+                if (myParModule != null && myParModule.ModuleId > -1)
+                    cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
                 cssFiles.Add("~" + _portalSettings.HomeDirectory + "portal.css");
                 cssFiles.Add("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CkEditorContents.css");
 
@@ -935,11 +936,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 sClientId = sClientId.Remove(ClientID.IndexOf("_"));
 
-                try
-                {
-                    parentModulId = int.Parse(sClientId);
-                }
-                catch (Exception)
+                if (!int.TryParse(sClientId, out parentModulId))
                 {
                     // The is no real module, then use the "User Accounts" module (Profile editor)
                     ModuleController db = new ModuleController();
