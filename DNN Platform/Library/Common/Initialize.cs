@@ -44,6 +44,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Services.Installer.Blocker;
 
 #endregion
 
@@ -203,7 +204,7 @@ namespace DotNetNuke.Common
             {
                 //Check whether the current App Version is the same as the DB Version
                 redirect = CheckVersion(app);
-                if (string.IsNullOrEmpty(redirect))
+                if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
 
