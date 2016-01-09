@@ -60,6 +60,7 @@ namespace DotNetNuke.Framework
     public abstract class PageBase : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -227,7 +228,8 @@ namespace DotNetNuke.Framework
             {
                 tabId = PortalSettings.ActiveTab.TabID;
             }
-            DnnLogger.GetLogger("DNN.Trace").Debug($"{origin} {action} (TabId:{tabId},{message})");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
         
         private void Handle404Exception()
