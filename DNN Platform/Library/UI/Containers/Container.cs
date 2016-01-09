@@ -62,8 +62,9 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class Container : UserControl
     {
-		#region Private Members
-		
+        #region Private Members
+
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private HtmlContainerControl _contentPane;
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
@@ -338,7 +339,8 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessModule()
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"Container.ProcessModule Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
 
             if (ContentPane != null)
             {
@@ -360,7 +362,8 @@ namespace DotNetNuke.UI.Containers
 
                 //Try to load the module control
                 _moduleHost = new ModuleHost(ModuleConfiguration, ParentSkin, this);
-                DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule Info (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{_moduleHost.ID})");
+                if (_tracelLogger.IsDebugEnabled)
+                    _tracelLogger.Debug($"Container.ProcessModule Info (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{_moduleHost.ID})");
 
                 ContentPane.Controls.Add(ModuleHost);
 
@@ -376,7 +379,8 @@ namespace DotNetNuke.UI.Containers
 				//Add Module Stylesheets
                 ProcessStylesheets(ModuleHost != null);
             }
-            DnnLogger.GetLogger("DNN.Trace").Debug($"Container.ProcessModule End (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"Container.ProcessModule End (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
         }
 
 		/// -----------------------------------------------------------------------------
