@@ -174,7 +174,7 @@
     <value>Editor Area CSS:</value>
   </data>
   <data name="lblPortal.Text" xml:space="preserve">
-    <value>Portal Name:</value>
+    <value>Site Name:</value>
   </data>
   <data name="lblStyles.Text" xml:space="preserve">
     <value>Editor Styles</value>
@@ -321,7 +321,7 @@
     <value>Remove {0} Settings</value>
   </data>
   <data name="RemoveAll.Help" xml:space="preserve">
-    <value>Removes the {0} settings of the entire portal.</value>
+    <value>Removes the {0} settings of the entire site.</value>
   </data>
   <data name="RemoveAll.Text" xml:space="preserve">
     <value>Remove All {0} Settings</value>
@@ -372,10 +372,10 @@
     <value>CKEditor Provider Config Manager</value>
   </data>
   <data name="PortalOnlyLabel.Text" xml:space="preserve">
-    <value>Show Settings Only for This Portal or for All Portals?</value>
+    <value>Show Settings Only for This Site or for All Sites?</value>
   </data>
   <data name="PortalOnly.Text" xml:space="preserve">
-    <value>This Portal Only</value>
+    <value>This Site Only</value>
   </data>
   <data name="Wait.Text" xml:space="preserve">
     <value>Please Wait...</value>
@@ -397,10 +397,10 @@
     <value>Contains No Page Settings</value>
   </data>
   <data name="PortalHasSettingLabel.Text" xml:space="preserve">
-    <value>Contains Portal Settings</value>
+    <value>Contains Site Settings</value>
   </data>
   <data name="PortalNoSettingLabel.Text" xml:space="preserve">
-    <value>Contains No Portal Settings</value>
+    <value>Contains No Site Settings</value>
   </data>
   <data name="IconLegendLabel.Text" xml:space="preserve">
     <value>Icon Legend</value>
@@ -415,7 +415,7 @@
     <value>Page</value>
   </data>
   <data name="Portal.Text" xml:space="preserve">
-    <value>Portal</value>
+    <value>Site</value>
   </data>
   <data name="RemoveModuleChild.Help" xml:space="preserve">
     <value>Remove Settings of all Modules on the Current Page</value>
