@@ -1179,7 +1179,7 @@ The host-level settings are currently set as follows:
     <value>SMTP Mode:</value>
   </data>
   <data name="plSMTPMode.Help" xml:space="preserve">
-    <value>Host mode utilizes all SMTP settings set at the application level. Portal level allows you to select your own SMTP server, port and authentication method.</value>
+    <value>Host mode utilizes all SMTP settings set at the application level. Site level allows you to select your own SMTP server, port and authentication method.</value>
   </data>
   <data name="plSMTPPassword.Text" xml:space="preserve">
     <value>SMTP Password:</value>
