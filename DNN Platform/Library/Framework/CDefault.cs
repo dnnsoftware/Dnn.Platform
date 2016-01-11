@@ -22,20 +22,14 @@
 
 using System;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
 
 #endregion
 
