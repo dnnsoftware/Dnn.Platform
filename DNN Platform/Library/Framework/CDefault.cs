@@ -56,7 +56,7 @@ namespace DotNetNuke.Framework
         public string KeyWords = string.Empty;
         public new string Title = string.Empty;
 
-        private static readonly object InstallerREmovedFilesLock = new object();
+        private static readonly object InstallerFilesRemovedLock = new object();
 
         protected override void RegisterAjaxScript()
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Framework
         {
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
             {
-                lock (InstallerREmovedFilesLock)
+                lock (InstallerFilesRemovedLock)
                 {
                     if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
                     {
