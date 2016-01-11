@@ -56,6 +56,8 @@ namespace DotNetNuke.Framework
         public string KeyWords = string.Empty;
         public new string Title = string.Empty;
 
+        private static readonly object InstallerREmovedFilesLock = new object();
+
         protected override void RegisterAjaxScript()
         {
             if (Page.Form != null)
@@ -85,16 +87,16 @@ namespace DotNetNuke.Framework
 
         protected void ManageInstallerFiles()
         {
-            //There could be a pending installation/upgrade process
-            if (InstallBlocker.Instance.IsInstallInProgress())
-            {
-                Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
-            }
-
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
             {
-                Services.Upgrade.Upgrade.DeleteInstallerFiles();
-                HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                lock (InstallerREmovedFilesLock)
+                {
+                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+                    {
+                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                    }
+                }
             }
         }
 
