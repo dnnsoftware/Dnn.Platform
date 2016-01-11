@@ -201,29 +201,41 @@
                     var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
                     $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
 
-                    $dnnToggleMax.click(function(e) {
+                    var initialTop = $modal.parent().css("top");
+                    var initialLeft = $modal.parent().css("left");
+                    
+                    $dnnToggleMax.click(function (e) {
                         e.preventDefault();
 
                         var $window = $(window),
                             newHeight,
-                            newWidth;
+                            newWidth,
+                            newTop,
+                            newLeft;
 
                         if ($modal.data('isMaximized')) {
-                            newHeight = $modal.data('height');
+                            newHeight = $modal.data('height') + 100;
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
+
+                            newTop = initialTop;
+                            newLeft = initialLeft;
+
                         } else {
                             $modal.data('height', $modal.dialog("option", "minHeight"))
-                                .data('width', $modal.dialog("option", "minWidth"))
-                                .data('position', $modal.dialog("option", "position"));
+                                .data('width', $modal.dialog("option", "minWidth"));
 
                             newHeight = $window.height() - 46;
                             newWidth = $window.width() - 40;
+
+                            newTop = "2%";
+                            newLeft = "1%";
+
                             $modal.data('isMaximized', true);
                         }
 
                         $modal.dialog({ height: newHeight, width: newWidth });
-                        $modal.dialog({ position: { my: "center", at: "center" } });
+                        $modal.parent().css({ "top": newTop, "left": newLeft, "position": "fixed" });
                     });
                 }
             } else {
