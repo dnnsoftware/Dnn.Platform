@@ -31,6 +31,9 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Installer.Blocker;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 
@@ -82,6 +85,12 @@ namespace DotNetNuke.Framework
 
         protected void ManageInstallerFiles()
         {
+            //There could be a pending installation/upgrade process
+            if (InstallBlocker.Instance.IsInstallInProgress())
+            {
+                Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
+            }
+
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
             {
                 Services.Upgrade.Upgrade.DeleteInstallerFiles();
