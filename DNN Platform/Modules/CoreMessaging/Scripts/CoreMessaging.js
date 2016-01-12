@@ -182,8 +182,6 @@
         self.messages = ko.observableArray([]);
         self.notifications = ko.observableArray([]);
 
-        self.notificationFadeTime = ko.observable(500);
-
         // Number displayed in Notifications tab
         self.TotalNotifications = ko.observable(0);
 
@@ -641,7 +639,6 @@
         };
 
         self.loadNotificationsTab = function () {
-            self.notificationFadeTime(0);
             History.pushState({ view: 'notifications', action: 'notifications' }, "", "?view=notifications&action=notifications&t=" + self.fetch_unix_timestamp());
         };
 
@@ -839,8 +836,7 @@
 
         self.hideNotification = function (elem) {
             if (elem.nodeType === 1) {
-                $(elem).fadeOut(self.notificationFadeTime(), function () { $(elem).remove(); });
-                self.notificationFadeTime(500);
+                $(elem).fadeOut('slow', function () { $(elem).remove(); });
             }
         };
 
