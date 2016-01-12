@@ -200,9 +200,6 @@
                     $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
                     var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
                     $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
-
-                    var initialTop = $modal.parent().css("top");
-                    var initialLeft = $modal.parent().css("left");
                     
                     $dnnToggleMax.click(function (e) {
                         e.preventDefault();
