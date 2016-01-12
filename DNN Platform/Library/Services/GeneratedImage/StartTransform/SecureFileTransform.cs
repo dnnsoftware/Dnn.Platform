@@ -51,21 +51,32 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             // if SecureFile is no ImageFile return FileType-Image instead
             if (!IsImageExtension(SecureFile.Extension))
-		    {
-		        var replaceFile = Globals.ApplicationMapPath +"\\" + 
-                    PortalSettings.Current.DefaultIconLocation.Replace("/","\\") + "\\"+
-                    "Ext" + SecureFile.Extension + "_32x32_Standard.png";
-
-		        return File.Exists(replaceFile) ? 
-                    new Bitmap(replaceFile) : 
-                    EmptyImage;
-		    }
+            {
+                return GetSecureFileExtensionIconImage();
+            }
 
             using (var content = FileManager.Instance.GetFileContent(SecureFile))
             {
                 return new Bitmap(content);
             }
 		}
+
+        private Image GetSecureFileExtensionIconImage()
+        {
+            var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
+                       PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
+                       "Ext" + SecureFile.Extension + "_32x32_Standard.png";
+
+            if (!File.Exists(extensionImageAbsolutePath))
+            {
+                return EmptyImage;
+            }
+
+            using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
+            {
+                return Image.FromStream(stream);
+            }
+        }
 
         /// <summary>
         /// Checks if the current user have READ permission on a given folder
