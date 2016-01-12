@@ -671,7 +671,8 @@ namespace Dnn.Modules.Lists
 				switch (cmdSaveEntry.CommandName.ToLower())
 				{
 					case "update":
-						entry.ParentKey = SelectedList.ParentKey;
+                        entry.ListName = ListName;
+                        entry.ParentKey = SelectedList.ParentKey;
 						entry.EntryID = Int16.Parse(txtEntryID.Text);
 						bool canUpdate = true;
 						foreach (var curEntry in listController.GetListEntryInfoItems(SelectedList.Name, entry.ParentKey, entry.PortalID))
