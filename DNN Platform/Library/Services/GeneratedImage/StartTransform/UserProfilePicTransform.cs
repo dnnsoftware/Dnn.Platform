@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -68,7 +69,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns></returns>
         public Bitmap GetNoAvatarImage()
         {
-            return new Bitmap(Globals.ApplicationMapPath + @"\images\no_avatar.gif");
+            var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
+            using (var stream = new FileStream(avatarAbsolutePath, FileMode.Open))
+            {
+                return new Bitmap(Image.FromStream(stream));
+            }
         }
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             return imageExtensions.Contains(extension.ToUpper());
         }
 
-        private Image CopyImage(System.IO.Stream imgStream)
+        private Image CopyImage(Stream imgStream)
         {
             using (Image srcImage = new Bitmap(imgStream))
             {
