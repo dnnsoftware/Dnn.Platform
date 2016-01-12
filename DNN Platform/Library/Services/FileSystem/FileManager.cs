@@ -272,17 +272,18 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && !UserController.Instance.GetCurrentUserInfo().IsSuperUser && !ignoreWhiteList)
+            if (!IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
+
             //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!IsAllowedExtension(fileName) && ignoreWhiteList)
-             {
-                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
-                 LogController.Instance.AddLog(log);
-             }
+            {
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
+                LogController.Instance.AddLog(log);
+            }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
