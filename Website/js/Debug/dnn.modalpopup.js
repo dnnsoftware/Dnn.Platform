@@ -210,16 +210,12 @@
                         var $window = $(window),
                             newHeight,
                             newWidth,
-                            newTop,
-                            newLeft;
+                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100;
 
                         if ($modal.data('isMaximized')) {
-                            newHeight = $modal.data('height') + 100;
+                            newHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
-
-                            newTop = initialTop;
-                            newLeft = initialLeft;
 
                         } else {
                             $modal.data('height', $modal.dialog("option", "minHeight"))
@@ -228,14 +224,12 @@
                             newHeight = $window.height() - 46;
                             newWidth = $window.width() - 40;
 
-                            newTop = "2%";
-                            newLeft = "1%";
-
                             $modal.data('isMaximized', true);
                         }
 
-                        $modal.dialog({ height: newHeight, width: newWidth });
-                        $modal.parent().css({ "top": newTop, "left": newLeft, "position": "fixed" });
+                        $modal.dialog("option", "height", newHeight);
+                        $modal.dialog("option", "width", newWidth);
+                        $modal.dialog("option", "position", { my: "center", at: "center", of: window });
                     });
                 }
             } else {
