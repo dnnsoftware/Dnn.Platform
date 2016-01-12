@@ -80,7 +80,11 @@ namespace DotNetNuke.Services.GeneratedImage
 
                     var fi = new System.IO.FileInfo(_defaultImageFile);
                     ContentType = GetImageFormat(fi.Extension);
-                    return new Bitmap(Image.FromFile(fullFilePath, true));
+
+                    using (var stream = new FileStream(fullFilePath, FileMode.Open))
+                    {
+                        return Image.FromStream(stream, true);
+                    }
                 }
                 catch (Exception ex)
                 {

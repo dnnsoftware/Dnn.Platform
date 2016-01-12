@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Net;
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
@@ -55,7 +56,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             try
             {
-                return new Bitmap(ImageFilePath);
+                using (var stream = new FileStream(ImageFilePath, FileMode.Open))
+                {
+                    return Image.FromStream(stream);
+                }
             }
             catch (Exception ex)
             {
