@@ -4062,11 +4062,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static string DeleteFiles(string providerPath, Version version, bool writeFeedback)
         {
-            var stringVersion = GetStringVersion(version);
-            if (version.Revision > 0)
-            {
-                stringVersion += "." + version.Revision.ToString("D2");
-            }
+            var stringVersion = GetStringVersionWithRevision(version);
 
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + stringVersion);
             string exceptions = "";
@@ -4111,6 +4107,16 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return exceptions;
+        }
+
+        private static string GetStringVersionWithRevision(Version version)
+        {
+            var stringVersion = GetStringVersion(version);
+            if (version.Revision > 0)
+            {
+                stringVersion += "." + version.Revision.ToString("D2");
+            }
+            return stringVersion;
         }
 
         ///-----------------------------------------------------------------------------
@@ -5375,11 +5381,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
-            var stringVersion = GetStringVersion(version);
-            if (version.Revision > 0)
-            {
-                stringVersion += "." + version.Revision.ToString("D2");
-            }
+            var stringVersion = GetStringVersionWithRevision(version);
 
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
             if (writeFeedback)
