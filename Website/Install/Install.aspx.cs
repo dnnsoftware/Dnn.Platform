@@ -126,6 +126,11 @@ namespace DotNetNuke.Services.Install
                     string strProviderPath = DataProvider.Instance().GetProviderPath();
                     if (!strProviderPath.StartsWith("ERROR:"))
                     {
+                        if (!CheckPermissions())
+                        {
+                            return;
+                        }
+                        //Add the install blocker logic
                         lock (installLocker)
                         {
                             if (InstallBlocker.Instance.IsInstallInProgress())
@@ -135,10 +140,6 @@ namespace DotNetNuke.Services.Install
                                 return;
                             }
                             RegisterInstallBegining();
-                        }
-                        if (!CheckPermissions())
-                        {
-                            return;
                         }
 
                         var installConfig = InstallController.Instance.GetInstallConfig();
