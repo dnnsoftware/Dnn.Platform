@@ -18,14 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Users;
+
 namespace DotNetNuke.Modules.HtmlEditorManager.Views
 {
     using System;
-    using System.Linq;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
-    using DotNetNuke.Web.Mvp;
+    using ViewModels;
+    using Web.Mvp;
 
     /// <summary>
     /// View control for selecting an HTML provider
@@ -73,5 +75,16 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         {
             Response.Redirect(Request.RawUrl, true);
         }
+
+        protected override void OnInit(EventArgs e)
+        {
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            if (currentUser == null || !currentUser.IsSuperUser)
+            {
+                LocalResourceFile = "/DesktopModules/Admin/HtmlEditorManager/App_LocalResources/ProviderConfiguration.ascx.resx";
+                Globals.Redirect(Globals.AccessDeniedURL(LocalizeString("CannotManageHTMLEditorProviders")), true);
+            }
+            base.OnInit(e);
+        }        
     }
 }
