@@ -4062,16 +4062,22 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static string DeleteFiles(string providerPath, Version version, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + Globals.FormatVersion(version));
+            var stringVersion = GetStringVersion(version);
+            if (version.Revision > 0)
+            {
+                stringVersion += "." + version.Revision.ToString("D2");
+            }
+
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + stringVersion);
             string exceptions = "";
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + Globals.FormatVersion(version));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
             try
             {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + GetStringVersion(version) + ".txt";
+                string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
 
                 if (File.Exists(listFile))
                 {
@@ -4082,12 +4088,12 @@ namespace DotNetNuke.Services.Upgrade
             {
                 Logger.Error(ex);
 
-                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                 // log the results
                 DnnInstallLogger.InstallLogError(exceptions);
                 try
                 {
-                    using (StreamWriter streamWriter = File.CreateText(providerPath + Globals.FormatVersion(version) + "_Config.log"))
+                    using (StreamWriter streamWriter = File.CreateText(providerPath + stringVersion + "_Config.log"))
                     {
                         streamWriter.WriteLine(exceptions);
                         streamWriter.Close();
@@ -4105,56 +4111,6 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return exceptions;
-        }
-
-
-        public static string DeleteFilesInterval(string providerPath, Version version, int interval, bool writeFeedback)
-        {
-            var intervalfile=GetStringVersion(version) + "." + interval.ToString("D2");
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + intervalfile);
-            string exceptions = "";
-            if (writeFeedback)
-            {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + intervalfile);
-            }
-
-            try
-            {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + intervalfile + ".txt";
-
-                if (File.Exists(listFile))
-                {
-                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
-                // log the results
-                DnnInstallLogger.InstallLogError(exceptions);
-                try
-                {
-                    using (StreamWriter streamWriter = File.CreateText(providerPath + intervalfile + "_Config.log"))
-                    {
-                        streamWriter.WriteLine(exceptions);
-                        streamWriter.Close();
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-            }
-
-            if (writeFeedback)
-            {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)));
-            }
-
-            return exceptions;
-         
         }
 
         ///-----------------------------------------------------------------------------
@@ -5417,33 +5373,23 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("Dnn.DynamicContentViewer", "Module");
         }
 
-        private static int MaxIncremental(Version version)
-        {
-            Provider currentdataprovider = Config.GetDefaultProvider("data");
-            string providerpath = currentdataprovider.Attributes["providerPath"];
-            //If the provider path does not exist, then there can't be any log files
-            if (!string.IsNullOrEmpty(providerpath))
-            {
-                providerpath = HttpContext.Current.Server.MapPath(providerpath);
-                if (Directory.Exists(providerpath))
-                {
-                    return Directory.GetFiles(providerpath, GetStringVersion(version) + ".*." + DefaultProvider).Length;                  
-                }
-            }
-            return 0;
-        }
-
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+            var stringVersion = GetStringVersion(version);
+            if (version.Revision > 0)
+            {
+                stringVersion += "." + version.Revision.ToString("D2");
+            }
+
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Files: {0}", Globals.FormatVersion(version)));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, $"Updating Config Files: {stringVersion}");
             }
-            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + ".config", version, "Core Upgrade");
+            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + stringVersion + ".config", version, "Core Upgrade");
             if (string.IsNullOrEmpty(strExceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
             }
             else
             {
@@ -5457,32 +5403,6 @@ namespace DotNetNuke.Services.Upgrade
 
             return strExceptions;
         }
-
-        public static string UpdateConfigInterval(string providerPath, Version version,int interval, bool writeFeedback)
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
-            if (writeFeedback)
-            {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Interval Files: {0}", Globals.FormatVersion(version) + "." + interval.ToString("D2")));
-            }
-            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + "." + interval.ToString("D2") + ".config", version, "Core Upgrade");
-            if (string.IsNullOrEmpty(strExceptions))
-            {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version) + "." + interval.ToString("D2"));
-            }
-            else
-            {
-                DnnInstallLogger.InstallLogError(strExceptions);
-            }
-
-            if (writeFeedback)
-            {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
-            }
-
-            return strExceptions;
-        }
-       
 
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
@@ -5745,38 +5665,32 @@ namespace DotNetNuke.Services.Upgrade
                 LogController.Instance.AddLog(log);
             }
 
-            if (version.Revision > 0)
+            if (version.Revision > 0 && 
+                version.Revision > Globals.GetLastAppliedIteration(version))
             {
-                if (version.Revision > Globals.GetLastAppliedIteration(version))
+                // execute script file (and version upgrades) for version
+                exceptions = ExecuteScript(scriptFile, writeFeedback);
+                    
+                // update the increment
+                Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
+
+                var log = new LogInfo
                 {
-                    // execute script file (and version upgrades) for version
-                    exceptions = ExecuteScript(scriptFile, writeFeedback);
+                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    BypassBuffering = true
+                };
+                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                if (exceptions.Length > 0)
+                {
+                    log.AddProperty("Warnings", exceptions);
+                }
+                else
+                {
+                    log.AddProperty("No Warnings", "");
+                }
+                LogController.Instance.AddLog(log);
+            } 
 
-                    //update any associated config files
-                    string strProviderPath = DataProvider.Instance().GetProviderPath();
-                    UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
-                    DeleteFilesInterval(strProviderPath, version, version.Revision, writeFeedback);
-
-                    // update the increment
-                    Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
-
-                    var log = new LogInfo
-                    {
-                        LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-                        BypassBuffering = true
-                    };
-                    log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
-                    if (exceptions.Length > 0)
-                    {
-                        log.AddProperty("Warnings", exceptions);
-                    }
-                    else
-                    {
-                        log.AddProperty("No Warnings", "");
-                    }
-                    LogController.Instance.AddLog(log);
-                }                
-            }
             if (string.IsNullOrEmpty(exceptions))
             {
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
