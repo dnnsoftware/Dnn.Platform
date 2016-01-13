@@ -5126,11 +5126,13 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //Remove any .txt and .config files that may exist in the Install folder
-            foreach (string file in Directory.GetFiles(Globals.InstallMapPath + "Cleanup\\", "??.??.??.txt"))
+            foreach (string file in Directory.GetFiles(Globals.InstallMapPath + "Cleanup\\", "??.??.??.txt")
+                                        .Concat(Directory.GetFiles(Globals.InstallMapPath + "Cleanup\\", "??.??.??.??.txt")))
             {
                 FileSystemUtils.DeleteFile(file);
             }
-            foreach (string file in Directory.GetFiles(Globals.InstallMapPath + "Config\\", "??.??.??.config"))
+            foreach (string file in Directory.GetFiles(Globals.InstallMapPath + "Config\\", "??.??.??.config")
+                                        .Concat(Directory.GetFiles(Globals.InstallMapPath + "Config\\", "??.??.??.??.config")))
             {
                 FileSystemUtils.DeleteFile(file);
             }
