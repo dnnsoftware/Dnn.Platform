@@ -55,9 +55,11 @@ namespace DotNetNuke.Data
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
 
-		#region Shared/Static Methods
+        private const int DuplicateKey = 2601;
 
-		public static DataProvider Instance()
+        #region Shared/Static Methods
+
+        public static DataProvider Instance()
 		{
 			return ComponentFactory.GetComponent<DataProvider>();
 		}
@@ -2507,7 +2509,7 @@ namespace DotNetNuke.Data
 
 				//If not a duplicate (throw an Exception)
 				retValue = -ex.Number;
-				if (ex.Number != 2601)
+				if (ex.Number != DuplicateKey)
 				{
 					throw;
 				}
@@ -2799,23 +2801,35 @@ namespace DotNetNuke.Data
 
 		#region Lists
 
-		public virtual int AddListEntry(string ListName, string Value, string Text, int ParentID, int Level,
+        public virtual int AddListEntry(string ListName, string Value, string Text, int ParentID, int Level,
 										bool EnableSortOrder, int DefinitionID, string Description, int PortalID,
 										bool SystemList,
 										 int CreatedByUserID)
 		{
-			return ExecuteScalar<int>("AddListEntry",
-											ListName,
-											Value,
-											Text,
-											ParentID,
-											Level,
-											EnableSortOrder,
-											DefinitionID,
-											Description,
-											PortalID,
-											SystemList,
-											CreatedByUserID);
+		    try
+		    {
+		        return ExecuteScalar<int>("AddListEntry",
+		            ListName,
+		            Value,
+		            Text,
+		            ParentID,
+		            Level,
+		            EnableSortOrder,
+		            DefinitionID,
+		            Description,
+		            PortalID,
+		            SystemList,
+		            CreatedByUserID);
+		    }
+		    catch (SqlException ex)
+		    {
+		        if (ex.Number == DuplicateKey)
+		        {
+		            return Null.NullInteger;
+		        }
+
+		        throw;
+		    }
 		}
 
 		public virtual void DeleteList(string ListName, string ParentKey)
