@@ -139,14 +139,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 			{
 				string description = Localization.Localization.GetString("UpdatingConfigFile", LocalInstallResourceFile);
 				Details = description + ver;
-				var exceptions = Upgrade.UpdateConfig(providerPath, ver, false);
+				var exceptions = ver.Revision > 0 ? Upgrade.UpdateConfigInterval(providerPath, ver, ver.Revision, false) : Upgrade.UpdateConfig(providerPath, ver, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
 					Errors.Add(exceptions);
 					Status = StepStatus.Retry;
 					return;
 				}
-				Percentage += percentForMiniStep;
+                Percentage += percentForMiniStep;
 			}
 			Percentage = percentForEachStep * counter++;
 
