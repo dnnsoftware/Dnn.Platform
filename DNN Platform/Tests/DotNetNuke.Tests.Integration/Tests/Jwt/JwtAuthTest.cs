@@ -30,7 +30,6 @@ using System.Web;
 using DotNetNuke.Tests.Integration.Framework;
 using DotNetNuke.Tests.Integration.Framework.Helpers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Tests.Jwt
@@ -299,7 +298,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             string sessionId = claims.sid;
-            var query = "UPDATE {objectQualifier}JsonWebTokens SET TokenExpiry="+
+            var query = "UPDATE {objectQualifier}JsonWebTokens SET TokenExpiry=" +
                 $"'{DateTime.UtcNow.AddMinutes(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
@@ -363,6 +362,61 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
+        [Test]
+        public void ValidatingSuccessWhenUsingExistingMoniker()
+        {
+            //Arrange
+            const string query1 =
+                 @"SELECT TabModuleId FROM {objectQualifier}TabModules
+	                WHERE TabId = (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
+	                  AND ModuleTitle='Journal';";
+            var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
+            Assert.Greater(tabModuleId, 0);
+
+            // These will set a moniker for the Activity Feed module of the user profile
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}AddTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
+            WebApiTestHelper.ClearHostCache();
+
+            // Act
+            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            SetAuthHeaderToken(token.AccessToken);
+            SetMonikerHeader("myjournal");
+            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var result = _httpClient.PostAsJsonAsync(
+                "/DesktopModules/Journal/API/Services/GetListForProfile", postItem).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            ShowInfo(@"content => " + content);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        }
+
+        [Test]
+        public void ValidatingFailureWhenUsingNonExistingMoniker()
+        {
+            //Arrange
+            const string query1 =
+                 @"SELECT TabModuleId FROM {objectQualifier}TabModules
+	                WHERE TabId = (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
+	                  AND ModuleTitle='Journal';";
+            var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
+            Assert.Greater(tabModuleId, 0);
+
+            // These will set a moniker for the Activity Feed module of the user profile
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
+            WebApiTestHelper.ClearHostCache();
+
+            // Act
+            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            SetAuthHeaderToken(token.AccessToken);
+            SetMonikerHeader("myjournal");
+            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var result = _httpClient.PostAsJsonAsync(
+                "/DesktopModules/Journal/API/Services/GetListForProfile", postItem).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            ShowInfo(@"content => " + content);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
         // template to help in copy/paste of new test methods
         /*
         [Test]
@@ -372,9 +426,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         }
          */
 
-#endregion
+        #endregion
 
-#region helpers
+        #region helpers
 
         private static void ShowInfo(string info)
         {
@@ -419,6 +473,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
                 AuthenticationHeaderValue.Parse(scheme.Trim() + " " + token.Trim());
         }
 
+        private void SetMonikerHeader(string monikerValue)
+        {
+            _httpClient.DefaultRequestHeaders.Add("X-DNN-MONIKER", monikerValue);
+        }
+
         private static string DecodeBase64(string b64Str)
         {
             // fix Base64 string padding
@@ -427,9 +486,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
-#endregion
+        #endregion
 
-#region supporting classes
+        #region supporting classes
 
         [JsonObject]
         public class LoginResultData
@@ -444,6 +503,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             public string RenewalToken { get; set; }
         }
 
-#endregion
+        #endregion
     }
 }
