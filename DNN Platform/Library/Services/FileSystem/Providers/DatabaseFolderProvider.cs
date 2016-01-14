@@ -61,8 +61,14 @@ namespace DotNetNuke.Services.FileSystem
 
             if (content != null)
             {
-                var originalPosition = content.Position;
-                content.Position = 0;
+                var restorePosition = content.CanSeek;
+                long originalPosition = Null.NullInteger;
+
+                if (restorePosition)
+                {
+                    originalPosition = content.Position;
+                    content.Position = 0;
+                }
 
                 var buffer = new byte[16 * 1024];
 
@@ -78,7 +84,10 @@ namespace DotNetNuke.Services.FileSystem
                     fileContent = ms.ToArray();
                 }
 
-                content.Position = originalPosition;
+                if (restorePosition)
+                {
+                    content.Position = originalPosition;
+                }
             }
 
             UpdateFileContent(fileId, fileContent);
