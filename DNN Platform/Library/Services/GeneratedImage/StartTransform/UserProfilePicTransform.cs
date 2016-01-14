@@ -70,9 +70,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public Bitmap GetNoAvatarImage()
         {
             var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
-            using (var stream = new FileStream(avatarAbsolutePath, FileMode.Open))
+            using (var temp = new Bitmap(avatarAbsolutePath))
             {
-                return new Bitmap(Image.FromStream(stream));
+                return new Bitmap(temp);
             }
         }
 
