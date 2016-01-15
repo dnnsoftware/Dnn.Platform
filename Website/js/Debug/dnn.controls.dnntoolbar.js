@@ -123,7 +123,6 @@ dnn.controls.DNNToolBar.prototype =
         this.click();
 
         if (e && e.preventDefault) {
-            //alert("FF");
             e.stopPropagation(); // DOM style (return false doesn't always work in FF)
             e.preventDefault();
         }
