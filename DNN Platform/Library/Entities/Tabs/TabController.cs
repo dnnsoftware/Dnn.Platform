@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Tabs
         private static readonly DataProvider Provider = DataProvider.Instance();
 
         private static readonly Regex TabNameCheck1 = new Regex("^LPT[1-9]$|^COM[1-9]$", RegexOptions.IgnoreCase);
-        private static readonly Regex TabNameCheck2 = new Regex("^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$", RegexOptions.IgnoreCase);
+        private static readonly Regex TabNameCheck2 = new Regex("^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^LOGIN$|^REGISTER$", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Gets the current page in current http request.
@@ -2869,7 +2869,7 @@ namespace DotNetNuke.Entities.Tabs
                 invalidType = "EmptyTabName";
                 valid = false;
             }
-            else if (TabNameCheck1.IsMatch(tabName) || TabNameCheck1.IsMatch(HtmlUtils.StripNonWord(tabName, false)))
+            else if (TabNameCheck1.IsMatch(tabName) || TabNameCheck2.IsMatch(HtmlUtils.StripNonWord(tabName, false)))
             {
                 invalidType = "InvalidTabName";
                 valid = false;
