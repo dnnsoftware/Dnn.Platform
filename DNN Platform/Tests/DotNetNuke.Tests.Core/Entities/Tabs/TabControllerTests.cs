@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             var isValid = TabController.IsValidTabName(tabName, out invalidType);
 
             //Assert
-            Assert.IsTrue(isValid, "An empty tab name is allowed");
+            Assert.IsTrue(isValid, "A regular tab name is not allowed");
             Assert.AreEqual("", invalidType, "The invalidType is not the expected one");
         }
     }
