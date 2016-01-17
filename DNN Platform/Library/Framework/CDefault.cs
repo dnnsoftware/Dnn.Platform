@@ -22,17 +22,14 @@
 
 using System;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
 
 #endregion
 
@@ -52,6 +49,8 @@ namespace DotNetNuke.Framework
         public string Generator = string.Empty;
         public string KeyWords = string.Empty;
         public new string Title = string.Empty;
+
+        private static readonly object InstallerFilesRemovedLock = new object();
 
         protected override void RegisterAjaxScript()
         {
@@ -84,8 +83,14 @@ namespace DotNetNuke.Framework
         {
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
             {
-                Services.Upgrade.Upgrade.DeleteInstallerFiles();
-                HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                lock (InstallerFilesRemovedLock)
+                {
+                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+                    {
+                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                    }
+                }
             }
         }
 

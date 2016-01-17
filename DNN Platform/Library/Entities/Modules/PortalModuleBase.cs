@@ -60,6 +60,7 @@ namespace DotNetNuke.Entities.Modules
     {
         protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
 
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
@@ -309,16 +310,19 @@ namespace DotNetNuke.Entities.Modules
 
         protected override void OnInit(EventArgs e)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnInit Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
             base.OnInit(e);
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnInit End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
         }
         protected override void OnLoad(EventArgs e)
         {
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnLoad Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
-
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
             base.OnLoad(e);
-            DnnLogger.GetLogger("DNN.Trace").Debug($"PortalModuleBase.OnLoad End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Web.Api
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
 
             //Act
-            var handler = new DigestAuthMessageHandler(true, SslModes.Default);
+            var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert
@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Web.Api
             response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "XmlHttpRequest");
 
             //Act
-            var handler = new DigestAuthMessageHandler(true, SslModes.Default);
+            var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert

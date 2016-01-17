@@ -749,6 +749,8 @@
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
+    <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
+    <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />

@@ -198,7 +198,7 @@ namespace Dnn.Modules.Languages
                     fileName = fileName + "." + package.Version.ToString(3) + "." + language.Code + ".zip";
                     packageWriter.CreatePackage(fileName, package.Name + ".dnn", manifest, true);
                 }
-                else
+                else if (!_Manifest.Contains(string.Format(@"package name=""{0}""", package.Name)))
                 {
                     packageWriter.BasePath = "";
                     _Manifest += packageWriter.WriteManifest(true);

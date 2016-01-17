@@ -274,6 +274,6 @@
     <value>Resource file has been updated.</value>
   </data> 
   <data name="InvalidLocale.ErrorMessage" xml:space="preserve">
-    <value>Current portal does not support this locale ({0}).</value>
+    <value>Current site does not support this locale ({0}).</value>
   </data>
 </root>

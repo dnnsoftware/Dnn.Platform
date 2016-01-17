@@ -47,6 +47,7 @@ AS
 BEGIN
 	SELECT [TokenId],
 		   [UserId],
+		   [RenewCount],
 		   [TokenExpiry],
 		   [RenewalExpiry],
 		   [TokenHash],

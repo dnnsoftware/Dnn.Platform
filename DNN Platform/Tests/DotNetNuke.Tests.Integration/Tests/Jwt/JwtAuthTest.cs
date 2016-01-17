@@ -1,16 +1,39 @@
-﻿using System;
+﻿#region Copyright
+//
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
+// by DotNetNuke Corporation
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
+// of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
+using System.Web;
 using DotNetNuke.Tests.Integration.Framework;
 using DotNetNuke.Tests.Integration.Framework.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Integration.Tests
+namespace DotNetNuke.Tests.Integration.Tests.Jwt
 {
     [TestFixture]
     public class JwtAuthTest : IntegrationTestBase
@@ -24,15 +47,18 @@ namespace DotNetNuke.Tests.Integration.Tests
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 #if DEBUG
         // for degugging and setting breakpoints
-        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(180); 
+        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(300);
 #else
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 #endif
 
         private const string LoginQuery = "/DesktopModules/JwtAuth/API/mobile/login";
+        private const string LogoutQuery = "/DesktopModules/JwtAuth/API/mobile/logout";
         public const string ExtendTokenQuery = "/DesktopModules/JwtAuth/API/mobile/extendtoken";
         private const string TestGetQuery = "/DesktopModules/JwtAuth/API/mobile/testget";
         private const string TestPostQuery = "/DesktopModules/JwtAuth/API/mobile/testpost";
+        private const string GetMonikerQuery = "/DesktopModules/web/API/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/DesktopModules/web/API/mobilehelper/moduledetails?moduleList=";
 
         public JwtAuthTest()
         {
@@ -41,6 +67,21 @@ namespace DotNetNuke.Tests.Integration.Tests
             _httpClient = new HttpClient { BaseAddress = siteUri, Timeout = _timeout };
             _hostName = ConfigurationManager.AppSettings["hostUsername"];
             _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+        }
+
+        [TestFixtureSetUp]
+        public override void TestFixtureSetUp()
+        {
+            base.TestFixtureSetUp();
+            try
+            {
+                if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                    DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         #endregion
@@ -75,12 +116,32 @@ namespace DotNetNuke.Tests.Integration.Tests
         }
 
         [Test]
-        public void RequestWithoutTokenShouldFail()
+        public void RequestUsingInvaldatedTokenAfterLogoutShouldFail()
         {
+            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+
+            SetAuthHeaderToken(token.AccessToken);
+            var result1 = _httpClient.GetAsync(TestGetQuery).Result;
+            var content1 = result1.Content.ReadAsStringAsync().Result;
+            ShowInfo(@"content1 => " + content1);
+            Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);
+
+            LogoutUser(token.AccessToken);
+
+            SetAuthHeaderToken(token.AccessToken);
             var result2 = _httpClient.GetAsync(TestGetQuery).Result;
             var content2 = result2.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content2 => " + content2);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
+        }
+
+        [Test]
+        public void RequestWithoutTokenShouldFail()
+        {
+            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            ShowInfo(@"content => " + content);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
         [Test]
@@ -90,7 +151,7 @@ namespace DotNetNuke.Tests.Integration.Tests
             SetAuthHeaderToken(token.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content2 => " + content);
+            ShowInfo(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             Assert.Less(0, content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal));
         }
@@ -135,7 +196,27 @@ namespace DotNetNuke.Tests.Integration.Tests
         }
 
         [Test]
-        public void UsingRenewedAccessTokenAfterRenewalShouldPass()
+        public void TryingToRenewUsingSameTokenMoreTHanOneTimeShouldFail()
+        {
+            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            RenewAuthorizationToken(token1);
+
+            SetAuthHeaderToken(token1.AccessToken);
+            var result = _httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
+            Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
+        [Test]
+        public void RenewMultipleTimesShouldPass()
+        {
+            RenewAuthorizationToken(
+                RenewAuthorizationToken(
+                    RenewAuthorizationToken(
+                        GetAuthorizationTokenFor(_hostName, _hostPass))));
+        }
+
+        [Test]
+        public void UsingTheNewAccessTokenAfterRenewalShouldPass()
         {
             var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
             var token2 = RenewAuthorizationToken(token1);
@@ -199,14 +280,14 @@ namespace DotNetNuke.Tests.Integration.Tests
             long claimExpiry = claims.exp;
             var expiryInToken = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(claimExpiry);
             Assert.Less(DateTime.UtcNow, expiryInToken);
-            Assert.LessOrEqual(expiryInToken, DateTime.UtcNow.AddMinutes(30));
+            Assert.LessOrEqual(expiryInToken, DateTime.UtcNow.AddMinutes(31)); // appears the library rounds the time
 
             var record = DatabaseHelper.GetRecordById("JsonWebTokens", "TokenId", sessionId);
             var accessExpiry = (DateTime)record["TokenExpiry"];
             var renewalExpiry = (DateTime)record["RenewalExpiry"];
             Assert.AreEqual(accessExpiry, renewalExpiry);
             Assert.Less(DateTime.UtcNow, renewalExpiry);
-            Assert.LessOrEqual(renewalExpiry, DateTime.UtcNow.AddMinutes(30));
+            Assert.LessOrEqual(renewalExpiry, DateTime.UtcNow.AddMinutes(31));
             Assert.AreEqual(accessExpiry, expiryInToken);
         }
 
@@ -219,7 +300,7 @@ namespace DotNetNuke.Tests.Integration.Tests
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             string sessionId = claims.sid;
             var query = "UPDATE {objectQualifier}JsonWebTokens SET TokenExpiry="+
-                $"'{DateTime.UtcNow.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
+                $"'{DateTime.UtcNow.AddMinutes(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
@@ -239,7 +320,7 @@ namespace DotNetNuke.Tests.Integration.Tests
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             string sessionId = claims.sid;
             var query = "UPDATE {objectQualifier}JsonWebTokens SET RenewalExpiry=" +
-                $"'{DateTime.UtcNow.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
+                $"'{DateTime.UtcNow.AddMinutes(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
@@ -251,7 +332,7 @@ namespace DotNetNuke.Tests.Integration.Tests
         }
 
         [Test]
-        public void TryingToRenewWhenExpiredRenewalTokenShouldFail()
+        public void TryingToRenewUsingAnExpiredRenewalTokenShouldFail()
         {
             var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
             var parts = token1.AccessToken.Split('.');
@@ -259,13 +340,27 @@ namespace DotNetNuke.Tests.Integration.Tests
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             string sessionId = claims.sid;
             var query = "UPDATE {objectQualifier}JsonWebTokens SET RenewalExpiry=" +
-                $"'{DateTime.UtcNow.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
+                $"'{DateTime.UtcNow.AddMinutes(-1).ToString("yyyy-MM-dd HH:mm:ss")}' WHERE TokenId='{sessionId}';";
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
             SetAuthHeaderToken(token1.AccessToken);
             var result = _httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
+        [Test]
+        [TestCase(GetMonikerQuery)]
+        [TestCase(GetModuleDetailsQuery)]
+        public void CallingHelperForLoggedinUserShouldReturnSuccess(string query)
+        {
+            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            SetAuthHeaderToken(token.AccessToken);
+            var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            ShowInfo(@"content => " + content);
+            Assert.NotNull(content);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
         // template to help in copy/paste of new test methods
@@ -276,13 +371,14 @@ namespace DotNetNuke.Tests.Integration.Tests
             Assert.Fail();
         }
          */
-        #endregion
 
-        #region helpers
+#endregion
+
+#region helpers
 
         private static void ShowInfo(string info)
         {
-            // Don't write anything to cosole when we run in TeamCity
+            // Don't write anything to console when we run in TeamCity
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
                 Console.WriteLine(info);
         }
@@ -310,9 +406,16 @@ namespace DotNetNuke.Tests.Integration.Tests
             return token;
         }
 
+        private void LogoutUser(string accessToken)
+        {
+            SetAuthHeaderToken(accessToken);
+            var result = _httpClient.GetAsync(LogoutQuery).Result;
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        }
+
         private void SetAuthHeaderToken(string token, string scheme = "Bearer")
         {
-            _httpClient.DefaultRequestHeaders.Authorization = 
+            _httpClient.DefaultRequestHeaders.Authorization =
                 AuthenticationHeaderValue.Parse(scheme.Trim() + " " + token.Trim());
         }
 
@@ -324,21 +427,23 @@ namespace DotNetNuke.Tests.Integration.Tests
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
-        #endregion
+#endregion
 
-        #region supporting classes
+#region supporting classes
 
         [JsonObject]
         public class LoginResultData
         {
             [JsonProperty("displayName")]
             public string DisplayName { get; set; }
+
             [JsonProperty("accessToken")]
             public string AccessToken { get; set; }
+
             [JsonProperty("renewalToken")]
             public string RenewalToken { get; set; }
         }
 
-        #endregion
+#endregion
     }
-    }
+}

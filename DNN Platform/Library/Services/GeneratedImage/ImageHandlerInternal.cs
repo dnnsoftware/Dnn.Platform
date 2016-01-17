@@ -355,39 +355,55 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private Image GetImageThroughTransforms(Image image)
         {
-            Image temp = image;
-
-            foreach (var tran in ImageTransforms)
+            try
             {
-                temp = tran.ProcessImage(temp);
+                Image temp = image;
+
+                foreach (var tran in ImageTransforms)
+                {
+                    temp = tran.ProcessImage(temp);
+                }
+                return temp;
             }
-            return temp;
+            finally
+            {
+                image?.Dispose();
+            }
         }
 
         private Image GetImageThroughTransforms(byte[] buffer)
         {
-            var memoryStream = new MemoryStream(buffer);
-            return GetImageThroughTransforms(Image.FromStream(memoryStream));
+            using (var memoryStream = new MemoryStream(buffer))
+            {
+                return GetImageThroughTransforms(Image.FromStream(memoryStream));
+            }
         }
 
         private void RenderImage(Image image, Stream outStream)
         {
-            if (ContentType == ImageFormat.Gif)
+            try
             {
-                var quantizer = new OctreeQuantizer(255, 8);
-                using (var quantized = quantizer.Quantize(image))
+                if (ContentType == ImageFormat.Gif)
                 {
-                    quantized.Save(outStream, ImageFormat.Gif);
+                    var quantizer = new OctreeQuantizer(255, 8);
+                    using (var quantized = quantizer.Quantize(image))
+                    {
+                        quantized.Save(outStream, ImageFormat.Gif);
+                    }
+                }
+                else
+                {
+                    var eps = new EncoderParameters(1)
+                    {
+                        Param = {[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression)}
+                    };
+                    var ici = GetEncoderInfo(GetImageMimeType(ContentType));
+                    image.Save(outStream, ici, eps);
                 }
             }
-            else
+            finally
             {
-                var eps = new EncoderParameters(1)
-                {
-                    Param = {[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression)}
-                };
-                var ici = GetEncoderInfo(GetImageMimeType(ContentType));
-                image.Save(outStream, ici, eps);
+                image?.Dispose();
             }
         }
 

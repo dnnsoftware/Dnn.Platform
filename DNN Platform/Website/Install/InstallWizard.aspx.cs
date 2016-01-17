@@ -40,6 +40,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
@@ -299,7 +300,7 @@ namespace DotNetNuke.Services.Install
         private static void Install()
         {
             //bail out early if we are already running
-            if (_installerRunning)
+            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress())
                 return;
 
             var percentForEachStep = 100 / _steps.Count;
@@ -904,6 +905,11 @@ namespace DotNetNuke.Services.Install
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
+            if (InstallBlocker.Instance.IsInstallInProgress())
+            {
+                Response.Redirect("Install.aspx", true);
+            }
+
             SetBrowserLanguage();
             LocalizePage();
             
@@ -942,7 +948,7 @@ namespace DotNetNuke.Services.Install
             }
             else if (!Page.IsPostBack)
             {
-                if (_installerRunning)
+                if (_installerRunning )
                 {
                     LaunchAutoInstall();
                 }
@@ -1305,7 +1311,7 @@ namespace DotNetNuke.Services.Install
         {
             bool isRunning;
 
-            if (_installerRunning) 
+            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress()) 
             {
                 isRunning =  true;
             }

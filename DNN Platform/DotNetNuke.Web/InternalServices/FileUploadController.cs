@@ -40,7 +40,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utils;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -257,13 +256,7 @@ namespace DotNetNuke.Web.InternalServices
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
                     return savedFileDto;
                 }
-
-                if (!IsAllowedExtension(extension))
-                {
-                    errorMessage = GetLocalizedString("ExtensionNotAllowed");
-                    return savedFileDto;
-                }
-
+            
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
@@ -308,6 +301,11 @@ namespace DotNetNuke.Web.InternalServices
                 savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
             }
+            catch (InvalidFileExtensionException)
+            {
+                errorMessage = GetLocalizedString("ExtensionNotAllowed");
+                return savedFileDto;
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex);
@@ -334,7 +332,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var image = (FileInfo)FileManager.Instance.GetFile(fileId);
 
-            if (image != null && IsAllowedExtension(image.Extension) && IsImageExtension(image.Extension))
+            if (image != null && IsImageExtension(image.Extension))
             {
                 var imageUrl = FileManager.Instance.GetUrl(image);
                 return imageUrl;
@@ -354,12 +352,6 @@ namespace DotNetNuke.Web.InternalServices
         {
             var name = fileName.ToUpper();
             return ImageExtensions.Any(extension => name.EndsWith("." + extension));
-        }
-
-        private static bool IsAllowedExtension(string extension)
-        {
-            return !string.IsNullOrEmpty(extension)
-                   && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension);
         }
 
         public class UploadByUrlDto
@@ -426,12 +418,6 @@ namespace DotNetNuke.Web.InternalServices
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
-                {
-                    result.Message = GetLocalizedString("ExtensionNotAllowed");
-                    return result;
-                }
-
-                if (!IsAllowedExtension(extension))
                 {
                     result.Message = GetLocalizedString("ExtensionNotAllowed");
                     return result;
@@ -522,6 +508,11 @@ namespace DotNetNuke.Web.InternalServices
                     FileManager.Instance.DeleteFile(file);
                 }
 
+                return result;
+            }
+            catch (InvalidFileExtensionException)
+            { 
+                result.Message = GetLocalizedString("ExtensionNotAllowed");
                 return result;
             }
             catch (Exception exe)

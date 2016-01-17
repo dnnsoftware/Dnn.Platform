@@ -182,6 +182,8 @@
         self.messages = ko.observableArray([]);
         self.notifications = ko.observableArray([]);
 
+        self.notificationFadeTime = ko.observable(500);
+
         // Number displayed in Notifications tab
         self.TotalNotifications = ko.observable(0);
 
@@ -388,11 +390,11 @@
             var previousNewThreads = self.TotalNewThreads();
 
             if (messageconversationView.Read() === true) {
-                messageconversationView.NewThreadCount(messageconversationView.ThreadCount());
+                messageconversationView.NewThreadCount(0);
                 self.TotalNewThreads(previousNewThreads + messageconversationView.NewThreadCount());
             } else {
                 self.TotalNewThreads(previousNewThreads - messageconversationView.NewThreadCount());
-                messageconversationView.NewThreadCount(0);
+                messageconversationView.NewThreadCount(1);
             }
         };
 
@@ -416,10 +418,12 @@
         };
 
         self.markAsRead = function (messageconversationView) {
+            messageconversationView.NewThreadCount(0);
             self.changeState(messageconversationView, baseServicepath + 'MarkRead');
         };
 
         self.markAsUnread = function (messageconversationView) {
+            messageconversationView.NewThreadCount(1);
             self.changeState(messageconversationView, baseServicepath + 'MarkUnRead');
         };
 
@@ -637,6 +641,7 @@
         };
 
         self.loadNotificationsTab = function () {
+            self.notificationFadeTime(0);
             History.pushState({ view: 'notifications', action: 'notifications' }, "", "?view=notifications&action=notifications&t=" + self.fetch_unix_timestamp());
         };
 
@@ -834,7 +839,8 @@
 
         self.hideNotification = function (elem) {
             if (elem.nodeType === 1) {
-                $(elem).fadeOut('slow', function () { $(elem).remove(); });
+                $(elem).fadeOut(self.notificationFadeTime(), function () { $(elem).remove(); });
+                self.notificationFadeTime(500);
             }
         };
 

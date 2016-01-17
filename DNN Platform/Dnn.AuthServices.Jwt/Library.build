@@ -5,8 +5,7 @@
     <PackageName>DnnJwtAuth</PackageName>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
-    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\AuthSystem</WebsiteInstallPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\AuthenticationServices\JWTAuth</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />

@@ -27,6 +27,7 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.OutputCache;
 
@@ -59,11 +60,22 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         #endregion
 
+
+        private bool IsInstallInProgress(HttpApplication app)
+        {
+            return InstallBlocker.Instance.IsInstallInProgress();            
+        }
+
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
             if ((_app == null) || (_app.Context == null) || (_app.Context.Items == null) || _app.Response.ContentType.ToLower() != "text/html" || _app.Context.Request.IsAuthenticated ||
                 HttpContext.Current.Request.Browser.Crawler)
+            {
+                return;
+            }
+            
+            if (IsInstallInProgress(_app))
             {
                 return;
             }

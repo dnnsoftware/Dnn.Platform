@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.Api.Internal
                 try
                 {
                     var type = Reflection.CreateType(handlerEntry.ClassName, false);
-                    var handler = Activator.CreateInstance(type, handlerEntry.DefaultInclude, handlerEntry.SslMode) as AuthMessageHandlerBase;
+                    var handler = Activator.CreateInstance(type, handlerEntry.DefaultInclude, handlerEntry.ForceSsl) as AuthMessageHandlerBase;
                     if (handler == null)
                     {
                         throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");

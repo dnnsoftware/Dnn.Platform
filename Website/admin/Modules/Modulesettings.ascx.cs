@@ -23,11 +23,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Utilities;
@@ -35,14 +33,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.UI;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
@@ -123,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 trnewPages.Visible = chkAllTabs.Checked;
                 allowIndexRow.Visible = desktopModule.IsSearchable;
                 chkAllowIndex.Checked = Settings["AllowIndex"] == null || Settings["AllowIndex"] != null && bool.Parse(Settings["AllowIndex"].ToString());
-                
+                txtMoniker.Text = (string)Settings["Moniker"] ?? "";
 
                 cboVisibility.SelectedIndex = (int)Module.Visibility;
                 chkAdminBorder.Checked = Settings["hideadminborder"] != null && bool.Parse(Settings["hideadminborder"].ToString());
@@ -551,16 +547,34 @@ namespace DotNetNuke.Modules.Admin.Modules
                         allTabsChanged = true;
                     }
                     Module.AllTabs = chkAllTabs.Checked;
-                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
+
+                    // collect these first as any settings update will clear the cache
+                    var originalChecked = Settings["hideadminborder"] != null && bool.Parse(Settings["hideadminborder"].ToString());
+                    var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
+                    var oldMoniker = ((string)Settings["Moniker"] ?? "").TrimToLength(100);
+                    var newMoniker = txtMoniker.Text.TrimToLength(100);
+                    if (!oldMoniker.Equals(txtMoniker.Text))
+                    {
+                        var ids = TabModulesController.Instance.GetTabModuleIdsBySetting("Moniker", newMoniker);
+                        if (ids != null && ids.Count > 0)
+                        {
+                            //Warn user - duplicate moniker value
+                            Skin.AddModuleMessage(this, Localization.GetString("MonikerExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "Moniker", newMoniker);
+                    }
+
+                    if (originalChecked != chkAdminBorder.Checked)
+                    {
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
+                    }
 
                     //check whether allow index value is changed
-                    var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
                     if (allowIndex != chkAllowIndex.Checked)
                     {
-                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked ? "True" : "False");
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
                     }
-                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
-
 
                     switch (Int32.Parse(cboVisibility.SelectedItem.Value))
                     {
@@ -570,10 +584,12 @@ namespace DotNetNuke.Modules.Admin.Modules
                         case 1:
                             Module.Visibility = VisibilityState.Minimized;
                             break;
-                        case 2:
+                        //case 2:
+                        default:
                             Module.Visibility = VisibilityState.None;
                             break;
                     }
+
                     Module.IsDeleted = false;
                     Module.Header = txtHeader.Text;
                     Module.Footer = txtFooter.Text;

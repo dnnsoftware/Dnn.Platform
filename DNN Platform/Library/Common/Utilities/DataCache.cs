@@ -148,6 +148,8 @@ namespace DotNetNuke.Common.Utilities
 
         public const string TabModuleCacheKey = "TabModules{0}";
         public const string TabModuleSettingsCacheKey = "TabModuleSettings{0}";
+        public const string SingleTabModuleCacheKey = "SingleTabModule{0}";
+        public const string TabModuleSettingsNameCacheKey = "TabModuleSettingsName:{0}:{1}";
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
 

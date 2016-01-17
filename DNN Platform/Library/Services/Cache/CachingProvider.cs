@@ -23,9 +23,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -235,11 +235,24 @@ namespace DotNetNuke.Services.Cache
             ClearDesktopModuleCacheInternal(-1, clearRuntime);
             ClearCacheKeysByPortalInternal(-1, clearRuntime);
             ClearTabCacheInternal(-1, clearRuntime);
-
         }
 
         private void ClearModuleCacheInternal(int tabId, bool clearRuntime)
         {
+            var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
+            var tabModules = Cache.Get(cacheKey) as Dictionary<int, ModuleInfo>;
+            if (tabModules != null && tabModules.Any())
+            {
+                foreach (var moduleInfo in tabModules.Values)
+                {
+                    cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID);
+                    if (clearRuntime)
+                        RemoveInternal(cacheKey);
+                    else
+                        Remove(cacheKey);
+                }
+            }
+
             RemoveFormattedCacheKey(DataCache.TabModuleCacheKey, clearRuntime, tabId);
             RemoveFormattedCacheKey(DataCache.PublishedTabModuleCacheKey, clearRuntime, tabId);
             RemoveFormattedCacheKey(DataCache.ModulePermissionCacheKey, clearRuntime, tabId);
@@ -248,7 +261,7 @@ namespace DotNetNuke.Services.Cache
 
         private void ClearModulePermissionsCachesByPortalInternal(int portalId, bool clearRuntime)
         {
-            foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
+            foreach (var tabPair in TabController.Instance.GetTabsByPortal(portalId))
             {
                 RemoveFormattedCacheKey(DataCache.ModulePermissionCacheKey, clearRuntime, tabPair.Value.TabID);
             }
@@ -258,7 +271,7 @@ namespace DotNetNuke.Services.Cache
         {
             RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, string.Empty);
 
-            Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
+            var locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
             {
                 //At least attempt to remove default locale

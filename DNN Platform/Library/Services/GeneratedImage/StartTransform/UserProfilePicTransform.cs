@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -54,9 +55,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		            return GetNoAvatarImage();
 		        }
 
-		        using(var content = FileManager.Instance.GetFileContent(photoFile))
+		        using (var content = FileManager.Instance.GetFileContent(photoFile))
 		        {
-		            return new Bitmap(content);
+		            return CopyImage(content);
 		        }
 		    }
 		    return GetNoAvatarImage();
@@ -68,7 +69,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns></returns>
         public Bitmap GetNoAvatarImage()
         {
-            return new Bitmap(Globals.ApplicationMapPath + @"\images\no_avatar.gif");
+            var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
+            using (var temp = new Bitmap(avatarAbsolutePath))
+            {
+                return new Bitmap(temp);
+            }
         }
 
         /// <summary>
@@ -82,6 +87,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var settings = PortalController.Instance.GetCurrentPortalSettings();
             var targetUser = UserController.Instance.GetUser(settings.PortalId, UserID);
+            if (targetUser == null)
+            {
+                return false;
+            }
+
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty == null)
             {
@@ -133,6 +143,23 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
+        }
+
+        private Image CopyImage(Stream imgStream)
+        {
+            using (Image srcImage = new Bitmap(imgStream))
+            {
+                Image destImage = new Bitmap(srcImage.Width, srcImage.Height, srcImage.PixelFormat);
+                using (Graphics graph = Graphics.FromImage(destImage))
+                {
+                    graph.CompositingMode = CompositingMode.SourceCopy;
+                    graph.CompositingQuality = CompositingQuality;
+                    graph.InterpolationMode = InterpolationMode;
+                    graph.SmoothingMode = SmoothingMode;
+                    graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
+                }
+                return destImage;
+            }
         }
     }
 }

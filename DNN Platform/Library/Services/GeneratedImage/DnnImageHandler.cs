@@ -80,7 +80,11 @@ namespace DotNetNuke.Services.GeneratedImage
 
                     var fi = new System.IO.FileInfo(_defaultImageFile);
                     ContentType = GetImageFormat(fi.Extension);
-                    return new Bitmap(Image.FromFile(fullFilePath, true));
+
+                    using (var stream = new FileStream(fullFilePath, FileMode.Open))
+                    {
+                        return Image.FromStream(stream, true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -97,11 +101,11 @@ namespace DotNetNuke.Services.GeneratedImage
             EnableServerCache = true;
             AllowStandalone = false;
             LogSecurity = false;
-            EnableIPCount = true;
+            EnableIPCount = false;
             ImageCompression = 95;
             DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
             IPCountPurgeInterval = new TimeSpan(0, 5, 0);
-            IPCountMaxCount = 50;
+            IPCountMaxCount = 500;
             ClientCacheExpiration = new TimeSpan(0, 10, 0);
             AllowedDomains = new[] { string.Empty };
 
