@@ -315,7 +315,8 @@ namespace DotNetNuke.Services.FileSystem
                                     StartDate = now,
                                     EndDate = Null.NullDate,
                                     EnablePublishPeriod = false,
-                                    ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger
+                                    ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
+                                    Title = oldFile != null ? oldFile.Title : Null.NullString
                                 };
 
             try
