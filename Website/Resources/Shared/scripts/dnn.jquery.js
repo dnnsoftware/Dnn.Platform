@@ -584,14 +584,7 @@
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
                     label.click(function (e) {
-                        $ch.triggerHandler('focus');
-                        var previousChecked = ch.checked;
-                        ch.click();
-                        if (ch.checked == previousChecked) {
-                            ch.checked = !ch.checked;  //Fix for Firefox browser
-                        }
-                        $ch.trigger('change', [e]);
-                        cb(e);
+                        clickHandler(e);
                         return false;
                     });
                 }
@@ -601,31 +594,29 @@
                         if ($this.is('input')) return;
 
                         $this.click(function (e) {
-                            $ch.triggerHandler('focus');
-                            var previousChecked = ch.checked;
-                            ch.click();
-                            if (ch.checked == previousChecked) {
-                                ch.checked = !ch.checked;  //Fix for Firefox browser
-                            }
-                            $ch.trigger('change', [e]);
-                            cb(e);
+                            clickHandler(e);
                             return false;
                         });
                     });
                 }
             }
+
             if (!parentLabel) {
                 ch.wrapper.click(function (e) {
-                    $ch.triggerHandler('focus');
-                    var previousChecked = ch.checked;
-                    ch.click();
-                    if (ch.checked == previousChecked) {
-                        ch.checked = !ch.checked;  //Fix for Firefox browser
-                    }
-                    $ch.trigger('change', [e]);
-                    cb(e);
+                    clickHandler(e);
                     return false;
                 });
+            }
+
+            function clickHandler(e) {
+                $ch.triggerHandler('focus');
+                var previousChecked = ch.checked;
+                ch.click();
+                if (ch.checked == previousChecked) {
+                    ch.checked = !ch.checked;  //Fix for Firefox browser
+                }
+                $ch.trigger('change', [e]);
+                cb(e);
             }
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
