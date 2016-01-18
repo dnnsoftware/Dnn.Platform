@@ -1,0 +1,36 @@
+/* DNN-4562 */
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+    @MessageID int,         -- message id
+    @RoleIDs nvarchar(max), -- comma separated list of RoleIds
+	@CreateUpdateUserID INT -- create / update user id
+AS
+BEGIN    
+
+    INSERT {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients](
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT distinct 
+			  @MessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE(), -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}[{objectQualifier}vw_UserRoles] ur
+			INNER JOIN {databaseOwner}[{objectQualifier}SplitStrings_CTE](@RoleIDs,',') m on ur.RoleID = m.Item
+			WHERE ur.ExpiryDate >= getdate() OR ur.ExpiryDate IS NULL
+END
+GO
