@@ -585,7 +585,11 @@
                 if (!parentLabel) {
                     label.click(function (e) {
                         $ch.triggerHandler('focus');
+                        var previousChecked = ch.checked;
                         ch.click();
+                        if (ch.checked == previousChecked) {
+                            ch.checked = !ch.checked;  //Fix for Firefox browser
+                        }
                         $ch.trigger('change', [e]);
                         cb(e);
                         return false;
@@ -598,7 +602,11 @@
 
                         $this.click(function (e) {
                             $ch.triggerHandler('focus');
+                            var previousChecked = ch.checked;
                             ch.click();
+                            if (ch.checked == previousChecked) {
+                                ch.checked = !ch.checked;  //Fix for Firefox browser
+                            }
                             $ch.trigger('change', [e]);
                             cb(e);
                             return false;
@@ -609,7 +617,11 @@
             if (!parentLabel) {
                 ch.wrapper.click(function (e) {
                     $ch.triggerHandler('focus');
+                    var previousChecked = ch.checked;
                     ch.click();
+                    if (ch.checked == previousChecked) {
+                        ch.checked = !ch.checked;  //Fix for Firefox browser
+                    }
                     $ch.trigger('change', [e]);
                     cb(e);
                     return false;
