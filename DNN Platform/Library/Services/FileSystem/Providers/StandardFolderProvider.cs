@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
 
-        private static readonly Regex InvalidFnameCharsRegex = new Regex(@"[&()<>?*+%]", RegexOptions.Compiled);
+        private static readonly Regex InvalidFnameCharsRegex = new Regex(@"[;?:@&=+$,]", RegexOptions.Compiled);
 
         #region Public Properties
 
