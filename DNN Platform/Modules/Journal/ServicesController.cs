@@ -53,6 +53,8 @@ namespace DotNetNuke.Modules.Journal
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
 
+        private static readonly string [] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+
         #region Public Methods
         public class CreateDTO
         {
@@ -79,10 +81,10 @@ namespace DotNetNuke.Modules.Journal
 			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
 	        }
 
-            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff","bmp" };
+            
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
             StringComparison.Ordinal) + 1).ToLower();
-            return acceptedExtensions.Contains(extension);
+            return AcceptedFileExtensions.Contains(extension);
         }
 
         [HttpPost]
@@ -154,6 +156,7 @@ namespace DotNetNuke.Modules.Journal
                 if (!string.IsNullOrEmpty(postData.ItemData))
                 {
                     ji.ItemData = postData.ItemData.FromJson<ItemData>();
+                    var originalImageUrl = ji.ItemData.ImageUrl;
                     if (!IsImageFile(ji.ItemData.ImageUrl))
                         ji.ItemData.ImageUrl = string.Empty;
                     ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
@@ -164,6 +167,11 @@ namespace DotNetNuke.Modules.Journal
                         var file = FileManager.Instance.GetFile(fileId);
                         ji.ItemData.Title = file.FileName;
 						ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+                        
+                        if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) && originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") && AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                        {
+                            ji.ItemData.ImageUrl = originalImageUrl;
+                        }
                     }
                 }
 
