@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -145,12 +146,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             return imageExtensions.Contains(extension.ToUpper());
         }
 
-        private Image CopyImage(Stream imgStream)
+        private Bitmap CopyImage(Stream imgStream)
         {
-            using (Image srcImage = new Bitmap(imgStream))
+            using (var srcImage = new Bitmap(imgStream))
             {
-                Image destImage = new Bitmap(srcImage.Width, srcImage.Height, srcImage.PixelFormat);
-                using (Graphics graph = Graphics.FromImage(destImage))
+                var destImage = new Bitmap(srcImage.Width, srcImage.Height, PixelFormat.Format24bppRgb);
+                using (var graph = Graphics.FromImage(destImage))
                 {
                     graph.CompositingMode = CompositingMode.SourceCopy;
                     graph.CompositingQuality = CompositingQuality;
