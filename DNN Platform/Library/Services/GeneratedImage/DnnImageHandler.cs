@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Set default settings here
             EnableClientCache = true;
             EnableServerCache = true;
-            AllowStandalone = false;
+            AllowStandalone = true;
             LogSecurity = false;
             EnableIPCount = false;
             ImageCompression = 95;
