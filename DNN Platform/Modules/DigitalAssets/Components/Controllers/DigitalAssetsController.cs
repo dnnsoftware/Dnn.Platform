@@ -217,8 +217,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 return (bool)MappedPathsSupported[folderMappingId];
             }
-            var result = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folderMappingId).FolderProviderType).SupportsMappedPaths;
-            MappedPathsSupported.Add(folderMappingId, result);
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
+            var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
+            var result = folderProvider.SupportsMappedPaths;
+            MappedPathsSupported[folderMappingId] = result;
             return result;
         }
 
