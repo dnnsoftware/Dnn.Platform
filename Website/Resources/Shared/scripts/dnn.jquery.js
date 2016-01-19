@@ -612,7 +612,7 @@
                 $ch.triggerHandler('focus');
                 var previousChecked = ch.checked;
                 ch.click();
-                if (ch.checked == previousChecked) {
+                if (ch.checked == previousChecked && ch.type == 'checkbox') {
                     ch.checked = !ch.checked;  //Fix for Firefox browser
                 }
                 $ch.trigger('change', [e]);
