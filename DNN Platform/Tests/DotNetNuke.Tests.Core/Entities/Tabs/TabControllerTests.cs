@@ -20,6 +20,7 @@
 #endregion
 
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Tests.Utilities.Mocks;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core.Entities.Tabs
@@ -27,6 +28,19 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
     [TestFixture]
     public class TabControllerTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            MockComponentProvider.CreateDataProvider();
+        }
+        
+        [TearDown]
+        public void TearDown()
+        {
+            MockComponentProvider.ResetContainer();
+            TabController.ClearInstance();
+        }
+
         [Test]
         [TestCase("Lpt1")]
         [TestCase("Lpt2")]
