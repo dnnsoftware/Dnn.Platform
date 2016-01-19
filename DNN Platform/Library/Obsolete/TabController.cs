@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             foreach (TabInfo tab in tabs)
             {
-                Provider.UpdateTab(tab.TabID,
+                _dataProvider.UpdateTab(tab.TabID,
                                    tab.ContentItemId,
                                    tab.PortalID,
                                    tab.VersionGuid,
@@ -182,14 +182,14 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabasByPortal")]
         public ArrayList GetAllTabs()
         {
-            return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
+            return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabasByPortal")]
         public ArrayList GetAllTabs(bool checkLegacyFields)
         {
-            return CBO.FillCollection(Provider.GetAllTabs(), typeof(TabInfo));
+            return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -231,7 +231,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached")]
         public TabInfo GetTabByUniqueID(Guid uniqueID)
         {
-            return CBO.FillObject<TabInfo>(Provider.GetTabByUniqueID(uniqueID));
+            return CBO.FillObject<TabInfo>(_dataProvider.GetTabByUniqueID(uniqueID));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -360,7 +360,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 6.2.  Tab Ordering is handled in the DB ")]
         public void UpdateTabOrder(TabInfo objTab)
         {
-            Provider.UpdateTabOrder(objTab.TabID, objTab.TabOrder, objTab.ParentId,
+            _dataProvider.UpdateTabOrder(objTab.TabID, objTab.TabOrder, objTab.ParentId,
                                     UserController.Instance.GetCurrentUserInfo().UserID);
             UpdateTabVersion(objTab.TabID);
             EventLogController.Instance.AddLog(objTab, PortalController.Instance.GetCurrentPortalSettings(),
