@@ -1,0 +1,111 @@
+/* DNN-8361 */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePackagesInUse]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+	@PortalID INT,
+	@ForHost BIT
+AS
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+
+	IF (@ForHost = 1)
+		-- Get in use for all host pages and portal pages
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM {databaseOwner}{objectQualifier}Packages P
+					INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+						ON P.PackageID=DM.PackageID
+					INNER JOIN {databaseOwner}{objectQualifier}vw_Modules M
+						ON M.DesktopModuleID=DM.DesktopModuleID
+					INNER JOIN {databaseOwner}{objectQualifier}tabs T 
+						ON T.TabID=M.TabID
+					LEFT JOIN #TabsLatestPublished TLP 
+						ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE T.IsDeleted=0
+					AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+	ELSE
+		-- Get in use for portal or host only
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM {databaseOwner}{objectQualifier}Packages P
+					INNER JOIN {databaseOwner}{objectQualifier}DesktopModules DM 
+						ON P.PackageID=DM.PackageID
+					INNER JOIN {databaseOwner}{objectQualifier}vw_Modules M
+						ON M.DesktopModuleID=DM.DesktopModuleID
+					INNER JOIN {databaseOwner}{objectQualifier}tabs T 
+						ON T.TabID=M.TabID
+					LEFT JOIN #TabsLatestPublished TLP 
+						ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE ((@PortalID IS NULL AND T.PortalID IS NULL) OR T.PortalID = @PortalID)
+					AND T.IsDeleted=0
+					AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (or host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+	
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+    WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+		AND IsDeleted = 0
+		AND TabId IN (SELECT TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+                      INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON M.DesktopModuleID = DM.DesktopModuleID
+					  LEFT JOIN #TabsLatestPublished TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+                      WHERE DM.PackageID = @PackageId AND (M.IsDeleted = 0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL)))
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
