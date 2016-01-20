@@ -23,10 +23,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             try
             {
-                var cacheKey = string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:",
-                    ((string[]) controllerContext.RouteData.DataTokens["namespaces"]).FirstOrDefault()
-                    , "View", viewName, controllerContext.RouteData.Values["controller"], masterName);
-
+                var cacheKey = CreateCacheKey(controllerContext, "View", viewName, masterName);
                 var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default,
                     "Find", viewEngineCollection,
                     new object[]
@@ -50,10 +47,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             try
             {
-                var cacheKey = string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:",
-                    ((string[]) controllerContext.RouteData.DataTokens["namespaces"]).FirstOrDefault()
-                    , "Partial", partialViewName, controllerContext.RouteData.Values["controller"], "");
-
+                var cacheKey = CreateCacheKey(controllerContext, "Partial", partialViewName, string.Empty);
                 var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default,
                     "Find", viewEngineCollection,
                     new object[]
@@ -81,6 +75,12 @@ namespace DotNetNuke.Web.Mvc.Framework
                 factoryType.InvokeMember(name,
                     BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, target, parameters)
                     as ViewEngineResult;
+        }
+
+        private static string CreateCacheKey(ControllerContext controllerContext, string section, string name, string areaName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:",
+                ((string[])controllerContext.RouteData.DataTokens["namespaces"]).FirstOrDefault(), section, name, controllerContext.RouteData.Values["controller"], areaName);
         }
     }
 }
