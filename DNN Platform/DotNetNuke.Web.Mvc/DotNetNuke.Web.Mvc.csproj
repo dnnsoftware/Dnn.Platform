@@ -114,6 +114,7 @@
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />
     <Compile Include="Framework\Controllers\DnnController.cs" />
     <Compile Include="Framework\Controllers\IDnnController.cs" />
+    <Compile Include="Framework\ViewEngineCollectionExt.cs" />
     <Compile Include="Framework\DnnWebViewPage.cs" />
     <Compile Include="Framework\DnnWebViewPageOfT.cs" />
     <Compile Include="Framework\ModuleDelegatingViewEngine.cs" />

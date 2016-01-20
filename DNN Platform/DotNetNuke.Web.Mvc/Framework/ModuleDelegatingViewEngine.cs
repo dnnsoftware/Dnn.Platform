@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="partialViewName">The name of the partial view.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName));
+            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName));
+            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
         }
 
         /// <summary>
