@@ -101,7 +101,7 @@ BEGIN
     SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
     WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
 		AND IsDeleted = 0
-		AND TabId IN (SELECT TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+		AND TabId IN (SELECT M.TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
                       INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON M.DesktopModuleID = DM.DesktopModuleID
 					  LEFT JOIN #TabsLatestPublished TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
                       WHERE DM.PackageID = @PackageId AND (M.IsDeleted = 0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL)))
