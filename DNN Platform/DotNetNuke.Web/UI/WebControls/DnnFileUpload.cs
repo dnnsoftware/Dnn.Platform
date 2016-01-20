@@ -7,6 +7,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -75,7 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(Page);
+            jQuery.RegisterFileUpload(Page);            
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -95,6 +96,8 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload." + skin + ".css", FileOrder.Css.ResourceCss);
             }
+
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
