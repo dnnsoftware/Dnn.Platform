@@ -351,4 +351,16 @@
   <data name="Tool.UnpublishPage.Text" xml:space="preserve">
     <value>Make Private</value>
   </data>
+  <data name="Tool.LockInstance.Text" xml:space="preserve">
+    <value>Lock Instance</value>
+  </data>
+  <data name="Tool.LockSite.Text" xml:space="preserve">
+    <value>Lock Site</value>
+  </data>
+  <data name="Tool.UnlockInstance.Text" xml:space="preserve">
+    <value>Unlock Instance</value>
+  </data>
+  <data name="Tool.UnlockSite.Text" xml:space="preserve">
+    <value>Unlock Site</value>
+  </data>
 </root>

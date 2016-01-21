@@ -539,6 +539,40 @@ dnn.controlBar.init = function (settings) {
         });
     };
 
+    dnn.controlBar.lockInstance = function (locking) {
+        var service = dnn.controlBar.getService();
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        $.ajax({
+            url: serviceUrl + 'LockInstance',
+            type: 'POST',
+            data: { Lock: locking },
+            beforeSend: service.setModuleHeaders,
+            success: function () {
+                window.location.href = window.location.href.split('#')[0];
+            },
+            error: function (xhr) {
+                dnn.controlBar.responseError(xhr);
+            }
+        });
+    };
+
+    dnn.controlBar.lockSite = function (locking) {
+        var service = dnn.controlBar.getService();
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        $.ajax({
+            url: serviceUrl + 'LockSite',
+            type: 'POST',
+            data: { Lock: locking },
+            beforeSend: service.setModuleHeaders,
+            success: function () {
+                window.location.href = window.location.href.split('#')[0];
+            },
+            error: function (xhr) {
+                dnn.controlBar.responseError(xhr);
+            }
+        });
+    };
+
     dnn.controlBar.switchSite = function (site) {
         if (site) {
             var dataVar = { Site: site };
@@ -1465,6 +1499,26 @@ dnn.controlBar.init = function (settings) {
 
     $('#controlBar_RecycleAppPool').click(function () {
         dnn.controlBar.recycleAppPool();
+        return false;
+    });
+
+    $('#controlBar_LockInstance').click(function () {
+        dnn.controlBar.lockInstance(true);
+        return false;
+    });
+
+    $('#controlBar_UnlockInstance').click(function () {
+        dnn.controlBar.lockInstance(false);
+        return false;
+    });
+
+    $('#controlBar_LockSite').click(function () {
+        dnn.controlBar.lockSite(true);
+        return false;
+    });
+
+    $('#controlBar_UnlockSite').click(function () {
+        dnn.controlBar.lockSite(false);
         return false;
     });
 

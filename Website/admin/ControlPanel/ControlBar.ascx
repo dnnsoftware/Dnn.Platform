@@ -97,28 +97,37 @@
                                     <li>
                                         <a href="javascript: openFileUploader();"><%= GetString("Tool.UploadFile.Text") %></a>
                                     </li>
-                                   <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                                      {%>
+                                   <% if (UserController.Instance.GetCurrentUserInfo().IsSuperUser) {%>
                                     <li><a href='javascript:void(0)' id="controlBar_ClearCache">
                                         <%= GetString("Tool.ClearCache.Text") %></a></li>
                                     <li><a href='javascript:void(0)' id="controlBar_RecycleAppPool">
                                         <%= GetString("Tool.RecycleApp.Text") %></a></li>
                                     <li>
                                         <div id="ControlBar_SiteSelector">
-                                            <p>
-                                                <%= GetString("Tool.SwitchSites.Text") %></p>
-											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
+                                            <p><%= GetString("Tool.SwitchSites.Text") %></p>
+                                            <dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
+                                        <% if (DotNetNuke.Entities.Host.Host.IsLocked == false) { %>
+                                            <li><a href='javascript:void(0)' id="controlBar_LockInstance"><%= GetString("Tool.LockInstance.Text") %></a></li>
+                                        <% } else {%>
+                                            <li><a href='javascript:void(0)' id="controlBar_UnlockInstance"><%= GetString("Tool.UnlockInstance.Text") %></a></li>
+                                        <% } %>
                                     <% } %>
-                                    <% if (ShowSwitchLanguagesPanel())
-                                       { %>
+                                    <% if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName) && DotNetNuke.Entities.Host.Host.IsLocked == false) { %>
+                                        <% if (PortalSettings.IsThisPortalLocked == false) { %>
+                                            <li><a href='javascript:void(0)' id="controlBar_LockSite"><%= GetString("Tool.LockSite.Text") %></a></li>
+                                        <% } else { %>
+                                            <li><a href='javascript:void(0)' id="controlBar_UnlockSite"><%= GetString("Tool.UnlockSite.Text") %></a></li>
+                                        <% } %>
+                                    <% } %>
+                                    <% if (ShowSwitchLanguagesPanel()) { %>
                                     <li>
                                         <div id="ControlBar_LanguageSelector">
                                             <p>
                                                <%= GetString("Tool.SwitchLanguages.Text") %></p>
-											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchLanguage" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
+                                            <dnn:DnnComboBox runat="server" ID="controlBar_SwitchLanguage" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
                                             <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
