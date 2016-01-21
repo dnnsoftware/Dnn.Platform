@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -476,44 +477,28 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
-        [HttpGet]
-        public HttpResponseMessage LockInstance(bool LockingFlag)
+        public class LockingDTO
         {
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-            {
-                if (LockingFlag)
-                {
-                    // we are locking
-                    HostController.Instance.Update("IsLocked", true.ToString(), true);
-                }
-                else
-                {
-                    //we are unlocking
-                    HostController.Instance.Update("IsLocked", false.ToString(), true);
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            public bool Lock { get; set; }
         }
 
-        [HttpGet]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-        public HttpResponseMessage LockSite(bool LockingFlag)
+        public HttpResponseMessage LockInstance(LockingDTO lockingRequest)
         {
-            if (LockingFlag)
-            {
-                // we are locking
-                PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "IsLocked", true.ToString(), true);
-            }
-            else
-            {
-                //we are unlocking
-                PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "IsLocked", false.ToString(), true);
-            }
+            HostController.Instance.Update("IsLocked", lockingRequest.Lock.ToString(), false);
+            HostController.Instance.Update("LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage LockSite(LockingDTO lockingRequest)
+        {
+            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "IsLocked", lockingRequest.Lock.ToString(), false);
+            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
