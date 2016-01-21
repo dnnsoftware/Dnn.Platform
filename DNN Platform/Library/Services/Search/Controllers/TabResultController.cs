@@ -38,6 +38,8 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class TabResultController : BaseResultController
     {
+        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+
         #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
@@ -65,6 +67,8 @@ namespace DotNetNuke.Services.Search.Controllers
             
             return url;
         }
+
+        public override string LocalizedSearchTypeName => Localization.Localization.GetString("Crawler_tab", LocalizedResxFile);
 
         #endregion
     }

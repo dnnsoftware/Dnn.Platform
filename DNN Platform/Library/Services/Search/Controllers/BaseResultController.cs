@@ -52,6 +52,8 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <remarks>The Query Strings in the Document (if present) should be appended while returning the Url</remarks>
         public abstract string GetDocUrl(SearchResult searchResult);
 
+        public virtual string LocalizedSearchTypeName => "";
+
         #endregion
     }
 }
