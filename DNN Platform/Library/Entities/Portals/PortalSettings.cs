@@ -530,6 +530,12 @@ namespace DotNetNuke.Entities.Portals
 				{
 					mode = Mode.View;
 				}
+
+				if (mode == Mode.Edit && this.IsLocked)
+				{
+					return Mode.View;
+				}
+
 				return mode;
 			}
 		}
