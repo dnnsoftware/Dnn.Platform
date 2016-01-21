@@ -102,19 +102,12 @@
                                         <%= GetString("Tool.ClearCache.Text") %></a></li>
                                     <li><a href='javascript:void(0)' id="controlBar_RecycleAppPool">
                                         <%= GetString("Tool.RecycleApp.Text") %></a></li>
-                                    <li>
-                                        <div id="ControlBar_SiteSelector">
-                                            <p><%= GetString("Tool.SwitchSites.Text") %></p>
-                                            <dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
-                                            <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
-                                        </div>
-                                    </li>
-                                        <% if (DotNetNuke.Entities.Host.Host.IsLocked == false) { %>
-                                            <li><a href='javascript:void(0)' id="controlBar_LockInstance"><%= GetString("Tool.LockInstance.Text") %></a></li>
-                                        <% } else {%>
-                                            <li><a href='javascript:void(0)' id="controlBar_UnlockInstance"><%= GetString("Tool.UnlockInstance.Text") %></a></li>
-                                        <% } %>
+                                    <% if (DotNetNuke.Entities.Host.Host.IsLocked == false) { %>
+                                        <li><a href='javascript:void(0)' id="controlBar_LockInstance"><%= GetString("Tool.LockInstance.Text") %></a></li>
+                                    <% } else {%>
+                                        <li><a href='javascript:void(0)' id="controlBar_UnlockInstance"><%= GetString("Tool.UnlockInstance.Text") %></a></li>
                                     <% } %>
+                                   <% } %>
                                     <% if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName) && DotNetNuke.Entities.Host.Host.IsLocked == false) { %>
                                         <% if (PortalSettings.IsThisPortalLocked == false) { %>
                                             <li><a href='javascript:void(0)' id="controlBar_LockSite"><%= GetString("Tool.LockSite.Text") %></a></li>
@@ -122,6 +115,13 @@
                                             <li><a href='javascript:void(0)' id="controlBar_UnlockSite"><%= GetString("Tool.UnlockSite.Text") %></a></li>
                                         <% } %>
                                     <% } %>
+                                    <li>
+                                        <div id="ControlBar_SiteSelector">
+                                            <p><%= GetString("Tool.SwitchSites.Text") %></p>
+                                            <dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
+                                            <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
+                                        </div>
+                                    </li>
                                     <% if (ShowSwitchLanguagesPanel()) { %>
                                     <li>
                                         <div id="ControlBar_LanguageSelector">
