@@ -506,12 +506,12 @@ namespace DotNetNuke.UI.Modules
         /// -----------------------------------------------------------------------------
         private void LoadActions(HttpRequest request)
         {
+            _actions = new ModuleActionCollection();
             if (PortalSettings.IsLocked)
             {
                 return;
             }
 
-            _actions = new ModuleActionCollection();
             _moduleGenericActions = new ModuleAction(GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
             int maxActionId = Null.NullInteger;
 
