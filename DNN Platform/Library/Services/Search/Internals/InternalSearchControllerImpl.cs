@@ -38,7 +38,9 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 
 using Lucene.Net.Documents;
@@ -133,11 +135,9 @@ namespace DotNetNuke.Services.Search.Internals
 
                     default:
 
-                        var localizedName = Localization.Localization.GetSafeJSString("Crawler_" + crawler.SearchTypeName, LocalizedResxFile);
-                        if (string.IsNullOrEmpty(localizedName))
-                        {
-                            localizedName = crawler.SearchTypeName;
-                        }
+                        var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
+                        var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);                       
+                        var localizedName = Localization.Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource
                         {

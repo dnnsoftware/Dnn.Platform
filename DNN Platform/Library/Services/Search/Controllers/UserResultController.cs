@@ -44,6 +44,8 @@ namespace DotNetNuke.Services.Search.Controllers
     {
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
 
+        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+
         #region Private Properties
 
         private PortalSettings PortalSettings
@@ -103,6 +105,8 @@ namespace DotNetNuke.Services.Search.Controllers
             var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
+
+        public override string LocalizedSearchTypeName => Localization.Localization.GetString("Crawler_user", LocalizedResxFile);
 
         #endregion
 
