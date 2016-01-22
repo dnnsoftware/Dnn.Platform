@@ -24,13 +24,12 @@
 using System;
 using System.Globalization;
 
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
-    using DotNetNuke.Entities.Controllers;
-
     /// <summary>
     /// The Config class provides a central area for management of Module Configuration Settings.
     /// </summary>
@@ -48,7 +47,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (HostConfig)
             {
-                APIKey = HostController.Instance.GetString(Service + "_APIKey", string.Empty);
+                APIKey = HostController.Instance.GetString(Service + "_APIKey", "");
                 APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
                 Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
             }
@@ -84,7 +83,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             string key = GetCacheKey(service, portalId);
             var config = (OAuthConfigBase)DataCache.GetCache(key);
-
             if (config == null)
             {
                 config = new OAuthConfigBase(service, portalId);
@@ -104,28 +102,25 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 PortalController.DeletePortalSetting(portalId, service + "_HostConfig");
             }
 
-            ClearConfig(service, portalId);
+            ClearConfig(service, portalId); 
         }
 
         public static void UpdateConfig(OAuthConfigBase config)
         {
             if (config.HostConfig)
             {
-                //host settings
                 HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
                 HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
                 HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
             }
             else
             {
-                // portal settings
                 PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
                 PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
                 PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
             }
 
             ClearConfig(config.Service, config.PortalID);
-            
         }
     }
 }
