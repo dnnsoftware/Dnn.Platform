@@ -46,6 +46,7 @@ using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Instrumentation;
@@ -134,7 +135,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         //oAuth 1 and 2
         protected Uri AuthorizationEndpoint { get; set; }
-        protected string AuthToken { get; private set; }
+        protected string AuthToken { get; set; }
         protected TimeSpan AuthTokenExpiry { get; set; }
         protected Uri MeGraphEndpoint { get; set; }
         protected Uri TokenEndpoint { get; set; }
@@ -158,6 +159,16 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public Uri CallbackUri { get; set; }
         public string Service { get; set; }
+
+        public virtual bool PrefixServiceToUserName
+        {
+            get { return true; }
+        }
+
+        public virtual bool AutoMatchExistingUsers
+        {
+            get { return false; }
+        }
 
         #endregion
 
@@ -618,18 +629,38 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            string userName = Service + "-" + user.Id;
+            string userName = PrefixServiceToUserName ? Service + "-" + user.Email : user.Email;
+            string token = Service + "-" + user.Email + "-" + user.Id;
 
-            var objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
-                                                                Service, "",
+            UserInfo objUserInfo;
+
+            if (AutoMatchExistingUsers)
+            {
+                objUserInfo = MembershipProvider.Instance().GetUserByUserName(settings.PortalId, userName);
+
+                if (objUserInfo != null)
+                {
+                    //user already exists... lets check for a token next... 
+                    var dnnAuthToken = MembershipProvider.Instance().GetUserByAuthToken(settings.PortalId, token, Service);
+
+                    if (dnnAuthToken == null)
+                    {
+                        DataProvider.Instance().AddUserAuthentication(objUserInfo.UserID, Service, token, objUserInfo.UserID);
+                    }
+                }
+            }
+
+            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
+                                                                Service, token,
                                                                 settings.PortalName, IPAddress,
                                                                 ref loginStatus);
 
 
             //Raise UserAuthenticated Event
-            var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, userName, loginStatus, Service)
+            var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, Service)
                                             {
-                                                AutoRegister = true
+                                                AutoRegister = true,
+                                                UserName = userName,
                                             };
 
             var profileProperties = new NameValueCollection();

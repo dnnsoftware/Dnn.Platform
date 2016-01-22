@@ -614,7 +614,7 @@ namespace DotNetNuke.Security.Membership
         }
 
        
-        private UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
+        public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
             IDataReader dr = _dataProvider.GetUserByAuthToken(portalId, userToken, authType);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
@@ -853,43 +853,6 @@ namespace DotNetNuke.Security.Membership
             UserCreateStatus createStatus = ValidateForProfanity(user);
             string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
-            //DNN-4016
-            //the username exists, first we check to see if this is an OAUTH user
-            bool isOAuthUser = false;
-
-            if (String.IsNullOrEmpty(service) || service.Equals("DNN"))
-            {
-                isOAuthUser = false;
-            }
-            else
-            {
-                try
-                {
-                    UserAuthenticationInfo authUser = AuthenticationController.GetUserAuthentication(user.UserID);
-
-                    // Check that the OAuth service currently being used for login is the same as was previously used (this should always be true if user authenticated to userid)
-                    if (authUser == null || authUser.AuthenticationType.Equals(service, StringComparison.OrdinalIgnoreCase))
-                    {
-                        isOAuthUser = true;
-                        //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-	                    if (!string.IsNullOrEmpty(user.Email))
-	                    {
-		                    user.Username = service + "-" + user.Email;
-	                    }
-                    }
-                    else
-                    {
-                        createStatus = UserCreateStatus.DuplicateEmail;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    createStatus = UserCreateStatus.UnexpectedError;
-                    EventLogController.Instance.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
-                }
-            }
-
             if (createStatus == UserCreateStatus.AddUser)
             {
                 ValidateForDuplicateDisplayName(user, ref createStatus);
@@ -905,7 +868,7 @@ namespace DotNetNuke.Security.Membership
                     {
                         //DNN-4016
                         //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
-                        if (isOAuthUser || ValidateUser(user.Username, user.Membership.Password))
+                        if (ValidateUser(user.Username, user.Membership.Password))
                         {
                             //check if user exists for the portal specified
                             objVerifyUser = GetUserByUserName(user.PortalID, user.Username);
@@ -1764,7 +1727,7 @@ namespace DotNetNuke.Security.Membership
             //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
                                 ? GetUserByUserName(portalId, username)
-                                : GetUserByAuthToken(portalId, username, authType);
+                                : GetUserByAuthToken(portalId, verificationCode, authType);
             if (user != null && !user.IsDeleted)
             {
                 //Get AspNet MembershipUser
