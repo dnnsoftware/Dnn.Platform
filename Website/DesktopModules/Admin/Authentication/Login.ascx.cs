@@ -332,6 +332,26 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			}
 		}
 
+		/// <summary>
+		/// Gets and sets the current UserName
+		/// </summary>
+		protected string UserName
+		{
+			get
+			{
+				var userName = "";
+				if (ViewState["UserName"] != null)
+				{
+                    userName = Convert.ToString(ViewState["UserName"]);
+				}
+				return userName;
+			}
+			set
+			{
+				ViewState["UserName"] = value;
+			}
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -376,6 +396,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         if (authSystem.AuthenticationType == "DNN")
                         {
                             defaultLoginControl = authLoginControl;
+                            pnlLoginContainer.Visible = true;
                         }
 
                         //Check if AuthSystem is Enabled
@@ -561,7 +582,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
-            pnlLoginContainer.Visible = true;
         }
 
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
@@ -609,8 +629,22 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private string GenerateUserName()
         {
-            //Try the best username. Default it to UserToken
-            var userName = UserToken.Replace("http://", "").TrimEnd('/');
+            //Try the best username. Default it to UserName
+            var userName = UserName;
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                return userName;
+            }
+            else
+            {
+                userName = UserToken.Replace("http://", "").TrimEnd('/');
+
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    return userName;
+                }
+            }
 
             //Try Email prefix
             var emailPrefix = string.Empty;
@@ -1203,6 +1237,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         AuthenticationType = e.AuthenticationType;
                         ProfileProperties = e.Profile;
                         UserToken = e.UserToken;
+                        UserName = e.UserName;
                         if (AutoRegister)
                         {
                             InitialiseUser();
