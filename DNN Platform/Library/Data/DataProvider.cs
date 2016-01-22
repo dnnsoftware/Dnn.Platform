@@ -1671,7 +1671,17 @@ namespace DotNetNuke.Data
 											GetNull(contentItemId));
 		}
 
-		public virtual int CountLegacyFiles()
+	    public virtual void SetHasBeenPublished(int fileId, bool hasBeenPublished)
+	    {
+            ExecuteNonQuery("SetHasBeenPublished", fileId, hasBeenPublished);
+        }
+
+        public virtual bool GetHasBeenPublished(int fileId)
+        {
+            return ExecuteScalar<bool>("GetHasBeenPublished", fileId);
+        }
+
+        public virtual int CountLegacyFiles()
 		{
 			return ExecuteScalar<int>("CountLegacyFiles");
 		}
