@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             {
                 using (var stream = new FileStream(ImageFilePath, FileMode.Open))
                 {
-                    return Image.FromStream(stream);
+                    return CopyImage(stream);
                 }
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 {
                     using (var stream = httpWebReponse.GetResponseStream())
                     {
-                        return Image.FromStream(stream);
+                        return CopyImage(stream);
                     }
                 }
             }
