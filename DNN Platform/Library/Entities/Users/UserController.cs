@@ -677,23 +677,26 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
-            bool retValue;
+            bool passwordChanged;
 
             //Although we would hope that the caller has already validated the password,
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
+                passwordChanged = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+                if (passwordChanged)
+                {
+                    //Update User
+                    user.Membership.UpdatePassword = false;
+                    UpdateUser(user.PortalID, user);
+                }
             }
             else
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
 
         /// <summary>
