@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         protected IDigitalAssetsController DigitalAssetsController { get; private set; }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
             var moduleId = Request.FindModuleId();
