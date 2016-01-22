@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.Modules
                 //role lookup on every property access (instead caching the result)
                 if (!_isEditable.HasValue)
                 {
-                    bool blnPreview = (PortalSettings.UserMode == PortalSettings.Mode.View);
+                    bool blnPreview = (PortalSettings.UserMode == PortalSettings.Mode.View) || PortalSettings.IsLocked;
                     if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                     {
                         blnPreview = false;
