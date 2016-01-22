@@ -35,10 +35,10 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
             }
         }
 
-        public static T ExecuteScalar<T>(string queryString)
+        public static T ExecuteScalar<T>(string queryString, params object[] args)
         {
             var qstr = ReplaceQueryQualifier(queryString);
-            return PetaPocoHelper.ExecuteScalar<T>(AppConfigHelper.ConnectionString, CommandType.Text, qstr, null);
+            return PetaPocoHelper.ExecuteScalar<T>(AppConfigHelper.ConnectionString, CommandType.Text, qstr, args);
         }
 
         public static IEnumerable<TItem> ExecuteQuery<TItem>(string queryString)
