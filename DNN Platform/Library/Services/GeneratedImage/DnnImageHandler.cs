@@ -168,11 +168,13 @@ namespace DotNetNuke.Services.GeneratedImage
                         if (!uppTrans.TryGetPhotoFile(out photoFile))
                         {
                             var noAvatar = uppTrans.GetNoAvatarImage();
+                            ContentType = ImageFormat.Gif;
                             return new ImageInfo(noAvatar)
                             {
                                 IsEmptyImage = true
                             };
                         }
+                        ContentType = GetImageFormat(photoFile?.Extension ?? "jpg");
                         ImageTransforms.Add(uppTrans);
                         break;
 
@@ -432,10 +434,10 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // We start the chain with an empty image
-            var dummy = new Bitmap(1, 1, PixelFormat.Format24bppRgb);
+            var dummy = new Bitmap(1, 1);
             using (var ms = new MemoryStream())
             {
-                dummy.Save(ms, ImageFormat.Jpeg);
+                dummy.Save(ms, ContentType);
                 return new ImageInfo(ms.ToArray());
             }
         }
