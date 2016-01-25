@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             using (var srcImage = new Bitmap(imgStream))
             {
-                var destImage = new Bitmap(srcImage.Width, srcImage.Height, PixelFormat.Format24bppRgb);
+                var destImage = new Bitmap(srcImage.Width, srcImage.Height);
                 using (var graph = Graphics.FromImage(destImage))
                 {
                     graph.CompositingMode = CompositingMode.SourceCopy;
