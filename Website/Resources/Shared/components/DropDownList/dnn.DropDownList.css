@@ -43,7 +43,9 @@
     border-left: 5px solid transparent;
     border-right: 14px solid transparent;
     text-overflow: ellipsis;
-    /*outline: #ececec solid thin;*/
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
 }
 
 .dnnDropDownList .selected-item a.opened,
