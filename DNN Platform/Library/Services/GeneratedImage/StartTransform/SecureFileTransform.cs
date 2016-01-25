@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             using (var content = FileManager.Instance.GetFileContent(SecureFile))
             {
-                return new Bitmap(content);
+                return CopyImage(content);
             }
 		}
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
             {
-                return Image.FromStream(stream);
+                return CopyImage(stream);
             }
         }
 
