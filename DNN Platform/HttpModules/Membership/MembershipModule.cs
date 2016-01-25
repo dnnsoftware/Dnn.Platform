@@ -139,45 +139,15 @@ namespace DotNetNuke.HttpModules.Membership
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");
-            if(!string.IsNullOrEmpty(auth))
+            if (!string.IsNullOrEmpty(auth))
             {
-                if(auth.StartsWith("Negotiate"))
+                if (auth.StartsWith("Negotiate"))
                 {
                     isActiveDirectoryAuthHeaderPresent = true;
                 }
             }
 
-            //DNN-6673 START
-            //check if it's Windows Authentication request, and try to authenticate it
-            if (request.IsAuthenticated
-                && context.User != null
-                && portalSettings != null
-                && (context.User is WindowsPrincipal || isActiveDirectoryAuthHeaderPresent))
-            {
-                string userName = string.Empty;
-                //get WinAuth username from context 
-                if (context.User != null && context.User.Identity != null)
-                {
-                    userName = NameRegex.Replace(context.User.Identity.Name, string.Empty);
-                }
-
-                UserInfo userInfo = UserController.GetCachedUser(portalSettings.PortalId, userName);
-
-                //save userinfo object in context
-                if (context.Items["UserInfo"] != null)
-                {
-                    context.Items["UserInfo"] = userInfo ?? new UserInfo(); //update
-                }
-                else
-                {
-                    context.Items.Add("UserInfo", userInfo = userInfo ?? new UserInfo()); //set new
-                }
-                //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (userInfo != null)
-                    Localization.SetLanguage(userInfo.Profile.PreferredLocale);
-            }//DNN-6673 END
-
-            else if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
+            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
                 //if current login is from windows authentication, the ignore the process
