@@ -373,8 +373,8 @@
         color: #bbb;
     }
 
-    #ControlBar_SiteSelector input[type="submit"],
-    #ControlBar_LanguageSelector input[type="submit"] {
+    #ControlBar_SiteSelector input[type="button"],
+    #ControlBar_LanguageSelector input[type="button"] {
         float: right;
         display: inline-block;
         margin: 0;
