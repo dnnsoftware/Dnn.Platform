@@ -108,7 +108,7 @@
                                             <p>
                                                 <%= GetString("Tool.SwitchSites.Text") %></p>
 											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchSite" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
-                                            <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
+                                            <input type="button" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchSiteButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
                                     <% } %>
@@ -119,7 +119,7 @@
                                             <p>
                                                <%= GetString("Tool.SwitchLanguages.Text") %></p>
 											<dnn:DnnComboBox runat="server" ID="controlBar_SwitchLanguage" ClientIDMode="Static" Skin="DnnBlack" ViewStateMode="Disabled"/>
-                                            <input type="submit" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
+                                            <input type="button" value="<%= GetString("Tool.SwitchSites.Button") %>" id="controlBar_SwitchLanguageButton" class="dnnPrimaryAction" />
                                         </div>
                                     </li>
 
