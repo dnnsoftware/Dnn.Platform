@@ -351,7 +351,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if ((!string.IsNullOrEmpty(parameters["w"]) && width>0) && (!string.IsNullOrEmpty(parameters["h"]) && height>0) && width != height)
+                    if (width>0 && height>0 && width != height)
                     {
                         resizeMode = ImageResizeMode.Fill;
                     }
