@@ -210,3 +210,72 @@ AS
 		 OR ([StartDate] <= GETDATE()
 			AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]) AND [HasBeenPublished] = 1)
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetPublishedVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion] 
+	@FileId					int,
+	@NewPublishedVersion	int
+AS
+BEGIN
+
+	-- Insert a new record in the FileVersions table for the old published version
+	INSERT {databaseOwner}[{objectQualifier}FileVersions]
+				([FileId]
+				,[Version]
+				,[FileName]
+				,[Extension]
+				,[Size]
+				,[Width]
+				,[Height]
+				,[ContentType]
+				,[Content]
+				,[CreatedByUserID]
+				,[CreatedOnDate]
+				,[LastModifiedByUserID]
+				,[LastModifiedOnDate]
+				,[SHA1Hash])
+	SELECT		[FileId]
+				,[PublishedVersion]  [Version]				
+				,CONVERT(nvarchar, [FileId]) + '_' + CONVERT(nvarchar, [PublishedVersion]) +'.v.resources' 
+				,[Extension]
+				,[Size]
+				,[Width]
+				,[Height]
+				,[ContentType]
+				,[Content]
+				,[CreatedByUserID]
+				,[CreatedOnDate]
+				,[LastModifiedByUserID]
+				,[LastModifiedOnDate]
+				,[SHA1Hash]					
+	FROM {objectQualifier}Files
+	WHERE FileId = @FileId
+
+	-- Change Files.PublishedVersion to the new version number
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET	 [PublishedVersion] = @NewPublishedVersion		
+		,[Extension] =v.[Extension]
+		,[Size] = v.[Size]
+		,[Width] = v.[Width]
+		,[Height] = v.[Height]
+		,[ContentType] = v.[ContentType]
+		,[Content] = v.[Content]
+		,[CreatedByUserID] = v.[CreatedByUserID]
+		,[CreatedOnDate] = v.[CreatedOnDate]
+		,[LastModifiedByUserID] = v.[LastModifiedByUserID]
+		,[LastModifiedOnDate] = v.[LastModifiedOnDate]
+		,[SHA1Hash] = v.[SHA1Hash]
+		,[HasBeenPublished] = 1
+	FROM {databaseOwner}[{objectQualifier}Files] f
+		JOIN {databaseOwner}[{objectQualifier}FileVersions] v ON f.FileId = v.FileId
+	WHERE f.FileId = @FileId
+		AND v.Version = @NewPublishedVersion
+
+    -- Delete the FileVersions entry of the version being published
+	DELETE {databaseOwner}[{objectQualifier}FileVersions]
+	WHERE FileId = @FileId AND Version = @NewPublishedVersion
+END
+GO
