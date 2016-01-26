@@ -288,8 +288,8 @@ namespace DotNetNuke.Services.FileSystem
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            bool fileExists = folderProvider.FileExists(folder, fileName);
-            bool needToWriteFile = fileContent != null && (overwrite || !fileExists);
+            bool fileExists = FileExists(folder, fileName, true);
+            bool needToWriteFile = fileContent != null && (overwrite || !folderProvider.FileExists(folder, fileName));
             bool usingSeekableStream = false;
 
             if (fileContent != null && !needToWriteFile && FileExists(folder, fileName))
@@ -322,11 +322,12 @@ namespace DotNetNuke.Services.FileSystem
             try
             {
                 Workflow folderWorkflow = null;
-
                 var contentFileName = fileName;
                 var fileHash = string.Empty;
                 if (needToWriteFile)
                 {
+                    CheckFileWritingRestrictions(folder, file, oldFile, createdByUserID);
+
                     if (!fileContent.CanSeek)
                     {
                         fileContent = GetSeekableStream(fileContent);
@@ -344,38 +345,9 @@ namespace DotNetNuke.Services.FileSystem
 
                     if (IsImageFile(file))
                     {
-                        try
-                        {
-                            using (var image = GetImageFromStream(fileContent))
-                            {
-                                file.Width = image.Width;
-                                file.Height = image.Height;
-                            }
-                        }
-                        catch
-                        {
-                            file.ContentType = "application/octet-stream";
-                        }
-                        finally
-                        {
-                            fileContent.Position = 0;
-                        }
+                        SetImageProperties(file, fileContent);
                     }
-
-                    if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
-                    {
-                        throw new NoSpaceAvailableException(
-                            Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
-                                                                          "The portal has no space available to store the specified file. The file has not been added."));
-                    }
-
-                    //Publish Period
-                    if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
-                    {
-                        throw new FileLockedException(
-                                        Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
-                                                                                        "File locked. The file cannot be updated because it is out of Publish Period"));
-                    }
+                    
                     // Workflow
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
                     if (folderWorkflow != null)
@@ -396,24 +368,16 @@ namespace DotNetNuke.Services.FileSystem
                         }
                         else
                         {
-                            // If workflow exists, then the file already exists
-
                             // Create Content Item if does not exists
                             if (file.ContentItemID == Null.NullInteger)
                             {
                                 file.ContentItemID = CreateFileContentItem().ContentItemId;
                             }
-
+                            
                             contentFileName = UpdateWhileApproving(folder, createdByUserID, file, fileExists, fileContent);
-                            if (StartWorkflowWhenChange(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
-                            {
-                                if (fileExists)
-                                {
-                                    //File Events for updating will not be fired. Only events for adding nust be fired
-                                    UpdateFile(file, true, false);
-                                }
-                            }    
-                        }                        
+                            //This case will be to overwrite an existing file
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                        }
                     }
                         // Versioning
                     else
@@ -437,10 +401,10 @@ namespace DotNetNuke.Services.FileSystem
 	                {
 		                if(folderWorkflow == null || !fileExists)
 						{
-							AddFile(file, fileHash, createdByUserID);
-						}
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                        }
 
-						if (needToWriteFile)
+                        if (needToWriteFile)
 						{
 							folderProvider.AddFile(folder, contentFileName, fileContent);
 						}
@@ -454,9 +418,9 @@ namespace DotNetNuke.Services.FileSystem
 
 		                if(folderWorkflow == null || !fileExists)
 						{
-							AddFile(file, fileHash, createdByUserID);
-						}
-	                }
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                        }
+                    }
 
 	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
@@ -492,7 +456,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
-                var addedFile = GetFile(file.FileId);
+                var addedFile = GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
 
                 // Notify file event
                 if (fileExists && (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
@@ -516,6 +480,65 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        private void SetImageProperties(IFileInfo file, Stream fileContent)
+        {
+            try
+            {
+                using (var image = GetImageFromStream(fileContent))
+                {
+                    file.Width = image.Width;
+                    file.Height = image.Height;
+                }
+            }
+            catch
+            {
+                file.ContentType = "application/octet-stream";
+            }
+            finally
+            {
+                fileContent.Position = 0;
+            }
+        }
+
+        private void CheckFileWritingRestrictions(IFolderInfo folder, IFileInfo file, IFileInfo oldFile, int createdByUserId)
+        {
+            if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
+            {
+                throw new NoSpaceAvailableException(
+                    Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
+                                                                  "The portal has no space available to store the specified file. The file has not been added."));
+            }
+
+            //Publish Period
+            if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserId))
+            {
+                throw new FileLockedException(
+                                Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
+                                                                                "File locked. The file cannot be updated because it is out of Publish Period"));
+            }
+        }
+
+        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, bool fileExists, FileInfo file, string fileHash)
+        {
+            if (folderWorkflow == null && fileExists)
+            {
+                //File Events for updating will not be fired. Only events for adding nust be fired
+                UpdateFile(file, true, false);
+            }
+            else 
+            {                
+                AddFile(file, fileHash, createdByUserID);                
+            }
+            if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
+            {
+                if (!fileExists) //if file exists it could have been published. So We don't have to update the field
+                {
+                    //Maybe here we can set HasBeenPublished as 0
+                    DataProvider.Instance().SetHasBeenPublished(file.FileId, false);
+                }                
+            }
+        }
+
         private void AddFile(IFileInfo file, string fileHash, int createdByUserID)
         {
             file.FileId = DataProvider.Instance().AddFile(file.PortalId,
@@ -536,8 +559,7 @@ namespace DotNetNuke.Services.FileSystem
                                                     file.StartDate,
                                                     file.EndDate,
                                                     file.EnablePublishPeriod,
-                                                    file.ContentItemID);
-          
+                                                    file.ContentItemID);          
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -1377,16 +1399,14 @@ namespace DotNetNuke.Services.FileSystem
             return WorkflowSecurity.Instance.HasStateReviewerPermission(folder.PortalID, createdByUserID, item.StateID);
         }
 
-        private bool StartWorkflowWhenChange(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
+        private bool StartWorkflow(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
         {
-            if(fileExists)
+            //TODO Changes for Version 0            
+            if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
             {
-                if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
-                {
-                    WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
-                    return true;
-                }
-            }
+                WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
+                return true;
+            }            
             return false;
         }
         private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, bool fileExists, Stream content)
