@@ -1415,8 +1415,11 @@ namespace DotNetNuke.Services.FileSystem
             bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
-            //Currently, first upload is always published
-            if (!fileExists)
+            
+            //If the file does not exist, then the field would not has value
+            var hasBeenPublished = !fileExists || DataProvider.Instance().GetHasBeenPublished(file.FileId);
+            //Currently, first upload has not version file
+            if (!fileExists || (!hasBeenPublished))
             {
                 return file.FileName;
             }
