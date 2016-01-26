@@ -102,16 +102,24 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 foreach (string scriptFile in scripts)
                 {
                     var fileName = Upgrade.GetFileNameWithoutExtension(scriptFile);
-                    versions.Add(new Version(fileName));
+                    var version = new Version(fileName);
                     string description = Localization.Localization.GetString("ProcessingUpgradeScript", LocalInstallResourceFile);
                     Details = description + fileName;
-					var exceptions = Upgrade.UpgradeVersion(scriptFile, false);
+
+                    bool scriptExecuted;
+					var exceptions = Upgrade.UpgradeVersion(scriptFile, false, out scriptExecuted);
 					if (!string.IsNullOrEmpty(exceptions))
 					{
 						Errors.Add(exceptions);
 						Status = StepStatus.Retry;
 						return;
 					}
+
+                    if (scriptExecuted)
+                    {
+                        versions.Add(version);
+                    }
+
                     Percentage += percentForMiniStep;
                 }
             }
