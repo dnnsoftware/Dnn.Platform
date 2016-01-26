@@ -243,6 +243,8 @@ namespace DotNetNuke.Common
             {
                 //NET Framework version is neeed by Upgrade
                 Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+                Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+                Globals.OperatingSystemVersion = Environment.OSVersion.Version;
             }
             return redirect;
         }
