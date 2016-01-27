@@ -90,7 +90,7 @@ GO
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]', N'U') IS NOT NULL
 	UPDATE {databaseOwner}[{objectQualifier}Tabs]
 	SET EndDate = NULL
-	WHERE EndDate >= '9999-12-31'
+	WHERE EndDate >= '9999-12-31T00:00:00'
 GO
 
 -- CONTENT-5617 END
