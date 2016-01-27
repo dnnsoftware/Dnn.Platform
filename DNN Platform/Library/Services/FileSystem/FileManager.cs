@@ -335,13 +335,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     // Retrieve Metadata
-                    file.Size = (int)fileContent.Length;
-                    fileHash = folderProvider.GetHashCode(file, fileContent);
-                    file.SHA1Hash = fileHash;
-                    fileContent.Position = 0;
-
-                    file.Width = 0;
-                    file.Height = 0;
+                    SetInitialFileMetadata(fileContent, file, ref fileHash, folderProvider);
 
                     if (IsImageFile(file))
                     {
@@ -352,12 +346,15 @@ namespace DotNetNuke.Services.FileSystem
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
                     if (folderWorkflow != null)
                     {
+                        SetContentItem(file);
+
                         file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
                             if (file.FileId == Null.NullInteger)
                             {
                                 AddFile(file, fileHash, createdByUserID);
+                                fileExists = true;
                             }  
                             else
                             {
@@ -368,15 +365,9 @@ namespace DotNetNuke.Services.FileSystem
                         }
                         else
                         {
-                            // Create Content Item if does not exists
-                            if (file.ContentItemID == Null.NullInteger)
-                            {
-                                file.ContentItemID = CreateFileContentItem().ContentItemId;
-                            }
-                            
                             contentFileName = UpdateWhileApproving(folder, createdByUserID, file, fileExists, fileContent);
                             //This case will be to overwrite an existing file
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
                         }
                     }
                         // Versioning
@@ -401,7 +392,7 @@ namespace DotNetNuke.Services.FileSystem
 	                {
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
                         }
 
                         if (needToWriteFile)
@@ -418,7 +409,7 @@ namespace DotNetNuke.Services.FileSystem
 
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
                         }
                     }
 
@@ -480,6 +471,27 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        private void SetContentItem(FileInfo file)
+        {
+            // Create Content Item if does not exists
+            if (file.ContentItemID == Null.NullInteger)
+            {
+                file.ContentItemID = CreateFileContentItem().ContentItemId;
+            }
+        }
+
+        private void SetInitialFileMetadata(Stream fileContent, FileInfo file, ref string fileHash,
+            FolderProvider folderProvider)
+        {
+            file.Size = (int) fileContent.Length;
+            fileHash = folderProvider.GetHashCode(file, fileContent);
+            file.SHA1Hash = fileHash;
+            fileContent.Position = 0;
+
+            file.Width = 0;
+            file.Height = 0;
+        }
+
         private void SetImageProperties(IFileInfo file, Stream fileContent)
         {
             try
@@ -518,8 +530,9 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, bool fileExists, FileInfo file, string fileHash)
+        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, ref bool fileExists, FileInfo file, string fileHash)
         {
+            var fileExistedPriorAction = fileExists;
             if (folderWorkflow == null && fileExists)
             {
                 //File Events for updating will not be fired. Only events for adding nust be fired
@@ -527,11 +540,12 @@ namespace DotNetNuke.Services.FileSystem
             }
             else 
             {                
-                AddFile(file, fileHash, createdByUserID);                
+                AddFile(file, fileHash, createdByUserID);
+                fileExists = true;
             }
             if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
-                if (!fileExists) //if file exists it could have been published. So We don't have to update the field
+                if (!fileExistedPriorAction) //if file exists it could have been published. So We don't have to update the field
                 {
                     //Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetHasBeenPublished(file.FileId, false);
