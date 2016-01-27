@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.FileSystem
                                     EndDate = Null.NullDate,
                                     EnablePublishPeriod = false,
                                     ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
-                                    Title = oldFile != null ? oldFile.Title : Null.NullString
+                                    Title = oldFile != null ? oldFile.Title : Null.NullString                 
                                 };
 
             try
@@ -366,7 +366,7 @@ namespace DotNetNuke.Services.FileSystem
                         else
                         {
                             contentFileName = UpdateWhileApproving(folder, createdByUserID, file, fileExists, fileContent);
-                            //This case will be to overwrite an existing file
+                            //This case will be to overwrite an existing file or initial file workflow
                             ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
                         }
                     }
@@ -449,16 +449,7 @@ namespace DotNetNuke.Services.FileSystem
                 DataCache.RemoveCache("GetFileById" + file.FileId);
                 var addedFile = GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
 
-                // Notify file event
-                if (fileExists && (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
-                {
-                    OnFileOverwritten(addedFile, createdByUserID);
-                }
-
-                if(!fileExists)
-                {
-                    OnFileAdded(addedFile, folder, createdByUserID);
-                }
+                NotifyFileEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
 
                 return addedFile;
             }
@@ -471,7 +462,22 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void SetContentItem(FileInfo file)
+        private void NotifyFileEvents(IFolderInfo folder, int createdByUserID, bool fileExists, Workflow folderWorkflow, IFileInfo file)
+        {
+            // Notify file event
+            if (fileExists &&
+                (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
+            {
+                OnFileOverwritten(file, createdByUserID);
+            }
+
+            if (!fileExists)
+            {
+                OnFileAdded(file, folder, createdByUserID);
+            }
+        }
+
+        private void SetContentItem(IFileInfo file)
         {
             // Create Content Item if does not exists
             if (file.ContentItemID == Null.NullInteger)
