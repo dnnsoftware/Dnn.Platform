@@ -5116,7 +5116,7 @@ namespace DotNetNuke.Services.Upgrade
             string exceptions = "";
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + Globals.FormatVersion(version));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
             }
             try
             {
@@ -5513,8 +5513,13 @@ namespace DotNetNuke.Services.Upgrade
             var versions = new List<Version>();
             foreach (string scriptFile in GetUpgradeScripts(providerPath, dataBaseVersion))
             {
-                versions.Add(new Version(GetFileNameWithoutExtension(scriptFile)));
-                UpgradeVersion(scriptFile, true);
+                var version = new Version(GetFileNameWithoutExtension(scriptFile));
+                bool scriptExecuted;
+                UpgradeVersion(scriptFile, true, out scriptExecuted);
+                if (scriptExecuted)
+                {
+                    versions.Add(version);
+                }
             }
             
             foreach (Version ver in versions)
@@ -5637,15 +5642,33 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback)
         {
+            bool scriptExecuted;
+            return UpgradeVersion(scriptFile, writeFeedback, out scriptExecuted);
+        }
+
+        ///-----------------------------------------------------------------------------
+        ///<summary>
+        ///  UpgradeVersion upgrades a single version
+        ///</summary>
+        ///<remarks>
+        ///</remarks>
+        ///<param name="scriptFile">The upgrade script file</param>
+        ///<param name="writeFeedback">Write status to Response Stream?</param>
+        /// <param name="scriptExecuted">Identity whether the script file executed.</param>
+        ///-----------------------------------------------------------------------------
+        public static string UpgradeVersion(string scriptFile, bool writeFeedback, out bool scriptExecuted)
+        {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
             var version = new Version(GetFileNameWithoutExtension(scriptFile));
             string exceptions = Null.NullString;
+            scriptExecuted = false;
 
             // verify script has not already been run
             if (!Globals.FindDatabaseVersion(version.Major, version.Minor, version.Build))
             {
                 // execute script file (and version upgrades) for version
                 exceptions = ExecuteScript(scriptFile, writeFeedback);
+                scriptExecuted = true;
 
                 // update the version
                 Globals.UpdateDataBaseVersion(version);
@@ -5672,7 +5695,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // execute script file (and version upgrades) for version
                 exceptions = ExecuteScript(scriptFile, writeFeedback);
-                    
+                scriptExecuted = true;
+
                 // update the increment
                 Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
 
