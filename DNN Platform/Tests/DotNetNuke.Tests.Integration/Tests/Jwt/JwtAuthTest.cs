@@ -367,8 +367,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             //Arrange
             const string query1 =
-                 @"SELECT TabModuleId FROM {objectQualifier}TabModules
-	                WHERE TabId = (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
+                 @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
+	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
 	                  AND ModuleTitle='Journal';";
             var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
             Assert.Greater(tabModuleId, 0);
@@ -395,8 +395,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             //Arrange
             const string query1 =
-                 @"SELECT TabModuleId FROM {objectQualifier}TabModules
-	                WHERE TabId = (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
+                 @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
+	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
 	                  AND ModuleTitle='Journal';";
             var tabModuleId = DatabaseHelper.ExecuteScalar<int>(query1);
             Assert.Greater(tabModuleId, 0);
