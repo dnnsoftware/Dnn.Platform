@@ -27,11 +27,12 @@ namespace DotNetNuke.HttpModules.Services
 {
     public class ServicesModule : IHttpModule
     {
-		public static readonly Regex ServiceApi = new Regex(@"/desktopmodules/.+/api/", RegexOptions.Compiled);
+        public static readonly Regex ServiceApi = DotNetNuke.Entities.Urls.RewriterUtils.ServicesFrameworkRegex;
 
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += InitDnn;
+            context.BeginRequest += InitDnn; 
+
             context.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
