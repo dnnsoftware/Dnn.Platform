@@ -100,6 +100,12 @@
             $('#trMem').hide();
 
         });
+        $('.wizardStepBody').find('.dnnPrimaryAction').click(function () {
+            var btn = $(this);
+            if ($('.wizardStepBody').find('input[type="text"]').val().length > 0) {
+                btn.attr('disabled', true);
+            }
+        });
     });
 </script>
 <% } %>
