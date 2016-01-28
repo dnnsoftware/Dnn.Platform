@@ -246,11 +246,12 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>decryption key</returns>
         /// -----------------------------------------------------------------------------
-        public static FcnMode GetFcnMode()
+        public static string GetFcnMode()
         {
-            HttpRuntimeSection section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
-            return section != null ? (FcnMode) section.FcnMode : FcnMode.NotSet;
+            var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
+            return section?.FcnMode.ToString() ?? FcnMode.NotSet.ToString();
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes
@@ -900,17 +901,16 @@ namespace DotNetNuke.Common.Utilities
 
         public static string AddFCNMode(FcnMode fcnMode)
         {
-            const string strError = "";
             try
             {
                 
                 //check current .net version and if attribute has been added already
-                if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode)
+                if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode.ToString())
                 {
                     //open the web.config
                     var xmlConfig = Load();
 
-                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                    var xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
                                                 xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
 
@@ -922,9 +922,8 @@ namespace DotNetNuke.Common.Utilities
             {
                 //in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
-                //strError += ex.Message;
             }
-            return strError;  
+            return "";  
         }
     }
 }
