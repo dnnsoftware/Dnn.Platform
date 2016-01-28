@@ -2049,7 +2049,8 @@
 								for(var i = 0; i < tags.length; i++){
 									$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
 								}
-							}
+                            }
+                            $(event.data.fake_input).dnnResetAutosize(settings);
                         }
 
                         return false;
