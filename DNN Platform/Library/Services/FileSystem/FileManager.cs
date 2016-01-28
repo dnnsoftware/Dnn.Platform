@@ -267,15 +267,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
-            {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
-            }
-
-            if (!IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList))
-            {
-                throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
-            }
+            CheckFileAddingRestrictions(folder, fileName, checkPermissions, ignoreWhiteList);
 
             //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!IsAllowedExtension(fileName) && ignoreWhiteList)
@@ -365,7 +357,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                         else
                         {
-                            contentFileName = UpdateWhileApproving(folder, createdByUserID, file, fileExists, fileContent);
+                            contentFileName = UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
                             //This case will be to overwrite an existing file or initial file workflow
                             ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
                         }
@@ -449,7 +441,7 @@ namespace DotNetNuke.Services.FileSystem
                 DataCache.RemoveCache("GetFileById" + file.FileId);
                 var addedFile = GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
 
-                NotifyFileEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
+                NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
 
                 return addedFile;
             }
@@ -462,7 +454,25 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void NotifyFileEvents(IFolderInfo folder, int createdByUserID, bool fileExists, Workflow folderWorkflow, IFileInfo file)
+        private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions,
+            bool ignoreWhiteList)
+        {
+            if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
+            {
+                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet",
+                    "Permissions are not met. The file has not been added."));
+            }
+
+            if (!IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList))
+            {
+                throw new InvalidFileExtensionException(
+                    string.Format(
+                        Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed",
+                            "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
+            }
+        }
+
+        private void NotifyFileAddingEvents(IFolderInfo folder, int createdByUserID, bool fileExists, Workflow folderWorkflow, IFileInfo file)
         {
             // Notify file event
             if (fileExists &&
@@ -1429,17 +1439,17 @@ namespace DotNetNuke.Services.FileSystem
             }            
             return false;
         }
-        private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, bool fileExists, Stream content)
+        private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
         {
             var contentController = new ContentController();            
             bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
             
-            //If the file does not exist, then the field would not has value
-            var hasBeenPublished = !fileExists || DataProvider.Instance().GetHasBeenPublished(file.FileId);
+            //If the file does not exist, then the field would not has value. 
+            var hasBeenPublished = (oldFile == null) || oldFile.HasBeenPublished;
             //Currently, first upload has not version file
-            if (!fileExists || (!hasBeenPublished))
+            if ((oldFile == null) || (!hasBeenPublished))
             {
                 return file.FileName;
             }

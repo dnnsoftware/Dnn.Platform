@@ -1675,12 +1675,7 @@ namespace DotNetNuke.Data
 	    {
             ExecuteNonQuery("SetHasBeenPublished", fileId, hasBeenPublished);
         }
-
-        public virtual bool GetHasBeenPublished(int fileId)
-        {
-            return ExecuteScalar<bool>("GetHasBeenPublished", fileId);
-        }
-
+        
         public virtual int CountLegacyFiles()
 		{
 			return ExecuteScalar<int>("CountLegacyFiles");
