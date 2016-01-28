@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.FileSystem
                 var fileHash = string.Empty;
                 if (needToWriteFile)
                 {
-                    CheckFileWritingRestrictions(folder, file, oldFile, createdByUserID);
+                    CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
 
                     if (!fileContent.CanSeek)
                     {
@@ -518,9 +518,9 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void CheckFileWritingRestrictions(IFolderInfo folder, IFileInfo file, IFileInfo oldFile, int createdByUserId)
+        private void CheckFileWritingRestrictions(IFolderInfo folder, long fileSize, IFileInfo oldFile, int createdByUserId)
         {
-            if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
+            if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileSize))
             {
                 throw new NoSpaceAvailableException(
                     Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
