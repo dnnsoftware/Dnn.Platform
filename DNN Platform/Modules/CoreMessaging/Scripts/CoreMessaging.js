@@ -289,6 +289,7 @@
 
         self.sendThreadRequest = function (message) {
             History.pushState({ view: 'messages', action: 'thread', conversationId: message.ConversationId }, "", "?view=messages&action=thread&t=" + self.fetch_unix_timestamp());
+            document.title = 'My Messages';
         };
 
         self.checkReplyHasRecipients = function (conversationId) {
@@ -643,6 +644,7 @@
         self.loadNotificationsTab = function () {
             self.notificationFadeTime(0);
             History.pushState({ view: 'notifications', action: 'notifications' }, "", "?view=notifications&action=notifications&t=" + self.fetch_unix_timestamp());
+            document.title = 'My Notifications';
         };
 
         self.loadNotificationsTabHandler = function () {
@@ -878,6 +880,7 @@
 
         self.myinbox = function () {
             History.pushState({ view: 'messages', action: 'inbox' }, "", "?view=messages&action=inbox&t=" + self.fetch_unix_timestamp());
+            document.title = 'My Inbox';
         };
 
         self.myinboxHandler = function () {
@@ -888,6 +891,7 @@
 
         self.mysentbox = function () {
             History.pushState({ view: 'messages', action: 'sentbox' }, "", "?view=messages&action=sentbox&t=" + self.fetch_unix_timestamp());
+            document.title = 'My Sent Box';
         };
 
         self.mysentboxHandler = function () {
@@ -898,6 +902,7 @@
 
         self.myarchivebox = function () {
             History.pushState({ view: 'messages', action: 'archivebox' }, "", "?view=messages&action=archivebox&t=" + self.fetch_unix_timestamp());
+            document.title = 'My Archive Box';
         };
 
         self.myarchiveboxHandler = function () {
