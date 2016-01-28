@@ -14,12 +14,13 @@
                 dataType: "json",
                 cache: false,
                 success: function (data) {
+                    if (typeof dnn.toast.toastTimer !== 'undefined') {
+                        // Cancel the periodic update.
+                        clearTimeout(dnn.toast.toastTimer);
+                        delete dnn.toast.toastTimer;
+                    }
+
                     if (!data || !data.Success) {
-                        if (typeof dnn.toast.toastTimer !== 'undefined') {
-                            // Cancel the periodic update.
-                            clearTimeout(dnn.toast.toastTimer);
-                            delete dnn.toast.toastTimer;
-                        }
                         return;
                     }
 
@@ -60,8 +61,7 @@
         // initial setup for toast
         var pageUnloaded = window.dnnModal && window.dnnModal.pageUnloaded;
         if (checkLogin() && !pageUnloaded) {
-            dnn.toast.toastTimer = setTimeout(dnn.toast.refreshUser, 30000);
-            dnn.toast.refreshUser();
+            dnn.toast.toastTimer = setTimeout(dnn.toast.refreshUser, 4000);
         }
     });
 
