@@ -424,7 +424,7 @@
     <value>Clear Cache</value>
   </data>
   <data name="Tool.RecycleApp.Text" xml:space="preserve">
-    <value>Recycle Application Domain</value>
+    <value>Restart Application</value>
   </data>
   <data name="Tool.ClearCache.ToolTip" xml:space="preserve">
     <value>Select to clear the site cache of all old file.</value>
