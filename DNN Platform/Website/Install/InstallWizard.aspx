@@ -8,9 +8,9 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />    
-    <link rel="stylesheet" type="text/css" href="Install.css?refresh" />    
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />    
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+    <link rel="stylesheet" type="text/css" href="Install.css?refresh" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />
      <!--[if IE]>
 	<link rel="stylesheet" type="text/css" href="../Portals/_default/ie.css?refresh" />
     <![endif]-->
@@ -24,27 +24,27 @@
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.extensions.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
-</head>  
+</head>
 <body>
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
     <form id="form1" runat="server">
-        <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>       
-        <asp:placeholder id="BodySCRIPTS" runat="server">    
-              <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js"></script>                          
-        </asp:placeholder>        
-                          
+        <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+        <asp:placeholder id="BodySCRIPTS" runat="server">
+              <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js"></script>
+        </asp:placeholder>
+
     <br/>
     <img src="../images/Branding/DNN_logo.png" alt="DotNetNuke" />
-            
-    <div id="languageFlags" style="float: right;">       
+
+    <div id="languageFlags" style="float: right;">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
-        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton> 
-        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>             
-        <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="Italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton> 
+        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
+        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>
+        <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="Italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_nl_NL" class="flag" runat="server" value="nl-NL" title="Nederlands (Nederland)" OnClientClick="installWizard.changePageLocale('lang_nl_NL','nl-NL');" CausesValidation="false"><img src="../images/flags/nl-NL.gif" alt="nl-NL" class="flagimage"/></asp:LinkButton>
     </div>
-         
+
     <div class="install">
         <h2 class="dnnForm dnnInstall dnnClear" >
             <asp:Label id="lblDotNetNukeInstalltion" runat="server" ResourceKey="InstallTitle" />
@@ -61,7 +61,7 @@
                         <span class="dnnWizardStepNumber">1</span>
                         <span class="dnnWizardStepTitle"><%= LocalizeString("AccountInfo")%></span>
                         <span class="dnnWizardStepArrow"></span>
-                    </div>                    
+                    </div>
                     </a>
                 </li>
                 <li id="installInfo"><a href="#installInstallation">
@@ -69,14 +69,14 @@
                         <span class="dnnWizardStepNumber">2</span>
                         <span class="dnnWizardStepTitle"><%= LocalizeString("Installation")%></span>
                         <span class="dnnWizardStepArrow"></span>
-                    </div>      
-                    </a>                    
+                    </div>
+                    </a>
                  </li>
                 <li id="webInfo"><a href="#installViewWebsite">
                      <div class="dnnWizardStep">
                         <span><img id="finishImage" src="../images/finishflag.png" alt="" /></span>
                         <span class="dnnWizardStepTitle"><%= LocalizeString("ViewWebsite")%></span>
-                    </div>      
+                    </div>
                 </a>
                 </li>
             </ul>
@@ -84,7 +84,7 @@
                 <asp:Label ID="lblAccountInfoIntro" runat="server" ResourceKey="AccountInfoIntro" />
 				<asp:Label ID="lblIntroDetail" runat="Server" ResourceKey="IntroDetail" />
                 <p style="display: block; margin: 10px 0 10px 0;">
-                    <asp:Label ID="lblAccountInfoError" runat="server" CssClass="dnnFormMessage dnnFormError" />                 
+                    <asp:Label ID="lblAccountInfoError" runat="server" CssClass="dnnFormMessage dnnFormError" />
                 </p>
                 <div id="adminInfo" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label ID="lblAdminInfo" runat="server" CssClass="tabSubTitle" ResourceKey="AdminInfo" />
@@ -106,7 +106,7 @@
                             <dnn:Label ID="lblConfirmPassword" runat="server" ControlName="txtConfirmPassword" ResourceKey="Confirm" CssClass="dnnFormRequired" />
                             <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" />
                             <asp:RequiredFieldValidator ID="valConfirmPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Confirm.Required" Display="Dynamic" ControlToValidate="txtConfirmPassword" />
-                        </div>                      
+                        </div>
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblEmail" runat="server" ControlName="txtEmail" ResourceKey="Email" CssClass="dnnFormRequired"/>
                             <asp:TextBox ID="txtEmail" runat="server"/>
@@ -115,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="websiteInfo" runat="Server" visible="True" class="dnnForm">                    
+                <div id="websiteInfo" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label ID="lblWebsiteInfo" runat="server" CssClass="tabSubTitle" ResourceKey="WebsiteInfo"/>
                     <asp:Label ID="lblWebsiteInfoError" runat="server" CssClass="dnnFormMessage dnnFormError" />
                     <div class="dnnFormItem">
@@ -133,14 +133,14 @@
                             <dnn:DnnComboBox ID="languageList" runat="server" DataTextField="Text" DataValueField="Code">
                             </dnn:DnnComboBox>
                             <br/>
-                            <asp:Label ID="lblLegacyLangaugePack" runat="server" CssClass="NormalBold" />      
+                            <asp:Label ID="lblLegacyLangaugePack" runat="server" CssClass="NormalBold" />
                         </div>
                     </div>
                 </div>
                 <div id="databaseInfo" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label id="lblDatabaseInfo" runat="server" CssClass="tabSubTitle" ResourceKey="DatabaseInfo" />
                     <div>
-                        <asp:Label ID="lblDatabaseInfoMsg" runat="server" CssClass="databaseCheck promptMessage NormalBold" />      
+                        <asp:Label ID="lblDatabaseInfoMsg" runat="server" CssClass="databaseCheck promptMessage NormalBold" />
                     </div>
                     <div class="dnnFormItem">
                         <div class="dnnFormItem">
@@ -148,7 +148,7 @@
                             <asp:RadioButtonList ID="databaseSetupType" runat="server" RepeatDirection="Horizontal" >
                                 <asp:ListItem Value="standard" ResourceKey="DatabaseStandard" Selected="True" />
                                 <asp:ListItem Value="advanced" ResourceKey="DatabaseAdvanced" />
-                            </asp:RadioButtonList>                            
+                            </asp:RadioButtonList>
                         </div>
                         <div id="StandardDatabaseMsg" class="dnnFormItem">
                             <dnn:Label ID="lblStandardDatabase" runat="server"/>
@@ -166,7 +166,7 @@
                                 <dnn:Label ID="lblDatabaseServerName" runat="server" ControlName="txtDatabaseServerName" ResourceKey="DatabaseServer" CssClass="dnnFormRequired"/>
                                 <asp:TextBox ID="txtDatabaseServerName" runat="server"/>
                                 <asp:RequiredFieldValidator ID="valDatabaseServerName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="DatabaseServer.Required" Display="Dynamic" ControlToValidate="txtDatabaseServerName" />
-                            </div>                        
+                            </div>
                             <div class="dnnFormItem" id="databaseFilename">
                                 <dnn:Label ID="lblDatabaseFilename" runat="server" ControlName="txtDatabaseFilename" ResourceKey="DatabaseFilename" CssClass="dnnFormRequired"/>
                                 <asp:TextBox ID="txtDatabaseFilename" runat="server"/>
@@ -182,8 +182,8 @@
                                 <dnn:Label ID="lblDatabaseObjectQualifier" runat="server" ControlName="txtDatabaseObjectQualifier" ResourceKey="DatabaseObjectQualifier"/>
                                 <asp:TextBox ID="txtDatabaseObjectQualifier" runat="Server" MaxLength="20" />
                                 <asp:RegularExpressionValidator ID="valQualifier" runat="server"
-                                  resourcekey="InvalidQualifier.Text" 
-                                  CssClass="dnnFormMessage dnnFormError"                                   
+                                  resourcekey="InvalidQualifier.Text"
+                                  CssClass="dnnFormMessage dnnFormError"
                                   ControlToValidate="txtDatabaseObjectQualifier"
                                   ValidationExpression="^[a-zA-Z][a-zA-Z0-9_]{0,19}$"
                                   Display="Dynamic"
@@ -197,7 +197,7 @@
                                 </asp:RadioButtonList>
                             </div>
                             <div id="securityUserDefined" class="dnnFormItem" style="display:none; padding-top: 5px;">
-                                <div class="dnnFormItem"> 
+                                <div class="dnnFormItem">
                                     <dnn:Label ID="lblDatabaseUsername" runat="server" ControlName="txtDatabaseUsername" ResourceKey="DatabaseUsername" CssClass="dnnFormRequired" />
                                     <asp:TextBox ID="txtDatabaseUsername" runat="server"/>
                                     <asp:RequiredFieldValidator ID="valDatabaseUsername" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="DatabaseUsername.Required" Display="Dynamic" ControlToValidate="txtDatabaseUsername" />
@@ -211,18 +211,18 @@
                                 <dnn:Label ID="lblDatabaseRunAs" runat="server" ControlName="txtDatabaseRunAs" ResourceKey="DatabaseRunAs"  />
                                 <asp:CheckBox ID="databaseRunAs" runat="server" ResourceKey="DatabaseOwner" />
                             </div>
-                        </div>                        
+                        </div>
                         <div id="databaseError" class="dnnFormItem">
                             <dnn:Label ID="lblDatabaseConnectionError" runat="server" ResourceKey="DatabaseConnectionError"/>
                             <asp:Label ID="lblDatabaseError" runat="server" CssClass="NormalRed" />
                         </div>
-                        
+
                     </div>
-                </div> 
+                </div>
                 <hr/>
-                <ul class="dnnActions dnnClear">                    
+                <ul class="dnnActions dnnClear">
                     <li><asp:LinkButton id="continueLink" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdContinue" /></li>
-                </ul>                           
+                </ul>
             </div>
             <div class="installInstallation dnnClear" id="installInstallation">
                 <asp:Label ID="lblInstallationIntroInfo" runat="server" CssClass="installIntro" ResourceKey="InstallationIntroInfo" />
@@ -232,30 +232,30 @@
                             <span id="timer"> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="percentage" style="height: auto; max-height: 200px; overflow: auto"> </span>
                             <div class="dnnProgressbar">
                                 <div id="progressbar"></div>
-                            </div>    
+                            </div>
                             <div id="installation-buttons">
                                 <a id="retry" href="javascript:void(0)" class="dnnPrimaryAction"><%= LocalizeString("Retry") %></a>
                                 <a id="seeLogs" href="javascript:void(0)" class="dnnSecondaryAction"><%= LocalizeString("SeeLogs") %></a>
-								<asp:LinkButton ID="visitSite" runat="server" resourcekey="VisitWebsite" CssClass="dnnPrimaryAction visitSiteLink" />                               
-                            </div> 
-							<hr />   
-                            <div id="installation-log-container" class="dnnScroll">                                
+								<asp:LinkButton ID="visitSite" runat="server" resourcekey="VisitWebsite" CssClass="dnnPrimaryAction visitSiteLink" />
+                            </div>
+							<hr />
+                            <div id="installation-log-container" class="dnnScroll">
                                 <div id="installation-log" ></div>
                             </div>
-                        </div>               
-                        <div id="installation-steps">   
+                        </div>
+                        <div id="installation-steps">
                             <p class="step-notstarted" id="FileAndFolderPermissionCheck"><span class="states-icons"></span><%= LocalizeString("FileAndFolderPermissionCheck")%></p>
-                            <p class="step-notstarted" id="DatabaseInstallation"><span class="states-icons"></span><%= LocalizeString("DatabaseInstallation") %></p>                                    
+                            <p class="step-notstarted" id="DatabaseInstallation"><span class="states-icons"></span><%= LocalizeString("DatabaseInstallation") %></p>
                             <p class="step-notstarted" id="ExtensionsInstallation"><span class="states-icons"></span><%= LocalizeString("ExtensionsInstallation") %></p>
-                            <p class="step-notstarted" id="WebsiteCreation"><span class="states-icons"></span><%= LocalizeString("WebsiteCreation") %></p>                                
+                            <p class="step-notstarted" id="WebsiteCreation"><span class="states-icons"></span><%= LocalizeString("WebsiteCreation") %></p>
                             <p class="step-notstarted" id="SuperUserCreation"><span class="states-icons"></span><%= LocalizeString("SuperUserCreation") %></p>
-                            <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>                                                                                
-                        </div>                        
+                            <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>
+                        </div>
                         <div id="banners">
                             <a id="bannerLink" runat="server" href="" target="">
                                 <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="" onerror="installWizard.bannerError(this);" />
                             </a>
-                        </div>                       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -266,14 +266,14 @@
             </div>
        </div>
     </div>
- 
+
     <br/><br/><br/>
 
         <input id="ScrollTop" runat="server" name="ScrollTop" type="hidden" />
         <input type="hidden" id="__dnnVariable" runat="server" />
         <input id="PageLocale" runat="server" name="PageLanguage" type="hidden" value="" />
         <asp:Label ID="txtErrorMessage" runat="server" />
-    </form> 
+    </form>
 
     <!-- InstallWizard() -->
     <script type="text/javascript">
@@ -316,7 +316,7 @@
                         }
                     });
                 }
-            };            
+            };
             this.validateInput = function () {
                 $.each($(".dnnRequired"), function () {
                     var id = $(this).attr("id");
@@ -357,7 +357,7 @@
                         $('#StandardDatabaseMsg').hide();
                         installWizard.ValidDatabaseConnection = true;
                     } else {
-                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");  
+                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                         $('#StandardDatabaseMsg').show();
                         $('#advancedDatabase').slideDown();
                         $('#advancedDatabase').show();
@@ -531,17 +531,17 @@
             };
         }
     </script>
-    
+
     <!-- Page Level -->
     <script type="text/javascript">
-            
+
         function LegacyLangaugePack(version) {
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '<%= Localization.GetSafeJSString(LocalizeString("LegacyLangaugePack"))%>' + version;
         }
         function ClearLegacyLangaugePack() {
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
         }
-        
+
         // Banner Rotator
         jQuery(document).ready(function ($) {
             if (installWizard.online) {
@@ -605,8 +605,8 @@
             $(document).ready(function () {
                 //Reset Validation
                 $('.dnnRequired').hide();
-                
-                if(window.location.href.indexOf("&executeinstall")>-1) {                    
+
+                if(window.location.href.indexOf("&executeinstall")>-1) {
                     installWizard.showInstallationTab();
                     installWizard.install();
                 }
@@ -646,7 +646,7 @@
             //Next Step
             $('#<%= continueLink.ClientID %>').click(function () {
             	if (!$("#continueLink").hasClass('dnnDisabledAction')) {
-                    $("#continueLink").addClass('dnnDisabledAction');                    
+                    $("#continueLink").addClass('dnnDisabledAction');
                     if (installWizard.confirmPasswords()) {
                         installWizard.installInfo = {
                             username: $('#<%= txtUsername.ClientID %>')[0].value,
@@ -716,39 +716,35 @@
                 }
                 return false;
             });
-            
+
         } (jQuery, window.Sys));
     </script>
-       
+
     <!-- Progressbar -->
     <script type="text/javascript">
         $.getInstallProgress = function () {
             if (installWizard.IsQueryingInstallProgress) return;
             installWizard.IsQueryingInstallProgress = true;
-            var xmlhttp;
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    if (xmlhttp.status == 200) {
-                        var statuslines = xmlhttp.responseText.split('\n');
+            $.get(
+                "<%= StatusFilename %>?" + Math.random(),
+                function (responseText) {
+                    try {
+                        var statuslines = responseText.split('\n');
                         $.updateProgressbar(statuslines[statuslines.length - 2]);
-                    }
-                    installWizard.IsQueryingInstallProgress = false;
-                } else {
+                    } catch (err) {
+                    } // ignore the error
+                }).fail(function () {
                     installWizard.Status = "";
-                }
-            };
-            xmlhttp.open("GET", "<%= StatusFilename %>" + "?" + Math.random(), true);
-            xmlhttp.send();
+                }).done(function () {
+                    installWizard.IsQueryingInstallProgress = false;
+                });
         };
 
         $.updateProgressbar = function (status) {
             var result = jQuery.parseJSON(status);
             if (result !== null) {
 	            if (result.progress < $("#progressbar").progressbar('value')) return;
-                //Updating progress              
+                //Updating progress
 	            $("#progressbar").progressbar('value', result.progress);
 	            installWizard.dnnProgressbar.update(result.progress);
                 $("#percentage").text(result.progress + '% ' + result.details);
@@ -758,7 +754,7 @@
                     for (var i = 0; i < 6; i++) {
                         var done = result["check" + i] === "Done";
                         if (!done) { break; }
-                    } 
+                    }
                 }
                 $.applyCssStyle(result.check0, $('#FileAndFolderPermissionCheck'));
                 $.applyCssStyle(result.check1, $('#DatabaseInstallation'));
@@ -773,7 +769,7 @@
                 }
                 //If not
                 else {
-                    if (installationError) { // if error in installation                       
+                    if (installationError) { // if error in installation
                         $.stopProgressbarOnError();
                         //Allow user to visit site even if only license step error occurs.
                         if (result["check4"] === "Done" && result.check5.indexOf("Error" > -1)) {
@@ -784,7 +780,7 @@
                 }
             }
         };
-        
+
         $.applyCssStyle = function (state, ele) {
             if (!state) state = '';
             switch (state.toLowerCase()) {
@@ -807,7 +803,7 @@
         $.startProgressbar = function () {
             //Disabling button
             $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-            //Making sure that progress indicate 0            
+            //Making sure that progress indicate 0
             $("#progressbar").progressbar().progressbar('value', 0);
             $("#percentage").text('0%');
             installWizard.startProgressBar();
@@ -829,7 +825,7 @@
         };
 
         $(document).ready(function () {
-            //Progressbar and button initialization                   
+            //Progressbar and button initialization
             $("#progressbar").progressbar({ value: 0 });
             $('#visitSite, #seeLogs, #retry').addClass('dnnDisabledAction');
 
@@ -855,7 +851,7 @@
                             $('#installation-log').html(result);
                         else
                             $('#installation-log').append(result);
-                        
+
                         installationLogStartLine += 500;
                         setTimeout(getInstallationLog, 1000);
                     } else {
@@ -875,7 +871,7 @@
                     getInstallationLog();
                 }
             });
-            
+
             $('#visitSite').click(function (e) {
                 if ($(this).hasClass('dnnDisabledAction')) {
                     e.preventDefault();
@@ -887,7 +883,7 @@
                 }
             });
         });
-    </script>    
+    </script>
 
 </body>
 </html>

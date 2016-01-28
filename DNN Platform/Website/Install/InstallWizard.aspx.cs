@@ -94,10 +94,11 @@ namespace DotNetNuke.Services.Install
         private static int _installerProgress;
         //private static bool _isValidConnection = false;
         //private static bool _isValidInput = false;
+        private static object _lock = new object();
 
         #endregion
 
-		#region Private Properties
+        #region Private Properties
         private static string StatusFile
         {
             get
@@ -424,11 +425,12 @@ namespace DotNetNuke.Services.Install
 
             try
             {
-                if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
-                using (var sw = new StreamWriter(StatusFile, true))
+                lock (_lock)
                 {
-                    sw.WriteLine(obj.ToJson());
-                    sw.Close();
+                    using (var sw = new StreamWriter(StatusFile, false))
+                    {
+                        sw.WriteLine(obj.ToJson());
+                    }
                 }
             }
             catch (Exception)
