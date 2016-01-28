@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.PropertyNotNull("fileName", fileName);
 
-            return (FileManager.Instance.GetFile(folder, fileName) != null);
+            return (FileManager.Instance.GetFile(folder, fileName, true) != null);
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            var file = FileManager.Instance.GetFile(folder, fileName);
+            var file = FileManager.Instance.GetFile(folder, fileName, true);
 
             return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
         }
@@ -262,7 +262,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            var file = FileManager.Instance.GetFile(folder, fileName);
+            var file = FileManager.Instance.GetFile(folder, fileName, true);
 
             if (file == null) return;
 
