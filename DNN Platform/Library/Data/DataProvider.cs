@@ -1673,7 +1673,7 @@ namespace DotNetNuke.Data
 
 	    public virtual void SetHasBeenPublished(int fileId, bool hasBeenPublished)
 	    {
-            ExecuteNonQuery("SetHasBeenPublished", fileId, hasBeenPublished);
+            ExecuteNonQuery("SetFileHasBeenPublished", fileId, hasBeenPublished);
         }
         
         public virtual int CountLegacyFiles()
