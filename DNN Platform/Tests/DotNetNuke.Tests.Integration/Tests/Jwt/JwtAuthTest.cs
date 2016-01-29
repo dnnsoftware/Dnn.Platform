@@ -445,6 +445,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
             Assert.IsNotNull(token);
             ShowInfo(@"AuthToken => " + JsonConvert.SerializeObject(token));
+            _httpClient.DefaultRequestHeaders.Clear();
             return token;
         }
 
