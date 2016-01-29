@@ -84,6 +84,11 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets or sets the published version number of the file
         /// </summary>
         int PublishedVersion { get; set; }
+        
+        /// <summary>
+        /// Gets a flag which says whether the file has ever been published
+        /// </summary>
+        bool HasBeenPublished { get; }
 
         #region Supoort for BaseEntityInfo on inherited classes
 
