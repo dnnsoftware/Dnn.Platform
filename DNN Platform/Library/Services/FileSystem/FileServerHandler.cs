@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !HasAVisibleVersion(file))
+                                if (!file.IsEnabled || !HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private bool HasAVisibleVersion(IFileInfo file)
+        private bool HasAPublishedVersion(IFileInfo file)
         {
             if (file.HasBeenPublished)
             {

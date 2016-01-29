@@ -308,14 +308,14 @@ namespace DotNetNuke.Services.FileSystem
                                     EndDate = Null.NullDate,
                                     EnablePublishPeriod = false,
                                     ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
-                                    Title = oldFile != null ? oldFile.Title : Null.NullString                 
+                                    Title = oldFile != null ? oldFile.Title : Null.NullString,
+                                    SHA1Hash     = oldFile != null ? oldFile.SHA1Hash : String.Empty
                                 };
 
             try
             {
                 Workflow folderWorkflow = null;
                 var contentFileName = fileName;
-                var fileHash = string.Empty;
                 if (needToWriteFile)
                 {
                     CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
@@ -327,12 +327,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     // Retrieve Metadata
-                    SetInitialFileMetadata(fileContent, file, ref fileHash, folderProvider);
-
-                    if (IsImageFile(file))
-                    {
-                        SetImageProperties(file, fileContent);
-                    }
+                    SetInitialFileMetadata(fileContent, file, folderProvider);
                     
                     // Workflow
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
@@ -345,7 +340,7 @@ namespace DotNetNuke.Services.FileSystem
                         {
                             if (file.FileId == Null.NullInteger)
                             {
-                                AddFile(file, fileHash, createdByUserID);
+                                AddFile(file, createdByUserID);
                                 fileExists = true;
                             }  
                             else
@@ -359,7 +354,7 @@ namespace DotNetNuke.Services.FileSystem
                         {
                             contentFileName = UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
                             //This case will be to overwrite an existing file or initial file workflow
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
                         }
                     }
                         // Versioning
@@ -384,7 +379,7 @@ namespace DotNetNuke.Services.FileSystem
 	                {
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
                         }
 
                         if (needToWriteFile)
@@ -401,7 +396,7 @@ namespace DotNetNuke.Services.FileSystem
 
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file, fileHash);
+                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
                         }
                     }
 
@@ -412,7 +407,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     var providerHash = folderProvider.GetHashCode(file);
-                    if (fileHash != providerHash)
+                    if (file.SHA1Hash != providerHash)
                     {
                         DataProvider.Instance()
                             .UpdateFileHashCode(file.FileId, providerHash);
@@ -496,16 +491,20 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void SetInitialFileMetadata(Stream fileContent, FileInfo file, ref string fileHash,
-            FolderProvider folderProvider)
+        private void SetInitialFileMetadata(Stream fileContent, FileInfo file, FolderProvider folderProvider)
         {
             file.Size = (int) fileContent.Length;
-            fileHash = folderProvider.GetHashCode(file, fileContent);
+            var fileHash = folderProvider.GetHashCode(file, fileContent);
             file.SHA1Hash = fileHash;
             fileContent.Position = 0;
 
             file.Width = 0;
             file.Height = 0;
+
+            if (IsImageFile(file))
+            {
+                SetImageProperties(file, fileContent);
+            }
         }
 
         private void SetImageProperties(IFileInfo file, Stream fileContent)
@@ -546,7 +545,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, ref bool fileExists, FileInfo file, string fileHash)
+        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, ref bool fileExists, FileInfo file)
         {
             var fileExistedPriorAction = fileExists;
             if (folderWorkflow == null && fileExists)
@@ -556,7 +555,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             else 
             {                
-                AddFile(file, fileHash, createdByUserID);
+                AddFile(file, createdByUserID);
                 fileExists = true;
             }
             if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
@@ -569,7 +568,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void AddFile(IFileInfo file, string fileHash, int createdByUserID)
+        private void AddFile(IFileInfo file, int createdByUserID)
         {
             file.FileId = DataProvider.Instance().AddFile(file.PortalId,
                                                     file.UniqueId,
@@ -583,7 +582,7 @@ namespace DotNetNuke.Services.FileSystem
                                                     file.Folder,
                                                     file.FolderId,
                                                     createdByUserID,
-                                                    fileHash,
+                                                    file.SHA1Hash,
                                                     file.LastModificationTime,
                                                     file.Title,
                                                     file.StartDate,

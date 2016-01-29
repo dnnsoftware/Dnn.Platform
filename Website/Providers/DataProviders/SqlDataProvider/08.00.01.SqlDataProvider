@@ -21,9 +21,7 @@ IF NOT EXISTS
 	WHERE c.name = 'HasBeenPublished')
 BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Files]
-		ADD HasBeenPublished bit NULL	
-	ALTER TABLE {databaseOwner}[{objectQualifier}Files] ADD CONSTRAINT
-		DF_{objectQualifier}Files_HasBeenPublished DEFAULT 1 FOR HasBeenPublished	
+		ADD HasBeenPublished bit DEFAULT 1 NOT NULL		
 END
 
 GO

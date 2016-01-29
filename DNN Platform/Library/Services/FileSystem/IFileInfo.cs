@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.FileSystem
         int PublishedVersion { get; set; }
         
         /// <summary>
-        /// Gets or sets a flag which says whether the file has ever been published
+        /// Gets a flag which says whether the file has ever been published
         /// </summary>
         bool HasBeenPublished { get; }
 
