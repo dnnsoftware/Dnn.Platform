@@ -1671,7 +1671,7 @@ namespace DotNetNuke.Data
 											GetNull(contentItemId));
 		}
 
-	    public virtual void SetHasBeenPublished(int fileId, bool hasBeenPublished)
+	    public virtual void SetFileHasBeenPublished(int fileId, bool hasBeenPublished)
 	    {
             ExecuteNonQuery("SetFileHasBeenPublished", fileId, hasBeenPublished);
         }

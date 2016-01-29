@@ -443,7 +443,7 @@ namespace DotNetNuke.Services.FileSystem
             EndDate  = Null.SetNullDateTime(dr["EndDate"]);
             ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
-            HasBeenPublished = Convert.IsDBNull(dr["HasBeenPublished"]) || Convert.ToBoolean(dr["HasBeenPublished"]);
+            HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
             FillBaseProperties(dr);
         }
 

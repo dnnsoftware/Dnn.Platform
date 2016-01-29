@@ -563,7 +563,7 @@ namespace DotNetNuke.Services.FileSystem
                 if (!fileExistedPriorAction) //if file exists it could have been published. So We don't have to update the field
                 {
                     //Maybe here we can set HasBeenPublished as 0
-                    DataProvider.Instance().SetHasBeenPublished(file.FileId, false);
+                    DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
                 }                
             }
         }
@@ -1429,8 +1429,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         private bool StartWorkflow(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
-        {
-            //TODO Changes for Version 0            
+        {      
             if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
             {
                 WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
@@ -1446,9 +1445,8 @@ namespace DotNetNuke.Services.FileSystem
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
             
             //If the file does not exist, then the field would not has value. 
-            var hasBeenPublished = (oldFile == null) || oldFile.HasBeenPublished;
             //Currently, first upload has not version file
-            if ((oldFile == null) || (!hasBeenPublished))
+            if (oldFile == null || !oldFile.HasBeenPublished)
             {
                 return file.FileName;
             }
