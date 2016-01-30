@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (_roleID == -1)
                     {
-                        var rolename = role.RoleName.ToUpper();
+                        var rolename = role.RoleName.ToUpperInvariant();
                         if (RoleController.Instance.GetRole(PortalId,
                             r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
                         {
