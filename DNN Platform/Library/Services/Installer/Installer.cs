@@ -206,7 +206,7 @@ namespace DotNetNuke.Services.Installer
 				//Check if package is valid
                 if (installer.Package.IsValid)
                 {
-                    if (installer.Package.InstallerInfo.Installed || installer.Package.InstallerInfo.RepairInstall)
+                    if (installer.Package.InstallerInfo.PackageID > Null.NullInteger || installer.Package.InstallerInfo.RepairInstall)
                     {
                         clearClientCache = true;
                     }
