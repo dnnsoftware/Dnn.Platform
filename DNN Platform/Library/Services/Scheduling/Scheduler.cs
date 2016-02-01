@@ -376,8 +376,10 @@ namespace DotNetNuke.Services.Scheduling
 			                }
 
 			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
-				            delegateFunc.BeginInvoke(new ScheduleHistoryItem(scheduleItem), null, null);
-				            Thread.Sleep(1000);
+                            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
+                            scheduleHistoryItem.StartDate = DateTime.Now;
+                            delegateFunc.BeginInvoke(scheduleHistoryItem, null, null);
+                            Thread.Sleep(1000);
 
 				            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
 
