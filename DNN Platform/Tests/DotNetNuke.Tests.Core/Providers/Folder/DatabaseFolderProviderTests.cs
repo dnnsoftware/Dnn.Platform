@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
             _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
 
-            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(new FileInfo());
+            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, true)).Returns(new FileInfo());
 
             var result = _dfp.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
 
@@ -318,7 +318,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _dfp.GetFileStream(_folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            _fileManager.Verify(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName), Times.Once());
+            _fileManager.Verify(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, true), Times.Once());
         }
 
         [Test]
@@ -336,7 +336,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockData.Setup(md => md.GetFileContent(Constants.FOLDER_ValidFileId)).Returns(_filesTable.CreateDataReader());
 
-            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName))
+            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, true))
                 .Returns(new FileInfo { FileId = Constants.FOLDER_ValidFileId, PortalId = Constants.CONTENT_ValidPortalId });
 
             var result = _dfp.GetFileStream(_folderInfo.Object, Constants.FOLDER_ValidFileName);
@@ -532,7 +532,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _fileInfo.Setup(fi => fi.FileId).Returns(Constants.FOLDER_ValidFileId);
 
-            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(_fileInfo.Object);
+            _fileManager.Setup(fm => fm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, true)).Returns(_fileInfo.Object);
 
             _dfp.UpdateFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, new MemoryStream(new byte[16 * 1024]));
 
