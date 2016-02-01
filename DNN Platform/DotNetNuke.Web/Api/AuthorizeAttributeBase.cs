@@ -70,7 +70,8 @@ namespace DotNetNuke.Web.Api
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                   || actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
+                        && !actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().Any());
         }
     }
 }
