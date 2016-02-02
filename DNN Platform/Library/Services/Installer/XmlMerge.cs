@@ -186,6 +186,18 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        private void PrependNode(XmlNode rootNode, XmlNode actionNode)
+        {
+            foreach (XmlNode child in actionNode.ChildNodes)
+            {
+                if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
+                {
+                    rootNode.PrependChild(TargetConfig.ImportNode(child, true));
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "PrependNode:" + child.InnerXml.ToString());
+                }
+            }
+        }
+
         private void InsertNode(XmlNode childRootNode, XmlNode actionNode, NodeInsertType mode)
         {
             XmlNode rootNode = childRootNode.ParentNode;
@@ -226,6 +238,9 @@ namespace DotNetNuke.Services.Installer
             {
                 case "add":
                     AddNode(rootNode, node);
+                    break;
+                case "prepend":
+                    PrependNode(rootNode, node);
                     break;
                 case "insertbefore":
                     InsertNode(rootNode, node, NodeInsertType.Before);
