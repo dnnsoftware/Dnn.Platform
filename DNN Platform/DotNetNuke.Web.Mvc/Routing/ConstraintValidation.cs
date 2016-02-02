@@ -32,11 +32,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             foreach (var kvp in route.Constraints.Where(kvp => !(kvp.Value is string)).Where(kvp => !(kvp.Value is IRouteConstraint)))
             {
-                //throw Error.InvalidOperation(
-                //    "Route_InvalidConstraint",
-                //    kvp.Key,
-                //    route.Url,
-                //    typeof(IRouteConstraint).FullName);
+                throw new InvalidOperationException("Invalid Constraint", new Exception(typeof(IRouteConstraint).FullName));
             }
         }
     }

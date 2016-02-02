@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             AddVersionHeader(RequestContext.HttpContext);
             RemoveOptionalRoutingParameters();
 
-            var controllerName = RequestContext.RouteData.GetRequiredString("controller"); //(string)context.RouteData.Values["controller"];
+            var controllerName = RequestContext.RouteData.GetRequiredString("controller");
 
             //Construct the controller using the ControllerFactory
             var controller = ControllerFactory.CreateController(RequestContext, controllerName);
