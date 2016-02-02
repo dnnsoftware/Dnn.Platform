@@ -98,40 +98,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public void RegisterRoutes()
         {
-            //register routes is ONLY called from within DNN application initialization
-            //which is well protected from races
-            //allowing us to not worry about multi-threading threats here
-            //if (!HttpConfiguration.Configuration.MessageHandlers.Any(x => x is BasicAuthMessageHandler))
-            {
-                ////Everything in this block is run one time at startup
-
-                ////dnnContext message handler
-                ////this must run before any auth message handlers
-                //HttpConfiguration.Configuration.MessageHandlers.Add(new DnnContextMessageHandler());
-
-                //RegisterAuthenticationHandlers();
-                ////this must run after aall other auth message handlers
-                //var handler = new WebFormsAuthMessageHandler();
-                //HttpConfiguration.Configuration.MessageHandlers.Add(handler);
-                //DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
-
-                ////media type formatter for text/html, text/plain
-                //HttpConfiguration.Configuration.Formatters.Add(new StringPassThroughMediaTypeFormatter());
-
-                ////controller selector that respects namespaces
-                //HttpConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DnnHttpControllerSelector(HttpConfiguration.Configuration));
-
-                ////tracwriter for dotnetnuke.instrumentation
-                //HttpConfiguration.Configuration.Services.Replace(typeof(ITraceWriter), new TraceWriter(IsTracingEnabled()));
-
-                ////replace the default action filter provider with our own
-                //HttpConfiguration.Configuration.Services.Add(typeof(IFilterProvider), new DnnActionFilterProvider());
-                //var defaultprovider = HttpConfiguration.Configuration.Services.GetFilterProviders().Where(x => x is ActionDescriptorFilterProvider);
-                //HttpConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defaultprovider);
-
-                //add standard tab and module id provider
-                //HttpConfiguration .AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
-            }
+            //add standard tab and module id provider
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (_routes.GetWriteLock())
             {
@@ -140,58 +107,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             }
             Logger.TraceFormat("Registered a total of {0} routes", _routes.Count);
         }
-
-        //private static void RegisterAuthenticationHandlers()
-        //{
-        //    //authentication message handlers from web.config file
-        //    var authSvcCfg = AuthServicesConfiguration.GetConfig();
-        //    if (authSvcCfg?.MessageHandlers == null || authSvcCfg.MessageHandlers.Count <= 0)
-        //        return;
-
-        //    var registeredSchemes = new List<string>();
-        //    foreach (var handlerEntry in authSvcCfg.MessageHandlers.Cast<MessageHandlerEntry>())
-        //    {
-        //        if (!handlerEntry.Enabled)
-        //        {
-        //            Logger.Trace("The following handler is disabled " + handlerEntry.ClassName);
-        //            continue;
-        //        }
-
-        //        try
-        //        {
-        //            var type = Reflection.CreateType(handlerEntry.ClassName, false);
-        //            var handler = Activator.CreateInstance(type, handlerEntry.DefaultInclude, handlerEntry.ForceSsl) as AuthMessageHandlerBase;
-        //            if (handler == null)
-        //            {
-        //                throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");
-        //            }
-
-        //            var schemeName = handler.AuthScheme.ToUpperInvariant();
-        //            if (registeredSchemes.Contains(schemeName))
-        //            {
-        //                Logger.Trace($"The following handler scheme '{handlerEntry.ClassName}' is already added and will be skipped");
-        //                continue;
-        //            }
-
-        //            HttpConfiguration.Configuration.MessageHandlers.Add(handler);
-        //            registeredSchemes.Add(schemeName);
-        //            Logger.Trace($"Instantiated/Activated instance of {handler.AuthScheme}, class: {handler.GetType().FullName}");
-
-        //            if (handlerEntry.DefaultInclude)
-        //            {
-        //                DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
-        //            }
-        //            if (handler.BypassAntiForgeryToken)
-        //            {
-        //                ValidateAntiForgeryTokenAttribute.AppendToBypassAuthTypes(handler.AuthScheme);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Logger.Error("Cannot instantiate/activate instance of " + handlerEntry.ClassName + Environment.NewLine + ex);
-        //        }
-        //    }
-        //}
 
         private static bool IsTracingEnabled()
         {
