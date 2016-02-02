@@ -231,24 +231,6 @@ namespace DotNetNuke.Framework
             if (_tracelLogger.IsDebugEnabled)
                 _tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
-        
-        private void Handle404Exception()
-        {
-            if (PortalSettings?.ErrorPage404 > Null.NullInteger)
-            {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
-            }
-            else
-            {
-                Response.ClearContent();
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 404;
-                Response.Status = "404 Not Found";
-                Response.Write("404 Not Found");
-                Response.End();
-            }
-
-        }
 
         #endregion
 
@@ -277,7 +259,7 @@ namespace DotNetNuke.Framework
                     var statusCode = (exc as HttpException).GetHttpCode();
                     if (statusCode == 404)
                     {
-                        Handle404Exception();
+                        UrlUtils.Handle404Exception(Response, PortalSettings);
                     }
 
                     if (PortalSettings?.ErrorPage500 != -1)

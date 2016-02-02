@@ -348,5 +348,27 @@ namespace DotNetNuke.Common.Utilities
         {
             return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
         }
+
+        /// <summary>
+        /// Redirect current response to 404 error page or output 404 content if error page not defined.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="portalSetting"></param>
+        public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
+        {
+            if (portalSetting?.ErrorPage404 > Null.NullInteger)
+            {
+                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+            }
+            else
+            {
+                response.ClearContent();
+                response.TrySkipIisCustomErrors = true;
+                response.StatusCode = 404;
+                response.Status = "404 Not Found";
+                response.Write("404 Not Found");
+                response.End();
+            }
+        }
     }
 }

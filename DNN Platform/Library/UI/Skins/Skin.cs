@@ -27,6 +27,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -1009,6 +1010,10 @@ namespace DotNetNuke.UI.Skins
                     pane.InjectModule(module);                   
                 }
 
+            }
+            catch (ThreadAbortException)
+            {
+                //Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
             }
             catch (Exception ex)
             {
