@@ -51,6 +51,7 @@ namespace DotNetNuke.HttpModules
     {
         private IRedirectionController _redirectionController;
         private readonly IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
+        private readonly Regex MvcServicePath = new Regex(@"/desktopmodules/mvc/.+", RegexOptions.Compiled);
         public string ModuleName
         {
             get
@@ -82,6 +83,7 @@ namespace DotNetNuke.HttpModules
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
                     || ServicesModule.ServiceApi.IsMatch(app.Request.RawUrl) 
+                    || MvcServicePath.IsMatch(app.Request.RawUrl)
                     || IsSpecialPage(app.Request.RawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(app.Request.RawUrl, app, portalSettings)))
             {

@@ -5,8 +5,10 @@ using System.Web.Routing;
 using System.Web.SessionState;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.HttpModules.Membership;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
 
@@ -55,6 +57,7 @@ namespace DotNetNuke.Web.Mvc
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
+            MembershipModule.AuthenticateRequest(RequestContext.HttpContext, allowUnknownExtensions: true);
             ProcessRequest(httpContext);
         }
 
