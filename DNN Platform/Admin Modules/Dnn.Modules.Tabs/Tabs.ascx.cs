@@ -929,7 +929,16 @@ namespace Dnn.Modules.Tabs
                 chkAllowIndex.Checked = !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
 
                 ctlIcon.Url = tab.IconFileRaw;
+                if (string.IsNullOrEmpty(tab.IconFileRaw))
+                {
+                    ctlIcon.UrlType = "F";
+                }
+
                 ctlIconLarge.Url = tab.IconFileLargeRaw;
+                if (string.IsNullOrEmpty(tab.IconFileLargeRaw))
+                {
+                    ctlIconLarge.UrlType = "F";
+                }
 
                 ShowPermissions(!tab.IsSuperTab && TabPermissionController.CanAdminPage(tab));
 
