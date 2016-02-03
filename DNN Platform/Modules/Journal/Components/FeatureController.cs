@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 //using System.Xml;
 using System.Linq;
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -197,6 +198,19 @@ namespace DotNetNuke.Modules.Journal.Components {
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
             {
+                if (HttpContext.Current == null || PortalSettings.Current == null)
+                {
+                    return false;
+                }
+
+                var portalSettings = PortalSettings.Current;
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                var isAdmin = currentUser.IsInRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId).RoleName);
+                if (!HttpContext.Current.Request.IsAuthenticated || (!currentUser.IsSuperUser && !isAdmin && currentUser.IsInRole("Unverified Users")))
+                {
+                    return false;
+                }
+
                 return true;
             }
 
