@@ -195,6 +195,11 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public bool HasViewPermission(SearchResult searchResult)
         {
+            if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
             var userInfo = UserController.Instance.GetCurrentUserInfo();
             
@@ -233,6 +238,11 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public string GetDocUrl(SearchResult searchResult)
         {
+            if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return string.Empty;
+            }
+
             string url;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
