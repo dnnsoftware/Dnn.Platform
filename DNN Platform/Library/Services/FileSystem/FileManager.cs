@@ -434,6 +434,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
+                ClearFolderCache(folder.PortalID);
                 var addedFile = GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
 
                 NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
@@ -700,7 +701,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
             FileDeletionController.Instance.DeleteFile(file);
-            
+            ClearFolderCache(file.PortalId);
             // Notify File Delete Event
             OnFileDeleted(file, GetCurrentUserID());
         }
@@ -1826,6 +1827,7 @@ namespace DotNetNuke.Services.FileSystem
                                                file.ContentItemID);
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
+            ClearFolderCache(file.PortalId);
             var updatedFile = GetFile(file.FileId);
 
             if (fireEvent)
@@ -1833,6 +1835,12 @@ namespace DotNetNuke.Services.FileSystem
                 OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
             }
             return updatedFile;
+        }
+
+        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        internal virtual void ClearFolderCache(int portalId)
+        {
+            DataCache.ClearFolderCache(portalId);
         }
 
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
