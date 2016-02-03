@@ -445,3 +445,48 @@ AS
 
         EXEC(@sql)
 GO
+
+/* DNN-6547: Modify AddPortalLanguage to insert record into PortalLocalization table. */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalLanguage]
+    @PortalId			int,
+    @LanguageId			int,
+    @IsPublished		bit,
+    @CreatedByUserID	int
+
+AS
+    DECLARE @PortalLanguageId INT
+    DECLARE @CultureCode NVARCHAR(50)
+
+    INSERT INTO {databaseOwner}{objectQualifier}PortalLanguages (
+        PortalId,
+        LanguageId,
+        IsPublished,
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    )
+    VALUES (
+        @PortalId,
+        @LanguageId,
+        @IsPublished,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+
+    SELECT @PortalLanguageId = SCOPE_IDENTITY()
+
+	SELECT @CultureCode = CultureCode FROM {databaseOwner}{objectQualifier}Languages WHERE LanguageID = @LanguageId
+
+	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
+	
+	SELECT @PortalLanguageId
+GO
