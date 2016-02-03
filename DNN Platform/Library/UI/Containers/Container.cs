@@ -412,9 +412,10 @@ namespace DotNetNuke.UI.Containers
                     }
                     ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
-                if (controlSrc.LastIndexOf("/") > 0)
+                var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
+                if (ix >= 0)
                 {
-                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + "module.css";
+                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
                     ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
             }
