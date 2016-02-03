@@ -102,7 +102,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (_routes.GetWriteLock())
             {
-                //_routes.Clear();
+                //_routes.Clear(); -- don't use; it will remove original WEP API maps
                 LocateServicesAndMapRoutes();
             }
             Logger.TraceFormat("Registered a total of {0} routes", _routes.Count);

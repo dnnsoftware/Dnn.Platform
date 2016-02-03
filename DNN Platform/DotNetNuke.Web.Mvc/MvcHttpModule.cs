@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHttpModule : IHttpModule
     {
-        public static readonly Regex MvcServicePath = new Regex(@"/desktopmodules/mvc/.+", RegexOptions.Compiled);
+        public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
 
         public void Init(HttpApplication context)
         {
