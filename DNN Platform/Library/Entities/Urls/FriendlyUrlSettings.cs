@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Urls
                 return _doNotIncludeInPathRegex ??
                        (_doNotIncludeInPathRegex =
                            GetStringSetting(KeepInQueryStringRegexSetting,
-                               @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+"));
+                               @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+|tou/[^/]+|(/utm[^/]+/[^/]+)+"));
             }
             internal set { _doNotIncludeInPathRegex = value; }
         }
