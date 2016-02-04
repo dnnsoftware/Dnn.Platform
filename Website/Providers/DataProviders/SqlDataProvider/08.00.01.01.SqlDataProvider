@@ -445,3 +445,50 @@ AS
 
         EXEC(@sql)
 GO
+
+/* DNN-7333 */
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_UserRoles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_UserRoles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_UserRoles]
+AS
+	SELECT     
+		UR.UserRoleID, 
+		R.RoleID, 
+		U.UserID, 
+		R.PortalID, 
+		R.RoleName, 
+		U.Username, 
+		R.Description, 
+		U.DisplayName, 
+		U.Email,
+		UR.Status, 
+		UR.IsOwner,
+		R.SecurityMode,
+		R.ServiceFee, 
+		R.BillingFrequency, 
+		R.TrialPeriod, 
+        R.TrialFrequency, 
+		R.BillingPeriod, 
+		R.TrialFee, 
+		R.IsPublic, 
+		R.AutoAssignment, 
+		R.RoleGroupID, 
+		R.RSVPCode, 
+		R.IconFile, 
+		UR.EffectiveDate, 
+		UR.ExpiryDate, 
+        UR.IsTrialUsed, 
+		UR.CreatedByUserID, 
+		UR.CreatedOnDate, 
+		UR.LastModifiedByUserID, 
+		UR.LastModifiedOnDate,
+		R.IsSystemRole 
+	FROM {databaseOwner}{objectQualifier}UserRoles AS UR 
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		INNER JOIN {databaseOwner}{objectQualifier}Roles AS R ON UR.RoleID = R.RoleID
+	WHERE R.Status = 1
+
+GO
