@@ -92,6 +92,7 @@ p.dnnFormRequired span {
 .dnnTabsModule .urlControl {
     display: block;
     float: left;
+    width: 58%;
 }
 .dnnPageSettings .urlControlLinkType {
     min-width: 280px;
