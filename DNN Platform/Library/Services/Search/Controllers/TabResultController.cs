@@ -21,8 +21,9 @@
 #region Usings
 
 using System;
-
+using System.Linq;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
@@ -62,7 +63,22 @@ namespace DotNetNuke.Services.Search.Controllers
             var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
             if (TabPermissionController.CanViewPage(tab))
             {
-                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                if (searchResult.PortalId != PortalSettings.Current.PortalId)
+                {
+                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(searchResult.PortalId)
+                                    .OrderByDescending(a => a.IsPrimary)
+                                    .FirstOrDefault();
+
+                    if (alias != null)
+                    {
+                        var portalSettings = new PortalSettings(searchResult.PortalId, alias);
+                        url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, portalSettings, string.Empty, searchResult.QueryString);
+                    }
+                }
+                else
+                {
+                    url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                }
             }
             
             return url;
