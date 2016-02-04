@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
@@ -258,7 +258,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         {
             if (! HttpContext.Current.Request.Browser.Crawler)
             {
-                var responseFilter = (OutputCacheResponseFilter) (_app.Context.Items[ContextKeyResponseFilter]);
+                var responseFilter = _app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
                 if (responseFilter != null)
                 {
                     responseFilter.StopFiltering(Convert.ToInt32(_app.Context.Items[ContextKeyTabId]), false);
