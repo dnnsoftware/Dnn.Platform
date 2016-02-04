@@ -445,3 +445,913 @@ AS
 
         EXEC(@sql)
 GO
+
+/* DNN-8378 Start */
+/* Create HasBeenPublished field */
+IF NOT EXISTS
+(SELECT * FROM sys.all_columns c INNER JOIN sys.tables t
+	ON c.object_id = t.object_id AND t.name = '{objectQualifier}Files'
+	WHERE c.name = 'HasBeenPublished')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}Files]
+		ADD HasBeenPublished bit DEFAULT 1 NOT NULL		
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}SetFileHasBeenPublished]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}SetFileHasBeenPublished
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetFileHasBeenPublished] 
+	@FileId					int,
+	@HasBeenPublished		bit
+AS
+BEGIN
+
+	-- Change Files.HasBeenPublished to the passed value
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET	 [HasBeenPublished] = @HasBeenPublished
+	FROM {databaseOwner}[{objectQualifier}Files] f
+	WHERE f.FileId = @FileId
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFileVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion] 
+	@FileId int,
+	@Version int
+AS
+BEGIN
+	DECLARE @PublishedVersion int
+
+	-- Check there is at least one version
+	IF NOT EXISTS(SELECT FileID FROM {objectQualifier}FileVersions WHERE FileId = @FileId)
+	BEGIN
+		SELECT 1 -- We need to return 1 in order to allow initial version
+		RETURN
+	END
+		
+	SELECT @PublishedVersion = PublishedVersion
+	FROM {databaseOwner}{objectQualifier}Files
+	WHERE FileId = @FileId
+
+	IF @PublishedVersion = @Version 
+	BEGIN
+		-- Get the previous version
+		SELECT @PublishedVersion = MAX(Version)
+		FROM {databaseOwner}{objectQualifier}FileVersions 
+		WHERE FileId = @FileId
+			AND Version < @Version
+
+		-- If there is no previous version, get the min exsisting version
+		IF @PublishedVersion IS NULL 
+			SELECT @PublishedVersion = MIN(Version)
+			FROM {databaseOwner}{objectQualifier}FileVersions 
+			WHERE FileId = @FileId
+
+		-- Update the published version
+		IF @PublishedVersion IS NOT NULL 
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Files
+			SET [PublishedVersion] = @PublishedVersion,
+				[Extension] = v.[Extension],
+				[Size] = v.[Size],
+				[Width] = v.Width,		
+				[Height] = v.Height,
+				[ContentType] = v.ContentType,
+				[Content] = v.Content,
+				[LastModifiedByUserID] = v.LastModifiedByUserID,
+				[LastModifiedOnDate] = v.LastModifiedOnDate,
+				[SHA1Hash] = v.SHA1Hash
+			FROM {databaseOwner}{objectQualifier}files AS f
+				INNER JOIN {databaseOwner}{objectQualifier}FileVersions AS v
+				ON ( f.FileId = v.FileId AND v.Version = @PublishedVersion)		
+			WHERE f.FileId = @FileId
+
+			DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+			WHERE FileId = @FileId 
+			AND Version = @PublishedVersion
+		END
+	END
+
+	DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+	WHERE FileId = @FileId 
+	  AND Version = @Version
+
+	SELECT @PublishedVersion
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+	SELECT	fi.FileId, 
+			fi.PortalId, 
+			fi.FileName, 
+			fi.Extension, 
+			fi.Size, 
+			fi.Width, 
+			fi.Height, 
+			fi.ContentType, 
+			fi.FolderID, 
+			fi.[Content], 
+			fi.CreatedByUserID, 
+			fi.CreatedOnDate, 
+			fi.LastModifiedByUserID, 
+			fi.LastModifiedOnDate, 
+			fi.UniqueId, 
+			fi.VersionGuid, 
+			fi.SHA1Hash, 
+			fi.LastModificationTime, 
+			fi.Title, 
+			fi.StartDate, 
+			fi.EnablePublishPeriod, 
+			fi.EndDate, 
+			fi.ContentItemID, 
+			fi.PublishedVersion, 
+			fo.FolderPath AS Folder,
+			fo.IsCached,
+			fo.FolderMappingID,
+			fo.StorageLocation,
+			fi.HasBeenPublished
+	FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+		ON fi.FolderID = fo.FolderID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+	SELECT     
+	   fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+	  ,fi.[Folder]
+	  ,fi.[IsCached]
+	  ,fi.[StorageLocation]
+	  ,fi.[FolderMappingID]
+	  ,fi.[HasBeenPublished]
+	FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+	  WHERE ([EnablePublishPeriod] = 0 AND [HasBeenPublished] = 1)
+		 OR ([StartDate] <= GETDATE()
+			AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]) AND [HasBeenPublished] = 1)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetPublishedVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetPublishedVersion] 
+	@FileId					int,
+	@NewPublishedVersion	int
+AS
+BEGIN
+
+	-- Insert a new record in the FileVersions table for the old published version
+	INSERT {databaseOwner}[{objectQualifier}FileVersions]
+				([FileId]
+				,[Version]
+				,[FileName]
+				,[Extension]
+				,[Size]
+				,[Width]
+				,[Height]
+				,[ContentType]
+				,[Content]
+				,[CreatedByUserID]
+				,[CreatedOnDate]
+				,[LastModifiedByUserID]
+				,[LastModifiedOnDate]
+				,[SHA1Hash])
+	SELECT		[FileId]
+				,[PublishedVersion]  [Version]				
+				,CONVERT(nvarchar, [FileId]) + '_' + CONVERT(nvarchar, [PublishedVersion]) +'.v.resources' 
+				,[Extension]
+				,[Size]
+				,[Width]
+				,[Height]
+				,[ContentType]
+				,[Content]
+				,[CreatedByUserID]
+				,[CreatedOnDate]
+				,[LastModifiedByUserID]
+				,[LastModifiedOnDate]
+				,[SHA1Hash]					
+	FROM {objectQualifier}Files
+	WHERE FileId = @FileId
+
+	-- Change Files.PublishedVersion to the new version number
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET	 [PublishedVersion] = @NewPublishedVersion		
+		,[Extension] =v.[Extension]
+		,[Size] = v.[Size]
+		,[Width] = v.[Width]
+		,[Height] = v.[Height]
+		,[ContentType] = v.[ContentType]
+		,[Content] = v.[Content]
+		,[CreatedByUserID] = v.[CreatedByUserID]
+		,[CreatedOnDate] = v.[CreatedOnDate]
+		,[LastModifiedByUserID] = v.[LastModifiedByUserID]
+		,[LastModifiedOnDate] = v.[LastModifiedOnDate]
+		,[SHA1Hash] = v.[SHA1Hash]
+		,[HasBeenPublished] = 1
+	FROM {databaseOwner}[{objectQualifier}Files] f
+		JOIN {databaseOwner}[{objectQualifier}FileVersions] v ON f.FileId = v.FileId
+	WHERE f.FileId = @FileId
+		AND v.Version = @NewPublishedVersion
+
+    -- Delete the FileVersions entry of the version being published
+	DELETE {databaseOwner}[{objectQualifier}FileVersions]
+	WHERE FileId = @FileId AND Version = @NewPublishedVersion
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+	@FileName nvarchar(246),
+	@FolderID int,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion,
+			   HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] 			
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion,
+			   HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_Files]
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId int	,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID,
+			   HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+		WHERE FileId = @FileId
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   [UniqueId],
+			   [VersionGuid],
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID,
+			   HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_Files] 
+		WHERE FileId = @FileId
+	END	
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID,
+			F.HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID,
+			F.HasBeenPublished
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
+/* DNN-8378 End */
+
+/*DNN-7960 Changes Start*/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate]
+    @FolderID	Int
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	--Update the folder only if it has LastModifiedOnDate more than 59 secs old.
+	--This is to avoid too many updates during massive sync
+	UPDATE {databaseOwner}[{objectQualifier}Folders] SET LastModifiedOnDate=GETDATE() WHERE FolderID=@FolderID AND DATEDIFF(SECOND,LastModifiedOnDate,GETDATE())>=60
+	IF(@@ROWCOUNT>0)
+	BEGIN
+		--Check if the parent also needs updation
+		DECLARE @ParentID Int;
+		SELECT @ParentID = ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID=@FolderID
+		IF(@ParentID>0)
+		BEGIN
+			EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+		END
+	END
+END
+
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+	@PortalId   int,
+	@UniqueId   uniqueidentifier,
+	@VersionGuid  uniqueidentifier,
+	@FileName   nvarchar(246),
+	@Extension   nvarchar(100),
+	@Size    int,
+	@Width    int,
+	@Height    int,
+	@ContentType  nvarchar(200),
+	@Folder    nvarchar(246),
+	@FolderID   int,
+	@CreatedByUserID   int,
+	@Hash     varchar(40),
+	@LastModificationTime	datetime, 
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@ContentItemID			int
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	DECLARE @FileID int
+
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET
+		/* retrieves FileId from table */
+		@FileID = FileId,
+		FileName = @FileName,
+		VersionGuid = @VersionGuid,
+		Extension = @Extension,
+		Size = @Size,
+		Width = @Width,
+		Height = @Height,
+		ContentType = @ContentType,
+		FolderID = @FolderID,
+		LastModifiedByUserID = @CreatedByUserID,
+		LastModifiedOnDate = getdate(),
+		SHA1Hash = @Hash,
+		LastModificationTime = @LastModificationTime, 
+		Title = @Title,
+		EnablePublishPeriod = @EnablePublishPeriod,
+		StartDate = @StartDate,
+		EndDate = @EndDate,
+		ContentItemID = @ContentItemID
+	WHERE
+		FolderID = @FolderID AND FileName = @FileName
+	
+	DECLARE @RowCount int = @@ROWCOUNT;
+	IF @RowCount = 0
+	BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Files] (
+		PortalId,
+		UniqueId,
+		VersionGuid,
+		FileName,
+		Extension,
+		Size,
+		Width,
+		Height,
+		ContentType,
+		FolderID,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		SHA1Hash,
+		LastModificationTime, 
+		Title,
+		EnablePublishPeriod,
+		StartDate,
+		EndDate,
+		ContentItemID
+	)
+	VALUES (
+		@PortalId,
+		@UniqueId,
+		@VersionGuid,
+		@FileName,
+		@Extension,
+		@Size,
+		@Width,
+		@Height,
+		@ContentType,
+		@FolderID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@Hash,
+		@LastModificationTime, 
+		@Title,
+		@EnablePublishPeriod,
+		@StartDate,
+		@EndDate,
+		@ContentItemID
+	)
+	SELECT @FileID = SCOPE_IDENTITY()
+	END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LATEST DATE
+	IF((@RowCount>0 OR @@ROWCOUNT>0) AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+	
+	SELECT @FileID
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolder]
+	@PortalID 			int,
+	@UniqueId	 		uniqueidentifier,
+	@VersionGuid 		uniqueidentifier,
+	@FolderPath 		nvarchar(300),
+	@MappedPath 		nvarchar(300),
+	@StorageLocation 	int,
+	@IsProtected 		bit,
+	@IsCached 			bit,
+	@LastUpdated 		datetime,
+	@CreatedByUserID  	int,
+	@FolderMappingID	int = 0,
+	@IsVersioned		bit = 0,
+	@WorkflowID			int = NULL,
+	@ParentID			int = NULL
+AS
+BEGIN
+	IF @FolderMappingID = 0 BEGIN
+		SELECT @FolderMappingID = FM.FolderMappingID
+		FROM {databaseOwner}[{objectQualifier}FolderMappings] as FM
+		WHERE ISNULL(FM.PortalID, -1) = ISNULL(@PortalID, -1)
+		AND FolderProviderType = (
+			CASE @StorageLocation
+				WHEN 0 THEN 'StandardFolderProvider'
+				WHEN 1 THEN 'SecureFolderProvider'
+				WHEN 2 THEN 'DatabaseFolderProvider'
+				ELSE 'StandardFolderProvider'
+			END
+		)
+	END
+	
+	SET NOCOUNT OFF;
+	INSERT INTO {databaseOwner}[{objectQualifier}Folders] (
+		PortalID, 
+		UniqueId,
+		VersionGuid,
+		FolderPath,
+		MappedPath, 
+		StorageLocation, 
+		IsProtected, 
+		IsCached, 
+		LastUpdated,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		FolderMappingID,
+		IsVersioned,
+		WorkflowID,
+		ParentID
+	)
+	VALUES (
+		@PortalID, 
+		@UniqueId,
+		@VersionGuid,
+		@FolderPath,
+		@MappedPath, 
+		@StorageLocation, 
+		@IsProtected, 
+		@IsCached, 
+		@LastUpdated,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@FolderMappingID,
+		@IsVersioned,
+		@WorkflowID,
+		@ParentID
+	)
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+
+	DECLARE @FolderId INT
+    SELECT @FolderId = SCOPE_IDENTITY()
+    SELECT @FolderId
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]	
+    @PortalID int,
+	@FileName nvarchar(246),
+	@FolderID int
+AS
+BEGIN
+	SET NOCOUNT OFF;
+    IF @PortalID is null
+    BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId IS Null
+    END 
+	ELSE 
+	BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId = @PortalID
+    END
+	
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFiles]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFiles]	
+    @PortalID int
+AS
+BEGIN
+    SET NOCOUNT OFF;
+	DECLARE @FolderID int;
+
+    IF @PortalID is null
+    BEGIN
+		SELECT TOP 1 @FolderID=FolderID FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId is null
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId is null
+    END 
+	ELSE 
+	BEGIN
+		SELECT TOP 1 @FolderID=FolderID FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId = @PortalID
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE PortalId = @PortalID
+    END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolder]	
+    @PortalID int,
+    @FolderPath nvarchar(300)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+	DECLARE @ParentID int;
+
+	IF @PortalID is null
+    BEGIN
+		SELECT @ParentID=ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID = @PortalID AND FolderPath = @FolderPath;
+	    DELETE FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID is null AND FolderPath = @FolderPath
+    END 
+	ELSE 
+	BEGIN
+		SELECT @ParentID=ParentID FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID is null AND FolderPath = @FolderPath;
+        DELETE FROM {databaseOwner}[{objectQualifier}Folders] WHERE PortalID = @PortalID AND FolderPath = @FolderPath
+    END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId                 Int,
+    @VersionGuid            UniqueIdentifier,
+    @FileName               nVarChar(246),
+    @Extension              nVarChar(100),
+    @Size                   Int,
+    @Width                  Int,
+    @Height                 Int,
+    @ContentType            nVarChar(200),
+    @FolderID               Int,
+    @LastModifiedByUserID   Int,
+    @Hash                   VarChar(40),
+    @LastModificationTime   DateTime,
+    @Title                  nVarChar(256),
+    @EnablePublishPeriod    Bit,
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @ContentItemID          Int
+AS
+BEGIN
+    SET NOCOUNT OFF;
+    DECLARE @PortalID int;
+    SELECT @PortalID = PortalID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID = @FolderID;
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+     SET   FileName             = @FileName,
+           VersionGuid          = @VersionGuid,
+           Extension            = @Extension,
+           Size                 = @Size,
+           Width                = @Width,
+           Height               = @Height,
+           ContentType          = @ContentType,
+           FolderID             = @FolderID,
+           PortalID             = @PortalID,
+           LastModifiedByUserID = @LastModifiedByUserID,
+           LastModifiedOnDate   = GetDate(),
+           SHA1Hash             = @Hash,
+           LastModificationTime = @LastModificationTime,
+           Title                = @Title,
+           EnablePublishPeriod  = @EnablePublishPeriod,
+           StartDate            = @StartDate,
+           EndDate              = @EndDate,
+           ContentItemID        = @ContentItemID
+     WHERE FileId = @FileId
+    
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolder]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolder]
+	@PortalID 				int,
+	@VersionGuid 			uniqueidentifier,	
+	@FolderID 				int,
+	@FolderPath 			nvarchar(300),
+	@MappedPath 			nvarchar(300),
+	@StorageLocation 		int,
+	@IsProtected 			bit,
+	@IsCached 				bit,
+	@LastUpdated 			datetime,
+	@LastModifiedByUserID  	int,
+	@FolderMappingID		int,
+	@IsVersioned			bit = 0,
+	@WorkflowID				int = NULL,
+	@ParentID				int = NULL
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	UPDATE {databaseOwner}[{objectQualifier}Folders]
+	SET
+		FolderPath = @FolderPath,
+		MappedPath = @MappedPath,
+		VersionGuid = @VersionGuid,
+		StorageLocation = @StorageLocation,
+		IsProtected = @IsProtected,
+		IsCached = @IsCached,
+		LastUpdated = @LastUpdated,
+		LastModifiedByUserID = @LastModifiedByUserID,
+		LastModifiedOnDate = getdate(),
+		FolderMappingID = @FolderMappingID,
+		IsVersioned = @IsVersioned,
+		WorkflowID = @WorkflowID,
+		ParentID = @ParentID
+	WHERE FolderID = @FolderID
+	
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @ParentID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @ParentID
+	END
+END
+GO
+/*DNN-7960 Changes End*/
