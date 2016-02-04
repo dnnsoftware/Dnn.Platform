@@ -24,7 +24,6 @@
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
-            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage()"><%=LocalizeString("ComposeNewMessage")%></a></div>
             <!-- ko ifnot: showReplies -->
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
