@@ -835,6 +835,20 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>
+        /// Update content item when the module title changed.
+        /// </summary>
+        /// <param name="module"></param>
+        private void UpdateContentItem(ModuleInfo module)
+        {
+            IContentController contentController = Util.GetContentController();
+            if (module.Content != module.ModuleTitle)
+            {
+                module.Content = module.ModuleTitle;
+                contentController.UpdateContentItem(module);
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1774,9 +1788,16 @@ namespace DotNetNuke.Entities.Modules
         public void UpdateModule(ModuleInfo module)
         {
             //Update ContentItem If neccessary
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            if (module.ModuleID != Null.NullInteger)
             {
-                CreateContentItem(module);
+                if (module.ContentItemId == Null.NullInteger)
+                {
+                    CreateContentItem(module);
+                }
+                else
+                {
+                    UpdateContentItem(module);
+                }
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
