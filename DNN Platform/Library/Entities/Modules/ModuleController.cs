@@ -839,7 +839,7 @@ namespace DotNetNuke.Entities.Modules
         /// Update content item when the module title changed.
         /// </summary>
         /// <param name="module"></param>
-        public void UpdateContentItem(ModuleInfo module)
+        private void UpdateContentItem(ModuleInfo module)
         {
             IContentController contentController = Util.GetContentController();
             if (module.Content != module.ModuleTitle)
