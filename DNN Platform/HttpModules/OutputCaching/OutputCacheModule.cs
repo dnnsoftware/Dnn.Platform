@@ -140,15 +140,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 {
                     if (includeVaryByKeysSettings.Contains(","))
                     {
-                        string[] keys = includeVaryByKeysSettings.Split(char.Parse(","));
+                        string[] keys = includeVaryByKeysSettings.Split(',');
                         foreach (string key in keys)
                         {
-                            includeVaryByKeys.Add(key.Trim().ToLower());
+                            includeVaryByKeys.Add(key.Trim().ToLowerInvariant());
                         }
                     }
                     else
                     {
-                        includeVaryByKeys.Add(includeVaryByKeysSettings.Trim().ToLower());
+                        includeVaryByKeys.Add(includeVaryByKeysSettings.Trim().ToLowerInvariant());
                     }
                 }
             }
@@ -165,15 +165,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 {
                     if (excludeVaryByKeysSettings.Contains(","))
                     {
-                        string[] keys = excludeVaryByKeysSettings.Split(char.Parse(","));
+                        string[] keys = excludeVaryByKeysSettings.Split(',');
                         foreach (string key in keys)
                         {
-                            excludeVaryByKeys.Add(key.Trim().ToLower());
+                            excludeVaryByKeys.Add(key.Trim().ToLowerInvariant());
                         }
                     }
                     else
                     {
-                        excludeVaryByKeys.Add(excludeVaryByKeysSettings.Trim().ToLower());
+                        excludeVaryByKeys.Add(excludeVaryByKeysSettings.Trim().ToLowerInvariant());
                     }
                 }
             }
@@ -183,7 +183,16 @@ namespace DotNetNuke.HttpModules.OutputCaching
             foreach (string key in _app.Context.Request.QueryString)
             {
                 if (key != null && _app.Context.Request.QueryString[key] != null)
-                    varyBy.Add(key.ToLower(), _app.Context.Request.QueryString[key]);
+                {
+                    var varyKey = key.ToLowerInvariant();
+                    varyBy.Add(varyKey, _app.Context.Request.QueryString[key]);
+
+                    if (includeExclude == IncludeExcludeType.IncludeByDefault && !includeVaryByKeys.Contains(varyKey))
+                    {
+                        includeVaryByKeys.Add(varyKey);
+                    }
+                }
+                
             }
             if (! (varyBy.ContainsKey("portalid")))
             {

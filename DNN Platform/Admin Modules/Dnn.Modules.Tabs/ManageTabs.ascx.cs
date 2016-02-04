@@ -1294,12 +1294,14 @@ namespace Dnn.Modules.Tabs
             if (rblCacheIncludeExclude.SelectedValue == "0")
             {
                 ExcludeVaryByRow.Visible = false;
+                txtExcludeVaryBy.Text = string.Empty;
                 IncludeVaryByRow.Visible = true;
             }
             else
             {
                 ExcludeVaryByRow.Visible = true;
                 IncludeVaryByRow.Visible = false;
+                txtIncludeVaryBy.Text = string.Empty;
             }
         }
 
