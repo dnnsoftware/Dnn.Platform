@@ -52,6 +52,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+using System.Web;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -664,7 +665,7 @@ namespace DotNetNuke.Web.InternalServices
 	            var fileName = GetFileName(response);
 	            if (string.IsNullOrEmpty(fileName))
 	            {
-		            fileName = new Uri(dto.Url).Segments.Last();
+		            fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
 	            }
 	            result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
