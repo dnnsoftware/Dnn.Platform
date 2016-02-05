@@ -1005,6 +1005,12 @@ namespace Dnn.Modules.Tabs
                                 {
                                     newModule.ModuleID = Null.NullInteger;
                                     ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
+                                    
+                                    //copy permissions from source module
+                                    foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
+                                    {
+                                        newModule.ModulePermissions.Add(permission, true);
+                                    }
                                 }
 
                                 newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
