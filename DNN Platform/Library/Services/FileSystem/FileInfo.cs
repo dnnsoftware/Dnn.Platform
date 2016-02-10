@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (FileId != 0 && string.IsNullOrEmpty(_sha1Hash))
+                if (FileId > 0 && string.IsNullOrEmpty(_sha1Hash))
                 {
                     LoadHashProperty();
                 }
