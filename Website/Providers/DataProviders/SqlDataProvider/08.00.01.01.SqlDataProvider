@@ -1402,3 +1402,19 @@ BEGIN
 END
 GO
 /*DNN-7960 Changes End*/
+
+/***** DNN-7906: add foreign key on moduleid column in TabVersionDetails table. *****/
+DELETE tvd FROM {databaseOwner}[{objectQualifier}TabVersionDetails] tvd
+	LEFT JOIN {databaseOwner}[{objectQualifier}Modules] m ON m.ModuleID = tvd.ModuleId
+	WHERE m.ModuleID IS NULL
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] DROP CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails]
+	ADD CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
+	FOREIGN KEY([ModuleID])
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE	
+GO
