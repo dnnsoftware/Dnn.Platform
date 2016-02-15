@@ -1418,3 +1418,14 @@ ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails]
 	FOREIGN KEY([ModuleID])
 	REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE	
 GO
+
+
+/***** DNN-6523: update module definitions of users and roles package to set default cache time as -1. *****/
+DECLARE @DesktopModuleId INT
+SELECT @DesktopModuleId = DesktopModuleId FROM {databaseOwner}[{objectQualifier}DesktopModules] WHERE ModuleName = 'Security'
+UPDATE {databaseOwner}[{objectQualifier}ModuleDefinitions] 
+    SET DefaultCacheTime = -1,
+        LastModifiedByUserID = -1,
+        LastModifiedOnDate = GETDATE()
+    WHERE DesktopModuleID = @DesktopModuleId
+GO
