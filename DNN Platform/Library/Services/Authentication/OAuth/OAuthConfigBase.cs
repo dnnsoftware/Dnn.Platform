@@ -24,8 +24,8 @@
 using System;
 using System.Globalization;
 
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
@@ -42,9 +42,20 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             Service = service;
 
-            APIKey = PortalController.GetPortalSetting(Service + "_APIKey", portalId, "");
-            APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
-            Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+            HostConfig = HostController.Instance.GetBoolean(Service + "_HostConfig", false);
+
+            if (HostConfig)
+            {
+                APIKey = HostController.Instance.GetString(Service + "_APIKey", "");
+                APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
+                Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
+            }
+            else
+            {
+                APIKey = PortalController.GetPortalSetting(Service + "_APIKey", portalId, "");
+                APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
+                Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+            }
         }
 
         protected string Service { get; set; }
@@ -54,6 +65,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
         public string APISecret { get; set; }
 
         public bool Enabled { get; set; }
+
+        public bool HostConfig { get; set; }
 
         private static string GetCacheKey(string service, int portalId)
         {
@@ -79,9 +92,21 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public static void UpdateConfig(OAuthConfigBase config)
         {
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
+            HostController.Instance.Update(config.Service + "_HostConfig", config.HostConfig.ToString(CultureInfo.InvariantCulture));
+
+            if (config.HostConfig)
+            {
+                HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
+                HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
+                HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
+            }
+            else
+            {
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
+                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
+            }
+
             ClearConfig(config.Service, config.PortalID);
         }
     }
