@@ -2882,21 +2882,35 @@ namespace DotNetNuke.Entities.Tabs
 
         public static bool IsValidTabName(string tabName, out string invalidType)
         {
-            var valid = true;
             invalidType = string.Empty;
 
             if (string.IsNullOrEmpty(tabName.Trim()))
             {
                 invalidType = "EmptyTabName";
-                valid = false;
-            }
-            else if (TabNameCheck1.IsMatch(tabName) || TabNameCheck2.IsMatch(HtmlUtils.StripNonWord(tabName, false)))
-            {
-                invalidType = "InvalidTabName";
-                valid = false;
+                return false;
             }
 
-            return valid;
+            var cleanTabName = HtmlUtils.StripNonWord(tabName, false);
+            if (TabNameCheck1.IsMatch(tabName) || TabNameCheck2.IsMatch(cleanTabName))
+            {
+                invalidType = "InvalidTabName";
+                return false;
+            }
+
+            if (Config.GetFriendlyUrlProvider() == "advanced" && PortalSettings.Current != null)
+            {
+                var doNotRewriteRegex = new FriendlyUrlSettings(PortalSettings.Current.PortalId).DoNotRewriteRegex;
+                if (!string.IsNullOrEmpty(doNotRewriteRegex) && 
+                        (Regex.IsMatch(cleanTabName, doNotRewriteRegex, RegexOptions.IgnoreCase) 
+                            || Regex.IsMatch("/" + cleanTabName, doNotRewriteRegex, RegexOptions.IgnoreCase)
+                            || Regex.IsMatch("/" + cleanTabName + "/", doNotRewriteRegex, RegexOptions.IgnoreCase)))
+                {
+                    invalidType = "InvalidTabName";
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #endregion
