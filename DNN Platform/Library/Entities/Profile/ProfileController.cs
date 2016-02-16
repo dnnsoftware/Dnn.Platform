@@ -23,7 +23,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Text.RegularExpressions;
+using System.Web;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -31,6 +32,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -545,15 +547,21 @@ namespace DotNetNuke.Entities.Profile
                     string propertyValue = propertyDefinition.PropertyValue;
                     if (propertyDefinition.IsDirty)
                     {
-                        user.Profile.SetProfileProperty(propertyName, propertyValue);
-                        if (propertyName.ToLower() == "firstname" || propertyName.ToLower() == "lastname")
+                        if (propertyName.Equals(UserProfile.USERPROFILE_FirstName, StringComparison.InvariantCultureIgnoreCase)
+                                || propertyName.Equals(UserProfile.USERPROFILE_LastName, StringComparison.InvariantCultureIgnoreCase))
                         {
                             updateUser = true;
                         }
-						else if (propertyName.ToLowerInvariant() == "photo")
-						{
-							photoChanged = true;
-						}
+                        else if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            photoChanged = true;
+                        }
+                        else if (propertyName.Equals(UserProfile.USERPROFILE_Biography, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            propertyValue = RemoveUnsafeAttributes(propertyValue);
+                        }
+
+                        user.Profile.SetProfileProperty(propertyName, propertyValue);
                     }
                 }
                 UpdateUserProfile(user);
@@ -583,7 +591,34 @@ namespace DotNetNuke.Entities.Profile
             return user;
         }
 
-		private static void CreateThumbnails(int fileId)
+        private static string RemoveUnsafeAttributes(string content)
+        {
+            var cleanContent = content;
+
+            var needEncode = false;
+            if (cleanContent.Contains("&lt;"))
+            {
+                cleanContent = HttpUtility.HtmlDecode(cleanContent);
+                needEncode = true;
+            }
+
+            var tagMatches = Regex.Matches(cleanContent, @"(<[\s\S]*?) on.*?\=(['""])[\s\S]*?\2([\s\S]*?>)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            foreach (Match match in tagMatches)
+            {
+                var tagContent = match.Value;
+                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""])[\s\S]*?\1", string.Empty, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
+            }
+
+            if (needEncode)
+            {
+                cleanContent = HttpUtility.HtmlEncode(cleanContent);
+            }
+
+            return cleanContent;
+        }
+
+        private static void CreateThumbnails(int fileId)
 		{
             CreateThumbnail(fileId, "l", 64, 64);
             CreateThumbnail(fileId, "s", 50, 50);
