@@ -40,6 +40,8 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using DotNetNuke.Services.Authentication;
+
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
@@ -149,7 +151,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             var usePopup =
                 portalSettings.EnablePopUps &&
                 portalSettings.LoginTabId == Null.NullInteger &&
-                !HasSocialAuthenticationEnabled();
+                !AuthenticationController.HasSocialAuthenticationEnabled();
 
             var navigationKey =
                 moduleInfo != null &&
@@ -203,20 +205,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "uniqueId", uniqueId },
                     };
         }
-
-        private static bool HasSocialAuthenticationEnabled()
-        {
-            return (from a in DotNetNuke.Services.Authentication.AuthenticationController.GetEnabledAuthenticationServices()
-                    let enabled = (a.AuthenticationType == "Facebook"
-                                     || a.AuthenticationType == "Google"
-                                     || a.AuthenticationType == "Live"
-                                     || a.AuthenticationType == "Twitter")
-                                  ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.Current.PortalId, false)
-                                  : !string.IsNullOrEmpty(a.LoginControlSrc)
-                    where a.AuthenticationType != "DNN" && enabled
-                    select a).Any();
-        }
-
+        
         private static string GetHistoryNavigationKey(string moduleName)
         {
             return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));

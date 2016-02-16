@@ -41,18 +41,29 @@ namespace DotNetNuke.Services.Authentication.OAuth
             : base(portalId)
         {
             Service = service;
+            
+            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
+            var hostApiKey = "";
 
-            HostConfig = HostController.Instance.GetBoolean(Service + "_HostConfig", false);
+            if (string.IsNullOrEmpty(portalApiKey))
+            {
+                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", "");
+                HostConfig = !string.IsNullOrEmpty(hostApiKey);
+            }
+            else
+            {
+                HostConfig = false;
+            }
 
             if (HostConfig)
             {
-                APIKey = HostController.Instance.GetString(Service + "_APIKey", "");
+                APIKey = hostApiKey;
                 APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
                 Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
             }
             else
             {
-                APIKey = PortalController.GetPortalSetting(Service + "_APIKey", portalId, "");
+                APIKey = portalApiKey;
                 APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
                 Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
             }
@@ -92,13 +103,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public static void UpdateConfig(OAuthConfigBase config)
         {
-            HostController.Instance.Update(config.Service + "_HostConfig", config.HostConfig.ToString(CultureInfo.InvariantCulture));
-
             if (config.HostConfig)
             {
                 HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
                 HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
                 HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
+                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APIKey");
+                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APISecret");
+                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_Enabled");
             }
             else
             {

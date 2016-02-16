@@ -37,6 +37,12 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Services.Authentication
 {
+    using System.Linq;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.UI.Skins;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationController class provides the Business Layer for the
@@ -267,6 +273,32 @@ namespace DotNetNuke.Services.Authentication
                 }
             }
             return enabled;
+        }
+        
+        public static bool HasSocialAuthenticationEnabled(UserControl control = null)
+        {
+            return (from a in GetEnabledAuthenticationServices()
+                    let enabled = (a.AuthenticationType.Equals("Facebook")
+                                     || a.AuthenticationType.Equals("Google")
+                                     || a.AuthenticationType.Equals("Live")
+                                     || a.AuthenticationType.Equals("Twitter"))
+                                  ? IsEnabledForPortal(a, PortalSettings.Current.PortalId)
+                                  : !string.IsNullOrEmpty(a.LoginControlSrc) && ((control?.LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase)?.Enabled ?? true)
+                    where !a.AuthenticationType.Equals("DNN") && enabled
+                    select a).Any();
+        }
+
+        /// <summary>
+        /// Determines whether [is enabled for portal] [the specified authentication].
+        /// </summary>
+        /// <param name="authentication">The authentication.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <returns>True if OAuth Provider and it is enabled for the portal, Otherwise false.</returns>
+        public static bool IsEnabledForPortal(AuthenticationInfo authentication, int portalId)
+        {
+            return !string.IsNullOrEmpty(PortalController.GetPortalSetting(authentication.AuthenticationType + "_Enabled", portalId, ""))
+                ? PortalController.GetPortalSettingAsBoolean(authentication.AuthenticationType + "_Enabled", portalId, false)
+                : HostController.Instance.GetBoolean(authentication.AuthenticationType + "_Enabled", false);
         }
 
         /// -----------------------------------------------------------------------------
