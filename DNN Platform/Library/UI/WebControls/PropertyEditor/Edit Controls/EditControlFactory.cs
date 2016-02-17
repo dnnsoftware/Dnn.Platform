@@ -88,32 +88,38 @@ namespace DotNetNuke.UI.WebControls
 
         private static EditControl CreateEditControlInternal(string systemType)
         {
-            Type type = Type.GetType(systemType);
-            EditControl propEditor;
-            switch (type.FullName)
+            EditControl propEditor = null;
+            try
             {
-                case "System.DateTime":
-                    propEditor = new DateTimeEditControl();
-                    break;
-                case "System.Boolean":
-                    propEditor = new CheckEditControl();
-                    break;
-                case "System.Int32":
-                case "System.Int16":
-                    propEditor = new IntegerEditControl();
-                    break;
-                default:
-                    if (type.IsEnum)
+                var type = Type.GetType(systemType);
+                if (type != null)
+                {
+                    switch (type.FullName)
                     {
-                        propEditor = new EnumEditControl(systemType);
+                        case "System.DateTime":
+                            propEditor = new DateTimeEditControl();
+                            break;
+                        case "System.Boolean":
+                            propEditor = new CheckEditControl();
+                            break;
+                        case "System.Int32":
+                        case "System.Int16":
+                            propEditor = new IntegerEditControl();
+                            break;
+                        default:
+                            if (type.IsEnum)
+                            {
+                                propEditor = new EnumEditControl(systemType);
+                            }
+                            break;
                     }
-                    else
-                    {
-                        propEditor = new TextEditControl(systemType);
-                    }
-                    break;
+                }
             }
-            return propEditor;
+            catch (Exception)
+            {
+                //ignore
+            }
+            return propEditor ?? new TextEditControl(systemType);
         }
     }
 }
