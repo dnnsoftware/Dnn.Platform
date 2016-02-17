@@ -629,7 +629,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            string userName = Service + "-" + user.Id;
+            string userName = PrefixServiceToUserName ? Service + "-" + user.Email : user.Email;
             string token = Service + "-" + user.Email + "-" + user.Id;
 
             UserInfo objUserInfo;
