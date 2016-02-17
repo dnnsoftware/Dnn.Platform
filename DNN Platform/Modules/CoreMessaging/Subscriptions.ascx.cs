@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.UI.Modules;
@@ -40,8 +41,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.CoreMessaging
 {
-    using DotNetNuke.Services.Authentication;
-
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
