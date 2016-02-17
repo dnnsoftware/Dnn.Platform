@@ -847,6 +847,21 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <summary>
+        /// update content item for the tab when tab name changed.
+        /// </summary>
+        /// <param name="tab">The updated tab.</param>
+        private void UpdateContentItem(TabInfo tab)
+        {
+            IContentController contentController = Util.GetContentController();
+            var newContent = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+            if (tab.Content != newContent)
+            {
+                tab.Content = newContent;
+                contentController.UpdateContentItem(tab);
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1894,9 +1909,16 @@ namespace DotNetNuke.Entities.Tabs
             TabInfo originalTab = GetTab(updatedTab.TabID, updatedTab.PortalID, true);
 
             //Update ContentItem If neccessary
-            if (updatedTab.ContentItemId == Null.NullInteger && updatedTab.TabID != Null.NullInteger)
+            if (updatedTab.TabID != Null.NullInteger)
             {
-                CreateContentItem(updatedTab);
+                if (updatedTab.ContentItemId == Null.NullInteger)
+                {
+                    CreateContentItem(updatedTab);
+                }
+                else
+                {
+                    UpdateContentItem(updatedTab);
+                }
             }
 
             //Create Tab Redirects

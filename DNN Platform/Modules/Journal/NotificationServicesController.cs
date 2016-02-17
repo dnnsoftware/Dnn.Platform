@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage ViewJournal(NotificationDTO postData)
         {
             try

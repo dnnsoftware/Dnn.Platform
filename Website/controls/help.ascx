@@ -7,7 +7,7 @@
         </div>
         <ul class="dnnActions dnnClear">
             <li>
-                <asp:HyperLink ID="cmdHelp" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdHelp" Target="_blank" EnableViewState="False" /></li>
+                <asp:HyperLink ID="cmdHelp" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdHelp" Target="_blank" EnableViewState="False" Visible="False" /></li>
             <li>
                 <asp:LinkButton ID="cmdCancel" runat="server" class="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="False" EnableViewState="False" /></li>
         </ul>

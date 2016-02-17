@@ -71,9 +71,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public Bitmap GetNoAvatarImage()
         {
             var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
-            using (var temp = new Bitmap(avatarAbsolutePath))
+            using (var content = File.OpenRead(avatarAbsolutePath))
             {
-                return new Bitmap(temp);
+                return CopyImage(content);
             }
         }
 
@@ -144,23 +144,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
-        }
-
-        private Bitmap CopyImage(Stream imgStream)
-        {
-            using (var srcImage = new Bitmap(imgStream))
-            {
-                var destImage = new Bitmap(srcImage.Width, srcImage.Height, PixelFormat.Format24bppRgb);
-                using (var graph = Graphics.FromImage(destImage))
-                {
-                    graph.CompositingMode = CompositingMode.SourceCopy;
-                    graph.CompositingQuality = CompositingQuality;
-                    graph.InterpolationMode = InterpolationMode;
-                    graph.SmoothingMode = SmoothingMode;
-                    graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
-                }
-                return destImage;
-            }
         }
     }
 }

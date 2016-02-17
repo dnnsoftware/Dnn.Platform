@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.UserControls
         private string MyFileName = "Help.ascx";
         private string _key;
         protected LinkButton cmdCancel;
+        protected HyperLink cmdHelp;
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
@@ -117,6 +118,8 @@ namespace DotNetNuke.UI.UserControls
                     }
                     lblInfo.Text = Server.HtmlDecode(strInfo);
                 }
+
+                cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
             if (Page.IsPostBack == false)
             {

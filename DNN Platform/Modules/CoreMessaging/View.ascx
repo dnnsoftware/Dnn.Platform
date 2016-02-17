@@ -24,7 +24,6 @@
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
-            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage()"><%=LocalizeString("ComposeNewMessage")%></a></div>
             <!-- ko ifnot: showReplies -->
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
@@ -280,7 +279,13 @@
 			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
 			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
 			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-			disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>
+		    disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>,
+		    messageTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Messages")) %>',
+		    notificationTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Notifications")) %>',
+		    archiveTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MarkArchive")) %>',
+		    sentTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Sent")) %>',
+		    currentUserText: '<%= UserController.Instance.GetCurrentUserInfo().DisplayName %>',
+            portalText: '<%= PortalSettings.PortalName %>'
 	}, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',

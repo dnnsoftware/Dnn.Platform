@@ -399,9 +399,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void RegisterScript(Page page, JavaScriptLibrary jsl)
         {
+            if (string.IsNullOrEmpty(jsl.FileName))
+            {
+                return;
+            }
+
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), GetFileOrder(jsl), GetScriptLocation(jsl));
 
-            //workaround to support IE specific script unti we move to IE version that no longer requires this
+            //workaround to support IE specific script until we move to IE version that no longer requires this
             if (jsl.LibraryName == CommonJs.jQueryFileUpload)
             {
                 ClientResourceManager.RegisterScript(page,

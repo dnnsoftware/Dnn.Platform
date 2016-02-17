@@ -388,7 +388,7 @@ namespace DotNetNuke.Security.Roles
 
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
-            roleGroupName = roleGroupName.ToUpper().Trim();
+            roleGroupName = roleGroupName.ToUpperInvariant().Trim();
             return GetRoleGroupsInternal(portalId).SingleOrDefault(r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
         }
 

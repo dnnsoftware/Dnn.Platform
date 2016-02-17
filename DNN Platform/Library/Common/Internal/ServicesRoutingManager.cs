@@ -40,6 +40,11 @@ namespace DotNetNuke.Common.Internal
 
                 var method = instance.Unwrap().GetType().GetMethod("RegisterRoutes");
                 method.Invoke(instance.Unwrap(), new object[0]);
+
+                var instanceMvc = Activator.CreateInstance("DotNetNuke.Web.Mvc", "DotNetNuke.Web.Mvc.Routing.MvcRoutingManager");
+
+                var methodMvc = instanceMvc.Unwrap().GetType().GetMethod("RegisterRoutes");
+                methodMvc.Invoke(instanceMvc.Unwrap(), new object[0]);
             }
             catch (Exception e)
             {

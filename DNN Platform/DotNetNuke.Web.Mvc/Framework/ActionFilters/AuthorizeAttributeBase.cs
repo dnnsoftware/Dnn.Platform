@@ -42,10 +42,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         {
             Requires.NotNull("filterContext", filterContext);
 
-            bool skipAuthorization = filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true)
-                                     || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
-
-            if (skipAuthorization)
+            if (SkipAuthorization(filterContext))
             {
                 return;
             }
@@ -69,7 +66,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
+            const string failureMessage = "Authorization has been denied for this request.";
+            var authFilterContext = new AuthFilterContext(filterContext, failureMessage);
+            authFilterContext.HandleUnauthorizedRequest();
+            //filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
         }
 
         protected virtual HttpValidationStatus OnCacheAuthorization(HttpContextBase httpContext)
@@ -78,6 +78,22 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             bool isAuthorized = AuthorizeCore(httpContext);
             return (isAuthorized) ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
+        }
+
+        /// <summary>
+        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required
+        /// </summary>
+        /// <param name="actionContext"></param>
+        /// <returns></returns>
+        protected virtual bool SkipAuthorization(AuthorizationContext filterContext)
+        {
+            return IsAnonymousAttributePresent(filterContext);
+        }
+
+        public static bool IsAnonymousAttributePresent(AuthorizationContext filterContext)
+        {
+            return filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true)
+                                     || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
         }
     }
 }

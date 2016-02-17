@@ -424,13 +424,13 @@
     <value>Clear Cache</value>
   </data>
   <data name="Tool.RecycleApp.Text" xml:space="preserve">
-    <value>Recycle Application Domain</value>
+    <value>Restart Application</value>
   </data>
   <data name="Tool.ClearCache.ToolTip" xml:space="preserve">
     <value>Select to clear the site cache of all old file.</value>
   </data>
   <data name="Tool.RecycleApp.ToolTip" xml:space="preserve">
-    <value>Select to restart the server and retrieve all new files for the current site.  The site will be unavailable for a few moments.</value>
+    <value>Select to restart the application and retrieve all new files for the current site. The site will be unavailable for a few moments.</value>
   </data>
   <data name="ModeMobilePreview.Text" xml:space="preserve">
     <value>Preview</value>

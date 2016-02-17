@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
@@ -40,5 +42,27 @@ namespace DotNetNuke.Services.GeneratedImage
         /// Provides an Unique String for the image transformation
         /// </summary>
         public virtual string UniqueString => GetType().FullName;
+
+        /// <summary>
+        /// Creates a new image from stream. The created image is independent of the stream.
+        /// </summary>
+        /// <param name="imgStream"></param>
+        /// <returns>Image object</returns>
+        public virtual Bitmap CopyImage(Stream imgStream)
+        {
+            using (var srcImage = new Bitmap(imgStream))
+            {
+                var destImage = new Bitmap(srcImage.Width, srcImage.Height);
+                using (var graph = Graphics.FromImage(destImage))
+                {
+                    graph.CompositingMode = CompositingMode.SourceCopy;
+                    graph.CompositingQuality = CompositingQuality;
+                    graph.InterpolationMode = InterpolationMode;
+                    graph.SmoothingMode = SmoothingMode;
+                    graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
+                }
+                return destImage;
+            }
+        }
     }
 }
