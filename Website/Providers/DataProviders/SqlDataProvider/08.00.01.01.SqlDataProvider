@@ -1505,3 +1505,12 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware
 UPDATE {databaseOwner}{objectQualifier}Packages SET Email = 'support@dnnsoftware.com' WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
 
 GO
+
+/* DNN-8368 Remove leftover ModuleDefinitions record from module Newsletters */
+
+DELETE 	FROM {databaseOwner}[{objectQualifier}ModuleDefinitions] 
+WHERE 	({databaseOwner}[{objectQualifier}ModuleDefinitions].DesktopModuleID NOT IN ( SELECT  DesktopModuleID FROM {databaseOwner}[{objectQualifier}DesktopModules] ))
+		AND 
+		({databaseOwner}[{objectQualifier}ModuleDefinitions].FriendlyName = 'Newsletters');
+		
+GO
