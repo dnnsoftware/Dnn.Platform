@@ -318,13 +318,13 @@ namespace DotNetNuke.Services.FileSystem
                 var contentFileName = fileName;
                 if (needToWriteFile)
                 {
-                    CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
-
                     if (!fileContent.CanSeek)
                     {
                         fileContent = GetSeekableStream(fileContent);
                         usingSeekableStream = true;
                     }
+
+                    CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
 
                     // Retrieve Metadata
                     SetInitialFileMetadata(fileContent, file, folderProvider);
