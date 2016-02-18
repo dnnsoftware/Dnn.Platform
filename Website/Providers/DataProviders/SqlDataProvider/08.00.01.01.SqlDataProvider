@@ -1514,3 +1514,13 @@ WHERE 	({databaseOwner}[{objectQualifier}ModuleDefinitions].DesktopModuleID NOT 
 		({databaseOwner}[{objectQualifier}ModuleDefinitions].FriendlyName = 'Newsletters');
 		
 GO
+
+/***** DNN-6523: update module definitions of users and roles package to set default cache time as -1. *****/
+DECLARE @DesktopModuleId INT
+SELECT @DesktopModuleId = DesktopModuleId FROM {databaseOwner}[{objectQualifier}DesktopModules] WHERE ModuleName = 'Security'
+UPDATE {databaseOwner}[{objectQualifier}ModuleDefinitions] 
+    SET DefaultCacheTime = -1,
+        LastModifiedByUserID = -1,
+        LastModifiedOnDate = GETDATE()
+    WHERE DesktopModuleID = @DesktopModuleId
+GO
