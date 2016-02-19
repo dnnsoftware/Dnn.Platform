@@ -1007,6 +1007,7 @@ namespace Dnn.Modules.Tabs
                                     ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
                                     
                                     //copy permissions from source module
+                                    newModule.InheritViewPermissions = objModule.InheritViewPermissions;
                                     foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
                                     {
                                         newModule.ModulePermissions.Add(permission, true);
