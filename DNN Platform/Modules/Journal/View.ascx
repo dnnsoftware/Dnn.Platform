@@ -26,11 +26,18 @@
                 <div class="handle"></div>
                 <ul>
                     <li><b><%= LocalizeString("WhoWillSee.Text") %></b></li>
+                    <% if (IsPublicGroup)
+                    { %>
                     <li><input type="radio" name="privacy" value="E" checked="checked" /><%= LocalizeString("Everyone.Text") %></li>
                     <li><input type="radio" name="privacy" value="C" /><%= LocalizeString("Community.Text") %></li>
                     <li><input type="radio" name="privacy" value="F" /><%= LocalizeString("Friends.Text") %></li>
                     <% if (!IsGroup) { %>
                     <li><input type="radio" name="privacy" value="U" /><%= LocalizeString("Private.Text") %></li>
+                    <% } %>
+                    <% }
+                    else
+                    { %>
+                    <li><input type="radio" name="privacy" value="R" checked="checked" /><%= LocalizeString("GroupMembers.Text") %></li>
                     <% } %>
                 </ul>
             </div>
@@ -120,6 +127,7 @@
 
     var pid = <%= Pid.ToString()%>;
     var gid = <%= Gid.ToString()%>;
+    var ispublicgroup = <%= IsPublicGroup ? "true" : "false" %>;
 
     var journalOptions = {};
     journalOptions.servicesFramework = $.ServicesFramework(<%=ModuleId %>);

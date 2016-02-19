@@ -466,6 +466,12 @@ function pluginInit() {
            
             data.profileId = pid;
             data.groupId = gid;
+
+            //for private group, overwrite existing security set so that the post only visible to group members
+            if (gid > 0 && !ispublicgroup) {
+                journalItem.Security = 'R';
+            }
+
             data.journalType = journalItem.JournalType;
             data.securitySet = journalItem.Security;
             var ItemData = journalItem.ItemData;
