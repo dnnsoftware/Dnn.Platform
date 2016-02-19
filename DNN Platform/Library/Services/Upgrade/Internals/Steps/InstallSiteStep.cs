@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 var locale = LocaleController.Instance.GetLocale("en-US");
-                Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId);
+                Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId, true);
             }
 
             //Log user in to site

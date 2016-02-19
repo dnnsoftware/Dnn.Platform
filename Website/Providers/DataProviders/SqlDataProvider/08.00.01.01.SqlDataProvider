@@ -446,6 +446,7 @@ AS
         EXEC(@sql)
 GO
 
+/****************************/
 /* DNN-6547: Modify AddPortalLanguage to insert record into PortalLocalization table. */
 /****************************/
 
@@ -490,3 +491,15 @@ AS
 	
 	SELECT @PortalLanguageId
 GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalLocalizations]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalLocalizations] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}GetPortalLocalizations]
+    @PortalId			int
+AS
+	SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalId = @PortalId
+GO
+
+/****************************/

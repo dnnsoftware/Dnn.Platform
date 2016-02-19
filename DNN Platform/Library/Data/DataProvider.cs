@@ -3182,6 +3182,11 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("RemovePortalLocalization", portalID, CultureCode);
 		}
 
+		public virtual IDataReader GetPortalLocalizations(int portalID)
+		{
+            return ExecuteReader("GetPortalLocalizations", portalID);
+		}
+
 		public virtual IDataReader GetLanguages()
 		{
 			return ExecuteReader("GetLanguages");

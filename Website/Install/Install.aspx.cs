@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Install
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                         {
                             var locale = LocaleController.Instance.GetLocale("en-US");
-                            Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId);
+                            Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
                         }
 
                         var licenseConfig = installConfig.License;
