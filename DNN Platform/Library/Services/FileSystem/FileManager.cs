@@ -318,6 +318,7 @@ namespace DotNetNuke.Services.FileSystem
                 var contentFileName = fileName;
                 if (needToWriteFile)
                 {
+                    file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                     if (!fileContent.CanSeek)
                     {
                         fileContent = GetSeekableStream(fileContent);
@@ -334,8 +335,7 @@ namespace DotNetNuke.Services.FileSystem
                     if (folderWorkflow != null)
                     {
                         SetContentItem(file);
-
-                        file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
+                        
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
                             if (file.FileId == Null.NullInteger)
