@@ -648,6 +648,9 @@ namespace DotNetNuke.Security
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
             }
+
+            //Identity the Login is processed by system.
+            HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
         public void SignOut()

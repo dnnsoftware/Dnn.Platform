@@ -26,7 +26,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -90,6 +90,7 @@ namespace DotNetNuke.HttpModules.Membership
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
+            application.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
         /// <summary>
@@ -106,6 +107,31 @@ namespace DotNetNuke.HttpModules.Membership
             var application = (HttpApplication) sender;
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
+
+        //DNN-6973: if the authentication cookie set by cookie slide in membership,
+        //then use SignIn method instead if current portal is in portal group.
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
+                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
+            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
+            {
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                if (isInPortalGroup)
+                {
+                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
+                    {
+                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                        new PortalSecurity().SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Called when unverified user skin initialize.
