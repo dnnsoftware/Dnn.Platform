@@ -19,45 +19,28 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 
-namespace DotNetNuke.Web.Mvc
+namespace DotNetNuke.Web.Mvc.Routing
 {
-    public class MvcHttpModule : IHttpModule
+    public static class HttpContextExtensions
     {
-        public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
+        public const string ModuleRequestResultKey = "Dnn_ModuleRequestResult";
 
-        public void Init(HttpApplication context)
+        public static ModuleRequestResult GetModuleRequestResult(this HttpContextBase context)
         {
-            ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
-
-            ViewEngines.Engines.Clear();
-            ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
-            ViewEngines.Engines.Add(new RazorViewEngine());
-
-            context.BeginRequest += InitDnn;
+            return context.Items[ModuleRequestResultKey] as ModuleRequestResult;
         }
-        private static void InitDnn(object sender, EventArgs e)
+
+        public static bool HasModuleRequestResult(this HttpContextBase context)
         {
-            var app = sender as HttpApplication;
-            if (app != null && MvcServicePath.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
-            {
-                Initialize.Init(app);
-            }
+            return (context.Items[ModuleRequestResultKey] as ModuleRequestResult) != null;
         }
-        public void Dispose()
+
+        public static void SetModuleRequestResult(this HttpContextBase context, ModuleRequestResult moduleRequestResult)
         {
+            context.Items[ModuleRequestResultKey] = moduleRequestResult;
         }
     }
 }

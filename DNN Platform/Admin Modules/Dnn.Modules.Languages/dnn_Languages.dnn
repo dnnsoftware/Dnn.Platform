@@ -2,7 +2,7 @@
 	<packages>
 		<package name="DotNetNuke.Languages" type="Module" version="08.00.01">
 			<friendlyName>Languages</friendlyName>
-			<description></description>
+			<description>The Languages module provides a means to create, edit and verify language packs for use within DNN. </description>
 			<iconFile>~/Icons/Sigma/Languages_32X32_Standard.png</iconFile>
 			<owner>
 				<name>DNN</name>

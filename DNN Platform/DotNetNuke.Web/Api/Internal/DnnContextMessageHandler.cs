@@ -67,7 +67,20 @@ namespace DotNetNuke.Web.Api.Internal
         private static bool TabIsInPortalOrHost(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
-            return tab != null && (tab.PortalID == portalId || IsHostTab(tab));
+
+            return tab != null && (IsHostTab(tab) || tab.PortalID == portalId || InSamePortalGroup(tab.PortalID, portalId));
+        }
+
+        private static bool InSamePortalGroup(int portalId1, int portalId2)
+        {
+            var portal1 = PortalController.Instance.GetPortal(portalId1);
+            var portal2 = PortalController.Instance.GetPortal(portalId2);
+
+            return portal1 != null
+                       && portal2 != null
+                       && portal1.PortalGroupID > Null.NullInteger
+                       && portal2.PortalGroupID > Null.NullInteger
+                       && portal1.PortalGroupID == portal2.PortalGroupID;
         }
 
         private static bool IsHostTab(TabInfo tab)

@@ -677,23 +677,26 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
-            bool retValue;
+            bool passwordChanged;
 
             //Although we would hope that the caller has already validated the password,
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
+                passwordChanged = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+                if (passwordChanged)
+                {
+                    //Update User
+                    user.Membership.UpdatePassword = false;
+                    UpdateUser(user.PortalID, user);
+                }
             }
             else
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
 
         /// <summary>
@@ -705,7 +708,7 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A Boolean indicating success or failure.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
         {
-            bool retValue;
+            bool passwordChanged;
 
             Guid resetTokenGuid = new Guid(resetToken);
 
@@ -730,21 +733,24 @@ namespace DotNetNuke.Entities.Users
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+                passwordChanged = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
 
                 //update reset token values to ensure token is 1-time use
                 user.PasswordResetExpiration = DateTime.MinValue;
                 user.PasswordResetToken = Guid.NewGuid();
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+                if (passwordChanged)
+                {
+                    //Update User
+                    user.Membership.UpdatePassword = false;
+                    UpdateUser(user.PortalID, user);
+                }
             }
             else
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
 
         /// <summary>
@@ -757,7 +763,7 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A Boolean indicating success or failure.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
         {
-            bool retValue;
+            bool passwordChanged;
             errorMessage = Null.NullString;
             Guid resetTokenGuid = new Guid(resetToken);
 
@@ -787,9 +793,9 @@ namespace DotNetNuke.Entities.Users
             {
 	            try
 	            {
-					retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
+                    passwordChanged = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
 
-		            if (retValue)
+		            if (passwordChanged)
 		            {
 			            //update reset token values to ensure token is 1-time use
 			            user.PasswordResetExpiration = DateTime.MinValue;
@@ -808,7 +814,7 @@ namespace DotNetNuke.Entities.Users
 	            }
 	            catch (Exception)
 	            {
-		            retValue = false;
+                    passwordChanged = false;
 					errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
 	            }
                 

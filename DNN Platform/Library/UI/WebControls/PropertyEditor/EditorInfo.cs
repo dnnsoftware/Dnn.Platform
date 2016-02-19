@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
                 ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorType);
                 if (definitionEntry != null)
                 {
-                    editor = definitionEntry.Text;
+                    editor = definitionEntry.TextNonLocalized;
                 }
             }
             return editor;
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
             ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorValue);
             if (definitionEntry != null)
             {
-                editor = definitionEntry.Text;
+                editor = definitionEntry.TextNonLocalized;
             }
             return editor;
         }
