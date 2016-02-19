@@ -713,7 +713,7 @@ namespace DotNetNuke.Services.Localization
                 default:
                     foreach (TimeZoneInfo timeZone in TimeZoneInfo.GetSystemTimeZones())
                     {
-                        if (timeZone.BaseUtcOffset.TotalMinutes == timeZoneOffsetInMinutes)
+                        if (Math.Abs(timeZone.BaseUtcOffset.TotalMinutes - timeZoneOffsetInMinutes) < 0.001)
                         {
                             timeZoneInfo = timeZone;
                             break;
@@ -727,8 +727,13 @@ namespace DotNetNuke.Services.Localization
 
         public static void DeleteLanguage(Locale language)
         {
+            DeleteLanguage(language, false);
+        }
+
+        public static void DeleteLanguage(Locale language, bool isInstalling)
+        {
             //remove languages from all portals
-            RemoveLanguageFromPortals(language.LanguageId);
+            RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
             EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
@@ -1897,9 +1902,14 @@ namespace DotNetNuke.Services.Localization
 
         public static void RemoveLanguageFromPortals(int languageId)
         {
+            RemoveLanguageFromPortals(languageId, false);
+        }
+
+        public static void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+        {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageId);
+                RemoveLanguageFromPortal(portal.PortalID, languageId, isInstalling);
             }
         }
 
