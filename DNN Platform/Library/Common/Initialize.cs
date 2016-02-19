@@ -24,9 +24,6 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -45,6 +42,7 @@ using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Services.Installer.Blocker;
+using Microsoft.Win32;
 
 #endregion
 
@@ -189,7 +187,52 @@ namespace DotNetNuke.Common
                     Logger.Error(exc);
                 }
             }
+            else if (version == "4.0")
+            {
+                var release = GetReleaseFromRegistry();
+                if (release >= 394254)
+                {
+                    version = "4.6.1";
+                }
+                else if (release >= 393295)
+                {
+                    version = "4.6";
+                }
+                else if (release >= 379893)
+                {
+                    version = "4.5.2";
+                }
+                else if (release >= 378675)
+                {
+                    version = "4.5.1";
+                }
+                else if (release >= 378389)
+                {
+                    version = "4.5";
+                }
+            }
+
             return new Version(version);
+        }
+
+        private static int GetReleaseFromRegistry()
+        {
+            try
+            {
+                using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+                    .OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
+                {
+                    if (ndpKey?.GetValue("Release") != null)
+                    {
+                        return (int)ndpKey.GetValue("Release");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
+            return -1;
         }
 
         private static string InitializeApp(HttpApplication app, ref bool initialized)
@@ -313,7 +356,7 @@ namespace DotNetNuke.Common
             try
             {
                 ApplicationShutdownReason shutdownReason = HostingEnvironment.ShutdownReason;
-                string shutdownDetail = "";
+                string shutdownDetail;
                 switch (shutdownReason)
                 {
                     case ApplicationShutdownReason.BinDirChangeOrDirectoryRename:
