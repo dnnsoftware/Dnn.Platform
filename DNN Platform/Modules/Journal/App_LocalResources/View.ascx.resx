@@ -186,4 +186,7 @@
   <data name="WhoWillSee.Text" xml:space="preserve">
     <value>Who will see this?</value>
   </data>
+  <data name="GroupMembers.Text" xml:space="preserve">
+    <value>Group Members</value>
+  </data>
 </root>

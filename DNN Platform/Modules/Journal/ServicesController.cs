@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Journal.Internal;
@@ -116,8 +117,14 @@ namespace DotNetNuke.Modules.Journal
                 if (postData.GroupId > 0)
                 {
                     postData.ProfileId = -1;
+
+                    RoleInfo roleInfo = RoleController.Instance.GetRoleById(ActiveModule.OwnerPortalID, postData.GroupId);
+                    if (roleInfo != null && !roleInfo.IsPublic)
+                    {
+                        postData.SecuritySet = "R";
+                    }
                 }
-                
+
                 var ji = new JournalItem
                 {
                     JournalId = -1,
