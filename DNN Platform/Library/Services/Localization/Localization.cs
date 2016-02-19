@@ -1813,10 +1813,28 @@ namespace DotNetNuke.Services.Localization
             return localRole;
         }
 
+        private static IList<object> GetPortalLocalizations(int portalID)
+        {
+            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalID));
+        }
+
         public static void RemoveLanguageFromPortal(int portalID, int languageID)
         {
-            //Remove Translator Role from Portal
-            Locale language = LocaleController.Instance.GetLocale(languageID);
+            RemoveLanguageFromPortal(portalID, languageID, false);
+        }
+
+        public static void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+        {
+            if (!isInstalling)
+            {
+                var portalLocales = GetPortalLocalizations(portalID);
+                if (portalLocales.Count <= 1)
+                {
+                    throw new Exception("You are trying to delete the only Portal localization entry in the system. This is NOT allowd!");
+                }
+            }
+
+            var language = LocaleController.Instance.GetLocale(languageID);
             if (language != null)
             {
                 if (Config.GetFriendlyUrlProvider() == "advanced")
@@ -1862,6 +1880,7 @@ namespace DotNetNuke.Services.Localization
 
                 if (role != null)
                 {
+                    //Remove Translator Role from Portal
                     RoleController.Instance.DeleteRole(role);
                 }
 
