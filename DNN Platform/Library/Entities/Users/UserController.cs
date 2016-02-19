@@ -823,7 +823,7 @@ namespace DotNetNuke.Entities.Users
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
         /// -----------------------------------------------------------------------------
         /// <summary>
