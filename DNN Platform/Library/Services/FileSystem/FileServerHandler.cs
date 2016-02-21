@@ -152,13 +152,9 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 //get optional parameters
-                if (context.Request.QueryString["clientcache"] != null)
-                {
-                    blnClientCache = bool.Parse(context.Request.QueryString["clientcache"]);
-                }
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                    blnForceDownload = bool.Parse(context.Request.QueryString["forcedownload"]);
+                     bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
 
