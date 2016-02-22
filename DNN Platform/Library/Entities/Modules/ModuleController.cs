@@ -712,7 +712,7 @@ namespace DotNetNuke.Entities.Modules
                 if (dr.Read())
                 {
 					settingExist = true;
-	                existValue = dr.GetString(0);
+	                existValue = dr.GetString(1);
                 }
 
 				dr.Close();
