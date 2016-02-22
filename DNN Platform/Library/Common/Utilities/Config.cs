@@ -233,9 +233,8 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetDecryptionkey()
         {
-            Configuration config = WebConfigurationManager.OpenWebConfiguration(Globals.ApplicationPath);
-            MachineKeySection key = (MachineKeySection)config.GetSection("system.web/machineKey");
-            return key.DecryptionKey;
+            MachineKeySection key = System.Configuration.ConfigurationManager.GetSection("system.web/machineKey") as MachineKeySection;
+            return key?.DecryptionKey.ToString() ?? string.Empty;
         }
 
         /// -----------------------------------------------------------------------------
