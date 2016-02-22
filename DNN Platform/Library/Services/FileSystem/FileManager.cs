@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.FileSystem
                         {
                             contentFileName = UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
                             //This case will be to overwrite an existing file or initial file workflow
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
                         // Versioning
@@ -379,7 +379,7 @@ namespace DotNetNuke.Services.FileSystem
 	                {
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
 
                         if (needToWriteFile)
@@ -396,7 +396,7 @@ namespace DotNetNuke.Services.FileSystem
 
 		                if(folderWorkflow == null || !fileExists)
 						{
-                            ManageFileAdding(createdByUserID, folderWorkflow, ref fileExists, file);
+                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
 
@@ -546,22 +546,20 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, ref bool fileExists, FileInfo file)
+        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, bool fileExists, FileInfo file)
         {
-            var fileExistedPriorAction = fileExists;
-            if (folderWorkflow == null && fileExists)
+            if (folderWorkflow == null || !fileExists)
+            {
+                AddFile(file, createdByUserID);
+            }
+            else 
             {
                 //File Events for updating will not be fired. Only events for adding nust be fired
                 UpdateFile(file, true, false);
             }
-            else 
-            {                
-                AddFile(file, createdByUserID);
-                fileExists = true;
-            }
             if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
-                if (!fileExistedPriorAction) //if file exists it could have been published. So We don't have to update the field
+                if (!fileExists) //if file exists it could have been published. So We don't have to update the field
                 {
                     //Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
