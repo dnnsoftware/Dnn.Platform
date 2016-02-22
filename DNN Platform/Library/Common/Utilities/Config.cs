@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -232,12 +233,9 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetDecryptionkey()
         {
-            var configNav = Load();
-            var httpNode = configNav.SelectSingleNode("configuration//system.web//machineKey").CreateNavigator();
-
-            var result = XmlUtils.GetAttributeValue(httpNode, "decryptionKey");
-
-            return result;
+            Configuration config = WebConfigurationManager.OpenWebConfiguration(Globals.ApplicationPath);
+            MachineKeySection key = (MachineKeySection)config.GetSection("system.web/machineKey");
+            return key.DecryptionKey;
         }
 
         /// -----------------------------------------------------------------------------
