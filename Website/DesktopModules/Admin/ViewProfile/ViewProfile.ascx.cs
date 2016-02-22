@@ -80,8 +80,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			//throw 404 so that deleted profile is not reindexed
 			if(ProfileUser == null || ProfileUser.IsDeleted)
 			{
-    		    throw new HttpException(404, "Not Found");
-			}
+                UrlUtils.Handle404Exception(Response, PortalSettings.Current);
+            }
 
             ProcessQuerystring();
 
@@ -306,6 +306,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             }
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }
