@@ -422,42 +422,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>
         /// This is a utility method that can be called to update the version of the composite files.
         /// </summary>
+        [Obsolete("This method is not required anymore. The CRM vesion is now managed in host settings and site settings.")]
         public static void UpdateVersion()
         {
-            //open the config file
-            var configPath = HostingEnvironment.MapPath("~/web.config");
-
-            if (!String.IsNullOrEmpty(configPath))
-            {
-                var xmlConfig = new XmlDocument();
-                xmlConfig.Load(configPath);
-
-                //test for namespace added by Web Admin Tool
-                if (!String.IsNullOrEmpty(xmlConfig.DocumentElement.GetAttribute("xmlns")))
-                {
-                    //remove namespace
-                    string strDoc = xmlConfig.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");
-                    xmlConfig.LoadXml(strDoc);
-                }
-
-                XmlNode xmlDependency = xmlConfig.SelectSingleNode("configuration/clientDependency");
-                if (xmlDependency == null)
-                {
-                    xmlDependency = xmlConfig.SelectSingleNode("configuration/location/clientDependency");
-                }
-                if ((xmlDependency != null))
-                {
-                    XmlAttribute attrib = xmlDependency.Attributes["version"];
-                    if (attrib != null)
-                    {
-                        int version = Int32.Parse(attrib.InnerText);
-                        version += 1;
-                        attrib.InnerText = version.ToString();
-                    }
-                }
-
-                xmlConfig.Save(configPath);
-            }
+            
         }
 
         /// <summary>
