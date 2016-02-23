@@ -2141,6 +2141,12 @@ namespace DotNetNuke.Entities.Portals
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
+            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Items.Add("CreatingPortalId", portalId);
+            }
+
             string message = Null.NullString;
 
             if (portalId != -1)
@@ -2181,6 +2187,12 @@ namespace DotNetNuke.Entities.Portals
                 //should be no exception, but suppress just in case
             }
 
+            //remove the portal id from http context as there is no exception.
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+            {
+                HttpContext.Current.Items.Remove("CreatingPortalId");
+            }
+
             return portalId;
         }
 
@@ -2203,6 +2215,12 @@ namespace DotNetNuke.Entities.Portals
         {
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
+
+            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Items.Add("CreatingPortalId", portalId);
+            }
 
             string message = Null.NullString;
 
@@ -2249,6 +2267,12 @@ namespace DotNetNuke.Entities.Portals
             catch (Exception)
             {
                 //should be no exception, but suppress just in case
+            }
+
+            //remove the portal id from http context as there is no exception.
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+            {
+                HttpContext.Current.Items.Remove("CreatingPortalId");
             }
 
             return portalId;
