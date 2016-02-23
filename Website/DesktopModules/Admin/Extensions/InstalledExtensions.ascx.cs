@@ -300,28 +300,28 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 switch (package.PackageType)
                 {
                     case "Module":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
                     case "Container":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
                     case "Skin":
                     case "SkinObject":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
                     case "AuthenticationSystem":
                     case "Auth_System":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
                     case "CoreLanguagePack":
                     case "ExtensionLanguagePack":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultLanguageImage;
+                        return !string.IsNullOrEmpty(package.IconFile) && package.IconFile != "N\\A" ? package.IconFile : Globals.ImagePath + DefaultLanguageImage;
                     case "Provider":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
                     case "Widget":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultWidgetImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultWidgetImage;
                     case "DashboardControl":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultDashboardImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultDashboardImage;
                     case "Library":
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultLibraryImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultLibraryImage;
                     default:
-                        return (package.IconFile != string.Empty) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                        return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
                 }
             }
             return null;
