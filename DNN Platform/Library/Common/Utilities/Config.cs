@@ -21,13 +21,13 @@
 #region Usings
 
 using System;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web.Configuration;
 using System.Xml;
 using System.Xml.XPath;
+using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -641,7 +641,8 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now);
+                RetryableAction.Retry5TimesWith2SecondsDelay(
+                    () => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
                 return true;
             }
             catch (Exception exc)
