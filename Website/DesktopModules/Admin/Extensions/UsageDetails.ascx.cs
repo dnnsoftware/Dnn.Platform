@@ -195,9 +195,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         if ((tab.BreadCrumbs.Count - 1 == index))
                         {
                             string url;
-                            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList();
-                            var alias = aliases[0];
-                            url = Globals.AddHTTP(alias.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            //use the current portal alias for host tabs
+                            url = Globals.AddHTTP(t.PortalID == Null.NullInteger? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList()[0].HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else
