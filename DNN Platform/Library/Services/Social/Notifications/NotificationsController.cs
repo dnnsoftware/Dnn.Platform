@@ -397,25 +397,18 @@ namespace DotNetNuke.Services.Social.Notifications
 			_dataService.MarkToastSent(notificationId, userId);
 		}
 
-		public IList<Notification> GetToasts(UserInfo userInfo)
-		{
-			var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
-			var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
-			if (toasts == null)
-			{
-				toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
-				foreach (var message in toasts)
-				{
-					_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
-				}
+        public IList<Notification> GetToasts(UserInfo userInfo)
+        {
+            var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+            if (toasts == null) return null;
+            foreach (var message in toasts)
+            {
+                _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+            }
+            return toasts;
+        }
 
-				DataCache.SetCache(cacheKey, toasts);
-			}
-
-			return toasts;
-		}
-
-		#endregion
+        #endregion
 
         #region Internal Methods
 
