@@ -205,9 +205,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 TabInfo objTab;
                 if (optMode.SelectedValue == "ADD")
                 {
-                    if (string.IsNullOrEmpty(txtTabName.Text))
+                    //Check for invalid
+                    string invalidType;
+                    if (!TabController.IsValidTabName(txtTabName.Text, out invalidType))
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SpecifyName", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        var warningMessage = string.Format(Localization.GetString(invalidType, LocalResourceFile), txtTabName.Text);
+                        UI.Skins.Skin.AddModuleMessage(this, warningMessage, ModuleMessage.ModuleMessageType.RedError);
                         return;
                     }
 
