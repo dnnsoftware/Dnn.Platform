@@ -3214,18 +3214,63 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var nt = NotificationsController.Instance.GetNotificationType(name);
 
-                var actions = NotificationsController.Instance.GetNotificationTypeActions(nt.NotificationTypeId).ToList();
-
-                if (actions.Any())
+                if (nt != null)
                 {
+                    var actions = NotificationsController.Instance.GetNotificationTypeActions(nt.NotificationTypeId).ToList();
 
-                    foreach (var action in actions)
+                    if (actions.Any())
                     {
-                        action.APICall = action.APICall.Replace(".ashx", "");
-                        NotificationsController.Instance.DeleteNotificationTypeAction(action.NotificationTypeActionId);
-                    }
 
-                    NotificationsController.Instance.SetNotificationTypeActions(actions, nt.NotificationTypeId);
+                        foreach (var action in actions)
+                        {
+                            action.APICall = action.APICall.Replace(".ashx", "");
+                            NotificationsController.Instance.DeleteNotificationTypeAction(
+                                action.NotificationTypeActionId);
+                        }
+
+                        NotificationsController.Instance.SetNotificationTypeActions(actions, nt.NotificationTypeId);
+                    }
+                }
+                else
+                {
+                    switch (name)
+                    {
+                        case "FriendRequest":
+                            var friendRequestType = new NotificationType { Name = name, Description = "Friend Request" };
+                            var friendRequestTypeActions = new List<NotificationTypeAction>();
+                            friendRequestTypeActions.Add(new NotificationTypeAction
+                            {
+                                NameResourceKey = "Accept",
+                                DescriptionResourceKey = "AcceptFriend",
+                                APICall = "DesktopModules/InternalServices/API/RelationshipService/AcceptFriend"
+                            });
+                            NotificationsController.Instance.CreateNotificationType(friendRequestType);
+                            NotificationsController.Instance.SetNotificationTypeActions(friendRequestTypeActions, friendRequestType.NotificationTypeId);
+                            break;
+                        case "FollowerRequest":
+                            var followerRequestType = new NotificationType { Name = name, Description = "Follower Request" };
+                            NotificationsController.Instance.CreateNotificationType(followerRequestType);
+                            break;
+                        case "FollowBackRequest":
+                            var followBackRequestType = new NotificationType { Name = name, Description = "Follow Back Request" };
+                            var followBackRequestTypeActions = new List<NotificationTypeAction>();
+                            followBackRequestTypeActions.Add(new NotificationTypeAction
+                            {
+                                NameResourceKey = "FollowBack",
+                                DescriptionResourceKey = "FollowBack",
+                                ConfirmResourceKey = "",
+                                APICall = "DesktopModules/InternalServices/API/RelationshipService/FollowBack"
+                            });
+                            NotificationsController.Instance.CreateNotificationType(followBackRequestType);
+                            NotificationsController.Instance.SetNotificationTypeActions(followBackRequestTypeActions, followBackRequestType.NotificationTypeId);
+                            break;
+                        case "TranslationSubmitted":
+                            var translationSubmittedType = new NotificationType { Name = name, Description = "Translation Submitted" };
+                            NotificationsController.Instance.CreateNotificationType(translationSubmittedType);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
