@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="plFolder.Text" xml:space="preserve">
     <value>Folder:</value>
@@ -192,7 +192,7 @@
   <data name="valTemplate.ErrorMessage" xml:space="preserve">
     <value>Please select a template.</value>
   </data>
-  <data name="SpecifyName.Text" xml:space="preserve">
+  <data name="EmptyTabName.Text" xml:space="preserve">
     <value>You must specify a name for the page.</value>
   </data>
   <data name="InsertAfter.Text" xml:space="preserve">
@@ -221,5 +221,8 @@
   </data>
   <data name="TabRecycled.Text" xml:space="preserve">
     <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
+  </data>
+  <data name="InvalidTabName.Text" xml:space="preserve">
+    <value>This is an invalid Page Name</value>
   </data>
 </root>
