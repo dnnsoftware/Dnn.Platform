@@ -1,4 +1,4 @@
-<h3>RecycelBin</h3>
+<h3>Console</h3>
 <div class="License">
 	<h3>About Console</h3>
 	<p class="Owner">

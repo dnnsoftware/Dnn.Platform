@@ -1,4 +1,4 @@
-<h3>RecycelBin</h3>
+<h3>Configuration Manager</h3>
 <div class="License">
 	<h3>About Configuration Manager</h3>
 	<p class="Owner">

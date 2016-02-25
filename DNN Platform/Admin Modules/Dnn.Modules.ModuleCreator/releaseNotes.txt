@@ -1,4 +1,4 @@
-<h3>RecycelBin</h3>
+<h3>Module Creator</h3>
 <div class="License">
 	<h3>About Module Creator</h3>
 	<p class="Owner">
