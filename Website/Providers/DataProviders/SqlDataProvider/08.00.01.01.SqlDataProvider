@@ -1583,3 +1583,10 @@ UPDATE {databaseOwner}[{objectQualifier}ModuleDefinitions]
     WHERE DesktopModuleID = @DesktopModuleId
 GO
 
+/***** DNN-8467 *****/
+DELETE p
+FROM {databaseOwner}[{objectQualifier}PortalDesktopModules] p
+JOIN {databaseOwner}[{objectQualifier}desktopmodules] m
+ON p.DesktopModuleID = m.DesktopModuleID
+WHERE m.ModuleName = '51Degrees.mobi'
+GO
