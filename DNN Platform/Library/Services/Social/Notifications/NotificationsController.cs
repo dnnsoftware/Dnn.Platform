@@ -399,14 +399,24 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public IList<Notification> GetToasts(UserInfo userInfo)
         {
-            var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
-            if (toasts == null) return null;
-            foreach (var message in toasts)
+            var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
+            var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
+
+            if (toasts == null)
             {
-                _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+                foreach (var message in toasts)
+                {
+                    _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                }
+                //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
+                //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
+                DataCache.SetCache(cacheKey, new List<Notification>());
             }
+
             return toasts;
         }
+
 
         #endregion
 
