@@ -35,6 +35,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Entities.Tabs.TabVersions;
 
 #endregion
 
@@ -492,7 +493,10 @@ namespace Dnn.Modules.Languages
                                         var hfTabID = (HiddenField)rDnnPage.Items[riDnnModule.ItemIndex].FindControl("hfTabID");
                                         var tabId = int.Parse(hfTabID.Value);
                                         var toTabInfo = TabController.Instance.GetTab(tabId, PortalSettings.PortalId, false);
+
+                                        DisableTabVersioningAndWorkflow(toTabInfo);
                                         ModuleController.Instance.CopyModule(miCopy, toTabInfo, Null.NullString, true);
+                                        EnableTabVersioningAndWorkflow(toTabInfo);
                                         var localizedModule = ModuleController.Instance.GetModule(miCopy.ModuleID, tabId, false);
                                         ModuleController.Instance.LocalizeModule(localizedModule, LocaleController.Instance.GetLocale(localizedModule.CultureCode));
                                     }
@@ -663,6 +667,34 @@ namespace Dnn.Modules.Languages
                         ModuleController.Instance.DeleteTabModule(dnnModule.TabId, dnnModule.ModuleID, true);
                     }
                 }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private static void EnableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            if (TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, true);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
+            {
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
+            }
+        }
+
+        private static void DisableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            if (TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
+            {
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
         }
 
