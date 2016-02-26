@@ -253,7 +253,14 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                 //if defaultConfigFile is missing there is a big problem
                 //let the error propogate to the module level
-                File.Copy(defaultConfigFile, path);
+                try
+                {
+                    File.Copy(defaultConfigFile, path);
+                }
+                catch (Exception)
+                {
+                    //do nothing - stops exception when 2 requests on one page compete to copy file
+                }
             }
         }
 
