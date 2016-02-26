@@ -1590,3 +1590,44 @@ JOIN {databaseOwner}[{objectQualifier}desktopmodules] m
 ON p.DesktopModuleID = m.DesktopModuleID
 WHERE m.ModuleName = '51Degrees.mobi'
 GO
+
+/***** DNN-27129 *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetNonExpiredUsersByRoleName]
+	@PortalID	INT,
+	@Rolename	NVARCHAR(50)
+AS
+	DECLARE @UserPortalId INT
+	DECLARE @PortalGroupId INT
+	SELECT @PortalGroupId = PortalGroupId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalID
+	IF EXISTS(SELECT PortalGroupID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId)
+	BEGIN
+		SELECT @UserPortalId = MasterPortalID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId
+	END
+	ELSE
+	BEGIN
+		SELECT @UserPortalId = @PortalID
+	END
+	SELECT     
+		U.*, 
+		UP.PortalId, 
+		UP.Authorised, 
+		UP.IsDeleted,
+		UP.RefreshRoles,
+		UP.VanityUrl
+	FROM {databaseOwner}{objectQualifier}UserPortals AS UP 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}UserRoles  UR 
+			INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		ON UP.UserId = U.UserID	
+	WHERE ( UP.PortalId = @UserPortalId OR @UserPortalId IS Null )
+		AND (UP.IsDeleted = 0 OR UP.IsDeleted Is NULL)
+		AND (R.RoleName = @Rolename)
+		AND (R.PortalId = @PortalID OR @PortalID IS Null )
+		AND (UR.ExpiryDate >= GETDATE() OR UR.ExpiryDate IS NULL)
+	ORDER BY U.FirstName + ' ' + U.LastName
+
+GO
