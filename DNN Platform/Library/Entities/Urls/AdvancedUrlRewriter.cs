@@ -497,9 +497,28 @@ namespace DotNetNuke.Entities.Urls
                         //add the portal settings to the app context if the portal alias has been found and is correct
                         if (result.PortalId != -1 && result.PortalAlias != null)
                         {
-                            Globals.SetApplicationName(result.PortalId);
-                            // load the PortalSettings into current context 
-                            var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
+                            //for invalid tab id other than -1, show the 404 page
+                            TabInfo tabInfo = TabController.Instance.GetTab(result.TabId, result.PortalId, true);
+                            if (tabInfo == null && result.TabId > -1)
+                            {
+                                finished = true;
+
+                                if (showDebug)
+                                {
+                                    ShowDebugData(context, requestUri.AbsoluteUri, result, null);
+                                }
+
+                                //show the 404 page if configured
+                                result.Action = ActionType.Output404;
+                                result.Reason = RedirectReason.Requested_404;
+                                response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+                                Handle404OrException(settings, context, null, result, true, showDebug);
+                            }
+                            else
+                            {
+                                Globals.SetApplicationName(result.PortalId);
+                                // load the PortalSettings into current context 
+                                var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
                             //set the primary alias if one was specified
                             if (result.PrimaryAlias != null) portalSettings.PrimaryAlias = result.PrimaryAlias;
 
@@ -615,6 +634,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+                    }
                         else
                         {
                             // alias does not exist in database 
