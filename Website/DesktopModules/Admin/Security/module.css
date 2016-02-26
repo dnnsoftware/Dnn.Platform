@@ -21,7 +21,10 @@
 {
     margin-bottom: 1em;
 }
-
+.dnnGrid.dnnSecurityRolesGrid .rgRow td, .dnnGrid.dnnSecurityRolesGrid .rgAltRow td {
+    max-width: 200px;
+    word-wrap: break-word;
+}
 .dnnSecurityRoles{
     width: 100%;
 }
