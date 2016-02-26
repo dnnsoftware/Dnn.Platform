@@ -122,14 +122,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if (!Page.IsPostBack)
                 {
                     BindFilterList();
-                    if (FilterUsageList.Visible)
-                    {
-                        BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
-                    }
-                    else
-                    {
-                        BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
-                    }
+                    BindUsageList();
                 }
             }
             catch (Exception ex)
@@ -159,7 +152,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             try
             {
                 UsageList.PageIndex = e.NewPageIndex;
-                BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
+                BindUsageList();
             }
             catch (Exception ex)
             {
@@ -218,6 +211,18 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2");
                     FilterUsageList.Items[0].Selected = true;
                 }
+            }
+        }
+
+	    private void BindUsageList()
+	    {
+            if (FilterUsageList.Visible)
+            {
+                BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
+            }
+            else
+            {
+                BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
             }
         }
 
