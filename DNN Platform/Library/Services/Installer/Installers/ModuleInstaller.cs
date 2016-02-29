@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 
 #endregion
 
@@ -51,10 +52,10 @@ namespace DotNetNuke.Services.Installer.Installers
         private DesktopModuleInfo _desktopModule;
         private EventMessage _eventMessage;
         private DesktopModuleInfo _installedDesktopModule;
-		
-		#endregion
 
-		#region Public Properties
+        #endregion
+
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -87,7 +88,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(Package.PackageID);
                 if (tempDesktopModule != null)
                 {
-					//Remove CodeSubDirectory
+                    var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
+                    //Remove CodeSubDirectory
                     if ((_desktopModule != null) && (!string.IsNullOrEmpty(_desktopModule.CodeSubDirectory)))
                     {
                         Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
@@ -138,7 +140,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
-                    
+                    //Remove all the tab versions related with the module.
+                    foreach (var module in modules)
+                    {
+                        var moduleInfo = module as ModuleInfo;
+                        if (moduleInfo != null)
+                            TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
+                    }
                 }
 
             }

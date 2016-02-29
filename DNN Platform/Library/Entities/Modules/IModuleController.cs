@@ -200,6 +200,13 @@ namespace DotNetNuke.Entities.Modules
         ArrayList GetModulesByDefinition(int portalID, string definitionName);
 
         /// <summary>
+        /// Gets the modules by DesktopModuleId.
+        /// </summary>
+        /// <param name="desktopModuleId">The Desktop Module Id.</param>
+        /// <returns>module collection</returns>
+        ArrayList GetModulesByDesktopModuleId(int desktopModuleId);
+
+        /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable
         /// either by inheriting from ModuleSearchBase or implementing the older ISearchable interface.
         /// </summary>

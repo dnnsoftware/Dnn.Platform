@@ -94,6 +94,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             Provider.DeleteTabVersion(tabVersionId);
             ClearCache(tabId);
         }
+
+        public void DeleteTabVersionDetailByModule(int moduleId)
+        {
+            Provider.DeleteTabVersionDetailByModule(moduleId);
+        }
         #endregion
 
         #region Private Methods
