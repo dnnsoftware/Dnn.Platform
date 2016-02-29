@@ -164,6 +164,12 @@ namespace DotNetNuke.Services.Search
             {
                 searchItem.ModuleDefId = module.ModuleDefID;
                 searchItem.ModuleId = module.ModuleID;
+
+                if (Null.IsNull(searchItem.PortalId))
+                {
+                    searchItem.PortalId = module.PortalID;
+                }
+
                 if (string.IsNullOrEmpty(searchItem.CultureCode))
                 {
                     searchItem.CultureCode = module.CultureCode;
