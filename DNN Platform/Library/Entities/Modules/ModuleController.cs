@@ -32,7 +32,6 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
@@ -215,7 +214,7 @@ namespace DotNetNuke.Entities.Modules
             return IsInstance;
         }
 
-        private void ClearModuleSettingsCache(int moduleId)
+        private static void ClearModuleSettingsCache(int moduleId)
         {
             foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
             {
@@ -224,12 +223,20 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private void ClearTabModuleSettingsCache(int tabModuleId)
+        private static void ClearTabModuleSettingsCache(int tabModuleId, string settingName)
         {
+            var portalId = -1;
             foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
             {
-                string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
+                var cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
+
+                if (portalId != tab.PortalID)
+                {
+                    portalId = tab.PortalID;
+                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? "");
+                    DataCache.RemoveCache(cacheKey);
+                }
             }
         }
 
@@ -705,7 +712,7 @@ namespace DotNetNuke.Entities.Modules
                 if (dr.Read())
                 {
 					settingExist = true;
-	                existValue = dr.GetString(0);
+	                existValue = dr.GetString(1);
                 }
 
 				dr.Close();
@@ -825,6 +832,20 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 ClearCache(moduleInfo.TabID);
+            }
+        }
+
+        /// <summary>
+        /// Update content item when the module title changed.
+        /// </summary>
+        /// <param name="module"></param>
+        private void UpdateContentItem(ModuleInfo module)
+        {
+            IContentController contentController = Util.GetContentController();
+            if (module.Content != module.ModuleTitle)
+            {
+                module.Content = module.ModuleTitle;
+                contentController.UpdateContentItem(module);
             }
         }
 
@@ -1131,9 +1152,6 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "module"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   20110-05-10   Modified: Added update tabmodule versionguids
-        /// </history>
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType  = ContentType.Module;
@@ -1202,21 +1220,14 @@ namespace DotNetNuke.Entities.Modules
         {
             //Get the module
             ModuleInfo module = GetModule(moduleId, Null.NullInteger, true);
-
             //Delete Module
             dataProvider.DeleteModule(moduleId);
 
             //Remove the Content Item
-            IContentController contentController = Util.GetContentController();
             if (module != null && module.ContentItemId > Null.NullInteger)
             {
+                IContentController contentController = Util.GetContentController();
                 contentController.DeleteContentItem(module);
-            }
-
-            //Remove any child Content Items
-            foreach (var contentItem in contentController.GetContentItemsByModuleId(moduleId))
-            {
-                contentController.DeleteContentItem(contentItem);
             }
 
             //Log deletion
@@ -1239,10 +1250,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="moduleId">ID of the affected module</param>
         /// <param name="settingName">Name of the setting to be deleted</param>
-        /// <history>
-        ///    [sleupold]   2007-09-24   documented
-        ///    [vnguyen]    2010-05-10   Modified: Added update tab module version
-        /// </history>
         public void DeleteModuleSetting(int moduleId, string settingName)
         {
             dataProvider.DeleteModuleSetting(moduleId, settingName);
@@ -1285,7 +1292,7 @@ namespace DotNetNuke.Entities.Modules
             log.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             LogController.Instance.AddLog(log);
-            ClearTabModuleSettingsCache(tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId, settingName);
         }
 
         /// <summary>
@@ -1577,6 +1584,26 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
+        /// Gets the modules by DesktopModuleId.
+        /// </summary>
+        /// <param name="desktopModuleId">The Desktop Module Id.</param>
+        /// <returns>module collection</returns>
+        public ArrayList GetModulesByDesktopModuleId(int desktopModuleId)
+        {
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId);
+            var modules = new ArrayList();
+            foreach (var moduleDefinition in moduleDefinitions)
+            {
+                var portals = PortalController.Instance.GetPortals();
+                foreach (PortalInfo portal in portals)
+                {
+                    modules.AddRange(GetModulesByDefinition(portal.PortalID, moduleDefinition.Value.DefinitionName));
+                }
+            }
+            return modules;
+        }
+
+        /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable
         /// either by inheriting from ModuleSearchBase or implementing the older ISearchable interface.
         /// </summary>
@@ -1594,7 +1621,10 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An ModuleInfo object</returns>
         public ModuleInfo GetTabModule(int tabModuleID)
         {
-            return CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID));
+            var cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, tabModuleID);
+            return CBO.GetCachedObject<ModuleInfo>(
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                    c => CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID)));
         }
 
         /// <summary>
@@ -1604,7 +1634,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>Dictionary of ModuleID and ModuleInfo</returns>
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
-            string cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
+            var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
                                                                             DataCache.TabModuleCacheTimeOut,
                                                                             DataCache.TabModuleCachePriority),
@@ -1778,9 +1808,16 @@ namespace DotNetNuke.Entities.Modules
         public void UpdateModule(ModuleInfo module)
         {
             //Update ContentItem If neccessary
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            if (module.ModuleID != Null.NullInteger)
             {
-                CreateContentItem(module);
+                if (module.ContentItemId == Null.NullInteger)
+                {
+                    CreateContentItem(module);
+                }
+                else
+                {
+                    UpdateContentItem(module);
+                }
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -2088,7 +2125,7 @@ namespace DotNetNuke.Entities.Modules
                 //Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
-            ClearTabModuleSettingsCache(tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId, settingName);
         }
 
         /// <summary>

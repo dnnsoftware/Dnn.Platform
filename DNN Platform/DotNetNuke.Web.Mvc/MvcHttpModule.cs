@@ -22,9 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Web.Mvc.Framework;
@@ -34,6 +36,8 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHttpModule : IHttpModule
     {
+        public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
+
         public void Init(HttpApplication context)
         {
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
@@ -41,8 +45,17 @@ namespace DotNetNuke.Web.Mvc
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
             ViewEngines.Engines.Add(new RazorViewEngine());
-        }
 
+            context.BeginRequest += InitDnn;
+        }
+        private static void InitDnn(object sender, EventArgs e)
+        {
+            var app = sender as HttpApplication;
+            if (app != null && MvcServicePath.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+            {
+                Initialize.Init(app);
+            }
+        }
         public void Dispose()
         {
         }

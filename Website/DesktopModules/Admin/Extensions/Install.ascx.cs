@@ -53,9 +53,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]   07/26/2007    Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     partial class Install : ModuleUserControlBase
     {
@@ -87,9 +84,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the FileName for the Uploade file
         /// </summary>
-        /// <history>
-        ///     [cnurse]   01/20/2009    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FileName
         {
@@ -107,9 +101,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Installer
         /// </summary>
-        /// <history>
-        ///     [cnurse]   08/13/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected Installer Installer
         {
@@ -123,9 +114,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Path to the Manifest File
         /// </summary>
-        /// <history>
-        ///     [cnurse]   08/13/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ManifestFile
         {
@@ -143,9 +131,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Package
         /// </summary>
-        /// <history>
-        ///     [cnurse]   08/13/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PackageInfo Package
         {
@@ -159,9 +144,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets the Package Type
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PackageType PackageType
         {
@@ -174,7 +156,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         pType = Request.QueryString["ptype"];
                     }
-                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == pType);
+                    _PackageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(pType, StringComparison.OrdinalIgnoreCase));
                 }
                 return _PackageType;
             }
@@ -197,9 +179,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets the Return Url
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ReturnURL
         {
@@ -225,9 +204,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets and sets the Temporary Installation Folder
         /// </summary>
-        /// <history>
-        ///     [cnurse]   08/13/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string TempInstallFolder
         {
@@ -249,9 +225,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine binds the package to the Property Editor
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindPackage()
         {
@@ -297,9 +270,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine checks the Access Security
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
@@ -313,9 +283,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine creates the Installer
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CreateInstaller()
         {
@@ -381,9 +348,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine installs the uploaded package
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void InstallPackage(WizardNavigationEventArgs e)
         {
@@ -440,25 +404,25 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 packageType = Request.QueryString["ptype"];
             }
-            switch (packageType)
+            switch (packageType.ToLowerInvariant())
             {
-                case "Auth_System":
+                case "auth_system":
                     installFolder = "AuthSystem";
                     break;
-                case "CoreLanguagePack":
-                case "ExtensionLanguagePack":
+                case "corelanguagepack":
+                case "extensionlanguagepack":
                     installFolder = "Language";
                     break;
-                case "JavaScript_Library":
+                case "javascript_library":
                     installFolder = "JavaScriptLibrary";
                     break;
-                case "Module":
-                case "Skin":
-                case "Container":
-                case "Provider":
+                case "module":
+                case "skin":
+                case "container":
+                case "provider":
                     installFolder = packageType;
                     break;
-                case "Library":
+                case "library":
                     installFolder = "Module";
                     break;
                 default:
@@ -701,9 +665,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -798,9 +759,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void wizInstall_CancelButtonClick(object sender, EventArgs e)
         {
@@ -810,6 +768,20 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 {
                     Globals.DeleteFolderRecursive(TempInstallFolder);
                 }
+
+                if (PackageType != null)
+                {
+                    if (PackageType.PackageType == "CoreLanguagePack" || PackageType.PackageType == "ExtensionLanguagePack")
+                    {
+                        var lpInstallFileName = String.Format("{0}\\Install\\{1}\\{2}", Globals.ApplicationMapPath,
+                            "Language", "installlanguage.resources");
+                        if (File.Exists(lpInstallFileName))
+                        {
+                            File.Delete(lpInstallFileName);
+                        }
+                    }
+                }
+
 				//Redirect to Definitions page
                 Response.Redirect(ReturnURL, true);
             }
@@ -825,9 +797,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void wizInstall_FinishButtonClick(object sender, WizardNavigationEventArgs e)
         {
@@ -841,9 +810,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void wizInstall_NextButtonClick(object sender, WizardNavigationEventArgs e)
         {

@@ -40,7 +40,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utils;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -53,6 +52,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+using System.Web;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.InternalServices
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
-        private static readonly Regex UserFolderEx = new Regex("users/\\d+/\\d+/(\\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public class FolderItemDTO
         {
@@ -257,13 +257,7 @@ namespace DotNetNuke.Web.InternalServices
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
                     return savedFileDto;
                 }
-
-                if (!IsAllowedExtension(extension))
-                {
-                    errorMessage = GetLocalizedString("ExtensionNotAllowed");
-                    return savedFileDto;
-                }
-
+            
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
@@ -308,6 +302,11 @@ namespace DotNetNuke.Web.InternalServices
                 savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
             }
+            catch (InvalidFileExtensionException)
+            {
+                errorMessage = GetLocalizedString("ExtensionNotAllowed");
+                return savedFileDto;
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex);
@@ -334,7 +333,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var image = (FileInfo)FileManager.Instance.GetFile(fileId);
 
-            if (image != null && IsAllowedExtension(image.Extension) && IsImageExtension(image.Extension))
+            if (image != null && IsImageExtension(image.Extension))
             {
                 var imageUrl = FileManager.Instance.GetUrl(image);
                 return imageUrl;
@@ -354,12 +353,6 @@ namespace DotNetNuke.Web.InternalServices
         {
             var name = fileName.ToUpper();
             return ImageExtensions.Any(extension => name.EndsWith("." + extension));
-        }
-
-        private static bool IsAllowedExtension(string extension)
-        {
-            return !string.IsNullOrEmpty(extension)
-                   && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension);
         }
 
         public class UploadByUrlDto
@@ -426,12 +419,6 @@ namespace DotNetNuke.Web.InternalServices
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
-                {
-                    result.Message = GetLocalizedString("ExtensionNotAllowed");
-                    return result;
-                }
-
-                if (!IsAllowedExtension(extension))
                 {
                     result.Message = GetLocalizedString("ExtensionNotAllowed");
                     return result;
@@ -524,6 +511,11 @@ namespace DotNetNuke.Web.InternalServices
 
                 return result;
             }
+            catch (InvalidFileExtensionException)
+            { 
+                result.Message = GetLocalizedString("ExtensionNotAllowed");
+                return result;
+            }
             catch (Exception exe)
             {
                 Logger.Error(exe);
@@ -605,7 +597,7 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
-                                if (Regex.Match(fileName, "[\\\\/]\\.\\.[\\\\/]").Success==false )
+                                if (Globals.FileEscapingRegex.Match(fileName).Success==false )
                                     {
                                         stream = item.ReadAsStreamAsync().Result;
                                     }
@@ -673,7 +665,7 @@ namespace DotNetNuke.Web.InternalServices
 	            var fileName = GetFileName(response);
 	            if (string.IsNullOrEmpty(fileName))
 	            {
-		            fileName = new Uri(dto.Url).Segments.Last();
+		            fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
 	            }
 	            result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);

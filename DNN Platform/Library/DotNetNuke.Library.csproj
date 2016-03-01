@@ -73,32 +73,34 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CountryListBox, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CountryListBox">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="dotnetnuke.log4net">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Services.Syndication">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
@@ -119,13 +121,17 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="SchwabenCode.QuickIO">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
@@ -177,7 +183,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -187,9 +192,22 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapper.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
+    <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -706,6 +724,33 @@
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\GeneratedImage\IPCount.cs" />
+    <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
+    <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageBrightnessTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageContrastTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGammaTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGreyscaleTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageInvertTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageResizeTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageRotateFlipTransform.cs" />
+    <Compile Include="Services\GeneratedImage\GeneratedImage.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandlerInternal.cs" />
+    <Compile Include="Services\GeneratedImage\ImageInfo.cs" />
+    <Compile Include="Services\GeneratedImage\ImageParameter.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\GrayscaleQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\OctreeQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\PaletteQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\Quantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageResizeMode.cs" />
+    <Compile Include="Services\GeneratedImage\ImageTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\ImageFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
+    <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
+    <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
@@ -717,6 +762,12 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryResponseFilter.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
@@ -1590,12 +1641,9 @@
     <Compile Include="UI\WebControls\DataGrids\RolesSelectionGrid.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumn.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumnTemplate.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStartedOptions.cs" />
     <Compile Include="UI\WebControls\DualListBox.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventArgs.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventHandler.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStarted.cs" />
-    <Compile Include="Services\GettingStarted\GettingStartedController.cs" />
     <Compile Include="UI\WebControls\LanguageSelector.cs" />
     <Compile Include="UI\WebControls\LiteralTemplate.cs" />
     <Compile Include="UI\WebControls\NavDataSource\NavDataPageHierarchicalEnumerable.cs" />
@@ -1664,7 +1712,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingInfo.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
-    <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
     <None Include="Module.build">
       <SubType>Designer</SubType>

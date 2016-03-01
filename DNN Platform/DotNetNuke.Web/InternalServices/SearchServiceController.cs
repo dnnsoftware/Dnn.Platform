@@ -49,6 +49,8 @@ namespace DotNetNuke.Web.InternalServices
     [AllowAnonymous]
     public class SearchServiceController : DnnApiController
     {
+        private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         public class SynonymsGroupDto
         {
             public int Id { get; set; }
@@ -234,7 +236,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = searchResults.TotalHits;
-            more = searchResults.Results.Count == searchQuery.PageSize;
+            more = searchResults.Results.Count > searchQuery.PageSize;
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
@@ -335,7 +337,7 @@ namespace DotNetNuke.Web.InternalServices
                 //if the document type is user, then try to add user pic into preview's custom attributes.
                 if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
                 {
-                    var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
+                    var match = GroupedBasicViewRegex.Match(preview.DocumentUrl);
                     if (match.Success)
                     {
                         var userid = Convert.ToInt32(match.Groups[2].Value);
@@ -472,7 +474,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
 
@@ -526,7 +528,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
 

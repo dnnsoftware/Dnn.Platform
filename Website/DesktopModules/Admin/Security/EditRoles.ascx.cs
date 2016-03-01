@@ -53,11 +53,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class EditRoles : PortalModuleBase
     {
         #region Private Members
@@ -91,10 +86,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    01/05/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void BindGroups()
         {
             var arrGroups = RoleController.GetRoleGroups(PortalId);
@@ -139,11 +130,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -341,12 +327,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// 	[jlucarino]	2/23/2009	Added CreatedByUserID and LastModifiedByUserID
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnUpdateClick(object sender, EventArgs e)
         {
             try
@@ -387,7 +367,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         PortalID = PortalId,
                         RoleID = _roleID,
                         RoleGroupID = int.Parse(cboRoleGroups.SelectedValue),
-                        RoleName = txtRoleName.Text,
+                        RoleName = txtRoleName.Text.Trim(),
                         Description = txtDescription.Text,
                         ServiceFee = sglServiceFee,
                         BillingPeriod = intBillingPeriod,
@@ -405,7 +385,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (_roleID == -1)
                     {
-                        if (RoleController.Instance.GetRole(PortalId, r => r.RoleName == role.RoleName) == null)
+                        var rolename = role.RoleName.ToUpperInvariant();
+                        if (RoleController.Instance.GetRole(PortalId,
+                            r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
                         {
                             RoleController.Instance.AddRole(role, chkAssignToExistUsers.Checked);
                         }
@@ -438,11 +420,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnDeleteClick(object sender, EventArgs e)
         {
             try
@@ -468,11 +445,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnManageClick(Object sender, EventArgs e)
         {
             try

@@ -47,9 +47,6 @@ namespace DotNetNuke.Services.Installer
     /// <summary>
     /// The Installer class provides a single entrypoint for Package Installation
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Installer
     {
@@ -209,7 +206,7 @@ namespace DotNetNuke.Services.Installer
 				//Check if package is valid
                 if (installer.Package.IsValid)
                 {
-                    if (installer.Package.InstallerInfo.Installed || installer.Package.InstallerInfo.RepairInstall)
+                    if (installer.Package.InstallerInfo.PackageID > Null.NullInteger || installer.Package.InstallerInfo.RepairInstall)
                     {
                         clearClientCache = true;
                     }

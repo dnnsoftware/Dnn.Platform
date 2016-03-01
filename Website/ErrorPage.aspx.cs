@@ -25,7 +25,6 @@ using System;
 using System.Web;
 using System.Web.UI;
 
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
@@ -52,9 +51,6 @@ namespace DotNetNuke.Services.Exceptions
     /// 'add to a placeholder and place on page
     /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
@@ -138,7 +134,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             base.OnLoad(e);
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && !String.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);
@@ -151,11 +147,13 @@ namespace DotNetNuke.Services.Exceptions
 
             string localizedMessage;
             var security = new PortalSecurity();
-            string status = security.InputFilter(Request.QueryString["status"],
+            var status = security.InputFilter(Request.QueryString["status"],
                                                     PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))
+            {
                 ManageError(status);
+            }
             else
             {
                 //get the last server error

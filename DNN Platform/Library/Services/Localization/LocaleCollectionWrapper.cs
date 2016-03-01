@@ -38,9 +38,6 @@ namespace DotNetNuke.Services.Localization
     /// This wrapper class exposes the individual objects of the underlying dictionary class
     /// thereby allowing for simple databinding to the colleciton of objects.
     /// </remarks>
-    /// <history>
-    /// 	[jbrinkman]	11/17/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 5.0.")]
     public class LocaleCollectionWrapper : IEnumerator, IEnumerable
@@ -57,9 +54,6 @@ namespace DotNetNuke.Services.Localization
         /// which is wrapped by the collection. </param>
         /// <remarks>This overloaded constructor copies the <see cref="T:DotNetNuke.ModuleAction" />s
         ///  from the indicated array.</remarks>
-        /// <history>
-        /// 	[jbrinkman]	11/17/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public LocaleCollectionWrapper(LocaleCollection Locales)
         {

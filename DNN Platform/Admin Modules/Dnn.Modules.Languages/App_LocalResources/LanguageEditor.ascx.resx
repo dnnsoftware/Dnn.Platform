@@ -130,25 +130,25 @@
     <value>&lt;br&gt;Required Field</value>
   </data>
   <data name="plLocales.Help" xml:space="preserve">
-    <value>Select the Language</value>
+    <value>Select the language.</value>
   </data>
   <data name="DefaultValue.Text" xml:space="preserve">
     <value>Default Value</value>
   </data>
   <data name="DeleteItem.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Localized File?</value>
+    <value>Are you sure you want to delete this localized file?</value>
   </data>
   <data name="Delete.ErrorMessage" xml:space="preserve">
-    <value>System Locale (en-US) Cannot Be Deleted</value>
+    <value>System Locale (en-US) cannot be deleted.</value>
   </data>
   <data name="Save.ErrorMessage" xml:space="preserve">
-    <value>A File Operation Failed. Please Check Resource File Permissions So Files Can Be Edited.</value>
+    <value>A file operation failed.  Please check resource file permissions so files can be edited.</value>
   </data>
   <data name="plSelected.Text" xml:space="preserve">
     <value>Selected Resource File:</value>
   </data>
   <data name="SaveWarning.Text" xml:space="preserve">
-    <value>All unsaved changes will be lost if you continue. Are you sure you want to continue?</value>
+    <value>All unsaved changes will be lost if you continue.  Are you sure you want to continue?</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Custom Website Locale</value>
@@ -157,7 +157,7 @@
     <value>Language Editor</value>
   </data>
   <data name="DuplicateEntry.Text" xml:space="preserve">
-    <value>This file contains more than one entry for: &lt;b&gt;{0}&lt;/b&gt;. You should edit the file and remove the duplicates.</value>
+    <value>This file contains more than one entry for: &lt;b&gt;{0}&lt;/b&gt;.  You should edit the file and remove the duplicates.</value>
   </data>
   <data name="highlightLabel.Text" xml:space="preserve">
     <value>Highlight Pending Translations</value>
@@ -184,7 +184,7 @@
     <value>File {0} has been deleted</value>
   </data>
   <data name="Obsolete.Text" xml:space="preserve">
-    <value>This files contains obsolete resources which are no more needed. Click save to remove these items permanently.</value>
+    <value>This files contains obsolete resources which are no more needed.  Click Save to permanently remove these items.</value>
   </data>
   <data name="DisplayEnglish.Text" xml:space="preserve">
     <value>Display English Name</value>
@@ -205,10 +205,10 @@
     <value>Goto Main Languages Page</value>
   </data>
   <data name="plSelected.Help" xml:space="preserve">
-    <value>Shows the path of the file that is currently being edited</value>
+    <value>Shows the path of the file that is currently being edited.</value>
   </data>
   <data name="plResources.Help" xml:space="preserve">
-    <value>Choose the Resource File to edit</value>
+    <value>Choose the Resource File to edit.</value>
   </data>
   <data name="plResources.Text" xml:space="preserve">
     <value>Resources:</value>
@@ -217,13 +217,13 @@
     <value>Edit Value in Text Editor</value>
   </data>
   <data name="FileSaved.Text" xml:space="preserve">
-    <value>Resource File updated successfully</value>
+    <value>Resource File updated successfully.</value>
   </data>
   <data name="cmdView.Text" xml:space="preserve">
     <value>View Default Value</value>
   </data>
   <data name="plEditingLanguage.Help" xml:space="preserve">
-    <value>This is the selected language for which you are editing resource keys. To select a different language, click cancel at the bottom of the screen.</value>
+    <value>This is the selected language for which you are editing resource keys.  To select a different language, click Cancel.</value>
   </data>
   <data name="plEditingLanguage.Text" xml:space="preserve">
     <value>Selected Language:</value>
@@ -268,9 +268,12 @@
     <value>WebControls</value>
   </data>
   <data name="Updated.Text" xml:space="preserve">
-    <value>File {0} has been saved</value>
+    <value>File {0} has been saved.</value>
   </data>
   <data name="ResourceUpdated.Text" xml:space="preserve">
-    <value>Rersource file has been updated</value>
+    <value>Resource file has been updated.</value>
   </data> 
+  <data name="InvalidLocale.ErrorMessage" xml:space="preserve">
+    <value>Current site does not support this locale ({0}).</value>
+  </data>
 </root>

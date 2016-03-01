@@ -55,14 +55,11 @@ namespace Dnn.Modules.Languages
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [vmasanas]	10/04/2004  Created
-    ///   [vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LanguageEditor : PortalModuleBase, IActionable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguageEditor));
+
         #region Private Enums
 
         /// -----------------------------------------------------------------------------
@@ -71,9 +68,6 @@ namespace Dnn.Modules.Languages
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	07/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private enum eImageType
         {
@@ -143,9 +137,6 @@ namespace Dnn.Modules.Languages
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	07/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string SelectedResourceFile
         {
@@ -184,10 +175,6 @@ namespace Dnn.Modules.Languages
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	04/10/2004	Created
-        ///   [vmasanas}  25/03/2006  Modified to support new features
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindGrid(bool reBind)
         {
@@ -258,9 +245,6 @@ namespace Dnn.Modules.Languages
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void LoadRootNodes()
         {
@@ -303,9 +287,6 @@ namespace Dnn.Modules.Languages
         ///   - Portal: base en-US, host override for en-US, base locale especific resource, and host override 
         ///   for locale
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Hashtable LoadFile(string mode, string type)
         {
@@ -368,9 +349,6 @@ namespace Dnn.Modules.Languages
         ///   First=>value to be edited
         ///   Second=>default value
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Hashtable LoadResource(Hashtable ht, string filepath)
         {
@@ -413,14 +391,11 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Returns the resource file name for a given resource and language
         /// </summary>
+        /// <param name="language">Language Name.</param>
         /// <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
         /// <returns>Localized File Name</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	04/10/2004	Created
-        ///   [vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string ResourceFile(string language, string mode)
         {
@@ -439,9 +414,6 @@ namespace Dnn.Modules.Languages
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [Vicenç]	26/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool ExpandDefault(Pair p)
         {
@@ -456,9 +428,6 @@ namespace Dnn.Modules.Languages
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	07/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string OpenFullEditor(string name)
         {
@@ -501,14 +470,9 @@ namespace Dnn.Modules.Languages
         /// <summary>
         ///   Loads suported locales and shows default values
         /// </summary>
-        /// <param name = "sender"></param>
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	04/10/2004	Created
-        ///   [vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -524,6 +488,12 @@ namespace Dnn.Modules.Languages
                     LoadRootNodes();
 
                     Locale language = LocaleController.Instance.GetLocale(Locale);
+
+                    if (language == null)
+                    {
+                        throw new ModuleLoadException(string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourceFile), Locale));
+                    }
+
                     languageLabel.Language = language.Code;
 
                     if (UserInfo.IsSuperUser)
@@ -590,9 +560,6 @@ namespace Dnn.Modules.Languages
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void chkHighlight_CheckedChanged(Object sender, EventArgs e)
         {
@@ -623,10 +590,6 @@ namespace Dnn.Modules.Languages
         /// <remarks>
         ///   System Default file cannot be deleted
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	04/10/2004	Created
-        ///   [vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(Object sender, EventArgs e)
         {
@@ -675,11 +638,6 @@ namespace Dnn.Modules.Languages
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	04/10/2004	Created
-        ///   [vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-        ///   [sleupold]  23/04/2010  Fixed missing parameters for navigateURL
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {
@@ -825,10 +783,6 @@ namespace Dnn.Modules.Languages
         /// <param name = "e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vmasanas]	25/03/2006	Created
-        ///   [erikvb]    24/02/2010  added personalization
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void rbMode_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -908,12 +862,12 @@ namespace Dnn.Modules.Languages
                         e.Node.Nodes.Add(node);
                     }
 
-                    string portalSkinFolder = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
+                    string portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
                     if (Directory.Exists(portalSkinFolder) && (PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId))
                     {
                         node = new RadTreeNode();
                         node.Text = LocalizeString("PortalSkins");
-                        node.Value = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Skins");
+                        node.Value = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
                         node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
                         e.Node.Nodes.Add(node);
                     }
@@ -974,7 +928,7 @@ namespace Dnn.Modules.Languages
             foreach (string file in Directory.GetFiles(path, "*.resx"))
             {
                 var fileInfo = new FileInfo(file);
-                var match = Regex.Match(fileInfo.Name, @"\.(\w\w\-\w\w)\.resx");
+                var match = FileInfoRegex.Match(fileInfo.Name);
 
                 if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
                 {

@@ -181,18 +181,7 @@ namespace DotNetNuke.Web.Mvc
                 ModuleActions = LoadActions(_result);
 
                 httpContext.SetModuleRequestResult(_result);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
 
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            try
-            {
                 if (_result != null)
                 {
                     Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
@@ -202,8 +191,6 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
-            base.OnLoad(e);
         }
 
         private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)

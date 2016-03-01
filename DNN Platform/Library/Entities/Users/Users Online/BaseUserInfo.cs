@@ -36,9 +36,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/14/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class BaseUserInfo
@@ -52,9 +49,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the PortalId for this online user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PortalID
         {
@@ -72,9 +66,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the TabId for this online user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int TabID
         {
@@ -92,9 +83,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the CreationDate for this online user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime CreationDate
         {
@@ -112,9 +100,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the LastActiveDate for this online user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime LastActiveDate
         {

@@ -62,7 +62,7 @@ namespace Dnn.Modules.Languages
         {
             var Package = new PackageInfo();
             Package.Name = authPackage.Name;
-            Package.FriendlyName = authPackage.Name;
+            Package.FriendlyName = authPackage.FriendlyName;
             Package.Version = authPackage.Version;
             Package.License = Util.PACKAGE_NoLicense;
 
@@ -77,6 +77,7 @@ namespace Dnn.Modules.Languages
         {
             var Package = new PackageInfo();
             Package.Name = Globals.CleanFileName(txtFileName.Text);
+            Package.FriendlyName = Package.Name;
             Package.Version = DotNetNukeContext.Current.Application.Version;
             Package.License = Util.PACKAGE_NoLicense;
 
@@ -137,7 +138,7 @@ namespace Dnn.Modules.Languages
         {
             var Package = new PackageInfo();
             Package.Name = library.Name;
-            Package.FriendlyName = library.Name;
+            Package.FriendlyName = library.FriendlyName;
             Package.Version = library.Version;
             Package.License = Util.PACKAGE_NoLicense;
 
@@ -153,7 +154,7 @@ namespace Dnn.Modules.Languages
 
             var Package = new PackageInfo();
             Package.Name = modulePackage.Name;
-            Package.FriendlyName = modulePackage.Name;
+            Package.FriendlyName = modulePackage.FriendlyName;
             Package.Version = modulePackage.Version;
             Package.License = Util.PACKAGE_NoLicense;
 
@@ -197,7 +198,7 @@ namespace Dnn.Modules.Languages
                     fileName = fileName + "." + package.Version.ToString(3) + "." + language.Code + ".zip";
                     packageWriter.CreatePackage(fileName, package.Name + ".dnn", manifest, true);
                 }
-                else
+                else if (!_Manifest.Contains(string.Format(@"package name=""{0}""", package.Name)))
                 {
                     packageWriter.BasePath = "";
                     _Manifest += packageWriter.WriteManifest(true);
@@ -217,7 +218,7 @@ namespace Dnn.Modules.Languages
         {
             var Package = new PackageInfo();
             Package.Name = providerPackage.Name;
-            Package.FriendlyName = providerPackage.Name;
+            Package.FriendlyName = providerPackage.FriendlyName;
             Package.Version = providerPackage.Version;
             Package.License = Util.PACKAGE_NoLicense;
 

@@ -45,10 +45,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class User : SkinObjectBase
     {
@@ -209,23 +205,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string GetAvatarUrl(UserInfo userInfo)
         {
-            var url = string.Format(Globals.UserProfilePicRelativeUrl(false), userInfo.UserID, 32, 32);
-            if (userInfo.Profile != null)
-            {
-                var photoProperty = userInfo.Profile.GetProperty("Photo");
-
-                int photoFileId;
-                if (photoProperty != null && int.TryParse(photoProperty.PropertyValue, out photoFileId))
-                {
-                    var photoFile = FileManager.Instance.GetFile(photoFileId);
-                    if (photoFile != null)
-                    {
-                        return url + "&cdv="+photoFile.LastModificationTime.Ticks;
-                    }
-                }
-            }
-
-            return url;
+            return UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32);
         }
 
         private int GetMessageTab()

@@ -37,7 +37,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	public class DotNetNukeDialogHandler : Telerik.Web.UI.DialogHandler
 	{
 	    private const string ResourceFile = "~/DesktopModules/Admin/RadEditorProvider/App_LocalResources/RadEditor.Dialogs.resx";
-        private static Regex LocalizeRegex = new Regex("\\[\\$LocalizeString\\(['\"](.+?)['\"]\\)\\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex LocalizeRegex = new Regex("\\[\\$LocalizeString\\(['\"](.+?)['\"]\\)\\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		
         protected override void OnInit(EventArgs e)
 		{

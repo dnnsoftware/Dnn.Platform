@@ -39,8 +39,8 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System.IO;
-	using System.Web.UI;
-	using ClientDependency.Core;
+    using System.Web.UI;
+    using ClientDependency.Core;
     using System.Collections.Generic;
     using System.Threading;
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ClientResourceManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
         internal const string DefaultJsProvider = "DnnBodyProvider";
 
@@ -64,21 +64,28 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             filePath = RemoveQueryString(filePath);
 
             // cache css file paths
-            if (!_fileExistsCache.ContainsKey(filePath)) {
+            if (!_fileExistsCache.ContainsKey(filePath))
+            {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _lockFileExistsCache.EnterWriteLock();
-                try {
+                try
+                {
                     _fileExistsCache[filePath] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
-                } finally {
+                }
+                finally
+                {
                     _lockFileExistsCache.ExitWriteLock();
                 }
             }
 
             // return if file exists from cache
             _lockFileExistsCache.EnterReadLock();
-            try {
+            try
+            {
                 return _fileExistsCache[filePath];
-            } finally {
+            }
+            finally
+            {
                 _lockFileExistsCache.ExitReadLock();
             }
         }
@@ -235,7 +242,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public static void RegisterDefaultStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, FileOrder.Css.DefaultCss);
+            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "7.0.0");
         }
 
         public static void RegisterFeatureStylesheet(Page page, string filePath)
@@ -293,7 +300,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider)
         {
-            RegisterScript(page, filePath, (int) priority, provider);
+            RegisterScript(page, filePath, (int)priority, provider);
         }
 
         /// <summary>
@@ -305,7 +312,21 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath};
+            RegisterScript(page, filePath, priority, provider, "", "");
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
+        /// <param name="version">Version nr of framework</param>
+        public static void RegisterScript(Page page, string filePath, int priority, string provider, string name, string version)
+        {
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -354,6 +375,20 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider)
         {
+            RegisterStyleSheet(page, filePath, priority, provider, "", "");
+        }
+
+        /// <summary>
+        /// Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the CSS resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="provider">The provider name to be used to render the css file on the page.</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
+        /// <param name="version">Version nr of framework</param>
+        public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string name, string version)
+        {
             var fileExists = false;
 
             // Some "legacy URLs" could be using their own query string versioning scheme (and we've forced them to use the new API through re-routing PageBase.RegisterStyleSheet
@@ -367,14 +402,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     filePath = filePathSansQueryString;
                 }
             }
-			else if (filePath.Contains("WebResource.axd"))
-			{
-				fileExists = true;
-			}
+            else if (filePath.Contains("WebResource.axd"))
+            {
+                fileExists = true;
+            }
 
             if (fileExists || FileExists(page, filePath))
             {
-                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath,};
+                var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
                 var loader = page.FindControl("ClientResourceIncludes");
 
                 if (loader != null)
@@ -387,71 +422,39 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>
         /// This is a utility method that can be called to update the version of the composite files.
         /// </summary>
+        [Obsolete("This method is not required anymore. The CRM vesion is now managed in host settings and site settings.")]
         public static void UpdateVersion()
         {
-            //open the config file
-            var configPath = HostingEnvironment.MapPath("~/web.config");
-
-            if (!String.IsNullOrEmpty(configPath))
-            {
-                var xmlConfig = new XmlDocument();
-                xmlConfig.Load(configPath);
-
-                //test for namespace added by Web Admin Tool
-                if (!String.IsNullOrEmpty(xmlConfig.DocumentElement.GetAttribute("xmlns")))
-                {
-                    //remove namespace
-                    string strDoc = xmlConfig.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");
-                    xmlConfig.LoadXml(strDoc);
-                }
-
-                XmlNode xmlDependency = xmlConfig.SelectSingleNode("configuration/clientDependency");
-                if (xmlDependency == null)
-                {
-                    xmlDependency = xmlConfig.SelectSingleNode("configuration/location/clientDependency");
-                }
-                if ((xmlDependency != null))
-                {
-                    XmlAttribute attrib = xmlDependency.Attributes["version"];
-                    if (attrib != null)
-                    {
-                        int version = Int32.Parse(attrib.InnerText);
-                        version += 1;
-                        attrib.InnerText = version.ToString();
-                    }
-                }
-
-                xmlConfig.Save(configPath);
-            }
+            
         }
 
-		/// <summary>
-		/// Clear the default compisite files so that it can be generated next time.
-		/// </summary>
-		public static void ClearCache()
-		{
-			var provider = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider;
-			if(provider is CompositeFileProcessingProvider)
-			{
-				try
-				{
-					var folder = provider.CompositeFilePath;
-					if (folder.Exists)
-					{
-						var files = folder.GetFiles("*.cd?");
-						foreach (var file in files)
-						{
-							file.Delete();
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Logger.Error(ex);
-				}
+        /// <summary>
+        /// Clear the default compisite files so that it can be generated next time.
+        /// </summary>
+        public static void ClearCache()
+        {
+            var provider = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider;
+            if (provider is CompositeFileProcessingProvider)
+            {
+                try
+                {
+                    var folder = provider.CompositeFilePath;
+                    if (folder.Exists)
+                    {
+                        var files = folder.GetFiles("*.cd?");
+                        foreach (var file in files)
+                        {
+                            file.Delete();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
 
-			}
-		}
+            }
+        }
 
         public static void EnableAsyncPostBackHandler()
         {

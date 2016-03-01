@@ -37,8 +37,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class HtmlTextLogController
     {
@@ -51,8 +49,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "ItemID">The Id of the Item</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextLog(int ItemID)
         {
@@ -66,8 +62,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "objHtmlTextLog">An HtmlTextLogInfo object</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddHtmlTextLog(HtmlTextLogInfo objHtmlTextLog)
         {

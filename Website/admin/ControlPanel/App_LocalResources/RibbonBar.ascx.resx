@@ -283,7 +283,7 @@
     <value>Theme and container will be replaced for children of this page that you have permissions to edit.&lt;br /&gt;&lt;br /&gt;Are you sure you want to continue?</value>
   </data>
   <data name="Tool.DeletePage.Special.ToolTip" xml:space="preserve">
-    <value>Cannot delete this page because it is a system page or the page is in use. See Site Settings &gt;Advanced Settings &gt; Page Management or contact your system administrator.</value>
+    <value>Cannot delete this page because it is a system page or the page is in use.  See Site Settings &gt;Advanced Settings &gt; Page Management or contact the Administrator.</value>
   </data>
   <data name="Tool.CopyDesignToChildren.ToolTip" xml:space="preserve">
     <value>Copy Theme and Container Settings to Children</value>
@@ -424,13 +424,13 @@
     <value>Clear Cache</value>
   </data>
   <data name="Tool.RecycleApp.Text" xml:space="preserve">
-    <value>Recycle Application Domain</value>
+    <value>Restart Application</value>
   </data>
   <data name="Tool.ClearCache.ToolTip" xml:space="preserve">
-    <value>Forces the application to purge all of its cache.</value>
+    <value>Select to clear the site cache of all old file.</value>
   </data>
   <data name="Tool.RecycleApp.ToolTip" xml:space="preserve">
-    <value>Forces the application pool to recycle. Your website will be unavilable for a few moments.</value>
+    <value>Select to restart the application and retrieve all new files for the current site. The site will be unavailable for a few moments.</value>
   </data>
   <data name="ModeMobilePreview.Text" xml:space="preserve">
     <value>Preview</value>
@@ -445,6 +445,6 @@
     <value>Cancel</value>
   </data>
   <data name="cmdConfirmAdd.Text" xml:space="preserve">
-    <value>I Understand the Risks</value>
+    <value>I understand the risks.</value>
   </data>
 </root>

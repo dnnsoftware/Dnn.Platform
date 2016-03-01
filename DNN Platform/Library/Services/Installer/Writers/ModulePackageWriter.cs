@@ -45,9 +45,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/30/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModulePackageWriter : PackageWriterBase
     {
@@ -134,9 +131,6 @@ namespace DotNetNuke.Services.Installer.Writers
 		/// Gets the associated Desktop Module
 		/// </summary>
 		/// <value>A DesktopModuleInfo object</value>
-		/// <history>
-		/// 	[cnurse]	02/01/2008  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
 

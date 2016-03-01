@@ -30,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 
@@ -181,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
                             //regex test each replaced to see if there is a match between the parameter string
                             //and the parmRedirect
                             string compareWith = rewrittenUrl;
-                            var redirectRegex = new Regex(parmRedirect.LookFor,
+                            var redirectRegex = RegexUtils.GetCachedRegex(parmRedirect.LookFor,
                                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;

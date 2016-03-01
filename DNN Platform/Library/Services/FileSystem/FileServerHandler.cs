@@ -28,7 +28,6 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -52,15 +51,12 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="context">System.Web.HttpContext)</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cpaterra]	4/19/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            int TabId = -1;
-            int ModuleId = -1;
+            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var TabId = -1;
+            var ModuleId = -1;
             try
             {
                 //get TabId
@@ -147,7 +143,7 @@ namespace DotNetNuke.Services.FileSystem
                     //to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(URL);
 
-                    var folderPath = URL.Substring(0, URL.LastIndexOf(fileName));
+                    var folderPath = URL.Substring(0, URL.LastIndexOf(fileName, StringComparison.InvariantCulture));
                     var folder = FolderManager.Instance.GetFolder(_portalSettings.PortalId, folderPath);
 
                     var file = FileManager.Instance.GetFile(folder, fileName);
@@ -178,7 +174,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled)
+                                if (!file.IsEnabled || !HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -257,13 +253,18 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        public bool IsReusable
+        private bool HasAPublishedVersion(IFileInfo file)
         {
-            get
+            if (file.HasBeenPublished)
             {
                 return true;
             }
+            //We should allow creator to see the file that is pending to be approved
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user != null && user.UserID == file.CreatedByUserID;
         }
+
+        public bool IsReusable => true;
 
         #endregion
     }

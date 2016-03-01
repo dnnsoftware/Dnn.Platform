@@ -25,6 +25,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
@@ -62,17 +63,26 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             }
         }
 
+        protected virtual bool IsAuthenticated()
+        {
+            return Thread.CurrentPrincipal.Identity.IsAuthenticated;
+        }
+
+        protected virtual UserInfo GetCurrentUser()
+        {
+            return PortalController.Instance.GetCurrentPortalSettings().UserInfo;            
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var principal = Thread.CurrentPrincipal;
-            if (!principal.Identity.IsAuthenticated)
+            if (!IsAuthenticated())
             {
                 return false;
             }
 
             if (_denyRolesSplit.Any())
             {
-                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = GetCurrentUser();
                 if (!currentUser.IsSuperUser && _denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
@@ -81,7 +91,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             if (_staticRolesSplit.Any())
             {
-                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = GetCurrentUser();
                 if (!_staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;

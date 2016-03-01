@@ -33,6 +33,7 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Client;
 
 #endregion
 
@@ -46,9 +47,6 @@ namespace DotNetNuke.UI.WebControls
 	/// The DNNRegionEditControl control provides a standard UI component for editing
 	/// Regions
 	/// </summary>
-	/// <history>
-	///     [cnurse]	05/04/2006	created
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	[ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
 	public class DNNRegionEditControl : EditControl
@@ -164,9 +162,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// OnAttributesChanged runs when the CustomAttributes property has changed.
 		/// </summary>
-		/// <history>
-		///     [cnurse]	06/08/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void OnAttributesChanged()
 		{

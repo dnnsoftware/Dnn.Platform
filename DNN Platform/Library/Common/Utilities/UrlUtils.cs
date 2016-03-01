@@ -122,9 +122,6 @@ namespace DotNetNuke.Common.Utilities
         /// either, the portalid param is not allowed when the tab is a supertab
         /// (because NavigateUrl adds the portalId param to the qs)
         /// </summary>
-        /// <history>
-        ///     [erikvb]   20070814    added
-        /// </history>
         public static string[] GetQSParamsForNavigateURL()
         {
             string returnValue = "";
@@ -309,10 +306,39 @@ namespace DotNetNuke.Common.Utilities
 
         public static string ValidReturnUrl(string url)
         {
-            //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-            if (url != null && url.Contains("://"))
+            if (string.IsNullOrEmpty(url))
             {
-                url = "";
+                return url;
+            }
+
+            //clean the return url to avoid possible XSS attack.
+            var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                url = string.Empty;
+            }
+
+            //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+            if (url.Contains("://"))
+            {
+                var portalSettings = PortalSettings.Current;
+                if (portalSettings == null ||
+                        !url.StartsWith(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = string.Empty;
+                }
+            }
+
+            if (url.StartsWith("//"))
+            {
+                var urlWithNoProtocol = url.Substring(2);
+                var portalSettings = PortalSettings.Current;
+                if (portalSettings == null ||
+                        !urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    url = string.Empty;
+                }
+
             }
             return url;
         }
@@ -321,6 +347,28 @@ namespace DotNetNuke.Common.Utilities
         public static bool InPopUp()
         {
             return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
+        }
+
+        /// <summary>
+        /// Redirect current response to 404 error page or output 404 content if error page not defined.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="portalSetting"></param>
+        public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
+        {
+            if (portalSetting?.ErrorPage404 > Null.NullInteger)
+            {
+                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+            }
+            else
+            {
+                response.ClearContent();
+                response.TrySkipIisCustomErrors = true;
+                response.StatusCode = 404;
+                response.Status = "404 Not Found";
+                response.Write("404 Not Found");
+                response.End();
+            }
         }
     }
 }

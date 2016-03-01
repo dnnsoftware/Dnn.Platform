@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -89,6 +90,8 @@ namespace DotNetNuke.Admin.Containers
             ID = "ModuleActions";
 
             actionButton.Click += actionButton_Click;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterStyleSheet(Page, "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);

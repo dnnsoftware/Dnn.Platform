@@ -130,25 +130,25 @@
     <value>Title:</value>
   </data>
   <data name="plPortalName.Help" xml:space="preserve">
-    <value>This is the Title for your website.  The text you enter will show up in the Title Bar.</value>
+    <value>Enter a site title. This title will show up in the Web browser Title Bar and will be a tooltip on the site Logo.</value>
   </data>
   <data name="plDescription.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
   <data name="plDescription.Help" xml:space="preserve">
-    <value>Enter a description about your site here.</value>
+    <value>Enter a description for the site here.</value>
   </data>
   <data name="plKeyWords.Text" xml:space="preserve">
     <value>Keywords:</value>
   </data>
   <data name="plKeyWords.Help" xml:space="preserve">
-    <value>Enter some keywords for your site (separated by commas).  These keywords are used by some internet search engines like Google to help index your site.</value>
+    <value>Enter some keywords for your site (separated by commas).  These keywords are used by search engines to help index the site.</value>
   </data>
   <data name="plGUID.Text" xml:space="preserve">
     <value>GUID:</value>
   </data>
   <data name="plGUID.Help" xml:space="preserve">
-    <value>The globally unique identifier which can be used to identify this website.</value>
+    <value>The globally unique identifier which can be used to identify this site.</value>
   </data>
   <data name="Submission.Text" xml:space="preserve">
     <value>Site Submission</value>
@@ -157,7 +157,7 @@
     <value>Search Engine:</value>
   </data>
   <data name="plSearchEngine.Help" xml:space="preserve">
-    <value>Submit your site to the selected search engine for indexing.</value>
+    <value>Submit this site to the selected search engine for indexing.</value>
   </data>
   <data name="Submit.Text" xml:space="preserve">
     <value>Submit</value>
@@ -166,7 +166,7 @@
     <value>Site Map URL:</value>
   </data>
   <data name="plSiteMap.Help" xml:space="preserve">
-    <value>Submit your Site Map to Google for better search optimization. Click Submit to get a Google Webmaster Tools account and verify your site ownership ( using the Verification option below ). Once verified, you can select the Add General Web Sitemap option on the Google Sitemaps tab, and paste the Site Map URL displayed.</value>
+    <value>Submit the Site Map to Google for better search optimization.  Click Submit to get a Google Webmaster Tools account and verify your site ownership ( using the Verification option below ). Once verified, you can select the Add General Web Sitemap option on the Google Sitemaps tab and paste in the Site Map URL displayed.</value>
   </data>
   <data name="cmdSiteMap.Text" xml:space="preserve">
     <value>Submit</value>
@@ -175,7 +175,7 @@
     <value>Verification:</value>
   </data>
   <data name="plVerification.Help" xml:space="preserve">
-    <value>When signing up with Google Webmaster Tools you will need to Verify your site ownership. Choose the "Upload an HTML file" method from the Google Verification screen. Enter the filename displayed ( ie. google53c0cef435b2b81e.html ) in the Verification textbox and click Create. Return to Google and select the Verify button.</value>
+    <value>When signing up with Google Webmaster Tools you will need to Verify your site ownership.  Choose the "Upload an HTML file" method from the Google Verification screen. Enter the file name displayed ( ie. google53c0cef435b2b81e.html ) in the Verification text box and click Create. Return to Google and select the Verify button.</value>
   </data>
   <data name="cmdVerification.Text" xml:space="preserve">
     <value>Create</value>
@@ -184,7 +184,7 @@
     <value>Banners:</value>
   </data>
   <data name="plBanners.Help" xml:space="preserve">
-    <value>Indicate the type of Banner Advertising you wish to display on your site.</value>
+    <value>Choose the type of banner advertising, if any, you want to display on your site.</value>
   </data>
   <data name="Appearance.Text" xml:space="preserve">
     <value>Appearance</value>
@@ -193,31 +193,31 @@
     <value>Logo:</value>
   </data>
   <data name="plLogo.Help" xml:space="preserve">
-    <value>Depending on the theme chosen, this image will appear in the top left corner of the page.</value>
+    <value>Depending on the theme chosen, this image will typically appear in the top left corner of the page.</value>
   </data>
   <data name="plPortalSkin.Text" xml:space="preserve">
     <value>Site Theme:</value>
   </data>
   <data name="plPortalSkin.Help" xml:space="preserve">
-    <value>The selected theme will be applied to all pages on the site, unless overridden at the Page level.</value>
+    <value>The selected theme will be applied to all pages on the site, unless it is overridden at the Page level.</value>
   </data>
   <data name="plPortalContainer.Text" xml:space="preserve">
     <value>Site Container:</value>
   </data>
   <data name="plPortalContainer.Help" xml:space="preserve">
-    <value>The selected container will be applied to all modules on the site, unless overridden at the Page or Module level.</value>
+    <value>The selected container will be applied to all modules on the site, unless it is overridden at the Page or Module level.</value>
   </data>
   <data name="plAdminSkin.Text" xml:space="preserve">
     <value>Edit Theme:</value>
   </data>
   <data name="plAdminSkin.Help" xml:space="preserve">
-    <value>The selected theme will be applied to all edit mode (ctl=) pages on the site.</value>
+    <value>The selected theme will be applied to all editing pages on the site. E.g. Page Settings.</value>
   </data>
   <data name="plAdminContainer.Text" xml:space="preserve">
     <value>Edit Container:</value>
   </data>
   <data name="plAdminContainer.Help" xml:space="preserve">
-    <value>The selected container will be applied to all edit mode (ctl=) modules on the site.</value>
+    <value>The selected container will be applied to all editing modules on the site.</value>
   </data>
   <data name="plIconSet.Text" xml:space="preserve">
     <value>Icon Set:</value>
@@ -229,7 +229,7 @@
     <value>Body Background:</value>
   </data>
   <data name="plBackground.Help" xml:space="preserve">
-    <value>Depending on the theme, if selected, an image will display in the background of all pages.</value>
+    <value>Depending on the theme, select an image to be displayed in the background of all pages.</value>
   </data>
   <data name="plFavIcon.Text" xml:space="preserve">
     <value>Favicon.ico:</value>
@@ -250,7 +250,7 @@
     <value>User Registration:</value>
   </data>
   <data name="plUserRegistration.Help" xml:space="preserve">
-    <value>The type of user registration allowed for this site</value>
+    <value>Select the type of user registration, if any, allowed for this site. Private registration requires users to be authorized by the Site Administrator before gaining access to the Registered Users role. Public registration provides immediate access and Verified registration requires verification of the email address provided.</value>
   </data>
   <data name="None.Text" xml:space="preserve">
     <value>None</value>
@@ -283,7 +283,7 @@
     <value>Login Page:</value>
   </data>
   <data name="plLoginTabId.Help" xml:space="preserve">
-    <value>The Login Page for your site, pages with no Account Login module are not eligible.</value>
+    <value>The Login Page for your site. Only pages with the Account Login module are listed.</value>
   </data>
   <data name="plUserTabId.Text" xml:space="preserve">
     <value>User Profile Page:</value>
@@ -298,13 +298,13 @@
     <value>Currency:</value>
   </data>
   <data name="plCurrency.Help" xml:space="preserve">
-    <value>The Currency used on the site.</value>
+    <value>The currency used on your site.</value>
   </data>
   <data name="plProcessor.Text" xml:space="preserve">
     <value>Payment Processor:</value>
   </data>
   <data name="plProcessor.Help" xml:space="preserve">
-    <value>The Payment Processor used to handle payments on the site.</value>
+    <value>The payment processor used to handle payments on the site.</value>
   </data>
   <data name="ProcessorWebSite.Text" xml:space="preserve">
     <value>Go To Payment Processor WebSite</value>
@@ -325,16 +325,16 @@
     <value>Usability Settings</value>
   </data>
   <data name="plInlineEditor.Text" xml:space="preserve">
-    <value>Inline Editor Enabled?</value>
+    <value>Inline Editor Enabled:</value>
   </data>
   <data name="plInlineEditor.Help" xml:space="preserve">
-    <value>Select this option if you wish for inline editing to be enabled on your site.</value>
+    <value>Check this box to enable inline editing on your site.</value>
   </data>
   <data name="plControlPanelMode.Text" xml:space="preserve">
     <value>Control Panel Mode:</value>
   </data>
   <data name="plControlPanelMode.Help" xml:space="preserve">
-    <value>Select the default Control Panel Mode for authorized users of your site.</value>
+    <value>Select the default mode for the Control Panel.</value>
   </data>
   <data name="ControlPanelModeView.Text" xml:space="preserve">
     <value>View</value>
@@ -358,7 +358,7 @@
     <value>Control Panel Security:</value>
   </data>
   <data name="plControlPanelSecurity.Help" xml:space="preserve">
-    <value>Select whether the Control Panel will be displayed for Page Editors or Module Editors.</value>
+    <value>Select whether the Control Panel will be displayed to Module Editors and/or Page Editors.</value>
   </data>
   <data name="ControlPanelSecurityTab.Text" xml:space="preserve">
     <value>Page Editors</value>
@@ -385,13 +385,13 @@
     <value>Administrator:</value>
   </data>
   <data name="plAdministrator.Help" xml:space="preserve">
-    <value>The Administrator User for the site.</value>
+    <value>The Primary Administrator who will receive email notification of member activities.</value>
   </data>
   <data name="plDefaultLanguage.Text" xml:space="preserve">
     <value>Default Language:</value>
   </data>
   <data name="plDefaultLanguage.Help" xml:space="preserve">
-    <value>The Default Language for the site.</value>
+    <value>The default language for the site.</value>
   </data>
   <data name="plTimeZone.Text" xml:space="preserve">
     <value>Site TimeZone:</value>
@@ -406,31 +406,31 @@
     <value>Site Alias:</value>
   </data>
   <data name="plPortalAlias.Help" xml:space="preserve">
-    <value>The Site Alias is the URL used to reach the site.</value>
+    <value>The Site Alias is the URL used to reach this site.</value>
   </data>
   <data name="plExpiryDate.Text" xml:space="preserve">
     <value>Expiry Date:</value>
   </data>
   <data name="plExpiryDate.Help" xml:space="preserve">
-    <value>The Expiry Date is the date that the Hosting Contract for the website expires.</value>
+    <value>The date when the hosting contract for this site expires.</value>
   </data>
   <data name="plHostFee.Text" xml:space="preserve">
     <value>Hosting Fee:</value>
   </data>
   <data name="plHostFee.Help" xml:space="preserve">
-    <value>The Hosting Fee is the monthly charge for hosting this site.</value>
+    <value>The monthly charge for hosting this site.</value>
   </data>
   <data name="plHostSpace.Text" xml:space="preserve">
     <value>Disk Space:</value>
   </data>
   <data name="plHostSpace.Help" xml:space="preserve">
-    <value>The amount of Disk Space in MB allowed for this site (enter 0 for unlimited space).</value>
+    <value>The amount of disk space in MegaByte allocated to this site. Enter 0 for unlimited space.</value>
   </data>
   <data name="plDesktopModules.Text" xml:space="preserve">
     <value>Available modules:</value>
   </data>
   <data name="plDesktopModules.Help" xml:space="preserve">
-    <value>Here you can select which of the installed modules can be used in this site.</value>
+    <value>Select which of the installed modules can be used in this site.</value>
   </data>
   <data name="StylesheetEditor.Text" xml:space="preserve">
     <value>Stylesheet Editor</value>
@@ -451,7 +451,7 @@
     <value>New User Signup Message</value>
   </data>
   <data name="DeleteMessage.Text" xml:space="preserve">
-    <value>Are You Sure You Wish To Delete This Website?</value>
+    <value>Are you sure you want to delete this site?</value>
   </data>
   <data name="SubmitGoogle.Text" xml:space="preserve">
     <value>Submit Site To Google</value>
@@ -460,7 +460,7 @@
     <value>Home Directory:</value>
   </data>
   <data name="plHomeDirectory.Help" xml:space="preserve">
-    <value>The Home Directory for this site</value>
+    <value>The location used for the storage of files in this site.</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Site Settings</value>
@@ -475,22 +475,22 @@
     <value>Upload Container</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Site Settings&lt;/h1&gt;&lt;p&gt;The Site Settings module represents the local options for your website. Local settings allow you to customize your website to meet your business requirements.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Site Settings&lt;/h1&gt;&lt;p&gt;Site Settings represents the local options for your site. Local settings allow you to customize your site to meet your business requirements.&lt;/p&gt;</value>
   </data>
   <data name="RestoreCCSMessage.Text" xml:space="preserve">
-    <value>Are You Sure You Want To Restore The Default Stylesheet (All Changes To The Current Stylesheet Will Be Lost) ? </value>
+    <value>Are you sure you want to restore the default stylesheet? All changes to the current stylesheet will be lost.</value>
   </data>
   <data name="valHostFee.Error" xml:space="preserve">
-    <value>Invalid fee, needs to be a currency value!</value>
+    <value>Invalid fee, needs to be a currency value.</value>
   </data>
   <data name="plPageQuota.Help" xml:space="preserve">
-    <value>You can specify a maximum number of pages per website.</value>
+    <value>The maximum number of pages for this site.</value>
   </data>
   <data name="plPageQuota.Text" xml:space="preserve">
     <value>Page Quota:</value>
   </data>
   <data name="plUserQuota.Help" xml:space="preserve">
-    <value>You can specify a maximum number of users per website.</value>
+    <value>The maximum number of users for this site.</value>
   </data>
   <data name="plUserQuota.Text" xml:space="preserve">
     <value>User Quota:</value>
@@ -499,31 +499,31 @@
     <value>SSL Settings</value>
   </data>
   <data name="plSSLEnabled.Text" xml:space="preserve">
-    <value>SSL Enabled?</value>
+    <value>SSL Enabled:</value>
   </data>
   <data name="plSSLEnabled.Help" xml:space="preserve">
-    <value>Specify whether an SSL Certificate has been installed for this site</value>
+    <value>Check the box if an SSL certificate has been installed for use on this site.</value>
   </data>
   <data name="plSSLEnforced.Text" xml:space="preserve">
-    <value>SSL Enforced?</value>
+    <value>SSL Enforced:</value>
   </data>
   <data name="plSSLEnforced.Help" xml:space="preserve">
-    <value>When this option is set, Pages which are not marked as Secure will not be accessible with SSL ( HTTPS )</value>
+    <value>Check the box if unsecure pages will not be accessible with SSL (HTTPS).</value>
   </data>
   <data name="plSSLURL.Text" xml:space="preserve">
     <value>SSL URL:</value>
   </data>
   <data name="plSSLURL.Help" xml:space="preserve">
-    <value>Optionally specify a URL which will be used for secure connections for this site. This is only necessary if you do not have an SSL Certificate installed for your standard site URL. An example would be a shared hosting account where the hoster provides you with a Shared SSL URL.</value>
+    <value>Optionally specify a URL which will be used for secure connections for this site. This is only necessary if you do not have an SSL Certificate installed for your standard site URL. An example would be a shared hosting account where the host provides you with a Shared SSL URL.</value>
   </data>
   <data name="plSTDURL.Text" xml:space="preserve">
     <value>Standard URL:</value>
   </data>
   <data name="plSTDURL.Help" xml:space="preserve">
-    <value>If an SSL URL is specified above, you will also need to specify a Standard URL for unsecure connections.</value>
+    <value>If an SSL URL is specified above, then specify the Standard URL for unsecure connections.</value>
   </data>
   <data name="lblBanners.Text" xml:space="preserve">
-    <value>&lt;br&gt;Banner option was set by the hostingprovider, and cannot be changed</value>
+    <value>&lt;br&gt;Banner option was set by the hosting provider and cannot be changed.</value>
   </data>
   <data name="AddAllModules.Text" xml:space="preserve">
     <value>Add All Modules</value>
@@ -553,34 +553,34 @@
     <value>Site Aliases</value>
   </data>
   <data name="valPortalName.ErrorMessage" xml:space="preserve">
-    <value>You must provide a title for your site</value>
+    <value>You must provide a title for your site.</value>
   </data>
   <data name="plPayPaylCancelURL.Help" xml:space="preserve">
-    <value>By default a subscriber is redirected to the website home page on payment canceled. If you use the subscription feature, you can create a page with information to display to the user if the payment has been canceled. Enter the fully qualified URL of this page.</value>
+    <value>Enter the fully qualified URL where users will be taken if their payment is canceled.  This allows you to create a custom page on your site with relevant information.  Users will be redirected to the Home page if this field is left blank.</value>
   </data>
   <data name="plPayPaylCancelURL.Text" xml:space="preserve">
     <value>PayPal Cancel URL:</value>
   </data>
   <data name="plPayPaylReturnURL.Help" xml:space="preserve">
-    <value>By default a subscriber is redirected to the website home page when a payment is validated. If you use the subscription feature, you can redirect the subscriber to a specific page. Enter the fully qualified URL of this page.</value>
+    <value>If you use the subscription feature, enter the fully qualified URL where users will be taken when a payment is validated. This allows you to create a custom page on your site with relevant information.  Users will be redirected to the Home page if this field is left blank.</value>
   </data>
   <data name="plPayPaylReturnURL.Text" xml:space="preserve">
     <value>PayPal Return URL:</value>
   </data>
   <data name="plPayPalSandboxEnabled.Help" xml:space="preserve">
-    <value>Check to use the PayPal Sandbox instead the real payment gateway.</value>
+    <value>Check this box to use the PayPal Sandbox instead the real payment gateway.</value>
   </data>
   <data name="plPayPalSandboxEnabled.Text" xml:space="preserve">
     <value>Use Sandbox:</value>
   </data>
   <data name="plHideSystemFolders.Help" xml:space="preserve">
-    <value>Check to prevent adding hidden folders or folders that start with underscore when performing folder synchronization.</value>
+    <value>Check this box to prevent hidden folders or folders that start with underscore begin added when performing folder synchronization.</value>
   </data>
   <data name="plHideSystemFolders.Text" xml:space="preserve">
-    <value>Hide System Folders</value>
+    <value>Hide System Folders:</value>
   </data>
   <data name="plRegisterTabId.Help" xml:space="preserve">
-    <value>The User Registration page for your site.</value>
+    <value>The user registration page for your site.</value>
   </data>
   <data name="plRegisterTabId.Text" xml:space="preserve">
     <value>Registration Page:</value>
@@ -592,19 +592,19 @@
     <value>Native Name</value>
   </data>
   <data name="plLanguageSelector.Help" xml:space="preserve">
-    <value>Select the language you wish to update settings for.  You can select whether the language in the drop-down list is displayed in English or in the Native tongue.</value>
+    <value>Select the language you want to update settings for and choose whether the language in the drop-down list is displayed in English or in the Native tongue.</value>
   </data>
   <data name="plLanguageSelector.Text" xml:space="preserve">
     <value>Select Language:</value>
   </data>
   <data name="plSearchTabId.Help" xml:space="preserve">
-    <value>The search results page for your site</value>
+    <value>The search results page for your site.</value>
   </data>
   <data name="plSearchTabId.Text" xml:space="preserve">
     <value>Search Results Page:</value>
   </data>
   <data name="portalAliasModeButtonListLabel.Help" xml:space="preserve">
-    <value>This setting determines how the site responds to URLs which are defined as alias, but are not the default-alias. None - no additional action is taken,  Canonical - the alias URL is handled as a Canaonical URL, Redirect - redirected to default alias. </value>
+    <value>This setting determines how the site responds to URLs which are defined as alias, but are not the default alias.  Canonical (the alias URL is handled as a Canonical URL), Redirect (redirects to default alias) or None (no additional action is taken).</value>
   </data>
   <data name="portalAliasModeButtonListLabel.Text" xml:space="preserve">
     <value>SiteAlias Mapping Mode:</value>
@@ -616,22 +616,22 @@
     <value>Redirect</value>
   </data>
   <data name="plAutoAddPortalAlias.Help" xml:space="preserve">
-    <value>This setting determines how the site responds to URLs which are mapped to the site but are not currently in the list of aliases. Setting is effective in single-siteconfiguration only. Select this option to automatically map new URL.</value>
+    <value>This setting determines how the site responds to URLs which are mapped to the site but are not currently in the list of aliases.  This setting is effective in single-site configuration only.  Select this option to automatically map new URL.</value>
   </data>
   <data name="plAutoAddPortalAlias.Text" xml:space="preserve">
     <value>Auto Add Site Alias:</value>
   </data>
   <data name="defaultAliasDropDownLabel.Help" xml:space="preserve">
-    <value>The default alias is used in conjunction with the Mapping Mode.  If the mode is set to Canonical then the default alias is used as the canonical alias for search engines.  If the mode is redirect then the default alias is used as the permanent redirect.</value>
+    <value>The default alias is used in conjunction with the Mapping Mode.  If the mode is set to Canonical then the default alias is used as the canonical alias for search engines.  If the mode is set to Redirect then the default alias is used as the permanent redirect.</value>
   </data>
   <data name="defaultAliasDropDownLabel.Text" xml:space="preserve">
     <value>Default Alias:</value>
   </data>
   <data name="enablePopUpsLabel.Help" xml:space="preserve">
-    <value>Check this box to enable the new Modal Pop-Up User Interface.</value>
+    <value>Check this box to open a new pop-up window when performing editing tasks, or uncheck to edit within the original Web browser.</value>
   </data>
   <data name="enablePopUpsLabel.Text" xml:space="preserve">
-    <value>Enable Pop-Ups?</value>
+    <value>Enable Pop-Ups:</value>
   </data>
   <data name="Marketing.Text" xml:space="preserve">
     <value>Site Marketing</value>
@@ -649,22 +649,22 @@
     <value>Please select a theme and/or container to preview.</value>
   </data>
   <data name="valExpiryDate.ErrorMessage" xml:space="preserve">
-    <value>Invalid expiry date</value>
+    <value>Invalid expiry date.</value>
   </data>
   <data name="ClientResourceManagement.Text" xml:space="preserve">
     <value>Client Resource Management</value>
   </data>
-  <data name="plEnableCompositeFiles.Help" xml:space="preserve">
-    <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
-  </data>
   <data name="plEnableCompositeFiles.Text" xml:space="preserve">
-    <value>Enable Composite Files</value>
+    <value>Enable Composite Files:</value>
+  </data>
+  <data name="plEnableCompositeFiles.Help" xml:space="preserve">
+    <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. Check this box to significantly increase the page loading speed.</value>
   </data>
   <data name="plCrmVersion.Help" xml:space="preserve">
-    <value>This is the version number of the client resources on your site. As this version number changes, each user will be forced to download the new version of the files. It is recommended the version be incremented only when necessary.</value>
+    <value>The version number of the client resources on your site. As this version number changes, each user will be forced to download the new version of the files. It is recommended the version only be incremented when necessary.</value>
   </data>
   <data name="plCrmVersion.Text" xml:space="preserve">
-    <value>Site Version</value>
+    <value>Site Version:</value>
   </data>
   <data name="MessagingSettings.Text" xml:space="preserve">
     <value>Messaging Settings</value>
@@ -673,19 +673,19 @@
     <value>Throttling Interval in Minutes:</value>
   </data>
   <data name="plMsgThrottlingInterval.Help" xml:space="preserve">
-    <value>Number of minutes after which a User can send the next message. Zero indicates no restrictions. Not applies to Site Administrators or Host</value>
+    <value>Enter the number of minutes after which a user can send the next message. Zero indicates no restrictions. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plMsgRecipientLimit.Text" xml:space="preserve">
     <value>Recipient Limit:</value>
   </data>
   <data name="plMsgRecipientLimit.Help" xml:space="preserve">
-    <value>Maximum number of Recipients allowed in To field. Message to a Role is considered as a single Recipient .</value>
+    <value>Maximum number of recipients allowed in To field. A message sent to a Role is considered as a single recipient.</value>
   </data>
   <data name="plMsgProfanityFilters.Text" xml:space="preserve">
     <value>Enable Profanity Filters:</value>
   </data>
   <data name="plMsgProfanityFilters.Help" xml:space="preserve">
-    <value>Enabling of this setting automatically converts Profane (inappropriate) words into something equivalent. The list is managed at Host-&gt;List-&gt;ProfanityFilters or at Admin-&gt;List-&gt;ProfanityFilters.</value>
+    <value>Enable to automatically convert profane (inappropriate) words and phrases into something equivalent. The list is managed on the  Host-&gt;List-&gt;ProfanityFilters and the Admin-&gt;List-&gt;ProfanityFilters pages.</value>
   </data>
   <data name="MsgProfanityFiltersYes.Text" xml:space="preserve">
     <value>Yes</value>
@@ -697,13 +697,13 @@
     <value>Allow Attachments:</value>
   </data>
   <data name="plMsgAllowAttachments.Help" xml:space="preserve">
-    <value>Select if attachments are allowed or not.</value>
+    <value>Choose whether attachments can be attached to messages.</value>
   </data>
   <data name="plIncludeAttachments.Text" xml:space="preserve">
     <value>Include Attachments:</value>
   </data>
   <data name="plIncludeAttachments.Help" xml:space="preserve">
-    <value>Select if attachments are to be included with outgoing email.</value>
+    <value>Choose whether attachments are to be included with outgoing email.</value>
   </data>
   <data name="MsgAllowAttachmentsYes.Text" xml:space="preserve">
     <value>Yes</value>
@@ -715,16 +715,16 @@
     <value>Send Emails:</value>
   </data>
   <data name="plMsgSendEmail.Help" xml:space="preserve">
-    <value>Select if Emails are to be sent to Recipients for every Message and Notification.</value>
+    <value>Select if emails are to be sent to recipients for every message and notification.</value>
   </data>
   <data name="CrmHostSettingsSummary.Text" xml:space="preserve">
-    <value>The host dictates default Client Resource Management behavior, but if you choose to do so, you may configure your site to behave differently.
+    <value>The Super User dictates the default Client Resource Management behavior, but if you choose to do so, you may configure your site to behave differently.
 The host-level settings are currently set as follows:
 &lt;ul&gt;
   &lt;li&gt;Version: {0}&lt;/li&gt;
   &lt;li&gt;Enable Composite Files: {1}&lt;/li&gt;
-  &lt;li&gt;Minify Css: {2}&lt;/li&gt;
-  &lt;li&gt;Minify Js: {3}&lt;/li&gt;
+  &lt;li&gt;Minify CSS: {2}&lt;/li&gt;
+  &lt;li&gt;Minify JS: {3}&lt;/li&gt;
 &lt;/ul&gt;</value>
     <comment>{0} = Version Value (number)
 {1} = Enable Composite Files Value (true or false)
@@ -732,7 +732,7 @@ The host-level settings are currently set as follows:
 {3} = Minify JS Value (true or false)</comment>
   </data>
   <data name="plOverrideDefaultSettings.Help" xml:space="preserve">
-    <value>When this option is enabled, this site will use its own settings for client resources instead of the host level settings. Check this box to show the settings that are available to configure for your site.</value>
+    <value>When this option is enabled, this site will use its own settings for client resources instead of the host level settings. Check this box to show the settings that can be configured for your site.</value>
   </data>
   <data name="plOverrideDefaultSettings.Text" xml:space="preserve">
     <value>Override Host Settings</value>
@@ -750,13 +750,13 @@ The host-level settings are currently set as follows:
     <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead css".  It is only available when composite files are enabled.</value>
   </data>
   <data name="plMinifyCss.Text" xml:space="preserve">
-    <value>Minify CSS</value>
+    <value>Minify CSS:</value>
   </data>
   <data name="plMinifyJs.Help" xml:space="preserve">
     <value>JS minification will reduce the size of the JavaScript code using JSMin. It is only available when composite files are enabled.</value>
   </data>
   <data name="plMinifyJs.Text" xml:space="preserve">
-    <value>Minify JS</value>
+    <value>Minify JS:</value>
   </data>
   <data name="DebugEnabled.Text" xml:space="preserve">
     <value>Debug mode is currently enabled at the application level (this is specified in the web.config file). This means that files will not be combined, even if file combining is enabled here or at the host level.</value>
@@ -789,64 +789,64 @@ The host-level settings are currently set as follows:
     <value>Registration Form Type:</value>
   </data>
   <data name="Registration_ExcludeTerms.Help" xml:space="preserve">
-    <value>You can define a comma-delimited list of terms that a user cannot use in their Username or Display Name.</value>
+    <value>You can define a comma-delimited list of terms that a user cannot use in their user name or display name.</value>
   </data>
   <data name="Registration_ExcludeTerms.Text" xml:space="preserve">
     <value>Excluded Terms:</value>
   </data>
   <data name="registrationFieldsLabel.Help" xml:space="preserve">
-    <value>You can specify the list of fields you wish to include as a comma-delimited list.  If this setting is used, this will take precedence over the other settings. The possible fields include Username, Email, Password, ConfirmPassword, DisplayName and all the Profile Properties.</value>
+    <value>You can specify the list of fields you want to include as a comma-delimited list.  If this setting is used, this will take precedence over the other settings.  The possible fields include user name, email, password, confirm password, display name and all the Profile Properties.</value>
   </data>
   <data name="registrationFieldsLabel.Text" xml:space="preserve">
     <value>Registration Fields:</value>
   </data>
   <data name="Registration_RequireUniqueDisplayName.Help" xml:space="preserve">
-    <value>You can optionally require your users to use a unique display name.  If a user chooses a name that exists already this will suggest a modified name.</value>
+    <value>Optionally require users to use a unique display name.  If a user chooses a name that already exists then a modified name will be suggested.</value>
   </data>
   <data name="Registration_RequireUniqueDisplayName.Text" xml:space="preserve">
     <value>Require Unique Display Name:</value>
   </data>
   <data name="Registration_UseAuthProviders.Help" xml:space="preserve">
-    <value>Select this option to use Authentication providers during registration.  Note - that not all providers support this option.</value>
+    <value>Select this option to use authentication providers during registration.  Note that not all providers support this option.</value>
   </data>
   <data name="Registration_UseAuthProviders.Text" xml:space="preserve">
     <value>Use Authentication Providers:</value>
   </data>
   <data name="Registration_UseEmailAsUserName.Help" xml:space="preserve">
-    <value>Check this option to use the Email Address as a UserName.  If this is true the username entry field is not shown in the regsitration form.</value>
+    <value>Check this box to use the email address as the user name.  If this option is enabled then the user name entry field will not be shown in the registration form.</value>
   </data>
   <data name="Registration_UseEmailAsUserName.Text" xml:space="preserve">
     <value>Use Email Address as Username:</value>
   </data>
   <data name="Registration_UseProfanityFilter.Help" xml:space="preserve">
-    <value>Selecting this option will enforce the profanity filter for the UserName and DisplayName  during Registration.</value>
+    <value>Check this box to enforce the profanity filter for the user name and display name fields during registration.</value>
   </data>
   <data name="Registration_UseProfanityFilter.Text" xml:space="preserve">
     <value>Use Profanity Filter:</value>
   </data>
   <data name="RequiresUniqueEmail.Help" xml:space="preserve">
-    <value>If this is checked then each user will be required to provide a unique Email address.  This means that  a user cannot register multiple times with the same email address.</value>
+    <value>Check this box to require each user to provide a unique email address.  This prevents users from registering  multiple times with the same email address.</value>
   </data>
   <data name="RequiresUniqueEmail.Text" xml:space="preserve">
     <value>Requires Unique Email:</value>
   </data>
   <data name="Security_DisplayNameFormat.Help" xml:space="preserve">
-    <value>You can optionally specify a format for the users display name. The format can include tokens for dynamic substitution such as [FIRSTNAME] [LASTNAME]. If a display name format is specified, the display name will no longer be editable through the user interface.</value>
+    <value>Optionally specify a format for display names.  The format can include tokens for dynamic substitution such as [FIRSTNAME] [LASTNAME].  If a display name format is specified, the display name will no longer be editable through the user interface.</value>
   </data>
   <data name="Security_DisplayNameFormat.Text" xml:space="preserve">
     <value>Display Name Format:</value>
   </data>
   <data name="Security_EmailValidation.Help" xml:space="preserve">
-    <value>You can modify the provided Email Validation Expression, which is used to check the validity of email addresses provided.</value>
+    <value>Optionally modify the Email Validation Expression which is used to check the validity of the email address provided.</value>
   </data>
   <data name="Security_EmailValidation.Text" xml:space="preserve">
     <value>Email Address Validation:</value>
   </data>
   <data name="Security_UserNameValidation.Help" xml:space="preserve">
-    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid username using the localization editor. (SharedResources.resx - Username.RegExError)</value>
+    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid user name using the localization editor. (SharedResources.resx - Username.RegExError)</value>
   </data>
   <data name="Security_UserNameValidation.Text" xml:space="preserve">
-    <value>User Name Validation</value>
+    <value>User Name Validation:</value>
   </data>
   <data name="Custom.Text" xml:space="preserve">
     <value>Custom</value>
@@ -867,7 +867,7 @@ The host-level settings are currently set as follows:
     <value>Minimum No of Non AlphaNumeric Characters:</value>
   </data>
   <data name="MinPasswordLength.Help" xml:space="preserve">
-    <value>The minimum number of characters required in a password</value>
+    <value>The minimum number of characters required in a password.</value>
   </data>
   <data name="MinPasswordLength.Text" xml:space="preserve">
     <value>Minimum Password Length:</value>
@@ -879,19 +879,19 @@ The host-level settings are currently set as follows:
     <value>Invalid Attempt Window (in mins):</value>
   </data>
   <data name="PasswordFormat.Help" xml:space="preserve">
-    <value>The password format</value>
+    <value>The password format.</value>
   </data>
   <data name="PasswordFormat.Text" xml:space="preserve">
     <value>Password Format:</value>
   </data>
   <data name="PasswordResetEnabled.Help" xml:space="preserve">
-    <value>Can the Administrator reset the user's password.</value>
+    <value>Indicates whether the Administrator can reset user passwords.</value>
   </data>
   <data name="PasswordResetEnabled.Text" xml:space="preserve">
     <value>Password Reset Enabled:</value>
   </data>
   <data name="PasswordRetrievalEnabled.Help" xml:space="preserve">
-    <value>Can the User's password be retrieved.</value>
+    <value>Indicates whether users can retrieve their password.</value>
   </data>
   <data name="PasswordRetrievalEnabled.Text" xml:space="preserve">
     <value>Password Retrieval Enabled:</value>
@@ -909,148 +909,148 @@ The host-level settings are currently set as follows:
     <value>Use Random Password:</value>
   </data>
   <data name="Registration_RequireConfirmPassword.Help" xml:space="preserve">
-    <value>Chcek this to require the registration form to display a password confirmation box.</value>
+    <value>Check this box to display a password confirmation box on the registration form.</value>
   </data>
   <data name="Registration_RequireConfirmPassword.Text" xml:space="preserve">
     <value>Require Password Confirmation:</value>
   </data>
   <data name="RequiresQuestionAndAnswer.Help" xml:space="preserve">
-    <value>Is a User supplied Question and Answer required to modify or retrieve a password</value>
+    <value>Indicates whether a user must answer a question to retrieve their password. Administrators cannot add new users or edit existing user accounts when this setting is enabled.</value>
   </data>
   <data name="RequiresQuestionAndAnswer.Text" xml:space="preserve">
     <value>Requires Question and Answer:</value>
   </data>
   <data name="Redirect_AfterRegistration.Help" xml:space="preserve">
-    <value>You can select a page to redirect the user to, on successful registration.</value>
+    <value>Optional select the page that users will be redirected to upon successful registration.</value>
   </data>
   <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
     <value>Redirect After Registration:</value>
   </data>
   <data name="Security_CaptchaRegister.Help" xml:space="preserve">
-    <value>Indicate whether this site should use CAPTCHA for Registration.</value>
+    <value>Indicate whether this site should use CAPTCHA for registration.</value>
   </data>
   <data name="Security_CaptchaRegister.Text" xml:space="preserve">
-    <value>Use CAPTCHA For Registration:</value>
+    <value>Use CAPTCHA for Registration:</value>
   </data>
   <data name="Security_RequireValidProfile.Help" xml:space="preserve">
-    <value>You can optionally require that a new user enters a valid profile during registration.</value>
+    <value>Check this box if users must complete all required fields including the User Name, First Name, Last Name, Display Name, Email Address and Password fields during registration.</value>
   </data>
   <data name="Security_RequireValidProfile.Text" xml:space="preserve">
-    <value>Require a valid Profile for Registration:</value>
+    <value>Require a Valid Profile for Registration:</value>
   </data>
   <data name="Profile_DefaultVisibility.Help" xml:space="preserve">
-    <value>Select the default Profile Visibility Mode for the Users Profile</value>
+    <value>Select default profile visibility mode for user profile.</value>
   </data>
   <data name="Profile_DefaultVisibility.Text" xml:space="preserve">
     <value>Default Profile Visibility Mode:</value>
   </data>
   <data name="Profile_DisplayVisibility.Help" xml:space="preserve">
-    <value>Check to display the Profile Visibility control in the Users profile</value>
+    <value>Check this box to display the profile visibility control on the User Profile page.</value>
   </data>
   <data name="Profile_DisplayVisibility.Text" xml:space="preserve">
     <value>Display Profile Visibility:</value>
   </data>
   <data name="Redirect_AfterLogin.Help" xml:space="preserve">
-    <value>You can select a page to redirect to after successful login</value>
+    <value>Optional select the page that users will be redirected to upon successful login.</value>
   </data>
   <data name="Redirect_AfterLogin.Text" xml:space="preserve">
     <value>Redirect After Login:</value>
   </data>
   <data name="Redirect_AfterLogout.Help" xml:space="preserve">
-    <value>You can select a page to redirect the user to, on logout.</value>
+    <value>Optional select the page that users will be redirected to upon logout.</value>
   </data>
   <data name="Redirect_AfterLogout.Text" xml:space="preserve">
     <value>Redirect After Logout:</value>
   </data>
   <data name="Security_CaptchaLogin.Help" xml:space="preserve">
-    <value>Indicate whether this site should use CAPTCHA for associating Logins e.g. openid, liveid, cardspace</value>
+    <value>Check this box to use CAPTCHA for associating logins. E.g. OpenID, LiveID, CardSpace</value>
   </data>
   <data name="Security_CaptchaLogin.Text" xml:space="preserve">
-    <value>Use CAPTCHA For Associating Logins:</value>
+    <value>Use CAPTCHA for Associating Logins:</value>
   </data>
   <data name="Security_CaptchaRetrivePassword.Help" xml:space="preserve">
-    <value>Select to add a CAPTCHA control to Password Retrieval</value>
+    <value>Check this box to use CAPTCHA when retrieving passwords.</value>
   </data>
   <data name="Security_CaptchaRetrivePassword.Text" xml:space="preserve">
-    <value>Use CAPTCHA to Retrieve Password</value>
+    <value>Use CAPTCHA to Retrieve Password:</value>
   </data>
   <data name="Security_CaptchaChangePassword.Help" xml:space="preserve">
-    <value>Select to add a CAPTCHA control to Password Change</value>
+    <value>Check this box to use CAPTCHA to change passwords.</value>
   </data>
   <data name="Security_CaptchaChangePassword.Text" xml:space="preserve">
-    <value>Use CAPTCHA to Change Password</value>
+    <value>Use CAPTCHA to Change Password:</value>
   </data>
   <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
-    <value>You can optionally require a user to update their Profile before be logged in, if their Profile is no longer Valid.</value>
+    <value>Check this box to require users to update their profile prior to login if the fields required for a valid profile have been modified.</value>
   </data>
   <data name="Security_RequireValidProfileAtLogin.Text" xml:space="preserve">
     <value>Require a valid Profile for Login:</value>
   </data>
   <data name="InvalidRegularExpression.Text" xml:space="preserve">
-    <value>The Regular Expression - {1} - entered for {0} is invalid</value>
+    <value>The Regular Expression - {1} - entered for {0} is invalid.</value>
   </data>
   <data name="InvalidFields.Text" xml:space="preserve">
-    <value>The field(s) - {0} - are not valid in the list of Registration Fields.  This is either because the field is an image type or you have spelt the field name incorrectly.</value>
+    <value>The field(s) - {0} - are not valid in the list of Registration Fields.  Ensure the field is not an image type and that the field name is spelled incorrect.</value>
   </data>
   <data name="NoEmail.Text" xml:space="preserve">
-    <value>You must, at a minimum, include the "Email" field.</value>
+    <value>The "Email" field, at minimum, must be included.</value>
   </data>
   <data name="NoDisplayName.Text" xml:space="preserve">
     <value>You have selected the Require Unique Display Name option but you have not included the Display Name in the list of fields.</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Help" xml:space="preserve">
-    <value>Specifies the number of times the wrong password can be entered before account is locked.  Can only be changed in web.config file.</value>
+    <value>Specifies the number of times the wrong password can be entered before account is locked.  This can only be changed in web.config file.</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Text" xml:space="preserve">
-    <value>Max Invalid Password Attempts</value>
+    <value>Max Invalid Password Attempts:</value>
   </data>
   <data name="MinNonAlphanumericCharactersTitle.Help" xml:space="preserve">
-    <value>Specifies the minimum number of special characters in the password.  Can only be changed in web.config file.</value>
+    <value>Specifies the minimum number of special characters in the password.  This can only be changed in web.config file.</value>
   </data>
   <data name="MinNonAlphanumericCharactersTitle.Text" xml:space="preserve">
-    <value>Min Non Alphanumeric Characters</value>
+    <value>Min Non Alphanumeric Characters:</value>
   </data>
   <data name="MinPasswordLengthTitle.Help" xml:space="preserve">
-    <value>Specifies the minimum number of characters in the password.  Can only be changed in web.config file.</value>
+    <value>Specifies the minimum number of characters in the password.  This can only be changed in web.config file.</value>
   </data>
   <data name="MinPasswordLengthTitle.Text" xml:space="preserve">
-    <value>Min Password Length</value>
+    <value>Min Password Length:</value>
   </data>
   <data name="PasswordAttemptWindowTitle.Help" xml:space="preserve">
     <value>Specifies the length of time an account is locked after failed login attempts.  Can only be changed in web.config file.</value>
   </data>
   <data name="PasswordAttemptWindowTitle.Text" xml:space="preserve">
-    <value>Password Attempt Window</value>
+    <value>Password Attempt Window:</value>
   </data>
   <data name="PasswordFormatTitle.Help" xml:space="preserve">
-    <value>Password will be Clear, Hashed or Encrypted.  Can only be changed in web.config file.</value>
+    <value>Password will be Clear, Hashed or Encrypted.  This can only be changed in web.config file.</value>
   </data>
   <data name="PasswordFormatTitle.Text" xml:space="preserve">
-    <value>Password Format</value>
+    <value>Password Format:</value>
   </data>
   <data name="PasswordResetEnabledTitle.Help" xml:space="preserve">
-    <value>Specifies whether or not a user can request their password to be reset.  Can only be changed in web.config file.</value>
+    <value>Specifies whether or not a user can request their password to be reset.  This can only be changed in web.config file.</value>
   </data>
   <data name="PasswordResetEnabledTitle.Text" xml:space="preserve">
-    <value>Password Reset Enabled</value>
+    <value>Password Reset Enabled:</value>
   </data>
   <data name="PasswordRetrievalEnabledTitle.Help" xml:space="preserve">
-    <value>Specifies whether or not a user can request their password to be sent to their email.  Can only be changed in web.config file.</value>
+    <value>Specifies whether a user can request their password to be sent to their email.  Can only be changed in web.config file.</value>
   </data>
   <data name="PasswordRetrievalEnabledTitle.Text" xml:space="preserve">
-    <value>Password Retrieval Enabled</value>
+    <value>Password Retrieval Enabled:</value>
   </data>
   <data name="PasswordStrengthRegularExpressionTitle.Help" xml:space="preserve">
-    <value>The regular expression used to evaluate password complexity from the provider specified in the Provider property, Can only be changed in web.config file, by adding/altering the passwordStrengthRegularExpression node of AspNetSqlMembershipProvider. Note: this server validation is different from the password strength meter introduced in 7.1.0 which only advises on password strength, whereas this expression is a requirement for new passwords (if it is defined).</value>
+    <value>The regular expression used to evaluate password complexity from the provider specified in the Provider property. This can only be changed in web.config file by adding/altering the passwordStrengthRegularExpression node of AspNetSqlMembershipProvider. Note: this server validation is different from the password strength meter introduced in 7.1.0 which only advises on password strength, whereas this expression is a requirement for new passwords (if it is defined).</value>
   </data>
   <data name="PasswordStrengthRegularExpressionTitle.Text" xml:space="preserve">
-    <value>Password Strength Regular Expression</value>
+    <value>Password Strength Regular Expression:</value>
   </data>
   <data name="RequiresQuestionAndAnswerTitle.Help" xml:space="preserve">
-    <value>Specifies whether a question and answer system is used as part of the registration process.  Can only be changed in web.config file.</value>
+    <value>Indicates whether a question and answer system is used as part of the registration process.  Can only be changed in web.config file.</value>
   </data>
   <data name="RequiresQuestionAndAnswerTitle.Text" xml:space="preserve">
-    <value>Requires Question And Answer</value>
+    <value>Requires Question and Answer:</value>
   </data>
   <data name="MsgSendEmailsNo.Text" xml:space="preserve">
     <value>No</value>
@@ -1062,22 +1062,22 @@ The host-level settings are currently set as follows:
     <value>Check this box to hide the login link in page.</value>
   </data>
   <data name="plHideLoginControl.Text" xml:space="preserve">
-    <value>Hide Login Control?</value>
+    <value>Hide Login Control:</value>
   </data>
   <data name="MembershipManagement.Text" xml:space="preserve">
     <value>Membership Management</value>
   </data>
   <data name="plEnableBannedList.Text" xml:space="preserve">
-    <value>Enable password banned list</value>
+    <value>Enable Password Banned List</value>
   </data>
   <data name="plEnableBannedList.Help" xml:space="preserve">
-    <value>Sets whether passwords are checked against a list of banned items</value>
+    <value>Sets whether passwords are checked against a list of banned items.</value>
   </data>
   <data name="plEnableIPChecking.Text" xml:space="preserve">
     <value>Enable IP address checking</value>
   </data>
   <data name="plEnableIPChecking.Help" xml:space="preserve">
-    <value>Sets whether IP address is checked during login</value>
+    <value>Sets whether IP address is checked during login.</value>
   </data>
   <data name="CharacterSubListLabel.Help" xml:space="preserve">
     <value>Select the character to use to concatenate URLs.</value>
@@ -1113,22 +1113,22 @@ The host-level settings are currently set as follows:
     <value>Verify User Profile URLs:</value>
   </data>
   <data name="plEnableRegisterNotification.Help" xml:space="preserve">
-    <value>Whether enable website administrator to receive email notification during new user registration.</value>
+    <value>Check this box to send email notification of new user registrations to the Primary Administrator.</value>
   </data>
   <data name="plEnableRegisterNotification.Text" xml:space="preserve">
-    <value>Receive user registration notification:</value>
+    <value>Receive User Registration Notification:</value>
   </data>
   <data name="FileVersionSettings.Text" xml:space="preserve">
     <value>File Version Settings</value>
   </data>
   <data name="plFileVersionEnabled.Help" xml:space="preserve">
-    <value>Set whether or not file versioning is enabled or disabled for the site</value>
+    <value>Check this box to enable file versioning for the site.</value>
   </data>
   <data name="plFileVersionEnabled.Text" xml:space="preserve">
-    <value>File Versioning enabled?</value>
+    <value>File Versioning enabled:</value>
   </data>
   <data name="plMaxVersions.Help" xml:space="preserve">
-    <value>Set the number of file versions to keep</value>
+    <value>Set the number of file versions to keep.</value>
   </data>
   <data name="plMaxVersions.Text" xml:space="preserve">
     <value>Maximum number of file versions kept</value>
@@ -1137,7 +1137,7 @@ The host-level settings are currently set as follows:
     <value>The number of versions kept must be in the range 5 to 25.</value>
   </data>
   <data name="vanilyUrlPrefixLabel.Help" xml:space="preserve">
-    <value>Enter a string to use to prefix vanity URLs</value>
+    <value>Enter a string to use to prefix vanity URLs.</value>
   </data>
   <data name="vanilyUrlPrefixLabel.Text" xml:space="preserve">
     <value>Vanity URL Prefix:</value>
@@ -1152,13 +1152,13 @@ The host-level settings are currently set as follows:
     <value>Default Authentication Provider</value>
   </data>
   <data name="DefaultAuthProvider.Help" xml:space="preserve">
-    <value>You can select a default auth provider for user login. Only providers that support forms authentication can be selected.</value>
+    <value>You can select a default authentication provider for user login.  Only providers that support forms authentication can be selected.</value>
   </data>
   <data name="EmailErrorMessage.Text" xml:space="preserve">
     <value>There has been an error trying to send the test email. The error is:&lt;br /&gt;{0}</value>
   </data>
   <data name="EmailSentMessage.Text" xml:space="preserve">
-    <value>Email Sent Successfully from {0} to {1}</value>
+    <value>Email sent successfully from {0} to {1}</value>
   </data>
   <data name="EmailTest.Text" xml:space="preserve">
     <value>Test SMTP Settings</value>
@@ -1167,10 +1167,10 @@ The host-level settings are currently set as follows:
     <value>SMTP Authentication:</value>
   </data>
   <data name="plSMTPAuthentication.Help" xml:space="preserve">
-    <value>Enter the SMTP Server Authentication method ( default = Anonymous )</value>
+    <value>Enter the SMTP Server Authentication method. Default = Anonymous.</value>
   </data>
   <data name="plSMTPEnableSSL.Help" xml:space="preserve">
-    <value>Used for SMTP services that require secure connection (usually not needed)</value>
+    <value>Used for SMTP services that require secure connection.  This is typically not required.</value>
   </data>
   <data name="plSMTPEnableSSL.Text" xml:space="preserve">
     <value>SMTP Enable SSL:</value>
@@ -1178,14 +1178,17 @@ The host-level settings are currently set as follows:
   <data name="plSMTPMode.Text" xml:space="preserve">
     <value>SMTP Mode:</value>
   </data>
+  <data name="plSMTPMode.Help" xml:space="preserve">
+    <value>Host mode utilizes all SMTP settings set at the application level. Site level allows you to select your own SMTP server, port and authentication method.</value>
+  </data>
   <data name="plSMTPPassword.Text" xml:space="preserve">
     <value>SMTP Password:</value>
   </data>
   <data name="plSMTPPassword.Help" xml:space="preserve">
-    <value>Enter the Password for the SMTP Server</value>
+    <value>Enter the password for the SMTP Server.</value>
   </data>
   <data name="plSMTPServer.Help" xml:space="preserve">
-    <value>Please enter name (address) and port of the SMTP server to be used for sending mails from this website.</value>
+    <value>Please enter the name (address) and port of the SMTP server to be used for sending mails from this site.</value>
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
     <value>SMTP Server and port:</value>
@@ -1209,86 +1212,73 @@ The host-level settings are currently set as follows:
     <value>NTLM</value>
   </data>
   <data name="SmtpServerWarning.Text" xml:space="preserve">
-    <value>You are try to use a custom SMTP port with your install instance running under medium trust, you need contact your host provider to make sure this setting can work correctly on the server.</value>
+    <value>You are trying to use a custom SMTP port with your install instance running under medium trust. Please contact your host provider to make sure this setting can work correctly on the server.</value>
   </data>
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
-    <value>You Must Specify The Host Email Address</value>
-  </data>
-  <data name="EnableOAuth.Text" xml:space="preserve">
-    <value>Enable OAuth</value>
-  </data>
-  <data name="DisableOAuth.Text" xml:space="preserve">
-    <value>Disable OAuth</value>
+    <value>You must specify the host email address</value>
   </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
   </data>
   <data name="plMaxIdleTime.Help" xml:space="preserve">
-    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0. 
-</value>
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0.</value>
   </data>
   <data name="plConnectionLimit.Text" xml:space="preserve">
     <value>Connection Limit:</value>
   </data>
   <data name="plConnectionLimit.Help" xml:space="preserve">
-    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1. </value>
+    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1.</value>
   </data>
   <data name="ConnectionLimitValidation.Text" xml:space="preserve">
-    <value>Numbers from 1 to 2147483647 only!</value>
+    <value>Numbers must be from 1 to 2147483647.</value>
   </data>
   <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
-    <value>Numbers from 1 to 2147483647 only!</value>
+    <value>Numbers must be from 1 to 2147483647.</value>
   </data>
   <data name="pl404TabId.Help" xml:space="preserve">
     <value>The 404 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in a "Page Not Found" error.</value>
   </data>
   <data name="pl404TabId.Text" xml:space="preserve">
-    <value>404 Error Page</value>
+    <value>404 Error Page:</value>
   </data>
   <data name="pl500TabId.Help" xml:space="preserve">
     <value>The 500 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in an unexpected error.</value>
   </data>
   <data name="pl500TabId.Text" xml:space="preserve">
-    <value>500 Error Page</value>
+    <value>500 Error Page:</value>
   </data>
   <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
-    <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
+    <value>The user base of this site contains duplicate email addresses. If you want to use email addresses as user names you must fix those entries first.</value>
   </data>
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
-  </data>
-  <data name="OAuthSite.Text" xml:space="preserve">
-    <value>OAuth Settings</value>
-  </data>
-  <data name="OAuthNotEnabled.Text" xml:space="preserve">
-    <value>OAuth is currently not enabled for this site.</value>
   </data>
   <data name="plPageHeadText.Help" xml:space="preserve">
     <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
   </data>
   <data name="plPageHeadText.Text" xml:space="preserve">
-    <value>Html Page Header Tags</value>
+    <value>HTML Page Header Tags:</value>
   </data>
   <data name="plInjectModuleHyperLink.Help" xml:space="preserve">
     <value>Inject a empty hyperlink on the top of the module with name equals moduleid.</value>
   </data>
   <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
-    <value>Inject Module Hyperlinks</value>
+    <value>Inject Module Hyperlinks:</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Help" xml:space="preserve">
-    <value>Add X-UA-Compatible to the hhtp response headers (ex. : IE=edge)</value>
+    <value>Add X-UA-Compatible to the http response headers.  E.g. IE=Edge</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
-    <value>X-UA-Compatible Http Header</value>
+    <value>X-UA-Compatible Http Header:</value>
   </data>
   <data name="plOAuthSitesettingsClient.Help" xml:space="preserve">
-    <value>OAuth Client identity for 3rd party usage</value>
+    <value>OAuth Client identity for 3rd party usage.</value>
   </data>
   <data name="plOAuthSitesettingsClient.Text" xml:space="preserve">
     <value>Client Identifier</value>
   </data>
   <data name="plOAuthSitesettingsSecret.Help" xml:space="preserve">
-    <value>OAuth Client (shared) secret for 3rd party usage</value>
+    <value>OAuth Client (shared) secret for 3rd party usage.</value>
   </data>
   <data name="plOAuthSitesettingsSecret.Text" xml:space="preserve">
     <value>Client Secret</value>
@@ -1297,12 +1287,12 @@ The host-level settings are currently set as follows:
     <value>Add a cache buster parameter (ver=[file timestamp]) to file resource URIs.</value>
   </data>
   <data name="plAddCachebusterToResourceUris.Text" xml:space="preserve">
-    <value>Cachebust resource URIs</value>
+    <value>Cachebust Resource URIs</value>
   </data>
   <data name="plDisablePrivateMessage.Help" xml:space="preserve">
-    <value>When this option is set, regular users can't send message to specific user or group anymore.</value>
+    <value>Select to prevent users from sending messages to specific users or groups. This restriction doesn't apply to Administrators or Super Users.</value>
   </data>
   <data name="plDisablePrivateMessage.Text" xml:space="preserve">
-    <value>Disable Private Message</value>
+    <value>Disable Private Message:</value>
   </data>
 </root>

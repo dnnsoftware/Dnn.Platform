@@ -50,7 +50,7 @@
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -81,6 +81,9 @@
     <Compile Include="Fakes\Dog.cs" />
     <Compile Include="Fakes\FakeController.cs" />
     <Compile Include="Fakes\FakeDnnController.cs" />
+    <Compile Include="Framework\Attributes\DnnModuleAuthorizeAttributeTests.cs" />
+    <Compile Include="Framework\Attributes\DnnAuthorizeAttributeTests.cs" />
+    <Compile Include="Framework\Attributes\DnnHandleErrorAttributeTests.cs" />
     <Compile Include="Framework\DnnWebViewPageTests.cs" />
     <Compile Include="Framework\Controllers\DnnControllerTests.cs" />
     <Compile Include="Framework\Modules\ModuleApplicationTests.cs" />

@@ -138,6 +138,11 @@ namespace DotNetNuke.Web.Client
             ModuleCss = 10,
 
             /// <summary>
+            /// Resources CSS files have a priority of 12
+            /// </summary>
+            ResourceCss = 12,
+
+            /// <summary>
             /// Skin CSS files have a priority of 15
             /// </summary>
             SkinCss = 15,

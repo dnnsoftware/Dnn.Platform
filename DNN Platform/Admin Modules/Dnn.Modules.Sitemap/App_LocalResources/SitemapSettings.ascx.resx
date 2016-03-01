@@ -148,7 +148,7 @@
     <value>This option can be used to remove certain pages from the Sitemap. For example you can setup a priority of -1 for a page and enter -1 here to cause the page to not being included in the generated Sitemap.</value>
   </data>
   <data name="lblExcludePriority.Text" xml:space="preserve">
-    <value>Exclude URLs with a priority lower than:</value>
+    <value>Exclude URLs With a Priority Lower Than:</value>
   </data>
   <data name="lblIncludeHidden.Help" xml:space="preserve">
     <value>When checked hidden pages (not visible in the menu) will also be included in the Sitemap. The default is not to include hidden pages.</value>
@@ -196,13 +196,13 @@
     <value>Enable this option if you want to cache the Sitemap so it is not generated every time it is requested. This is specially necessary for big sites. If your site has more than 50.000 URLs the Sitemap will be cached with a default value of 1 day. Set this value to 0 to disable the caching.</value>
   </data>
   <data name="lblCache.Text" xml:space="preserve">
-    <value>Days to cache Sitemap for</value>
+    <value>Days to Cache Sitemap For</value>
   </data>
   <data name="lnkResetCache.Text" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
   <data name="ResetOK.Text" xml:space="preserve">
-    <value>The Sitemap cache successfully purged</value>
+    <value>The Sitemap cache successfully purged.</value>
   </data>
   <data name="cmdVerification.Text" xml:space="preserve">
     <value>Create</value>
@@ -220,19 +220,19 @@
     <value>Sitemap URL:</value>
   </data>
   <data name="lblVerification.Help" xml:space="preserve">
-    <value>When signing up with Google Webmaster Tools you will need to Verify your site ownership. Choose the "Upload an HTML file" method from the Google Verification screen. Enter the filename displayed (ie. google53c0cef435b2b81e.html) in the Verification textbox and click Create. Return to Google and select the Verify button.</value>
+    <value>When signing up with Google Webmaster Tools you will need to Verify your site ownership. Choose the "Upload an HTML File" method from the Google Verification screen. Enter the file name displayed (ie. google53c0cef435b2b81e.html) into the Verification text box and click Create. Return to Google and select the Verify button.</value>
   </data>
   <data name="lblVerification.Text" xml:space="preserve">
     <value>Verification:</value>
   </data>
   <data name="lnkTestSitemap.Text" xml:space="preserve">
-    <value>View current Sitemap</value>
+    <value>View Current Sitemap</value>
   </data>
   <data name="SectionSubmissionSettings.Text" xml:space="preserve">
     <value>Site Submission</value>
   </data>
   <data name="NoCacheToReset.Text" xml:space="preserve">
-    <value>No cache data available to reset</value>
+    <value>No cache data available to reset.</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Name</value>
@@ -241,7 +241,7 @@
     <value>Submit</value>
   </data>
   <data name="SectionCoreSettingsLbl.Text" xml:space="preserve">
-    <value>Modify the basic settings that apply to general DotNetNuke pages.</value>
+    <value>Modify the basic settings that apply to general DNN pages.</value>
   </data>
   <data name="SectionGeneralSettingsLbl.Text" xml:space="preserve">
     <value>Configure the settings that apply to all URLs included in the Sitemap.</value>

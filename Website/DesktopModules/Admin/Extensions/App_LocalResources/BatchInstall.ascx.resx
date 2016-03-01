@@ -142,7 +142,7 @@
     <value>Install Extension Wizard</value>
   </data>
   <data name="Help.Text" xml:space="preserve">
-    <value>The following extensions are available for you to install.  Select the extension(s) you would like to install and then click the Install button. </value>
+    <value>The following extensions are available for installation.  Select the extension(s) you would like to install and then click the Install button.</value>
   </data>
   <data name="NoAuthSystems.Text" xml:space="preserve">
     <value>No Authentication Systems Available</value>
@@ -175,6 +175,6 @@
     <value>&lt;b&gt;&lt;font color='red'&gt;Error installing Theme:&lt;/font&gt;&lt;/b&gt;&lt;br/&gt; {0}</value>
   </data>
   <data name="NoneSelected.Text" xml:space="preserve">
-    <value>No Extensions were selected for installation.</value>
+    <value>No extensions were selected for installation.</value>
   </data>
 </root>

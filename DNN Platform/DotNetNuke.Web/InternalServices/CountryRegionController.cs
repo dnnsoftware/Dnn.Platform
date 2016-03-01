@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using DotNetNuke.Common.Lists;
@@ -19,9 +19,10 @@ namespace DotNetNuke.Web.InternalServices
 		[HttpGet()]
 		public HttpResponseMessage Countries()
 		{
-			string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
-			CachedCountryList countries = CachedCountryList.GetCountryList(System.Threading.Thread.CurrentThread.CurrentCulture.Name);
-			return Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(x => x.NormalizedFullName.IndexOf(searchString) > -1).OrderBy(x => x.NormalizedFullName));
+			var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? "").NormalizeString();
+            var countries = CachedCountryList.GetCountryList(Thread.CurrentThread.CurrentCulture.Name);
+			return Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(
+                x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));
 		}
 
 		public struct Region

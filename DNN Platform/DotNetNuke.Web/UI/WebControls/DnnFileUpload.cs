@@ -7,6 +7,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -75,7 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(Page);
+            jQuery.RegisterFileUpload(Page);            
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -90,11 +91,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             DnnDropDownList.RegisterClientScript(page, skin);
 
-            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css");
+            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css", FileOrder.Css.ResourceCss);
             if (!string.IsNullOrEmpty(skin))
             {
-                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload." + skin + ".css");
+                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload." + skin + ".css", FileOrder.Css.ResourceCss);
             }
+
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
@@ -110,7 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (Options.FolderPicker.InitialState == null)
             {
                 var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
-                var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+                var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
 
                 Options.FolderPicker.InitialState = new DnnDropDownListState
                 {

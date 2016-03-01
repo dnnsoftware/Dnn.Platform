@@ -69,6 +69,8 @@ namespace Dnn.Modules.Tabs
     /// </remarks>
     public partial class View : PortalModuleBase
     {
+        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
+
         #region Private Members
 
         private const string DefaultPageTemplate = "Default.page.template";
@@ -575,7 +577,7 @@ namespace Dnn.Modules.Tabs
             {
                 tabs.Add(new TabInfo
                             {
-                                TabName = Regex.Replace(strLine, ">*(.*)", "${1}"),
+                                TabName = TabNameRegex.Replace(strLine, "${1}"),
                                 Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1
                             });
             }
@@ -927,7 +929,16 @@ namespace Dnn.Modules.Tabs
                 chkAllowIndex.Checked = !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
 
                 ctlIcon.Url = tab.IconFileRaw;
+                if (string.IsNullOrEmpty(tab.IconFileRaw))
+                {
+                    ctlIcon.UrlType = "F";
+                }
+
                 ctlIconLarge.Url = tab.IconFileLargeRaw;
+                if (string.IsNullOrEmpty(tab.IconFileLargeRaw))
+                {
+                    ctlIconLarge.UrlType = "F";
+                }
 
                 ShowPermissions(!tab.IsSuperTab && TabPermissionController.CanAdminPage(tab));
 

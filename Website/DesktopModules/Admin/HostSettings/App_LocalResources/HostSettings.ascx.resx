@@ -124,49 +124,49 @@
     <value>Server Time:</value>
   </data>
   <data name="plServerTime.Help" xml:space="preserve">
-    <value>The current date and time for the web server</value>
+    <value>The current date and time of the web server.</value>
   </data>
   <data name="plebFarm.Text" xml:space="preserve">
-    <value>Web Farm Enabled?</value>
+    <value>Web Farm Enabled:</value>
   </data>
   <data name="plWebFarm.Help" xml:space="preserve">
-    <value>Is this site using a Web Farm.</value>
+    <value>Indicates whether this DNN application is running in a web farm.</value>
   </data>
   <data name="plVersion.Text" xml:space="preserve">
     <value>Version:</value>
   </data>
   <data name="plVersion.Help" xml:space="preserve">
-    <value>The application version you are running</value>
+    <value>The version of this application.</value>
   </data>
   <data name="plDataProvider.Text" xml:space="preserve">
     <value>Data Provider:</value>
   </data>
   <data name="plDataProvider.Help" xml:space="preserve">
-    <value>The provider name which is identified as the default data provider in the web.config file</value>
+    <value>The default data provider for this application.</value>
   </data>
   <data name="plFramework.Text" xml:space="preserve">
     <value>.NET Framework:</value>
   </data>
   <data name="plFramework.Help" xml:space="preserve">
-    <value>The .NET Framework version which the application is running on - specified through IIS</value>
+    <value>The .NET Framework version which the application is running on as specified through IIS.</value>
   </data>
   <data name="plIdentity.Text" xml:space="preserve">
     <value>ASP.NET Identity:</value>
   </data>
   <data name="plIdentity.Help" xml:space="preserve">
-    <value>The Windows user account under which the application is running. This is the account which needs to be granted folder permissions on the server.</value>
+    <value>The Windows user account under which the application is running. This account needs to be granted folder permissions on the server.</value>
   </data>
   <data name="plHostName.Text" xml:space="preserve">
     <value>Server Name:</value>
   </data>
   <data name="plHostName.Help" xml:space="preserve">
-    <value>The Name of the Server</value>
+    <value>The name of the server.</value>
   </data>
   <data name="plIPAddress.Text" xml:space="preserve">
     <value>IP Address:</value>
   </data>
   <data name="plIPAddress.Help" xml:space="preserve">
-    <value>The IP Address of the Server.</value>
+    <value>The IP address of the server.</value>
   </data>
   <data name="plPermissions.Text" xml:space="preserve">
     <value>Permissions:</value>
@@ -232,10 +232,10 @@
     <value>Demo Period:</value>
   </data>
   <data name="plDemoSignup.Text" xml:space="preserve">
-    <value>Anonymous Demo Signup?</value>
+    <value>Anonymous Demo Signup:</value>
   </data>
   <data name="plUsersOnline.Text" xml:space="preserve">
-    <value>Enable Users Online?</value>
+    <value>Enable Users Online:</value>
   </data>
   <data name="plUsersOnlineTime.Text" xml:space="preserve">
     <value>Users Online Time:</value>
@@ -256,7 +256,7 @@
     <value>Web Request Timeout:</value>
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
-    <value>SMTP Server and port:</value>
+    <value>SMTP Server and Port:</value>
   </data>
   <data name="EmailTest.Text" xml:space="preserve">
     <value>Test SMTP Settings</value>
@@ -274,7 +274,7 @@
     <value>SMTP Enable SSL:</value>
   </data>
   <data name="plSMTPEnableSSL.Help" xml:space="preserve">
-    <value>Used for SMTP services that require secure connection (usually not needed)</value>
+    <value>Used for SMTP services that require secure connection. This setting is typically not required.</value>
   </data>
   <data name="plFileExtensions.Text" xml:space="preserve">
     <value>Allowable File Extensions:</value>
@@ -283,25 +283,25 @@
     <value>Theme Upload Permission:</value>
   </data>
   <data name="plCache.Text" xml:space="preserve">
-    <value>Cache Timeout (seconds):</value>
+    <value>Cache Timeout (Seconds):</value>
   </data>
   <data name="ClearCache.Text" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
   <data name="plCopyright.Text" xml:space="preserve">
-    <value>Show Copyright Credits?</value>
+    <value>Show Copyright Credits:</value>
   </data>
   <data name="plUseCustomErrorMessages.Text" xml:space="preserve">
-    <value>Use Custom Error Messages?</value>
+    <value>Use Custom Error Messages:</value>
   </data>
   <data name="UpgradeLog.Text" xml:space="preserve">
-    <value>Upgrade Log For Version</value>
+    <value>Upgrade Log for Version</value>
   </data>
   <data name="EmailSentMessage.Text" xml:space="preserve">
-    <value>Email Sent Successfully from {0} to {0}</value>
+    <value>Email sent successfully from {0} to {0}</value>
   </data>
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
-    <value>You Must Specify The Host Email Address</value>
+    <value>You must specify the host email address.</value>
   </data>
   <data name="15Seconds.Text" xml:space="preserve">
     <value>15 Seconds</value>
@@ -331,7 +331,7 @@
     <value>None</value>
   </data>
   <data name="BasicSettingsHelp.Text" xml:space="preserve">
-    <value>Enter basic settings for your Hosting Account</value>
+    <value>Enter basic settings for the Hosting account.</value>
   </data>
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Basic Settings</value>
@@ -340,19 +340,19 @@
     <value>Host Details</value>
   </data>
   <data name="plHostTitle.Help" xml:space="preserve">
-    <value>Enter the name of your Hosting Account</value>
+    <value>Enter the title of the Host site.</value>
   </data>
   <data name="plHostURL.Help" xml:space="preserve">
-    <value>Enter the URL of your Hosting Account</value>
+    <value>Enter the URL of the Hosting account.</value>
   </data>
   <data name="plHostEmail.Help" xml:space="preserve">
-    <value>Enter a support email adress for your Hosting Account</value>
+    <value>Enter a support email address for the Hosting account.</value>
   </data>
   <data name="plHostSkin.Help" xml:space="preserve">
-    <value>Select the default theme to use for your sites</value>
+    <value>Select the default theme to use for all sites.</value>
   </data>
   <data name="plHostContainer.Help" xml:space="preserve">
-    <value>Select the default container to use for your sites</value>
+    <value>Select the default container to use for all sites.</value>
   </data>
   <data name="Appearance.Text" xml:space="preserve">
     <value>Appearance</value>
@@ -373,46 +373,46 @@
     <value>Advanced Settings</value>
   </data>
   <data name="AdvancedSettingsHelp.Text" xml:space="preserve">
-    <value>Enter advanced settings for your Hosting Account</value>
+    <value>Advanced settings for the Hosting account.</value>
   </data>
   <data name="Other.Text" xml:space="preserve">
     <value>Other Settings</value>
   </data>
   <data name="plCopyright.Help" xml:space="preserve">
-    <value>Select this to add the DotNetNuke copyright credits to the Page Source</value>
+    <value>Check this box to add the DNN copyright credits to the page source.</value>
   </data>
   <data name="plUseCustomErrorMessages.Help" xml:space="preserve">
-    <value>Select this to use Custom Error Messages</value>
+    <value>Check this box to use custom error messages.</value>
   </data>
   <data name="plProcessor.Help" xml:space="preserve">
-    <value>Select a Payment processor for accepting payments from Client sites</value>
+    <value>Select a payment processor for accepting payments from child sites.</value>
   </data>
   <data name="plUserId.Help" xml:space="preserve">
-    <value>Enter your UserId for the Payment Processor</value>
+    <value>Enter the UserId for the payment processor.</value>
   </data>
   <data name="plPassword.Help" xml:space="preserve">
-    <value>Enter your Pasword for the Payment Processor</value>
+    <value>Enter the password for the payment processor.</value>
   </data>
   <data name="plHostFee.Help" xml:space="preserve">
-    <value>Enter the base fee for site hosting</value>
+    <value>Enter the base fee for site hosting.</value>
   </data>
   <data name="plHostCurrency.Help" xml:space="preserve">
-    <value>Select the currency for your fees</value>
+    <value>Select the currency for hosting fees.</value>
   </data>
   <data name="plDemoPeriod.Help" xml:space="preserve">
-    <value>Enter the number of days for a demo trial account</value>
+    <value>Enter the number of days for a demo trial account.</value>
   </data>
   <data name="plDemoSignup.Help" xml:space="preserve">
-    <value>Select whether you will allow users to signup for a demo</value>
+    <value>Check the box to allow users to signup for a demo site.</value>
   </data>
   <data name="plHostSpace.Help" xml:space="preserve">
-    <value>Enter the amount of file space allowed for an account</value>
+    <value>Enter the amount of file space allowed for an account.</value>
   </data>
   <data name="plSMTPServer.Help" xml:space="preserve">
-    <value>Enter the SMTP Server Address. You can also specify an alternate port by adding a colon and the port number (e.g. smtp.googlemail.com:587). Enter the SMTP server name only to use default port number (25)</value>
+    <value>Enter the SMTP server name to use default port number (25). Optionally specify an alternate port by adding a colon and the port number to the SMTP server address. E.g. smtp.googlemail.com:587.</value>
   </data>
   <data name="plSMTPAuthentication.Help" xml:space="preserve">
-    <value>Enter the SMTP Server Authentication method ( default = Anonymous )</value>
+    <value>Enter the SMTP server authentication method. Default is Anonymous.</value>
   </data>
   <data name="SMTPAnonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
@@ -424,22 +424,22 @@
     <value>NTLM</value>
   </data>
   <data name="plSMTPUsername.Help" xml:space="preserve">
-    <value>Enter the Username for the SMTP Server</value>
+    <value>Enter the user name for the SMTP server.</value>
   </data>
   <data name="plSMTPPassword.Help" xml:space="preserve">
-    <value>Enter the Password for the SMTP Server</value>
+    <value>Enter the password for the SMTP server.</value>
   </data>
   <data name="plControlPanel.Text" xml:space="preserve">
     <value>Control Panel:</value>
   </data>
   <data name="plControlPanel.Help" xml:space="preserve">
-    <value>You can specify an alternative control to use for Page Administration</value>
+    <value>Choose the Control Panel for all sites.</value>
   </data>
   <data name="plFileExtensions.Help" xml:space="preserve">
-    <value>Enter the allowable file extensions (separated by commas)</value>
+    <value>Enter the file extensions (separated by commas) that can be uploaded to the site.</value>
   </data>
   <data name="plSkinUpload.Help" xml:space="preserve">
-    <value>Select whether Theme Upload is restricted to the "Host" Account or can be done by Site Administrators</value>
+    <value>Choose whether themes can be uploaded by Administrators or if uploading it restricted to the Host Account.</value>
   </data>
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
@@ -448,31 +448,31 @@
     <value>Site</value>
   </data>
   <data name="plCache.Help" xml:space="preserve">
-    <value>Set the length of time that objects remain in the cache</value>
+    <value>Set the length of time that objects remain in the cache.</value>
   </data>
   <data name="plPerformance.Help" xml:space="preserve">
     <value>Select how to optimize performance.</value>
   </data>
   <data name="plProxyServer.Help" xml:space="preserve">
-    <value>Enter the Proxy Server Address</value>
+    <value>Enter the proxy server address.</value>
   </data>
   <data name="plProxyPort.Help" xml:space="preserve">
-    <value>Enter the Proxy Server Port</value>
+    <value>Enter the proxy server port.</value>
   </data>
   <data name="plProxyUsername.Help" xml:space="preserve">
-    <value>Enter the User Name for the Proxy Server</value>
+    <value>Enter the user name for the proxy server.</value>
   </data>
   <data name="plProxyPassword.Help" xml:space="preserve">
-    <value>Enter the Password for the Proxy Server</value>
+    <value>Enter the password for the proxy server.</value>
   </data>
   <data name="plWebRequestTimeout.Help" xml:space="preserve">
-    <value>Enter a time out value for a Web Request</value>
+    <value>Enter a time out value for a web request.</value>
   </data>
   <data name="plUsersOnline.Help" xml:space="preserve">
-    <value>You can optionally enable the Users Online feature</value>
+    <value>Check the box to enable the Users Online feature.</value>
   </data>
   <data name="plUsersOnlineTime.Help" xml:space="preserve">
-    <value>Enter the length of the Users Online Buffer</value>
+    <value>Enter the number of minutes that an inactive user is tracked for. After this time the user will be considered offline and wont be tracked further.</value>
   </data>
   <data name="FriendlyUrl.Text" xml:space="preserve">
     <value>Friendly URL Settings</value>
@@ -481,13 +481,13 @@
     <value>Request Filter Settings</value>
   </data>
   <data name="plEnableRequestFilters.Text" xml:space="preserve">
-    <value>Enable Request Filters?</value>
+    <value>Enable Request Filters:</value>
   </data>
   <data name="plEnableRequestFilters.Help" xml:space="preserve">
-    <value>Check to enable request filters.</value>
+    <value>Check the box to enable request filters.</value>
   </data>
   <data name="plHostPortal.Help" xml:space="preserve">
-    <value>Select the default website</value>
+    <value>Select the default site.</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Host Settings</value>
@@ -508,22 +508,22 @@
     <value>&lt;h1&gt;About Host Settings&lt;/h1&gt;&lt;p&gt;The Super User can manage the configuration settings which apply to the entire site.&lt;/p&gt;</value>
   </data>
   <data name="plLogBuffer.Text" xml:space="preserve">
-    <value>Enable Event Log Buffer?</value>
+    <value>Enable Event Log Buffer:</value>
   </data>
   <data name="plLogBuffer.Help" xml:space="preserve">
-    <value>Checking this will cause log entries to be logged to memory and then purged regularly to the data store.  Unchecking it will cause log entries to be written immediately.</value>
+    <value>Check this box to cause log entries to be logged in memory and then purged regularly to the data store, or uncheck to cause log entries to be written immediately.</value>
   </data>
   <data name="plAutoAccountUnlock.Text" xml:space="preserve">
     <value>Auto-Unlock Accounts After:</value>
   </data>
   <data name="plAutoAccountUnlock.Help" xml:space="preserve">
-    <value>After an account is locked out due to unsuccessful login attempts, it can be automatically unlocked with a successful authentication after a certain period of time has elapsed.  Enter the number of minutes to wait until the account can be automatically unlocked.  Enter "0" to disable the auto-unlock feature.</value>
+    <value>After an account is locked out due to unsuccessful login attempts, it can be automatically unlocked with a successful authentication after a certain period of time has elapsed. Enter the number of minutes to wait until the account can be automatically unlocked. Enter "0" to disable the auto-unlock feature.</value>
   </data>
   <data name="plCacheMethod.Text" xml:space="preserve">
     <value>Module Caching Method:</value>
   </data>
   <data name="plCacheMethod.Help" xml:space="preserve">
-    <value>Memory caching provides the most flexibility and is the highest performance method however it also consumes the most system resources. Disk caching is the least expensive on resources but does not offer any flexibility.</value>
+    <value>Choose the preferred cache method. Memory caching provides the most flexibility and is the highest performance method however it also consumes the most system resources. Disk caching requires less resources however it does not offer any flexibility.</value>
   </data>
   <data name="Memory.Text" xml:space="preserve">
     <value>Memory</value>
@@ -532,19 +532,19 @@
     <value>Disk</value>
   </data>
   <data name="ProcessorWebSite.Text" xml:space="preserve">
-    <value>Go To Payment Processor WebSite</value>
+    <value>Go to Payment Processor Website</value>
   </data>
   <data name="plHelpUrl.Text" xml:space="preserve">
     <value>Help URL:</value>
   </data>
   <data name="plHelpUrl.Help" xml:space="preserve">
-    <value>Enter the URL for the Online Help you will be providing.  If you leave the entry blank then no Online Help will be offered for the Admin/Host areas of DotNetNuke.</value>
+    <value>Enter the URL of the Online Help you are providing or leave blank to remove.</value>
   </data>
   <data name="plEnableHelp.Text" xml:space="preserve">
     <value>Enable Module Online Help:</value>
   </data>
   <data name="plEnableHelp.Help" xml:space="preserve">
-    <value>You can enable or disable the Online Help Action Menu for Modules.  If enabled, you will need to provide the Help URL for the module, in the Module Definitions, although this may have been provided by the developer of the module.</value>
+    <value>Check this box to enable Online Help Action Menu for Modules. If enabled, you will need to provide the Help URL for the module, in the Module Definitions, although this may have been provided by the developer of the module.</value>
   </data>
   <data name="plcboUnauthCacheability.Text" xml:space="preserve">
     <value>Unauthenticated Cacheability:</value>
@@ -577,43 +577,43 @@
     <value>ServerAndPrivate</value>
   </data>
   <data name="plUpgrade.Text" xml:space="preserve">
-    <value>Check For Upgrades?</value>
+    <value>Check for Upgrades</value>
   </data>
   <data name="plUpgrade.Help" xml:space="preserve">
-    <value>Select this option if you would like the application to check if there are upgrades available.</value>
+    <value>Check this box to have the application check if there are upgrades available.</value>
   </data>
   <data name="UpgradeNever.Text" xml:space="preserve">
     <value>Never</value>
   </data>
   <data name="plAvailable.Text" xml:space="preserve">
-    <value>Upgrade Available?</value>
+    <value>Upgrade Available:</value>
   </data>
   <data name="plAvailable.Help" xml:space="preserve">
-    <value>Displays an icon if a new version of the application is available</value>
+    <value>An icon is displayed when a new version of the application is available.</value>
   </data>
   <data name="plLog.Text" xml:space="preserve">
-    <value>View Upgrade Log For Version:</value>
+    <value>View Upgrade Log for Version:</value>
   </data>
   <data name="plLog.Help" xml:space="preserve">
-    <value>Allows you to view the database upgrade log for a specific version</value>
+    <value>View the database upgrade log for a specific version.</value>
   </data>
   <data name="cmdRestart.Text" xml:space="preserve">
     <value>Restart Application</value>
   </data>
   <data name="plAutoSync.Text" xml:space="preserve">
-    <value>Auto-Sync File System?</value>
+    <value>Auto-Sync File System:</value>
   </data>
   <data name="plAutoSync.Help" xml:space="preserve">
     <value>Check this box to automatically synchronize the file system.</value>
   </data>
   <data name="plPageQuota.Help" xml:space="preserve">
-    <value>You can specify a maximum number of pages per website.</value>
+    <value>Enter the maximum number of pages per site or leave blank for no limit.</value>
   </data>
   <data name="plPageQuota.Text" xml:space="preserve">
     <value>Page Quota:</value>
   </data>
   <data name="plUserQuota.Help" xml:space="preserve">
-    <value>You can specify a maximum number of users per website.</value>
+    <value>Enter the maximum number of users per site or leave blank for no limit.</value>
   </data>
   <data name="plUserQuota.Text" xml:space="preserve">
     <value>User Quota:</value>
@@ -625,16 +625,16 @@
     <value>Page</value>
   </data>
   <data name="plPageState.Help" xml:space="preserve">
-    <value>Select the mode to use to persist a page's state.  This can either be a hidden field on the Page (Default) or in Memory (Cache). ** Warning: Memory page state persistence can cause Ajax issues **</value>
+    <value>Select the mode to use to persist a page's state. This can either be a hidden field on the Page (Default) or in Memory (Cache).</value>
   </data>
   <data name="plPageState.Text" xml:space="preserve">
     <value>Page State Persistence:</value>
   </data>
-  <data name="plWhitespace.Help" xml:space="preserve">
-    <value>Select this to remove excess white space from the response sent to the client - this will result in a smaller download (10-15%) but it will make the html less readable.</value>
-  </data>
   <data name="plWhitespace.Text" xml:space="preserve">
     <value>Use Whitespace Filter:</value>
+  </data>
+  <data name="plWhitespace.Help" xml:space="preserve">
+    <value>Select to remove excess white space from the response sent to the client. This will result in a smaller download (10-15%) but it will make the HTML less readable.</value>
   </data>
   <data name="plExcludedPaths.Text" xml:space="preserve">
     <value>Excluded Paths:</value>
@@ -649,7 +649,7 @@
     <value>Enter a Regular Expression filter for removing whitespace.</value>
   </data>
   <data name="valHostFee.Error" xml:space="preserve">
-    <value>Invalid fee, needs to be a currency value!</value>
+    <value>Fee is invalid. Fee must be a currency value.</value>
   </data>
   <data name="LogEmpty.Text" xml:space="preserve">
     <value>The log file is empty for the script version specified. This generally indicates that the script ran successfully.</value>
@@ -667,7 +667,7 @@
     <value>Check this box to enable AJAX support.</value>
   </data>
   <data name="plAJAX.Text" xml:space="preserve">
-    <value>Enable AJAX?</value>
+    <value>Enable AJAX</value>
   </data>
   <data name="UserRestart.Text" xml:space="preserve">
     <value>User triggered an Application Restart</value>
@@ -682,25 +682,25 @@
     <value>Fallback Theme Doctype:</value>
   </data>
   <data name="plHostDefaultDocType.Help" xml:space="preserve">
-    <value>Sets the fallback Theme Doctype for webpages.  This is used if the Theme does not define the DocType.</value>
+    <value>The doctype to be used if the page theme does not define the doctype.</value>
   </data>
   <data name="LegacyDoctype.Text" xml:space="preserve">
-    <value>HTML 4 (legacy)</value>
+    <value>HTML 4 (Legacy)</value>
   </data>
   <data name="TransDoctype.Text" xml:space="preserve">
-    <value>XHTML 1.0 transitional</value>
+    <value>XHTML 1.0 Transitional</value>
   </data>
   <data name="StrictDoctype.Text" xml:space="preserve">
-    <value>XHTML 1.0 strict</value>
+    <value>XHTML 1.0 Strict</value>
   </data>
   <data name="plRememberMe.Text" xml:space="preserve">
-    <value>Enable Remember me on login controls?</value>
+    <value>Enable Remember Me on Login Control:</value>
   </data>
   <data name="plRememberMe.Help" xml:space="preserve">
-    <value>Sets the remember me checkbox on login controls. If remember me is allowed, users can create cookies that are persisted over multiple visits.</value>
+    <value>Check this box to display the Remember Login check box on the login control that allows users to stay logged in for multiple visits.</value>
   </data>
   <data name="plWebFarm.Text" xml:space="preserve">
-    <value>Is Web Farm?</value>
+    <value>Is Web Farm</value>
   </data>
   <data name="valFileExtensions.Error" xml:space="preserve">
     <value>&lt;br/&gt;File Extensions can only include letters, numbers and the underscore, separated by commas.</value>
@@ -709,40 +709,40 @@
     <value>Update Current .NET Framework</value>
   </data>
   <data name="plNotifyUpgrade.Help" xml:space="preserve">
-    <value>If checked the Host user will be notified of Updates by email.</value>
+    <value>Check this box to send email notification of any upgrades to the Host.</value>
   </data>
   <data name="plNotifyUpgrade.Text" xml:space="preserve">
-    <value>Notify Host?</value>
+    <value>Notify Host</value>
   </data>
   <data name="plAdminContainer.Help" xml:space="preserve">
-    <value>The selected container will be applied to all edit mode (ctl=) modules on your sites.</value>
+    <value>The default container for all editing modules.</value>
   </data>
   <data name="plAdminContainer.Text" xml:space="preserve">
     <value>Edit Container:</value>
   </data>
   <data name="plAdminSkin.Help" xml:space="preserve">
-    <value>The selected theme will be applied to all edit mode (ctl=) pages on your sites.</value>
+    <value>The default theme for all editing pages.</value>
   </data>
   <data name="plAdminSkin.Text" xml:space="preserve">
     <value>Edit Theme:</value>
   </data>
   <data name="plJQueryDebugVersion.Help" xml:space="preserve">
-    <value>If checked, then the standard jQuery script file is used.  If unchecked, then a minified version is used which  significantly reduces the size of the javascript file, but decreases readability of the javascript.</value>
+    <value>Check this box to use the standard jQuery script file. If unchecked, then a minified version is used which significantly reduces the size of the javascript file, but decreases readability of the javascript.</value>
   </data>
   <data name="plJQueryDebugVersion.Text" xml:space="preserve">
-    <value>Use jQuery Debug Version?</value>
+    <value>Use jQuery Debug Version</value>
   </data>
   <data name="plJQueryHostUrl.Help" xml:space="preserve">
-    <value>This is the full URL for the jQuery script.  By default this is set to the latest jQuery minified script hosted on Google's CDN servers for optimum performance.</value>
+    <value>The full URL for the jQuery script. By default this is set to the latest jQuery minified script hosted on Google's CDN servers for optimum performance.</value>
   </data>
   <data name="plJQueryHostUrl.Text" xml:space="preserve">
     <value>Hosted jQuery URL:</value>
   </data>
   <data name="plJQueryUseHosted.Help" xml:space="preserve">
-    <value>If checked, then the associated URL will be used for the jQuery file.  If unchecked then local copies of the file will be used.</value>
+    <value>If checked, then the associated URL will be used for the jQuery file. If unchecked then local copies of the file will be used.</value>
   </data>
   <data name="plJQueryUseHosted.Text" xml:space="preserve">
-    <value>Use Hosted jQuery Version?</value>
+    <value>Use Hosted jQuery Version</value>
   </data>
   <data name="plJQueryVersion.Help" xml:space="preserve">
     <value>Identifies the version string embedded in the local jQuery script.</value>
@@ -751,10 +751,10 @@
     <value>Installed jQuery Version:</value>
   </data>
   <data name="plEnableCDN.Help" xml:space="preserve">
-    <value>If checked, then the associated URL will be used for javascript libraries.  If unchecked then local copies of the file will be used.</value>
+    <value>If checked, then the associated URL will be used for javascript libraries. If unchecked then local copies of the file will be used.</value>
   </data>
   <data name="plEnableCDN.Text" xml:space="preserve">
-    <value>Use javascript libraries CDN?</value>
+    <value>Use Javascript Libraries CDN:</value>
   </data>
   <data name="HostEmail.Error" xml:space="preserve">
     <value>Email Address is invalid</value>
@@ -769,55 +769,52 @@
     <value>The application you are running</value>
   </data>
   <data name="FrameworkDownLevel.Text" xml:space="preserve">
-    <value>Note: You are running on an old version of the .NET Framework.  The DNN Platform requires .NET 4.0 or later.</value>
+    <value>Note: You are running on an old version of the .NET Framework. The DNN Platform requires .NET 4.0 or later.</value>
   </data>
   <data name="plBetaNotice.Help" xml:space="preserve">
     <value>Check this box to display a message indicating that the running version is a Beta release.</value>
   </data>
   <data name="plBetaNotice.Text" xml:space="preserve">
-    <value>Display Beta Message?</value>
+    <value>Display Beta Message:</value>
   </data>
   <data name="plThrowExceptions.Help" xml:space="preserve">
-    <value>Check this to enable core exceptions that are due to missing fields in data returned from the database to be rethrown.  If this is not checked the error is logged in the Event Log.  If this is checked the error is bubbled up.  This setting is primarily used for developers to diagnose problems.</value>
+    <value>Check this box to enable core exceptions that are due to missing fields in data returned from the database to be rethrown. If this is not checked the error is logged in the Event Log. If this is checked the error is bubbled up. This setting is primarily used for developers to diagnose problems.</value>
   </data>
   <data name="plThrowExceptions.Text" xml:space="preserve">
     <value>Rethrow CBO Exceptions:</value>
   </data>
   <data name="plPsWarning.Text" xml:space="preserve">
-    <value>Warning: Memory page state persistence can cause Ajax issues</value>
-  </data>
-  <data name="plOAuthWarning.Text" xml:space="preserve">
-    <value>Warning: The OAuth library must be installed for OAuth server support to work</value>
+    <value>Warning: Memory page state persistence can cause Ajax issues.</value>
   </data>
   <data name="ModuleCacheProvider.Help" xml:space="preserve">
-    <value>Select the default module caching provider.  This setting can be overridden by each individual module.</value>
+    <value>Select the default module caching provider. This setting can be overridden by each individual module.</value>
   </data>
   <data name="ModuleCacheProvider.Text" xml:space="preserve">
-    <value>Module Cache Provider</value>
+    <value>Module Cache Provider:</value>
   </data>
   <data name="plContentLocalization.Help" xml:space="preserve">
-    <value>Check this to enable passing the users current culture allowing for dynamic website and content localization</value>
+    <value>Check this box to allow dynamic site and content localization.</value>
   </data>
   <data name="plContentLocalization.Text" xml:space="preserve">
-    <value>Allow Content Localization?</value>
+    <value>Allow Content Localization:</value>
   </data>
   <data name="PageCacheProvider.Help" xml:space="preserve">
-    <value>Select the default Page Caching Provider.  The caching provider must be enabled by setting the cache timeout on each page.</value>
+    <value>Select the default Page Caching Provider. The caching provider must be enabled by setting the cache timeout on each page.</value>
   </data>
   <data name="PageCacheProvider.Text" xml:space="preserve">
     <value>Page Output Cache Provider</value>
   </data>
   <data name="plUseCustomModuleCssClass.Help" xml:space="preserve">
-    <value>Check this option to enable a custom css class based on the module definition to be rendered.  This can be used by theme designers to apply specific css styles to specific module types.</value>
+    <value>Check this box to enable a custom CSS class based on the module definition to be rendered.  This can be used by theme designers to apply specific CSS styles to specific module types.</value>
   </data>
   <data name="plUseCustomModuleCssClass.Text" xml:space="preserve">
-    <value>Use Custom Module Css Class?</value>
+    <value>Use Custom Module CSS Class:</value>
   </data>
   <data name="plEnableContentLocalization.Help" xml:space="preserve">
-    <value>Check this box to allow site administrators to enable content localization for their site.</value>
+    <value>Check this box to allow Administrators to enable content localization for their site.</value>
   </data>
   <data name="plEnableContentLocalization.Text" xml:space="preserve">
-    <value>Allow Content Localization?</value>
+    <value>Allow Content Localization</value>
   </data>
   <data name="SkinPreview.Text" xml:space="preserve">
     <value>Preview Host Theme and Container</value>
@@ -835,7 +832,7 @@
     <value>Identifies the version string embedded in the local jQuery UI script.</value>
   </data>
   <data name="plJQueryUIVersion.Text" xml:space="preserve">
-    <value>Installed jQuery UI Version</value>
+    <value>Installed jQuery UI Version:</value>
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
     <value>Please select a theme and/or container to preview.</value>
@@ -847,25 +844,25 @@
     <value>To manage browser caching, client resources are assigned a version number. This number is increased when an extension is installed, portal.css is updated, or when the server cache is cleared.  It applies to any processed file (combined and/or minified).  You can manually increase the number below to force browsers to download new copies of the resource files.</value>
   </data>
   <data name="plCrmVersion.Text" xml:space="preserve">
-    <value>Current Host Version</value>
+    <value>Current Host Version:</value>
   </data>
   <data name="plCrmEnableCompositeFiles.Help" xml:space="preserve">
     <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
   </data>
   <data name="plCrmEnableCompositeFiles.Text" xml:space="preserve">
-    <value>Enable Composite Files</value>
+    <value>Enable Composite Files:</value>
   </data>
   <data name="plCrmMinifyCss.Help" xml:space="preserve">
-    <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead css".  It is only available when composite files are enabled.</value>
+    <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead CSS".  It is only available when composite files are enabled.</value>
   </data>
   <data name="plCrmMinifyCss.Text" xml:space="preserve">
-    <value>Minify CSS</value>
+    <value>Minify CSS:</value>
   </data>
   <data name="plCrmMinifyJs.Help" xml:space="preserve">
     <value>JS minification will reduce the size of the JavaScript code using JSMin. It is only available when composite files are enabled.</value>
   </data>
   <data name="plCrmMinifyJs.Text" xml:space="preserve">
-    <value>Minify JS</value>
+    <value>Minify JS:</value>
   </data>
   <data name="CrmIncrementCrmVersionButton.Text" xml:space="preserve">
     <value>Increment Version</value>
@@ -904,13 +901,13 @@
     <value>Important note regarding IP Filtering settings</value>
   </data>
   <data name="txtBatch.Text" xml:space="preserve">
-    <value>Number of messages sent in each batch:</value>
+    <value>Number of Messages per Batch:</value>
   </data>
   <data name="txtBatch.Help" xml:space="preserve">
     <value>The number of messages sent by the messaging scheduler in each batch.</value>
   </data>
   <data name="SmtpServerWarning.Text" xml:space="preserve">
-    <value>You are try to use a custom SMTP port with your install instance running under medium trust, you need contact your host provider to make sure this setting can work correctly on the server.</value>
+    <value>You are try to use a custom SMTP port with your install instance running under medium trust. Please contact your Host provider to ensure this setting can work correctly on the server.</value>
   </data>
   <data name="LogSettings.Text" xml:space="preserve">
     <value>Logs</value>
@@ -922,13 +919,13 @@
     <value>HTML 5</value>
   </data>
   <data name="LogLocations.Text" xml:space="preserve">
-    <value>Log locations</value>
+    <value>Log Locations</value>
   </data>
   <data name="plLogs.Text" xml:space="preserve">
-    <value>Log files</value>
+    <value>Log Files:</value>
   </data>
   <data name="plLogs.Help" xml:space="preserve">
-    <value>List of log files available to view</value>
+    <value>List of log files available to view.</value>
   </data>
   <data name="SelectLog.Text" xml:space="preserve">
     <value>Please select a log file to view</value>
@@ -943,31 +940,31 @@
     <value>Membership Management</value>
   </data>
   <data name="plResetLinkValidity.Text" xml:space="preserve">
-    <value>Reset link timeout (minutes)</value>
+    <value>Reset Link Timeout (in Minutes):</value>
   </data>
   <data name="plAdminResetLinkValidity.Text" xml:space="preserve">
-    <value>Administrator reset link timeout (minutes)</value>
+    <value>Administrator Reset Link Timeout (in Minutes)</value>
   </data>
   <data name="plNumberPasswords.Text" xml:space="preserve">
-    <value>Number of passwords to store</value>
+    <value>Number of Passwords to Store:</value>
   </data>
   <data name="plNumberPasswords.Help" xml:space="preserve">
-    <value>Sets number of passwords to store for reuse check</value>
+    <value>Enter the number of passwords to store for reuse check</value>
   </data>
   <data name="plEnableBannedList.Text" xml:space="preserve">
-    <value>Enable password banned list</value>
+    <value>Enable Password Banned List:</value>
   </data>
   <data name="plEnableBannedList.Help" xml:space="preserve">
-    <value>Sets whether passwords are checked against a list of banned items</value>
+    <value>Check this box to check passwords against a list of banned items.</value>
   </data>
   <data name="plEnableStrengthMeter.Text" xml:space="preserve">
-    <value>Enable password strength check</value>
+    <value>Enable Password Strength Checking:</value>
   </data>
   <data name="plEnableStrengthMeter.Help" xml:space="preserve">
     <value>Sets whether the password strength meter is shown on registration screen</value>
   </data>
   <data name="plEnableIPChecking.Text" xml:space="preserve">
-    <value>Enable IP address checking</value>
+    <value>Enable IP Address Checking:</value>
   </data>
   <data name="plEnableIPChecking.Help" xml:space="preserve">
     <value>Sets whether IP address is checked during login</value>
@@ -976,28 +973,28 @@
     <value>CDN Settings</value>
   </data>
   <data name="plMsAjaxCdn.Help" xml:space="preserve">
-    <value>Enable CDN setting for Microsoft Ajax Library?</value>
+    <value>Enable CDN setting for Microsoft Ajax Library.</value>
   </data>
   <data name="plMsAjaxCdn.Text" xml:space="preserve">
-    <value>Enable MS Ajax CDN?</value>
+    <value>Enable MS Ajax CDN:</value>
   </data>
   <data name="plTelerikBasicUrl.Help" xml:space="preserve">
-    <value>Set the basic URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. you can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
+    <value>Enter the basic URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. you can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
   </data>
   <data name="plTelerikBasicUrl.Text" xml:space="preserve">
-    <value>Telerik CDN Basic URL</value>
+    <value>Telerik CDN Basic URL:</value>
   </data>
   <data name="plTelerikCdn.Help" xml:space="preserve">
-    <value>Enable CDN settings for Telerik Controls?</value>
+    <value>Check this box to enable CDN Settings for Telerik Controls.</value>
   </data>
   <data name="plTelerikCdn.Text" xml:space="preserve">
-    <value>Enable Telerik CDN?</value>
+    <value>Enable Telerik CDN:</value>
   </data>
   <data name="plTelerikSecureUrl.Help" xml:space="preserve">
-    <value>Set the secure URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. you can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
+    <value>Enter the secure URL of Telerik CDN or leave this field blank to use the files on Telerik server.  For more details see &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
   </data>
   <data name="plTelerikSecureUrl.Text" xml:space="preserve">
-    <value>Telerik CDN Secure URL</value>
+    <value>Telerik CDN Secure URL:</value>
   </data>
   <data name="plAsyncTimeout.Help" xml:space="preserve">
     <value>Set a value that indicates the time, in seconds, before asynchronous postbacks time out if no response is received, the value should between 90-9999 seconds.</value>
@@ -1005,14 +1002,11 @@
   <data name="plAsyncTimeout.Text" xml:space="preserve">
     <value>Time Before Timeout:</value>
   </data>
-  <data name="plEnableOAuth.Text" xml:space="preserve">
-    <value>Enable OAuth Authorization:</value>
-  </data>
   <data name="plEnablePasswordHistory.Help" xml:space="preserve">
     <value>Sets whether a list of recently used passwords is maintained and checked to prevent re-use.</value>
   </data>
   <data name="plEnablePasswordHistory.Text" xml:space="preserve">
-    <value>Enable password history?</value>
+    <value>Enable Password History:</value>
   </data>
   <data name="plResetLinkValidity.Help" xml:space="preserve">
     <value>Password reset links are only valid for (in minutes).</value>
@@ -1021,10 +1015,10 @@
     <value>Reset link timeouts must be greater than 0</value>
   </data>
   <data name="plAdminResetLinkValidity.Help" xml:space="preserve">
-    <value>Administrator reset links are only valid for (in minutes).</value>
+    <value>Time in minutes that password reset links sent by the Site Administrator will be valid for.</value>
   </data>
   <data name="valAdminResetLink.Error" xml:space="preserve">
-    <value>Administrator reset link timeouts must be greater than 0</value>
+    <value>Administrator reset link timeouts must be greater than 0.</value>
   </data>
   <data name="AlwaysUse.Text" xml:space="preserve">
     <value>All URLs.</value>
@@ -1039,10 +1033,10 @@
     <value>Enter the extension, including the period prefix.  The default extension is .aspx.</value>
   </data>
   <data name="ExtensionLabel.Text" xml:space="preserve">
-    <value>Extension to use (default is .aspx):</value>
+    <value>Extension to Use (Default is .aspx):</value>
   </data>
   <data name="PageOnly.Text" xml:space="preserve">
-    <value>Only pages with no querystring.</value>
+    <value>Only Pages with No Querystring.</value>
   </data>
   <data name="EmptyString.Text" xml:space="preserve">
     <value>&lt;&lt;Empty String&gt;&gt;</value>
@@ -1054,13 +1048,13 @@
     <value>Login IP Filters</value>
   </data>
   <data name="plJQueryMigrateHostUrl.Help" xml:space="preserve">
-    <value>This is the full URL for the jQuery migrate plugin. If this field is empty then it will continue to use the resource in website.</value>
+    <value>The full URL for the jQuery migrate plugin.  If this field is empty then it will continue to use the resource in site.</value>
   </data>
   <data name="plJQueryMigrateHostUrl.Text" xml:space="preserve">
     <value>Hosted jQuery Migrate Plugin URL:</value>
   </data>
   <data name="lblSearchIndexPath.Help" xml:space="preserve">
-    <value>Location where Search Index is stored. This location can be manually changed by creating a Host Setting "Search_IndexFolder" in database. It is advised to stop App Pool prior to making this change. Content of old folder must be manually copied to new location also or manual re-index must be triggered. </value>
+    <value>Location where Search Index is stored.  This location can be manually changed by creating a Host Setting "Search_IndexFolder" in database.  It is advised to stop the App Pool prior to making this change.  Content from the old folder must be manually copied to new location or a manual re-index must be triggered. </value>
   </data>
   <data name="lblSearchIndexPath.Text" xml:space="preserve">
     <value>Search Index Path:</value>
@@ -1121,7 +1115,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Deleted Documents:</value>
   </data>
   <data name="lblSearchIndexLastModifiedOn.Help" xml:space="preserve">
-    <value>Last modified time of search index files</value>
+    <value>Last modified time of search index files.</value>
   </data>
   <data name="lblSearchIndexLastModifiedOn.Text" xml:space="preserve">
     <value>Last Modified On:</value>
@@ -1139,101 +1133,101 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Continue</value>
   </data>
   <data name="valIndexWordMaxLengthCompare.Error" xml:space="preserve">
-    <value>Must be integer that greater than min length</value>
+    <value>Integer must be greater than the minimum length.</value>
   </data>
   <data name="valIndexWordMaxLengthRequired.Error" xml:space="preserve">
-    <value>Max length of index word is required</value>
+    <value>Maximum length of index word is required.</value>
   </data>
   <data name="valIndexWordMinLengthCompare.Error" xml:space="preserve">
-    <value>Must be integer that greater than 0</value>
+    <value>Integer must be greater than 0.</value>
   </data>
   <data name="valIndexWordMinLengthRequired.Error" xml:space="preserve">
-    <value>Min length of index word is required</value>
+    <value>Minimum length of index word is required.</value>
   </data>
   <data name="lblSearchIndexDbSize.Help" xml:space="preserve">
-    <value>The total size of search index database files</value>
+    <value>The total size of search index database files.</value>
   </data>
   <data name="lblSearchIndexDbSize.Text" xml:space="preserve">
     <value>Search Index Size:</value>
   </data>
   <data name="plDebugMode.Help" xml:space="preserve">
-    <value>If checked the installation runs in "debug mode", meaning that various parts of the application will write more verbose error logs etc. Note this may lead to performance degradation.</value>
+    <value>Check this box to run the installation in "debug mode". This causes various parts of the application to write more verbose error logs etc. Note: This may lead to performance degradation.</value>
   </data>
   <data name="plDebugMode.Text" xml:space="preserve">
-    <value>Debug Mode</value>
+    <value>Debug Mode:</value>
   </data>
   <data name="plShowCriticalErrors.Help" xml:space="preserve">
     <value>This setting determines if error messages sent via the error querystring parameter should be shown inline in the page.</value>
   </data>
   <data name="plShowCriticalErrors.Text" xml:space="preserve">
-    <value>Show Critical Errors on screen?</value>
+    <value>Show Critical Errors on Screen:</value>
   </data>
   <data name="lblCustomAnalyzer.Help" xml:space="preserve">
-    <value>&lt;p&gt;If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note: &lt;/b&gt;If you want exist content to index with new analyzer, you need visit "Admin &gt; Search Admin" in each site which you want re-index and click the "Re-Index Content" button.&lt;/p&gt;</value>
+    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
     <value>Custom Analyzer Type:</value>
   </data>
   <data name="Mb.Text" xml:space="preserve">
-    <value>Mb</value>
+    <value>MB</value>
   </data>
   <data name="plMaxUploadSize.Help" xml:space="preserve">
-    <value>Maximum size of file that can be uploaded to the site. The minimum is 12 Mb.</value>
+    <value>Maximum size of file that can be uploaded to the site.  The minimum is 12 MB.</value>
   </data>
   <data name="plMaxUploadSize.Text" xml:space="preserve">
-    <value>Max Upload Size</value>
+    <value>Max Upload Size:</value>
   </data>
   <data name="maxUploadSize.Error" xml:space="preserve">
-    <value>Maximum Upload Size must be between 12 and {0}</value>
+    <value>Maximum upload size must be between 12 and {0}</value>
   </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
   </data>
   <data name="plMaxIdleTime.Help" xml:space="preserve">
-    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0. 
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection.  Max value is 2147483647.  Default value is 0. 
 </value>
   </data>
   <data name="plConnectionLimit.Text" xml:space="preserve">
     <value>Connection Limit:</value>
   </data>
   <data name="plConnectionLimit.Help" xml:space="preserve">
-    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1. </value>
+    <value>The maximum number of connections allowed on this ServicePoint object.  Max value is 2147483647. Default is 1.</value>
   </data>
   <data name="ConnectionLimitValidation.Text" xml:space="preserve">
-    <value>Numbers from 1 to 2147483647 only!</value>
+    <value>Numbers from 1 to 2147483647 only.</value>
   </data>
   <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
-    <value>Numbers from 1 to 2147483647 only!</value>
+    <value>Numbers from 1 to 2147483647 only.</value>
   </data>
   <data name="PasswordConfig_PasswordExpiry.Help" xml:space="preserve">
-    <value>The number of days before a User must change their password (value of 0 means the password never expires)</value>
+    <value>Enter the number of days before a user must change their password.  Enter 0 (zero) if the password should never expire.</value>
   </data>
   <data name="PasswordConfig_PasswordExpiry.Text" xml:space="preserve">
-    <value>Password Expiry (in days):</value>
+    <value>Password Expiry (in Days):</value>
   </data>
   <data name="PasswordConfig_PasswordExpiryReminder.Help" xml:space="preserve">
-    <value>The number of days warning the user will recieve that their password is about to expire.</value>
+    <value>Enter the number of days warning users will receive that their password is about to expires.</value>
   </data>
   <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
-    <value>Password Expiry Reminder (in days):</value>
+    <value>Password Expiry Reminder (in Days):</value>
   </data>
   <data name="plSSLDomain.Help" xml:space="preserve">
-    <value>The domain used when upgrade wizard forced to shown in SSL channel.</value>
+    <value>The domain used when the Upgrade Wizard is forced to show in SSL channel.</value>
   </data>
   <data name="plSSLDomain.Text" xml:space="preserve">
-    <value>SSL Domain</value>
+    <value>SSL Domain:</value>
   </data>
   <data name="plUpgradeForceSSL.Help" xml:space="preserve">
-    <value>Whether force upgrade wizard shown in SSL channel.</value>
+    <value>Check the box to force the Upgrade Wizard to show in SSL channel.</value>
   </data>
   <data name="plUpgradeForceSSL.Text" xml:space="preserve">
-    <value>Require SSL for Upgrade wizard</value>
+    <value>Require SSL for Upgrade Wizard:</value>
   </data>
   <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
-    <value>Enable this setting to allow search within words. For example: by default, searching "dnn" will match "dnn8" but not "powerfuldnn" - it only searches words that begin with the keyword. If you want to return "powerfuldnn" in search result, you need to enable this setting. Note: this may cause performance issues, so make sure to only enable this setting when really needed.</value>
+    <value>Check this box to return search criteria that occurs within a word rather than only at the beginning of the word. Warning: Enabling wildcard searching may cause performance issues.</value>
   </data>
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
-    <value>Enable partial-word search (slow):</value>
+    <value>Enable Partial-Word Search (Slow):</value>
   </data>
   <data name="lblAuthorBoost.Help" xml:space="preserve">
     <value>Author boost value is associated with the author as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
@@ -1242,25 +1236,25 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Author Boost:</value>
   </data>
   <data name="lblContentBoost.Help" xml:space="preserve">
-    <value>Content boost value is associated with the content as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+    <value>Content boost value is associated with the content as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
   </data>
   <data name="lblContentBoost.Text" xml:space="preserve">
     <value>Content Boost:</value>
   </data>
   <data name="lblDescriptionBoost.Help" xml:space="preserve">
-    <value>Description boost value is associated with the description as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+    <value>Description boost value is associated with the description as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
   </data>
   <data name="lblDescriptionBoost.Text" xml:space="preserve">
     <value>Description Boost:</value>
   </data>
   <data name="lblTagBoost.Help" xml:space="preserve">
-    <value>Tag boost value is associated with the tag as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+    <value>Tag boost value is associated with the tag as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
   </data>
   <data name="lblTagBoost.Text" xml:space="preserve">
     <value>Tag Boost:</value>
   </data>
   <data name="lblTitleBoost.Help" xml:space="preserve">
-    <value>Title boost value is associated with the title as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+    <value>Title boost value is associated with the title as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
   </data>
   <data name="lblTitleBoost.Text" xml:space="preserve">
     <value>Title Boost:</value>

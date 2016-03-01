@@ -67,14 +67,13 @@ namespace Dnn.Modules.Tabs
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///   and localisation
-    /// </history>
     public partial class ManageTabs : PortalModuleBase
     {
         private TabInfo _tab;
         private string _strAction = "";
+
+        private dynamic contentLocalizationControl;
+        private const string ContentLocalizationControlPath = @"~/DesktopModules/Admin/Languages/CLControl.ascx";
 
         #region Protected Properties
 
@@ -149,7 +148,7 @@ namespace Dnn.Modules.Tabs
             var subject = Localization.GetString("NewContentMessage.Subject", LocalResourceFile);
             var body = string.Format(Localization.GetString("NewContentMessage.Body", LocalResourceFile),
                 tabInfo.TabName,
-                Globals.NavigateURL(tabInfo.TabID, false, PortalSettings, Null.NullString, tabInfo.CultureCode, new string[] { }),
+                Globals.NavigateURL(tabInfo.TabID, false, PortalSettings, Null.NullString, tabInfo.CultureCode),
                 txtTranslationComment.Text);
 
             var sender = UserController.GetUserById(PortalSettings.PortalId, PortalSettings.AdministratorId);
@@ -161,7 +160,7 @@ namespace Dnn.Modules.Tabs
 
         private void BindBeforeAfterTabControls()
         {
-            List<TabInfo> listTabs = null;
+            List<TabInfo> listTabs;
             TabInfo parentTab = null;
 
             if (cboParentTab.SelectedItem != null)
@@ -198,7 +197,7 @@ namespace Dnn.Modules.Tabs
             }
         }
 
-        private void BindLocalization(bool rebind)
+        private void BindLocalization()
         {
             cultureLanguageLabel.Language = Tab.CultureCode;
             cultureRow.Visible = false;
@@ -234,6 +233,20 @@ namespace Dnn.Modules.Tabs
 
         }
 
+        private void LoadContentLocalizationControl()
+        {
+            if (IsLanguageModuleInstalled())
+            {
+                contentLocalizationControl = LoadControl(ContentLocalizationControlPath);
+                localizationControlRow.Controls.Add(contentLocalizationControl);
+            }
+        }
+
+        private bool IsLanguageModuleInstalled()
+        {
+            return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
+        }
+
         protected void BindCLControl()
         {
             if (!localizationPanel.Visible)
@@ -247,7 +260,7 @@ namespace Dnn.Modules.Tabs
             AddMissing.Visible = false;
             if (String.IsNullOrEmpty(_tab.CultureCode))
             {
-                CLControl1.Visible = false;
+                contentLocalizationControl.Visible = false;
                 if (!(string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy"))
                 {
                     MakeTranslatable.Visible = true;
@@ -255,9 +268,9 @@ namespace Dnn.Modules.Tabs
             }
             else
             {
-                CLControl1.Visible = true;
-                CLControl1.enablePageEdit = true;
-                CLControl1.BindAll(_tab.TabID);
+                contentLocalizationControl.Visible = true;
+                contentLocalizationControl.enablePageEdit = true;
+                contentLocalizationControl.BindAll(_tab.TabID);
                 cmdUpdateLocalization.Visible = true;
 
                 // only show "Convert to neutral" if page has no child pages
@@ -290,7 +303,7 @@ namespace Dnn.Modules.Tabs
                     }
                 }
 
-                var friendlyUrlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalId);
+                var friendlyUrlSettings = new FriendlyUrlSettings(PortalId);
                 if (String.IsNullOrEmpty(urlTextBox.Text) && Tab.TabID > -1 && !Tab.IsSuperTab)
                 {
                     var baseUrl = Globals.AddHTTP(PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + Tab.TabID;
@@ -342,10 +355,10 @@ namespace Dnn.Modules.Tabs
                 PageDetailsExtensionControl.BindAction(PortalId, Tab.TabID, ModuleId);
 
                 ctlURL.Url = Tab.Url;
-                bool newWindow = false;
+                bool newWindow;
                 if (Tab.TabSettings["LinkNewWindow"] != null && Boolean.TryParse((string)Tab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
                 {
-                    ctlURL.NewWindow = newWindow;
+                    ctlURL.NewWindow = true;
                 }
 
                 ctlIcon.Url = Tab.IconFileRaw;
@@ -371,9 +384,12 @@ namespace Dnn.Modules.Tabs
                     chkSecure.Enabled = false;
                     chkSecure.Checked = Tab.IsSecure;
                 }
-                var allowIndex = false;
+                bool allowIndex;
                 chkAllowIndex.Checked = !Tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(Tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
-                txtPriority.Text = Tab.SiteMapPriority.ToString();
+                txtPriority.Text = Tab.SiteMapPriority.ToString("F1");
+
+                startDatePicker.SkipMinMaxDateValidationOnServer =
+                    endDatePicker.SkipMinMaxDateValidationOnServer = true;
 
                 if (!Null.IsNull(Tab.StartDate))
                 {
@@ -487,7 +503,8 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ContentLocalizationEnabled 
                 && LocaleController.Instance.GetLocales(PortalId).Count > 1
                 && _tab.TabID != PortalSettings.AdminTabId
-                && _tab.ParentId != PortalSettings.AdminTabId)
+                && _tab.ParentId != PortalSettings.AdminTabId
+                && contentLocalizationControl != null)
             {
                 localizationTab.Visible = true;
                 localizationPanel.Visible = true;
@@ -508,7 +525,7 @@ namespace Dnn.Modules.Tabs
             else
             {
                 cmdUpdate.Enabled = false;
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ExceededQuota", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddModuleMessage(this, Localization.GetString("ExceededQuota", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -542,7 +559,8 @@ namespace Dnn.Modules.Tabs
                     // selected tab
                     if (TabPermissionController.CanAddContentToPage())
                     {
-                        var tabId = int.Parse(cboCopyPage.SelectedItem.Value);
+                        int tabId;
+                        int.TryParse(cboCopyPage.SelectedItem.Value, out tabId);
                         var dataSource = LoadTabModules(tabId);
                         if (dataSource.Any())
                         {
@@ -643,18 +661,16 @@ namespace Dnn.Modules.Tabs
         /// <summary>
         ///   Checks if parent tab will cause a circular reference
         /// </summary>
-        /// <param name = "intTabId">Tabid</param>
+        /// <param name = "tabId">Tab id.</param>
+        /// <param name = "portalId">portal id.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [VMasanas]	28/11/2004	Created
-        /// </history>
-        private bool IsCircularReference(int intTabId, int portalId)
+        private bool IsCircularReference(int tabId, int portalId)
         {
-            if (intTabId != -1)
+            if (tabId != -1)
             {
-                var tabInfo = TabController.Instance.GetTab(intTabId, portalId, false);
+                var tabInfo = TabController.Instance.GetTab(tabId, portalId, false);
 
                 if (tabInfo.Level == 0)
                 {
@@ -665,11 +681,11 @@ namespace Dnn.Modules.Tabs
             return false;
         }
 
-        private List<ModuleInfo> LoadTabModules(int TabID)
+        private List<ModuleInfo> LoadTabModules(int tabId)
         {
             var moduleList = new List<ModuleInfo>();
 
-            foreach (var m in ModuleController.Instance.GetTabModules(TabID).Values)
+            foreach (var m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 if (TabPermissionController.CanAddContentToPage() && !m.IsDeleted && !m.AllTabs)
                 {
@@ -721,11 +737,6 @@ namespace Dnn.Modules.Tabs
         /// <remarks>
         /// </remarks>
         /// <param name = "strAction">The action to perform "edit" or "add"</param>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [jlucarino]	2/26/2009	Added CreatedByUserID and LastModifiedByUserID
-        /// </history>
         private int SaveTabData(string strAction)
         {
             string strIcon = ctlIcon.Url;
@@ -790,7 +801,10 @@ namespace Dnn.Modules.Tabs
             var positionTabId = Null.NullInteger;
             if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue) && cboPositionTab.Items.Count > 0)
             {
-                positionTabId = Int32.Parse(cboPositionTab.SelectedValue);
+                if (!int.TryParse(cboPositionTab.SelectedValue, out positionTabId))
+                {
+                    positionTabId = Null.NullInteger;
+                }
             }
 
             //Set Culture Code
@@ -846,11 +860,11 @@ namespace Dnn.Modules.Tabs
                     var existingTab = TabController.Instance.GetTab(tabID, PortalId, false);
                     if (existingTab != null && existingTab.IsDeleted)
                     {
-                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabRecycled", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                        Skin.AddModuleMessage(this, Localization.GetString("TabRecycled", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                     }
                     else
                     {
-                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        Skin.AddModuleMessage(this, Localization.GetString("TabExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     }
                     return Null.NullInteger;
                 }
@@ -861,7 +875,7 @@ namespace Dnn.Modules.Tabs
 
             if (Tab.StartDate > Null.NullDate && Tab.EndDate > Null.NullDate && Tab.StartDate >= Tab.EndDate)
             {
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InvalidTabDates", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                Skin.AddModuleMessage(this, Localization.GetString("InvalidTabDates", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 return Null.NullInteger;
             }
 
@@ -875,7 +889,13 @@ namespace Dnn.Modules.Tabs
             {
                 return Null.NullInteger;
             }
-            Tab.SiteMapPriority = float.Parse(txtPriority.Text);
+
+            float pri;
+            if (float.TryParse(txtPriority.Text, out pri))
+            {
+                Tab.SiteMapPriority = (float)Math.Round(pri, 1);
+            }
+
             Tab.PageHeadText = txtPageHeadText.Text;
             Tab.IsSecure = chkSecure.Checked;
             Tab.PermanentRedirect = chkPermanentRedirect.Checked;
@@ -959,23 +979,17 @@ namespace Dnn.Modules.Tabs
 
                 if (copyTabId != Null.NullInteger)
                 {
-                    ModuleInfo objModule;
-                    CheckBox chkModule;
-                    RadioButton optCopy;
-                    RadioButton optReference;
-                    TextBox txtCopyTitle;
-
                     foreach (DataGridItem objDataGridItem in grdModules.Items)
                     {
-                        chkModule = (CheckBox)objDataGridItem.FindControl("chkModule");
+                        var chkModule = (CheckBox)objDataGridItem.FindControl("chkModule");
                         if (chkModule.Checked)
                         {
                             var intModuleID = Convert.ToInt32(grdModules.DataKeys[objDataGridItem.ItemIndex]);
-                            optCopy = (RadioButton)objDataGridItem.FindControl("optCopy");
-                            optReference = (RadioButton)objDataGridItem.FindControl("optReference");
-                            txtCopyTitle = (TextBox)objDataGridItem.FindControl("txtCopyTitle");
+                            var optCopy = (RadioButton)objDataGridItem.FindControl("optCopy");
+                            var optReference = (RadioButton)objDataGridItem.FindControl("optReference");
+                            var txtCopyTitle = (TextBox)objDataGridItem.FindControl("txtCopyTitle");
 
-                            objModule = ModuleController.Instance.GetModule(intModuleID, copyTabId, false);
+                            var objModule = ModuleController.Instance.GetModule(intModuleID, copyTabId, false);
                             ModuleInfo newModule = null;
                             if ((objModule != null))
                             {
@@ -991,21 +1005,39 @@ namespace Dnn.Modules.Tabs
                                 {
                                     newModule.ModuleID = Null.NullInteger;
                                     ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
+                                    newModule.InheritViewPermissions = objModule.InheritViewPermissions;
                                 }
 
                                 newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
+
+                                //copy permissions from source module
+                                foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
+                                {
+                                    newModule.ModulePermissions.Add(new ModulePermissionInfo
+                                    {
+                                        ModuleID = newModule.ModuleID,
+                                        PermissionID = permission.PermissionID,
+                                        RoleID = permission.RoleID,
+                                        UserID = permission.UserID,
+                                        PermissionKey = permission.PermissionKey,
+                                        AllowAccess = permission.AllowAccess
+                                    }, true);
+                                }
+
+                                ModulePermissionController.SaveModulePermissions(newModule);
 
                                 if (optCopy.Checked)
                                 {
                                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                                     {
                                         var objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                                        if (objObject is IPortable)
+                                        var o = objObject as IPortable;
+                                        if (o != null)
                                         {
-                                            var content = Convert.ToString(((IPortable)objObject).ExportModule(intModuleID));
+                                            var content = Convert.ToString(o.ExportModule(intModuleID));
                                             if (!string.IsNullOrEmpty(content))
                                             {
-                                                ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserInfo.UserID);
+                                                o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserInfo.UserID);
                                             }
                                         }
                                     }
@@ -1039,8 +1071,8 @@ namespace Dnn.Modules.Tabs
                         {
                             // open the XML file
                             var fileId = Convert.ToInt32(cboTemplate.SelectedValue);
-							var templateFile = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
-							xmlDoc.Load(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(templateFile));
+							var templateFile = FileManager.Instance.GetFile(fileId);
+							xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                         }
                         catch (Exception ex)
                         {
@@ -1279,12 +1311,14 @@ namespace Dnn.Modules.Tabs
             if (rblCacheIncludeExclude.SelectedValue == "0")
             {
                 ExcludeVaryByRow.Visible = false;
+                txtExcludeVaryBy.Text = string.Empty;
                 IncludeVaryByRow.Visible = true;
             }
             else
             {
                 ExcludeVaryByRow.Visible = true;
                 IncludeVaryByRow.Visible = false;
+                txtIncludeVaryBy.Text = string.Empty;
             }
         }
 
@@ -1326,7 +1360,7 @@ namespace Dnn.Modules.Tabs
 
         private void ShowWarningMessage(string message)
         {
-            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
+            Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
         private void ShowErrorMessage(string message)
@@ -1423,14 +1457,16 @@ namespace Dnn.Modules.Tabs
             if (PortalSettings.ActiveTab.IsSuperTab || PortalSecurity.IsInRole("Administrators") || PortalSettings.ActiveTab.ParentId == Null.NullInteger)
             {
                 // Add Non Specified if user is Admin or if current tab is already on the top level
-                cboParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                cboParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
             }
 
-            cboCopyPage.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+            cboCopyPage.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
             PortalAliasCaption.Text = PortalAlias.HTTPAlias;
             PortalAliasCaption.ToolTip = PortalAlias.HTTPAlias;
             UrlContainer.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "um-page-url-container");
+
+            LoadContentLocalizationControl();
         }
 
         private void DisableHostAdminFunctions()
@@ -1568,7 +1604,7 @@ namespace Dnn.Modules.Tabs
                 }
                 else
                 {
-                    BindLocalization(false);
+                    BindLocalization();
                 }
                 
 
@@ -1604,8 +1640,8 @@ namespace Dnn.Modules.Tabs
 
             redirectRow.Visible = ctlURL.UrlType != "N";
 
-            var locales = LocaleController.Instance.GetLocales(PortalId);
-            var urlLocale = locales.Values.FirstOrDefault(local => local.Code == PortalAlias.CultureCode);
+            //var locales = LocaleController.Instance.GetLocales(PortalId);
+            //var urlLocale = locales.Values.FirstOrDefault(local => local.Code == PortalAlias.CultureCode);
 
             //if (_strAction == "edit")
             //{
@@ -1687,11 +1723,11 @@ namespace Dnn.Modules.Tabs
             try
             {
                 TabController.CopyPermissionsToChildren(TabController.Instance.GetTab(TabId, PortalId, false), dgPermissions.Permissions);
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                Skin.AddModuleMessage(this, Localization.GetString("PermissionsCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception ex)
             {
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionCopyError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                Skin.AddModuleMessage(this, Localization.GetString("PermissionCopyError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
@@ -1701,11 +1737,11 @@ namespace Dnn.Modules.Tabs
             try
             {
                 TabController.CopyDesignToChildren(TabController.Instance.GetTab(TabId, PortalId, false), pageSkinCombo.SelectedValue, pageContainerCombo.SelectedValue);
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DesignCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                Skin.AddModuleMessage(this, Localization.GetString("DesignCopied", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception ex)
             {
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DesignCopyError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                Skin.AddModuleMessage(this, Localization.GetString("DesignCopyError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
@@ -1716,11 +1752,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   and localisation
-        ///   [VMasanas]  30/09/2004  When a parent tab is deleted all child are also marked as deleted.
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(object Sender, EventArgs e)
         {
@@ -1758,7 +1789,7 @@ namespace Dnn.Modules.Tabs
             var urlPath = url.TrimStart('/');
             bool modified;
 
-	        var friendlyUrlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId);
+	        var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.PortalId);
 	        urlPath = UrlRewriterUtils.CleanExtension(urlPath, friendlyUrlSettings, string.Empty);
 
             //Clean Url
@@ -1800,13 +1831,6 @@ namespace Dnn.Modules.Tabs
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///   [aprasad]	3/21/2011	DNN-14685. Modified Redirect behavior after Save. Stays to the same page
-        ///                         if more than one langugae is present, else redirects to the updated/new page
-        ///   and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object Sender, EventArgs e)
         {
             try
@@ -1863,14 +1887,14 @@ namespace Dnn.Modules.Tabs
         {
             try
             {
-                if ((sender) is DnnCheckBox)
+                var box = sender as DnnCheckBox;
+                if (box != null)
                 {
-                    var translatedCheckbox = (DnnCheckBox)sender;
-                    int tabId = int.Parse(translatedCheckbox.CommandArgument);
+                    var translatedCheckbox = box;
+                    int tabId;
+                    int.TryParse(translatedCheckbox.CommandArgument, out tabId);
                     TabInfo localizedTab = TabController.Instance.GetTab(tabId, PortalId, false);
-
                     TabController.Instance.UpdateTranslationStatus(localizedTab, translatedCheckbox.Checked);
-
                 }
             }
             catch (Exception ex)
@@ -1963,7 +1987,10 @@ namespace Dnn.Modules.Tabs
 
         protected void cmdUpdateLocalization_Click(object sender, EventArgs e)
         {
-            CLControl1.SaveData();
+            if (contentLocalizationControl != null)
+            {
+                contentLocalizationControl.SaveData();
+            }
 
             var returnPath = Globals.NavigateURL();
 

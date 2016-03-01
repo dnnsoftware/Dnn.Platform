@@ -40,9 +40,6 @@ namespace Dnn.Modules.Languages
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[vmasanas]	10/04/2004  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LanguageEditorExt : PortalModuleBase
     {
@@ -88,9 +85,6 @@ namespace Dnn.Modules.Languages
         /// - Portal: base en-US, host override for en-US, base locale especific resource, and host override 
         /// for locale
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string LoadFile(string mode, string type)
         {
@@ -167,9 +161,6 @@ namespace Dnn.Modules.Languages
         /// <returns>Resource value</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	25/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string LoadResource(string filepath)
         {
@@ -205,10 +196,6 @@ namespace Dnn.Modules.Languages
         /// <returns>Localized File Name</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	04/10/2004	Created
-        /// 	[vmasanas]	25/03/2006	Modified to support new host resources and incremental saving
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string ResourceFile(string language, string mode)
         {
@@ -226,9 +213,6 @@ namespace Dnn.Modules.Languages
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	07/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -271,9 +255,6 @@ namespace Dnn.Modules.Languages
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	04/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdCancel_Click(Object sender, EventArgs e)
         {
@@ -295,9 +276,6 @@ namespace Dnn.Modules.Languages
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	07/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {

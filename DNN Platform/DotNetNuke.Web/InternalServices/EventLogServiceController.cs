@@ -41,7 +41,6 @@ namespace DotNetNuke.Web.InternalServices
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventLogServiceController));
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         public HttpResponseMessage GetLogDetails(string guid)
         {

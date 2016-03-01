@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Urls
                 return _doNotIncludeInPathRegex ??
                        (_doNotIncludeInPathRegex =
                            GetStringSetting(KeepInQueryStringRegexSetting,
-                               @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+"));
+                               @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+|tou/[^/]+|(/utm[^/]+/[^/]+)+"));
             }
             internal set { _doNotIncludeInPathRegex = value; }
         }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return _doNotRewriteRegex ??
                        (_doNotRewriteRegex =
-                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/__browserLink/"));
+                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/"));
             }
             internal set { _doNotRewriteRegex = value; }
         }

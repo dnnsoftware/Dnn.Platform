@@ -37,15 +37,11 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary></summary>
     /// <returns></returns>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Logo : SkinObjectBase
     {
         public string BorderWidth { get; set; }
-
+        public string CssClass { get; set; }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -54,6 +50,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (!String.IsNullOrEmpty(BorderWidth))
                 {
                     imgLogo.BorderWidth = Unit.Parse(BorderWidth);
+                }
+                if (!String.IsNullOrEmpty(CssClass))
+                {
+                    imgLogo.CssClass = CssClass;
                 }
                 bool logoVisible = false;
                 if (!String.IsNullOrEmpty(PortalSettings.LogoFile))

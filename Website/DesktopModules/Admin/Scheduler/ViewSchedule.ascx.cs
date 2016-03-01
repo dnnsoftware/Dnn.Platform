@@ -48,10 +48,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     public partial class ViewSchedule : PortalModuleBase
     {
 
@@ -62,10 +58,6 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         protected string GetTimeLapse(int timeLapse, string timeLapseMeasurement)
         {
             if (timeLapse != Null.NullInteger)

@@ -41,6 +41,8 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallFile
     {
+        private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
+
 		#region Private Members
 
         #endregion
@@ -329,7 +331,7 @@ namespace DotNetNuke.Services.Installer
                         }
                         else
                         {
-                            Type = Regex.IsMatch(Name, Util.REGEX_Version + ".txt") ? InstallFileType.CleanUp : InstallFileType.Other;
+                            Type = FileTypeMatchRegex.IsMatch(Name) ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
                         break;
                 }

@@ -41,9 +41,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SearchEngineScheduler : SchedulerClient
     {
@@ -60,10 +57,6 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        ///     [vqnguyen]  05/28/2013  updated
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DoWork()
         {

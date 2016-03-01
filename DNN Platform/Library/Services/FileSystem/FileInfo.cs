@@ -46,10 +46,6 @@ namespace DotNetNuke.Services.FileSystem
     /// <summary>
     ///   Represents the File object and holds the Properties of that object
     /// </summary>
-    /// <history>
-    ///   [DYNST]     02/01/2004   Created
-    ///   [vnguyen]   04/28/2010   Modified: Added GUID and Version GUID properties
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
@@ -250,7 +246,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (FileId != 0 && string.IsNullOrEmpty(_sha1Hash))
+                if (FileId > 0 && string.IsNullOrEmpty(_sha1Hash))
                 {
                     LoadHashProperty();
                 }
@@ -395,6 +391,11 @@ namespace DotNetNuke.Services.FileSystem
         public int PublishedVersion { get; set; }
 
         /// <summary>
+        /// Gets a flag which says whether the file has ever been published
+        /// </summary>
+        public bool HasBeenPublished { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether the file is enabled,
         /// considering if the publish period is active and if the current date is within the publish period
         /// </summary>
@@ -442,6 +443,7 @@ namespace DotNetNuke.Services.FileSystem
             EndDate  = Null.SetNullDateTime(dr["EndDate"]);
             ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
+            HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
             FillBaseProperties(dr);
         }
 

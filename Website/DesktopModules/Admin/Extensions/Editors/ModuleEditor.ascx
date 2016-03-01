@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.Security.Permissions.Controls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <h2 class="dnnFormSectionHead" id="moduleSettingsHead" runat='server'><a href="" class="dnnLabelExpanded"><%=LocalizeString("ModuleSettings")%></a></h2>
 <fieldset>
@@ -41,7 +42,7 @@
     </asp:Panel>
 </fieldset>
 <asp:Panel ID="pnlDefinitions" runat="server" Visible="False">
-    <h2 class="dnnFormSectionHead"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Definitions")%></a></h2>
+    <h2 class="dnnFormSectionHead" id="dnnPanel-ExtensionPackageSettings"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Definitions")%></a></h2>
     <fieldset>
         <div id="definitionSelectRow" class="dnnFormItem" runat="server">
             <dnn:label id="plSelectDefinition" controlname="cboDefinitions" runat="server" />

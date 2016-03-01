@@ -50,6 +50,20 @@ namespace DotNetNuke.Entities.Urls
         internal const int SiteRootRewrite = -3;
         internal const int AllTabsRewrite = -1;
 
+        private static readonly Regex TabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex UrlParamsRegex = new Regex(@"&[^=]+(?:&|$)", RegexOptions.Compiled);
+
+        private static readonly Regex CultureMatchRegex = new Regex("([A-Za-z]{2})-([A-Za-z]{2})",
+            RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex RewriteParamsRegex = new Regex(@"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region Private Methods
 
         private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
@@ -361,8 +375,8 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //Check for VanityUrl
-            var doNotRedirectRegex = new Regex(settings.DoNotRedirectRegex);
-            if (!found && !AdvancedUrlRewriter.ServiceApi.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
+            var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
+            if (!found && !RewriterUtils.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
                 string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
                 if (urlParams.Length > 1)
@@ -455,7 +469,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string CheckLanguageMatch(ref string url, UrlAction result)
         {
             //ok now scan for the language modifier 
-            Match langMatch = Regex.Match(url, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            Match langMatch = LangMatchRegex.Match(url);
 
             //searches for a string like language/en-US/ in the url
             string langParms = "";
@@ -535,7 +549,7 @@ namespace DotNetNuke.Entities.Urls
         {
             //split out found replaced and store tabid, rulePortalId and do301 if found
             result.RewritePath = rewritePath;
-            MatchCollection qsItems = Regex.Matches(rewritePath, @"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))");
+            MatchCollection qsItems = RewriteParamsRegex.Matches(rewritePath);
             foreach (Match itemMatch in qsItems)
             {
                 string val = itemMatch.Groups["val"].Value;
@@ -1142,7 +1156,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else
                         {
-                            if (!AdvancedUrlRewriter.ServiceApi.IsMatch(url) && result.RedirectAllowed)
+                            if (!RewriterUtils.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
                             {
                                 //nothing left to try 
                                 result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
@@ -1581,7 +1595,7 @@ namespace DotNetNuke.Entities.Urls
                             urlParms = temp.ToArray();
                             //656 : don't allow forced lower case of the culture identifier - always convert the case to aa-AA to match the standard
                             string cultureId = langValues[1];
-                            Match cultureMatch = Regex.Match(cultureId, "([a-z]{2})-([a-z]{2})", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            Match cultureMatch = CultureMatchRegex.Match(cultureId);
                             if (cultureMatch.Success)
                             {
                                 cultureId = cultureMatch.Groups[1].Value + "-" +
@@ -1686,7 +1700,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (stripLoneParm)
                 {
-                    newUrl = Regex.Replace(newUrl, @"&[^=]+(?:&|$)", "&");
+                    newUrl = UrlParamsRegex.Replace(newUrl, "&");
                     if (newUrl.EndsWith("&"))
                     {
                         newUrl = newUrl.Substring(0, newUrl.Length - 1);
@@ -1735,9 +1749,7 @@ namespace DotNetNuke.Entities.Urls
                 if (rewriteActions != null && rewriteActions.Count > 0)
                 {
                     SharedList<ParameterRewriteAction> tabRewrites = null;
-                    var tabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
-                                               RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    Match tabMatch = tabIdRegex.Match(newUrl);
+                    Match tabMatch = TabIdRegex.Match(newUrl);
                     if (tabMatch.Success)
                     {
                         string rawTabId = tabMatch.Groups["tabid"].Value;
@@ -1787,9 +1799,7 @@ namespace DotNetNuke.Entities.Urls
                         //process each one until a match is found
                         foreach (ParameterRewriteAction rewrite in tabRewrites)
                         {
-                            string lookFor = rewrite.LookFor;
-                            //debugInfo += " lookFor:" + lookFor;
-                            var parmRegex = new Regex(lookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var parmRegex = RegexUtils.GetCachedRegex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             //check the match, if a match found, do the replacement
                             if (parmRegex.IsMatch(parms))
                             {

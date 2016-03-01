@@ -66,9 +66,6 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// [skydnn] DNN4016 and DNN4133
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider
     {
@@ -530,14 +527,6 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
-                        if (schema.Select("ColumnName = 'HmacAppId'").Length > 0)
-                        {
-                            user.HmacAppId = Null.SetNullString(dr["HmacAppId"]);
-                        }
-                        if (schema.Select("ColumnName = 'HmacAppSecret'").Length > 0)
-                        {
-                            user.HmacAppSecret = Null.SetNullString(dr["HmacAppSecret"]);
-                        }
                     }
 
                     user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
@@ -861,10 +850,6 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="user">The user to persist to the Data Store.</param>
         /// <returns>A UserCreateStatus enumeration indicating success or reason for failure.</returns>
-        /// <history>
-        /// DNN-4016 Allow OAuth authenticated user to join more than one portal
-        /// DNN-4133 Prevent duplicate usernames for OAuth email address with same email prefix and different email domain.
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
@@ -1129,20 +1114,7 @@ namespace DotNetNuke.Security.Membership
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
-
-        /// <summary>
-        /// Get a user based on their HMAC AppId
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="appId">HMAC AppId</param>
-        /// <returns>The User as a UserInfo object</returns>
-        public override UserInfo GetUserByHmacAppId(int portalId, string appId)
-        {
-            IDataReader dr = _dataProvider.GetUserByHmacAppId(appId);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
-            return objUserInfo;
-        }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserByUserName retrieves a User from the DataStore
@@ -1691,9 +1663,7 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.Instance.GetCurrentUserInfo().UserID,
-                                     user.HmacAppId,
-                                     user.HmacAppSecret);
+                                     UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);

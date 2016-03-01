@@ -139,7 +139,7 @@
     <value>Language Pack</value>
   </data>
   <data name="Decompress.Text" xml:space="preserve">
-    <value>Decompress ZIP Files?</value>
+    <value>Decompress ZIP Files</value>
   </data>
   <data name="LogTitle.Text" xml:space="preserve">
     <value>Resource Upload Logs</value>
@@ -148,7 +148,7 @@
     <value>Return</value>
   </data>
   <data name="InvalidExt.Text" xml:space="preserve">
-    <value>Invalid File Extension For</value>
+    <value>Invalid File Extension For </value>
   </data>
   <data name="ControlTitle_file manager.Text" xml:space="preserve">
     <value>File Upload</value>
@@ -175,22 +175,22 @@
     <value>Install Language Pack</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Web Upload&lt;/h1&gt;&lt;p&gt;Allows you to upload files to the website.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Web Upload&lt;/h1&gt;&lt;p&gt;Allows you to upload files to the site.&lt;/p&gt;</value>
   </data>
   <data name="cmdUpload.Text" xml:space="preserve">
     <value>Save File</value>
   </data>
   <data name="NoFile.Text" xml:space="preserve">
-    <value>You need to select a file to upload first - click the Browse button to locate the file on your local file system.</value>
+    <value>You need to select a file to upload first.  Click the Browse button to locate the file on your local file system.</value>
   </data>
   <data name="Multiple.Text" xml:space="preserve">
-    <value>Upload Multiple Files?</value>
+    <value>Upload Multiple Files</value>
   </data>
   <data name="FileUploadSuccess.Text" xml:space="preserve">
     <value>{0} Uploaded Successfully</value>
   </data>
   <data name="plBrowse.Help" xml:space="preserve">
-    <value>Click the Browse button to browse your file system for the file you wish to upload.</value>
+    <value>Click the Browse button to browse your file system for the file you want to upload.</value>
   </data>
   <data name="plBrowse.Text" xml:space="preserve">
     <value>Browse Files</value>
@@ -205,9 +205,9 @@
     <value>Install Extension</value>
   </data>
   <data name="FileSizeRestriction.Text" xml:space="preserve">
-    <value>Your site is configured with a maximum file upload size of {0} MB. </value>
+    <value>Your site is configured with a maximum file upload size of {0} MB.</value>
   </data>
   <data name="Decompress.Help" xml:space="preserve">
-    <value>Check this box top optionally decompress any archive that you upload.</value>
+    <value>Check this box to decompress any archive that you upload.</value>
   </data>
 </root>

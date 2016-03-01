@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -117,6 +117,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.PreviewProfileManagement", "DNN Platform\Tests\DotNetNuke.Tests.PreviewProfileManagement\DotNetNuke.Tests.PreviewProfileManagement.csproj", "{D305E5DC-584F-43CB-B3ED-4CB5E7ED0B9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
@@ -226,45 +230,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web.Mvc", "DNN Platform\Tests\DotNetNuke.Tests.Web.Mvc\DotNetNuke.Tests.Web.Mvc.csproj", "{AF3A5042-B67B-4F84-9E40-BE06B1105337}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC Modules", "MVC Modules", "{B816AB39-0689-420B-94A3-581463EB9E40}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin Modules", "Admin Modules", "{2E2CA195-01E2-4754-8F3C-1598B894C2C9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Newsletters", "DNN Platform\Admin Modules\Dnn.Modules.Newsletters\Dnn.Modules.Newsletters.csproj", "{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Html", "DNN Platform\MVC Modules\Dnn.Modules.Html\Dnn.Modules.Html.csproj", "{99780E6C-A19B-4B03-B092-87BE4CD9E575}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.RecycleBin", "DNN Platform\Admin Modules\Dnn.Modules.RecycleBin\Dnn.Modules.RecycleBin.csproj", "{0A65E1A2-BB41-4C76-8012-17CB90B9333F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Log4Net", "DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj", "{04F77171-0634-46E0-A95E-D7477C88712E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.DynamicContent", "DNN Platform\Dnn.DynamicContent\Dnn.DynamicContent.csproj", "{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentManager", "DNN Platform\Modules\Dnn.Modules.DynamicContentManager\Dnn.Modules.DynamicContentManager.csproj", "{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentViewer", "DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Dnn.Modules.DynamicContentViewer.csproj", "{3B984D43-33BE-4918-A7B3-84729F4CEC92}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F} = {7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}
-		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamicContent", "DynamicContent", "{53587796-3981-4E25-A8BA-29E62901C003}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.UnitTests", "DNN Platform\Tests\Dnn.Tests.DynamicContent.UnitTests\Dnn.Tests.DynamicContent.UnitTests.csproj", "{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.IntegrationTests", "DNN Platform\Tests\Dnn.Tests.DynamicContent.IntegrationTests\Dnn.Tests.DynamicContent.IntegrationTests.csproj", "{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -292,8 +262,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.SiteWizard", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Languages", "DNN Platform\Admin Modules\Dnn.Modules.Languages\Dnn.Modules.Languages.csproj", "{E66B5763-2EAA-470D-84CB-A8FE1D21E864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.OAuth.AuthorizationServer.Core", "DNN Platform\OAuth.AuthorizationServer.Core\Dnn.OAuth.AuthorizationServer.Core.csproj", "{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Console", "DNN Platform\Admin Modules\Dnn.Modules.Console\Dnn.Modules.Console.csproj", "{946F0EA1-6187-4878-A32F-B7BF70E13CE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.ConfigurationManager", "DNN Platform\Admin Modules\Dnn.Modules.ConfigurationManager\Dnn.Modules.ConfigurationManager.csproj", "{F93FF11D-1FB8-461E-838F-32BF0353C34B}"
@@ -303,6 +271,132 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.ModuleCreator", "DNN Platform\Admin Modules\Dnn.Modules.ModuleCreator\Dnn.Modules.ModuleCreator.csproj", "{BD519B8A-169C-4328-BF67-62CD278435BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Dashboard", "DNN Platform\Admin Modules\Dnn.Modules.Dashboard\Dnn.Modules.Dashboard.csproj", "{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Deprecated", "DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj", "{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.GoogleAnalytics", "DNN Platform\Admin Modules\Dnn.Modules.GoogleAnalytics\Dnn.Modules.GoogleAnalytics.csproj", "{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.SkinManagement", "DNN Platform\Admin Modules\Dnn.Modules.SkinManagement\Dnn.Modules.SkinManagement.csproj", "{63909AD9-4859-44C4-81C1-280E554E6983}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.AuthServices.Jwt", "DNN Platform\Dnn.AuthServices.Jwt\Dnn.AuthServices.Jwt.csproj", "{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website.Artifacts", "Website.Artifacts", "{FAEC4667-B1E7-403A-92EC-CEFA85542D8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\App_Data\Database.mdf = DNN Platform\Website\App_Data\Database.mdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RadSpell", "RadSpell", "{207FD10B-58FA-4892-BED0-2077D02CEDDF}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\App_Data\RadSpell\en-US.tdf = DNN Platform\Website\App_Data\RadSpell\en-US.tdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5467AF88-258B-48A4-B2AA-FE57CC156D98}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Config\DotNetNuke.config = DNN Platform\Website\Config\DotNetNuke.config
+		DNN Platform\Website\Config\DotNetNuke.log4net.config = DNN Platform\Website\Config\DotNetNuke.log4net.config
+		DNN Platform\Website\Config\InstallLog.Config = DNN Platform\Website\Config\InstallLog.Config
+		DNN Platform\Website\Config\SiteAnalytics.config = DNN Platform\Website\Config\SiteAnalytics.config
+		DNN Platform\Website\Config\SiteUrls.config = DNN Platform\Website\Config\SiteUrls.config
+		DNN Platform\Website\Config\SolutionsExplorer.opml.config = DNN Platform\Website\Config\SolutionsExplorer.opml.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Install", "Install", "{22307C17-79AA-48AF-B0DF-6EDDC13048F5}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\InstallWizard.aspx = DNN Platform\Website\Install\InstallWizard.aspx
+		DNN Platform\Website\Install\InstallWizard.aspx.cs = DNN Platform\Website\Install\InstallWizard.aspx.cs
+		DNN Platform\Website\Install\InstallWizard.aspx.designer.cs = DNN Platform\Website\Install\InstallWizard.aspx.designer.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Cleanup\03.00.08.txt = DNN Platform\Website\Install\Cleanup\03.00.08.txt
+		DNN Platform\Website\Install\Cleanup\03.00.12.txt = DNN Platform\Website\Install\Cleanup\03.00.12.txt
+		DNN Platform\Website\Install\Cleanup\03.01.00.txt = DNN Platform\Website\Install\Cleanup\03.01.00.txt
+		DNN Platform\Website\Install\Cleanup\03.02.00.txt = DNN Platform\Website\Install\Cleanup\03.02.00.txt
+		DNN Platform\Website\Install\Cleanup\03.02.01.txt = DNN Platform\Website\Install\Cleanup\03.02.01.txt
+		DNN Platform\Website\Install\Cleanup\03.03.00.txt = DNN Platform\Website\Install\Cleanup\03.03.00.txt
+		DNN Platform\Website\Install\Cleanup\04.03.03.txt = DNN Platform\Website\Install\Cleanup\04.03.03.txt
+		DNN Platform\Website\Install\Cleanup\04.05.00.txt = DNN Platform\Website\Install\Cleanup\04.05.00.txt
+		DNN Platform\Website\Install\Cleanup\04.05.01.txt = DNN Platform\Website\Install\Cleanup\04.05.01.txt
+		DNN Platform\Website\Install\Cleanup\04.06.00.txt = DNN Platform\Website\Install\Cleanup\04.06.00.txt
+		DNN Platform\Website\Install\Cleanup\04.07.00.txt = DNN Platform\Website\Install\Cleanup\04.07.00.txt
+		DNN Platform\Website\Install\Cleanup\04.08.00.txt = DNN Platform\Website\Install\Cleanup\04.08.00.txt
+		DNN Platform\Website\Install\Cleanup\04.08.01.txt = DNN Platform\Website\Install\Cleanup\04.08.01.txt
+		DNN Platform\Website\Install\Cleanup\04.08.02.txt = DNN Platform\Website\Install\Cleanup\04.08.02.txt
+		DNN Platform\Website\Install\Cleanup\04.09.00.txt = DNN Platform\Website\Install\Cleanup\04.09.00.txt
+		DNN Platform\Website\Install\Cleanup\05.00.00.txt = DNN Platform\Website\Install\Cleanup\05.00.00.txt
+		DNN Platform\Website\Install\Cleanup\05.00.01.txt = DNN Platform\Website\Install\Cleanup\05.00.01.txt
+		DNN Platform\Website\Install\Cleanup\05.01.00.txt = DNN Platform\Website\Install\Cleanup\05.01.00.txt
+		DNN Platform\Website\Install\Cleanup\05.03.00.txt = DNN Platform\Website\Install\Cleanup\05.03.00.txt
+		DNN Platform\Website\Install\Cleanup\05.06.00.txt = DNN Platform\Website\Install\Cleanup\05.06.00.txt
+		DNN Platform\Website\Install\Cleanup\06.00.00.txt = DNN Platform\Website\Install\Cleanup\06.00.00.txt
+		DNN Platform\Website\Install\Cleanup\07.00.00.txt = DNN Platform\Website\Install\Cleanup\07.00.00.txt
+		DNN Platform\Website\Install\Cleanup\07.00.01.txt = DNN Platform\Website\Install\Cleanup\07.00.01.txt
+		DNN Platform\Website\Install\Cleanup\07.02.01.txt = DNN Platform\Website\Install\Cleanup\07.02.01.txt
+		DNN Platform\Website\Install\Cleanup\07.03.01.txt = DNN Platform\Website\Install\Cleanup\07.03.01.txt
+		DNN Platform\Website\Install\Cleanup\07.04.01.txt = DNN Platform\Website\Install\Cleanup\07.04.01.txt
+		DNN Platform\Website\Install\Cleanup\07.04.02.txt = DNN Platform\Website\Install\Cleanup\07.04.02.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.06.txt = DNN Platform\Website\Install\Cleanup\08.00.00.06.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.13.txt = DNN Platform\Website\Install\Cleanup\08.00.00.13.txt
+		DNN Platform\Website\Install\Cleanup\08.00.00.16.txt = DNN Platform\Website\Install\Cleanup\08.00.00.16.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Config\04.06.00.config = DNN Platform\Website\Install\Config\04.06.00.config
+		DNN Platform\Website\Install\Config\04.07.00.config = DNN Platform\Website\Install\Config\04.07.00.config
+		DNN Platform\Website\Install\Config\04.08.00.config = DNN Platform\Website\Install\Config\04.08.00.config
+		DNN Platform\Website\Install\Config\04.09.00.config = DNN Platform\Website\Install\Config\04.09.00.config
+		DNN Platform\Website\Install\Config\05.01.00.config = DNN Platform\Website\Install\Config\05.01.00.config
+		DNN Platform\Website\Install\Config\05.02.00.config = DNN Platform\Website\Install\Config\05.02.00.config
+		DNN Platform\Website\Install\Config\05.02.01.config = DNN Platform\Website\Install\Config\05.02.01.config
+		DNN Platform\Website\Install\Config\05.03.00.config = DNN Platform\Website\Install\Config\05.03.00.config
+		DNN Platform\Website\Install\Config\05.05.00.config = DNN Platform\Website\Install\Config\05.05.00.config
+		DNN Platform\Website\Install\Config\05.06.00.config = DNN Platform\Website\Install\Config\05.06.00.config
+		DNN Platform\Website\Install\Config\05.06.01.config = DNN Platform\Website\Install\Config\05.06.01.config
+		DNN Platform\Website\Install\Config\05.06.03.config = DNN Platform\Website\Install\Config\05.06.03.config
+		DNN Platform\Website\Install\Config\06.00.00.config = DNN Platform\Website\Install\Config\06.00.00.config
+		DNN Platform\Website\Install\Config\06.01.00.config = DNN Platform\Website\Install\Config\06.01.00.config
+		DNN Platform\Website\Install\Config\06.01.01.config = DNN Platform\Website\Install\Config\06.01.01.config
+		DNN Platform\Website\Install\Config\06.02.00.config = DNN Platform\Website\Install\Config\06.02.00.config
+		DNN Platform\Website\Install\Config\07.00.00.config = DNN Platform\Website\Install\Config\07.00.00.config
+		DNN Platform\Website\Install\Config\07.00.05.config = DNN Platform\Website\Install\Config\07.00.05.config
+		DNN Platform\Website\Install\Config\07.00.06.config = DNN Platform\Website\Install\Config\07.00.06.config
+		DNN Platform\Website\Install\Config\07.01.01.config = DNN Platform\Website\Install\Config\07.01.01.config
+		DNN Platform\Website\Install\Config\07.01.02.config = DNN Platform\Website\Install\Config\07.01.02.config
+		DNN Platform\Website\Install\Config\07.02.00.config = DNN Platform\Website\Install\Config\07.02.00.config
+		DNN Platform\Website\Install\Config\07.02.01.config = DNN Platform\Website\Install\Config\07.02.01.config
+		DNN Platform\Website\Install\Config\07.03.00.config = DNN Platform\Website\Install\Config\07.03.00.config
+		DNN Platform\Website\Install\Config\07.04.01.config = DNN Platform\Website\Install\Config\07.04.01.config
+		DNN Platform\Website\Install\Config\08.00.00.01.config = DNN Platform\Website\Install\Config\08.00.00.01.config
+		DNN Platform\Website\Install\Config\08.00.00.02.config = DNN Platform\Website\Install\Config\08.00.00.02.config
+		DNN Platform\Website\Install\Config\08.00.00.03.config = DNN Platform\Website\Install\Config\08.00.00.03.config
+		DNN Platform\Website\Install\Config\08.00.00.12.config = DNN Platform\Website\Install\Config\08.00.00.12.config
+		DNN Platform\Website\Install\Config\08.00.00.22.config = DNN Platform\Website\Install\Config\08.00.00.22.config
+		DNN Platform\Website\Install\Config\08.00.00.26.config = DNN Platform\Website\Install\Config\08.00.00.26.config
+		DNN Platform\Website\Install\Config\08.00.00.30.config = DNN Platform\Website\Install\Config\08.00.00.30.config
+		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
+		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
+		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
+		DNN Platform\Website\Install\Config\RemoveBindingRedirect.config = DNN Platform\Website\Install\Config\RemoveBindingRedirect.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{C5955B6A-A368-4AF0-A752-198D403437CB}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Module\SecurityAnalyzer_08.00.00_Install.zip = DNN Platform\Website\Install\Module\SecurityAnalyzer_08.00.00_Install.zip
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider", "Provider", "{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip = DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skin", "Skin", "{140B6176-E045-4F86-ABCA-6C493068F6FA}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip = DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -586,18 +680,6 @@ Global
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|x86.ActiveCfg = Release|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3}.Release|x86.ActiveCfg = Release|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575}.Release|x86.ActiveCfg = Release|Any CPU
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -612,46 +694,6 @@ Global
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.ActiveCfg = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.Build.0 = Release|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|x86.Build.0 = Debug|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|x86.ActiveCfg = Release|Any CPU
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|x86.Build.0 = Release|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|x86.Build.0 = Debug|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|x86.ActiveCfg = Release|Any CPU
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|x86.Build.0 = Release|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|x86.Build.0 = Debug|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|x86.ActiveCfg = Release|Any CPU
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|x86.Build.0 = Release|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Debug|x86.Build.0 = Debug|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|x86.ActiveCfg = Release|Any CPU
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}.Release|x86.Build.0 = Release|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Debug|x86.Build.0 = Debug|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|x86.ActiveCfg = Release|Any CPU
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|x86.Build.0 = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -694,12 +736,6 @@ Global
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864}.Release|x86.ActiveCfg = Release|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49}.Release|x86.ActiveCfg = Release|Any CPU
 		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -730,6 +766,34 @@ Global
 		{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.ActiveCfg = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.Build.0 = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.ActiveCfg = Release|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.Build.0 = Release|x86
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63909AD9-4859-44C4-81C1-280E554E6983}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -796,29 +860,33 @@ Global
 		{9806C125-8CA9-48CC-940A-CCD0442C5993} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{64DC5798-9D37-4F8D-97DD-8403E6E70DD3} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337} = {88E649D7-1379-430F-B794-1F3B9B442C80}
-		{B816AB39-0689-420B-94A3-581463EB9E40} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{2E2CA195-01E2-4754-8F3C-1598B894C2C9} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
-		{DF9DA7E9-FBD6-4411-A4C1-768E0DC945E3} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
-		{99780E6C-A19B-4B03-B092-87BE4CD9E575} = {B816AB39-0689-420B-94A3-581463EB9E40}
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{04F77171-0634-46E0-A95E-D7477C88712E} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
-		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
-		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
-		{3B984D43-33BE-4918-A7B3-84729F4CEC92} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
-		{53587796-3981-4E25-A8BA-29E62901C003} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
-		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3} = {53587796-3981-4E25-A8BA-29E62901C003}
-		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05} = {53587796-3981-4E25-A8BA-29E62901C003}
 		{4FDBF2F9-F5E0-4A56-A388-F347EA14D041} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{8CD1B407-FC7E-4F15-8ABF-C368B647590E} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{34BFDFD4-FB37-4165-AAB1-0359A99AC16B} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{5897E180-382C-47CE-B782-FF2DA0707010} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{4C471207-E8A8-475A-9B29-68FB3272AEAC} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{E66B5763-2EAA-470D-84CB-A8FE1D21E864} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
-		{C7DAB16C-365F-4E43-AF8A-D50087DF7C49} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{946F0EA1-6187-4878-A32F-B7BF70E13CE5} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{F93FF11D-1FB8-461E-838F-32BF0353C34B} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{6542F074-9C02-421F-9A75-F7496D7D04D5} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{BD519B8A-169C-4328-BF67-62CD278435BC} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{4B6F5970-4B9F-4884-B91E-4B27E04BFFF6} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
+		{228F29D7-BC26-4EEA-AABB-36CEF4A865D6} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{63909AD9-4859-44C4-81C1-280E554E6983} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
+		{FAEC4667-B1E7-403A-92EC-CEFA85542D8B} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
+		{2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{207FD10B-58FA-4892-BED0-2077D02CEDDF} = {2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8}
+		{5467AF88-258B-48A4-B2AA-FE57CC156D98} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{22307C17-79AA-48AF-B0DF-6EDDC13048F5} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
+		{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{15EE268D-2073-4489-9BB2-26E34D65A8DC} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{C5955B6A-A368-4AF0-A752-198D403437CB} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{140B6176-E045-4F86-ABCA-6C493068F6FA} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 	EndGlobalSection
 EndGlobal

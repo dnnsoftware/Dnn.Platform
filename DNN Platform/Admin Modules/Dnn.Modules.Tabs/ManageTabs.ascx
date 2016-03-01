@@ -1,12 +1,12 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Tabs.ManageTabs" Codebehind="ManageTabs.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Audit" Src="~/controls/ModuleAuditControl.ascx" %>
 <%@ Register tagPrefix="dnnext" Namespace="DotNetNuke.ExtensionPoints" Assembly="DotNetNuke"%>
-<%@ Register TagPrefix="dnn" Src="~/DesktopModules/Admin/Languages/CLControl.ascx" TagName="CLControl" %>
 
 <div class="dnnForm dnnPageSettings dnnClear" id="tabSettingsForm">
 	<ul class="dnnAdminTabNav dnnClear" id="TabStrip">
@@ -163,7 +163,9 @@
 					<asp:Label ID="defaultCultureMessageLabel" runat="server" CssClass="dnnFormError" Text="**" />
 					<asp:Label ID="defaultCultureMessage" runat="server" resourcekey="DefaultCulture" />
 				</div>
-                <dnn:CLControl ID="CLControl1" runat="server" />
+				<div id="localizationControlRow" runat="server">
+					
+				</div>
                 <ul class="dnnActions dnnClear">
                     <li><asp:LinkButton ID="cmdUpdateLocalization" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdateLocalization" OnClick="cmdUpdateLocalization_Click"></asp:LinkButton></li>
                     <li><asp:LinkButton runat="server" ID="MakeTranslatable" CssClass="dnnSecondaryAction" resourcekey="MakeTranslatable" OnClick="MakeTranslatable_Click"></asp:LinkButton></li>

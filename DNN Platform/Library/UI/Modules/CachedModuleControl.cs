@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.Modules
     /// CachedModuleControl represents a cached "ModuleControl".  It inherits from
     /// Literal and implements the IModuleControl interface
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/15/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CachedModuleControl : Literal, IModuleControl
     {
@@ -52,9 +49,6 @@ namespace DotNetNuke.UI.Modules
         /// Constructs a new CachedModuleControl
         /// </summary>
         /// <param name="cachedContent">The cached Content for this control</param>
-        /// <history>
-        /// 	[cnurse]	12/17/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CachedModuleControl(string cachedContent)
         {
@@ -68,9 +62,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets the underlying base control for this ModuleControl
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/17/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Control Control
         {
@@ -85,9 +76,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets the Path for this control (used primarily for UserControls)
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlPath
         {
@@ -102,9 +90,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets the Name for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlName
         {
@@ -119,9 +104,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets and sets the local resource file for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -150,9 +132,6 @@ namespace DotNetNuke.UI.Modules
         /// Gets the Module Context for this control
         /// </summary>
         /// <returns>A ModuleInstanceContext</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {

@@ -56,14 +56,15 @@ function bindConfirm() {
             $this.attr("onclick", "");
             clickFuncs.push(eval(clickFunc));
         } else {
-            for (var i = 0; i < $this.data("events").click.length; i++) {
-                var handler = $this.data("events").click[i].handler;
-                if (typeof handler.name != "undefined" && handler.name.length > 0) {
-                    clickFuncs.push(handler);
-                    break;
+            if (typeof $._data($this[0], "events") != "undefined") {
+                for (var i = 0; i < $._data($this[0], "events").click.length; i++) {
+                    var handler = $._data($this[0], "events").click[i].handler;
+                    if (typeof handler.name != "undefined" && handler.name.length > 0) {
+                        clickFuncs.push(handler);
+                        break;
+                    }
                 }
             }
-
             $this.unbind("click");
         }
 
@@ -465,6 +466,12 @@ function pluginInit() {
            
             data.profileId = pid;
             data.groupId = gid;
+
+            //for private group, overwrite existing security set so that the post only visible to group members
+            if (gid > 0 && !ispublicgroup) {
+                journalItem.Security = 'R';
+            }
+
             data.journalType = journalItem.JournalType;
             data.securitySet = journalItem.Security;
             var ItemData = journalItem.ItemData;

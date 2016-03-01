@@ -200,30 +200,33 @@
                     $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
                     var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
                     $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
-
-                    $dnnToggleMax.click(function(e) {
+                    
+                    $dnnToggleMax.click(function (e) {
                         e.preventDefault();
 
                         var $window = $(window),
                             newHeight,
-                            newWidth;
+                            newWidth,
+                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100;
 
                         if ($modal.data('isMaximized')) {
-                            newHeight = $modal.data('height');
+                            newHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
+
                         } else {
                             $modal.data('height', $modal.dialog("option", "minHeight"))
-                                .data('width', $modal.dialog("option", "minWidth"))
-                                .data('position', $modal.dialog("option", "position"));
+                                .data('width', $modal.dialog("option", "minWidth"));
 
                             newHeight = $window.height() - 46;
                             newWidth = $window.width() - 40;
+
                             $modal.data('isMaximized', true);
                         }
 
-                        $modal.dialog({ height: newHeight, width: newWidth });
-                        $modal.dialog({ position: { my: "center", at: "center" } });
+                        $modal.dialog("option", "height", newHeight);
+                        $modal.dialog("option", "width", newWidth);
+                        $modal.dialog("option", "position", { my: "center", at: "center", of: window });
                     });
                 }
             } else {

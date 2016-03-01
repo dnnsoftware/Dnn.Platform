@@ -52,12 +52,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    ///     [cnurse]    2/21/2005   Updated to use new User UserControl
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class ManageUsers : UserModuleBase, IActionable
     {
 		#region Protected Members
@@ -66,10 +60,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets whether to display the Manage Services tab
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/11/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool DisplayServices
         {
             get
@@ -83,10 +73,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Redirect URL (after successful registration)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string RedirectURL
         {
             get
@@ -99,11 +85,10 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
 						//return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://"))
-                        {
-                            _RedirectURL = "";
-                        }
+
+                        //clean the return url to avoid possible XSS attack.
+                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
                         if (_RedirectURL.Contains("?returnurl"))
                         {
                             string baseURL = _RedirectURL.Substring(0, _RedirectURL.IndexOf("?returnurl"));
@@ -130,10 +115,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Return Url for the page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string ReturnUrl
         {
             get
@@ -146,10 +127,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets the Filter to use
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string UserFilter
         {
             get
@@ -182,10 +159,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets the current Page No
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public int PageNo
         {
             get
@@ -485,10 +458,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -564,10 +533,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -609,10 +574,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/18/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             if (IsAdmin == false && HasManageUsersModulePermission() == false)
@@ -640,10 +601,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </remarks>
         /// <param name="sender"> The object that triggers the event</param>
         /// <param name="e">An ActionEventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	03/01/2006	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ModuleAction_Click(object sender, ActionEventArgs e)
         {
             switch (e.Action.CommandArgument)
@@ -671,10 +628,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/01/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void MembershipAuthorized(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -706,10 +659,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/14/2008	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -786,10 +735,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/01/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void MembershipUnAuthorized(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -814,10 +759,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/01/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void MembershipUnLocked(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -841,10 +782,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/09/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (IsAdmin == false)
@@ -868,10 +805,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/08/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (IsAdmin == false)
@@ -916,10 +849,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/20/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -952,10 +881,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/06/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             try
@@ -982,10 +907,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/01/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void UserDeleted(object sender, UserUserControlBase.UserDeletedEventArgs e)
         {
             try
@@ -1004,10 +925,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/02/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void UserRestored(object sender, UserUserControlBase.UserRestoredEventArgs e)
         {
             try
@@ -1046,10 +963,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	2/07/2007	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void UserUpdateError(object sender, UserUserControlBase.UserUpdateErrorArgs e)
         {
             AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);

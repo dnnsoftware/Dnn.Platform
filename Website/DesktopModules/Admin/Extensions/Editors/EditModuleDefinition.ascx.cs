@@ -25,14 +25,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
@@ -40,7 +37,6 @@ using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.UI.WebControls;
 
 #endregion
@@ -52,15 +48,23 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class CreateModuleDefinition : ModuleUserControlBase
-	{
+    {
 
-		#region Private Members
+        #region Private Classes
+        private class ModuleDefinitionFolder
+        {
+            public string Path { get; set; }
+            public bool SpecialOwner { get; set; }
+            public string SpecialFolderType { get; set; }
+        }
+        #endregion
 
-		private PackageInfo _Package;
+        #region Private Members
 
+        private static readonly string[] SpecialModuleFolders = new[] {"mvc"};
+        private PackageInfo _Package;
+	    
 		#endregion
 
 		#region Protected Properties
@@ -115,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 
 		private static bool InvalidFilename(string fileName)
 		{
-			var invalidFilenameChars = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+			var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
 			return invalidFilenameChars.IsMatch(fileName);
 		}
 
@@ -177,8 +181,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// <remarks>
 		/// Loads the cboSource control list with locations of controls.
 		/// </remarks>
-		/// <history>
-		/// </history>
 		private ModuleDefinitionInfo ImportControl(string controlSrc)
 		{
 			ModuleDefinitionInfo moduleDefinition = null;
@@ -340,10 +342,12 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		private void LoadModuleFolders(string selectedValue)
 		{
 			cboModule.Items.Clear();
-			var arrFolders = Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\" + cboOwner.SelectedValue);
-			foreach (var strFolder in arrFolders)
+
+		    var moduleFolders = GetModulesFolders();
+		    
+            foreach (var moduleFolder in moduleFolders)
 			{
-				var path = strFolder.Replace(Path.GetDirectoryName(strFolder) + "\\", "");
+                var path = GetPathForComboBox(moduleFolder);
 				var item = new DnnComboBoxItem(path, path);
 				if (item.Value == selectedValue)
 				{
@@ -355,17 +359,31 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             cboModule.InsertItem(0, "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", "");
 		}
 
+	    private List<ModuleDefinitionFolder> GetModulesFolders()
+	    {
+            if (!String.IsNullOrEmpty(cboOwner.SelectedValue))
+            {
+                return Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\" +
+                                                         cboOwner.SelectedValue)
+                    .ToList()
+                    .ConvertAll(folder => new ModuleDefinitionFolder { Path = folder, SpecialOwner = false });
+            }
+
+            return GetRootModuleDefinitionFolders();
+	    }
+
 		private void LoadOwnerFolders(string selectedValue)
 		{
-			cboOwner.Items.Clear();
-			var arrFolders = Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\");
-			foreach (var strFolder in arrFolders)
+            cboOwner.Items.Clear();
+
+            var arrFolders = GetRootModuleDefinitionFolders();
+			foreach (var folder in arrFolders)
 			{
-				var files = Directory.GetFiles(strFolder, "*.ascx");
+				var files = Directory.GetFiles(folder.Path, "*.ascx");
 				//exclude module folders
-				if (files.Length == 0 || strFolder.ToLower() == "admin")
-				{
-					var path = strFolder.Replace(Path.GetDirectoryName(strFolder) + "\\", "");
+                if (files.Length == 0 || folder.Path.ToLower() == "admin")
+                {
+                    var path = GetPathForComboBox(folder);
 					var item = new DnnComboBoxItem(path, path);
 					if (item.Value == selectedValue)
 					{
@@ -377,6 +395,55 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 			//cboOwner.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
             cboOwner.InsertItem(0, "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", "");
 		}
+
+	    private string GetPathForComboBox(ModuleDefinitionFolder folder)
+	    {
+            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", "");
+            if (folder.SpecialOwner)
+            {
+                path = folder.SpecialFolderType + "\\" + path;
+            }
+
+	        return path;
+	    }
+
+	    private List<ModuleDefinitionFolder> GetRootModuleDefinitionFolders()
+	    {
+            var ModuleDefinitionFolders = new List<ModuleDefinitionFolder>();
+            var rootFolders = Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\").ToList();
+
+            foreach (var folderPath in rootFolders)
+            {
+                var folderName = folderPath.Replace(Path.GetDirectoryName(folderPath) + "\\", "");
+	            if (IsSpecialFolder(folderName))
+	            {
+                    Directory.GetDirectories(folderPath).ToList()
+	                    .ForEach(specialFolderChild =>
+	                        ModuleDefinitionFolders.Add(new ModuleDefinitionFolder
+	                        {
+	                            Path = specialFolderChild,
+	                            SpecialOwner = true,
+                                SpecialFolderType = folderName
+	                        })
+	                    );
+	            }
+	            else
+	            {
+                    ModuleDefinitionFolders.Add(new ModuleDefinitionFolder
+                    {
+                        Path = folderPath,
+                        SpecialOwner = false
+                    });   
+	            }
+	        }
+
+	        return ModuleDefinitionFolders;
+	    }
+
+	    private bool IsSpecialFolder(string folderName)
+	    {
+            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
+	    }
 
 		private void SetupModuleFolders()
 		{
@@ -413,9 +480,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	03/01/2006
-		/// </history>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -439,8 +503,6 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// </history>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);

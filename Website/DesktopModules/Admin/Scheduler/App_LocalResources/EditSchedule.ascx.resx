@@ -133,7 +133,7 @@
     <value>Frequency:</value>
   </data>
   <data name="plTimeLapse.Help" xml:space="preserve">
-    <value>Example: "5" and select "Minutes" to run task every 5 minutes.</value>
+    <value>Set the time period to determine how frequently this task will run.</value>
   </data>
   <data name="Minutes.Text" xml:space="preserve">
     <value>Minutes</value>
@@ -157,19 +157,19 @@
     <value>Retry Time Lapse:</value>
   </data>
   <data name="plRetryTimeLapse.Help" xml:space="preserve">
-    <value>Example: "5" and select "Minutes" to retry the task every 5 minutes after a failure.</value>
+    <value>Set the time period to rerun this task after a failure.</value>
   </data>
   <data name="plRetainHistoryNum.Text" xml:space="preserve">
     <value>Retain Schedule History:</value>
   </data>
   <data name="plRetainHistoryNum.Help" xml:space="preserve">
-    <value>Example: Select "10" to keep the ten most recent schedule history rows.</value>
+    <value>Select the number of items to be retained in the schedule history.</value>
   </data>
   <data name="plAttachToEvent.Text" xml:space="preserve">
     <value>Run on Event:</value>
   </data>
   <data name="plAttachToEvent.Help" xml:space="preserve">
-    <value>Example: Select "Application Start" to run this event when the web app starts. Please note,  events run on APPLICATION_END may not run reliably on some hosts.</value>
+    <value>Select "Application Start" to run this event when the web app starts. Note that   events run on APPLICATION_END may not run reliably on some hosts.</value>
   </data>
   <data name="None.Text" xml:space="preserve">
     <value>None</value>
@@ -181,13 +181,13 @@
     <value>Catch Up Enabled:</value>
   </data>
   <data name="plCatchUpEnabled.Help" xml:space="preserve">
-    <value>If checked, if the webserver is ever out of service, when the webserver is back in service this event will run once for each frequency that was missed during the downtime.</value>
+    <value>Check this box to run this event once for each frequency that was missed during any server downtime.</value>
   </data>
   <data name="plObjectDependencies.Text" xml:space="preserve">
     <value>Object Dependencies:</value>
   </data>
   <data name="plObjectDependencies.Help" xml:space="preserve">
-    <value>Enter the tables or other objects that this event is dependent on. Example: "Users,UsersOnline"</value>
+    <value>Enter the tables or other objects that this event is dependent on.  E.g. "Users,UsersOnline"</value>
   </data>
   <data name="UpdateSuccess.Text" xml:space="preserve">
     <value>Your changes have been saved.</value>
@@ -202,19 +202,19 @@
     <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
   </data>
   <data name="plType.Help" xml:space="preserve">
-    <value>This is the full class name followed by the assembly name.  Example: "DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE"</value>
+    <value>This is the full class name followed by the assembly name.  E.g. "DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE"</value>
   </data>
   <data name="plServers.Text" xml:space="preserve">
     <value>Run on Servers:</value>
   </data>
   <data name="plServers.Help" xml:space="preserve">
-    <value>Select the web server(s) that this schedule should run on. Leave empty to run on all servers.</value>
+    <value>Select the web server(s) that this schedule should run on.  Leave empty to run on all servers.</value>
   </data>
   <data name="Seconds.Text" xml:space="preserve">
     <value>Seconds</value>
   </data>
   <data name="plEnabled.Help" xml:space="preserve">
-    <value>Check to enable the schedule.</value>
+    <value>Check this box to enable the schedule for this job.</value>
   </data>
   <data name="plFriendlyName.Help" xml:space="preserve">
     <value>Enter a name for the scheduled job.</value>
@@ -226,30 +226,27 @@
     <value>Run Now</value>
   </data>
   <data name="RunNow.Text" xml:space="preserve">
-    <value>Item added to schedule for immediate execution</value>
+    <value>Item added to schedule for immediate execution.</value>
   </data>
   <data name="TypeRequired.Text" xml:space="preserve">
-    <value>The type of Schedule Item is required.</value>
+    <value>The type of schedule item is required.</value>
   </data>
   <data name="TimeLapseValidator.ErrorMessage" xml:space="preserve">
-    <value>Frequency range is from 1 to 999999</value>
+    <value>Frequency range is from 1 to 999999.</value>
   </data>
   <data name="TimeLapseRequired.ErrorMessage" xml:space="preserve">
-    <value>You must set Frequency value</value>
+    <value>You must set Frequency value.</value>
   </data>
   <data name="RetryTimeLapseValidator.ErrorMessage" xml:space="preserve">
-    <value>Retry Frequency range is from 1 to 999999</value>
-  </data>
-  <data name="RetryTimeLapseRequired.ErrorMessage" xml:space="preserve">
-    <value>You must set Retry Frequency value</value>
+    <value>Retry Frequency range is from 1 to 999999.</value>
   </data>
   <data name="plScheduleStartDate.Text" xml:space="preserve">
     <value>Schedule Start Date/Time:</value>
   </data>
   <data name="plScheduleStartDate.Help" xml:space="preserve">
-    <value>Enter the start date/time for scheduled job. NOTE: If the server is down at the time it is supposed to run or other jobs are already running, then it will run as soon as the server comes back on online.</value>
+    <value>Enter the start date/time for scheduled job.  Note: If the server is down at the scheduled time or other jobs are already running, then the job will run as soon as the server comes back on online.</value>
   </data>
   <data name="InvalidFrequencyAndRetry.Text" xml:space="preserve">
-    <value>The values for frequency and retry are invalid as the retry interval exceeds the frequency interval</value>
+    <value>The values for frequency and retry are invalid as the retry interval exceeds the frequency interval.</value>
   </data>
 </root>

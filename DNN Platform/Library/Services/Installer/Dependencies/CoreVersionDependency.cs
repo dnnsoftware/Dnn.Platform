@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	09/02/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CoreVersionDependency : DependencyBase
     {

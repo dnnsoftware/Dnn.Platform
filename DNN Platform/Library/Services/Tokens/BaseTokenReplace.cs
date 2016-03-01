@@ -38,10 +38,10 @@ namespace DotNetNuke.Services.Tokens
     public abstract class BaseTokenReplace
     {
         private const string ExpressionDefault =
-            "(?:\\[(?:(?<object>[^\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
+            "(?:(?<text>\\[\\])|\\[(?:(?<object>[^\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
 
         private const string ExpressionObjectLess =
-            "(?:\\[(?:(?<object>[^\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])" +
+            "(?:(?<text>\\[\\])|\\[(?:(?<object>[^\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])" +
             "|(?:(?<object>\\[)(?<property>[A-Z0-9._]+)(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])" + "|(?<text>\\[[^\\]\\[]+\\])" +
             "|(?<text>[^\\]\\[]+)";
 
@@ -91,10 +91,10 @@ namespace DotNetNuke.Services.Tokens
             get
             {
                 var cacheKey = (UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
-                var tokenizer = (Regex)DataCache.GetCache(cacheKey);
+                var tokenizer = DataCache.GetCache(cacheKey) as Regex;
                 if (tokenizer == null)
                 {
-                    tokenizer = new Regex((UseObjectLessExpression) ? ExpressionObjectLess : ExpressionDefault, RegexOptions.Compiled);
+                    tokenizer = RegexUtils.GetCachedRegex(UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
                     DataCache.SetCache(cacheKey, tokenizer);
                 }
                 return tokenizer;

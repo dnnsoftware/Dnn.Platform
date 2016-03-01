@@ -39,6 +39,8 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
 
+        private static readonly Regex InvalidFileUrlCharsRegex = new Regex(@"[%;?:@&=+$,]", RegexOptions.Compiled);
+
         #region Public Properties
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace DotNetNuke.Services.FileSystem
             var fullPath = rootFolder + file.Folder + file.FileName;
 
             //check if a filename has a character that is not valid for urls
-            if (Regex.IsMatch(fullPath, @"[&()<>?*+%]"))
+            if (InvalidFileUrlCharsRegex.IsMatch(fullPath))
             {
                 return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
             }

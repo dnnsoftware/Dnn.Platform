@@ -59,13 +59,24 @@ namespace DotNetNuke.Modules.Admin.Portals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/28/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Template : PortalModuleBase
     {
+        #region Private Properties
+
+        /// <summary>
+        /// Gets the file extension to use for protected files.
+        /// </summary>
+        private string ProtectedExtension
+        {
+            get
+            {
+                return Globals.glbProtectedExtension;
+            }
+        }
+        
+        #endregion
+
         #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
@@ -77,10 +88,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// <remarks>
         /// The serialization uses the xml attributes defined in FileInfo class.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	Created
-        ///     [cnurse]    05/20/2004  Extracted adding of file to zip to new FileSystemUtils method
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeFiles(XmlWriter writer, PortalInfo objportal, string folderPath, ref ZipOutputStream zipFile)
         {
@@ -91,7 +98,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             foreach (FileInfo objFile in folderManager.GetFiles(objFolder))
             {
                 //verify that the file exists on the file system
-                var filePath = objportal.HomeDirectoryMapPath + folderPath + objFile.FileName;
+                var filePath = objportal.HomeDirectoryMapPath + folderPath + GetActualFileName(objFile);
                 if (File.Exists(filePath))
                 {
                     writer.WriteStartElement("file");
@@ -105,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
                     writer.WriteEndElement();
 
-                    FileSystemUtils.AddToZip(ref zipFile, filePath, objFile.FileName, folderPath);
+                    FileSystemUtils.AddToZip(ref zipFile, filePath, GetActualFileName(objFile), folderPath);
                 }
             }
             writer.WriteEndElement();
@@ -119,9 +126,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// <remarks>
         /// The serialization uses the xml attributes defined in FolderInfo class.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipOutputStream zipFile)
         {
@@ -157,9 +161,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// <remarks>
         /// The serialization uses the xml attributes defined in FolderInfo class.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeFolderPermissions(XmlWriter writer, PortalInfo objportal, string folderPath)
         {
@@ -189,8 +190,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// <remarks>
         /// The serialization uses the xml attributes defined in ProfilePropertyDefinition class.
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeProfileDefinitions(XmlWriter writer, PortalInfo objportal)
         {
@@ -261,9 +260,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// Only portal tabs will be exported to the template, Admin tabs are not exported.
         /// On each tab, all modules will also be exported.
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	23/09/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeTabs(XmlWriter writer, PortalInfo portal)
         {
@@ -567,6 +563,14 @@ namespace DotNetNuke.Modules.Admin.Portals
             }
         }
 
+        //Checks if the Storage location is secured then post append the protected extension to the file name.
+        private string GetActualFileName(FileInfo objFile)
+        {
+            return (objFile.StorageLocation == (int) FolderController.StorageLocationTypes.SecureFileSystem)
+                ? objFile.FileName + ProtectedExtension
+                : objFile.FileName;
+        }
+
         #region Pages tree
         private bool IsAdminTab(TabInfo tab)
         {
@@ -802,9 +806,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	09/02/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdCancel_Click(object sender, EventArgs e)
         {
@@ -828,11 +829,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// Template will be saved in Portals\_default folder.
         /// An extension of .template will be added to filename if not entered
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	23/09/2004	Created
-        /// 	[cnurse]	11/08/2004	Addition of files to template
-        ///  	[aprasad]	1/17/2011	New setting AutoAddPortalAlias
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdExport_Click(Object sender, EventArgs e)
         {

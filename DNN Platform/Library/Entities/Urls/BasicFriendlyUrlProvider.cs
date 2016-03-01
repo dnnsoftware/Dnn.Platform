@@ -44,6 +44,9 @@ namespace DotNetNuke.Entities.Urls
         private readonly bool _includePageName;
         private readonly string _regexMatch;
 
+        private static readonly Regex FriendlyPathRx = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex DefaultPageRx = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
@@ -83,10 +86,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page name.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
@@ -120,10 +119,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalAlias">The portal alias of the site.</param>
         /// <param name="isPagePath">Whether is a relative page path.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string GetFriendlyAlias(string path, string portalAlias, bool isPagePath)
         {
             string friendlyPath = path;
@@ -206,20 +201,15 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The Page name.</param>
         /// <returns>The formatted url</returns>
-        /// <history>
-        ///		[cnurse]	12/16/2004	created
-        ///		[smcculloch]10/10/2005	Regex update for rewritten characters
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private string GetFriendlyQueryString(TabInfo tab, string path, string pageName)
         {
             string friendlyPath = path;
-            Match queryStringMatch = Regex.Match(friendlyPath, "(.[^\\\\?]*)\\\\?(.*)", RegexOptions.IgnoreCase);
+            Match queryStringMatch = FriendlyPathRx.Match(friendlyPath);
             string queryStringSpecialChars = "";
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
-                friendlyPath = Regex.Replace(friendlyPath, Globals.glbDefaultPage, "", RegexOptions.IgnoreCase);
+                friendlyPath = DefaultPageRx.Replace(friendlyPath, "");
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if ((queryString.StartsWith("?")))
                 {
@@ -249,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
                                 //Contains Non-AlphaNumeric Characters
                                 if ((pair[0].ToLower() == "tabid"))
                                 {
-                                    if ((Regex.IsMatch(pair[1], "^\\d+$")))
+                                    if (Globals.NumberMatchRegex.IsMatch(pair[1]))
                                     {
                                         if (tab != null)
                                         {
@@ -415,8 +405,7 @@ namespace DotNetNuke.Entities.Urls
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
-                friendlyPath = regex.Replace(friendlyPath, "https://");
+                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
                 var sslUrl = portalSettings.SSLURL;

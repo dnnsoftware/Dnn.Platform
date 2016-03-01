@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Sitemap" type="Module" version="08.00.00">
+		<package name="DotNetNuke.Sitemap" type="Module" version="08.00.01">
 			<friendlyName>Sitemap</friendlyName>
 			<description>Site Map Settings.</description>
 			<iconFile>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconFile>
@@ -23,10 +23,12 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
-            <adminPage>Search Engine SiteMap</adminPage>
-            <tabIconFile>~/Icons/Sigma/Sitemap_16X16_Standard.png</tabIconFile>
-            <tabIconFileLarge>~/Icons/Sigma/Sitemap_32X32_Standard.png</tabIconFileLarge>
-            <tabDescription>Configure the sitemap for submission to common search engines.</tabDescription>
+                        <page type="Admin" common="false">
+                            <name>SearchEngineSiteMap</name>
+                            <icon>~/Icons/Sigma/Sitemap_16X16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/Sitemap_32X32_Standard.png</largeIcon>
+                            <description>Configure the sitemap for submission to common search engines.</description>
+                        </page>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Sitemap</friendlyName>

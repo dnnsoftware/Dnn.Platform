@@ -309,7 +309,8 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName && r.PortalID == portalId);
+            roleName = roleName.ToUpperInvariant().Trim();
+            return GetRoles(portalId).SingleOrDefault(r => roleName.Equals(r.RoleName.Trim(), StringComparison.InvariantCultureIgnoreCase) && r.PortalID == portalId);
         }
 
         public IList<RoleInfo> GetRoles(int portalId)
@@ -518,9 +519,6 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// <param name="objRoleGroupInfo">The RoleGroup to Add</param>
         /// <returns>The Id of the new role</returns>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
@@ -583,9 +581,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="UserId">The Id of the User that should be checked for role removability</param>
         /// <param name="RoleId">The Id of the Role that should be checked for removability</param>
         /// <returns></returns>
-        /// <history>
-        /// 	[anurse]	01/12/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
         {
@@ -607,9 +602,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="UserId">The Id of the User</param>
         /// <param name="RoleId">The Id of the Role that should be checked for removability</param>
         /// <returns></returns>
-        /// <history>
-        /// 	[anurse]	01/12/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
         {
@@ -624,9 +616,6 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Deletes a Role Group
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(int PortalID, int RoleGroupId)
         {
@@ -638,9 +627,6 @@ namespace DotNetNuke.Security.Roles
         /// Deletes a Role Group
         /// </summary>
         /// <param name="objRoleGroupInfo">The RoleGroup to Delete</param>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
@@ -676,9 +662,6 @@ namespace DotNetNuke.Security.Roles
 		/// <param name="roleGroupId">Role Group ID</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
@@ -693,9 +676,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="roleGroupName">Role Group Name</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 		public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
@@ -708,9 +688,6 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// <param name="PortalID">The Id of the Portal</param>
         /// <returns>An ArrayList of RoleGroups</returns>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetRoleGroups(int PortalID)
         {
@@ -723,9 +700,6 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// <param name="writer">An XmlWriter</param>
 		/// <param name="portalID">The Id of the Portal</param>
-        /// <history>
-        /// 	[cnurse]	03/18/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {
@@ -751,9 +725,6 @@ namespace DotNetNuke.Security.Roles
         /// Updates a Role Group
         /// </summary>
         /// <param name="roleGroup">The RoleGroup to Update</param>
-        /// <history>
-        /// 	[cnurse]	01/03/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {

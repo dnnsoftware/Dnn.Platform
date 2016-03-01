@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private static string GetProfilePicUrl(PortalSettings portalSettings, int userId)
         {
             return string.Format(
-                "http://{0}/profilepic.ashx?userId={1}&h={2}&w={3}",
+                "http://{0}/DnnImageHandler.ashx?mode=profilepic&userId={1}&h={2}&w={3}",
                 portalSettings.DefaultPortalAlias,
                 userId,
                 64,

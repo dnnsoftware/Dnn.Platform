@@ -42,9 +42,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	12/13/2005	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class EditorInfo
     {
@@ -89,9 +86,6 @@ namespace DotNetNuke.UI.WebControls
         /// properties
         /// </summary>
         /// <param name="editorType">The Id of the Editor</param>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetEditor(int editorType)
         {
@@ -102,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
                 ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorType);
                 if (definitionEntry != null)
                 {
-                    editor = definitionEntry.Text;
+                    editor = definitionEntry.TextNonLocalized;
                 }
             }
             return editor;
@@ -115,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
             ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorValue);
             if (definitionEntry != null)
             {
-                editor = definitionEntry.Text;
+                editor = definitionEntry.TextNonLocalized;
             }
             return editor;
         }

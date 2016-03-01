@@ -127,13 +127,13 @@
     <value>Current Site Default</value>
   </data>
     <data name="enableLocalization.Text" xml:space="preserve">
-    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized content is enabled the default site culture will be set permanently and &lt;strong&gt;&lt;em&gt;you will no longer be able to change it&lt;/em&gt;&lt;/strong&gt;. &lt;br/&gt;&lt;br/&gt;Click Cancel if you need to change the current site default.</value>
+    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text.  Once localized content is enabled the default site culture will be permanently set and &lt;strong&gt;&lt;em&gt;cannot be changed&lt;/em&gt;&lt;/strong&gt;. &lt;br/&gt;&lt;br/&gt;Click Cancel now if you want to change the current site default.</value>
   </data>
     <data name="header.Text" xml:space="preserve">
     <value>Enable Localized Content</value>
   </data>
     <data name="siteDefaultDescription.Text" xml:space="preserve">
-    <value>Once localized content is enabled the default site culture will be set permanently and &lt;strong&gt;&lt;em&gt;you will no longer be able to change it&lt;/em&gt;&lt;/strong&gt;. &lt;br/&gt;&lt;br/&gt;Click Cancel if you need to change the current site default.</value>
+    <value>Once localized content is enabled the default site culture will be permanently set and &lt;strong&gt;&lt;em&gt;cannot be changed&lt;/em&gt;&lt;/strong&gt;. &lt;br/&gt;&lt;br/&gt;Click Cancel now if you want to change the current site default.</value>
   </data>
     <data name="siteDefaultLabel.Text" xml:space="preserve">
     <value>Current Site Default:</value>
@@ -160,9 +160,12 @@
     <value>Total Pages</value>
   </data>
   <data name="AllPagesTranslatable.Help" xml:space="preserve">
-    <value>If checked, all pages that are in the default language will be made translatable. DotNetNuke will create a copy of all translatable pages, in all other selected languages</value>
+    <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
   </data>
   <data name="AllPagesTranslatable.Text" xml:space="preserve">
     <value>Make all pages Translatable</value>
+  </data>
+  <data name="ControlTitle_enablecontent.Text" xml:space="preserve">
+    <value>Enable Localized Content</value>
   </data>
 </root>

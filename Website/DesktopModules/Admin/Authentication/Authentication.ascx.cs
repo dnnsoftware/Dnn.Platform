@@ -41,9 +41,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]        06/29/2007   Created
-	/// </history>
 	public partial class Authentication : PortalModuleBase
 	{
 

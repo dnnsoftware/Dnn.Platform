@@ -246,9 +246,6 @@
   <data name="//Host//SuperuserAccounts.String" xml:space="preserve">
     <value>SuperUser Accounts</value>
   </data>
-  <data name="//Admin//Solutions.String" xml:space="preserve">
-    <value>Solutions Explorer</value>
-  </data>
   <data name="View.Permission" xml:space="preserve">
     <value>View Module</value>
   </data>
@@ -277,20 +274,20 @@
     <value>&lt;div align="left"&gt;
         &lt;p&gt;[Portal:PortalName] is committed to protecting your privacy and developing technology
         that gives you the most powerful and safe online experience. This Statement of Privacy
-        applies to the [Portal:PortalName] Web site and governs data collection and usage.
-        By using the [Portal:PortalName] website, you consent to the data practices described
+        applies to the [Portal:PortalName] site and governs data collection and usage.
+        By using the [Portal:PortalName] site, you consent to the data practices described
         in this statement.&lt;/p&gt;
         &lt;p&gt;&lt;span class="SubHead"&gt;Collection of your Personal Information&lt;/span&gt;&lt;/p&gt;
-        &lt;p&gt;[Portal:PortalName] collects personally identifiable information, such as your e-mail
+        &lt;p&gt;[Portal:PortalName] collects personally identifiable information, such as your email
         address, name, home or work address or telephone number. [Portal:PortalName] also
         collects anonymous demographic information, which is not unique to you, such as
         your ZIP code, age, gender, preferences, interests and favorites.&lt;/p&gt;
         &lt;p&gt;There is also information about your computer hardware and software that is automatically
         collected by [Portal:PortalName]. This information can include: your IP address,
-        browser type, domain names, access times and referring Web site addresses. This
+        browser type, domain names, access times and referring website addresses. This
         information is used by [Portal:PortalName] for the operation of the service, to
         maintain quality of the service, and to provide general statistics regarding use
-        of the [Portal:PortalName] Web site.&lt;/p&gt;
+        of the [Portal:PortalName] site.&lt;/p&gt;
         &lt;p&gt;Please keep in mind that if you directly disclose personally identifiable information
         or personally sensitive data through [Portal:PortalName] public message boards,
         this information may be collected and used by others. Note: [Portal:PortalName]
@@ -1011,9 +1008,6 @@ Thank you, we appreciate your support...
 [Portal:PortalName]
 </value>
   </data>
-  <data name="//Host//WhatsNew.String" xml:space="preserve">
-    <value>What's New</value>
-  </data>
   <data name="PurgeCacheUnsupported.Text" xml:space="preserve">
     <value>This Caching Provider does not require the PurgeCache feature.</value>
   </data>
@@ -1089,9 +1083,6 @@ Sincerely,
   </data>
   <data name="//Admin//Taxonomy.String" xml:space="preserve">
     <value>Taxonomy</value>
-  </data>
-  <data name="//GettingStarted.String" xml:space="preserve">
-    <value>Getting Started</value>
   </data>
   <data name="//Home.String" xml:space="preserve">
     <value>Home</value>
@@ -1588,5 +1579,17 @@ Sincerely,
   </data>
   <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Password Reminder</value>
+  </data>
+  <data name="503.Error" xml:space="preserve">
+    <value>{0} - 503 Service Unavailable</value>
+  </data>
+  <data name="NoSitesForThisInstallation.Error" xml:space="preserve">
+    <value>No sites currently exist for this installation.</value>
+  </data>
+  <data name="SiteAccessedWhileInstallationWasInProgress.Error" xml:space="preserve">
+    <value>The site was accessed while an installation/upgrade was in progress.</value>
+  </data>
+  <data name="ThereIsAInstallationCurrentlyInProgress.Error" xml:space="preserve">
+    <value>There is an installation currently in progress. Please try again later.</value>
   </data>
 </root>

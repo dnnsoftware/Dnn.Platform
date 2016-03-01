@@ -38,10 +38,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    ///     [vnguyen]   09/07/2010  Modified: added TabId property
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     [Serializable]

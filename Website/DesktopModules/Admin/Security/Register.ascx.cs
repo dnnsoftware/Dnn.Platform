@@ -435,7 +435,8 @@ namespace DotNetNuke.Modules.Admin.Users
 				Required = required,
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
-				ClearContentInPasswordMode = true
+				ClearContentInPasswordMode = true,
+                MaxLength = 39
 			};
 			userForm.Items.Add(formItem);
 
@@ -742,14 +743,11 @@ namespace DotNetNuke.Modules.Admin.Users
 				{
 					//return to the url passed to register
 					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-					if (redirectUrl.Contains("://") &&
-						!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-							StringComparison.InvariantCultureIgnoreCase))
-					{
-						redirectUrl = "";
-					}
-					if (redirectUrl.Contains("?returnurl"))
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
+
+                    if (redirectUrl.Contains("?returnurl"))
 					{
 						string baseURL = redirectUrl.Substring(0,
 							redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));

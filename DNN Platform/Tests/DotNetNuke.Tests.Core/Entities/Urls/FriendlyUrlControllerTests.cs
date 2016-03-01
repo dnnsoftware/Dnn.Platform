@@ -20,7 +20,9 @@
 #endregion
 using System;
 using System.Linq;
-
+using DotNetNuke.Services.Cache;
+using DotNetNuke.Tests.Utilities.Mocks;
+using Moq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core
@@ -33,6 +35,14 @@ namespace DotNetNuke.Tests.Core
     [TestFixture]
     public class FriendlyUrlControllerTests
     {
+        private Mock<CachingProvider> _mockCache;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+        }
+
         [Test]
         public void DoesNothingToSimpleText()
         {

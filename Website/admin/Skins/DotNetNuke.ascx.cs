@@ -32,10 +32,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DotNetNukeControl : SkinObjectBase
     {

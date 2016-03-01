@@ -36,8 +36,6 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserController
     {
@@ -50,8 +48,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "UserID">The Id of the User</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextUser(int UserID)
         {
@@ -65,8 +61,6 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "objHtmlTextUser">An HtmlTextUserInfo object</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddHtmlTextUser(HtmlTextUserInfo objHtmlTextUser)
         {
@@ -79,8 +73,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void DeleteHtmlTextUsers()
         {

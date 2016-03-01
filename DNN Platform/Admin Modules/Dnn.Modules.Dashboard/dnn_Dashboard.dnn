@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Dashboard" type="Module" version="08.00.00" isSystem="true">
+        <package name="DotNetNuke.Dashboard" type="Module" version="08.00.01">
             <friendlyName>Dashboard</friendlyName>
             <description>Provides a snapshot of your DotNetNuke Application.</description>
             <iconFile>~/Icons/Sigma/Dashboard_32X32_Standard.png</iconFile>
@@ -22,10 +22,12 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                      <hostPage>Dashboard</hostPage>
-                      <tabIconFile>~/images/icon_dashboard_16px.gif</tabIconFile>
-                      <tabIconFileLarge>~/images/icon_dashboard_32px.gif</tabIconFileLarge>
-                      <tabDescription>Summary view of application and site settings.</tabDescription>
+                        <page type="Host" common="true">
+                            <name>Dashboard</name>
+                            <icon>~/images/icon_dashboard_16px.gif</icon>
+                            <largeIcon>~/images/icon_dashboard_32px.gif</largeIcon>
+                            <description>Summary view of application and site settings.</description>
+                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Dashboard</friendlyName>

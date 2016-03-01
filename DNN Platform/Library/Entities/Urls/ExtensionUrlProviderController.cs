@@ -50,6 +50,8 @@ namespace DotNetNuke.Entities.Urls
     public class ExtensionUrlProviderController
     {
         private static readonly object providersBuildLock = new object();
+        private static readonly Regex RewrittenUrlRegex = new Regex(@"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         #region Private Methods
 
@@ -378,18 +380,15 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     //930 : look for other querystring information in the rewritten Url, or invalid rewritten urls can be created
                                     //pattern to determine which tab matches
-                                    const string rewrittenUrlPattern = @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*";
                                     //look for any other querystirng information in the already rewritten Url (ie language parameters)
-                                    Match rewrittenUrlMatch = Regex.Match(rewrittenUrl, rewrittenUrlPattern,
-                                                                          RegexOptions.IgnoreCase |
-                                                                          RegexOptions.CultureInvariant);
+                                    Match rewrittenUrlMatch = RewrittenUrlRegex.Match(rewrittenUrl);
                                     if (rewrittenUrlMatch.Groups["qs"].Success)
                                     {
                                         //keep any other querystring remainders
                                         qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate("", (current, qsCapture) => current + qsCapture.Value); //initialise
                                     }
                                     //supplied value overwrites existing value, so remove from the rewritten url
-                                    rewrittenUrl = Regex.Replace(rewrittenUrl, rewrittenUrlPattern, "", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                                    rewrittenUrl = RewrittenUrlRegex.Replace(rewrittenUrl, "");
                                 }
                                 if (rewrittenUrl.Contains("?") == false)
                                 {

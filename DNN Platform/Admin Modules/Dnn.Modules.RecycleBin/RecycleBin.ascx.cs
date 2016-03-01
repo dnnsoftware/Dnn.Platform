@@ -54,10 +54,6 @@ namespace DesktopModules.Admin.RecycleBin
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	9/15/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	/// </history>
 	public partial class RecycleBin : PortalModuleBase
     {
         #region Protected Properties

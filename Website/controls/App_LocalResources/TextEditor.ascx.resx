@@ -127,19 +127,19 @@
     <value>Text</value>
   </data>
   <data name="Html.Text" xml:space="preserve">
-    <value>Html</value>
+    <value>HTML</value>
   </data>
   <data name="Raw.Text" xml:space="preserve">
     <value>Raw</value>
   </data>
   <data name="plView.Help" xml:space="preserve">
-    <value>Select the editor to use</value>
+    <value>Select the editor to use.</value>
   </data>
   <data name="plView.Text" xml:space="preserve">
     <value>Editor:</value>
   </data>
   <data name="plRender.Help" xml:space="preserve">
-    <value>Select the mode to use to render the html</value>
+    <value>Select the mode to use to render the HTML.</value>
   </data>
   <data name="plRender.Text" xml:space="preserve">
     <value>Render Mode:</value>

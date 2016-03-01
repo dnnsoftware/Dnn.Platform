@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Languages" type="Module" version="08.00.00">
+		<package name="DotNetNuke.Languages" type="Module" version="08.00.01">
 			<friendlyName>Languages</friendlyName>
-			<description></description>
+			<description>The Languages module provides a means to create, edit and verify language packs for use within DNN. </description>
 			<iconFile>~/Icons/Sigma/Languages_32X32_Standard.png</iconFile>
 			<owner>
 				<name>DNN</name>
@@ -23,10 +23,12 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
-            <adminPage>Languages</adminPage>
-            <tabIconFile>~/Icons/Sigma/Languages_16X16_Standard.png</tabIconFile>
-            <tabIconFileLarge>~/Icons/Sigma/Languages_32X32_Standard.png</tabIconFileLarge>
-            <tabDescription>Manage Language Resources.</tabDescription>
+                        <page type="Admin" common="false">
+                            <name>Languages</name>
+                            <icon>~/Icons/Sigma/Languages_16X16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/Languages_32X32_Standard.png</largeIcon>
+                            <description>Manage Language Resources.</description>
+                        </page>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Languages</friendlyName>

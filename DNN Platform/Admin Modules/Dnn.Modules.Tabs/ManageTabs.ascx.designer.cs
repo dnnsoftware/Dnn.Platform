@@ -544,13 +544,13 @@ namespace Dnn.Modules.Tabs {
         protected global::System.Web.UI.WebControls.Label defaultCultureMessage;
         
         /// <summary>
-        /// CLControl1 control.
+        /// localizationControlRow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected dynamic CLControl1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl localizationControlRow;
         
         /// <summary>
         /// cmdUpdateLocalization control.
@@ -676,7 +676,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
         
         /// <summary>
         /// plIconLarge control.
@@ -694,7 +694,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIconLarge;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIconLarge;
         
         /// <summary>
         /// plSkin control.
@@ -1207,7 +1207,7 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlURL;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlURL;
         
         /// <summary>
         /// redirectRow control.
@@ -1270,6 +1270,6 @@ namespace Dnn.Modules.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::DotNetNuke.UI.UserControls.ModuleAuditControl ctlAudit;
+        protected global::DotNetNuke.UI.UserControls.ModuleAuditControl ctlAudit;
     }
 }

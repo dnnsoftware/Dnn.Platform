@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 
 <dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
@@ -153,8 +154,6 @@
             <li>
                 <div class="dnnFormItem">
                     <asp:DropDownList ID="ddlRender" runat="server" AutoPostBack="true">
-                        <asp:ListItem resourcekey="liRichText" Value="RICH"></asp:ListItem>
-                        <asp:ListItem resourcekey="liBasicText" Value="BASIC"></asp:ListItem>
                     </asp:DropDownList>
                 </div>
             </li>

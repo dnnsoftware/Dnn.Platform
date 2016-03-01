@@ -124,6 +124,6 @@
     <value>Authentication Settings</value>
   </data>
   <data name="NoProvidersEnabled.Text" xml:space="preserve">
-    <value>No providers are enabled - the standard DotNetNuke Authentication provider will be used.</value>
+    <value>No providers are enabled. The standard DotNetNuke Authentication provider will be used.</value>
   </data>
 </root>

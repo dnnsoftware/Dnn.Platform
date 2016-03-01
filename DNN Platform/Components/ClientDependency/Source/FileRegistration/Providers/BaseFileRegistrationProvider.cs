@@ -4,15 +4,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Configuration.Provider;
 using System.Web;
 using System.Linq;
 using ClientDependency.Core.CompositeFiles.Providers;
-using ClientDependency.Core.Controls;
 using ClientDependency.Core.Config;
-using ClientDependency.Core;
-using ClientDependency.Core.CompositeFiles;
 
 namespace ClientDependency.Core.FileRegistration.Providers
 {
@@ -78,40 +74,40 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
         #endregion
 
-		#region CompositeFileHandlerPath config
+        #region CompositeFileHandlerPath config
 
         //set the default
         private string _compositeFileHandlerPath = "~/DependencyHandler.axd";
         private volatile bool _compositeFileHandlerPathInitialized = false;
 
         [Obsolete("The GetCompositeFileHandlerPath should be retrieved from the compositeFiles element in config: ClientDependencySettings.Instance.CompositeFileHandlerPath")]
-		protected internal string GetCompositeFileHandlerPath(HttpContextBase http)
-		{
-		    if (!_compositeFileHandlerPathInitialized)
-		    {
+        protected internal string GetCompositeFileHandlerPath(HttpContextBase http)
+        {
+            if (!_compositeFileHandlerPathInitialized)
+            {
                 lock (this)
                 {
                     //double check
                     if (!_compositeFileHandlerPathInitialized)
-                    {                        
+                    {
                         //we may need to convert this to a real path
                         if (_compositeFileHandlerPath.StartsWith("~/"))
                         {
-                            _compositeFileHandlerPath = VirtualPathUtility.ToAbsolute(_compositeFileHandlerPath, http.Request.ApplicationPath);    
+                            _compositeFileHandlerPath = VirtualPathUtility.ToAbsolute(_compositeFileHandlerPath, http.Request.ApplicationPath);
                         }
                         //set the flag, we're done
                         _compositeFileHandlerPathInitialized = true;
-                    }                    
+                    }
                 }
-		    }
+            }
             return _compositeFileHandlerPath;
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Provider Initialization
+        #region Provider Initialization
 
-		public override void Initialize(string name, NameValueCollection config)
+        public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(name, config);
 
@@ -124,7 +120,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             {
                 EnableDebugVersionQueryString = bool.Parse(config["enableDebugVersionQueryString"]);
             }
-		}
+        }
 
         #endregion
 
@@ -172,8 +168,8 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// <param name="renderCompositeFiles"></param>
         /// <param name="renderSingle"></param>
         protected void WriteStaggeredDependencies(
-            IEnumerable<IClientDependencyFile> dependencies, 
-            HttpContextBase http, 
+            IEnumerable<IClientDependencyFile> dependencies,
+            HttpContextBase http,
             StringBuilder builder,
             Func<IEnumerable<IClientDependencyFile>, HttpContextBase, IDictionary<string, string>, string> renderCompositeFiles,
             Func<string, IDictionary<string, string>, string> renderSingle)
@@ -191,7 +187,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 var stringExt = "";
                 if (!string.IsNullOrWhiteSpace(extension))
                 {
-                    stringExt = extension.ToUpper().Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries)[0];
+                    stringExt = extension.ToUpper().Split(new[] { '?' }, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
 
                 //if this is a protocol-relative/protocol-less uri, then we need to add the protocol for the remaining
@@ -200,7 +196,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 {
                     f.FilePath = Regex.Replace(f.FilePath, @"^\/\/", http.Request.Url.GetLeftPart(UriPartial.Scheme));
                 }
-                
+
 
                 // if it is an external resource OR
                 // if it is a non-standard JS/CSS resource (i.e. a server request)
@@ -254,10 +250,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
             foreach (var dependency in dependencies)
             {
                 if (!string.IsNullOrEmpty(dependency.PathNameAlias))
-                {                    
+                {
                     var d = dependency;
-                    var path = paths.Find(
-                        (p) => p.Name == d.PathNameAlias);
+                    var path = paths.Find(p => p.Name == d.PathNameAlias);
                     if (path == null)
                     {
                         throw new NullReferenceException("The PathNameAlias specified for dependency " + dependency.FilePath + " does not exist in the ClientDependencyPathCollection");
@@ -387,12 +382,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 if (parsing != null)
                 {
                     //we need to parse the attributes into the dictionary
-                    HtmlAttributesStringParser.ParseIntoDictionary(parsing.HtmlAttributesAsString, attributes);                    
-                }                
+                    HtmlAttributesStringParser.ParseIntoDictionary(parsing.HtmlAttributesAsString, attributes);
+                }
             }
 
             //now we must ensure that the correct js/css attribute exist!
-            switch(file.DependencyType)
+            switch (file.DependencyType)
             {
                 case ClientDependencyType.Javascript:
                     if (!attributes.ContainsKey("type"))
@@ -416,7 +411,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             return attributes;
         }
 
-        
+
 
         /// <summary>
         /// Called to write the js and css to string output
@@ -439,7 +434,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 hashCodeCombiner.AddObject(d);
             }
             var hash = hashCodeCombiner.GetCombinedHashCode();
-            
+
             //we may have already processed this so don't do it again
             if (http.Items["BaseRenderer.RegisterDependencies." + hash] == null)
             {
@@ -466,11 +461,11 @@ namespace ClientDependency.Core.FileRegistration.Providers
             {
                 //sort both the js and css dependencies properly
 
-                var jsDependencies = DependencySorter.SortItems(
-                    group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList());
+                var jsDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList()));
 
-                var cssDependencies = DependencySorter.SortItems(
-                    group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList());
+                var cssDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList()));
 
                 //render
                 WriteStaggeredDependencies(cssDependencies, http, cssBuilder, RenderCssDependencies, RenderSingleCssFile);

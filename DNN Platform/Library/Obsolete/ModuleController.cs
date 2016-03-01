@@ -187,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
-            ClearTabModuleSettingsCache(tabModuleId);
+            ClearTabModuleSettingsCache(tabModuleId, null);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Journal {
         public int Gid = -1;
         public int Pid = -1;
         public long MaxUploadSize = Config.GetMaxUploadSize();
+        public bool IsPublicGroup = false;
 
         #region Event Handlers
 
@@ -130,6 +131,10 @@ namespace DotNetNuke.Modules.Journal {
                             if (roleInfo.IsPublic && ShowEditor) 
                             {
                                 ctlJournalList.Enabled = true;
+                            }
+                            if (roleInfo.IsPublic)
+                            {
+                                IsPublicGroup = true;
                             }
                         } 
                         else 

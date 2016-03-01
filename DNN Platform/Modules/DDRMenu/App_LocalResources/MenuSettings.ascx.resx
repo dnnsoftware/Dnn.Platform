@@ -121,7 +121,7 @@
     <value>Add Content</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>DDRMenu documentation available on the &lt;a href="http://wiki.dotnetnuke.com/"&gt;DotNetNuke wiki&lt;/a&gt;.</value>
+    <value>DDRMenu documentation available on the &lt;a href="http://www.dnnsoftware.com/wiki/"&gt;DNN wiki&lt;/a&gt;.</value>
   </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Menu settings</value>

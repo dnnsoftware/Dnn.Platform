@@ -23,11 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
@@ -40,7 +38,7 @@ namespace DotNetNuke.Modules.Journal
     public class FileUploadController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileUploadController));
-        
+
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -69,18 +67,6 @@ namespace DotNetNuke.Modules.Journal
             };
         }
 
-        private static bool IsAllowedExtension(string fileName)
-        {
-            var extension = Path.GetExtension(fileName);
-
-            //regex matches a dot followed by 1 or more chars followed by a semi-colon
-            //regex is meant to block files like "foo.asp;.png" which can take advantage
-            //of a vulnerability in IIS6 which treasts such files as .asp, not .png
-            return !string.IsNullOrEmpty(extension)
-                   && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
-                   && !Regex.IsMatch(fileName, @"\..+;");
-        }
-
         private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG" };
 
         private static bool IsImageExtension(string extension)
@@ -103,7 +89,7 @@ namespace DotNetNuke.Modules.Journal
                     fileName = fileName.Replace("+", ""); 
                 }
                 
-                if (IsAllowedExtension(fileName))
+                try
                 {
                     var fileInfo = JournalController.Instance.SaveJourmalFile(ActiveModule, UserInfo, fileName, file.InputStream);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
@@ -125,7 +111,7 @@ namespace DotNetNuke.Modules.Journal
                         file_id = fileInfo.FileId,
                     });
                 }
-                else
+                catch (InvalidFileExtensionException)
                 {
                     statuses.Add(new FilesStatus
                     {

@@ -28,9 +28,6 @@ namespace DotNetNuke.UI.WebControls
     /// PropertySortType is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
     /// to determine the order for displaying properties.
     /// </remarks>
-    /// <history>
-    /// 	[Joe]	2/25/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public enum PropertySortType
     {

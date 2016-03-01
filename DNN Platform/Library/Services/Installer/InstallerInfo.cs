@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is installed
+        /// Gets whether the Package is already installed with the same version
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -205,9 +205,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Invalid File Extensions
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/12/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string InvalidFileExtensions
         {

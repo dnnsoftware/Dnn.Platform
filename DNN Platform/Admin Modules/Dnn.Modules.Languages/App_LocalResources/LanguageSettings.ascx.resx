@@ -127,13 +127,13 @@
     <value>Language Management Settings</value>
   </data>
   <data name="plPageSize.Help" xml:space="preserve">
-    <value>If you have enabled Paging in the Editor you can set the Page Size to use here (default is 10)</value>
+    <value>If you have enabled Paging in the Language Editor you can set the Page Size here. The default is 10.</value>
   </data>
   <data name="plPageSize.Text" xml:space="preserve">
     <value>Editor Page Size:</value>
   </data>
   <data name="plUsePaging.Help" xml:space="preserve">
-    <value>By default the Editor does not use paging.  You can however select to use paging in the Language editor to reduce the size of the page.</value>
+    <value>By default the Editor does not use paging.  You can however select to use paging in the Language Editor to reduce the size of the page.</value>
   </data>
   <data name="plUsePaging.Text" xml:space="preserve">
     <value>Use Paging in Editor?</value>
@@ -142,16 +142,16 @@
     <value>&lt;br&gt;Page Size must be an integer value &gt; 0</value>
   </data>
   <data name="plBrowser.Help" xml:space="preserve">
-    <value>Check this box to enable browser language detection</value>
+    <value>Check this box to enable Browser Language Detection.</value>
   </data>
   <data name="plShowLanguages.Help" xml:space="preserve">
-    <value>Check this box to show the Languages tab also to non-administrators that may have access to this module. Administrators and Host users will always see the Languages tab</value>
+    <value>Check this box to show the Languages tab to non-administrators that may have access to this module.  Administrators and Super Users can always see the Languages tab.</value>
   </data>
   <data name="plShowLanguages.Text" xml:space="preserve">
     <value>Show languages for non-administrators?</value>
   </data>
   <data name="plShowSettings.Help" xml:space="preserve">
-    <value>Check this box to show the Settings tab also to non-administrators that may have access to this module. Administrators and Host users will always see the Settings tab</value>
+    <value>Check this box to show the Settings tab to non-administrators that may have access to this module.  Administrators and Super Users can always see the Settings tab.</value>
   </data>
   <data name="plShowSettings.Text" xml:space="preserve">
     <value>Show settings for non-administrators?</value>

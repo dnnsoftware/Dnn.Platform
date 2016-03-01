@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.UsageDetails" Codebehind="UsageDetails.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls"%>                
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls"%>     
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>               
 <h2 class="dnnFormSectionHead"><asp:Literal ID="lblTitle" runat="server" /></h2>
 <style type="text/css">
 .dnnGrid{
@@ -35,7 +36,8 @@
         </asp:Panel>
      
         <asp:Label ID="UsageListMsg" runat="server" />
-        <asp:GridView ID="UsageList" runat="server" AutoGenerateColumns="false" PageSize="100" AllowPaging="true" GridLines="None" CellPadding="0" EnableViewState="False" CssClass="dnnGrid">
+        <asp:GridView ID="UsageList" runat="server" AutoGenerateColumns="false" PageSize="10" AllowPaging="true" GridLines="None" CellPadding="0" 
+            EnableViewState="False" CssClass="dnnGrid" OnPageIndexChanging="UsageList_PageIndexChanging">
             <HeaderStyle Wrap="False" CssClass="dnnGridHeader"/>
             <PagerSettings Mode="NextPreviousFirstLast" />         
             <Columns>

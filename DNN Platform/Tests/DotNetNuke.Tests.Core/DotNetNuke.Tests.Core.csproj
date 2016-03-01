@@ -59,11 +59,11 @@
     <NoWarn>1591, 0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Instrumentation, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.log4net">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
@@ -151,9 +151,17 @@
     <Compile Include="Controllers\Messaging\NotificationsControllerTests.cs" />
     <Compile Include="Controllers\Search\SearchQueryStringParserTests.cs" />
     <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
+    <Compile Include="Entities\Modules\Settings\BaseSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexType.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexTypeSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\NullableSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingsTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Tabs\TabControllerTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />

@@ -67,7 +67,6 @@ using System.Web;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Web.Client;
-using OAuth.AuthorizationServer.Core.Server;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -85,11 +84,6 @@ namespace DesktopModules.Admin.Portals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/8/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class SiteSettings : PortalModuleBase
     {
 
@@ -440,40 +434,8 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
-            BindOAuth(portal);
         }
-
-        private void BindOAuth(PortalInfo portal)
-        {
-            if (Host.EnableOAuthAuthorization == false)
-            {
-                OAuthStatus.Visible = true;
-                OAuthClient.Visible = false;
-                OAuthSecret.Visible = false;
-                cmdOAuth.Visible = false;
-                return;
-            }
-            else
-            {
-                var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DNNOAuth");
-                if (package == null)
-                {
-                    plOAuthWarning.Visible = true;
-                    plOAuthWarning.Text = Localization.GetString("plOAuthWarning", "DesktopModules/Admin/HostSettings/App_LocalResources/HostSettings.ascx.resx"); 
-                }
-               
-            }
-
-            var btnstatus=PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", portal.PortalID, false);
-            cmdOAuth.Text = Localization.GetString(btnstatus ? "DisableOAuth" : "EnableOAuth", LocalResourceFile);
-
-            OAuthSitesettingsClientLabel.Text=PortalController.GetPortalSetting("OAuthClient",_portalId, string.Empty);
-            OAuthSitesettingsSecretLabel.Text = PortalController.GetPortalSetting("OAuthSecret", _portalId, string.Empty);
-            OAuthStatus.Visible = !btnstatus;
-            OAuthClient.Visible = btnstatus;
-            OAuthSecret.Visible = btnstatus;
-        }
-
+        
         private void BindCustomSettings(PortalInfo portal)
         {
             var portalId = portal.PortalID;
@@ -789,10 +751,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void LoadStyleSheet(PortalInfo portal)
         {
             string uploadDirectory = "";
@@ -835,10 +793,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>A formatted string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string FormatCurrency()
         {
             var retValue = "";
@@ -861,10 +815,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>A formatted string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string FormatFee(object objHostFee)
         {
             var retValue = "";
@@ -887,10 +837,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>True if Subscribed, False if not</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsSubscribed(int portalModuleDefinitionId)
         {
             try
@@ -912,10 +858,6 @@ namespace DesktopModules.Admin.Portals
         /// <returns>True if SuperUser, False if not</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	10/4/2004	Added
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsSuperUser()
         {
             return UserInfo.IsSuperUser;
@@ -951,7 +893,6 @@ namespace DesktopModules.Admin.Portals
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             cmdEmail.Click += TestEmail;
-            cmdOAuth.Click += UpdateOAuth;
             rblSMTPmode.SelectedIndexChanged += OnSmtpModeChanged;
             chkPayPalSandboxEnabled.CheckedChanged += OnChkPayPalSandboxChanged;
             IncrementCrmVersionButton.Click += IncrementCrmVersion;
@@ -961,38 +902,13 @@ namespace DesktopModules.Admin.Portals
             InitializeDropDownLists();
 
         }
-
-        private void UpdateOAuth(object sender, EventArgs e)
-        {
-            var btnstatus = PortalController.GetPortalSettingAsBoolean("EnableOAuthAuthorization", PortalSettings.PortalId, false);
-            if (btnstatus==false)
-            {
-                var existingClientId = PortalController.GetPortalSetting("OAuthClient", _portalId, string.Empty);
-                if (existingClientId == string.Empty)
-                {
-                    //create oauth portal specific settings
-                    var rnd = new Random(DateTime.Now.Millisecond);
-                    int ticks = rnd.Next(0, 3000);
-                    var clientId = "Client-" + ticks.ToString();
-                    PortalController.UpdatePortalSetting(_portalId, "OAuthClient", clientId, false);
-                    Guid id = Guid.NewGuid();
-
-                    PortalController.UpdatePortalSetting(_portalId, "OAuthSecret", id.ToString(), false);
-                    OAUTHDataController.ClientInsert(clientId, id.ToString(), string.Empty, PortalSettings.PortalName, 1);
-                }
-               
-            }
-            
-            PortalController.UpdatePortalSetting(_portalId, "EnableOAuthAuthorization", (!btnstatus).ToString(), true);
-            Response.Redirect(Request.RawUrl, true);
-        }
-
+        
         /// <summary>
         /// Initializes DropDownLists
         /// </summary>
         private void InitializeDropDownLists()
         {
-            var undefinedItem = new ListItem(SharedConstants.Unspecified, String.Empty);
+            var undefinedItem = new ListItem(DynamicSharedConstants.Unspecified, String.Empty);
             cboSplashTabId.UndefinedItem = undefinedItem;
             cboHomeTabId.UndefinedItem = undefinedItem;
             cboRegisterTabId.UndefinedItem = undefinedItem;
@@ -1046,11 +962,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -1109,12 +1020,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        ///     [VMasanas]  9/12/2004   Move skin deassignment to DeletePortalInfo.
-        ///     [jmarino]  16/06/2011   Modify redirection after deletion of portal 
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void DeletePortal(object sender, EventArgs e)
         {
             try
@@ -1240,10 +1145,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnRestoreClick(object sender, EventArgs e)
         {
             try
@@ -1278,10 +1179,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void OnSaveClick(object sender, EventArgs e)
         {
             try
@@ -1336,11 +1233,6 @@ namespace DesktopModules.Admin.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/9/2004	Modified
-        /// 	[aprasad]	1/17/2011	New setting AutoAddPortalAlias
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void UpdatePortal(object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -1579,7 +1471,7 @@ namespace DesktopModules.Admin.Portals
                     {
                         try
                         {
-                            var regex = new Regex(item.Value.ToString());
+                            var regex = RegexUtils.GetCachedRegex(item.Value.ToString());
                             PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                         }
                         catch

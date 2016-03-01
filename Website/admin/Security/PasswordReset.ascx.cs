@@ -31,10 +31,12 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
@@ -78,7 +80,7 @@ namespace DotNetNuke.Modules.Admin.Security
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
 			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
@@ -265,21 +267,18 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     //return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                    if (redirectURL.Contains("://"))
-                    {
-                        redirectURL = "";
-                    }
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (Request.Cookies["returnurl"] != null)
                 {
                     //return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
-                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                    if (redirectURL.Contains("://"))
-                    {
-                        redirectURL = "";
-                    }
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
                 if (String.IsNullOrEmpty(redirectURL))
                 {

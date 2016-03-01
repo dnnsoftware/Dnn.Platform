@@ -24,7 +24,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
@@ -43,7 +43,9 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
 
-		[Serializable]
+        private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
+
+        [Serializable]
 		private class EntityInfo
 		{
 			public int CreatedByUserID { get; set; }
@@ -109,7 +111,8 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 //check to see if updated check is redundant
-                var isCreatorAndUpdater = Regex.IsMatch(CreatedByUser, "^\\d+$") && Regex.IsMatch(LastModifiedByUser, "^\\d+$") && CreatedByUser == LastModifiedByUser;
+                var isCreatorAndUpdater = CreatedByUser == LastModifiedByUser &&
+                    Globals.NumberMatchRegex.IsMatch(CreatedByUser) && Globals.NumberMatchRegex.IsMatch(LastModifiedByUser);
 
                 _systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
                 ShowCreatedString();
@@ -123,7 +126,7 @@ namespace DotNetNuke.UI.UserControls
 
         private void ShowCreatedString()
         {
-            if (Regex.IsMatch(CreatedByUser, @"^-?\d+$"))
+            if (CheckDateColumnRegex.IsMatch(CreatedByUser))
             {
                 if (int.Parse(CreatedByUser) == Null.NullInteger)
                 {
@@ -152,7 +155,7 @@ namespace DotNetNuke.UI.UserControls
                 return;
             }
 
-            if (Regex.IsMatch(LastModifiedByUser, @"^-?\d+$"))
+            if (CheckDateColumnRegex.IsMatch(LastModifiedByUser))
             {
                 if (isCreatorAndUpdater)
                 {

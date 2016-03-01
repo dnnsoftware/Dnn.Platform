@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Scheduling
             //where our threads will be kicked off.
             private static ProcessGroup[] _processGroup;
 
-            //A ReaderWriterLock will protect our objects
+            //A ReaderWriterLockSlim will protect our objects
             //in memory from being corrupted by simultaneous
             //thread operations.  This block of code below
             //establishes variables to help keep track
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Scheduling
             private static int _readerTimeouts;
             private static int _writerTimeouts;
             private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(45);
-            private static readonly ReaderWriterLock StatusLock = new ReaderWriterLock();
+            private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
             private static ScheduleStatus _status = ScheduleStatus.STOPPED;
 
             //If KeepRunning gets switched to false, 
@@ -298,7 +298,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     try
                     {
-                        //objQueueReadWriteLock.AcquireWriterLock(WriteTimeout)
+                        //objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
                         using (ScheduleQueue.GetWriteLock(LockTimeout))
                         {
                             //Do a second check just in case
@@ -376,8 +376,10 @@ namespace DotNetNuke.Services.Scheduling
 			                }
 
 			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
-				            delegateFunc.BeginInvoke(new ScheduleHistoryItem(scheduleItem), null, null);
-				            Thread.Sleep(1000);
+                            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
+                            scheduleHistoryItem.StartDate = DateTime.Now;
+                            delegateFunc.BeginInvoke(scheduleHistoryItem, null, null);
+                            Thread.Sleep(1000);
 
 				            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
 
@@ -576,23 +578,26 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    StatusLock.AcquireReaderLock(LockTimeout);
-                    try
+                    if (StatusLock.TryEnterReadLock(LockTimeout))
                     {
-                        //ScheduleStatus is a value type a copy is returned (enumeration)
-                        return _status;
-                    }
-                    finally
-                    {
-                        StatusLock.ReleaseReaderLock();
+                        try
+                        {
+                            //ScheduleStatus is a value type a copy is returned (enumeration)
+                            return _status;
+                        }
+                        finally
+                        {
+                            StatusLock.ExitReadLock();
+                        }
+                        
                     }
                 }
                 catch (ApplicationException)
                 {
                     //The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
-                    return ScheduleStatus.NOT_SET;
                 }
+                return ScheduleStatus.NOT_SET;
             }
 
             /// <summary>
@@ -835,17 +840,19 @@ namespace DotNetNuke.Services.Scheduling
                     //as there is no lock in place between when the caller
                     //decides to call this method and when the lock is acquired
                     //the value could easily change in that time
-                    StatusLock.AcquireWriterLock(LockTimeout);
-                    try
+                    if (StatusLock.TryEnterWriteLock(LockTimeout))
                     {
-                        // It is safe for this thread to read or write
-                        // from the shared resource.
-                        _status = newStatus;
-                    }
-                    finally
-                    {
-                        // Ensure that the lock is released.
-                        StatusLock.ReleaseWriterLock();
+                        try
+                        {
+                            // It is safe for this thread to read or write
+                            // from the shared resource.
+                            _status = newStatus;
+                        }
+                        finally
+                        {
+                            // Ensure that the lock is released.
+                            StatusLock.ExitWriteLock();;
+                        }
                     }
                 }
                 catch (ApplicationException ex)

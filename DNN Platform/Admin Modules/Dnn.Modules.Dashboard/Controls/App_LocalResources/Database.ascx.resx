@@ -124,13 +124,13 @@
     <value>Database Version:</value>
   </data>
   <data name="plBackups.Help" xml:space="preserve">
-    <value>Displays the last 20 database backups for this DotNetNuke installation.  This list may not be complete if you regularly clean your database backup history tables.</value>
+    <value>Displays the last 20 database backups for this DNN installation.  This list may be incomplete if you regularly clean your database backup history tables.</value>
   </data>
   <data name="plBackups.Text" xml:space="preserve">
     <value>Database Backup History:</value>
   </data>
   <data name="plFiles.Help" xml:space="preserve">
-    <value>Displays a list of data and log files for this DotNetNuke installation.</value>
+    <value>Displays a list of data and log files for this DNN installation.</value>
   </data>
   <data name="plFiles.Text" xml:space="preserve">
     <value>Database Files:</value>
@@ -142,13 +142,13 @@
     <value>Database Server Information:</value>
   </data>
   <data name="DbInfo_ProductEdition.Help" xml:space="preserve">
-    <value>The Edition of SQL Server installed</value>
+    <value>The edition of SQL Server installed.</value>
   </data>
   <data name="DbInfo_ProductEdition.Text" xml:space="preserve">
     <value>Product Edition:</value>
   </data>
   <data name="DbInfo_ServicePack.Help" xml:space="preserve">
-    <value>Installed Service Pack(s)</value>
+    <value>Installed service pack(s).</value>
   </data>
   <data name="DbInfo_ServicePack.Text" xml:space="preserve">
     <value>Service Pack:</value>
@@ -190,6 +190,6 @@
     <value>Started</value>
   </data>
   <data name="Backup.Error.Text" xml:space="preserve">
-    <value>Your application does not have permission to retrieve database backup information. Provide necessary permissions to query the msdb database if you wish to make this data available in the dashboard.</value>
+    <value>Your application does not have permission to retrieve database backup information.  Provide necessary permissions to query the msdb database if you want to make this data available in the Dashboard.</value>
   </data>
 </root>

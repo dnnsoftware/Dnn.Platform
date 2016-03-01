@@ -1,0 +1,97 @@
+-- DNN-7629  Add DB Unique restriction to SubscriptionName
+
+;WITH Duplicate_SubscriptionTypes AS 
+(
+	SELECT MIN(SubscriptionTypeId) MinSubscriptionTypeId, SubscriptionName, COUNT(*) [Count]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	GROUP BY SubscriptionName 
+	HAVING count(*) > 1
+)
+
+UPDATE S1
+ SET [SubscriptionTypeId] = D.MinSubscriptionTypeId
+ FROM {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions] S1, Duplicate_SubscriptionTypes D
+WHERE [SubscriptionTypeId] IN 
+	(
+		SELECT S2.[SubscriptionTypeId] 
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] S2
+		WHERE S2.SubscriptionName = D.[SubscriptionName]
+	)
+    AND [SubscriptionTypeId] <> D.MinSubscriptionTypeId
+GO
+
+;WITH Duplicate_SubscriptionTypes AS 
+(
+	SELECT MIN(SubscriptionTypeId) MinSubscriptionTypeId, SubscriptionName, COUNT(*) [Count]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	GROUP BY SubscriptionName 
+	HAVING count(*) > 1
+)
+
+DELETE ST
+FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] ST, Duplicate_SubscriptionTypes D
+WHERE ST.SubscriptionName = D.[SubscriptionName] AND ST.SubscriptionTypeId <> D.MinSubscriptionTypeId
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]') AND name = N'IX_{objectQualifier}CoreMessaging_SubscriptionTypes_SubscriptionName')
+	DROP INDEX [IX_{objectQualifier}CoreMessaging_SubscriptionTypes_SubscriptionName] ON {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_SubscriptionTypes_SubscriptionName] ON {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+(
+	[SubscriptionName]
+)
+GO
+
+-- END DNN-7629
+
+-- DNN-8141	Implement Moniker API for Service Framework
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleSettingsByName
+	@PortalId INT,
+	@SettingName NVARCHAR(50)
+AS
+BEGIN
+	SELECT tms.TabModuleID, tms.SettingValue
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND t.PortalID = @PortalID
+	WHERE tms.SettingName = @SettingName
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleIdsBySettingNameAndValue] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}{objectQualifier}GetTabModuleIdsBySettingNameAndValue
+	@PortalId INT,
+	@SettingName NVARCHAR(50),
+	@SettingValue NVARCHAR(max)
+AS
+BEGIN
+	SELECT DISTINCT tms.TabModuleID
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tms.TabModuleID = tm.TabModuleID
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t ON tm.TabID = t.TabID AND t.PortalID = @PortalID
+	WHERE tms.SettingName = @SettingName
+	  AND tms.SettingValue = @SettingValue
+END
+GO
+
+-- DNN-8141 END
+
+-- CONTENT-5617	Page Settings Error: 12/31/9999 11:59:59 PM' is not valid for 'SelectedDate'
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]', N'U') IS NOT NULL
+	UPDATE {databaseOwner}[{objectQualifier}Tabs]
+	SET EndDate = NULL
+	WHERE EndDate >= '9999-12-31T00:00:00'
+GO
+
+-- CONTENT-5617 END
+

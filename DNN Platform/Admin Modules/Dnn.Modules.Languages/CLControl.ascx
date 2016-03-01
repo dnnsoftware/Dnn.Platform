@@ -3,6 +3,7 @@
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <div id="DnnPages">
     <div id="mainContainer" runat="server" class="container RadGrid RadGrid_Default">
         <asp:Repeater ID="rDnnModules" runat="server"

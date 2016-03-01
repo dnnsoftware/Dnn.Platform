@@ -23,7 +23,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -334,7 +333,7 @@ namespace DotNetNuke.Security.Permissions
                 string[] arrRoles = roles.Split(';');
                 for (int i = 0; i <= arrRoles.Length - 1; i++)
                 {
-                    if (Regex.IsMatch(arrRoles[i], "^\\d+$"))
+                    if (Globals.NumberMatchRegex.IsMatch(arrRoles[i]))
                     {
                         strRoles += Globals.GetRoleName(Convert.ToInt32(arrRoles[i])) + ";";
                     }

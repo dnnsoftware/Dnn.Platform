@@ -64,8 +64,6 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-using OAuth.AuthorizationServer.Core.Server;
 
 #endregion
 
@@ -110,11 +108,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// <summary>
         /// BindData fetches the data from the database and updates the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void BindConfiguration()
         {
             lblProduct.Text = DotNetNukeContext.Current.Application.Description;
@@ -231,6 +224,7 @@ namespace DotNetNuke.Modules.Admin.Host
                 cboPerformance.FindItemByValue("3").Selected = true;
             }
             cboCacheability.FindItemByValue(Entities.Host.Host.AuthenticatedCacheability).Selected = true;
+            cboUnauthCacheability.FindItemByValue(Entities.Host.Host.UnauthenticatedCacheability).Selected = true;
         }
 
         private void BindPaymentProcessor()
@@ -387,15 +381,6 @@ namespace DotNetNuke.Modules.Admin.Host
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
-            chkEnableOAuth.Checked = Entities.Host.Host.EnableOAuthAuthorization;
-            if (chkEnableOAuth.Checked)
-            {
-                var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DNNOAuth");
-                if (package == null)
-                {
-                    plOAuthWarning.Visible = true;
-                }
-            }
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
@@ -551,12 +536,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        ///     [VMasanas]  9/28/2004   Changed redirect to Access Denied
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -715,11 +694,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void ClearCache(object sender, EventArgs e)
         {
             DataCache.ClearCache();
@@ -742,11 +716,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void TestEmail(object sender, EventArgs e)
         {
             try
@@ -821,11 +790,6 @@ namespace DotNetNuke.Modules.Admin.Host
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/27/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void UpdateSettings(object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -898,7 +862,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("EnableFileAutoSync", chkAutoSync.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
-                    HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "True" : "False", false);
                     HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     HostController.Instance.Update("UpgradeForceSSL", chkUpgradeForceSSL.Checked ? "Y" : "N", false);
@@ -941,7 +905,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);
                     UpdateSchedule();
                     UpdateSearchIndexConfiguration();
-                    UpdateOAuth();
 
                     // TODO: Remove after refactor: this code/functionality has been copied to ..\AdvancedSettings\SmtpServerSettings.aspx) 
                     var redirectUrl = Request.RawUrl;
@@ -962,17 +925,6 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
         }
-
-        private void UpdateOAuth()
-        {
-          HostController.Instance.Update("EnableOAuthAuthorization", chkEnableOAuth.Checked ? "Y" : "N", false);
-            var settings = OAUTHDataController.GetSettings();
-            if (settings==null)
-            {
-                OAUTHDataController.InsertSettings("PFJTQUtleVZhbHVlPjxNb2R1bHVzPjZlZnpYTHNvSmQ5OVVQMjdOQ1hWSnpZSFVtMmlLTUVOSlo2eVpVSFNvTE5uYnFMdENZWjZXaEl3SXY5WVBGeit0Z1AvQWN0dXh3N2VWVzdsU0RaU0IvQU8ySk1kOXJ1MkJ4SHRVaUZVd2pySnNHTlRUS1NhVDFDOTA0YXFaTExaRUxmYnVvVllabnFKWkRvdjlreTkwaHZtTTYwY3FXbkU4TGc2aGZSYlFPOD08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjxQPjlrUjZaNGtabGVMeTlVMlo4WFl3WXd5VTA2d1g2UTR0QytlUitRZm5jOWJJK1loVFFRQXA1RXM1MGZwcWorWE8yQUhnb3RwN1NMRHdLSmZ5UmUzcElRPT08L1A+PFE+OHlacEFEUndhTG45MHFIY1liVG14N094b20wQVlrNVJnaDRyTTF1cGpNTEVHZTF5M01Xa2R0eUs0L3RsamVOeEJmOS82a0w4WTEyRU4zZDluaCtZRHc9PTwvUT48RFA+SW94VXg3V2FHMGJ0WXJCeVNrZVVYakRqcUJaYWZGMTZ3RkxLVGE5b0x2NFF6OERxUFJJeXprNG5YR2ZQRDBUa0ViV2h0L2NDbUo0Sjh3ZnQreFYzUVE9PTwvRFA+PERRPlhpOWd1TzJYSlZuMlVpTFVwUnhYMEw5d2JZUmZnN1RtcWNwWjNaa0NBajVuaTh1SWxMQVNWdUJ6QklDYkErMDRHS1N4dmVLWXRUekNQR0lTeks5Y1RRPT08L0RRPjxJbnZlcnNlUT5kcmVJNmhLaXFOVjZQWXEva2pybENpQk5XaGV1SVRUcGZTS0lEa0ZYd0xLaThrQ2hKcW1FWVltVjFqb2hOOVJEMzNEU2xGcnY0TXZ1cWFUWG5iMXBwdz09PC9JbnZlcnNlUT48RD5uTGZDUUpGTk53TGtyYzB6RHArQ2owRU42dFoxM2FSck1KZUJvNEpVbzBOUXU3b0I0MjNzc0VpYlkvZDlvUVFWek5Ja200azM4YnN1a0VNNjhBVWxNOUJqTGpNZjZmdFF3YlJWbUY0cllPZmZ4czhoUGszRXN3aWoycVlsNmxUMVpUaFM3MHd0MWlyQWQrWmFKNWN5V29HSnZVTWs4cWpQaWNSeEtkbEdub0U9PC9EPjwvUlNBS2V5VmFsdWU+", "PFJTQUtleVZhbHVlPjxNb2R1bHVzPjkwNU9zRjVnYXNIOUVFY0VYV2RaSXNpNlozbWxKRjhlMFlPancrVmY0M0lYTnhmc3ZzOUxvdTR6dVpUOHV5dndpT25jaDUrSXBIOHZTZ2ZzaUZLbFZuQXRzcXhUcU5HVXFBWk5HWG9rZ3FiS0d6WTFoajZLVWxHUlErcThJMHdFbzBrWFh3cjQ3bWFIN01pRVYvaXBiSjZvVmtkbC9XVHJybXMyb2JFR09CRT08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjwvUlNBS2V5VmFsdWU+", "PFJTQUtleVZhbHVlPjxNb2R1bHVzPjkwNU9zRjVnYXNIOUVFY0VYV2RaSXNpNlozbWxKRjhlMFlPancrVmY0M0lYTnhmc3ZzOUxvdTR6dVpUOHV5dndpT25jaDUrSXBIOHZTZ2ZzaUZLbFZuQXRzcXhUcU5HVXFBWk5HWG9rZ3FiS0d6WTFoajZLVWxHUlErcThJMHdFbzBrWFh3cjQ3bWFIN01pRVYvaXBiSjZvVmtkbC9XVHJybXMyb2JFR09CRT08L01vZHVsdXM+PEV4cG9uZW50PkFRQUI8L0V4cG9uZW50PjxQPi9DSTYxZ1ZhZzlUMTRkMmdLb0hJSUc2NU5rQ0FzQlVzTlEzMGtRK2l2UEFIWTV5b2JpSXdxTDVxSk54cjhsVUhGMDJxQVR2TUxOYnNaT3J2a3V1bjF3PT08L1A+PFE+K3hrZ0pSQXJhRFRiem9VeElEbVZ4UVZtUVhia1NFS244bnpTYkZEN2ptSzRKd3h5NmlNR2ZTakljdFliNmhxQTc3dFlrTzFpSHVHTnZtS0FHMU9DVnc9PTwvUT48RFA+R1MwUjB1MFY3TFFIR1ZhWDk2YWQ1UjhwUDFHUmlBT1ZObmIrUkwzYThpTEZtaHk2ZE1UVk53Uk1kUUhOaFpVWDhDdkJIZjVxbE0raEt6S0tXWkZPWVE9PTwvRFA+PERRPjRQMnpldUpSTXE5aVlWdWhHREhoREVmNVJ5RmtEWWVFZTFmektGRXNCbnBZYmN6T3p4TVJSbWFicmFKQ0l2TWFvelNvZUR2c1ZxVmVYOEJjNzU5VlF3PT08L0RRPjxJbnZlcnNlUT5vVm5hNG1HQkx5SzN3OHdOQzhGVVBlVHlISzN5SkFSTXdDU0ZTLytTajI5eUdEbCtPeE5CRlNvUW9uWmwwdWFFeFdBN0VJTjJVZUxSZzhicWFELzUyQT09PC9JbnZlcnNlUT48RD5ZTkJQRGN4a2dtYWU0eGhxSlFhb1ptMmVTNVBiaW5tU1h3TGh3WGF5S3lBbTVuSi9ROU56RUwyZmtpODVJU3o2WlI3b0xrL045bGV6ODQ5V2thZUpBYUMzZm96c2Zrek9KVXBOQlNWS1RCRkR6K0dyRHV1a0tLL2JDbDBCVHZnT3E5R0k2UWUwUXpFUnV0SVIwUjY3cXptUUxmenRhVVc4UGVOSTcwTVhHZUU9PC9EPjwvUlNBS2V5VmFsdWU+");
-            }
-        }
-
         #endregion
 
         protected void CompactSearchIndex(object sender, EventArgs e)

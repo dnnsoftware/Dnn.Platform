@@ -151,10 +151,10 @@
     <value>&lt;h1&gt;About Roles&lt;/h1&gt;&lt;p&gt;Administrators can manage the security roles defined for their website. The module allows you to add new security roles, modify existing security roles, delete security roles, and manage the users assigned to security roles.&lt;/p&gt;</value>
   </data>
   <data name="plRoleGroups.Text" xml:space="preserve">
-    <value>Filter By Role Group:</value>
+    <value>Filter by Role Group:</value>
   </data>
   <data name="plRoleGroups.Help" xml:space="preserve">
-    <value>Select the Role Group you would like to view</value>
+    <value>Select a Role Group to view roles within that group.</value>
   </data>
   <data name="AddGroup.Action" xml:space="preserve">
     <value>Add New Role Group</value>

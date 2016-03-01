@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 
@@ -471,6 +472,8 @@ namespace DotNetNuke.Modules.Admin.Portals
 
                             intPortalId = Null.NullInteger;
                             message = ex.Message;
+
+                            TryDeleteCreatingPortal(blnChild ? strChildPath : string.Empty);
                         }
 
                         if (intPortalId != -1)
@@ -564,6 +567,28 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     Exceptions.ProcessModuleLoadException(this, exc);
                 }
+            }
+        }
+
+        private void TryDeleteCreatingPortal(string childPath)
+        {
+            try
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+                {
+                    var creatingPortalId = Convert.ToInt32(HttpContext.Current.Items["CreatingPortalId"]);
+                    var portalInfo = PortalController.Instance.GetPortal(creatingPortalId);
+                    PortalController.DeletePortal(portalInfo, Globals.GetAbsoluteServerPath(Request));
+                }
+
+                if (!string.IsNullOrEmpty(childPath))
+                {
+                    PortalController.DeletePortalFolder(string.Empty, childPath);
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error(ex);
             }
         }
 

@@ -121,22 +121,22 @@
     <value>Website</value>
   </data>
   <data name="plPortalID.Help" xml:space="preserve">
-    <value>Select the Website you would like to view.</value>
+    <value>Select the site you want to view.</value>
   </data>
   <data name="plLogType.Text" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="plLogType.Help" xml:space="preserve">
-    <value>You can choose to restrict the Log to certain types of events.</value>
+    <value>Filter the events displayed in the log.</value>
   </data>
   <data name="plShowRecords.Text" xml:space="preserve">
     <value>Show Records</value>
   </data>
   <data name="plShowRecords.Help" xml:space="preserve">
-    <value>Select which records you would like to view.</value>
+    <value>Select the records you want to view.</value>
   </data>
   <data name="ColorCoding.Text" xml:space="preserve">
-    <value>Color Coding On</value>
+    <value>Color Coding on</value>
   </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Viewer Settings</value>
@@ -171,7 +171,7 @@
   <data name="ExceptionsWarning.Text" xml:space="preserve">
     <value>&lt;b&gt;Please note&lt;/b&gt;: By using these features 
             below, you &lt;i&gt;may&lt;/i&gt; be sending sensitive data over the Internet in clear 
-            text (&lt;i&gt;not&lt;/i&gt; encrypted). Before sending your exception submission, 
+            text (&lt;i&gt;not&lt;/i&gt; encrypted). Before sending this exception, 
             please review the contents of your log entry to verify that no 
             sensitive data is contained within it. Only the log entries checked above 
             will be sent.</value>
@@ -183,13 +183,13 @@
     <value>Email Address</value>
   </data>
   <data name="plEmailAddress.Help" xml:space="preserve">
-    <value>Please enter the Email Address of the person you wish to receive the log entries.</value>
+    <value>Please enter the email address of the person you want to receive the log entries.</value>
   </data>
   <data name="SendMessage.Text" xml:space="preserve">
     <value>Message (optional)</value>
   </data>
   <data name="SendMessage.Help" xml:space="preserve">
-    <value>Include an optional message with the log entries</value>
+    <value>Include an optional message with the log entries.</value>
   </data>
   <data name="btnEmail.Text" xml:space="preserve">
     <value>Send Selected Entries</value>
@@ -258,7 +258,7 @@
     <value>Event Viewer</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Log Viewer&lt;/h1&gt;&lt;p&gt;Allows you to view log entries for website events.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;About Log Viewer&lt;/h1&gt;&lt;p&gt;Allows you to view log entries for site events.&lt;/p&gt;</value>
   </data>
   <data name="SecurityException.Text" xml:space="preserve">
     <value>Security Exception</value>
@@ -276,9 +276,15 @@
     <value>Viewer</value>
   </data>
   <data name="ClearLog.Text" xml:space="preserve">
-    <value>Are you sure you wish to clear all log entries?</value>
+    <value>Are you sure you want to clear all log entries?</value>
   </data>
   <data name="SelectException.Text" xml:space="preserve">
     <value>Please select at least one log entry.</value>
+  </data>
+  <data name="LogEntryDefaultMsg.Text" xml:space="preserve">
+    <value>Attached are my error log entries.</value>
+  </data>
+  <data name="LogEntryDefaultSubject.Text" xml:space="preserve">
+    <value>Error Logs</value>
   </data>
 </root>

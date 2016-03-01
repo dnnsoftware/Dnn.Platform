@@ -48,11 +48,6 @@ namespace DotNetNuke.UI.Containers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	    2/1/2004	Created
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Visibility : SkinObjectBase
     {

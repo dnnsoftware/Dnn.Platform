@@ -55,9 +55,11 @@ namespace DotNetNuke.Data
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
 
-		#region Shared/Static Methods
+        private const int DuplicateKey = 2601;
 
-		public static DataProvider Instance()
+        #region Shared/Static Methods
+
+        public static DataProvider Instance()
 		{
 			return ComponentFactory.GetComponent<DataProvider>();
 		}
@@ -847,7 +849,12 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("DeleteTabVersionDetail", tabVersionDetailId);
 		}
 
-		public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
+	    public virtual void DeleteTabVersionDetailByModule(int moduleId)
+	    {
+            ExecuteNonQuery("DeleteTabVersionDetailByModule", moduleId);
+        }
+
+        public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
 		{
 			ExecuteNonQuery("DeleteTranslatedTabs", tabId, cultureCode);
 		}
@@ -914,7 +921,7 @@ namespace DotNetNuke.Data
 
 		public virtual IDataReader GetTabSettings(int portalId)
 		{
-			return ExecuteReader("GetTabSettings", portalId);
+            return ExecuteReader("GetTabSettings", GetNull(portalId));
 		}
 
 		public virtual IDataReader GetTabAliasSkins(int portalId)
@@ -1159,7 +1166,17 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("DeleteTabModuleSettings", tabModuleId);
 		}
 
-		public virtual IDataReader GetAllModules()
+	    public virtual IDataReader GetTabModuleSettingsByName(int portalId, string settingName)
+	    {
+            return ExecuteReader("GetTabModuleSettingsByName", portalId, settingName);
+        }
+
+	    public virtual IDataReader GetTabModuleIdsBySettingNameAndValue(int portalId, string settingName, string expectedValue)
+	    {
+            return ExecuteReader("GetTabModuleIdsBySettingNameAndValue", portalId, settingName, expectedValue);
+        }
+
+        public virtual IDataReader GetAllModules()
 		{
 			return ExecuteReader("GetAllModules");
 		}
@@ -1659,7 +1676,12 @@ namespace DotNetNuke.Data
 											GetNull(contentItemId));
 		}
 
-		public virtual int CountLegacyFiles()
+	    public virtual void SetFileHasBeenPublished(int fileId, bool hasBeenPublished)
+	    {
+            ExecuteNonQuery("SetFileHasBeenPublished", fileId, hasBeenPublished);
+        }
+        
+        public virtual int CountLegacyFiles()
 		{
 			return ExecuteScalar<int>("CountLegacyFiles");
 		}
@@ -2334,16 +2356,6 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetDuplicateEmailCount", portalId);
         }
 
-        public virtual IDataReader GetUserByHmacAppId(string appId)
-        {
-            return ExecuteReader("GetUserByHmacAppId", appId);
-        }
-
-        public virtual string GetHmacSecretByHmacAppId(string appId)
-        {
-            return ExecuteScalar<string>("GetHmacSecretByHmacAppId", appId);
-        }
-
         public virtual int GetSingleUserByEmail(int portalId, string emailToMatch)
         {
             return ExecuteScalar<int>("GetSingleUserByEmail", portalId, emailToMatch);
@@ -2362,7 +2374,7 @@ namespace DotNetNuke.Data
 		public virtual void UpdateUser(int userId, int portalID, string firstName, string lastName, bool isSuperUser,
 										string email, string displayName, string vanityUrl, bool updatePassword,
 										bool isApproved, bool refreshRoles, string lastIpAddress, Guid passwordResetToken,
-                                        DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID, string hmacAppId, string hmacAppSecret )
+                                        DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID)
 		{
 			ExecuteNonQuery("UpdateUser",
 									  userId,
@@ -2380,10 +2392,13 @@ namespace DotNetNuke.Data
 									  passwordResetToken,
 									  GetNull(passwordResetExpiration),
 									  isDeleted,
-									  lastModifiedByUserID,
-                                      hmacAppId,
-                                      hmacAppSecret);
+									  lastModifiedByUserID);
 		}
+
+	    public virtual void UpdateUserLastIpAddress(int userId, string lastIpAddress)
+	    {
+	        ExecuteNonQuery("UpdateUserLastIpAddress", userId, lastIpAddress);
+	    }
 
 		#endregion
 
@@ -2456,9 +2471,10 @@ namespace DotNetNuke.Data
 			}
 			foreach (string key in userList.Keys)
 			{
-				if (userList[key] is AnonymousUserInfo)
+			    var info = userList[key] as AnonymousUserInfo;
+			    if (info != null)
 				{
-					var user = (AnonymousUserInfo)userList[key];
+					var user = info;
 					ExecuteNonQuery("UpdateAnonymousUser", user.UserID, user.PortalID, user.TabID, user.LastActiveDate);
 				}
 				else if (userList[key] is OnlineUserInfo)
@@ -2503,7 +2519,7 @@ namespace DotNetNuke.Data
 
 				//If not a duplicate (throw an Exception)
 				retValue = -ex.Number;
-				if (ex.Number != 2601)
+				if (ex.Number != DuplicateKey)
 				{
 					throw;
 				}
@@ -2795,23 +2811,35 @@ namespace DotNetNuke.Data
 
 		#region Lists
 
-		public virtual int AddListEntry(string ListName, string Value, string Text, int ParentID, int Level,
+        public virtual int AddListEntry(string ListName, string Value, string Text, int ParentID, int Level,
 										bool EnableSortOrder, int DefinitionID, string Description, int PortalID,
 										bool SystemList,
 										 int CreatedByUserID)
 		{
-			return ExecuteScalar<int>("AddListEntry",
-											ListName,
-											Value,
-											Text,
-											ParentID,
-											Level,
-											EnableSortOrder,
-											DefinitionID,
-											Description,
-											PortalID,
-											SystemList,
-											CreatedByUserID);
+		    try
+		    {
+		        return ExecuteScalar<int>("AddListEntry",
+		            ListName,
+		            Value,
+		            Text,
+		            ParentID,
+		            Level,
+		            EnableSortOrder,
+		            DefinitionID,
+		            Description,
+		            PortalID,
+		            SystemList,
+		            CreatedByUserID);
+		    }
+		    catch (SqlException ex)
+		    {
+		        if (ex.Number == DuplicateKey)
+		        {
+		            return Null.NullInteger;
+		        }
+
+		        throw;
+		    }
 		}
 
 		public virtual void DeleteList(string ListName, string ParentKey)
@@ -3159,6 +3187,11 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("RemovePortalLocalization", portalID, CultureCode);
 		}
 
+		public virtual IDataReader GetPortalLocalizations(int portalID)
+		{
+            return ExecuteReader("GetPortalLocalizations", portalID);
+		}
+
 		public virtual IDataReader GetLanguages()
 		{
 			return ExecuteReader("GetLanguages");
@@ -3361,10 +3394,9 @@ namespace DotNetNuke.Data
 
 		public virtual void AddLog(string logGUID, string logTypeKey, int logUserID, string logUserName, int logPortalID,
 								   string logPortalName, DateTime logCreateDate, string logServerName,
-							string logProperties, int logConfigID, ExceptionInfo exception)
+							string logProperties, int logConfigID, ExceptionInfo exception, bool notificationActive)
 		{
-            int logEventID;
-            if (exception != null)
+		    if (exception != null)
             {
                 if (!string.IsNullOrEmpty(exception.ExceptionHash))
                     ExecuteNonQuery("AddException",
@@ -3378,6 +3410,7 @@ namespace DotNetNuke.Data
 
                 // DNN-6218 + DNN-6239 + DNN-6242: Due to change in the AddEventLog stored
                 // procedure in 7.4.0, we need to try a fallback especially during upgrading
+                int logEventID;
                 try
                 {
                     logEventID = ExecuteScalar<int>("AddEventLog",
@@ -3391,7 +3424,8 @@ namespace DotNetNuke.Data
                         logServerName,
                         logProperties,
                         logConfigID,
-                        GetNull(exception.ExceptionHash));
+                        GetNull(exception.ExceptionHash),
+                        notificationActive);
                 }
                 catch (SqlException)
                 {
@@ -3427,7 +3461,7 @@ namespace DotNetNuke.Data
             }
             else
             {
-                logEventID = ExecuteScalar<int>("AddEventLog",
+                ExecuteScalar<int>("AddEventLog",
                                                 logGUID,
                                                 logTypeKey,
                                                 GetNull(logUserID),
@@ -3437,7 +3471,9 @@ namespace DotNetNuke.Data
                                                 logCreateDate,
                                                 logServerName,
                                                 logProperties,
-                                                logConfigID);
+                                                logConfigID,
+                                                DBNull.Value,
+                                                notificationActive);
             }
 		}
 
@@ -4163,6 +4199,50 @@ namespace DotNetNuke.Data
 		public virtual IDataReader GetAvailableUsersForIndex(int portalId, DateTime startDate, int startUserId, int numberOfUsers)
 		{
 			return ExecuteReader("GetAvailableUsersForIndex", portalId, startDate, startUserId, numberOfUsers);
+		}
+
+		#endregion
+
+		#region OutputCache Methods
+
+		public virtual void AddOutputCacheItem(int itemId, string cacheKey, string output, DateTime expiration)
+		{
+			Instance().ExecuteNonQuery("OutputCacheAddItem", itemId, cacheKey, output, expiration);
+		}
+
+		public virtual IDataReader GetOutputCacheItem(string cacheKey)
+		{
+			return Instance().ExecuteReader("OutputCacheGetItem", cacheKey);
+		}
+
+		public virtual int GetOutputCacheItemCount(int itemId)
+		{
+			return Instance().ExecuteScalar<int>("OutputCacheGetItemCount", itemId);
+		}
+
+		public virtual IDataReader GetOutputCacheKeys()
+		{
+			return Instance().ExecuteReader("OutputCacheGetKeys", DBNull.Value);
+		}
+
+		public virtual IDataReader GetOutputCacheKeys(int itemId)
+		{
+			return Instance().ExecuteReader("OutputCacheGetKeys", itemId);
+		}
+
+		public virtual void PurgeExpiredOutputCacheItems()
+		{
+			Instance().ExecuteNonQuery("OutputCachePurgeExpiredItems", DateTime.UtcNow);
+		}
+
+		public virtual void PurgeOutputCache()
+		{
+			Instance().ExecuteNonQuery("OutputCachePurgeCache");
+		}
+
+		public virtual void RemoveOutputCacheItem(int itemId)
+		{
+			Instance().ExecuteNonQuery("OutputCacheRemoveItem", itemId);
 		}
 
 		#endregion

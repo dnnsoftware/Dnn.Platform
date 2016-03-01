@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
@@ -77,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ID = ID + "_TextBox",
                 TextMode = TextBoxMode.Password,
                 CssClass = TextBoxCssClass,
-                MaxLength = 20, //ensure password cannot be cut if too long
+                MaxLength = 39, //ensure password cannot be cut if too long
                 Text = Convert.ToString(Value) // Load from ControlState
             };
             _password.Attributes.Add("autocomplete", "off");
@@ -101,7 +102,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }

@@ -31,9 +31,6 @@ namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
     ///   Class for managing an OPML feed
-    ///   <history>
-    ///     Created     Nik Kalyani     3/1/2007
-    ///   </history>
     /// </summary>
     public class Opml
     {

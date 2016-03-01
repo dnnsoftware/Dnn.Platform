@@ -1,6 +1,1 @@
-/* DNN-6785 Define more Standard DataTypes  */
-/********************************************/
-
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Bytes', 4)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Guid', 5)
-GO
+-- Removed code from DNN-8060

@@ -32,6 +32,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Modules.Html.Components;
 
 
 #endregion
@@ -44,10 +45,8 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
-    public partial class HtmlModule : PortalModuleBase, IActionable
+    public partial class HtmlModule : HtmlModuleBase, IActionable
     {
         private bool EditorEnabled;
         private int WorkflowID;
@@ -64,8 +63,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -91,8 +88,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -147,10 +142,7 @@ namespace DotNetNuke.Modules.Html
                 }
 
                 // token replace
-                if (EditorEnabled && Settings["HtmlText_ReplaceTokens"] != null)
-                {
-                    EditorEnabled = !Convert.ToBoolean(Settings["HtmlText_ReplaceTokens"]);
-                }
+                EditorEnabled = EditorEnabled && !Settings.ReplaceTokens;
 
                 // localize toolbar
                 if (!IsPostBack)
@@ -173,11 +165,11 @@ namespace DotNetNuke.Modules.Html
                 // add content to module
                 lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(ModuleId, contentString, Settings, PortalSettings, Page)));
 
-				//set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
-				if (Settings.ContainsKey("HtmlText_UseDecorate") && Settings["HtmlText_UseDecorate"].ToString() == "0")
-				{
-					lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
-				}
+                //set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
+                if (!Settings.UseDecorate)
+                {
+                    lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
+                }
             }
             catch (Exception exc)
             {
@@ -191,8 +183,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void lblContent_UpdateLabel(object source, DNNLabelEditEventArgs e)
         {
@@ -241,8 +231,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ModuleAction_Click(object sender, ActionEventArgs e)
         {
@@ -288,8 +276,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection ModuleActions
         {

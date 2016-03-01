@@ -25,7 +25,6 @@
       <DataFiles Include="Resources/*.xml" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);@(ControlResourceFiles);
                  @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig)" />
-      <ContentTemplates Include="Content Templates/*/*.cshtml;Content Templates/*.cshtml" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -53,6 +52,5 @@
     <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)/Views" />
     <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)/Views/%(RecursiveDir)" />
     <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)/Views" />
-    <Copy SourceFiles="@(ContentTemplates)" DestinationFolder="$(WebsitePath)/Portals/_default/Content Templates/%(RecursiveDir)" />
   </Target> 
 </Project>

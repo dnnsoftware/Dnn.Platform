@@ -136,13 +136,13 @@
     <value>List of Vocabularies</value>
   </data>
   <data name="Create.ToolTip" xml:space="preserve">
-    <value>Click on this button to create a new Vocabulary</value>
+    <value>Click on this button to create a new vocabulary.</value>
   </data>
   <data name="Edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="Confirm.Text" xml:space="preserve">
-    <value>Are you sure you want to add a Vocabulary</value>
+    <value>Are you sure you want to add a vocabulary?</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Taxonomy Manager</value>

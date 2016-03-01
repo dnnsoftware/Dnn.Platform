@@ -44,23 +44,6 @@ namespace Dnn.Modules.ConfigurationManager.Components
                 switch (version)
                 {
                     case "08.00.00":
-                        //ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Configuration Manager");
-                        //if (moduleDefinition != null)
-                        //{
-                        //    //Create New Host Page (or get existing one)
-                        //TabInfo configurationPage = Upgrade.AddHostPage("Configuration Manager",
-                        //                            "Modify configuration settings for your site",
-                        //                            "~/Icons/Sigma/Configuration_32X32_Standard.png",
-                        //                            "~/Icons/Sigma/Configuration_16X16_Standard.png",
-                        //                            true);
-
-                        //    //Add Module To Page
-                        //    Upgrade.AddModuleToPage(configurationPage,
-                        //                                moduleDefinition.ModuleDefID,
-                        //                                "Configuration Manager",
-                        //                                "~/Icons/Sigma/Configuration_32X32_Standard.png",
-                        //                                true);
-                        //}
                         break;
                 }
                 return "Success";

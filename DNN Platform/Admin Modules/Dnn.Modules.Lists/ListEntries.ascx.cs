@@ -26,13 +26,13 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.UI.WebControls;
@@ -267,7 +267,7 @@ namespace Dnn.Modules.Lists
 					}
 
 					//Localize Image Column Text
-					if (!String.IsNullOrEmpty(imageColumn.CommandName))
+					if (!string.IsNullOrEmpty(imageColumn.CommandName))
 					{
 						imageColumn.Text = Localization.GetString(imageColumn.CommandName, LocalResourceFile);
 					}
@@ -315,7 +315,7 @@ namespace Dnn.Modules.Lists
 		{
 			lblListName.Text = ListName;
 			lblListParent.Text = ParentKey;
-			rowListParent.Visible = (!String.IsNullOrEmpty(ParentKey));
+			rowListParent.Visible = (!string.IsNullOrEmpty(ParentKey));
 			chkEnableSortOrder.Checked = EnableSortOrder;
 			if (!SystemList && ShowDelete)
 			{
@@ -599,7 +599,7 @@ namespace Dnn.Modules.Lists
 		protected void SelectListIndexChanged(object sender, EventArgs e)
 		{
 			var ctlLists = new ListController();
-			if (!String.IsNullOrEmpty(ddlSelectList.SelectedValue))
+			if (!string.IsNullOrEmpty(ddlSelectList.SelectedValue))
 			{
 				ListInfo selList = GetList(ddlSelectList.SelectedItem.Value, false);
 				{
@@ -641,8 +641,8 @@ namespace Dnn.Modules.Lists
 		/// </remarks>
 		protected void OnSaveEntryClick(object sender, EventArgs e)
 		{
-		    String entryValue;
-		    String entryText;
+		    string entryValue;
+		    string entryText;
             if (UserInfo.IsSuperUser)
             {
                 entryValue = txtEntryValue.Text;
@@ -671,16 +671,17 @@ namespace Dnn.Modules.Lists
 				switch (cmdSaveEntry.CommandName.ToLower())
 				{
 					case "update":
-						entry.ParentKey = SelectedList.ParentKey;
-						entry.EntryID = Int16.Parse(txtEntryID.Text);
+                        entry.ListName = ListName;
+                        entry.ParentKey = SelectedList.ParentKey;
+						entry.EntryID = int.Parse(txtEntryID.Text);
 						bool canUpdate = true;
 						foreach (var curEntry in listController.GetListEntryInfoItems(SelectedList.Name, entry.ParentKey, entry.PortalID))
 						{
 							if (entry.EntryID != curEntry.EntryID) //not the same item we are trying to update
 							{
-								if (entry.Value == curEntry.Value && entry.Text == curEntry.Text)
+								if (entry.Value == curEntry.Value)
 								{
-									DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+									Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 									canUpdate = false;
 									break;
 								}
@@ -710,18 +711,21 @@ namespace Dnn.Modules.Lists
 							entry.SortOrder = 0;
 						}
 
-						if (listController.AddListEntry(entry) == Null.NullInteger) //entry already found in database
-						{
-							DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-						}
-
-
-						DataBind();
+				        if (listController.AddListEntry(entry) == Null.NullInteger) //entry already found in database
+				        {
+				            Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+				            Mode = "AddEntry";
+				        }
+				        else
+				        {
+				            DataBind();
+				        }
+						
 						break;
 					case "savelist":
 						if (ddlSelectParent.SelectedIndex != -1)
 						{
-							int parentID = Int32.Parse(ddlSelectParent.SelectedItem.Value);
+							int parentID = int.Parse(ddlSelectParent.SelectedItem.Value);
 							ListEntryInfo parentEntry = listController.GetListEntryInfo(parentID);
 							entry.ParentID = parentID;
 							entry.DefinitionID = parentEntry.DefinitionID;
@@ -739,7 +743,7 @@ namespace Dnn.Modules.Lists
 
 						if (listController.AddListEntry(entry) == Null.NullInteger) //entry already found in database
 						{
-							DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+							Skin.AddModuleMessage(this, Localization.GetString("ItemAlreadyPresent", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 						}
 						else
 						{
@@ -784,7 +788,7 @@ namespace Dnn.Modules.Lists
 			try
 			{
 				Mode = "ListEntries";
-				if (!String.IsNullOrEmpty(SelectedKey))
+				if (!string.IsNullOrEmpty(SelectedKey))
 				{
 					DataBind();
 				}

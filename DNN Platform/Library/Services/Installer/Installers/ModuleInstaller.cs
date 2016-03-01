@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 
 #endregion
 
@@ -43,9 +44,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/15/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleInstaller : ComponentInstallerBase
     {
@@ -54,19 +52,16 @@ namespace DotNetNuke.Services.Installer.Installers
         private DesktopModuleInfo _desktopModule;
         private EventMessage _eventMessage;
         private DesktopModuleInfo _installedDesktopModule;
-		
-		#endregion
 
-		#region Public Properties
+        #endregion
+
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -84,9 +79,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The DeleteModule method deletes the Module from the data Store.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DeleteModule()
         {
@@ -96,7 +88,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(Package.PackageID);
                 if (tempDesktopModule != null)
                 {
-					//Remove CodeSubDirectory
+                    var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
+                    //Remove CodeSubDirectory
                     if ((_desktopModule != null) && (!string.IsNullOrEmpty(_desktopModule.CodeSubDirectory)))
                     {
                         Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
@@ -131,10 +124,10 @@ namespace DotNetNuke.Services.Installer.Installers
                                 }
                                 if (noOtherTabModule)
                                 {
-                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
-                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, _desktopModule.AdminPage, portal.PortalID));
+                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
                         
@@ -147,7 +140,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
-                    
+                    //Remove all the tab versions related with the module.
+                    foreach (var module in modules)
+                    {
+                        var moduleInfo = module as ModuleInfo;
+                        if (moduleInfo != null)
+                            TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
+                    }
                 }
 
             }
@@ -166,9 +165,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Modules this is not neccessary</remarks>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -217,62 +213,39 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add DesktopModule to all portals
             if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
             {
-              
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
-                    string tabPath = "//Admin//" + _desktopModule.AdminPage;
-                    var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                    TabInfo portalAdmin = TabController.Instance.GetTab(tabID, portal.PortalID);
-                    ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                    TabInfo newAdminPage = null;
-                    if ((portalAdmin == null ))
+
+                    bool createdNewPage = false, addedNewModule = false;
+                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+
+                    if (createdNewPage)
                     {
-                        newAdminPage = Upgrade.Upgrade.AddAdminPage(portal, _desktopModule.AdminPage,
-                                                                             _desktopModule.TabDescription,
-                                                                             _desktopModule.TabIconFile,
-                                                                             _desktopModule.TabIconFileLarge,
-                                                                             true);
                         Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
                     }
-                    
-                    if (moduleDefinition != null)
+
+                    if (addedNewModule)
                     {
-                        Upgrade.Upgrade.AddModuleToPage(newAdminPage,
-                       moduleDefinition.ModuleDefID,
-                       _desktopModule.TabDescription,
-                       _desktopModule.TabIconFile,
-                       true);
                         Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
                     }
-
-                   
                 }
                
             }
+
             //Add host items
-            if (!String.IsNullOrEmpty(_desktopModule.HostPage))
+            if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
             {
-                string tabPath = "//Host//" + _desktopModule.AdminPage;
-                var tabID = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
-                ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(_desktopModule.FriendlyName);
-                TabInfo newHostPage = TabController.Instance.GetTab(tabID, Null.NullInteger);
-                if (newHostPage == null)
+                bool createdNewPage = false, addedNewModule = false;
+                DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
+
+                if (createdNewPage)
                 {
-                    newHostPage = Upgrade.Upgrade.AddHostPage(_desktopModule.HostPage,
-                        _desktopModule.TabDescription,
-                        _desktopModule.TabIconFile, _desktopModule.TabIconFileLarge,
-                        true);
-                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.AdminPage));
+                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.HostPage));
                 }
-                if (moduleDefinition != null)
+
+                if (addedNewModule)
                 {
-                //Add Module To Page
-                    Upgrade.Upgrade.AddModuleToPage(newHostPage,
-                        moduleDefinition.ModuleDefID,
-                        _desktopModule.TabDescription,
-                        _desktopModule.TabIconFile,
-                        true);
-                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.AdminPage));
+                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.HostPage));
                 }
             }
         }
@@ -281,9 +254,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the Module component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -320,9 +290,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file for the Module compoent.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -370,9 +337,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -393,9 +357,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the Module component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

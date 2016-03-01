@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.Taxonomy.Services
 {
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
 	[SupportedModules("DotNetNuke.Taxonomy")]
-    [ValidateAntiForgeryToken]
     public class ServicesController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));

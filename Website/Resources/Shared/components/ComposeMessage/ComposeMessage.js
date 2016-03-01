@@ -102,17 +102,19 @@
                 $wrap.data('fileManagerInitialized', true);
             }
 	        
-            composeMessageDialog.find('.fileUploadArea').dnnUserFileUpload({
-				maxFileSize: opts.maxFileSize,
-				serverErrorMessage: opts.serverErrorText,
-				addImageServiceUrl: opts.servicesFramework.getServiceRoot('CoreMessaging') + 'FileUpload/UploadFile',
-				beforeSend: opts.servicesFramework.setModuleHeaders,
-				callback: attachFile,
-				complete: function() {
-					composeMessageDialog.find('.fileUploadArea input:file').data("wrapper").get(0).childNodes[0].nodeValue = opts.uploadText;
-				}
-			});
-
+	        if ($.fn.dnnUserFileUpload && typeof $.fn.dnnUserFileUpload === "function") {
+				composeMessageDialog.find('.fileUploadArea').dnnUserFileUpload({
+					maxFileSize: opts.maxFileSize,
+					serverErrorMessage: opts.serverErrorText,
+					addImageServiceUrl: opts.servicesFramework.getServiceRoot('CoreMessaging') + 'FileUpload/UploadFile',
+					beforeSend: opts.servicesFramework.setModuleHeaders,
+					callback: attachFile,
+					complete: function() {
+						composeMessageDialog.find('.fileUploadArea input:file').data("wrapper").get(0).childNodes[0].nodeValue = opts.uploadText;
+					}
+				});
+	        }
+	        
 	        composeMessageDialog.find('#to').tokenInput(opts.serviceurlbase + "Search", {
 				// We can set the tokenLimit here
 				theme: "facebook",

@@ -35,6 +35,8 @@ namespace DotNetNuke.Services.Scheduling
     public class ScheduleHistoryItem : ScheduleItem
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ScheduleHistoryItem));
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+
         private StringBuilder _LogNotes;
         private int _ScheduleHistoryID;
         private string _Server;
@@ -225,6 +227,8 @@ namespace DotNetNuke.Services.Scheduling
             set
             {
                 _Succeeded = value;
+                if (_tracelLogger.IsDebugEnabled)
+                    _tracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {FriendlyName}");
             }
         }
 

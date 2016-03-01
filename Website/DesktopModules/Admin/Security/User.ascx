@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
 <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short">
     <Items>
@@ -47,12 +47,12 @@
         <div class="dnnFormItem">
             <dnn:label id="plPassword" runat="server" controlname="txtPassword" cssclass="dnnFormRequired"  />
             <asp:Panel ID="passwordContainer" runat="server">
-    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="20" AutoCompleteType="Disabled" />
+    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="39" AutoCompleteType="Disabled" />
             </asp:Panel>
         </div>
         <div class="dnnFormItem">
             <dnn:label id="plConfirm" runat="server" controlname="txtConfirm" text="Confirm Password:" cssclass="dnnFormRequired"  ></dnn:label>
-			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="20" CssClass="password-confirm" />
+			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="39" CssClass="password-confirm" />
             <asp:CompareValidator ID="ComparePasswordsValidator" runat="server"
                                   resourcekey = "ComparePasswordsValidator.ErrorMessage" 
                                   CssClass="dnnFormMessage dnnFormError"    

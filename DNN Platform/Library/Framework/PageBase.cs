@@ -56,13 +56,14 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// PageBase provides a custom DotNetNuke base class for pages
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private PageStatePersister _persister;
         #region Private Members
@@ -80,9 +81,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the Page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
@@ -98,9 +96,6 @@ namespace DotNetNuke.Framework
         /// PageStatePersister returns an instance of the class that will be used to persist the Page State
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister</returns>
-        /// <history>
-        /// 	[cnurse]	    11/30/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
@@ -222,25 +217,19 @@ namespace DotNetNuke.Framework
             foreach (Control c in controls)
             {
                 ProcessControl(c, affectedControls, true, resourceFileRoot);
+                LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
             }
         }
 
-        private void Handle404Exception()
+        private void LogDnnTrace(string origin, string action, string message)
         {
-            if (PortalSettings.ErrorPage404 > Null.NullInteger)
+            var tabId = -1;
+            if (PortalSettings?.ActiveTab != null)
             {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                tabId = PortalSettings.ActiveTab.TabID;
             }
-            else
-            {
-                Response.ClearContent();
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 404;
-                Response.Status = "404 Not Found";
-                Response.Write("404 Not Found");
-                Response.End();
-            }
-
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
 
         #endregion
@@ -264,22 +253,32 @@ namespace DotNetNuke.Framework
             string strURL = Globals.ApplicationURL();
             if (exc is HttpException && !IsViewStateFailure(exc))
             {
-                //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
-                var statusCode = (exc as HttpException).GetHttpCode();
-                if (statusCode == 404)
+                try
                 {
-                    Handle404Exception();
-                }
+                    //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                    var statusCode = (exc as HttpException).GetHttpCode();
+                    if (statusCode == 404)
+                    {
+                        UrlUtils.Handle404Exception(Response, PortalSettings);
+                    }
 
-                if (PortalSettings.ErrorPage500 != -1)
-                {
-                    var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc, false);
-                    HttpContext.Current.Response.Redirect(url);
+                    if (PortalSettings?.ErrorPage500 != -1)
+                    {
+                        var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc,
+                            false);
+                        HttpContext.Current.Response.Redirect(url);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Response.Clear();
+                        HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
+                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error="+errorMessage);
                 }
             }
 
@@ -333,8 +332,8 @@ namespace DotNetNuke.Framework
             //{
             //    jQuery.RegisterHoverIntent(Page);
             //}
-
-            if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
+            
+            if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);
             }
@@ -344,10 +343,14 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
+            LogDnnTrace("PageBase.Render", "Start", $"{Page.Request.Url.AbsoluteUri}");
+
             IterateControls(Controls, _localizedControls, LocalResourceFile);
             RemoveKeyAttribute(_localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
+
+            LogDnnTrace("PageBase.Render", "End", $"{Page.Request.Url.AbsoluteUri}");            
         }
 
 
@@ -432,9 +435,7 @@ namespace DotNetNuke.Framework
             var linkButton = control as LinkButton;
             if (linkButton != null)
             {
-                var imgMatches = Regex.Matches(value,
-                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
-                    RegexOptions.IgnoreCase);
+                var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))

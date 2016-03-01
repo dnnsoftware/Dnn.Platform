@@ -130,6 +130,6 @@
     <value>Save</value>
   </data>
   <data name="UserCannotReadFileError.Text" xml:space="preserve">
-    <value>The User has no permission to read this file</value>
+    <value>The user does not have permissions to read this file.</value>
   </data>
 </root>

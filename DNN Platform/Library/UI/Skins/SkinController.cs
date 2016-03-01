@@ -54,16 +54,16 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[willhsc]	3/3/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
-		private const string GlobalSkinPrefix = "[G]";
-		private const string PortalSystemSkinPrefix = "[S]";
-		private const string PortalSkinPrefix = "[L]";
+        private const string GlobalSkinPrefix = "[G]";
+        private const string PortalSystemSkinPrefix = "[S]";
+        private const string PortalSkinPrefix = "[L]";
+        private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		#region Public Shared Properties
 		
@@ -251,16 +251,16 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!String.IsNullOrEmpty(strSkinSrc))
             {
-                switch (strSkinSrc.ToLowerInvariant().Substring(0, 3))
+                switch (strSkinSrc.Substring(0, 3).ToLowerInvariant())
                 {
                     case "[g]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
+                        strSkinSrc = GdirRegex.Replace(strSkinSrc, Globals.HostPath);
                         break;
                     case "[s]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[s]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = SdirRegex.Replace(strSkinSrc, portalSettings.HomeSystemDirectory);
                         break;
                     case "[l]": //to be compliant with all versions
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = LdirRegex.Replace(strSkinSrc, portalSettings.HomeDirectory);
                         break;
                 }
             }
@@ -328,9 +328,6 @@ namespace DotNetNuke.UI.Skins
         /// </remarks>
         /// <param name="skinFolder">The Folder Name</param>
         /// <param name="skinFile">The File Name without extension</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
             if (skinFolder.ToLower() == "_default")
@@ -361,9 +358,6 @@ namespace DotNetNuke.UI.Skins
         /// passed as a parameter.  Using this method abstracts knowledge of the actual location
         /// of skins in the file system.
         /// </remarks>
-        /// <history>
-        ///     [Joe Brinkman]	10/20/2007	Created
-        /// </history>
         public static bool IsGlobalSkin(string skinSrc)
         {
             return skinSrc.Contains(Globals.HostPath);

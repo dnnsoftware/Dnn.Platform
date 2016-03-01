@@ -60,11 +60,6 @@ namespace Dnn.Modules.LogViewer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [cnurse] 17/9/2004  Updated for localization, Help and 508. Also 
-    ///                       consolidated Send Exceptions into one set of 
-    ///                       controls
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class LogViewer : PortalModuleBase, ILogViewer
     {
@@ -251,7 +246,7 @@ namespace Dnn.Modules.LogViewer
             }
 
             string returnMsg;
-            if (Regex.IsMatch(strFromEmailAddress, Globals.glbEmailRegEx))
+            if (Globals.EmailValidatorRegex.IsMatch(strFromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
                 var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
@@ -345,7 +340,7 @@ namespace Dnn.Modules.LogViewer
             ddlLogType.SelectedIndexChanged += DdlLogTypeSelectedIndexChanged;
             ddlPortalid.SelectedIndexChanged += DdlPortalIDSelectedIndexChanged;
             ddlRecordsPerPage.SelectedIndexChanged += DdlRecordsPerPageSelectedIndexChanged;
-
+            
             if (Request.QueryString["CurrentPage"] != null)
             {
                 _pageIndex = Convert.ToInt32(Request.QueryString["CurrentPage"]);
@@ -358,7 +353,6 @@ namespace Dnn.Modules.LogViewer
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
@@ -371,6 +365,8 @@ namespace Dnn.Modules.LogViewer
 				// If this is the first visit to the page, populate the site data
                 if (Page.IsPostBack == false)
                 {
+                    txtSubject.Text = Localization.GetString("LogEntryDefaultSubject", LocalResourceFile);
+                    txtMessage.Text = Localization.GetString("LogEntryDefaultMsg", LocalResourceFile);
                     LogController.Instance.PurgeLogBuffer();
                     if (Request.QueryString["PageRecords"] != null)
                     {

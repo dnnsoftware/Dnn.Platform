@@ -11,15 +11,15 @@ namespace DotNetNuke.Web.Api.Internal
     {
         public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
         {
-            Requires.NotNull("configuration", configuration);
+            //Requires.NotNull("configuration", configuration);
             Requires.NotNull("actionDescriptor", actionDescriptor);
 
-            IEnumerable<FilterInfo> controllerFilters = actionDescriptor.ControllerDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Controller));
-            IEnumerable<FilterInfo> actionFilters = actionDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Action));
+            var controllerFilters = actionDescriptor.ControllerDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Controller));
+            var actionFilters = actionDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Action));
 
             var allFilters = controllerFilters.Concat(actionFilters).ToList();
 
-            bool overrideFilterPresent = allFilters.Any(x => x.Instance is IOverrideDefaultAuthLevel);
+            var overrideFilterPresent = allFilters.Any(x => x.Instance is IOverrideDefaultAuthLevel);
 
             if(!overrideFilterPresent)
             {

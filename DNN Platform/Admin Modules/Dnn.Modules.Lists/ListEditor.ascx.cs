@@ -146,7 +146,6 @@ namespace Dnn.Modules.Lists
         /// <summary>
         ///     Page load, bind tree and enable controls
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
@@ -185,7 +184,6 @@ namespace Dnn.Modules.Lists
         /// <summary>
         /// Page_PreRender runs just prior to the control being rendered
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

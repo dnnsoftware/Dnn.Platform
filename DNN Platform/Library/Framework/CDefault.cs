@@ -22,18 +22,14 @@
 
 using System;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.GettingStarted;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
 
 #endregion
 
@@ -43,9 +39,6 @@ namespace DotNetNuke.Framework
     /// Project	 : DotNetNuke
     /// Class	 : CDefault
     /// -----------------------------------------------------------------------------
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CDefault : PageBase
     {
@@ -56,6 +49,8 @@ namespace DotNetNuke.Framework
         public string Generator = string.Empty;
         public string KeyWords = string.Empty;
         public new string Title = string.Empty;
+
+        private static readonly object InstallerFilesRemovedLock = new object();
 
         protected override void RegisterAjaxScript()
         {
@@ -84,29 +79,18 @@ namespace DotNetNuke.Framework
             }
         }
 
-        protected void ManageGettingStarted()
-        {
-            // The Getting Started dialog can be also opened from the Control Bar, also do not show getting started in popup.
-            var controller = new GettingStartedController();
-            if (!controller.ShowOnStartup || UrlUtils.InPopUp())
-            {
-                return;
-            }
-            var gettingStarted = DnnGettingStarted.GetCurrent(Page);
-            if (gettingStarted == null)
-            {
-                gettingStarted = new DnnGettingStarted();
-                Page.Form.Controls.Add(gettingStarted);
-            }
-            gettingStarted.ShowOnStartup = true;
-        }
-
         protected void ManageInstallerFiles()
         {
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
             {
-                Services.Upgrade.Upgrade.DeleteInstallerFiles();
-                HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                lock (InstallerFilesRemovedLock)
+                {
+                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+                    {
+                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                    }
+                }
             }
         }
 

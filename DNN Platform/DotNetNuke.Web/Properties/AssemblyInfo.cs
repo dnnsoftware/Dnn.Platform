@@ -4,7 +4,6 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Web.UI;
 
 #endregion
 
@@ -25,5 +24,3 @@ using System.Web.UI;
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Messaging")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
-[assembly: WebResource("DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js", "application/x-javascript")]
-[assembly: WebResource("DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css", "text/css")]

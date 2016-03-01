@@ -27,7 +27,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Host;
 using DotNetNuke.UI.WebControls;
-
 using Telerik.Web.UI;
 
 #endregion
@@ -44,9 +43,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void AddScriptManager(Page page)
         {
 	        AddScriptManager(page, true);
@@ -63,9 +59,9 @@ namespace DotNetNuke.Framework
                 using (var scriptManager = new RadScriptManager
 	                {
 		                ID = "ScriptManager", 
-						EnableScriptGlobalization = true, 
-						SupportsPartialRendering = true, 
-						EnableHandlerDetection = false
+						EnableScriptGlobalization = true,
+						SupportsPartialRendering = true,
+                        EnableHandlerDetection = false
 	                })
                 {
 					if (page.Form != null)
@@ -75,7 +71,7 @@ namespace DotNetNuke.Framework
 							if (checkCdn)
 							{
 								scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
-								scriptManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
+                                scriptManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
 								if (scriptManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
 								{
 									scriptManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
@@ -97,7 +93,7 @@ namespace DotNetNuke.Framework
                         }
                     }
                 }
-				using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
+                using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
                 {
 					if (page.Form != null)
                     {
@@ -141,9 +137,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static bool IsEnabled()
         {
             if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
@@ -162,9 +155,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static bool IsInstalled()
         {
             return true;
@@ -176,9 +166,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RegisterPostBackControl(Control objControl)
         {
             ScriptManager objScriptManager = GetScriptManager(objControl.Page);
@@ -194,9 +181,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RegisterScriptManager()
         {
             if (!IsEnabled())
@@ -211,9 +195,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RemoveScriptManager(Page objPage)
         {
             if (!IsEnabled())
@@ -232,9 +213,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {
             var updatePanel = new UpdatePanel();

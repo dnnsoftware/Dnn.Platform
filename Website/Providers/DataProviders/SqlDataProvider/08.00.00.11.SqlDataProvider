@@ -1,7 +1,1 @@
-/*   DNN-7609 DCC Admin - Add a flag to identify if a custom Template is an Edit template */
-/******************************************************************************************/
-
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}ContentTypes_Templates' AND COLUMN_NAME = 'IsEditTemplate')
-  ALTER TABLE [{objectQualifier}ContentTypes_Templates] 
-	ADD IsEditTemplate bit NOT NULL DEFAULT (0)
-GO
+-- Removed code from DNN-8060

@@ -24,7 +24,6 @@
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
-            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage()"><%=LocalizeString("ComposeNewMessage")%></a></div>
             <!-- ko ifnot: showReplies -->
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
@@ -170,13 +169,13 @@
                                     <ul>
                                         <li class="ListCol-1">
 										    <a class="profileImg" data-bind="attr: { href: SenderProfileUrl }">
-											    <span><em><img alt="" data-bind="attr: { src: SenderAvatar, alt: From, title: From }" /></em></span>
+											    <span><em><img alt="" data-bind="attr: { src: SenderAvatar, alt: SenderDisplayName, title: SenderDisplayName }" /></em></span>
 										    </a>
                                         </li>
                                         <li class="ListCol-2">
                                             <dl>
                                                 <dd class="meta">
-                                                    <em><a data-bind="text: From, attr: { href: SenderProfileUrl }"></a></em>
+                                                    <em><a data-bind="text: SenderDisplayName, attr: { href: SenderProfileUrl }"></a></em>
                                                 </dd>
                                                 <dd class="message" data-bind="text: Body"></dd>
                                                 <dd class="attachements" data-bind="if: AttachmentCount > 0">
@@ -228,12 +227,12 @@
                             <ul>
                                 <li class="ListCol-1"></li>
                                 <li class="ListCol-2">
-                                    <a class="profileImg" data-bind="attr: { href: SenderProfileUrl }"><span><em><img alt="" data-bind="    attr: { src: SenderAvatar, alt: From, title: From }" /></em></span></a>
+                                    <a class="profileImg" data-bind="attr: { href: SenderProfileUrl }"><span><em><img alt="" data-bind="    attr: { src: SenderAvatar, alt: SenderDisplayName, title: SenderDisplayName }" /></em></span></a>
                                 </li>
                                 <li class="ListCol-3">
                                     <dl>
                                         <dt class="subject"><span data-bind="text: Subject"></span></dt>
-                                        <dd class="meta"><em><a data-bind="text: From, attr: { href: SenderProfileUrl }"></a></em></dd>
+                                        <dd class="meta"><em><a data-bind="text: SenderDisplayName, attr: { href: SenderProfileUrl }"></a></em></dd>
                                         <dd class="message" data-bind="html: Body"></dd>
                                         <dd class="notificationControls" data-bind="foreach: Actions">
                                             <a href="#" data-bind="text: Name, click: $root.performNotificationAction, attr: { title: Description }"></a><span data-bind="    visible: !$root.isLastNotificationAction($parent, $data)"> | </span>
@@ -280,7 +279,13 @@
 			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
 			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
 			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-			disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>
+		    disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>,
+		    messageTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Messages")) %>',
+		    notificationTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Notifications")) %>',
+		    archiveTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MarkArchive")) %>',
+		    sentTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Sent")) %>',
+		    currentUserText: '<%= UserController.Instance.GetCurrentUserInfo().DisplayName %>',
+            portalText: '<%= PortalSettings.PortalName %>'
 	}, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',

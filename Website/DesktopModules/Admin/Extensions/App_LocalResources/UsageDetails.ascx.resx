@@ -124,7 +124,7 @@
     <value>Host</value>
   </data>
   <data name="lblFilterUsageList.Help" xml:space="preserve">
-    <value>Select host or a specific website from the filter by list, to view a list of pages that this module exists on.</value>
+    <value>Select Host or a specific site from the filter by list to view a list of pages that this module exists on.</value>
   </data>
   <data name="lblFilterUsageList.Text" xml:space="preserve">
     <value>Show pages for </value>

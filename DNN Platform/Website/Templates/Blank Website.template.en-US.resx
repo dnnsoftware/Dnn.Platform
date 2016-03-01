@@ -147,108 +147,6 @@
   <data name="RoleGroup.Description.Text" xml:space="preserve">
     <value>A dummy role group that represents the Global roles</value>
   </data>
-  <data name="Tab.GettingStarted.Actions.Module.Content.0.Text" xml:space="preserve">
-    <value>Watch the Getting Started Video</value>
-  </data>
-  <data name="Tab.GettingStarted.Actions.Module.Content.1.Text" xml:space="preserve">
-    <value>Let me at it</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.0.Text" xml:space="preserve">
-    <value>The video below will &lt;strong&gt; help get you started &lt;/strong&gt; building your new DotNetNuke site. Using DotNetNuke is fast and easy and you can have your new site up and running with real content in just a matter of minutes.</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.1.Text" xml:space="preserve">
-    <value>Watch the Video</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Title.0.Text" xml:space="preserve">
-    <value>What's new with 7.0</value>
-  </data>
-  <data name="Tab.GettingStarted.Name.Text" xml:space="preserve">
-    <value>Getting Started</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.0.Text" xml:space="preserve">
-    <value>Already an expert?</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.1.Text" xml:space="preserve">
-    <value>Setup your email, install languages, and other advanced configuration settings</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.2.Text" xml:space="preserve">
-    <value>Set Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.3.Text" xml:space="preserve">
-    <value>Looking for answers?</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.4.Text" xml:space="preserve">
-    <value>Do you have any questions, ideas for improvement or just want to meet some other DotNetNuke members?</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.5.Text" xml:space="preserve">
-    <value>Find an Answer</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Submit you Ideas</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.7.Text" xml:space="preserve">
-    <value>We always appreciate your feedback</value>
-  </data>
-  <data name="Tab.GettingStarted.RightPane.Module.Content.8.Text" xml:space="preserve">
-    <value>We would love to hear how we're doing</value>
-  </data>
-  <data name="Tab.GettingStarted.Title.Text" xml:space="preserve">
-    <value>Welcome to Your Installation</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Title.1.Text" xml:space="preserve">
-    <value>Learn the basics of working with DNN</value>
-  </data>
-  <data name="Tab.GettingStarted.Header.Module.Title.Text" xml:space="preserve">
-    <value>&lt;strong&gt;Way to go!&lt;/strong&gt; you just completed your installation of DotNetNuke; &lt;strong&gt;what whould you like to do next?&lt;/strong&gt;</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.2.Text" xml:space="preserve">
-    <value>Find out what improvements and additions we've made to DotNetNuke 7.0.</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.3.Text" xml:space="preserve">
-    <value>Watch the Video</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.10.Text" xml:space="preserve">
-    <value>Add New Functionality</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.11.Text" xml:space="preserve">
-    <value>Enhance your site with capabilities such as e-commerce.</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.12.Text" xml:space="preserve">
-    <value>Visit the DotNetNuke Store</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.13.Text" xml:space="preserve">
-    <value>Sponsors</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.4.Text" xml:space="preserve">
-    <value>Personalize your DotNetNuke</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.5.Text" xml:space="preserve">
-    <value>Are you ready to make DotNetNuke your own?</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>We have the resources and tools to do just about anything you can imagine.</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.7.Text" xml:space="preserve">
-    <value>I want to...</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.8.Text" xml:space="preserve">
-    <value>Change the look of my site</value>
-  </data>
-  <data name="Tab.GettingStarted.LeftPane.Module.Content.9.Text" xml:space="preserve">
-    <value>Find new themes for your website on the DNN Store.</value>
-  </data>
-  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
   <data name="Tab.About.RightPane.OtherModule.Content.8.Text" xml:space="preserve">
     <value>Share your feedback</value>
   </data>
@@ -269,5 +167,38 @@
   </data>
   <data name="Tab.404ErrorPage.Title.Text" xml:space="preserve">
     <value>404 Error Page</value>
+  </data>
+  <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="Tab.Extensions.Title.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="Tab.PortalAdministration.Title.Text" xml:space="preserve">
+    <value>Website Administration</value>
+  </data>
+  <data name="Tab.MyFriends.Title.Text" xml:space="preserve">
+    <value>My Friends</value>
+  </data>
+  <data name="Tab.MyMessages.Title.Text" xml:space="preserve">
+    <value>My Messages</value>
+  </data>
+  <data name="Tab.SecurityRoles.Title.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="Tab.SiteSettings.Title.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="Tab.UserAccounts.Title.Text" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
+  <data name="Tab.SearchResultsCE.Title.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>  
+  <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
+    <value>File Management</value>
   </data>
 </root>

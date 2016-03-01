@@ -13,12 +13,12 @@
         </div>
         <div class="dnnFormItem">
             <asp:Panel ID="passwordContainer" runat="server" CssClass="password-strength-container">
-                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" size="12" MaxLength="20" AutoCompleteType="Disabled" CssClass="password-strength" />
+                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" size="12" MaxLength="39" AutoCompleteType="Disabled" CssClass="password-strength" />
             </asp:Panel>
             <asp:RegularExpressionValidator ID="valPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Password.Required" Display="Dynamic" ControlToValidate="txtPassword" ValidationExpression="[\w\W]{7,}" />
         </div>
         <div class="dnnFormItem">
-            <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="password-confirm" />
+            <asp:TextBox ID="txtConfirmPassword" runat="server" MaxLength="39" TextMode="Password" CssClass="password-confirm" />
             <asp:RequiredFieldValidator ID="valConfirmPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Confirm.Required" Display="Dynamic" ControlToValidate="txtConfirmPassword" />
         </div>
 		<div id="divQA" runat="server" visible="false">

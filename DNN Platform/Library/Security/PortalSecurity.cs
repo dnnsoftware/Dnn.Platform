@@ -54,6 +54,39 @@ namespace DotNetNuke.Security
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
 
+        private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+
+        const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
+        private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+        private static readonly Regex[] RxListStrings = new[]
+        {
+            new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
+            new Regex("<script", RxOptions),
+            new Regex("<input[^>]*>.*?</input[^><]*>", RxOptions),
+            new Regex("<object[^>]*>.*?</object[^><]*>", RxOptions),
+            new Regex("<embed[^>]*>.*?</embed[^><]*>", RxOptions),
+            new Regex("<applet[^>]*>.*?</applet[^><]*>", RxOptions),
+            new Regex("<form[^>]*>.*?</form[^><]*>", RxOptions),
+            new Regex("<option[^>]*>.*?</option[^><]*>", RxOptions),
+            new Regex("<select[^>]*>.*?</select[^><]*>", RxOptions),
+            new Regex("<iframe[^>]*>.*?</iframe[^><]*>", RxOptions),
+            new Regex("<iframe.*?<", RxOptions),
+            new Regex("<iframe.*?", RxOptions),
+            new Regex("<ilayer[^>]*>.*?</ilayer[^><]*>", RxOptions),
+            new Regex("<form[^>]*>", RxOptions),
+            new Regex("</form[^><]*>", RxOptions),
+            new Regex("onerror", RxOptions),
+            new Regex("onmouseover", RxOptions),
+            new Regex("javascript:", RxOptions),
+            new Regex("vbscript:", RxOptions),
+            new Regex("unescape", RxOptions),
+            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"eval*.\(", RxOptions),
+            new Regex("onload", RxOptions),
+        };
+
         #region FilterFlag enum
 
         ///-----------------------------------------------------------------------------
@@ -218,13 +251,12 @@ namespace DotNetNuke.Security
             return RoleType.Security;
         }
 
-        private string BytesToHexString(byte[] bytes)
+        private static string BytesToHexString(IEnumerable<byte> bytes)
         {
-            var hexString = new StringBuilder(64);
-            int counter;
-            for (counter = 0; counter <= bytes.Length - 1; counter++)
+            var hexString = new StringBuilder();
+            foreach (var b in bytes)
             {
-                hexString.Append(String.Format("{0:X2}", bytes[counter]));
+                hexString.Append(String.Format("{0:X2}", b));
             }
             return hexString.ToString();
         }
@@ -240,42 +272,12 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the FormatDisableScripting function
         /// </remarks>
-        /// <history>
-        ///     [cathal]        3/06/2007   Created
-        /// </history>
         ///-----------------------------------------------------------------------------
-        private string FilterStrings(string strInput)
+        private static string FilterStrings(string strInput)
         {
 			//setup up list of search terms as items may be used twice
             var tempInput = strInput;
-            var listStrings = new List<string>
-                                  {
-                                      "<script[^>]*>.*?</script[^><]*>",
-                                      "<script",
-                                      "<input[^>]*>.*?</input[^><]*>",
-                                      "<object[^>]*>.*?</object[^><]*>",
-                                      "<embed[^>]*>.*?</embed[^><]*>",
-                                      "<applet[^>]*>.*?</applet[^><]*>",
-                                      "<form[^>]*>.*?</form[^><]*>",
-                                      "<option[^>]*>.*?</option[^><]*>",
-                                      "<select[^>]*>.*?</select[^><]*>",
-                                      "<iframe[^>]*>.*?</iframe[^><]*>",
-                                      "<iframe.*?<",
-                                      "<iframe.*?",
-                                      "<ilayer[^>]*>.*?</ilayer[^><]*>",
-                                      "<form[^>]*>",
-                                      "</form[^><]*>",
-                                      "onerror",
-                                      "onmouseover",
-                                      "javascript:",
-                                      "vbscript:",
-                                      "unescape",
-                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?",
-                                      @"eval*.\(",
-                                      "onload"
-                                  };
 
-            const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
             const string replacement = " ";
 
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
@@ -283,14 +285,14 @@ namespace DotNetNuke.Security
             {
 				//text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
-                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
 
                 //Re-encode
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
             else
             {
-                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
             }
             return tempInput;
         }
@@ -327,15 +329,11 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
-        /// <history>
-        /// 	[Cathal] 	6/1/2006	Created to fufill client request
-        /// </history>
         ///-----------------------------------------------------------------------------
-        private string FormatAngleBrackets(string strInput)
+        private static string FormatAngleBrackets(string strInput)
         {
-            var tempInput = strInput.Replace("<", "");
-            tempInput = tempInput.Replace(">", "");
-            return tempInput;
+            var tempInput = new StringBuilder(strInput).Replace("<", "").Replace(">", "");
+            return tempInput.ToString();
         }
 
         ///-----------------------------------------------------------------------------
@@ -348,10 +346,11 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private string FormatMultiLine(string strInput)
+        private static string FormatMultiLine(string strInput)
         {
-            string tempInput = strInput.Replace(Environment.NewLine, "<br />").Replace("\r\n", "<br />").Replace("\n", "<br />").Replace("\r", "<br />");
-            return (tempInput);
+            const string lbreak = "<br />";
+            var tempInput = new StringBuilder(strInput).Replace("\r\n", lbreak).Replace("\n", lbreak).Replace("\r", lbreak);
+            return tempInput.ToString();
         }
 
         ///-----------------------------------------------------------------------------
@@ -365,11 +364,10 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private string FormatRemoveSQL(string strSQL)
+        private static string FormatRemoveSQL(string strSQL)
         {
             // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
-            const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
-            return Regex.Replace(strSQL, BadStatementExpression, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace("'", "''");
+            return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
         }
 
         ///-----------------------------------------------------------------------------
@@ -382,11 +380,9 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private bool IncludesMarkup(string strInput)
+        private static bool IncludesMarkup(string strInput)
         {
-            const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-            const string pattern = "<[^<>]*>";
-            return Regex.IsMatch(strInput, pattern, options);
+            return StripTagsRegex.IsMatch(strInput);
         }
 		
 		#endregion
@@ -402,9 +398,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a public function used for generating SHA1 keys
         /// </remarks>
-        /// <history>
-        /// </history>
-        ///-----------------------------------------------------------------------------
         public string CreateKey(int numBytes)
         {
             var rng = new RNGCryptoServiceProvider();
@@ -654,8 +647,10 @@ namespace DotNetNuke.Security
             {
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
             }
+
+            //Identity the Login is processed by system.
+            HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
         public void SignOut()
@@ -778,10 +773,10 @@ namespace DotNetNuke.Security
 			//get current url
             var url = HttpContext.Current.Request.Url.ToString();
 			//if unsecure connection
-            if (url.StartsWith("http://"))
+            if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
 				//switch to secure connection
-                url = url.Replace("http://", "https://");
+                url = "https://" + url.Substring("http://".Length);
                 //append ssl parameter to querystring to indicate secure connection processing has already occurred
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {

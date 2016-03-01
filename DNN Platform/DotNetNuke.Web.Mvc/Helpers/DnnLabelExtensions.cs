@@ -33,6 +33,36 @@ namespace DotNetNuke.Web.Mvc.Helpers
                                htmlAttributes);
         }
 
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression)
+        {
+            return LabelFor(dnnHelper, expression, null, null, null);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, object htmlAttributes)
+        {
+            return LabelFor(dnnHelper, expression, null, null, htmlAttributes);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> htmlAttributes)
+        {
+            return LabelFor(dnnHelper, expression, null, null, htmlAttributes);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string helpText)
+        {
+            return LabelFor(dnnHelper, expression, null, helpText, null);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string helpText, object htmlAttributes)
+        {
+            return LabelFor(dnnHelper, expression, null, helpText, htmlAttributes);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string helpText, IDictionary<string, object> htmlAttributes)
+        {
+            return LabelFor(dnnHelper, expression, null, helpText, htmlAttributes);
+        }
+
         public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression, string labelText, string helpText)
         {
             return LabelFor(dnnHelper, expression, labelText, helpText, null);
@@ -58,9 +88,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
         internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
         {
             string resolvedLabelText = labelText ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
+            string resolvedHelpText = helpText ?? metadata.Description ?? metadata.Description ?? null;
             string resolvedId = TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName));
 
-            return LabelHelper(html, resolvedId, resolvedLabelText, helpText, htmlAttributes);
+            return LabelHelper(html, resolvedId, resolvedLabelText, resolvedHelpText, htmlAttributes);
         }
 
         public static MvcHtmlString LabelHelper(HtmlHelper html, string htmlFieldName, string labelText, string helpText = null, IDictionary<string, object> htmlAttributes = null)

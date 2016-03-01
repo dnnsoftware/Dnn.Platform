@@ -1,0 +1,111 @@
+﻿IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Templates]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Localizations]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_Localizations]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_DataTypes]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_PortalID]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_PortalID]
+END
+GO
+
+IF EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentTypes_ContentType')
+	DROP INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes
+GO
+
+CREATE UNIQUE INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes (ContentType)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_IsDynamic]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic]
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_Description]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_Description]
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_CreatedByUserID]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedByUserID]
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_CreatedOnDate]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedOnDate]
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_LastModifiedByUserID]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedByUserID]
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{objectQualifier}ContentTypes_LastModifiedOnDate]') AND type = 'D')
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes] DROP CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedOnDate]
+END
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'PortalID')
+   ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [PortalID] 
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsDynamic')
+BEGIN
+	EXEC sp_executesql N'DELETE FROM {databaseOwner}{objectQualifier}ContentItems 
+      WHERE ContentTypeID IN (SELECT ContentTypeID FROM {databaseOwner}{objectQualifier}ContentTypes WHERE IsDynamic = 1)'
+
+	EXEC sp_executesql N'DELETE FROM {databaseOwner}{objectQualifier}ContentTypes WHERE IsDynamic = 1'
+
+	ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [IsDynamic]    
+END 
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'Description')
+   	ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [Description] 
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedByUserID')
+   ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [CreatedByUserID]
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedOnDate')
+   ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [CreatedOnDate] 
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedByUserID')
+   ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [LastModifiedByUserID] 
+GO
+
+IF EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedOnDate')
+   ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes DROP COLUMN [LastModifiedOnDate] 
+GO

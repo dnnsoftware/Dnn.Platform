@@ -1030,7 +1030,7 @@ namespace DotNetNuke.Web.InternalServices
             if (parentId < 1) return new List<ItemDto> { new ItemDto
                 {
                     Key = parentFolder.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = portalId == -1 ? SharedConstants.HostRootFolder : SharedConstants.RootFolder,
+                    Value = portalId == -1 ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder,
                     HasChildren = HasChildren(parentFolder, permission),
                     Selectable = true
                 } };
@@ -1158,7 +1158,7 @@ namespace DotNetNuke.Web.InternalServices
                 parentId = parentFolder.ParentID;
                 parentFolder = parentId > 0 ? FolderManager.Instance.GetFolder(parentId) : null;
             }
-            selfTree.Data.Value = SharedConstants.RootFolder;
+            selfTree.Data.Value = DynamicSharedConstants.RootFolder;
 
             tree.Children.Add(selfTree);
             return tree;
@@ -1343,7 +1343,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
                     }).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));

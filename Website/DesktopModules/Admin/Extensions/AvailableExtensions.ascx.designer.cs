@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Modules.Admin.AdvancedSettings.LanguagePacks languagePacks;
+        protected global::DotNetNuke.Website.DesktopModules.Admin.Extensions.LanguagePacks languagePacks;
         
         /// <summary>
         /// extensionTypeRepeater control.

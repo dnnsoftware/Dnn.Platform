@@ -45,8 +45,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
     public partial class UsageDetails : PortalModuleBase
     {
         private bool _IsListBound;
@@ -120,27 +118,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 UsageList.PagerSettings.LastPageText = Localization.GetString("grd.PagerSettings.LastPageText", LocalResourceFile);
                 UsageList.PagerSettings.NextPageText = Localization.GetString("grd.PagerSettings.NextPageText", LocalResourceFile);
                 UsageList.PagerSettings.PreviousPageText = Localization.GetString("grd.PagerSettings.PreviousPageText", LocalResourceFile);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessModuleLoadException(this, ex);
-            }
-        }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            try
-            {
-                BindFilterList();
-                if ((FilterUsageList.Visible))
+                if (!Page.IsPostBack)
                 {
-                    BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
-                }
-                else
-                {
-                    BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
+                    BindFilterList();
+                    BindUsageList();
                 }
             }
             catch (Exception ex)
@@ -153,7 +135,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             try
             {
-                if ((FilterUsageList.SelectedValue != null))
+                if (FilterUsageList.SelectedValue != null)
                 {
                     UsageList.PageIndex = 0;
                     BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
@@ -170,7 +152,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             try
             {
                 UsageList.PageIndex = e.NewPageIndex;
-                BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
+                BindUsageList();
             }
             catch (Exception ex)
             {
@@ -197,9 +179,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         if ((tab.BreadCrumbs.Count - 1 == index))
                         {
                             string url;
-                            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList();
-                            var alias = aliases[0];
-                            url = Globals.AddHTTP(alias.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            //use the current portal alias for host tabs
+                            url = Globals.AddHTTP(t.PortalID == Null.NullInteger? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList()[0].HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else
@@ -215,31 +196,39 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private void BindFilterList()
         {
-            if ((PackageID != Null.NullInteger && Package != null && Package.PackageType.ToUpper() == "MODULE"))
+            if (PackageID != Null.NullInteger && Package != null && Package.PackageType.ToUpper() == "MODULE")
             {
                 tblFilterUsage.Visible = IsSuperTab;
-                if (!IsPostBack)
-                {
-                    if ((FilterUsageList.Visible))
-                    {
-                        FilterUsageList.DataSource = Portals.Values;
-                        FilterUsageList.DataTextField = "PortalName";
-                        FilterUsageList.DataValueField = "PortalID";
-                        FilterUsageList.DataBind();
-                        //FilterUsageList.Items.Insert(0, new ListItem(Localization.GetString("FilterOptionHost", LocalResourceFile), Null.NullInteger.ToString()));
-                        //FilterUsageList.Items.Insert(0, new ListItem(Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2"));
 
-                        FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionHost", LocalResourceFile), Null.NullInteger.ToString());
-                        FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2");
-                        FilterUsageList.Items[0].Selected = true;
-                    }
+                if (FilterUsageList.Visible)
+                {
+                    FilterUsageList.DataSource = Portals.Values;
+                    FilterUsageList.DataTextField = "PortalName";
+                    FilterUsageList.DataValueField = "PortalID";
+                    FilterUsageList.DataBind();
+
+                    FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionHost", LocalResourceFile), Null.NullInteger.ToString());
+                    FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2");
+                    FilterUsageList.Items[0].Selected = true;
                 }
+            }
+        }
+
+	    private void BindUsageList()
+	    {
+            if (FilterUsageList.Visible)
+            {
+                BindUsageList(int.Parse(FilterUsageList.SelectedValue), FilterUsageList.SelectedItem.Text);
+            }
+            else
+            {
+                BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
             }
         }
 
         private void BindUsageList(int selectedPortalID, string selectedPortalName)
         {
-            if ((_IsListBound))
+            if (_IsListBound)
             {
                 return;
             }
@@ -267,7 +256,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     portalName = string.Empty;
                 }
             }
-            if ((tabs != null && tabs.Count > 0))
+            if (tabs != null && tabs.Count > 0)
             {
                 UsageList.Visible = true;
                 UsageList.DataSource = tabs.Values;
@@ -275,7 +264,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
                 UsageListMsg.Text = string.Format(Localization.GetString("Msg.InUseBy", LocalResourceFile), tabs.Count, portalName);
             }
-            else if ((portalName != string.Empty))
+            else if (portalName != string.Empty)
             {
                 UsageList.Visible = false;
                 UsageListMsg.Text = string.Format(Localization.GetString("Msg.NotUsedBy", LocalResourceFile), portalName);

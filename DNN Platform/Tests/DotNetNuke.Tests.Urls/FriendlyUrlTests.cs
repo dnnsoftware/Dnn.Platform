@@ -111,8 +111,8 @@ namespace DotNetNuke.Tests.Urls
 
             if (_customLocale != null)
             {
-                Localization.RemoveLanguageFromPortals(_customLocale.LanguageId);
-                Localization.DeleteLanguage(_customLocale);
+                Localization.RemoveLanguageFromPortals(_customLocale.LanguageId, true);
+                Localization.DeleteLanguage(_customLocale, true);
             }
             if (_primaryAlias != null)
             {

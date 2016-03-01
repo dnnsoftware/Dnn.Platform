@@ -46,9 +46,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]   07/26/2007    Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class UnInstall : ModuleUserControlBase
     {
@@ -93,9 +90,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// Gets the Return Url
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/31/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ReturnURL
         {
@@ -123,9 +117,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine checks the Access Security
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
@@ -139,9 +130,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <summary>
         /// This routine uninstalls the package
         /// </summary>
-        /// <history>
-        ///     [cnurse]   07/31/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UnInstallPackage()
         {
@@ -161,9 +149,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/21/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -189,9 +174,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]   07/26/2007    Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -247,9 +229,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 07/31/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUninstall_Click(object sender, EventArgs e)
         {

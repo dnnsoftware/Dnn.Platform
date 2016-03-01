@@ -226,17 +226,6 @@ namespace DotNetNuke.Entities.Portals
                         {
                             ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
-
-                        //copy getting started css into portal's folder.
-                        var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
-                        if (File.Exists(hostGettingStartedFile))
-                        {
-                            var portalFile = mappedHomeDirectory + "GettingStarted.css";
-                            if (!File.Exists(portalFile))
-                            {
-                                File.Copy(hostGettingStartedFile, portalFile);
-                            }
-                        }
                     }
                     catch (Exception Exc)
                     {
@@ -316,6 +305,10 @@ namespace DotNetNuke.Entities.Portals
                         foreach (Locale newPortalLocale in newPortalLocales.AllValues)
                         {
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
+                            if (portalSettings.ContentLocalizationEnabled)
+                            {
+                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                            }
                         }
                     }
 
@@ -1673,10 +1666,6 @@ namespace DotNetNuke.Entities.Portals
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
                         break;
-                    case "gettingStartedTab":                        
-                        UpdatePortalSetting(portalId, "GettingStartedTabId", tab.TabID.ToString());
-                        logType = "GettingStartedTabId";
-                        break;
                     case "404Tab":
                         portal.Custom404TabId = tab.TabID;
                         logType = "Custom404Tab";
@@ -2152,6 +2141,12 @@ namespace DotNetNuke.Entities.Portals
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
+            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Items.Add("CreatingPortalId", portalId);
+            }
+
             string message = Null.NullString;
 
             if (portalId != -1)
@@ -2192,6 +2187,12 @@ namespace DotNetNuke.Entities.Portals
                 //should be no exception, but suppress just in case
             }
 
+            //remove the portal id from http context as there is no exception.
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+            {
+                HttpContext.Current.Items.Remove("CreatingPortalId");
+            }
+
             return portalId;
         }
 
@@ -2214,6 +2215,12 @@ namespace DotNetNuke.Entities.Portals
         {
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
+
+            //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Items.Add("CreatingPortalId", portalId);
+            }
 
             string message = Null.NullString;
 
@@ -2260,6 +2267,12 @@ namespace DotNetNuke.Entities.Portals
             catch (Exception)
             {
                 //should be no exception, but suppress just in case
+            }
+
+            //remove the portal id from http context as there is no exception.
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+            {
+                HttpContext.Current.Items.Remove("CreatingPortalId");
             }
 
             return portalId;
@@ -2785,10 +2798,16 @@ namespace DotNetNuke.Entities.Portals
                     Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string HomeDirectory = portal.HomeDirectoryMapPath;
-                        if (Directory.Exists(HomeDirectory))
+                        string homeDirectory = portal.HomeDirectoryMapPath;
+
+                        if (homeDirectory.EndsWith("\\"))
                         {
-                            Globals.DeleteFolderRecursive(HomeDirectory);
+                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
+                        }
+
+                        if (Directory.Exists(homeDirectory))
+                        {
+                            Globals.DeleteFolderRecursive(homeDirectory);
                         }
                     }
                     //remove database references
@@ -2819,16 +2838,14 @@ namespace DotNetNuke.Entities.Portals
             return alias.Substring(alias.IndexOf(appPath, StringComparison.InvariantCultureIgnoreCase) + appPath.Length);
         }
 
-        /// <summary>
-        /// Delete the child portal folder and try to remove its parent when parent folder is empty.
-        /// </summary>
+        /// <summary>Delete the child portal folder and try to remove its parent when parent folder is empty.</summary>
         /// <param name="serverPath">the server path.</param>
         /// <param name="portalFolder">the child folder path.</param>
-        /// <returns></returns>
         public static void DeletePortalFolder(string serverPath, string portalFolder)
         {
             var physicalPath = serverPath + portalFolder;
             Globals.DeleteFolderRecursive(physicalPath);
+            
             //remove parent folder if its empty.
             var parentFolder = Directory.GetParent(physicalPath);
             while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
@@ -2866,9 +2883,6 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="pageSize">The size of the page</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
-        /// <history>
-        ///     [cnurse]	11/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {

@@ -525,14 +525,7 @@ namespace DotNetNuke.Entities.Users
         {
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
-
         
-        public UserInfo GetUserByHmacAppId(string appId)
-        {
-            return MembershipProvider.Instance().GetUserByHmacAppId(PortalSettings.Current.PortalId, appId);
-            
-        }
-
         UserInfo IUserController.GetUserById(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
@@ -552,6 +545,61 @@ namespace DotNetNuke.Entities.Users
         {
             return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
                                                        sortAscending, propertyName, propertyValue);
+        }
+        
+        /// <summary>
+        /// Return User Profile Picture relative Url
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="width">Width in pixel</param>
+        /// <param name="height">Height in pixel</param>
+        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32)
+        /// </remarks>
+        public string GetUserProfilePictureUrl(int userId, int width, int height)
+        {
+            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
+
+            var childPortalAlias = GetChildPortalAlias();
+            var cdv = GetProfilePictureCdv(userId);
+
+            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+                ? childPortalAlias + url + cdv
+                : Globals.ApplicationPath + childPortalAlias + url + cdv;
+        }
+
+        private static string GetChildPortalAlias()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentAlias = settings.PortalAlias.HTTPAlias;
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+            return childPortalAlias;
+        }
+
+        private static string GetProfilePictureCdv(int userId)
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var userInfo = GetUserById(settings.PortalId, userId);
+            if (userInfo?.Profile == null)
+            {
+                return string.Empty;
+            }
+
+            var cdv = string.Empty;
+            var photoProperty = userInfo.Profile.GetProperty("Photo");
+
+            int photoFileId;
+            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
+            {
+                var photoFile = FileManager.Instance.GetFile(photoFileId);
+                if (photoFile != null)
+                {
+                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
+                }
+            }
+            return cdv;
         }
 
         /// -----------------------------------------------------------------------------
@@ -629,23 +677,26 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
         {
-            bool retValue;
+            bool passwordChanged;
 
             //Although we would hope that the caller has already validated the password,
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
+                passwordChanged = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+                if (passwordChanged)
+                {
+                    //Update User
+                    user.Membership.UpdatePassword = false;
+                    UpdateUser(user.PortalID, user);
+                }
             }
             else
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
 
         /// <summary>
@@ -657,7 +708,7 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A Boolean indicating success or failure.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
         {
-            bool retValue;
+            bool passwordChanged;
 
             Guid resetTokenGuid = new Guid(resetToken);
 
@@ -682,21 +733,24 @@ namespace DotNetNuke.Entities.Users
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+                passwordChanged = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
 
                 //update reset token values to ensure token is 1-time use
                 user.PasswordResetExpiration = DateTime.MinValue;
                 user.PasswordResetToken = Guid.NewGuid();
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+                if (passwordChanged)
+                {
+                    //Update User
+                    user.Membership.UpdatePassword = false;
+                    UpdateUser(user.PortalID, user);
+                }
             }
             else
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
 
         /// <summary>
@@ -709,7 +763,7 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A Boolean indicating success or failure.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
         {
-            bool retValue;
+            bool passwordChanged;
             errorMessage = Null.NullString;
             Guid resetTokenGuid = new Guid(resetToken);
 
@@ -739,9 +793,9 @@ namespace DotNetNuke.Entities.Users
             {
 	            try
 	            {
-					retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
+                    passwordChanged = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
 
-		            if (retValue)
+		            if (passwordChanged)
 		            {
 			            //update reset token values to ensure token is 1-time use
 			            user.PasswordResetExpiration = DateTime.MinValue;
@@ -760,7 +814,7 @@ namespace DotNetNuke.Entities.Users
 	            }
 	            catch (Exception)
 	            {
-		            retValue = false;
+                    passwordChanged = false;
 					errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
 	            }
                 
@@ -769,7 +823,7 @@ namespace DotNetNuke.Entities.Users
             {
                 throw new Exception("Invalid Password");
             }
-            return retValue;
+            return passwordChanged;
         }
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1941,7 +1995,7 @@ namespace DotNetNuke.Entities.Users
 
             //Update User in Database with Last IP used
             user.LastIPAddress = ip;
-            UpdateUser(portalId, user, false);
+            DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
 
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
@@ -1959,16 +2013,11 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ValidatePassword(string password)
         {
-            var isValid = true;
-
             //Valid Length
-            if (password.Length < MembershipProviderConfig.MinPasswordLength)
-            {
-                isValid = false;
-            }
+            var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
             //Validate NonAlphaChars
-            var rx = new Regex("[^0-9a-zA-Z]");
+            var rx = Globals.InvalidCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;
@@ -1976,8 +2025,7 @@ namespace DotNetNuke.Entities.Users
             //Validate Regex
             if (!String.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
-                rx = new Regex(MembershipProviderConfig.PasswordStrengthRegularExpression);
-                isValid = rx.IsMatch(password);
+                isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
             }
             return isValid;
         }

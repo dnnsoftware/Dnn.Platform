@@ -136,8 +136,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         private void View_EditorChanged(object sender, EditorEventArgs e)
         {
             this.View.Editor.Controls.Clear();
-            this.View.Editor.Controls.Add(this.LoadCurrentEditor(e.Editor));
             this.View.Model.SelectedEditor = e.Editor;
+            this.View.Model.CanSave = true;
         }
 
         /// <summary>Handles the SaveEditorChoice event of the View control.</summary>
@@ -146,6 +146,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         private void View_SaveEditorChoice(object sender, EditorEventArgs e)
         {
             this.SaveEditorInConfiguration(e.Editor);
+            this.View.Refresh();
             this.View.Editor.Controls.Clear();
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
             this.View.Model.SelectedEditor = e.Editor;

@@ -157,25 +157,25 @@
     <value>Resource Pack Type:</value>
   </data>
     <data name="lblType.Help" xml:space="preserve">
-    <value>Select the type of resource pack to generate</value>
+    <value>Select the type of resource pack to generate.</value>
   </data>
     <data name="SelectModules.Text" xml:space="preserve">
-    <value>Select the Module(s) you would like to include in the resource pack:</value>
+    <value>Select the module(s) you want to include in the resource pack:</value>
   </data>
     <data name="SelectProviders.Text" xml:space="preserve">
-    <value>Select the Provider(s)  you would like to include in the resource pack:</value>
+    <value>Select the provider(s) you want to include in the resource pack:</value>
   </data>
     <data name="lblName.Text" xml:space="preserve">
     <value>Resource Pack Name:</value>
   </data>
     <data name="lblName.Help" xml:space="preserve">
-    <value>You can change the name of the generated resource pack. Notice that part of the name is fixed.</value>
+    <value>The name of the generated resource pack can be modified.  Notice that part of the name is fixed.</value>
   </data>
     <data name="Success.Text" xml:space="preserve">
-    <value>The Language Pack(s) were created and can be found in the {0}/Install/Language folder</value>
+    <value>The Language Pack(s) were created and can be found in the {0}/Install/Language folder.</value>
   </data>
     <data name="Failure.Text" xml:space="preserve">
-    <value>You must create resource files before you can create a language pack</value>
+    <value>You must create resource files before you can create a language pack.</value>
   </data>
     <data name="AuthSystem.LangPackType" xml:space="preserve">
     <value>Authentication System</value>

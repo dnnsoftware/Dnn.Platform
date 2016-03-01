@@ -36,6 +36,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.WebControls.Internal;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -704,8 +705,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objectPermissionId">The Id of the object permission</param>
         /// <param name="roleId">The role id</param>
         /// <param name="roleName">The role name</param>
-        /// <history>
-        /// </history>
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName)
         {
             return BuildKey(allowAccess, permissionId, objectPermissionId, roleId, roleName, Null.NullInteger, Null.NullString);
@@ -1043,7 +1042,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             ClientResourceManager.RegisterScript(Page, "~/js/dnn.permissiongrid.js");
 
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css", FileOrder.Css.ResourceCss);
         }
 
         /// <summary>
@@ -1245,9 +1244,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// RoleGroupsSelectedIndexChanged runs when the Role Group is changed
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/06/2006  Documented
-        /// </history>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
             FillSelectRoleComboBox(Int32.Parse(cboRoleGroups.SelectedValue));
@@ -1256,8 +1252,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// AddUser runs when the Add user linkbutton is clicked
         /// </summary>
-        /// <history>
-        /// </history>
         protected virtual void AddUser(object sender, EventArgs e)
         {
             UpdatePermissions();
@@ -1281,8 +1275,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// AddRole runs when the Add Role linkbutton is clicked
         /// </summary>
-        /// <history>
-        /// </history>
         void AddRole(object sender, EventArgs e)
         {
             UpdatePermissions();

@@ -60,19 +60,28 @@ dnnModule.DigitalAssetsController.prototype = function () {
         getLeftPaneActions = function() {
             return [];
         },
-        updateModuleState = function (stateObject) {            
-            var state = stateObject.stateMode + "=" + stateObject.stateValue +
-                        "&view=" + stateObject.currentView +
-                        "&pageSize=" + stateObject.pageSize;
+        updateModuleState = function (stateObject) {
+            var state = {};
+            state[stateObject.stateMode] = stateObject.stateValue;
+            state["view"] = stateObject.currentView;
+            state["pageSize"] = stateObject.pageSize;
 
             var d = new Date();
             d.setDate(d.getDate() + 30);
-            document.cookie = "damState-" + stateObject.userId + "=" + encodeURIComponent(state)
+            document.cookie = "damState-" + stateObject.userId + "=" + encodeURIComponent($.param(state))
                 + "; path=" + window.location.pathname
                 + "; expires=" + d.toUTCString();
 
+            var deparam = function (str) {
+                if (str.length === 0) return {};
+                var parts = str.replace(/(^\?)/, '').split("&");
+                return $.map(parts, function (n) { return n = n.split("="), this[n[0]] = decodeURIComponent(n[1]), this }.bind({}))[0];
+            };
+
             if (history.replaceState) { // IE9 does not support replaceState
-                history.replaceState(null, null, '?' + state);
+                var p = deparam(window.location.search);
+                $.extend(p, state);
+                history.replaceState(null, null, '?' + $.param(p));
             }            
         },
         getCurrentState = function (grid,  view) {

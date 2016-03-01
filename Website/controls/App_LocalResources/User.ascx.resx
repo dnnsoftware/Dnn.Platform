@@ -127,66 +127,66 @@
     <value>User Name:</value>
   </data>
   <data name="plUserName.Help" xml:space="preserve">
-    <value>Choose a User Name.  If the user name already exists you will get an opportunity to select an alternate name.</value>
+    <value>Choose a user name.  If the user name already exists you will get an opportunity to select an alternate name.</value>
   </data>
   <data name="plPassword.Text" xml:space="preserve">
     <value>Password:</value>
   </data>
   <data name="plPassword.Help" xml:space="preserve">
-    <value>Choose a Password</value>
+    <value>Choose a password.</value>
   </data>
   <data name="plConfirm.Text" xml:space="preserve">
     <value>Confirm:</value>
   </data>
   <data name="plConfirm.Help" xml:space="preserve">
-    <value>Re-Enter your Password to confirm the typing</value>
+    <value>Re-enter your password to confirm.</value>
   </data>
   <data name="plEmail.Text" xml:space="preserve">
     <value>Email Address:</value>
   </data>
   <data name="valFirstName.Text" xml:space="preserve">
-    <value>&lt;br&gt;First Name Is Required.</value>
+    <value>&lt;br&gt;First name is required.</value>
   </data>
   <data name="valLastName.Text" xml:space="preserve">
-    <value>&lt;br&gt;Last Name Is Required.</value>
+    <value>&lt;br&gt;Last name is required.</value>
   </data>
   <data name="valUsername.Text" xml:space="preserve">
-    <value>&lt;br&gt;Username Is Required.</value>
+    <value>&lt;br&gt;User name is required.</value>
   </data>
   <data name="valPassword.Text" xml:space="preserve">
-    <value>&lt;br&gt;Password Is Required.</value>
+    <value>&lt;br&gt;Password is required.</value>
   </data>
   <data name="valConfirm1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Password Confirmation Is Required.</value>
+    <value>&lt;br&gt;Password confirmation is required.</value>
   </data>
   <data name="valConfirm2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Password Values Entered Do Not Match.</value>
+    <value>&lt;br&gt;Password values entered do not match.</value>
   </data>
   <data name="valEmail1.Text" xml:space="preserve">
-    <value>&lt;br&gt;Email Is Required.</value>
+    <value>&lt;br&gt;Email is required.</value>
   </data>
   <data name="valEmail2.Text" xml:space="preserve">
-    <value>&lt;br&gt;Email Must be Valid.</value>
+    <value>&lt;br&gt;Email must be valid.</value>
   </data>
   <data name="plFirstName.Help" xml:space="preserve">
-    <value>Enter your First Name</value>
+    <value>Enter your first name.</value>
   </data>
   <data name="plLastName.Help" xml:space="preserve">
-    <value>Enter your Last Name</value>
+    <value>Enter your last name.</value>
   </data>
   <data name="plEmail.Help" xml:space="preserve">
-    <value>Enter your Email Address</value>
+    <value>Enter your email address.</value>
   </data>
   <data name="plWebsite.Text" xml:space="preserve">
     <value>Website:</value>
   </data>
   <data name="plWebsite.Help" xml:space="preserve">
-    <value>Enter your Website Address</value>
+    <value>Enter your website address.</value>
   </data>
   <data name="plIM.Text" xml:space="preserve">
     <value>Instant Messenger ID:</value>
   </data>
   <data name="plIM.Help" xml:space="preserve">
-    <value>Enter your Instant Messenger (Skype, Yahoo, Google, etc) ID</value>
+    <value>Enter your instant messenger (Skype, Yahoo, Google, etc) ID.</value>
   </data>
 </root>

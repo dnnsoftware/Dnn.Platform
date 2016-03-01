@@ -1,0 +1,26 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Extension>resources</Extension>
+    <DNNFileName>Dnn.Jwt</DNNFileName>
+    <PackageName>DnnJwtAuth</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\AuthenticationServices\JWTAuth</ModuleFolderName>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;Package" />
+  <Target Name="GetFiles">
+    <CreateItem Include="**\*.sqldataprovider">
+      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
+    </CreateItem>
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+  </Target>
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.IdentityModel.Tokens.Jwt.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.IdentityModel.Tokens.Jwt.pdb" DestinationFolder="$(WebsitePath)/bin" />
+  </Target>
+</Project>
