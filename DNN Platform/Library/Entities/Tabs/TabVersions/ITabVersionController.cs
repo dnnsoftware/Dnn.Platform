@@ -81,5 +81,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="tabId">The Tab Id to be queried</param>
         /// <param name="tabVersionId">The TabVersion Id to be deleted</param>
         void DeleteTabVersion(int tabId, int tabVersionId);
+
+        /// <summary>
+        /// Deletes a Tab Version details for a module
+        /// </summary>
+        /// <param name="moduleId">The Module Id to be queried</param>
+        void DeleteTabVersionDetailByModule(int moduleId);
     }
 }
