@@ -1597,7 +1597,7 @@ namespace DotNetNuke.Entities.Modules
                 var portals = PortalController.Instance.GetPortals();
                 foreach (PortalInfo portal in portals)
                 {
-                    modules.AddRange(GetModulesByDefinition(portal.PortalID, moduleDefinition.Key));
+                    modules.AddRange(GetModulesByDefinition(portal.PortalID, moduleDefinition.Value.DefinitionName));
                 }
             }
             return modules;
