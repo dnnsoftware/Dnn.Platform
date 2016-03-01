@@ -1738,3 +1738,20 @@ UPDATE {databaseOwner}{objectQualifier}Schedule
 	ScheduleStartDate = @ScheduleStartDate
 	WHERE ScheduleID = @ScheduleID
 GO
+
+/* Add New OutputCacheGetKeys  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetKeys]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+	@ItemId Int
+AS
+BEGIN
+    SELECT CacheKey
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId OR @ItemId IS NULL
+END
+GO
