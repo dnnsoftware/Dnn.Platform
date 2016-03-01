@@ -1738,3 +1738,21 @@ UPDATE {databaseOwner}{objectQualifier}Schedule
 	ScheduleStartDate = @ScheduleStartDate
 	WHERE ScheduleID = @ScheduleID
 GO
+
+/* DNN-8327: Add GetUserByPasswordResetToken Procedure. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
+	@PortalID int,
+	@PasswordResetToken UNIQUEIDENTIFIER
+
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Users
+	WHERE  PasswordResetToken = @PasswordResetToken
+		AND  ((@PortalId IS NULL) OR (PortalId = @PortalID) OR IsSuperUser = 1)
+
+GO

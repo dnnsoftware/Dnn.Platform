@@ -114,6 +114,11 @@ namespace DotNetNuke.Security.Membership
             return null;
         }
 
+        public virtual UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            return null;
+        }
+
         public virtual ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             throw new NotImplementedException();

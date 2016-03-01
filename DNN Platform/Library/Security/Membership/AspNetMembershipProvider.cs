@@ -1155,6 +1155,27 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// GetUserByPasswordResetToken retrieves a User from the DataStore
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="resetToken">The password reset token.</param>
+        /// <returns>The User as a UserInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        public override UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            UserInfo user = null;
+            if (!String.IsNullOrEmpty(resetToken))
+            {
+                IDataReader dr = _dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
+                user = FillUserInfo(portalId, dr, true);
+            }
+            return user;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// GetUserCountByPortal gets the number of users in the portal
         /// </summary>
         /// <remarks>
