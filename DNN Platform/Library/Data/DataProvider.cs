@@ -849,7 +849,12 @@ namespace DotNetNuke.Data
 			ExecuteNonQuery("DeleteTabVersionDetail", tabVersionDetailId);
 		}
 
-		public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
+	    public virtual void DeleteTabVersionDetailByModule(int moduleId)
+	    {
+            ExecuteNonQuery("DeleteTabVersionDetailByModule", moduleId);
+        }
+
+        public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
 		{
 			ExecuteNonQuery("DeleteTranslatedTabs", tabId, cultureCode);
 		}
