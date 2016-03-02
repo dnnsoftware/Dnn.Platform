@@ -197,11 +197,22 @@ namespace DotNetNuke.Entities.Portals
             OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
         }
         
-        private static void RemoveProfileDefinitions(PortalInfo portal)
+        private void RemoveProfileDefinitions(PortalInfo portal)
         {
             foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID))
             {
                 ProfileController.DeletePropertyDefinition(definition);
+            }
+        }
+
+        private void CopyPropertyDefinitions(int portalId, int masterPortalId)
+        {
+            foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(masterPortalId))
+            {
+                var newDefinition = definition.Clone();
+                newDefinition.PortalId = portalId;
+
+                ProfileController.AddPropertyDefinition(newDefinition);
             }
         }
 
@@ -311,6 +322,8 @@ namespace DotNetNuke.Entities.Portals
             DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
             PortalController.Instance.UpdatePortalInfo(portal);
+
+            CopyPropertyDefinitions(portal.PortalID, portalGroup.MasterPortalId);
 
             var userNo = 0;
             if (copyUsers)

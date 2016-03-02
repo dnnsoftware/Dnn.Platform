@@ -1461,23 +1461,6 @@ END
 GO
 /*DNN-7960 Changes End*/
 
-/***** DNN-7906: add foreign key on moduleid column in TabVersionDetails table. *****/
-DELETE tvd FROM {databaseOwner}[{objectQualifier}TabVersionDetails] tvd
-	LEFT JOIN {databaseOwner}[{objectQualifier}Modules] m ON m.ModuleID = tvd.ModuleId
-	WHERE m.ModuleID IS NULL
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]'))
-	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] DROP CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails]
-	ADD CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
-	FOREIGN KEY([ModuleID])
-	REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE	
-GO
-
-
 /* Update version number in DesktopModules */
 /*******************************************/
 DECLARE @version NVARCHAR(8)
@@ -1756,3 +1739,40 @@ AS
 		AND  ((@PortalId IS NULL) OR (PortalId = @PortalID) OR IsSuperUser = 1)
 
 GO
+
+/* Add New OutputCacheGetKeys  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetKeys]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+	@ItemId Int
+AS
+BEGIN
+    SELECT CacheKey
+     FROM  {databaseOwner}{objectQualifier}OutputCache
+     WHERE ItemId = @ItemId OR @ItemId IS NULL
+END
+GO
+
+/***** DNN-8474: Roleback changes from DNN-7906 and add SP to delete the tab version history *****/
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] DROP CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}Modules]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabVersionDetailByModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetailByModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DeleteTabVersionDetailByModule
+	@ModuleId   INT
+AS
+DELETE FROM   {databaseOwner}{objectQualifier}TabVersionDetails
+WHERE  ModuleId = @ModuleId
+GO
+
+/***** DNN-8474 ENDS *****/
+

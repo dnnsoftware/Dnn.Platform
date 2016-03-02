@@ -158,23 +158,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (mode)
                 {
                     case "profilepic":
+                        int uid;
+                        if (!int.TryParse(parameters["userid"], out uid) || uid <= 0)
+                        {
+                            uid = -1;
+                        }
                         var uppTrans = new UserProfilePicTransform
                         {
-                            UserID = string.IsNullOrEmpty(parameters["userid"])
-                                ? -1
-                                : Convert.ToInt32(parameters["userid"])
+                            UserID = uid
                         };
+
                         IFileInfo photoFile;
-                        if (!uppTrans.TryGetPhotoFile(out photoFile))
-                        {
-                            var noAvatar = uppTrans.GetNoAvatarImage();
-                            ContentType = ImageFormat.Gif;
-                            return new ImageInfo(noAvatar)
-                            {
-                                IsEmptyImage = true
-                            };
-                        }
-                        ContentType = GetImageFormat(photoFile?.Extension ?? "jpg");
+                        ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
+                            ? ImageFormat.Gif
+                            : GetImageFormat(photoFile?.Extension ?? "jpg");
+
                         ImageTransforms.Add(uppTrans);
                         break;
 
