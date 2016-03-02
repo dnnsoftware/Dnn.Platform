@@ -27,6 +27,7 @@
 			</div>
 			<div class="dnnFormItem">
 				<asp:textbox id="txtAnswer" runat="server" />
+                <asp:RequiredFieldValidator ID="valAnswer" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" Display="Dynamic" resourcekey="Answer.Required" ControlToValidate="txtAnswer" />
 			</div>
 		</div>
         <ul class="dnnActions dnnClear">

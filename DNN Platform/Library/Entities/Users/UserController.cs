@@ -1238,6 +1238,11 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByVanityUrl(portalId, vanityUrl);
         }
 
+        public static UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            return MembershipProvider.Instance().GetUserByPasswordResetToken(portalId, resetToken);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserCountByPortal gets the number of users in the portal

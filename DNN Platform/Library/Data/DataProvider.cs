@@ -2282,7 +2282,12 @@ namespace DotNetNuke.Data
 			return ExecuteReader("GetUserByVanityUrl", GetNull(portalId), vanityUrl);
 		}
 
-		public virtual IDataReader GetDisplayNameForUser(int userId, string spaceReplacement)
+        public virtual IDataReader GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            return ExecuteReader("GetUserByPasswordResetToken", GetNull(portalId), resetToken);
+        }
+
+        public virtual IDataReader GetDisplayNameForUser(int userId, string spaceReplacement)
 		{
 			return ExecuteReader("GetDisplayNameForUser", userId, spaceReplacement);
 		}
