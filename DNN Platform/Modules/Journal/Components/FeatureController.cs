@@ -144,6 +144,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                                 var searchDocument = new SearchDocument
                                 {
                                     UniqueKey = string.Format("JI_{0}_{1}", journalId, securityKey),
+                                    PortalId = moduleInfo.PortalID,
                                     Body = summary,
                                     ModifiedTimeUtc = dateUpdated,
                                     Title = title,
