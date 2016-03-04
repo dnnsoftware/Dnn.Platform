@@ -25,5 +25,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         ActionResult ResultOfLastExecute { get; }
 
         bool ValidateRequest { get; set; }
+
+        ViewEngineCollection ViewEngineCollectionEx { get; set; }
+
     }
 }

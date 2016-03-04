@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
 
@@ -54,17 +55,8 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
-            // Get the current module request
-            ModuleRequestResult moduleRequestResult = GetCurrentModuleRequestResult(controllerContext);
-
-            // No current request => Skip this view engine
-            if (moduleRequestResult == null)
-            {
-                return new ViewEngineResult(new string[0]);
-            }
-
-            // Delegate to the module's view engine collection
-            ViewEngineResult result = engineRequest(moduleRequestResult.ModuleApplication.ViewEngines);
+            var controller = controllerContext.Controller as IDnnController;
+            var result = engineRequest(controller.ViewEngineCollectionEx);
 
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)
