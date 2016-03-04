@@ -544,9 +544,14 @@ Gallery.prototype.ShowDetails = function (extensionID) {
 }
 
 Gallery.prototype.getCatalog = function (id) {
-	for (var i in this.cats.d) {
-		if (this.cats.d[i].CatalogID == id) return this.cats.d[i];
-	}
+    if (this.cats && this.cats.d) {
+        var categoryData = this.cats.d;
+        for (var i in categoryData) {
+            if (categoryData.hasOwnProperty(i)) {
+                if (categoryData[i].CatalogID == id) return categoryData[i];
+            }
+        }
+    }
     return null;
 }
 
