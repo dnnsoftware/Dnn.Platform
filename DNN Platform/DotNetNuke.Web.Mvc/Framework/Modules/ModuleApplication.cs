@@ -44,6 +44,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             DisableMvcResponseHeader = disableMvcResponseHeader;
             ControllerFactory = ControllerBuilder.Current.GetControllerFactory();
             ViewEngines = new ViewEngineCollection();
+            //ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
         public virtual IControllerFactory ControllerFactory { get; set; }
@@ -116,6 +117,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                                     Localization.LocalResourceDirectory,
                                                     controllerName);
 
+                moduleController.ViewEngineCollectionEx = ViewEngines;
                 // Execute the controller and capture the result
                 moduleController.Execute(RequestContext);
                 var result = moduleController.ResultOfLastExecute;
