@@ -56,6 +56,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
             var controller = controllerContext.Controller as IDnnController;
+            if (controller == null || controller.ViewEngineCollectionEx == null)
+                return new ViewEngineResult(new string[0]);
+
             var result = engineRequest(controller.ViewEngineCollectionEx);
 
             // If there is a view, store the view<->viewengine mapping so release works correctly
