@@ -100,24 +100,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
 
             var user = UserController.Instance.GetCurrentUserInfo();
-            var isVisible = user.UserID == targetUser.UserID;
-            if (!isVisible)
-            {
-                switch (photoProperty.ProfileVisibility.VisibilityMode)
-                {
-                    case UserVisibilityMode.AllUsers:
-                        isVisible = true;
-                        break;
-                    case UserVisibilityMode.MembersOnly:
-                        isVisible = user.UserID > 0;
-                        break;
-                    case UserVisibilityMode.AdminOnly:
-                        isVisible = user.IsInRole(settings.AdministratorRoleName);
-                        break;
-                    case UserVisibilityMode.FriendsAndGroups:
-                        break;
-                }
-            }
+            var isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
 
             if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
             {
