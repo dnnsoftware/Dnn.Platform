@@ -498,7 +498,7 @@ namespace DotNetNuke.Entities.Urls
                         if (result.PortalId != -1 && result.PortalAlias != null)
                         {
                             //for invalid tab id other than -1, show the 404 page
-                            TabInfo tabInfo = TabController.Instance.GetTab(result.TabId, result.PortalId, true);
+                            TabInfo tabInfo = TabController.Instance.GetTab(result.TabId, result.PortalId, false);
                             if (tabInfo == null && result.TabId > -1)
                             {
                                 finished = true;
@@ -519,64 +519,38 @@ namespace DotNetNuke.Entities.Urls
                                 Globals.SetApplicationName(result.PortalId);
                                 // load the PortalSettings into current context 
                                 var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
-                            //set the primary alias if one was specified
-                            if (result.PrimaryAlias != null) portalSettings.PrimaryAlias = result.PrimaryAlias;
+                                //set the primary alias if one was specified
+                                if (result.PrimaryAlias != null) portalSettings.PrimaryAlias = result.PrimaryAlias;
 
-                            if (result.CultureCode != null && fullUrl.Contains(result.CultureCode) &&
-                                portalSettings.DefaultLanguage == result.CultureCode)
-                            {
-                                //when the request culture code is the same as the portal default, check for a 301 redirect, because we try and remove the language from the url where possible
-                                result.Action = ActionType.CheckFor301;
-                            }
-
-                            int portalHomeTabId = portalSettings.HomeTabId;
-                            if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
-                            {
-                                context.Items.Add("PortalSettings", portalSettings);
-
-                                // load PortalSettings and HostSettings dictionaries into current context
-                                // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                                context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
-                                context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
-                            }
-                            //check if a secure redirection is needed
-                            //this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
-                            bool redirectSecure = CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
-                            if (redirectSecure)
-                            {
-                                if (response != null)
+                                if (result.CultureCode != null && fullUrl.Contains(result.CultureCode) &&
+                                    portalSettings.DefaultLanguage == result.CultureCode)
                                 {
-                                    //702 : don't check final url until checked for null reference first
-                                    if (result.FinalUrl != null)
+                                    //when the request culture code is the same as the portal default, check for a 301 redirect, because we try and remove the language from the url where possible
+                                    result.Action = ActionType.CheckFor301;
+                                }
+
+                                int portalHomeTabId = portalSettings.HomeTabId;
+                                if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
+                                {
+                                    context.Items.Add("PortalSettings", portalSettings);
+
+                                    // load PortalSettings and HostSettings dictionaries into current context
+                                    // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
+                                    context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                    context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
+                                }
+                                //check if a secure redirection is needed
+                                //this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
+                                bool redirectSecure = CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
+                                if (redirectSecure)
+                                {
+                                    if (response != null)
                                     {
-                                        if (result.FinalUrl.StartsWith("https://"))
+                                        //702 : don't check final url until checked for null reference first
+                                        if (result.FinalUrl != null)
                                         {
-                                            if (showDebug)
+                                            if (result.FinalUrl.StartsWith("https://"))
                                             {
-                                                /*
-                                                string debugMsg = "{0}, {1}, {2}, {3}, {4}";
-                                                string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
-                                                response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
-                                                 */
-                                                ShowDebugData(context, fullUrl, result, null);
-                                            }
-                                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.RedirectPermanent(result.FinalUrl);
-                                            finished = true;
-                                        }
-                                        else
-                                        {
-                                            if (settings.SSLClientRedirect)
-                                            {
-                                                //redirect back to http version, use client redirect
-                                                response.Clear();
-                                                // add a refresh header to the response 
-                                                response.AddHeader("Refresh", "0;URL=" + result.FinalUrl);
-                                                // add the clientside javascript redirection script
-                                                var finalUrl = HttpUtility.HtmlEncode(result.FinalUrl);
-                                                response.Write("<html><head><title></title>");
-                                                response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + finalUrl + @""")</script> -->");
-                                                response.Write("</head><body><div><a href='" + finalUrl + "'>" + finalUrl + "</a></div></body></html>");
                                                 if (showDebug)
                                                 {
                                                     /*
@@ -586,55 +560,81 @@ namespace DotNetNuke.Entities.Urls
                                                      */
                                                     ShowDebugData(context, fullUrl, result, null);
                                                 }
-                                                // send the response
-                                                //891 : reinstate the response.end to stop the entire page loading
-                                                response.End();
-                                                finished = true;
-                                            }
-                                            else
-                                            {
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                                 response.RedirectPermanent(result.FinalUrl);
                                                 finished = true;
                                             }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //check for, and do a 301 redirect if required 
-                                if (CheckForRedirects(requestUri, fullUrl, queryStringCol, result, requestType, settings, portalHomeTabId))
-                                {
-                                    if (response != null)
-                                    {
-                                        if (result.Action == ActionType.Redirect301)
-                                        {
-                                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.RedirectPermanent(result.FinalUrl, false);
-                                            finished = true;
-                                        }
-                                        else if (result.Action == ActionType.Redirect302)
-                                        {
-                                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.Redirect(result.FinalUrl, false);
-                                            finished = true;
+                                            else
+                                            {
+                                                if (settings.SSLClientRedirect)
+                                                {
+                                                    //redirect back to http version, use client redirect
+                                                    response.Clear();
+                                                    // add a refresh header to the response 
+                                                    response.AddHeader("Refresh", "0;URL=" + result.FinalUrl);
+                                                    // add the clientside javascript redirection script
+                                                    var finalUrl = HttpUtility.HtmlEncode(result.FinalUrl);
+                                                    response.Write("<html><head><title></title>");
+                                                    response.Write(@"<!-- <script language=""javascript"">window.location.replace(""" + finalUrl + @""")</script> -->");
+                                                    response.Write("</head><body><div><a href='" + finalUrl + "'>" + finalUrl + "</a></div></body></html>");
+                                                    if (showDebug)
+                                                    {
+                                                        /*
+                                                        string debugMsg = "{0}, {1}, {2}, {3}, {4}";
+                                                        string productVer = System.Reflection.Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                                                        response.AppendHeader("X-" + prodName + "-Debug", string.Format(debugMsg, requestUri.AbsoluteUri, result.FinalUrl, result.RewritePath, result.Action, productVer));
+                                                         */
+                                                        ShowDebugData(context, fullUrl, result, null);
+                                                    }
+                                                    // send the response
+                                                    //891 : reinstate the response.end to stop the entire page loading
+                                                    response.End();
+                                                    finished = true;
+                                                }
+                                                else
+                                                {
+                                                    response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                    response.RedirectPermanent(result.FinalUrl);
+                                                    finished = true;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    //612 : Don't clear out a 302 redirect if set
-                                    if (result.Action != ActionType.Redirect302 &&
-                                        result.Action != ActionType.Redirect302Now)
+                                    //check for, and do a 301 redirect if required 
+                                    if (CheckForRedirects(requestUri, fullUrl, queryStringCol, result, requestType, settings, portalHomeTabId))
                                     {
-                                        result.Reason = RedirectReason.Not_Redirected;
-                                        result.FinalUrl = null;
+                                        if (response != null)
+                                        {
+                                            if (result.Action == ActionType.Redirect301)
+                                            {
+                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                response.RedirectPermanent(result.FinalUrl, false);
+                                                finished = true;
+                                            }
+                                            else if (result.Action == ActionType.Redirect302)
+                                            {
+                                                response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                                                response.Redirect(result.FinalUrl, false);
+                                                finished = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //612 : Don't clear out a 302 redirect if set
+                                        if (result.Action != ActionType.Redirect302 &&
+                                            result.Action != ActionType.Redirect302Now)
+                                        {
+                                            result.Reason = RedirectReason.Not_Redirected;
+                                            result.FinalUrl = null;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
                         else
                         {
                             // alias does not exist in database 
