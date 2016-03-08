@@ -194,6 +194,10 @@ namespace DotNetNuke.Common.Utilities
         public const int UserCacheTimeOut = 1;
         public const CacheItemPriority UserCachePriority = CacheItemPriority.Normal;
 
+        public const string UserNotificationsCountCacheKey = "UserNotificationsCount|{0}|{1}";
+        public const string UserNewThreadsCountCacheKey = "UserNewThreadsCount|{0}|{1}";
+        public const int NotificationsCacheTimeInSec = 30;
+
         public const string UserPersonalizationCacheKey = "UserPersonalization|{0}|{1}";
         public const int UserPersonalizationCacheTimeout = 5;
         public const CacheItemPriority UserPersonalizationCachePriority = CacheItemPriority.Normal;
