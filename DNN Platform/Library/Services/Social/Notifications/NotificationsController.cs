@@ -34,6 +34,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications.Data;
+using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.Services.Social.Notifications
 {
@@ -125,7 +126,18 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual int CountNotifications(int userId, int portalId)
         {
-            return _dataService.CountNotifications(userId, portalId);
+            var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
+            var cache = CachingProvider.Instance();
+            var cacheObject = cache.GetItem(cacheKey);
+            if (cacheObject is int)
+            {
+                return (int)cacheObject;
+            }
+
+            var count = _dataService.CountNotifications(userId, portalId);
+            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            return count;
         }
 
         public virtual void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users)
