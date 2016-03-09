@@ -10,8 +10,7 @@ SELECT M.PortalID AS OwnerPortalID, T.PortalID, TM.TabID, TM.TabModuleID, M.Modu
              WHERE CAST(fileid AS nchar(10)) = SUBSTRING(tm.IconFile, 8, 10)) 
 	   ELSE COALESCE (tm.IconFile, '') 
 	   END AS IconFile, 
-	   M.AllTabs, TM.Visibility, TM.IsDeleted, 
-       TM.Header, TM.Footer, M.StartDate, M.EndDate, TM.ContainerSrc, TM.DisplayTitle, TM.DisplayPrint, TM.DisplaySyndicate, TM.IsWebSlice, TM.WebSliceTitle, 
+	   M.AllTabs, TM.Visibility, TM.IsDeleted, TM.Header, TM.Footer, M.StartDate, M.EndDate, TM.ContainerSrc, TM.DisplayTitle, TM.DisplayPrint, TM.DisplaySyndicate, TM.IsWebSlice, TM.WebSliceTitle, 
        TM.WebSliceExpiryDate, TM.WebSliceTTL, M.InheritViewPermissions, M.IsShareable, M.IsShareableViewOnly, MD.DesktopModuleID, MD.DefaultCacheTime, 
        MC.ModuleControlID, DM.BusinessControllerClass, DM.IsAdmin, DM.SupportedFeatures, CI.ContentItemID, CI.[Content], CI.ContentTypeID, CI.ContentKey, CI.Indexed, 
        CI.StateID, M.CreatedByUserID, M.CreatedOnDate, M.LastModifiedByUserID, M.LastModifiedOnDate, M.LastContentModifiedOnDate, TM.UniqueId, TM.VersionGuid, 
