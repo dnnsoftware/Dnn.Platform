@@ -64,13 +64,17 @@ namespace DotNetNuke.Web.Api
         /// <returns></returns>
         protected virtual bool SkipAuthorization(HttpActionContext actionContext)
         {
-            return IsAnonymousAttributePresent(actionContext);
+            return IsAnonymousAttributePresent(actionContext) 
+                        && !(this is SupportedModulesAttribute)
+                        && !(this is ValidateAntiForgeryTokenAttribute);
         }
 
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                   || actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
+                         && !actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>()
+                                .Any(t => !(t is SupportedModulesAttribute) && !(t is ValidateAntiForgeryTokenAttribute)));
         }
     }
 }
