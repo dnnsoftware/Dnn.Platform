@@ -1805,9 +1805,13 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
 
             ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
             foreach (ModuleInfo objModule in allTabsModules)
             {
-                ModuleController.Instance.CopyModule(objModule, tab, Null.NullString, true);
+                if (!tabModules.ContainsKey(objModule.ModuleID))
+                {
+                    ModuleController.Instance.CopyModule(objModule, tab, Null.NullString, true);
+                }
             }
 
             ClearCache(tab.PortalID);
