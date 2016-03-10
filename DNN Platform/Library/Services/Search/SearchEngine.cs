@@ -302,7 +302,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetContent gets all the content and passes it to the Indexer
@@ -311,7 +311,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         protected SearchItemInfoCollection GetContent(IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();
@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetContent gets the Portal's content and passes it to the Indexer
@@ -336,7 +336,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId">The Id of the Portal</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();
