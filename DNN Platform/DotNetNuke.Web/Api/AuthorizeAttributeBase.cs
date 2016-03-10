@@ -64,9 +64,7 @@ namespace DotNetNuke.Web.Api
         /// <returns></returns>
         protected virtual bool SkipAuthorization(HttpActionContext actionContext)
         {
-            return IsAnonymousAttributePresent(actionContext) 
-                        && !(this is SupportedModulesAttribute)
-                        && !(this is ValidateAntiForgeryTokenAttribute);
+            return IsAnonymousAttributePresent(actionContext);
         }
 
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
