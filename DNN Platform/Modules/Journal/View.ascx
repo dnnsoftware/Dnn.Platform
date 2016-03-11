@@ -26,7 +26,11 @@
                 <div class="handle"></div>
                 <ul>
                     <li><b><%= LocalizeString("WhoWillSee.Text") %></b></li>
-                    <% if (IsPublicGroup)
+                    <% if (IsGroup && !IsPublicGroup)
+                    { %>
+                    <li><input type="radio" name="privacy" value="R" checked="checked" /><%= LocalizeString("GroupMembers.Text") %></li>
+                    <% }
+                    else
                     { %>
                     <li><input type="radio" name="privacy" value="E" checked="checked" /><%= LocalizeString("Everyone.Text") %></li>
                     <li><input type="radio" name="privacy" value="C" /><%= LocalizeString("Community.Text") %></li>
@@ -34,10 +38,6 @@
                     <% if (!IsGroup) { %>
                     <li><input type="radio" name="privacy" value="U" /><%= LocalizeString("Private.Text") %></li>
                     <% } %>
-                    <% }
-                    else
-                    { %>
-                    <li><input type="radio" name="privacy" value="R" checked="checked" /><%= LocalizeString("GroupMembers.Text") %></li>
                     <% } %>
                 </ul>
             </div>

@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         private ScheduleItem CreateScheduleItem()
         {
             var scheduleItem = new ScheduleItem();
-            scheduleItem.TypeFullName = txtType.Text.Replace(" ", "");
+            scheduleItem.TypeFullName = txtType.Text.Trim();
             scheduleItem.FriendlyName = txtFriendlyName.Text;
             //DNN-4964 - values for time lapse can't be set to 0, -1 or left empty (client side validation has been added)
             scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);

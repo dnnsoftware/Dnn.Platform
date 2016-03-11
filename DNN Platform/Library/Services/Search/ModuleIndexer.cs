@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Search
                             Title = module.ModuleTitle,
                             PortalId = portalId,
                             CultureCode = module.CultureCode,
-                            ModifiedTimeUtc = module.LastModifiedOnDate,
+                            ModifiedTimeUtc = module.LastModifiedOnDate.ToUniversalTime(),
                             Body = module.Header + " " + module.Footer
                         };
 

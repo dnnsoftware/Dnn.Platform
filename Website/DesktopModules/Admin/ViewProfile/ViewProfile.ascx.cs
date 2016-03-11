@@ -171,6 +171,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 foreach (ProfilePropertyDefinition property in ProfileUser.Profile.ProfileProperties)
                 {
+                    var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
                     string value = propertyAccess.GetProperty(property.PropertyName,
                                                               String.Empty,
                                                               Thread.CurrentThread.CurrentUICulture,
@@ -184,7 +185,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     sb.Append("\"");
                     if (!string.IsNullOrEmpty(value))
                     {
-                        value = Localization.GetSafeJSString(Server.HtmlDecode(value));
+                        value = Localization.GetSafeJSString(displayDataType == "richtext" ? value : Server.HtmlDecode(value));
                         value = value
                             .Replace("\r", string.Empty)
                             .Replace("\n", " ")

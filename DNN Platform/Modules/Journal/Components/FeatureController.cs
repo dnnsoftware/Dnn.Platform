@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 //using System.Xml;
 using System.Linq;
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -144,6 +145,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                                 var searchDocument = new SearchDocument
                                 {
                                     UniqueKey = string.Format("JI_{0}_{1}", journalId, securityKey),
+                                    PortalId = moduleInfo.PortalID,
                                     Body = summary,
                                     ModifiedTimeUtc = dateUpdated,
                                     Title = title,
@@ -195,6 +197,24 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public bool HasViewPermission(SearchResult searchResult)
         {
+            if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (HttpContext.Current == null || PortalSettings.Current == null)
+                {
+                    return false;
+                }
+
+                var portalSettings = PortalSettings.Current;
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                var isAdmin = currentUser.IsInRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId).RoleName);
+                if (!HttpContext.Current.Request.IsAuthenticated || (!currentUser.IsSuperUser && !isAdmin && currentUser.IsInRole("Unverified Users")))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
             var userInfo = UserController.Instance.GetCurrentUserInfo();
             
@@ -233,6 +253,11 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         public string GetDocUrl(SearchResult searchResult)
         {
+            if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return string.Empty;
+            }
+
             string url;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);

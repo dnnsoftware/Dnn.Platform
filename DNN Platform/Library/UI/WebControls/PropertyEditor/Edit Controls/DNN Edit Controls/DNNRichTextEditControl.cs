@@ -102,8 +102,14 @@ namespace DotNetNuke.UI.WebControls
                 {
                     _richTextEditor.ControlID = ID + "edit";
                     _richTextEditor.Initialize();
-                    _richTextEditor.Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height;
-                    _richTextEditor.Width = ControlStyle.Width.IsEmpty ? new Unit(400) : ControlStyle.Width;
+                    _richTextEditor.Height = ControlStyle.Height;
+                    _richTextEditor.Width = ControlStyle.Width;
+                    if (_richTextEditor.Height.IsEmpty)
+                    {
+                        _richTextEditor.Height = new Unit(250);
+                    }
+
+                    _richTextEditor.Width = new Unit(400);
                 }
                 else
                 {

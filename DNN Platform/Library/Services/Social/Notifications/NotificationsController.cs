@@ -34,6 +34,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications.Data;
+using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.Services.Social.Notifications
 {
@@ -125,7 +126,18 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual int CountNotifications(int userId, int portalId)
         {
-            return _dataService.CountNotifications(userId, portalId);
+            var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
+            var cache = CachingProvider.Instance();
+            var cacheObject = cache.GetItem(cacheKey);
+            if (cacheObject is int)
+            {
+                return (int)cacheObject;
+            }
+
+            var count = _dataService.CountNotifications(userId, portalId);
+            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            return count;
         }
 
         public virtual void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users)
@@ -399,14 +411,24 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public IList<Notification> GetToasts(UserInfo userInfo)
         {
-            var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
-            if (toasts == null) return null;
-            foreach (var message in toasts)
+            var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
+            var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
+
+            if (toasts == null)
             {
-                _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+                foreach (var message in toasts)
+                {
+                    _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                }
+                //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
+                //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
+                DataCache.SetCache(cacheKey, new List<Notification>());
             }
+
             return toasts;
         }
+
 
         #endregion
 

@@ -28,6 +28,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal.Views;
@@ -362,7 +363,18 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int CountUnreadMessages(int userId, int portalId)
         {
-            return _dataService.CountNewThreads(userId, portalId);
+            var cacheKey = string.Format(DataCache.UserNewThreadsCountCacheKey, portalId, userId);
+            var cache = CachingProvider.Instance();
+            var cacheObject = cache.GetItem(cacheKey);
+            if (cacheObject is int)
+            {
+                return (int)cacheObject;
+            }
+
+            var count = _dataService.CountNewThreads(userId, portalId);
+            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            return count;
         }
 
         public virtual int CountSentMessages(int userId, int portalId)
