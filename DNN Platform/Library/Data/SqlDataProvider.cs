@@ -83,7 +83,9 @@ namespace DotNetNuke.Data
 
             try
             {
-                PetaPocoHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
+                DatabaseConnectionProvider.Instance()
+                                          .ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
+                ////PetaPocoHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
@@ -167,7 +169,8 @@ namespace DotNetNuke.Data
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
-                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+                return DatabaseConnectionProvider.Instance().ExecuteReader(connectionString, CommandType.Text, sql);
+                ////return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {
@@ -238,7 +241,8 @@ namespace DotNetNuke.Data
                 SQL += "    deallocate sp_cursor";
                 SQL += "  end ";
 
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                DatabaseConnectionProvider.Instance().ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                ////SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
             }
             catch (SqlException objException)
             {
@@ -288,7 +292,8 @@ namespace DotNetNuke.Data
                 SQL += "    deallocate sp_cursor";
                 SQL += "  end ";
 
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                DatabaseConnectionProvider.Instance().ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                ////SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
             }
             catch (SqlException objException)
             {
@@ -334,17 +339,35 @@ namespace DotNetNuke.Data
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                                      .ExecuteNonQuery(
+                                          ConnectionString,
+                                          CommandType.StoredProcedure,
+                                          DatabaseOwner + ObjectQualifier + procedureName,
+                                          commandParameters);
+            ////PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                                             .ExecuteReader(
+                                                 ConnectionString,
+                                                 CommandType.StoredProcedure,
+                                                 DatabaseOwner + ObjectQualifier + procedureName,
+                                                 commandParameters);
+            ////return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return DatabaseConnectionProvider.Instance()
+                                             .ExecuteScalar<T>(
+                                                 ConnectionString,
+                                                 CommandType.StoredProcedure,
+                                                 DatabaseOwner + ObjectQualifier + procedureName,
+                                                 commandParameters);
+            ////return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
         }
 
         public override string ExecuteScript(string script)

@@ -28,6 +28,8 @@ using System.Linq;
 
 namespace DotNetNuke.Data
 {
+    using System.Data;
+
     using DotNetNuke.ComponentModel;
 
     public abstract class DatabaseConnectionProvider
@@ -49,11 +51,23 @@ namespace DotNetNuke.Data
 
         public virtual string ConnectionString { get; set; }
 
+        public virtual CommandType CommandType { get; set; }
+
+        public virtual string CommandText { get; set; }
+
         #endregion
 
         #region Public Methods
 
         public abstract void ExecuteCommand();
+
+        public abstract int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText);
+
+        public abstract void ExecuteNonQuery(string connectionString, CommandType commandType, string procedure, object[] commandParameters);
+
+        public abstract IDataReader ExecuteReader(string connectionString, CommandType commandType, string procedureName, params object[] commandParameters);
+
+        public abstract T ExecuteScalar<T>(string connectionString, CommandType commandType, string procedureName, params object[] commandParameters);
 
         #endregion
     }

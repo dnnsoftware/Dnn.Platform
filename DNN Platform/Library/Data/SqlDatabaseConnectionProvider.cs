@@ -28,9 +28,14 @@ using System.Linq;
 
 namespace DotNetNuke.Data
 {
+    using System.Data;
     using System.Data.SqlClient;
 
-    public class SqlDatabaseConnection : DatabaseConnectionProvider
+    using DotNetNuke.Data.PetaPoco;
+
+    using Microsoft.ApplicationBlocks.Data;
+
+    public class SqlDatabaseConnectionProvider : DatabaseConnectionProvider
     {
         public override void ExecuteCommand()
         {
@@ -44,6 +49,26 @@ namespace DotNetNuke.Data
                 command.ExecuteNonQuery();
                 connection.Close();
             }
+        }
+
+        public override int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText)
+        {
+            return SqlHelper.ExecuteNonQuery(connectionString, commandType, commandText);
+        }
+
+        public override void ExecuteNonQuery(string connectionString, CommandType commandType, string procedure, object[] commandParameters)
+        {
+            PetaPocoHelper.ExecuteNonQuery(connectionString, commandType, procedure, commandParameters);
+        }
+
+        public override IDataReader ExecuteReader(string connectionString, CommandType commandType, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteReader(connectionString, commandType, procedureName, commandParameters);
+        }
+
+        public override T ExecuteScalar<T>(string connectionString, CommandType commandType, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteScalar<T>(connectionString, commandType, procedureName, commandParameters);
         }
     }
 }
