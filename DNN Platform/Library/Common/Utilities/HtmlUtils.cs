@@ -33,6 +33,8 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Common.Utilities
 {
+    using DotNetNuke.Services.Exceptions;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Project:    DotNetNuke
@@ -504,7 +506,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="message">The feedback message</param>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message)
-        {
+        { 
             WriteFeedback(response, indent, message, true);
         }
 
@@ -521,28 +523,36 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
         {
-            bool showInstallationMessages = true;
-            string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
-            if (ConfigSetting != null)
+            try
             {
-                showInstallationMessages = bool.Parse(ConfigSetting);
+                bool showInstallationMessages = true;
+                string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
+                if (ConfigSetting != null)
+                {
+                    showInstallationMessages = bool.Parse(ConfigSetting);
+                }
+                if (showInstallationMessages)
+                {
+                    //Get the time of the feedback
+                    TimeSpan timeElapsed = Upgrade.RunTime;
+                    string strMessage = "";
+                    if (showtime)
+                    {
+                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4)
+                                      + " -";
+                    }
+                    for (int i = 0; i <= indent; i++)
+                    {
+                        strMessage += "&nbsp;";
+                    }
+                    strMessage += message;
+                    response.Write(strMessage);
+                    response.Flush();
+                }
             }
-            if (showInstallationMessages)
+            catch (HttpException exc)
             {
-                //Get the time of the feedback
-                TimeSpan timeElapsed = Upgrade.RunTime;
-                string strMessage = "";
-                if (showtime)
-                {
-                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
-                }
-                for (int i = 0; i <= indent; i++)
-                {
-                    strMessage += "&nbsp;";
-                }
-                strMessage += message;
-                response.Write(strMessage);
-                response.Flush();
+                Exceptions.LogException(exc);
             }
         }
 
