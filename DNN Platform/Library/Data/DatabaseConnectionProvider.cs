@@ -53,8 +53,6 @@ namespace DotNetNuke.Data
 
         public virtual CommandType CommandType { get; set; }
 
-        public virtual string CommandText { get; set; }
-
         #endregion
 
         #region Public Methods
