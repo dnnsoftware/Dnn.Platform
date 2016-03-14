@@ -33,8 +33,6 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Common.Utilities
 {
-    using DotNetNuke.Services.Exceptions;
-
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Project:    DotNetNuke
