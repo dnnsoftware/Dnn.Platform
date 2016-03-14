@@ -550,9 +550,9 @@ namespace DotNetNuke.Common.Utilities
                     response.Flush();
                 }
             }
-            catch (HttpException exc)
+            catch (HttpException)
             {
-                Exceptions.LogException(exc);
+                // Swallowing this for when requests have timed out.
             }
         }
 
