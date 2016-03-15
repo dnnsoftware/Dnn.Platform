@@ -15,6 +15,11 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
             [PackageID] [int] NOT NULL DEFAULT ((-1))
         )
 
+        ALTER TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls] ADD CONSTRAINT [PK_{objectQualifier}Dashboard] PRIMARY KEY CLUSTERED  ([DashboardControlID])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls] WITH NOCHECK  ADD CONSTRAINT [FK_{objectQualifier}Dashboard_Controls_{objectQualifier}Packages] FOREIGN KEY ([PackageID]) REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE ON UPDATE CASCADE
+
+        INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'DashboardControl', N'Dashboard Control', 3, NULL, 0)
+
         DECLARE @PackageId INT
         INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.WebServer', N'WebServer', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)
         SELECT @PackageId = SCOPE_IDENTITY()
@@ -179,16 +184,17 @@ AS
     
 GO
 
-IF (EXISTS (SELECT name FROM sysobjects WHERE (name = N'{objectQualifier}Dashboard_GetDashboardControlByPackageId') AND (type = 'P')))
-  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetDashboardControlByKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByKey
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByPackageId  
-	@PackageID INT
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Dashboard_GetDashboardControlByKey  
+	@DashboardControlKey nvarchar(50)
 AS
+	
 	SELECT *
 	  FROM {databaseOwner}{objectQualifier}Dashboard_Controls
-		WHERE PackageID = @PackageID AND PackageID <> -1
+		WHERE DashboardControlKey = @DashboardControlKey
     
 GO
 
