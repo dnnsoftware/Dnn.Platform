@@ -4,7 +4,7 @@
     <script name="Schema">DotNetNuke.Schema</script>
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
-  <version>08.00.01</version>
+  <version>07.00.00</version>
   <installCulture>en-US</installCulture>
   <superuser>
     <firstname>SuperUser</firstname>
