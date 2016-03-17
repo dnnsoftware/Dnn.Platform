@@ -753,11 +753,16 @@ namespace DotNetNuke.Entities.Tabs
 
         private bool SoftDeleteTabInternal(TabInfo tabToDelete, PortalSettings portalSettings)
         {
-            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID, tabToDelete.TabID);
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            Dto.ChangeControlState changeControlStateForTab = null;
+            if (tabToDelete.PortalID > -1)
             {
-                TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
-                TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+                changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID,
+                    tabToDelete.TabID);
+                if (changeControlStateForTab.IsChangeControlEnabledForTab)
+                {
+                    TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
+                    TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+                }
             }
 
             var deleted = false;
@@ -781,7 +786,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            if (changeControlStateForTab != null && changeControlStateForTab.IsChangeControlEnabledForTab)
             {
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
