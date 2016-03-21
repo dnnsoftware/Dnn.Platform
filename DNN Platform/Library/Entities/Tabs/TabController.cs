@@ -773,6 +773,9 @@ namespace DotNetNuke.Entities.Tabs
                     tabToDelete.IsDeleted = true;
                     UpdateTab(tabToDelete);
 
+                    // Remove all tab redirect references.
+                    RemoveRedirectReferences(tabToDelete.TabID, tabToDelete.PortalID);
+
                     foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabToDelete.TabID).Values)
                     {
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
@@ -793,6 +796,18 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return deleted;
+        }
+
+        /// <summary>Removes the redirect references.</summary>
+        /// <param name="tabId">The tab identifier.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        private void RemoveRedirectReferences(int tabId, int portalId)
+        {
+            foreach (var tab in GetTabsByPortal(portalId).Values.Where(t => t.Url.Equals(tabId.ToString(CultureInfo.InvariantCulture))))
+            {
+                tab.Url = string.Empty;
+                UpdateTab(tab);
+            }
         }
 
         private void UpdateTabSettingInternal(int tabId, string settingName, string settingValue, bool clearCache)
@@ -2735,15 +2750,29 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Normal"));
                     break;
                 case TabType.Tab:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
-                    //Get the tab being linked to
-                    TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    int tabId;
+                    if (Int32.TryParse(tab.Url, out tabId))
+                    {
+                        //Get the tab being linked to
+                        TabInfo tempTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
+                        if (tempTab?.TabPath != null)
+                        {
+                            urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
+                            urlNode.InnerXml = tempTab.TabPath;
+                        }
+                    }
                     break;
                 case TabType.File:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
-                    IFileInfo file = FileManager.Instance.GetFile(Int32.Parse(tab.Url.Substring(7)));
-                    urlNode.InnerXml = file.RelativePath;
+                    int fileId;
+                    if (Int32.TryParse(tab.Url.Substring(7), out fileId))
+                    {
+                        IFileInfo file = FileManager.Instance.GetFile(fileId);
+                        if (file?.RelativePath != null)
+                        {
+                            urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
+                            urlNode.InnerXml = file.RelativePath;
+                        }
+                    }
                     break;
                 case TabType.Url:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Url"));
