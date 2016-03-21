@@ -90,3 +90,20 @@ GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
+
+/* CONTENT-5905 Add/Update RegEx to allow DnnImageHandler and stop throwing 404 Error */
+
+DECLARE @DoNotRedirectUrlRegex_Value NVARCHAR(2000);
+DECLARE @DoNotRewriteRegEx_Value NVARCHAR(2000);
+SELECT @DoNotRedirectUrlRegex_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+SELECT @DoNotRewriteRegEx_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRewriteRegEx'
+IF(CHARINDEX('|\.ashx', @DoNotRedirectUrlRegex_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRedirectUrlRegex_Value + '|\.ashx' WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+END
+IF(CHARINDEX('|/DnnImageHandler\.ashx', @DoNotRewriteRegEx_Value) = 0 AND CHARINDEX('/DnnImageHandler\.ashx|', @DoNotRewriteRegEx_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRewriteRegEx_Value + '|/DnnImageHandler\.ashx' WHERE SettingName='AUM_DoNotRewriteRegEx'
+END
+
+/* CONTENT-5905 End */
