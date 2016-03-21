@@ -612,8 +612,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
 			{
 				if (!String.IsNullOrEmpty(TempInstallFolder) && Directory.Exists(TempInstallFolder))
 				{
-					Directory.Delete(TempInstallFolder, true);
-				}
+                    Globals.DeleteFolderRecursive(TempInstallFolder);
+                }
 
 				if (DeleteFile && File.Exists(FileName))
 				{
