@@ -212,6 +212,10 @@ namespace DotNetNuke.Services.Localization
             {
                 return new Dictionary<string, string>();
             }
+
+            //clone the dictionart so that when merge values into dictionart, it won't
+            //affect the cache data.
+            res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
             if (defaultLanguage != systemLanguage)
             {
