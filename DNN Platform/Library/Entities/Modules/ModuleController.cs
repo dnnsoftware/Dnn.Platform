@@ -2256,7 +2256,7 @@ namespace DotNetNuke.Entities.Modules
                     ModuleInfo module = DeserializeModule(nodeModule, nodePane, portalId, tabId, moduleDefinition.ModuleDefID);
                     //if the module is marked as show on all tabs, then check whether the module is exist in current website and it also
                     //still marked as shown on all tabs, this action will make sure there is no duplicate modules created on new tab.
-                    if (module.AllTabs)
+                    if (mergeTabs != PortalTemplateModuleAction.Replace && module.AllTabs)
                     {
                         var existModule = Instance.GetModule(templateModuleID, Null.NullInteger, false);
                         if (existModule != null && !existModule.IsDeleted && existModule.AllTabs && existModule.PortalID == portalId)

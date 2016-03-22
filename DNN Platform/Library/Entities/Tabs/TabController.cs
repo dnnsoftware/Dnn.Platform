@@ -2181,7 +2181,7 @@ namespace DotNetNuke.Entities.Tabs
             //If Mode is Replace remove all the modules already on this Tab
             if (mergeTabs == PortalTemplateModuleAction.Replace)
             {
-                foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules.Where(kvp => !kvp.Value.AllTabs))
+                foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
                     ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
                 }
