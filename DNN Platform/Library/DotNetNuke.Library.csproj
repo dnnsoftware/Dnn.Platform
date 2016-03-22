@@ -194,9 +194,11 @@
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Data\DatabaseConnectionProvider.cs" />
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
+    <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />

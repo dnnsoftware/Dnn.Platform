@@ -49,10 +49,6 @@ namespace DotNetNuke.Data
 
         private const string _scriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-		private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)", 
-															RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-		private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-
         #endregion
 
         #region Public Properties
@@ -83,7 +79,8 @@ namespace DotNetNuke.Data
 
             try
             {
-                PetaPocoHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
+                DatabaseConnectionProvider.Instance()
+                                          .ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
@@ -110,39 +107,20 @@ namespace DotNetNuke.Data
                     // script dynamic substitution
                     sql = DataUtil.ReplaceTokens(sql);
 
-                    //Clean up some SQL Azure incompatabilities
-	                var query = GetAzureCompactScript(sql);
-
-                    if (query != sql)
-                    {
-                        var props = new LogProperties { new LogDetailInfo("SQL Script Modified", query) };
-
-                        EventLogController.Instance.AddLog(props,
-                                    PortalController.Instance.GetCurrentPortalSettings(),
-                                    UserController.Instance.GetCurrentUserInfo().UserID,
-                                    EventLogController.EventLogType.HOST_ALERT.ToString(),
-                                    true);
-                    }
-
                     try
                     {
-                        Logger.Trace("Executing SQL Script " + query);
+                        Logger.Trace("Executing SQL Script " + sql);
 
-                        //Create a new connection
-                        using (var connection = new SqlConnection(connectionString))
-                        {
-                            //Create a new command (with no timeout)
-                            var command = new SqlCommand(query, connection) { CommandTimeout = 0 };
-
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
-                        }
+                        var databaseConnection = DatabaseConnectionProvider.Instance();
+                        databaseConnection.CommandTimeout = 0;
+                        databaseConnection.ConnectionString = connectionString;
+                        databaseConnection.Query = sql;
+                        databaseConnection.ExecuteCommand();
                     }
                     catch (SqlException objException)
                     {
                         Logger.Error(objException);
-                        exceptions += objException + Environment.NewLine + Environment.NewLine + query + Environment.NewLine + Environment.NewLine;
+                        exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
                     }
                 }
             }
@@ -161,7 +139,7 @@ namespace DotNetNuke.Data
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
-                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+                return DatabaseConnectionProvider.Instance().ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {
@@ -232,7 +210,7 @@ namespace DotNetNuke.Data
                 SQL += "    deallocate sp_cursor";
                 SQL += "  end ";
 
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                DatabaseConnectionProvider.Instance().ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
             }
             catch (SqlException objException)
             {
@@ -282,7 +260,7 @@ namespace DotNetNuke.Data
                 SQL += "    deallocate sp_cursor";
                 SQL += "  end ";
 
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                DatabaseConnectionProvider.Instance().ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
             }
             catch (SqlException objException)
             {
@@ -292,21 +270,6 @@ namespace DotNetNuke.Data
             }
             return Exceptions;
         }
-
-		private string GetAzureCompactScript(string script)
-		{
-			if (ScriptWithRegex.IsMatch(script))
-			{
-				script = ScriptWithRegex.Replace(script, string.Empty);
-			}
-
-			if (ScriptOnPrimaryRegex.IsMatch(script))
-			{
-				script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
-			}
-
-			return script;
-		}
 
         private Regex SqlDelimiterRegex
         {
@@ -328,17 +291,32 @@ namespace DotNetNuke.Data
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                                      .ExecuteNonQuery(
+                                          ConnectionString,
+                                          CommandType.StoredProcedure,
+                                          DatabaseOwner + ObjectQualifier + procedureName,
+                                          commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                                             .ExecuteReader(
+                                                 ConnectionString,
+                                                 CommandType.StoredProcedure,
+                                                 DatabaseOwner + ObjectQualifier + procedureName,
+                                                 commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return DatabaseConnectionProvider.Instance()
+                                             .ExecuteScalar<T>(
+                                                 ConnectionString,
+                                                 CommandType.StoredProcedure,
+                                                 DatabaseOwner + ObjectQualifier + procedureName,
+                                                 commandParameters);
         }
 
         public override string ExecuteScript(string script)
