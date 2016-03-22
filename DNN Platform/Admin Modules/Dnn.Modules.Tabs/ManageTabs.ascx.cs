@@ -1081,7 +1081,7 @@ namespace Dnn.Modules.Tabs
                             Skin.AddModuleMessage(this, Localization.GetString("BadTemplate", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return Null.NullInteger;
                         }
-                        TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), Tab.PortalID, Tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                        TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), Tab.PortalID, Tab.TabID, PortalTemplateModuleAction.Replace, new Hashtable());
                         //save tab permissions
                         RibbonBarManager.DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), Tab);
 
