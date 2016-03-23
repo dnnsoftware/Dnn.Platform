@@ -2183,7 +2183,12 @@ namespace DotNetNuke.Entities.Tabs
             {
                 foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
-                    ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    var module = kvp.Value;
+                    //when the modules show on all pages are included by the same import process, it need removed.
+                    if (!module.AllTabs || hModules.ContainsValue(module.ModuleID))
+                    {
+                        ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    }
                 }
             }
 
