@@ -240,7 +240,7 @@ namespace DotNetNuke.Security.Membership
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
-            if (displayName.Contains("<"))
+            if (displayName.Contains("<") || displayName.Contains(">"))
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }

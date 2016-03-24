@@ -281,7 +281,7 @@ namespace DotNetNuke.Security
             const string replacement = " ";
 
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (tempInput.Contains("&gt;") && tempInput.Contains("&lt;"))
+            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);

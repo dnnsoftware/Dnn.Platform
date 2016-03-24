@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Users
                         break;
                     case "richtext":
                         var objSecurity = new PortalSecurity();
-                        result = PropertyAccess.FormatString(objSecurity.InputFilter(HttpUtility.HtmlDecode(property.PropertyValue), PortalSecurity.FilterFlag.NoScripting), formatString);
+                        result = PropertyAccess.FormatString(objSecurity.InputFilter(property.PropertyValue, PortalSecurity.FilterFlag.NoScripting), formatString);
                         break;
                     default:
                         result = HttpUtility.HtmlEncode(PropertyAccess.FormatString(property.PropertyValue, formatString));

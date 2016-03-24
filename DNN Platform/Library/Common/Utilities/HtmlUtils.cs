@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled);
         private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
-        private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
+        private static readonly Regex StripTagsRegex = new Regex("<.*?>", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
          
         //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
@@ -338,8 +338,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
-            string RepString = RetainSpace ? " " : "";
-            return StripTagsRegex.Replace(HTML, RepString);
+            return StripTagsRegex.Replace(HTML, RetainSpace ? " " : "");
         }
 
 

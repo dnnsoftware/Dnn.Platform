@@ -602,11 +602,11 @@ namespace DotNetNuke.Entities.Profile
                 needEncode = true;
             }
 
-            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.IgnoreCase);
             foreach (Match match in tagMatches)
             {
                 var tagContent = match.Value;
-                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.IgnoreCase);
                 cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
             }
 
