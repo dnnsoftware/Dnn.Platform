@@ -130,7 +130,7 @@
     <value>Collapse all Nodes</value>
   </data>
   <data name="ConfirmDelete.Text" xml:space="preserve">
-    <value>This will delete the selected page, all of its child pages, and all redirect references. Are you sure?</value>
+    <value>This will delete the selected page and all its child pages. Are you sure?</value>
   </data>
   <data name="DeletePage.Text" xml:space="preserve">
     <value>Delete Page</value>

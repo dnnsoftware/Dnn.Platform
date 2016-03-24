@@ -773,9 +773,6 @@ namespace DotNetNuke.Entities.Tabs
                     tabToDelete.IsDeleted = true;
                     UpdateTab(tabToDelete);
 
-                    // Remove all tab redirect references.
-                    RemoveRedirectReferences(tabToDelete.TabID, tabToDelete.PortalID);
-
                     foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabToDelete.TabID).Values)
                     {
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
@@ -796,18 +793,6 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return deleted;
-        }
-
-        /// <summary>Removes the redirect references.</summary>
-        /// <param name="tabId">The tab identifier.</param>
-        /// <param name="portalId">The portal identifier.</param>
-        private void RemoveRedirectReferences(int tabId, int portalId)
-        {
-            foreach (var tab in GetTabsByPortal(portalId).Values.Where(t => t.Url.Equals(tabId.ToString(CultureInfo.InvariantCulture))))
-            {
-                tab.Url = string.Empty;
-                UpdateTab(tab);
-            }
         }
 
         private void UpdateTabSettingInternal(int tabId, string settingName, string settingValue, bool clearCache)
