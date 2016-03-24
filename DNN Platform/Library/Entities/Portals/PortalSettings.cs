@@ -819,5 +819,14 @@ namespace DotNetNuke.Entities.Portals
 		}
 
         #endregion
-	}
+
+        #region Public Methods
+
+	    public PortalSettings Clone()
+	    {
+	        return (PortalSettings)MemberwiseClone();
+	    }
+
+        #endregion
+    }
 }
