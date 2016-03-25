@@ -553,7 +553,9 @@ namespace Dnn.Modules.Tabs
 
         protected void OnCreatePagesClick(object sender, EventArgs e)
         {
-            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) 
+            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
+            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
+            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) && !TabPermissionController.CanAddPage(rootTab))
                 return;
 
             var strValue = txtBulk.Text;
@@ -569,8 +571,6 @@ namespace Dnn.Modules.Tabs
             }
 
             var pages = strValue.Split(char.Parse("\n"));
-            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
-            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
             var tabs = new List<TabInfo>();
 
             foreach (var strLine in pages)
