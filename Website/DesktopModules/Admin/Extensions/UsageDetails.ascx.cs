@@ -209,8 +209,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     FilterUsageList.DataBind();
 
                     FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionHost", LocalResourceFile), Null.NullInteger.ToString());
-                    FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2");
-                    FilterUsageList.Items[0].Selected = true;
+                    FilterUsageList.SelectedValue = this.PortalId.ToString();
                 }
             }
         }
@@ -241,15 +240,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (IsSuperTab)
                 {
-                    if (selectedPortalID == -2)
-                    {
-                        portalName = string.Empty;
-                    }
-                    else
-                    {
-                        tabs = BuildData(selectedPortalID);
-                        portalName = selectedPortalName;
-                    }
+                    tabs = BuildData(selectedPortalID);
+                    portalName = selectedPortalName;
                 }
                 else
                 {
