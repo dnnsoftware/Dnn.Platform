@@ -28,13 +28,11 @@ using DotNetNuke.Data;
 
 namespace DotNetNuke.Tests.Data.Fakes
 {
-    class FakeDataProvider : DataProvider
+    internal class FakeDataProvider : DataProvider
     {
-        private Dictionary<string, string> _settings;
-
         public FakeDataProvider(Dictionary<string, string> settings )
         {
-            _settings = settings;
+            Settings = settings;
         }
 
         #region Overrides of DataProvider
@@ -44,12 +42,14 @@ namespace DotNetNuke.Tests.Data.Fakes
             get { throw new System.NotImplementedException(); }
         }
 
-        public override Dictionary<string, string> Settings
-        {
-            get { return _settings; }
-        }
+        public override Dictionary<string, string> Settings { get; }
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
             throw new System.NotImplementedException();
         }

@@ -49,6 +49,8 @@ using Microsoft.ApplicationBlocks.Data;
 
 #endregion
 
+// ReSharper disable InconsistentNaming
+
 namespace DotNetNuke.Data
 {
 	public abstract class DataProvider
@@ -169,7 +171,9 @@ namespace DotNetNuke.Data
 
 		public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
 
-		public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
+        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
+
+        public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
 
