@@ -42,6 +42,9 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
     DROP TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls]
 GO
 
+DELETE FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = N'DashboardControl'
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
