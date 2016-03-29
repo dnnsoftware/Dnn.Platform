@@ -2738,7 +2738,10 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    if (tempTab != null)
+                    {
+                        urlNode.InnerXml = tempTab.TabPath;
+                    }
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
@@ -2783,16 +2786,19 @@ namespace DotNetNuke.Entities.Tabs
             if (tabs != null)
             {
                 //Manage Parent Tab
-                if (!Null.IsNull(tab.ParentId))
+                if (!Null.IsNull(tab.ParentId) && tabs.ContainsKey(tab.ParentId))
                 {
                     newnode = tabXml.CreateElement("parent");
                     newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.ParentId].ToString());
                     tabNode.AppendChild(newnode);
 
                     //save tab as: ParentTabName/CurrentTabName
-                    tabs.Add(tab.TabID, tabs[tab.ParentId] + "/" + tab.TabName);
+                    if (!tabs.ContainsKey(tab.TabID))
+                    {
+                        tabs.Add(tab.TabID, tabs[tab.ParentId] + "/" + tab.TabName);
+                    }
                 }
-                else
+                else if(!tabs.ContainsKey(tab.TabID))
                 {
                     //save tab as: CurrentTabName
                     tabs.Add(tab.TabID, tab.TabName);
