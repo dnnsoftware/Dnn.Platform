@@ -654,7 +654,7 @@ Please login using the following information:
 Website Address: [Portal:URL]
 Username:   [User:Username]
 
-Link to reset password: http://[Portal:URL]/default.aspx?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken]
+Link to reset password: [Portal:LOGINURL]?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken]
 
 Sincerely,
 [Portal:PortalName]

@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Common;
 
 #endregion
 
@@ -646,7 +647,16 @@ namespace DotNetNuke.Entities.Portals
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
 					break;
-				case "portalid":
+                case "loginurl": //if login page defined in portal settings, then get that page url, otherwise return home page.
+                    propertyNotFound = false;
+			        var loginUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
+			        if (LoginTabId > Null.NullInteger && Globals.ValidateLoginTabID(LoginTabId))
+			        {
+			            loginUrl = Globals.LoginURL(string.Empty, false, this);
+			        }
+                    result = PropertyAccess.FormatString(loginUrl, format);
+                    break;
+                case "portalid":
 					propertyNotFound = false;
 					result = (PortalId.ToString(outputFormat, formatProvider));
 					break;
