@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        private static void CheckAndUpdatePortalSettingsForNewAlias(PortalSettings portalSettings, bool cultureSpecificAlias, string portalAlias)
+        private static PortalSettings CheckAndUpdatePortalSettingsForNewAlias(PortalSettings portalSettings, bool cultureSpecificAlias, string portalAlias)
         {
             if (cultureSpecificAlias && portalAlias != portalSettings.PortalAlias.HTTPAlias)
             {
@@ -218,9 +218,12 @@ namespace DotNetNuke.Entities.Urls
                 PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalSettings.PortalId);
                 if (pa != null)
                 {
+                    portalSettings = portalSettings.Clone();
                     portalSettings.PortalAlias = pa;
                 }
             }
+
+            return portalSettings;
         }
 
         private static string CheckForDebug(HttpRequest request)
@@ -428,7 +431,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (portalSettings != null)
             {
-                CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
+                portalSettings = CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
             }
 
             if (tab == null && path == "~/" && String.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
