@@ -1324,7 +1324,7 @@ namespace Dnn.Modules.Tabs
                 try
                 {
                     xmlDoc.Load(templateFile);
-                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Replace, new Hashtable());
+                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                 }
                 catch (Exception ex)
                 {

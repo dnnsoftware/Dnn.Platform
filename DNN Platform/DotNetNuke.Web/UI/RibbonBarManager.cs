@@ -402,7 +402,7 @@ namespace DotNetNuke.Web.UI
                 {
 	                var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
 					xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
-                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Replace, new Hashtable());
+                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                     
                     //save tab permissions
                     DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
