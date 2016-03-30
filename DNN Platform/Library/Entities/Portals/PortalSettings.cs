@@ -647,14 +647,14 @@ namespace DotNetNuke.Entities.Portals
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
 					break;
-                case "loginurl": //if login page defined in portal settings, then get that page url, otherwise return home page.
+                case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page.
                     propertyNotFound = false;
-			        var loginUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
-			        if (LoginTabId > Null.NullInteger && Globals.ValidateLoginTabID(LoginTabId))
+			        var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
+			        if (RegisterTabId > Null.NullInteger)
 			        {
-			            loginUrl = Globals.LoginURL(string.Empty, false, this);
+                        reminderUrl = Globals.RegisterURL(string.Empty, string.Empty);
 			        }
-                    result = PropertyAccess.FormatString(loginUrl, format);
+                    result = PropertyAccess.FormatString(reminderUrl, format);
                     break;
                 case "portalid":
 					propertyNotFound = false;
