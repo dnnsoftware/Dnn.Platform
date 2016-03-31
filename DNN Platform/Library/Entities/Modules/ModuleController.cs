@@ -1798,6 +1798,8 @@ namespace DotNetNuke.Entities.Modules
         public void RestoreModule(ModuleInfo objModule)
         {
             dataProvider.RestoreTabModule(objModule.TabID, objModule.ModuleID);
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            TabChangeTracker.Instance.TrackModuleCopy(objModule, 1, objModule.TabID, userId);
             ClearCache(objModule.TabID);
         }
 

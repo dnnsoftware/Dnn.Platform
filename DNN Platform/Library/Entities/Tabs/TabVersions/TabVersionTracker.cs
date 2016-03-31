@@ -168,6 +168,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 var targetVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??
                                     TabVersionBuilder.Instance.GetCurrentVersion(module.TabID);
 
+                if (targetVersion == null)
+                {
+                    return;
+                }
+
                 ProcessDeletionDetail(module, moduleVersion, userId, targetVersion);
             }
             catch (Exception ex)
