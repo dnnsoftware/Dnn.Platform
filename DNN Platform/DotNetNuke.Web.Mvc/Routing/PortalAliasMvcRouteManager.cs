@@ -25,7 +25,14 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
-            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(portalAlias.HTTPAlias));
+            var alias = portalAlias.HTTPAlias;
+            string appPath = TestableGlobals.Instance.ApplicationPath;
+            int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
+            if (i > 0)
+            {
+                alias = alias.Remove(i, appPath.Length);
+            }
+            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
         private static string GeneratePrefixString(int count)
