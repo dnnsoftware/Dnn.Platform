@@ -1,7 +1,7 @@
 
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -2785,7 +2785,7 @@ namespace DotNetNuke.Services.Upgrade
 
                         if (userName != HttpUtility.HtmlDecode(userName))
                         {
-                            userName = portalSecurity.InputFilter(userName,
+                            userName = portalSecurity.InputFilter(HttpUtility.HtmlDecode(userName),
                                                                  PortalSecurity.FilterFlag.NoScripting |
                                                                  PortalSecurity.FilterFlag.NoAngleBrackets |
                                                                  PortalSecurity.FilterFlag.NoMarkup);
