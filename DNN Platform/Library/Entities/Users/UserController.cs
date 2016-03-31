@@ -28,7 +28,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -75,8 +74,6 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
-        private const string DefaultUsersFoldersPath = "Users";
-
         protected override Func<IUserController> GetFactory()
         {
             return () => new UserController();
@@ -203,13 +200,6 @@ namespace DotNetNuke.Entities.Users
             {
                 user.PortalID = portalId;
             }
-        }
-
-        private static object GetCachedUserByPortalCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            var username = (string)cacheItemArgs.ParamList[1];
-            return MembershipProvider.Instance().GetUserByUserName(portalId, username);
         }
 
         private static UserInfo GetCurrentUserInternal()
@@ -1090,10 +1080,9 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static UserInfo GetCachedUser(int portalId, string username)
         {
-            //Get the User cache key
             var masterPortalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.UserCacheKey, masterPortalId, username);
-            var user = CBO.GetCachedObject<UserInfo>(new CacheItemArgs(cacheKey, DataCache.UserCacheTimeOut, DataCache.UserCachePriority, masterPortalId, username), GetCachedUserByPortalCallBack);
+            // user is cached inside the MembershipProvider.Instance().GetUserByUserName method
+            var user = MembershipProvider.Instance().GetUserByUserName(masterPortalId, username);
             FixMemberPortalId(user, portalId);
 
             if (user!= null)
@@ -1998,9 +1987,12 @@ namespace DotNetNuke.Entities.Users
 
             AddEventLog(portalId, user.Username, user.UserID, portalName, ip, user.IsSuperUser ? UserLoginStatus.LOGIN_SUPERUSER : UserLoginStatus.LOGIN_SUCCESS);
 
-            //Update User in Database with Last IP used
-            user.LastIPAddress = ip;
-            DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
+            if (user.LastIPAddress != ip)
+            {
+                //Update User in Database with Last IP used
+                user.LastIPAddress = ip;
+                DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
+            }
 
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
