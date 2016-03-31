@@ -26,12 +26,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using System.Web.Security;
 
@@ -1127,8 +1124,16 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
-            IDataReader dr = _dataProvider.GetUserByUsername(portalId, username);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            var objUserInfo = CBO.GetCachedObject<UserInfo>(
+                new CacheItemArgs(string.Format(DataCache.UserCacheKey, portalId, username),
+                    DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
+                _ =>
+                {
+                    using (var dr = _dataProvider.GetUserByUsername(portalId, username))
+                    {
+                        return FillUserInfo(portalId, dr, true);
+                    }
+                });
             return objUserInfo;
         }
 
