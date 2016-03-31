@@ -2736,7 +2736,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case TabType.Tab:
                     int tabId;
-                    if (Int32.TryParse(tab.Url, out tabId))
+                    if (int.TryParse(tab.Url, out tabId))
                     {
                         //Get the tab being linked to
                         TabInfo tempTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
@@ -2749,7 +2749,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case TabType.File:
                     int fileId;
-                    if (Int32.TryParse(tab.Url.Substring(7), out fileId))
+                    if (int.TryParse(tab.Url.Substring(7), out fileId))
                     {
                         IFileInfo file = FileManager.Instance.GetFile(fileId);
                         if (file?.RelativePath != null)
