@@ -338,8 +338,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
-            string RepString = RetainSpace ? " " : "";
-            return StripTagsRegex.Replace(HTML, RepString);
+            return StripTagsRegex.Replace(HTML, RetainSpace ? " " : "");
         }
 
 
