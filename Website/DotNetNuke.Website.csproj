@@ -863,6 +863,7 @@
     <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
       <DependentUpon>Preview.ascx</DependentUpon>
     </Compile>
+	<Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
