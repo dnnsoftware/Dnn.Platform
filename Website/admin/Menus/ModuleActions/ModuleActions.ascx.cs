@@ -128,6 +128,8 @@ namespace DotNetNuke.Admin.Containers
 
                     DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
                     ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "QS_FirstLoad", "False");
+
+                    ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
                 if (ActionRoot.Visible)
