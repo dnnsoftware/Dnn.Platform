@@ -161,7 +161,7 @@ p.dnnFormRequired span
 }
 
 .dnnProfileDetails .dnnFormItem > span:hover {
-    cursor: not-allowed;
+    cursor: pointer;
 }
 
 .dnnProfileDetails .dnnFormItem > span {
@@ -173,7 +173,6 @@ p.dnnFormRequired span
 }
 
 .dnnProfileDetails .dnnFormItem input[type="text"],
-.dnnProfileDetails .dnnFormItem > span,
 .dnnProfileDetails .dnnFormItem textarea,
 .dnnProfileDetails .dnnFormItem select,
 .dnnProfileDetails .RadPicker{
@@ -182,6 +181,21 @@ p.dnnFormRequired span
     width: 85%;
     box-sizing: border-box;
 }
+.dnnProfileDetails .dnnFormItem > span
+{ 
+	box-sizing: 
+	border-box; 
+	display: inline; 
+	float: none; 
+	width: auto; 
+	background-color: 
+	transparent; padding: 4px; 
+}
+.dnnProfileDetails .dnnFormItem > span.dnnRadiobutton
+{ 
+	background-color: #dbdbdb;
+}
+
 .dnnProfileDetails .dnnFormItem .dnnDropDownList input[type="text"] {
     float: none;
 }
