@@ -241,6 +241,7 @@
                     refresh: refresh,
                     showReturn: showReturn,
                     closingUrl: closingUrl,
+                    minHeight: height,
                     position: { my: "top", at: "top" },
                     draggable: false,
 					open: function() { 
