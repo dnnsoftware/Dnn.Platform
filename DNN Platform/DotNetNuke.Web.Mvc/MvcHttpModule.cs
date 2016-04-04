@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
@@ -41,7 +42,7 @@ namespace DotNetNuke.Web.Mvc
         public void Init(HttpApplication context)
         {
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
-
+            AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
             ViewEngines.Engines.Add(new RazorViewEngine());
