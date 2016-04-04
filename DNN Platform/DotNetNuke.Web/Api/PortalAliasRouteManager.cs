@@ -46,10 +46,13 @@ namespace DotNetNuke.Web.Api
         {
             var alias = portalAlias.HTTPAlias;
             string appPath = TestableGlobals.Instance.ApplicationPath;
-            int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
-            if (i > 0)
+            if (!string.IsNullOrEmpty(appPath))
             {
-                alias = alias.Remove(i, appPath.Length);
+                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
+                if (i > 0)
+                {
+                    alias = alias.Remove(i, appPath.Length);
+                }
             }
             return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
