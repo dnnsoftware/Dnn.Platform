@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = portalRoot + "/";
             }
-            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot.ToLowerInvariant(), RegexOptions.IgnoreCase);
 
             return content;
         }
