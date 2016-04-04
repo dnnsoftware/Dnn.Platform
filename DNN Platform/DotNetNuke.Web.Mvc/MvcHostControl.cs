@@ -38,8 +38,14 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
+        #region Fields
+
         private ModuleRequestResult _result;
         private string _controlKey;
+
+        #endregion
+
+        #region Constructors
 
         public MvcHostControl()
         {
@@ -50,6 +56,10 @@ namespace DotNetNuke.Web.Mvc
         {
             _controlKey = controlKey;
         }
+
+        #endregion
+
+        #region Private Methods
 
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
@@ -164,53 +174,6 @@ namespace DotNetNuke.Web.Mvc
             return actions;
         }
 
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            try
-            {
-                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
-                var moduleExecutionEngine = GetModuleExecutionEngine();
-
-                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
-
-                ModuleActions = LoadActions(_result);
-
-                httpContext.SetModuleRequestResult(_result);
-
-                //if (_result != null)
-                //{
-                //    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
-                //}
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            try
-            {
-                if (_result != null)
-                {
-                    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-
-            base.OnLoad(e);
-        }
-
-
         private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
         {
             MvcHtmlString moduleOutput;
@@ -226,5 +189,66 @@ namespace DotNetNuke.Web.Mvc
 
             return moduleOutput;
         }
+
+        protected void ExecuteModule()
+        {
+            try
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                var moduleExecutionEngine = GetModuleExecutionEngine();
+
+                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
+
+                ModuleActions = LoadActions(_result);
+
+                httpContext.SetModuleRequestResult(_result);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
+        public ModuleActionCollection ModuleActions { get; private set; }
+
+        protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        #endregion
+
+        #region Event Handlers
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (ExecuteModuleImmediately)
+            {
+                ExecuteModule();
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            try
+            {
+                if (_result != null)
+                {
+                    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        #endregion
     }
 }
