@@ -51,6 +51,28 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             if (AsyncPostBackHandlerEnabled)
             {
                 const string handlerScript = @"
+var loadScriptInSingleMode = function(){
+    var s = document.createElement( 'script' );
+    s.type = 'text/javascript';
+    s.src = window.dnnLoadScriptsInAjaxMode[0];
+    s.onload = window.dnnLoadScriptsInAjaxModeComplete;
+    s.onerror = window.dnnLoadScriptsInAjaxModeComplete;
+    document.body.appendChild(s);
+};
+
+var loadScriptInMultipleMode = function(){
+    for(var i = 0; i < window.dnnLoadScriptsInAjaxMode.length; i++){
+        var s = document.createElement( 'script' );
+        s.type = 'text/javascript';
+        s.src = window.dnnLoadScriptsInAjaxMode[i];
+        s.onload = window.dnnLoadScriptsInAjaxModeComplete;
+        s.onerror = window.dnnLoadScriptsInAjaxModeComplete;
+        document.body.appendChild(s);
+    }
+};
+
+var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
 (function($){
 Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, args){
     var dataItems = args.get_dataItems();
@@ -67,11 +89,6 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
                     var src = scripts[i].match(/src=""(.+?)""/i)[1];
                     if($('script[src=""' + src + '""]').length == 0){
                         window.dnnLoadScriptsInAjaxMode.push(src);
-                        var s = document.createElement( 'script' );
-                        s.type = 'text/javascript';
-                        s.src = src;
-                        s.onload = window.dnnLoadScriptsInAjaxModeComplete;
-                        document.body.appendChild(s);
                     }
                 }
             }
@@ -87,6 +104,12 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
             }
         }
     }
+
+    if(isFirefox){
+        loadScriptInSingleMode();
+    } else {
+        loadScriptInMultipleMode();
+    }
 });
 
 if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
@@ -101,6 +124,8 @@ if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
             }
             if(window.dnnLoadScriptsInAjaxMode.length == 0){
                 $(window).trigger('dnnScriptLoadComplete');
+            }else if(isFirefox){
+                loadScriptInSingleMode();
             }
         }
     }
