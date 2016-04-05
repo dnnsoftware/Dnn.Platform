@@ -27,7 +27,9 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Web.Mvc.Framework;
@@ -41,14 +43,15 @@ namespace DotNetNuke.Web.Mvc
 
         public void Init(HttpApplication context)
         {
+            SuppressXFrameOptionsHeaderIfPresentInConfig();
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
-            AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
             ViewEngines.Engines.Add(new RazorViewEngine());
 
             context.BeginRequest += InitDnn;
         }
+
         private static void InitDnn(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
@@ -59,6 +62,26 @@ namespace DotNetNuke.Web.Mvc
         }
         public void Dispose()
         {
+        }
+
+        /// <summary>
+        /// Suppress X-Frame-Options Header if there is configuration specified in web.config for it.
+        /// </summary>
+        private void SuppressXFrameOptionsHeaderIfPresentInConfig()
+        {
+            var xmlConfig = Config.Load();
+            var xmlCustomHeaders =
+                xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders") ??
+                xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders");
+
+            if (xmlCustomHeaders?.ChildNodes != null)
+                foreach (XmlNode header in xmlCustomHeaders.ChildNodes)
+                {
+                    if (header.Attributes != null && header.Attributes["name"].Value == "X-Frame-Options")
+                    {
+                        AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
+                    }
+                }
         }
     }
 }
