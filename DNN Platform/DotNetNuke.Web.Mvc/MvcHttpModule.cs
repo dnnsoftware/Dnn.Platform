@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.Mvc
             var xmlConfig = Config.Load();
             var xmlCustomHeaders =
                 xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders") ??
-                xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders");
+                xmlConfig.SelectSingleNode("configuration/location/system.webServer/httpProtocol/customHeaders");
 
             if (xmlCustomHeaders?.ChildNodes != null)
                 foreach (XmlNode header in xmlCustomHeaders.ChildNodes)
