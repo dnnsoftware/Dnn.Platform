@@ -1343,9 +1343,15 @@ namespace DotNetNuke.Entities.Users
         public static Hashtable GetUserSettings(int portalId)
         {
             var settings = GetDefaultUserSettings();
+            var masterPortalId = GetEffectivePortalId(portalId);
             Dictionary<string, string> settingsDictionary = (portalId == Null.NullInteger)
                                                             ? HostController.Instance.GetSettingsDictionary()
-                                                            : PortalController.Instance.GetPortalSettings(GetEffectivePortalId(portalId));
+                                                            : PortalController.Instance.GetPortalSettings(masterPortalId);
+            Dictionary<string, string> currentPortalSettings = null;
+            if (portalId != Null.NullInteger && masterPortalId != portalId)
+            {
+                currentPortalSettings = PortalController.Instance.GetPortalSettings(portalId);
+            }
             if (settingsDictionary != null)
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
@@ -1383,6 +1389,14 @@ namespace DotNetNuke.Entities.Users
                                 break;
                         }
                     }
+                }
+            }
+
+            if (currentPortalSettings != null)
+            {
+                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_")))
+                {
+                    settings[kvp.Key] = kvp.Value;
                 }
             }
             return settings;
