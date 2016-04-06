@@ -81,6 +81,7 @@ namespace DotNetNuke.Web.Mvc
                     if (header.Attributes != null && header.Attributes["name"].Value == "X-Frame-Options")
                     {
                         AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
+                        break;
                     }
                 }
             }
