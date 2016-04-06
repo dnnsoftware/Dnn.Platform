@@ -43,7 +43,7 @@ namespace DotNetNuke.Data
             using (var connection = new SqlConnection(ConnectionString))
             {
                 //Create a new command (with no timeout)
-                var command = new SqlCommand(Query, connection) { CommandTimeout = 0 };
+                var command = new SqlCommand(Query, connection) { CommandTimeout = CommandTimeout };
 
                 connection.Open();
                 command.ExecuteNonQuery();
