@@ -2740,15 +2740,29 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Normal"));
                     break;
                 case TabType.Tab:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
-                    //Get the tab being linked to
-                    TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    int tabId;
+                    if (int.TryParse(tab.Url, out tabId))
+                    {
+                        //Get the tab being linked to
+                        TabInfo tempTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
+                        if (tempTab?.TabPath != null)
+                        {
+                            urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
+                            urlNode.InnerXml = tempTab.TabPath;
+                        }
+                    }
                     break;
                 case TabType.File:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
-                    IFileInfo file = FileManager.Instance.GetFile(Int32.Parse(tab.Url.Substring(7)));
-                    urlNode.InnerXml = file.RelativePath;
+                    int fileId;
+                    if (int.TryParse(tab.Url.Substring(7), out fileId))
+                    {
+                        IFileInfo file = FileManager.Instance.GetFile(fileId);
+                        if (file?.RelativePath != null)
+                        {
+                            urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
+                            urlNode.InnerXml = file.RelativePath;
+                        }
+                    }
                     break;
                 case TabType.Url:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Url"));
