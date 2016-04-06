@@ -21,17 +21,14 @@
 
 #region usings
 
-using System;
-using System.Linq;
+using System.Data;
+
+using DotNetNuke.ComponentModel;
 
 #endregion
 
 namespace DotNetNuke.Data
 {
-    using System.Data;
-
-    using DotNetNuke.ComponentModel;
-
     public abstract class DatabaseConnectionProvider
     {
         #region Shared/Static Methods
