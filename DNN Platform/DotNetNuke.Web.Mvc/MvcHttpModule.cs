@@ -75,6 +75,7 @@ namespace DotNetNuke.Web.Mvc
                 xmlConfig.SelectSingleNode("configuration/location/system.webServer/httpProtocol/customHeaders");
 
             if (xmlCustomHeaders?.ChildNodes != null)
+            {
                 foreach (XmlNode header in xmlCustomHeaders.ChildNodes)
                 {
                     if (header.Attributes != null && header.Attributes["name"].Value == "X-Frame-Options")
@@ -82,6 +83,7 @@ namespace DotNetNuke.Web.Mvc
                         AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
                     }
                 }
+            }
         }
     }
 }
