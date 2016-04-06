@@ -21,20 +21,17 @@
 
 #region usings
 
-using System;
-using System.Linq;
+using System.Data;
+using System.Data.SqlClient;
+
+using DotNetNuke.Data.PetaPoco;
+
+using Microsoft.ApplicationBlocks.Data;
 
 #endregion
 
 namespace DotNetNuke.Data
 {
-    using System.Data;
-    using System.Data.SqlClient;
-
-    using DotNetNuke.Data.PetaPoco;
-
-    using Microsoft.ApplicationBlocks.Data;
-
     public class SqlDatabaseConnectionProvider : DatabaseConnectionProvider
     {
         public override void ExecuteCommand()
