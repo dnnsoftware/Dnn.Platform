@@ -87,6 +87,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                 type = packageType.PackageType;
                                 installPath = Globals.ApplicationMapPath + "\\Install\\" + packageType.PackageType;
                                 break;
+                            case "Library":
+                                type = packageType.PackageType;
+                                installPath = Globals.ApplicationMapPath + "\\Install\\Module";
+                                break;
                             default:
                                 type = String.Empty;
                                 installPath = String.Empty;
