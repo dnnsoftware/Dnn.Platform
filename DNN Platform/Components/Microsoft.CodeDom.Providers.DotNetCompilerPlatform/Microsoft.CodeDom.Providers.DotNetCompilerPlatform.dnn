@@ -1,7 +1,7 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="01.00.01" isSystem="true">
-      <friendlyName>Microsoft.CodeDom.Providers.DotNetCompilerPlatform</friendlyName>
+    <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="01.00.01" isSystem="false">
+      <friendlyName>Microsoft CodeDom .NET Compiler</friendlyName>
       <description>Provides compiler support for C# 6 and VB 14.</description>
       <dependencies/>
       <owner>
@@ -11,7 +11,7 @@
         <email>support@dnnsoftware.com</email>
       </owner>
       <license />
-      <releaseNotes />
+      <releaseNotes src="releaseNotes.txt"></releaseNotes>
       <components>
         <component type="Assembly">
           <assemblies>
@@ -51,7 +51,10 @@
             </install>
             <uninstall>
               <configuration>
-                <nodes />
+                <nodes>
+                  <node path="/configuration/system.codedom/compilers/compiler[@language='c#;cs;csharp']" action="remove" />
+                  <node path="/configuration/system.codedom/compilers/compiler[@language='vb;vbs;visualbasic;vbscript']" action="remove" />
+                </nodes>
               </configuration>
             </uninstall>
           </config>
