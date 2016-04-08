@@ -122,7 +122,7 @@
     <CreateItem Include="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="DotNetCompilerContent" />
     </CreateItem>
-    <Zip Files="@(DotNetCompilerContent)" WorkingDirectory="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" ZipFileName="$(WebsiteInstallPath)\Module\Microsoft.CodeDom.Providers.DotNetCompilerPlatform_$(DotNetCompilerVersion)_Install.resources" />
+    <Zip Files="@(DotNetCompilerContent)" WorkingDirectory="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" ZipFileName="$(WebsiteInstallPath)\Library\Microsoft.CodeDom.Providers.DotNetCompilerPlatform_$(DotNetCompilerVersion)_Install.resources" />
     <RemoveDir Directories ="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" />
   </Target>
 </Project>
