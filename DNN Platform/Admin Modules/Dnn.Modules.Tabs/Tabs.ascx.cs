@@ -638,7 +638,7 @@ namespace Dnn.Modules.Tabs
 
             var intTab = Convert.ToInt32(ctlPages.SelectedNode.Value);
             var tab = TabController.Instance.GetTab(intTab, PortalId, true);
-            Page.Validate();
+            Page.Validate("Page");
             if (!Page.IsValid) 
                 return;
             if (tab != null && TabPermissionController.CanManagePage(tab))
