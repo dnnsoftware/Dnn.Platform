@@ -420,10 +420,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 case "skin":
                 case "container":
                 case "provider":
-                    installFolder = packageType;
-                    break;
                 case "library":
-                    installFolder = "Module";
+                    installFolder = packageType;
                     break;
                 default:
                     break;

@@ -462,7 +462,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             switch (extensionType)
             {
                 case "Library":
-                    extensionFolder = "Module";
+                    extensionFolder = "Library";
                     break;
                 case "Module":
                     extensionFolder = "Module";
