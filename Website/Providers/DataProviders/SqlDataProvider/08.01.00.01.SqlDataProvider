@@ -166,3 +166,181 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+/***** DNN-8556: update tab reference when delete tab and files. *****/
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+    @TabId                  Int,
+    @ContentItemID          Int,
+    @PortalId               Int,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @IsDeleted              Bit,
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @LastModifiedByUserID   Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit
+AS
+BEGIN
+    DECLARE @OldParentId Int
+    SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    -- Get New TabOrder
+    DECLARE @NewTabOrder Int
+    SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+    IF @NewTabOrder IS NULL
+        SET @NewTabOrder = 1
+    ELSE
+        SET @NewTabOrder = @NewTabOrder + 2
+
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET
+            ContentItemID           = @ContentItemID,
+            PortalId                = @PortalId,
+            VersionGuid             = @VersionGuid,
+            DefaultLanguageGuid     = @DefaultLanguageGuid,
+            LocalizedVersionGuid    = @LocalizedVersionGuid,
+            TabName                 = @TabName,
+            IsVisible               = @IsVisible,
+            DisableLink             = @DisableLink,
+            ParentId                = @ParentId,
+            IconFile                = @IconFile,
+            IconFileLarge           = @IconFileLarge,
+            Title                   = @Title,
+            Description             = @Description,
+            KeyWords                = @KeyWords,
+            IsDeleted               = @IsDeleted,
+            Url                     = @Url,
+            SkinSrc                 = @SkinSrc,
+            ContainerSrc            = @ContainerSrc,
+            StartDate               = @StartDate,
+            EndDate                 = @EndDate,
+            RefreshInterval         = @RefreshInterval,
+            PageHeadText            = @PageHeadText,
+            IsSecure                = @IsSecure,
+            PermanentRedirect       = @PermanentRedirect,
+            SiteMapPriority         = @SiteMapPriority,
+            LastModifiedByUserID    = @LastModifiedByUserID,
+            LastModifiedOnDate      = getdate(),
+            CultureCode             = @CultureCode,
+            IsSystem                = @IsSystem
+    WHERE  TabId = @TabId;
+
+    IF (@OldParentId <> @ParentId) BEGIN
+        -- update TabOrder of Tabs with same original Parent
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = TabOrder - 2
+         WHERE (ParentId = @OldParentId)
+           AND TabOrder > @TabOrder
+
+        -- Update Tab with new TabOrder
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = @NewTabOrder
+         WHERE TabID = @TabId
+    END /* IF */
+
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+
+    IF @IsDeleted = 1
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}Tabs] SET URL = NULL 
+            WHERE (PortalID = @PortalID OR @PortalID IS NULL AND PortalID IS NULL) AND URL = CAST(@TabId AS NVARCHAR(255))
+    END
+END /* Procedure */
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+    @TabId Int  -- ID of tab to delete; Not Null and > 0
+AS
+BEGIN
+    DECLARE @TabOrder Int
+    DECLARE @ParentId Int
+    DECLARE @ContentItemId Int
+    DECLARE @PortalId INT
+    SELECT @TabOrder = TabOrder, 
+           @ParentId = ParentID, 
+           @ContentItemID = ContentItemID,
+           @PortalId = PortalId
+       FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Delete Tab --
+    DELETE FROM {databaseOwner}[{objectQualifier}Tabs] WHERE  TabID = @TabId
+
+    -- Update TabOrder of remaining Tabs --
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET TabOrder = TabOrder - 2
+        WHERE IsNull(ParentID, -1) = IsNull(@ParentId , -1) AND TabOrder > @TabOrder
+
+    -- Delete Content Item --
+    DELETE FROM {databaseOwner}[{objectQualifier}ContentItems] WHERE ContentItemID = @ContentItemId
+
+    UPDATE {databaseOwner}[{objectQualifier}Tabs] SET URL = NULL 
+            WHERE (PortalID = @PortalID OR @PortalID IS NULL AND PortalID IS NULL) AND URL = CAST(@TabId AS NVARCHAR(255))
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFile]	
+    @PortalID int,
+	@FileName nvarchar(246),
+	@FolderID int
+AS
+BEGIN
+	SET NOCOUNT OFF;
+    DECLARE @FileId INT
+    IF @PortalID IS NULL
+    BEGIN
+        SELECT @FileId = FileId FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId IS Null
+    END 
+	ELSE 
+	BEGIN
+        SELECT @FileId = FileId FROM {databaseOwner}[{objectQualifier}Files] WHERE FileName = @FileName AND FolderID = @FolderID AND PortalId = @PortalID
+    END
+
+    IF @FileId IS NOT NULL AND @FileId > 0
+    BEGIN
+        DELETE FROM {databaseOwner}[{objectQualifier}Files] WHERE FileId = @FileId
+
+        UPDATE {databaseOwner}[{objectQualifier}Tabs] SET URL = NULL 
+        WHERE (PortalID = @PortalID OR @PortalID IS NULL AND PortalID IS NULL) AND URL = 'FileID=' + CAST(@FileId AS NVARCHAR(50))
+    END
+	
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+END
+GO

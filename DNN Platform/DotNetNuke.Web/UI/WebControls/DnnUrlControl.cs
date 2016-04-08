@@ -937,7 +937,10 @@ namespace DotNetNuke.Web.UI.WebControls
                             FolderPath = LastFolderPath;
                         }
 
-                        ctlFile.FilePath = FolderPath + FileName;
+                        if (!string.IsNullOrEmpty(FolderPath) || !string.IsNullOrEmpty(FileName))
+                        {
+                            ctlFile.FilePath = FolderPath + FileName;
+                        }
 
                         txtUrl.Visible = false;
                         break;

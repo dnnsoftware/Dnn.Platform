@@ -2740,18 +2740,31 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Normal"));
                     break;
                 case TabType.Tab:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    if (tempTab != null)
+                    if (tempTab != null && !tempTab.IsDeleted)
                     {
+                        urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                         urlNode.InnerXml = tempTab.TabPath;
+                    }
+                    else
+                    {
+                        urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Normal"));
+                        urlNode.InnerXml = string.Empty;
                     }
                     break;
                 case TabType.File:
-                    urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
                     IFileInfo file = FileManager.Instance.GetFile(Int32.Parse(tab.Url.Substring(7)));
-                    urlNode.InnerXml = file.RelativePath;
+                    if (file != null)
+                    {
+                        urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
+                        urlNode.InnerXml = file.RelativePath;
+                    }
+                    else
+                    {
+                        urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Normal"));
+                        urlNode.InnerXml = string.Empty;
+                    }
                     break;
                 case TabType.Url:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Url"));

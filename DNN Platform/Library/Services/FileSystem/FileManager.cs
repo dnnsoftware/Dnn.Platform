@@ -791,6 +791,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             Requires.NotNull("file", file);
             FileDeletionController.Instance.DeleteFile(file);
             ClearFolderCache(file.PortalId);
+            DataCache.ClearTabsCache(file.PortalId);
             // Notify File Delete Event
             OnFileDeleted(file, GetCurrentUserID());
         }
