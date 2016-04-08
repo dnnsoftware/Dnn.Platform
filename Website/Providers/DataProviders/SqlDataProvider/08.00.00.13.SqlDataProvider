@@ -1,5 +1,5 @@
 
-IF EXISTS (SELECT * FROM sys.procedures WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddException]'))
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddException]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
 GO
 
