@@ -245,10 +245,6 @@
     <ToolbarIcon>qrcodes.jpg</ToolbarIcon>
   </ToolbarButton>
   <ToolbarButton>
-    <ToolbarName>newsarticleslinks</ToolbarName>
-    <ToolbarIcon>newsarticleslinks.gif</ToolbarIcon>
-  </ToolbarButton>
-  <ToolbarButton>
     <ToolbarName>-</ToolbarName>
     <ToolbarIcon>separator.png</ToolbarIcon>
   </ToolbarButton>

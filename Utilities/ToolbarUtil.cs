@@ -561,13 +561,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                              },
                                                          new ToolbarButton
                                                              {
-                                                                 ToolbarName =
-                                                                     "newsarticleslinks",
-                                                                 ToolbarIcon =
-                                                                     "newsarticleslinks.gif"
-                                                             },
-                                                         new ToolbarButton
-                                                             {
                                                                  ToolbarName = "-",
                                                                  ToolbarIcon =
                                                                      "separator.png"
