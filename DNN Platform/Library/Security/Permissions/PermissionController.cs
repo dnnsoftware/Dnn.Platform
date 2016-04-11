@@ -126,13 +126,6 @@ namespace DotNetNuke.Security.Permissions
         {
             PermissionKey = PermissionKey.ToUpperInvariant();
             var permissionsBuilder = new StringBuilder();
-            //if there is permission set to administrators role, then the permission should
-            //append in the first place, so that admin user won't inject by other permission settings.
-            //eg: permission set as administrators allowed, editors denied. if the user both in administrators
-            //and editors role, the user should get allowed permission.
-            var portalSettings = PortalSettings.Current;
-            var adminRoleName = portalSettings != null ? portalSettings.AdministratorRoleName : string.Empty;
-            var adminPermission = string.Empty;
             foreach (PermissionInfoBase permission in Permissions)
             {
                 if (PermissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
@@ -145,11 +138,6 @@ namespace DotNetNuke.Security.Permissions
                     if (Null.IsNull(permission.UserID))
                     {
                         permissionString = prefix + permission.RoleName + ";";
-                        if (!string.IsNullOrEmpty(adminRoleName) && permission.RoleName.Equals(adminRoleName))
-                        {
-                            adminPermission = permissionString;
-                            continue;
-                        }
                     }
                     else
                     {
@@ -166,11 +154,6 @@ namespace DotNetNuke.Security.Permissions
                         permissionsBuilder.Append(permissionString);
                     }
                 }
-            }
-
-            if (!string.IsNullOrEmpty(adminPermission))
-            {
-                permissionsBuilder.Insert(0, adminPermission);
             }
 			
             //get string
