@@ -233,9 +233,6 @@
     <Content Include="js\jquery.notification.js" />
     <Content Include="js\jquery.ui.controls.js" />
     <Content Include="js\Options.js" />
-    <Content Include="CKFinder\config.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
     <Content Include="Install\Dnn.CKToolbarButtons.xml" />
     <Content Include="Install\Dnn.CKToolbarSets.xml" />
     <Content Include="Install\license.txt" />
