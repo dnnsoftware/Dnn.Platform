@@ -124,6 +124,7 @@ namespace DotNetNuke.Admin.Containers
                 {
                     SupportsQuickSettings = true;
                     var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    control.ID += ModuleContext.ModuleId;
                     quickSettings.Controls.Add(control);
 
                     DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
