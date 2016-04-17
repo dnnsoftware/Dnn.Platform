@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     if (CanViewGroupMembers(portalId, groupId))
                     {
-                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
+                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId,
                                                                                        Int32.Parse(filterValue),
                                                                                        -1, isAdmin, pageIndex, pageSize,
                                                                                        sortField, (sortOrder == "ASC"),
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     break;
                 case "Relationship":
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, userId, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
                                                                            Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     var propertyValue = GetSetting(ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
                                                                            -1, isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                                            sortField, (sortOrder == "ASC"),
                                                                            "DisplayName", searchTerm)
                                                                            :
-                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, -1,
+                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
                                                                                -1, isAdmin, pageIndex, pageSize,
                                                                                sortField, (sortOrder == "ASC"),
                                                                                propertyNames, propertyValues);
@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var users = GetUsers(PortalSettings.UserId, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
+                var users = GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
                 return Request.CreateResponse(HttpStatusCode.OK, GetMembers(users));
             }
             catch (Exception exc)
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var names = (from UserInfo user in GetUsers(PortalSettings.UserId, groupId, displayName.Trim(), 0, 10, "", "")
+                var names = (from UserInfo user in GetUsers(-1, groupId, displayName.Trim(), 0, 10, "", "")
                              select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
                                 .ToList();
 
