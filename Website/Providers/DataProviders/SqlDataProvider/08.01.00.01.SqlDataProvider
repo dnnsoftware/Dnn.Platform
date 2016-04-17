@@ -166,3 +166,67 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-4505: improve robustness and readability
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByUser]
+    @PortalID           Int, -- Null|-1: Host
+    @UserID             Int, -- NOT Null
+    @SubscriptionTypeID Int  -- might be null for all types
+AS
+BEGIN
+    SELECT *
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+     WHERE (IsNull(@PortalID, -1) = IsNull(PortalID, -1))
+       AND (UserId = @UserID)
+       AND (@SubscriptionTypeID IS NULL OR SubscriptionTypeID = @SubscriptionTypeID);
+END -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSubscriptionsByContent]
+    @PortalId           Int,          – Null: Host
+    @SubscriptionTypeID Int,          – Not Null
+    @ObjectKey          nVarChar(255) – Not Null
+ AS
+ BEGIN
+     SELECT *
+      FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+      WHERE (IsNull(@PortalId, -1) = IsNull(PortalId, -1))
+        AND SubscriptionTypeID = @SubscriptionTypeID
+        AND ObjectKey = @ObjectKey
+ END -- Procedure
+ GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_IsSubscribed]
+    @PortalID           Int,            -- Null|-1 for Host portal
+    @UserID             Int,            -- NOT Null
+    @SubscriptionTypeId Int,            -- NOT null
+    @ObjectKey          nVarChar(255),  -- NOT Null
+    @ModuleID           Int,            -- Null|-1 for any module
+    @TabId              Int             -- Null|-1 for any page
+AS
+BEGIN
+    SELECT TOP 1 *
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+     WHERE UserId               = @UserID
+       AND SubscriptionTypeId   = @SubscriptionTypeID
+       AND ObjectKey            = @ObjectKey
+       AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+       AND IsNull(ModuleID, -1) = IsNull(@ModuleID, -1)
+       AND IsNull(TabId,    -1) = ISNull(@TabId,    -1);
+END -- Procedure
+GO
