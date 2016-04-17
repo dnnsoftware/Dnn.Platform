@@ -353,7 +353,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     case Constants.ModifiedTimeTag:
                         DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
+                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out modifiedTimeUtc);
                         result.ModifiedTimeUtc = modifiedTimeUtc;
                         break;
                     default:
