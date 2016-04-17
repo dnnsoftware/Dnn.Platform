@@ -166,3 +166,58 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-8403: exclude (soft)deleted users from role member count
+
+IF EXISTS (SELECT * FROM Sys.Views WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}vw_RoleUserCount]'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_RoleUserCount]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_RoleUserCount]
+AS
+    SELECT U.[RoleID],
+           Count(*) AS UserCount
+    FROM {databaseOwner}[{objectQualifier}Roles]       R
+    JOIN {databaseOwner}[{objectQualifier}UserRoles]   U ON R.RoleID = U.RoleID
+    JOIN {databaseOwner}[{objectQualifier}UserPortals] P ON P.UserID = U.UserID AND P.PortalID = R.PortalID
+    WHERE P.[isDeleted] = 0
+      AND (U.ExpiryDate    > GETDATE() OR U.ExpiryDate    IS NULL)
+      AND (U.EffectiveDate < GETDATE() OR U.EffectiveDate IS NULL)
+    GROUP BY U.[RoleID]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoles]
+AS
+BEGIN
+     SELECT R.*,
+            ISNull(C.UserCount, 0) AS UserCount
+     FROM      {databaseOwner}[{objectQualifier}Roles]            AS R
+     LEFT JOIN {databaseOwner}[{objectQualifier}vw_RoleUserCount] AS C
+     WHERE RoleID >= 0 -- ignore virtual roles. Note: might be removed, after controller has been adjusted.
+END
+GO 
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalRoles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
+    @PortalId     Int -- Null: Host Roles
+AS
+BEGIN
+    SELECT R.*,
+           ISNull(C.UserCount, 0) AS UserCount
+     FROM      {databaseOwner}[{objectQualifier}Roles]            AS R
+     LEFT JOIN {databaseOwner}[{objectQualifier}vw_RoleUserCount] AS C
+     WHERE (R.PortalId = @PortalId OR R.PortalId is null)
+       AND (R.RoleId >= 0) -- DNN-4288: ignore virtual roles. Might be removed, after API has been adjusted.
+     ORDER BY R.RoleName
+	 OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
