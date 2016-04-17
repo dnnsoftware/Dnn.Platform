@@ -2743,7 +2743,10 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    if (tempTab != null)
+                    {
+                        urlNode.InnerXml = tempTab.TabPath;
+                    }
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
