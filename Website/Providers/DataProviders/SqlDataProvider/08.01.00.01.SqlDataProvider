@@ -166,3 +166,67 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-4258: Enable Stored Procedure CoreMessaging_AddSubscription to update values
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscription]
+    @UserID             Int,           -- Not Null
+    @PortalID           Int,           -- Null for all Portals
+    @SubscriptionTypeId Int,
+    @ObjectKey          nVarChar(255),
+    @Description        nVarChar(255),
+    @ModuleID           Int,
+    @TabId              Int,
+    @ObjectData         nVarChar(MAX)
+AS
+BEGIN
+    DECLARE @SubscriptionId Int = NULL;
+
+    SELECT  TOP 1 @SubscriptionId = SubscriptionId
+            FROM  {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+            WHERE UserId                = @UserID
+              AND SubscriptionTypeId    = @SubscriptionTypeID
+              AND ObjectKey             = @ObjectKey
+              AND IsNull(@PortalID, -1) = IsNull(PortalId, -1)
+              AND IsNull(@ModuleID, -1) = IsNull(ModuleId, -1)
+              AND IsNull(@TabId,    -1) = IsNull(TabId,    -1);
+
+    IF (@SubscriptionId IS NULL)
+        BEGIN
+            INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]
+               (            UserID,
+                             PortalID,
+                             SubscriptionTypeID,
+                             ObjectKey,
+                             Description,
+                             CreatedOnDate,
+                             ModuleId,
+                             TabId,
+                             ObjectData
+               ) VALUES    
+               (            @UserID,
+                            @PortalID,
+                            @SubscriptionTypeId,
+                            @ObjectKey,
+                            @Description,
+                            GETUTCDATE(),
+                            @ModuleID,
+                            @TabId,
+                            @ObjectData
+               );
+            SELECT  SCOPE_IDENTITY() AS [SubscriptionId];
+        END
+    ELSE
+        BEGIN
+            UPDATE  {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+                SET Description        = @Description,
+                    ObjectData         = @ObjectData
+                WHERE  SubscriptionId  = @SubscriptionId;
+
+            SELECT  @SubscriptionId AS [SubscriptionId];
+        END
+END; -- Procedure
