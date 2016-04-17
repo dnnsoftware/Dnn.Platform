@@ -166,3 +166,33 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-4350: Update TabUrls
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalAlias]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalAlias]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalAlias]
+    @PortalAliasID Int -- Not Null
+AS
+BEGIN
+    SET NoCount ON;
+    DELETE 
+     FROM  {databaseOwner}[{objectQualifier}PortalAlias]                      
+     WHERE PortalAliasID = @PortalAliasID;
+     
+    UPDATE  T
+       SET PortalAliasId = Null
+     FROM      {databaseOwner}[{objectQualifier}TabUrls] T
+     LEFT JOIN {databaseOwner}[{objectQualifier}TabUrls] S ON S.TabID = T.TabID AND S.Url = T.Url AND S.CultureCode = T.CultureCode 
+                                                          AND T.PortalAliasId = @PortalAliasID
+                                                          AND S.PortalAliasId Is Null
+     WHERE S.TabID Is Null;
+     
+    DELETE 
+     FROM  {databaseOwner}[{objectQualifier}TabUrls]
+     WHERE PortalAliasId = @PortalAliasID;
+    SET NoCount OFF;
+END -- Procedure
+GO
