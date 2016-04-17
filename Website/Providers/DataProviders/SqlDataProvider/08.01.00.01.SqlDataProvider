@@ -214,17 +214,17 @@ BEGIN
 		DELETE 
 		 FROM  {databaseOwner}[{objectQualifier}Journal_Security]
 		 WHERE JournalId = @JournalId;
-        INSERT INTO {databaseOwner}[{objectQualifier}Journal_Security] T 
+        INSERT INTO {databaseOwner}[{objectQualifier}Journal_Security] 
 		SELECT @JournalId, string 
 		 FROM  {databaseOwner}[{objectQualifier}Journal_SplitText](@SecuritySet,',') S; 
 
         IF @JournalXML IS NOT NULL
             MERGE INTO {databaseOwner}[{objectQualifier}Journal_Data] T
-			USING (SELECT @JournalId, @JournalXML) S ON T.JournalID = S.JournalID
+			USING (SELECT @JournalId AS JournalId) S ON T.JournalID = S.JournalID
 			WHEN     MATCHED THEN UPDATE SET JournalXML = @JournalXML
             WHEN NOT MATCHED THEN INSERT ( JournalId,  JournalXML)
                                   VALUES (@JournalId, @JournalXML);
     END -- IF @JournalID Is Not Null
     SELECT @JournalId;
-END -- PROCEDURE
+END -- Procedure
 GO
