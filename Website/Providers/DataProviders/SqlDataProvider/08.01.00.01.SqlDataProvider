@@ -208,7 +208,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalRoles]
-    @PortalId     Int -- Null: Host Roles
+    @PortalId     Int -- Null: Virtual Roles only
 AS
 BEGIN
     SELECT R.*,
