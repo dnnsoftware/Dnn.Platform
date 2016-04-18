@@ -207,7 +207,7 @@ BEGIN
            AND (F.FolderID   = @FolderID   OR IsNull(@FolderID,    -1) =  -1)
            AND (F.FolderPath = @FolderPath OR IsNull(@FolderPath, N'') = N'')
          ORDER BY F.PortalID, F.FolderPath
-         OPTION (OPTIMIZE FOR (@PortalID UNKNOWN));
+         OPTION (OPTIMIZE FOR (@PortalID UNKNOWN, @FolderID UNKNOWN, @FolderPath UNKNOWN));
     ELSE BEGIN
         --Retrieve Permission IDs
             SELECT TOP 1 @AllPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'WRITE';
