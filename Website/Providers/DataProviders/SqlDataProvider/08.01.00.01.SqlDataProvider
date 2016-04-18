@@ -234,7 +234,7 @@ BEGIN
                    AND PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @WritePerm)
                    AND AllowAccess = 0)
          ORDER BY PortalID, FolderPath
-         OPTION (OPTIMIZE FOR (@FolderPath Unknown, @FolderId Unknown, @UserID Unknown));
+         OPTION (OPTIMIZE FOR (@PortalID Unknown, @FolderPath Unknown, @FolderId Unknown, @UserID Unknown));
     END
 END -- Procedure
 GO
