@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2015, DNN Corp.
+// Copyright (c) 2002-2016, DNN Corp.
 // All Rights Reserved
 
 using System.Linq;
