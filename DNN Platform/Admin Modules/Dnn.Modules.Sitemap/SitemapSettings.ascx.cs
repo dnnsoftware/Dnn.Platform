@@ -83,7 +83,7 @@ namespace Dnn.Modules.Sitemap
 
         private void ResetCache()
         {
-            var cacheFolder = new DirectoryInfo(PortalSettings.HomeDirectoryMapPath + "sitemap\\");
+            var cacheFolder = new DirectoryInfo(PortalSettings.HomeSystemDirectoryMapPath + "sitemap\\");
 
             if (cacheFolder.Exists)
             {
