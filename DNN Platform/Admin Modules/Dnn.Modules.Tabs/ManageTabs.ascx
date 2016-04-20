@@ -69,7 +69,7 @@
                     </div>
                     <div class="dnnFormItem">
                         <div class="dnnLabel"></div>
-                        <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Disabled" />
+                        <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Enabled" />
                     </div>
 				</div>    
 				<div id="templateRow1" class="dnnFormItem" runat="server" visible="false">
