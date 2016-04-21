@@ -17,6 +17,7 @@ using DotNetNuke.Security.Roles;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using DotNetNuke.Entities.Host;
 
     /// <summary>
     /// Settings Base Helper Class
@@ -33,7 +34,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if Portal or Page Settings Exists
         /// </returns>
-        internal static bool CheckExistsPortalOrPageSettings(List<EditorHostSetting> editorHostSettings, string key)
+        internal static bool CheckSettingsExistByKey(List<EditorHostSetting> editorHostSettings, string key)
         {
             if (
                 editorHostSettings.Any(
@@ -45,7 +46,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SKIN))).Value);
             }
 
-            // No Portal/Page Settings Found
+            // No Settings Found
             return false;
         }
 
@@ -86,7 +87,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Filled Settings
         /// </returns>
-        internal static EditorProviderSettings LoadPortalOrPageSettings(
+        internal static EditorProviderSettings LoadEditorSettingsByKey(
             PortalSettings portalSettings,
             EditorProviderSettings currentSettings,
             List<EditorHostSetting> editorHostSettings,
@@ -1262,7 +1263,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings.PortalId, int.Parse(sRoleName));
+                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings?.PortalId ?? Host.HostPortalID, int.Parse(sRoleName));
 
                             if (roleInfo != null)
                             {

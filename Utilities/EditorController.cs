@@ -78,6 +78,17 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
+        /// Deletes all Host settings of the Editor.
+        /// </summary>
+        public static void DeleteAllHostSettings()
+        {
+            DataProvider.Instance().ExecuteNonQuery("CKE_DeleteAllHostSettings");
+
+            // Finally Clear Cache
+            ClearEditorCache();
+        }
+
+        /// <summary>
         /// Gets the editor host settings.
         /// </summary>
         /// <returns>Returns the list of all Editor Host Settings</returns>

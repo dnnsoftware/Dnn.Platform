@@ -14,6 +14,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     /// <summary>
     /// The File Upload Handler
     /// </summary>
+    /// <seealso cref="System.Web.IHttpHandler" />
     public class FileUploader : IHttpHandler
     {
         /// <summary>

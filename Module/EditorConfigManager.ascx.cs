@@ -13,6 +13,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DNNConnect.CKEditorProvider.Module
 {
+    using DNNConnect.CKEditorProvider.Constants;
 
     /// <summary>
     /// The Editor Config Manger Module
@@ -146,8 +147,8 @@ namespace DNNConnect.CKEditorProvider.Module
             var portalId = PortalTabsAndModulesTree.SelectedValue.Substring(1);
             var tabId = PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
 
-            EditorOptions.CurrentOrSelectedPortalId = Convert.ToInt32(portalId);
-            EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
+            EditorOptions.CurrentOrSelectedPortalId = EditorOptions.CurrentPortalOnly ? Convert.ToInt32(portalId) : -1;
+            EditorOptions.CurrentOrSelectedTabId = EditorOptions.CurrentPortalOnly ? Convert.ToInt32(tabId) : -1;
 
             EditorOptions.DefaultHostLoadMode = 0;
 
@@ -172,18 +173,33 @@ namespace DNNConnect.CKEditorProvider.Module
             PortalTabsAndModulesTree.SelectedNode.ExpandAll();
 
             EditorOptions.IsHostMode = true;
-
             EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
             if (PortalTabsAndModulesTree.SelectedNode == null)
             {
                 return;
             }
+            
+            if (PortalTabsAndModulesTree.SelectedValue.StartsWith("h"))
+            {
+                EditorOptions.Visible = true;
+                ModuleInstanceInfoPlaceHolder.Visible = false;
 
-            EditorOptions.IsHostMode = true;
+                // Load Portal Settings for the selected Portal if exist
+                var portalId = PortalTabsAndModulesTree.SelectedValue.Substring(1);
+                var tabId = PortalTabsAndModulesTree.SelectedNode.ChildNodes[0].Value.Substring(1);
 
-            EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
+                int temp;
+                EditorOptions.CurrentOrSelectedPortalId = int.TryParse(portalId, out temp) ? temp : -1;
+                EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
+                EditorOptions.DefaultHostLoadMode = -1;
+
+                BindPortalTabsAndModulesTree();
+
+                // Load Settings
+                EditorOptions.BindOptionsData(true);
+            }
             if (PortalTabsAndModulesTree.SelectedValue.StartsWith("p"))
             {
                 EditorOptions.Visible = true;
@@ -239,6 +255,10 @@ namespace DNNConnect.CKEditorProvider.Module
             ModuleHeader.Text = Localization.GetString("ModuleHeader.Text", ResXFile, LangCode);
             PortalOnlyLabel.Text = Localization.GetString("PortalOnlyLabel.Text", ResXFile, LangCode);
             PortalOnly.Text = Localization.GetString("PortalOnly.Text", ResXFile, LangCode);
+            HostHasSettingLabel.Text = Localization.GetString(
+                "HostHasSettingLabel.Text", ResXFile, LangCode);
+            HostNoSettingLabel.Text = Localization.GetString(
+                "HostNoSettingLabel.Text", ResXFile, LangCode);
             PortalHasSettingLabel.Text = Localization.GetString(
                 "PortalHasSettingLabel.Text", ResXFile, LangCode);
             PortalNoSettingLabel.Text = Localization.GetString(
@@ -274,13 +294,35 @@ namespace DNNConnect.CKEditorProvider.Module
             }
             else
             {
-                foreach (PortalInfo portal in new PortalController().GetPortals())
-                {
-                    RenderPortalNode(portal, moduleController, settingsDictionary);
-                }
+                var portals = new PortalController().GetPortals().Cast<PortalInfo>().ToList();
+                RenderHostNode(portals, moduleController, settingsDictionary);
             }
 
             PortalTabsAndModulesTree.DataBind();
+        }
+
+        private void RenderHostNode(IEnumerable<PortalInfo> portals, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        {
+            const string hostKey = "DNNCKH#";
+            var hostSettingsExist = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, hostKey);
+
+            var hostNode = new TreeNode()
+                           {
+                               Text = Localization.GetString("AllPortals.Text", ResXFile, LangCode),
+                               Value = "h",
+                               ImageUrl = 
+                               hostSettingsExist
+                                    ? "../js/ckeditor/4.5.3/images/HostHasSetting.png"
+                                    : "../js/ckeditor/4.5.3/images/HostNoSetting.png",
+                               Expanded = true,
+            };
+
+            foreach (var portal in portals)
+            {
+                RenderPortalNode(portal, moduleController, editorHostSettings, hostNode);
+            }
+
+            PortalTabsAndModulesTree.Nodes.Add(hostNode);
         }
 
         /// <summary>
@@ -289,17 +331,18 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="portal">The <paramref name="portal" />.</param>
         /// <param name="moduleController">The module controller.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
-        private void RenderPortalNode(PortalInfo portal, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        /// <param name="parentNode">The parent node.</param>
+        private void RenderPortalNode(PortalInfo portal, ModuleController moduleController, List<EditorHostSetting> editorHostSettings, TreeNode parentNode = null)
         {
-            var portalKey = string.Format("DNNCKP#{0}#", portal.PortalID);
+            var portalKey = $"DNNCKP#{portal.PortalID}#";
 
-            var portalSettingsExists = SettingsUtil.CheckExistsPortalOrPageSettings(editorHostSettings, portalKey);
+            var portalSettingsExists = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, portalKey);
 
             // Portals
             var portalNode = new TreeNode
             {
                 Text = portal.PortalName,
-                Value = string.Format("p{0}", portal.PortalID),
+                Value = $"p{portal.PortalID}",
                 ImageUrl =
                     portalSettingsExists
                         ? "../js/ckeditor/4.5.3/images/PortalHasSetting.png"
@@ -312,7 +355,14 @@ namespace DNNConnect.CKEditorProvider.Module
                 RenderTabNode(portalNode, tabInfo, moduleController, editorHostSettings);
             }
 
-            PortalTabsAndModulesTree.Nodes.Add(portalNode);
+            if (parentNode == null)
+            {
+                PortalTabsAndModulesTree.Nodes.Add(portalNode);
+            }
+            else
+            {
+                parentNode.ChildNodes.Add(portalNode);
+            }
         }
 
         /// <summary>
@@ -328,15 +378,15 @@ namespace DNNConnect.CKEditorProvider.Module
             ModuleController moduleController,
             List<EditorHostSetting> editorHostSettings)
         {
-            var tabKey = string.Format("DNNCKT#{0}#", tabInfo.TabID);
+            var tabKey = $"DNNCKT#{tabInfo.TabID}#";
 
-            var tabSettingsExists = SettingsUtil.CheckExistsPortalOrPageSettings(editorHostSettings, tabKey);
+            var tabSettingsExists = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, tabKey);
 
             // Tabs
             var tabNode = new TreeNode
                               {
                                   Text = tabInfo.TabName,
-                                  Value = string.Format("t{0}", tabInfo.TabID),
+                                  Value = $"t{tabInfo.TabID}",
                                   ImageUrl =
                                       tabSettingsExists
                                           ? "../js/ckeditor/4.5.3/images/PageHasSetting.png"
@@ -354,7 +404,7 @@ namespace DNNConnect.CKEditorProvider.Module
             var modules = moduleController.GetTabModules(tabInfo.TabID).Values;
 
             foreach (var moduleNode in from moduleInfo in modules
-                                       let moduleKey = string.Format("DNNCKMI#{0}#INS#", moduleInfo.ModuleID)
+                                       let moduleKey = $"DNNCKMI#{moduleInfo.ModuleID}#INS#"
                                        let moduleSettingsExists =
                                            SettingsUtil.CheckExistsModuleSettings(moduleKey, moduleInfo.ModuleID)
                                        select
@@ -365,8 +415,7 @@ namespace DNNConnect.CKEditorProvider.Module
                                                        moduleSettingsExists
                                                            ? "../js/ckeditor/4.5.3/images/ModuleHasSetting.png"
                                                            : "../js/ckeditor/4.5.3/images/ModuleNoSetting.png",
-                                                   Value = string.Format("m{0}", moduleInfo.ModuleID)
-                                               })
+                                                   Value = $"m{moduleInfo.ModuleID}" })
             {
                 tabNode.ChildNodes.Add(moduleNode);
             }

@@ -383,7 +383,6 @@
   <data name="WaitMessage.Text" xml:space="preserve">
     <value>Loading Options Page.</value>
   </data>
-
   <data name="ModuleHasSettingLabel.Text" xml:space="preserve">
     <value>Contains Module Settings</value>
   </data>
@@ -503,5 +502,14 @@
   </data>
   <data name="UploadFileLimitLabel.Text" xml:space="preserve">
     <value>Upload File Limits</value>
+  </data>
+  <data name="AllPortals.Text" xml:space="preserve">
+    <value>All Portals</value>
+  </data>
+  <data name="HostHasSettingLabel.Text" xml:space="preserve">
+    <value>Contains Host Settings</value>
+  </data>
+  <data name="HostNoSettingLabel.Text" xml:space="preserve">
+    <value>Contains No Host Settings</value>
   </data>
 </root>

@@ -35,6 +35,14 @@
         <div class="iconLegend">
             <ul>
                 <li>
+                    <asp:Image ID="HostHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/HostHasSetting.png" />&nbsp;
+                    <asp:Label runat="server" ID="HostHasSettingLabel"></asp:Label>
+                </li>
+                <li>
+                    <asp:Image ID="HostNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/HostNoSetting.png"/>&nbsp;
+                    <asp:Label runat="server" ID="HostNoSettingLabel"></asp:Label>
+                </li>
+                <li>
                     <asp:Image ID="PortalHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/PortalHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="PortalHasSettingLabel"></asp:Label>
                 </li>
