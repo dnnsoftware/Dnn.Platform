@@ -2033,6 +2033,29 @@ namespace Dnn.Modules.Tabs
          
         }
 
+        protected void grdModules_OnItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var optNew = (RadioButton) e.Item.FindControl("optNew");
+            var optCopy = (RadioButton) e.Item.FindControl("optCopy");
+            var optReference = (RadioButton) e.Item.FindControl("optReference");
+
+            var moduleInfo = e.Item.DataItem as ModuleInfo;
+            if (optNew != null && moduleInfo != null)
+            {
+                optCopy.Enabled = moduleInfo.DesktopModule.IsPortable;
+                optReference.Enabled = moduleInfo.ModuleID > Null.NullInteger 
+                    && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "CONTENT", moduleInfo);
+
+                if (optCopy.Enabled)
+                {
+                    optCopy.Checked = true;
+                }
+                else
+                {
+                    optNew.Checked = true;
+                }
+            }
+        }
 
         #endregion
     }
