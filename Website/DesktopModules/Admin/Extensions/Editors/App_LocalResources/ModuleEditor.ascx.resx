@@ -133,7 +133,7 @@
     <value>Is Portable?</value>
   </data>
   <data name="IsSearchable.Help" xml:space="preserve">
-    <value>Identifies if the module supports the ISearchable interface allowing it to have its content indexed.</value>
+    <value>Identifies if the module supports the ISearchable or ModuleSearchBase interface allowing it to have its content indexed.</value>
   </data>
   <data name="IsSearchable.Text" xml:space="preserve">
     <value>Is Searchable?</value>
