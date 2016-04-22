@@ -5,7 +5,7 @@
 
 <div class="dnnSearchBoxPanel">
     <a href="javascript:void(0)" class="dnnSearchResultAdvancedTip"><%= LinkAdvancedTipText %></a>
-    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchDisplayTerm %>" />
+    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= HttpUtility.HtmlAttributeEncode(SearchTerm) %>" />
     <div id="dnnSearchResult-advancedTipContainer">
         <%= AdvancedSearchHintText %>
     </div>
@@ -37,7 +37,7 @@
     <div class="dnnLeft">
         <span></span>
     </div>
-    <div class="dnnRight">       
+    <div class="dnnRight">
     </div>
     <div class="dnnClear"></div>
 </div>
@@ -49,14 +49,14 @@
     <div class="dnnLeft">
         <span></span>
     </div>
-    <div class="dnnRight">       
+    <div class="dnnRight">
     </div>
 </div>
 
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
-        <input type="text" id="advancedTagsCtrl" value="<%=TagsQuery %>" />
+        <input type="text" id="advancedTagsCtrl" value="<%= HttpUtility.HtmlAttributeEncode(TagsQuery) %>" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />
@@ -98,13 +98,13 @@
             var checked = items.getItem(i).get_checked();
             if (checked) countOfChecked++;
         }
-        
+
         if (countOfChecked == 1) {
             var item = e.get_item();
             if (item.get_checked()) e.set_cancel(true);
         }
     }
-    
+
     function dnnSearchResultPageSizeChanged(sender, e) {
         var combo = $find('<%= ResultsPerPageList.ClientID %>');
         var pageSize = combo.get_value();
@@ -118,7 +118,7 @@
         if(typeof dnn != 'undefined' && dnn.searchResult){
             dnn.searchResult.moduleId = <%= ModuleId %>;
             dnn.searchResult.queryOptions = {
-                searchTerm: '<%= SearchTerm %>',
+                searchTerm: '<%= HttpUtility.JavaScriptStringEncode(SearchTerm) %>',
                 sortOption: <%= SortOption %>,
                 pageIndex: <%= PageIndex %>,
                 pageSize: <%= PageSize %>
@@ -142,7 +142,7 @@
                 currentPageIndexText: '<%= CurrentPageIndexText %>',
                 linkTarget: '<%= LinkTarget %>',
                 cultureCode: '<%= CultureCode %>'
-                
+
             });
         }
     });
