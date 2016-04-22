@@ -1,11 +1,7 @@
 #region Copyright
 
 //
-<<<<<<< 2a837028d4fafdc2a75bd41ce5249dcf4401fe1e
 // DotNetNuke® - http://www.dotnetnuke.com
-=======
-// DotNetNuke� - http://www.dotnetnuke.com
->>>>>>> NOJIRA: update copyright.
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 //
