@@ -177,6 +177,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             return new LoginResultData
             {
+                UserId = userInfo.UserID,
                 DisplayName = userInfo.DisplayName,
                 AccessToken = accessToken,
                 RenewalToken = renewalToken
@@ -260,6 +261,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             return new LoginResultData
             {
+                UserId = userInfo.UserID,
                 DisplayName = userInfo.DisplayName,
                 AccessToken = accessToken,
                 RenewalToken = renewalToken
