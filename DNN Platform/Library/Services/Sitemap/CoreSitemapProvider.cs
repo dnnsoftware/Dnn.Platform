@@ -67,8 +67,12 @@ namespace DotNetNuke.Services.Sitemap
             minPagePriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", portalId, "0.1"), CultureInfo.InvariantCulture);
             includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
 
-            var currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
-	        var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
+            var currentLanguage = ps.CultureCode;
+            if (string.IsNullOrEmpty(currentLanguage))
+            {
+                currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
+            }
+            var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
 	        var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
 						.Where(t => !t.IsSystem
 									&& !ps.ContentLocalizationEnabled || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
