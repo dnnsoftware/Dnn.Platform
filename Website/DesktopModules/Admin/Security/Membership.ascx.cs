@@ -311,6 +311,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 UserController.ApproveUser(User);
             }
 
+            Mail.SendMail(User, MessageType.UserAuthorized, PortalSettings);
+
             OnMembershipAuthorized(EventArgs.Empty);
         }
 

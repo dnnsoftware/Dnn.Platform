@@ -30,6 +30,7 @@ namespace DotNetNuke.Services.Mail
         UserRegistrationVerified,
         UserUpdatedOwnPassword,
         PasswordUpdated,
-        PasswordReminderUserIsNotApproved
+        PasswordReminderUserIsNotApproved,
+        UserAuthorized
     }
 }
