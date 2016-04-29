@@ -183,7 +183,6 @@ namespace DotNetNuke.Web.Mvc
                 var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 
                 moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-
                 moduleOutput = MvcHtmlString.Create(writer.ToString());
             }
 
@@ -235,12 +234,13 @@ namespace DotNetNuke.Web.Mvc
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-
             try
             {
-                if (_result != null)
+                if (_result == null) return;
+                var mvcString = RenderModule(_result);
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {
-                    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
+                    Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
                 }
             }
             catch (Exception exc)
