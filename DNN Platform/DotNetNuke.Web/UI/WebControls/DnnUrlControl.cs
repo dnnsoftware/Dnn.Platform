@@ -892,6 +892,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         cboTabs.IncludeAllTabTypes = false;
                         cboTabs.IncludeActiveTab = IncludeActiveTab;
+                        cboTabs.IncludeDisabledTabs = true;
+                        cboTabs.DisabledNotSelectable = true;
                         cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
                         if (!string.IsNullOrEmpty(_Url))
