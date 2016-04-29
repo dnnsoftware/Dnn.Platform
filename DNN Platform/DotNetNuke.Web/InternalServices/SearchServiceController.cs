@@ -236,7 +236,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = searchResults.TotalHits;
-            more = searchResults.Results.Count > searchQuery.PageSize;
+            more = totalHits > searchQuery.PageSize * searchQuery.PageIndex;
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
