@@ -166,3 +166,26 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-5013: Drop old Messaging table and procedures
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_Messages]") Is Not Null 
+    DROP TABLE     {databaseOwner}[{objectQualifier}Messaging_Messages];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_GetInbox]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetInbox];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_GetInboxCount]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetInboxCount];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_GetMessage]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetMessage];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_GetNewMessageCount]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetNewMessageCount];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_GetNextMessageForDispatch]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_GetNextMessageForDispatch];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_MarkMessageAsDispatched]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_MarkMessageAsDispatched];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_Save_Message]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_Save_Message];
+IF Object_ID("{databaseOwner}[{objectQualifier}Messaging_UpdateMessage]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Messaging_UpdateMessage];
+IF Object_ID("{databaseOwner}[{objectQualifier}CoreMessaging_ConvertLegacyMessages]") Is Not Null 
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_ConvertLegacyMessages];
