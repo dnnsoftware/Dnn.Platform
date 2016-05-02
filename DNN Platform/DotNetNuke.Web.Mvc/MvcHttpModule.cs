@@ -41,14 +41,18 @@ namespace DotNetNuke.Web.Mvc
     {
         public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
 
+        static MvcHttpModule()
+        {
+            var engines = ViewEngines.Engines;
+            engines.Clear();
+            engines.Add(new ModuleDelegatingViewEngine());
+            engines.Add(new RazorViewEngine());
+        }
+
         public void Init(HttpApplication context)
         {
             SuppressXFrameOptionsHeaderIfPresentInConfig();
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
-            ViewEngines.Engines.Clear();
-            ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
-            ViewEngines.Engines.Add(new RazorViewEngine());
-
             context.BeginRequest += InitDnn;
         }
 
