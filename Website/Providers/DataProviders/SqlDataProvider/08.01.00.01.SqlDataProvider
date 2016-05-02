@@ -166,3 +166,34 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-4608: use new virtual roles
+IF EXISTS (select * from Sys.Views where object_id = object_id(N'{databaseOwner}[{objectQualifier}vw_ContentWorkflowStatePermissions]'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowStatePermissions]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowStatePermissions]
+AS
+    SELECT W.WorkflowStatePermissionID,
+           W.StateID,
+           P.PermissionID,
+           W.RoleID,
+           R.RoleName,
+           W.AllowAccess,
+           W.UserID,
+           U.Username,
+           U.DisplayName,
+           P.PermissionCode,
+           P.ModuleDefID,
+           P.PermissionKey,
+           P.PermissionName,
+           W.CreatedByUserID,
+           W.CreatedOnDate,
+           W.LastModifiedByUserID,
+           W.LastModifiedOnDate
+     FROM      {databaseOwner}{objectQualifier}ContentWorkflowStatePermission AS W
+     LEFT JOIN {databaseOwner}{objectQualifier}Permission      AS P ON W.PermissionID = P.PermissionID
+     LEFT JOIN {databaseOwner}{objectQualifier}Roles           AS R ON W.RoleID = R.RoleID
+     LEFT JOIN {databaseOwner}{objectQualifier}Users           AS U ON W.UserID = U.UserID
+GO
