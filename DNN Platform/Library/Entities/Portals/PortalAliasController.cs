@@ -214,7 +214,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string alias, int portalId)
         {
-            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias && pa.Value.PortalID == portalId).Value;
+            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
         }
 
         /// <summary>
