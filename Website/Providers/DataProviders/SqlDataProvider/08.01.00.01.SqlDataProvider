@@ -166,3 +166,65 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+-- DNN-8358: Improve Journal_Save to support updates
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Save]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Save]
+    @PortalID           Int,
+    @JournalId          Int,
+    @JournalTypeId      Int,
+    @UserID             Int,
+    @ProfileId          Int,
+    @GroupId            Int,
+    @Title              nVarChar(255),
+    @Summary            nVarChar(2000),
+    @ItemData           nVarChar(2000),
+    @JournalXML         xml,
+    @ObjectKey          nVarChar(255),
+    @AccessKey          UniqueIdentifier,
+    @SecuritySet        nVarChar(2000),
+    @CommentsDisabled   Bit,
+    @CommentsHidden     Bit
+AS
+BEGIN
+    IF IsNull(@JournalId, -1) = -1 BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal]
+			   ( JournalTypeId,  UserId,  DateCreated,  DateUpdated,  PortalId,  ProfileId,  GroupId,  Title,  Summary,  ObjectKey,  AccessKey,  ItemData,  CommentsHidden,  CommentsDisabled)
+		VALUES (@JournalTypeId, @UserID, GETUTCDATE(), GETUTCDATE(), @PortalID, @ProfileId, @GroupId, @Title, @Summary, @ObjectKey, @AccessKey, @ItemData, @CommentsHidden, @CommentsDisabled)
+		SET @JournalId = SCOPE_IDENTITY();
+	END ELSE
+		UPDATE {databaseOwner}[{objectQualifier}Journal]
+		 SET   JournalTypeId    = @JournalTypeId,
+		  --   UserID           = @UserID,   // should not be modified
+		  --   PortalID         = @PortalID, // should not be modified
+		  --   GroupId          = @GroupId   // should not be modified
+		       Title            = @Title,
+			   Summary          = @Summary,
+			   ObjectKey        = @ObjectKey,
+			   AccessKey        = @AccessKey,
+			   ItemData         = @ItemData,
+			   CommentsHidden   = @CommentsHidden,
+			   CommentsDisabled = @CommentsDisabled
+		 WHERE JournalId = @JournalId;
+
+    IF @JournalID IS NOT NULL BEGIN
+		DELETE 
+		 FROM  {databaseOwner}[{objectQualifier}Journal_Security]
+		 WHERE JournalId = @JournalId;
+        INSERT INTO {databaseOwner}[{objectQualifier}Journal_Security] 
+		SELECT @JournalId, string 
+		 FROM  {databaseOwner}[{objectQualifier}Journal_SplitText](@SecuritySet,',') S; 
+
+        IF @JournalXML IS NOT NULL
+            MERGE INTO {databaseOwner}[{objectQualifier}Journal_Data] T
+			USING (SELECT @JournalId AS JournalId) S ON T.JournalID = S.JournalID
+			WHEN     MATCHED THEN UPDATE SET JournalXML = @JournalXML
+            WHEN NOT MATCHED THEN INSERT ( JournalId,  JournalXML)
+                                  VALUES (@JournalId, @JournalXML);
+    END -- IF @JournalID Is Not Null
+    SELECT @JournalId;
+END -- Procedure
+GO
