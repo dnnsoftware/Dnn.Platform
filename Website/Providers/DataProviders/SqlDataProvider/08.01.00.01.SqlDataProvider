@@ -166,3 +166,75 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+-- DNN-6567: GetFoldersByPermissions returns wrong records
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
+    @PortalID    Int,            -- Null|-1 retrieves host folders
+    @Permissions nVarChar(300),  -- list of permissions, to be required any of it, not the complete set. Use '*', '' OR Null for ANY.
+    @UserID      Int,            -- Id of the user to be inspected, Null|-1 for anonymous users
+    @FolderId    Int,            -- optional ID   of a single folder to check (or Null|-1 for all)
+    @FolderPath  nVarChar(300)   -- optional path of a single folder to check (or Null|'' for all)
+AS
+BEGIN
+    DECLARE @IsSuperUser  Bit = 0
+    DECLARE @IsAdmin      Bit = 0
+    DECLARE @AllPerm      Int = 0
+    DECLARE @ReadPerm     Int = 0
+    DECLARE @WritePerm    Int = 0
+    DECLARE @BrowsePerm   Int = 0
+    DECLARE @AddPerm      Int = 0
+
+    -- Determine Admin or SuperUser
+    IF NOT IsNull(@UserID, -1) = -1 BEGIN
+        SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserID;
+        IF @IsSuperUser != 0
+            SET @IsAdmin = 1;
+         ELSE IF IsNull(@PortalID, -1) = -1
+            SET @IsAdmin = 0
+         ELSE IF {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalID)) <> 0
+            SET @IsAdmin = 1;
+    END;
+
+    IF (IsNull(@PortalID, -1) = -1 AND @IsSuperUser != 0) OR (@IsAdmin != 0)
+        -- shortcut for admins/superusers: return all folders (they are having always access to all of them)
+        SELECT F.*
+         FROM  {databaseOwner}[{objectQualifier}Folders] F
+         WHERE IsNull(F.PortalID, -1) = IsNull(@PortalID, -1)
+           AND (F.FolderID   = @FolderID   OR IsNull(@FolderID,    -1) =  -1)
+           AND (F.FolderPath = @FolderPath OR IsNull(@FolderPath, N'') = N'')
+         ORDER BY F.PortalID, F.FolderPath
+         OPTION (OPTIMIZE FOR (@PortalID UNKNOWN, @FolderID UNKNOWN, @FolderPath UNKNOWN));
+    ELSE BEGIN
+        --Retrieve Permission IDs
+            SELECT TOP 1 @AllPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'WRITE';
+        IF IsNull(@Permissions, N'') LIKE N'%WRITE%'  SET @WritePerm = @AllPerm -- always checked, because WRITE always rules all other permissions
+        IF IsNull(@Permissions, N'') LIKE N'%READ%'
+            SELECT TOP 1 @ReadPerm   = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'READ';
+        IF IsNull(@Permissions, N'') LIKE N'%BROWSE%'
+            SELECT TOP 1 @BrowsePerm = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'BROWSE';
+        IF IsNull(@Permissions, N'') LIKE N'%ADD%' -- advanced permission provider only
+            SELECT TOP 1 @AddPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'ADD';
+
+        SELECT * FROM {databaseOwner}[{objectQualifier}Folders]
+         WHERE (PortalID = IsNull(@PortalID, -1))
+           AND (FolderPath = @FolderPath OR IsNull(@FolderPath, N'') = N'')
+           AND (FolderID   = @FolderID   OR IsNull(@FolderID, -1) = -1)
+           AND FolderId IN -- granted folders
+                (SELECT DISTINCT FolderId FROM {databaseOwner}[{objectQualifier}FolderPermission]
+                 WHERE (UserID = @UserID OR (RoleID Is Not Null AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, RoleID) = 1))
+                   AND PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @AllPerm)
+                   AND AllowAccess = 1)
+           AND NOT FolderId IN -- denied folders
+                (SELECT DISTINCT FolderId FROM {databaseOwner}[{objectQualifier}FolderPermission]
+                 WHERE (UserID = @UserID OR (RoleID Is Not Null AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, RoleID) = 1))
+                   AND PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @WritePerm)
+                   AND AllowAccess = 0)
+         ORDER BY PortalID, FolderPath
+         OPTION (OPTIMIZE FOR (@PortalID Unknown, @FolderPath Unknown, @FolderId Unknown, @UserID Unknown));
+    END
+END -- Procedure
+GO
