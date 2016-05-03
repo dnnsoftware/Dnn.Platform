@@ -92,34 +92,83 @@ GO
 /************************************************************/
 
 /* CONTENT-5905 Add/Update RegEx to allow DnnImageHandler and stop throwing 404 Error */
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = SettingValue + '|\.ashx'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|\.ashx', SettingValue) = 0
+GO
 
-DECLARE @DoNotRedirectUrlRegex_Value NVARCHAR(2000);
-DECLARE @DoNotRewriteRegEx_Value NVARCHAR(2000);
-/* Do it for Portal */
-SELECT @DoNotRedirectUrlRegex_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRedirectUrlRegex'
-SELECT @DoNotRewriteRegEx_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRewriteRegEx'
-IF(CHARINDEX('|\.ashx', @DoNotRedirectUrlRegex_Value) = 0)
-BEGIN
-	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRedirectUrlRegex_Value + '|\.ashx' WHERE SettingName='AUM_DoNotRedirectUrlRegex'
-END
-IF(CHARINDEX('|/DnnImageHandler\.ashx', @DoNotRewriteRegEx_Value) = 0 AND CHARINDEX('/DnnImageHandler\.ashx|', @DoNotRewriteRegEx_Value) = 0)
-BEGIN
-	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRewriteRegEx_Value + '|/DnnImageHandler\.ashx' WHERE SettingName='AUM_DoNotRewriteRegEx'
-END
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = SettingValue + '|/DnnImageHandler\.ashx'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/DnnImageHandler\.ashx', SettingValue) = 0
+GO
 
-/* Do it for Host */
-SELECT @DoNotRedirectUrlRegex_Value=SettingValue FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName='AUM_DoNotRedirectUrlRegex'
-SELECT @DoNotRewriteRegEx_Value=SettingValue FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName='AUM_DoNotRewriteRegEx'
-IF(CHARINDEX('|\.ashx', @DoNotRedirectUrlRegex_Value) = 0)
-BEGIN
-	UPDATE {databaseOwner}[{objectQualifier}HostSettings] SET SettingValue=@DoNotRedirectUrlRegex_Value + '|\.ashx' WHERE SettingName='AUM_DoNotRedirectUrlRegex'
-END
-IF(CHARINDEX('|/DnnImageHandler\.ashx', @DoNotRewriteRegEx_Value) = 0 AND CHARINDEX('/DnnImageHandler\.ashx|', @DoNotRewriteRegEx_Value) = 0)
-BEGIN
-	UPDATE {databaseOwner}[{objectQualifier}HostSettings] SET SettingValue=@DoNotRewriteRegEx_Value + '|/DnnImageHandler\.ashx' WHERE SettingName='AUM_DoNotRewriteRegEx'
-END
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingValue = SettingValue + '|\.ashx'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|\.ashx', SettingValue) = 0
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingValue = SettingValue + '|/DnnImageHandler\.ashx'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/DnnImageHandler\.ashx', SettingValue) = 0
+GO
 
 /* CONTENT-5905 End */
+
+/***** DNN-6221: update DoNotRedirect and DoNotRewrite settings to include API path.  *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/', SettingValue) = 0
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/', SettingValue) = 0
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/', SettingValue) = 0
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/', SettingValue) = 0
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/RelationshipService/AcceptFriend'
+    WHERE APICall = 'DesktopModules/InternalServices/API/RelationshipService/AcceptFriend'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/RelationshipService/FollowBack'
+    WHERE APICall = 'DesktopModules/InternalServices/API/RelationshipService/FollowBack'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/Journal/Action/NotificationServices/ViewJournal'
+    WHERE APICall = 'DesktopModules/Journal/API/NotificationServices/ViewJournal'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/ContentWorkflowService/Approve'
+    WHERE APICall = 'DesktopModules/InternalServices/API/ContentWorkflowService/Approve'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/ContentWorkflowService/Reject'
+    WHERE APICall = 'DesktopModules/InternalServices/API/ContentWorkflowService/Reject'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/NewUserNotificationService/Authorize'
+    WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Authorize'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
+    SET APICall = 'API/InternalServices/Action/NewUserNotificationService/Reject'
+    WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Reject'
+GO
 
 /****************************/
 /* DNN-8563: Return language id before call EnsureLocalizationExists. */

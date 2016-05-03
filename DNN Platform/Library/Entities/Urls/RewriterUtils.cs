@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Urls
 {
     public class RewriterUtils
     {
-        internal static readonly Regex ServicesFrameworkRegex = new Regex("DesktopModules/.+/API/", RegexOptions.Compiled);
+        internal static readonly Regex ServicesFrameworkRegex = new Regex("desktopModules/.+/api/|api/.+/action/", RegexOptions.Compiled);
 
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
         {
@@ -121,8 +121,8 @@ namespace DotNetNuke.Entities.Urls
             if (string.IsNullOrEmpty(omitSettings)) {
 		        omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
 	        }
-	        omitSettings = omitSettings.ToLower();
-	        localPath = localPath.ToLower();
+	        omitSettings = omitSettings.ToLowerInvariant();
+	        localPath = localPath.ToLowerInvariant();
 
 	        var omissions = omitSettings.Split(new[] { '|' });
 
