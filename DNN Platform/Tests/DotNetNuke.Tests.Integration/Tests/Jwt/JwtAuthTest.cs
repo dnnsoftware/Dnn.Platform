@@ -101,6 +101,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         public void ValidUserLoginShouldPass()
         {
             var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            Assert.IsNotNull(token.UserId);
             Assert.IsNotNull(token.AccessToken);
             Assert.IsNotNull(token.DisplayName);
             Assert.IsNotNull(token.RenewalToken);
@@ -494,6 +495,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [JsonObject]
         public class LoginResultData
         {
+            [JsonProperty("userId")]
+            public int UserId { get; set; }
+
             [JsonProperty("displayName")]
             public string DisplayName { get; set; }
 

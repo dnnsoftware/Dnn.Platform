@@ -26,6 +26,8 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
     [JsonObject]
     public class LoginResultData
     {
+        [JsonProperty("userId")]
+        public int UserId { get; set; }
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
         [JsonProperty("accessToken")]
