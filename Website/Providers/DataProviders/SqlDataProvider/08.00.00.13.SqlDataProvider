@@ -1,5 +1,5 @@
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddException]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddException]'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
 GO
 
@@ -49,7 +49,7 @@ GO
 /* DNN-7565: return settings for host tabs. */
 /*********************************************************/
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
 GO
 
