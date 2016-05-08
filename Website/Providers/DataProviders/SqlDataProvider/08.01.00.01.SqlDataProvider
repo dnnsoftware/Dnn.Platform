@@ -166,3 +166,35 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-4593: Improve Function UserIsInRole with system roles support
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserIsInRole]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+(   @UserID Int, -- Null|-1: anonymous users
+    @RoleID Int  -- Null|-1: allUsers Role, -2: Superusers, -3: Unauthenticated users
+)	RETURNS Bit
+AS
+BEGIN
+    DECLARE @Res Bit;
+
+    IF IsNull(@RoleID, -1) = -1      -- All Users Role
+        SET @Res = 1;
+    ELSE IF IsNull(@UserID, -1) = -1 -- Unauthenticated Users
+        SET @Res = CASE WHEN @RoleID = -3 THEN 1 ELSE 0 END;
+    ELSE IF @RoleID = -2             -- Superusers Role
+        SELECT @Res = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserID;
+    ELSE
+        SET @Res = CASE WHEN EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}UserRoles]
+                                      WHERE UserID = @UserID AND RoleID = @RoleID
+                                        AND IsNull(EffectiveDate, GetDate()) >= GetDate()
+                                        AND IsNull(ExpiryDate,    GetDate()) <= GetDate()) 
+                        THEN 1 
+                        ELSE 0 
+                   END;
+    RETURN IsNull(@Res, 0);
+END -- Function
+GO
