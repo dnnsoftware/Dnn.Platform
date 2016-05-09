@@ -311,6 +311,11 @@ namespace DotNetNuke.Common.Utilities
                 return url;
             }
 
+            if (url.ToLowerInvariant().Contains("data:"))
+            {
+                url = string.Empty;
+            }
+
             //clean the return url to avoid possible XSS attack.
             var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
             if (url != cleanUrl)
