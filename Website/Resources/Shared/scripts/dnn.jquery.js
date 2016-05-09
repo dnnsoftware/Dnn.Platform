@@ -609,6 +609,9 @@
             }
 
             function clickHandler(e) {
+                if (ch.disabled) {
+                    return;
+                }
                 $ch.triggerHandler('focus');
                 var previousChecked = ch.checked;
                 ch.click();
