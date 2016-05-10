@@ -166,3 +166,54 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+
+-- DNN-7719: Improve indexes on Lists table to allow same list name in multiple portals
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_ListName_ParentID')
+	DROP INDEX [IX_{objectQualifier}Lists_ListName_ParentID] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+-- remove orphaned entries
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] 
+WHERE (DefinitionID NOT IN (SELECT ModuleDefID FROM {databaseOwner}[{objectQualifier}ModuleDefinitions]) AND DefinitionID > 0)
+   OR (PortalID NOT IN (SELECT PortalID FROM {databaseOwner}[{objectQualifier}Portals]) AND PortalID >= 0)
+GO
+
+-- ensure that there are no duplicates before creating the index
+DELETE FROM {databaseOwner}[{objectQualifier}Lists] 
+ WHERE EntryID NOT IN (SELECT Max(EntryID) Item
+						FROM  {databaseOwner}[{objectQualifier}Lists] 
+						GROUP BY PortalID, ParentID, ListName, [Value])
+GO
+
+-- allow same list for multiple portals:
+
+IF EXISTS(SELECT * FROM sys.key_constraints WHERE name = N'IX_{objectQualifier}Lists_ListName_Value_Text_ParentID' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}Lists] DROP CONSTRAINT IX_{objectQualifier}Lists_ListName_Value_Text_ParentID
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_ListName_Value_Text_ParentID')
+	DROP INDEX [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_ParentID')
+	DROP INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_Portal_ListName_Parent_Value')
+	DROP INDEX [IX_{objectQualifier}Lists_Portal_ListName_Parent_Value] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_Portal_ListName_Parent_Value] ON {databaseOwner}[{objectQualifier}Lists] 
+	([PortalID], [ListName], [ParentID], [Value])
+	INCLUDE ([Text])
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Lists]') AND name = N'IX_{objectQualifier}Lists_SortOrder')
+	DROP INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_SortOrder] ON {databaseOwner}[{objectQualifier}Lists] 
+	([PortalID], [ParentID], [ListName], [SortOrder], [Value]) 
+	INCLUDE (DefinitionID, Text)
+GO
