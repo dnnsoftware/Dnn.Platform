@@ -1,21 +1,21 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
@@ -78,7 +78,7 @@ namespace Dnn.Modules.Sql
             rptResults.ItemDataBound += rptResults_ItemDataBound;
             ddlSavedQuery.SelectedIndexChanged += ddlSavedQuery_SelectedIndexChanged;
 
-            txtQuery.Attributes.Add("placeholder", Localization.GetSafeJSString(LocalizeString("Placeholder")));
+            txtQuery.Attributes.Add("placeholder", HttpUtility.JavaScriptStringEncode(LocalizeString("Placeholder")));
 
             try
             {
@@ -90,7 +90,7 @@ namespace Dnn.Modules.Sql
                     cmdExecute.ToolTip = Localization.GetString("cmdExecute.ToolTip", LocalResourceFile);
                     //DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(btDelete, LocalizeString("DeleteItem"));
                 }
-                var js = string.Format("javascript:return confirm('{0}');", Localization.GetSafeJSString(LocalizeString("DeleteItem")));
+                var js = string.Format("javascript:return confirm('{0}');", HttpUtility.JavaScriptStringEncode(LocalizeString("DeleteItem")));
                 btDelete.Attributes.Add("onClick", js);
             }
             catch (Exception exc)
@@ -190,7 +190,7 @@ namespace Dnn.Modules.Sql
                     gvResults.DataSource = e.Item.DataItem;
                     gvResults.DataBind();
                     gvResults.ToolTip = "Query " + (e.Item.ItemIndex + 1).ToString();
-                    
+
 
                     if (gvResults.Rows.Count == 0)
                     {

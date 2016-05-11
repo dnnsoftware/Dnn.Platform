@@ -154,8 +154,8 @@
                         <div class="messageHeader">
                             <p><strong><%=LocalizeString("Subject")%>:</strong> <span data-bind="text: threadSubject"></span><br/><strong><%=LocalizeString("SentTo")%>:</strong> <span data-bind="    text: threadTo"></span></p>
                             <div class="returnLink">
-                                <a href="#" data-bind="click: toggleArchiveConversation, text: (TotalArchivedThreads() === 0 ? '<%=Localization.GetSafeJSString(LocalizeString("MarkArchive"))%>    ' : '<%=Localization.GetSafeJSString(LocalizeString("MarkUnarchive"))%>    ')"></a> | 
-                                <a href="#" data-bind="click: toggleConversationState, text: (conversationRead() === true ? '<%=Localization.GetSafeJSString(LocalizeString("MarkUnread"))%>    ' : '<%=Localization.GetSafeJSString(LocalizeString("MarkRead"))%>    '), visible: TotalArchivedThreads() === 0"></a> | 
+                                <a href="#" data-bind="click: toggleArchiveConversation, text: (TotalArchivedThreads() === 0 ? '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("MarkArchive"))%>    ' : '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("MarkUnarchive"))%>    ')"></a> | 
+                                <a href="#" data-bind="click: toggleConversationState, text: (conversationRead() === true ? '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("MarkUnread"))%>    ' : '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("MarkRead"))%>    '), visible: TotalArchivedThreads() === 0"></a> | 
                                 <a href="#" data-bind="click: backToMessages"><%=LocalizeString("BackToMessages")%></a>
                             </div>
                             <div class="dnnClear"></div>
@@ -275,10 +275,10 @@
 			serverErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
 			serverErrorWithDescriptionText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
 			dismissAllConfirmText: '<%= ClientAPI.GetSafeJSString(LocalizeString("DismissAllConfirm")) %>',
-			text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+			text: '<%= HttpUtility.JavaScriptStringEncode("DeleteItem.Text", Localization.SharedResourceFile) %>',
+			yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+			noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+			title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>',
 		    disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>,
 		    messageTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Messages")) %>',
 		    notificationTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Notifications")) %>',

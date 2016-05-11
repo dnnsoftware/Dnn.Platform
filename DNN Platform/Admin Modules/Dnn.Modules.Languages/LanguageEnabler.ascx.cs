@@ -243,10 +243,10 @@ namespace Dnn.Modules.Languages
                         Locale localeToDelete = LocaleController.Instance.GetLocale(languageId);
                         s += string.Format(@"$('#{0}').dnnConfirm({{text: '{1}', yesText: '{2}', noText: '{3}', title: '{4}'}});",
                             button.ClientID,
-                            string.Format(Localization.GetSafeJSString(confirmResource, LocalResourceFile), localeToDelete.Code),
-                            Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile),
-                            Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile),
-                            Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile)
+                            string.Format(HttpUtility.JavaScriptStringEncode(confirmResource, LocalResourceFile), localeToDelete.Code),
+                            HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile),
+                            HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile),
+                            HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile)
                             );
                     }
                 }
@@ -593,7 +593,7 @@ namespace Dnn.Modules.Languages
                             if (enabledCheckbox.Checked)
                             {
                                 string msg = String.Format(LocalizeString("Disable.Confirm"), Localization.GetLocaleName(locale.Code, DisplayType));
-                                enabledCheckbox.Attributes.Add("onclick", "if (!confirm('" + Localization.GetSafeJSString(msg) + "')) return false;");
+                                enabledCheckbox.Attributes.Add("onclick", "if (!confirm('" + HttpUtility.JavaScriptStringEncode(msg) + "')) return false;");
                             }
                         }
 
@@ -605,7 +605,7 @@ namespace Dnn.Modules.Languages
                             if (publishedCheckbox.Checked)
                             {
                                 string msg = String.Format(LocalizeString("Unpublish.Confirm"), Localization.GetLocaleName(locale.Code, DisplayType));
-                                publishedCheckbox.Attributes.Add("onclick", "if (!confirm('" + Localization.GetSafeJSString(msg) + "')) return false;");
+                                publishedCheckbox.Attributes.Add("onclick", "if (!confirm('" + HttpUtility.JavaScriptStringEncode(msg) + "')) return false;");
                             }
                         }
                     }

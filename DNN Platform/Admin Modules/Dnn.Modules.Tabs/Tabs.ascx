@@ -109,10 +109,10 @@
 					delayPostBack();
 				}
 			},
-			text: '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>',
-			yesText: '<%=Localization.GetSafeJSString("Yes", LocalResourceFile)%>',
-			noText: '<%=Localization.GetSafeJSString("No", LocalResourceFile)%>',
-			title: '<%=Localization.GetSafeJSString("Confirm", LocalResourceFile)%>'
+			text: '<%=HttpUtility.JavaScriptStringEncode("ConfirmSave", LocalResourceFile)%>',
+			yesText: '<%=HttpUtility.JavaScriptStringEncode("Yes", LocalResourceFile)%>',
+			noText: '<%=HttpUtility.JavaScriptStringEncode("No", LocalResourceFile)%>',
+			title: '<%=HttpUtility.JavaScriptStringEncode("Confirm", LocalResourceFile)%>'
 		};
 
 		//show prompt
@@ -122,8 +122,8 @@
 	function setUpTabsModule() {
 		$('#dnnTabsModule').dnnPanels()
 			.find('.dnnFormExpandContent a').dnnExpandAll({
-			    expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
-			    collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
+			    expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>',
+			    collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>',
 				targetArea: '#dnnTabsModule'
 			});
 
@@ -144,9 +144,9 @@
 	    
         $('input[id$=cmdDeleteModule]').dnnConfirm({
             text: '<%= LocalizeSafeJsString("DeleteItem") %>',
-            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-        	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+            yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+        	title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>',
         	isButton: true
         });
 
@@ -204,7 +204,7 @@
 		parseSelectedPageFromHash();
 		$(window).on('beforeunload', function() {
 			if (fieldsChanged) {
-				return '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>';
+				return '<%=HttpUtility.JavaScriptStringEncode("ConfirmSave", LocalResourceFile)%>';
 			}
 		});
 

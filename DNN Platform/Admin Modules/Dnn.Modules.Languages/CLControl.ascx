@@ -154,7 +154,7 @@
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setupCLTools() {
-            var confirmText = '<%= Localization.GetSafeJSString("DeleteTranslation.Confirm", LocalResourceFile) %>';
+            var confirmText = '<%= HttpUtility.JavaScriptStringEncode("DeleteTranslation.Confirm", LocalResourceFile) %>';
             
             $('a[id*="rHeader_cmdDeleteTranslation"]').each(function (index) {
                 var deleteButton = this;
@@ -163,18 +163,18 @@
                 
                 $(this).dnnConfirm({
                     text: customText,
-                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                    title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                    yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                    noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                    title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
                 });
             });
             
             $('a[id*="cmdDeleteModule"]').each(function (index) {
                 $(this).dnnConfirm({
-                    text: '<%= Localization.GetSafeJSString("DeleteModule.Confirm", Localization.SharedResourceFile) %>',
-                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                    title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                    text: '<%= HttpUtility.JavaScriptStringEncode("DeleteModule.Confirm", Localization.SharedResourceFile) %>',
+                    yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                    noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                    title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
                 });
             });
 

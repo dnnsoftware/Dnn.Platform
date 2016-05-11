@@ -403,32 +403,32 @@
     	visibilityComboId: '<%= VisibilityLst.ClientID %>',
     	makeCopyCheckboxId: 'ControlBar_Module_chkCopyModule',
 		pagePickerId: '<%= PageList.ClientID %>',
-        yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-        noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-        titleText: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-        deleteText: '<%= Localization.GetSafeJSString(GetButtonConfirmMessage("DeletePage"))%>',
-        publishConfirmHeader: '<%= Localization.GetSafeJSString(GetPublishConfirmHeader())%>',
-        publishConfirmText: '<%= Localization.GetSafeJSString(GetPublishConfirmText())%>',
-        publishedPage: '<%= Localization.GetSafeJSString(GetTabPublishing())%>',
-        copyPermissionsToChildrenText: '<%= Localization.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
+        yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+        noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+        titleText: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>',
+        deleteText: '<%= HttpUtility.JavaScriptStringEncode(GetButtonConfirmMessage("DeletePage"))%>',
+        publishConfirmHeader: '<%= HttpUtility.JavaScriptStringEncode(GetPublishConfirmHeader())%>',
+        publishConfirmText: '<%= HttpUtility.JavaScriptStringEncode(GetPublishConfirmText())%>',
+        publishedPage: '<%= HttpUtility.JavaScriptStringEncode(GetTabPublishing())%>',
+        copyPermissionsToChildrenText: '<%= HttpUtility.JavaScriptStringEncode(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
 
-        dragModuleToolTip: '<%= Localization.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
+        dragModuleToolTip: '<%= HttpUtility.JavaScriptStringEncode(GetString("DragModuleToolTip.Text")) %>',
 
         loginUrl: '<%= LoginUrl %>',
 
-        selectPageText: '<%= Localization.GetSafeJSString(GetString("SelectPage.Text")) %>',
-        moduleShareableTitle: '<%= Localization.GetSafeJSString(GetString("ShareableWarningTitle")) %>',
+        selectPageText: '<%= HttpUtility.JavaScriptStringEncode(GetString("SelectPage.Text")) %>',
+        moduleShareableTitle: '<%= HttpUtility.JavaScriptStringEncode(GetString("ShareableWarningTitle")) %>',
 
-        removeBookmarksTip: '<%= Localization.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
-        addToBookmarksTip: '<%= Localization.GetSafeJSString(GetString("Tool.AddToBookmarks.ToolTip")) %>',
+        removeBookmarksTip: '<%= HttpUtility.JavaScriptStringEncode(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
+        addToBookmarksTip: '<%= HttpUtility.JavaScriptStringEncode(GetString("Tool.AddToBookmarks.ToolTip")) %>',
 
         bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
         bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>',
         defaultCategoryValue: 'All',
 
         loadingModulesId: 'ControlBar_ModuleListWaiter_LoadingMessage',
-        loadingModulesMessage: '<%= Localization.GetSafeJSString(GetString("LoadingModule.Text"))%>',
-        loadingModulesOnNoDefaultCategoryMessage: "<%= Localization.GetSafeJSString(GetString("LoadingModuleOnNoDefaultCategory.Text"))%>"
+        loadingModulesMessage: '<%= HttpUtility.JavaScriptStringEncode(GetString("LoadingModule.Text"))%>',
+        loadingModulesOnNoDefaultCategoryMessage: "<%= HttpUtility.JavaScriptStringEncode(GetString("LoadingModuleOnNoDefaultCategory.Text"))%>"
     };
 
     $(function() {

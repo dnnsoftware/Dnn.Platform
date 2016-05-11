@@ -18,7 +18,7 @@
                     <asp:TextBox ID="txtRoleName" runat="server" MaxLength="50" />
                     <asp:Label ID="lblRoleName" Visible="False" runat="server" />
                     <asp:RequiredFieldValidator ID="valRoleName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName" ControlToValidate="txtRoleName" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>¿¡«»!\.:\*'\[\]]*" />
+                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>Â¿Â¡Â«Â»!\.:\*'\[\]]*" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plDescription" runat="server" ResourceKey="Description" ControlName="txtDescription" />
@@ -112,9 +112,9 @@
 (function ($, Sys) {
     function setUpDnnEditRoles() {
         $('#dnnEditRole').dnnTabs();
-        var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
-        var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
-        var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+        var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>';
+        var noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>';
+        var titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
         $('#<%= cmdDelete.ClientID %>').dnnConfirm({
             text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: yesText,
@@ -130,13 +130,13 @@
 				$("#assignToExistUsers").find("input[type=checkbox]").attr("checked", false);
 			}
 	    };
-        
+
          var updateView = function(e) {
             var txtBillingPeriod = $("#<%=txtBillingPeriod.ClientID %>");
             var cboBillingFrequency = $find("<%=cboBillingFrequency.ClientID %>");
             var txtTrialPeriod = $("#<%=txtTrialPeriod.ClientID %>");
             var cboTrialFrequency = $find("<%=cboTrialFrequency.ClientID %>");
-            
+
             if ($("#<%=txtServiceFee.ClientID %>").val() == "") {
                 txtBillingPeriod.attr("disabled", "disabled").val("");
                 cboBillingFrequency.disable();
@@ -164,7 +164,7 @@
 	    $("#<%=chkAutoAssignment.ClientID%>").click(function() {
 		    updateAssignRow(this.checked);
 	    });
-        
+
         setTimeout(updateView, 0);
     }
     $(document).ready(function () {

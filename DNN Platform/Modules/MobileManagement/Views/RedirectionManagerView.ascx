@@ -89,15 +89,15 @@
             });
             $('a.delete').dnnConfirm({
                 text: '<%= LocalizeSafeJsString("DeleteItem") %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
             });
             $('a.enable').dnnConfirm({
                 text: '<%= LocalizeSafeJsString("EnableItem.Text") %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
             });
 
             // Show/Hide Tooltip

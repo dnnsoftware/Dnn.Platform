@@ -1,21 +1,21 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			}
 		}
 
-        public bool IncludeButton   
+        public bool IncludeButton
         {
             get
             {
@@ -180,12 +180,12 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                                                               ref propertyNotFound);
 
 
-                    var clientName = Localization.GetSafeJSString(property.PropertyName);
+                    var clientName = HttpUtility.JavaScriptStringEncode(property.PropertyName);
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
                     if (!string.IsNullOrEmpty(value))
                     {
-                        value = Localization.GetSafeJSString(displayDataType == "richtext" ? value : Server.HtmlDecode(value));
+                        value = HttpUtility.JavaScriptStringEncode(displayDataType == "richtext" ? value : Server.HtmlDecode(value));
                         value = value
                             .Replace("\r", string.Empty)
                             .Replace("\n", " ")
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			                       : String.Empty;
 
                 sb.Append("self.Email = ko.observable('");
-                email = Localization.GetSafeJSString(Server.HtmlDecode(email));
+                email = HttpUtility.JavaScriptStringEncode(Server.HtmlDecode(email));
                 email = email.Replace(";", string.Empty).Replace("//", string.Empty);
                 sb.Append(email + "');");
                 sb.Append('\n');
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
             var action = Request.QueryString["action"];
 
-            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in. 
+            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in.
             {
                 string loginUrl = Common.Globals.LoginURL(Request.RawUrl, false);
                 Response.Redirect(loginUrl);
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             if (Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
             {
                 //current user, i.e. the one that the request was for
-                var currentUser = UserController.Instance.GetCurrentUserInfo();               
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 // the initiating user,i.e. the one who wanted to be friend
                 // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
                 var initiatingUser = UserController.Instance.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(Request.QueryString["UserID"]));
@@ -273,15 +273,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     return; //do not further process for users who are on their own profile page
                 }
-            
+
                 var friendRelationship = RelationshipController.Instance.GetFriendRelationship(currentUser, initiatingUser);
 
                 if (friendRelationship != null)
-                {                   
+                {
                     if (action.ToLower() == "acceptfriend")
                     {
                         var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
-                        FriendsController.Instance.AcceptFriend(friend);                        
+                        FriendsController.Instance.AcceptFriend(friend);
                     }
 
                     if (action.ToLower() == "followback")
@@ -296,11 +296,11 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                                 NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
                             }
                         }
-                        catch 
+                        catch
                         {}
 
 
-                    }                    
+                    }
                 }
 
                 Response.Redirect(Common.Globals.UserProfileURL(initiatingUser.UserID));

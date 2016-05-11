@@ -89,8 +89,8 @@
         },
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',            
-            canAdminPermissions: '<%=Localization.GetSafeJSString(CanManageFolder.ToString().ToLowerInvariant()) %>',
-            dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
+            canAdminPermissions: '<%=HttpUtility.JavaScriptStringEncode(CanManageFolder.ToString().ToLowerInvariant()) %>',
+            dialogTitle: '<%=HttpUtility.JavaScriptStringEncode(DialogTitle)%>'
         }
     );
 </script>

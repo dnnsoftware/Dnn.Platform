@@ -14,12 +14,12 @@
     jQuery(document).ready(function($) {
         function ProfileViewModelModule<%=ModuleContext.ModuleId.ToString(CultureInfo.InvariantCulture) %>() {
             var self = this;
-            self.AboutMeText = '<%=Localization.GetSafeJSString(LocalizeString("AboutMe")) %>';
-            self.LocationText = '<%=Localization.GetSafeJSString(LocalizeString("Location")) %>';
-            self.GetInTouchText = '<%=Localization.GetSafeJSString(LocalizeString("GetInTouch")) %>';
-            self.EmptyAboutMeText = '<%=Localization.GetSafeJSString(LocalizeString("EmptyAboutMe")) %>';
-            self.EmptyLocationText = '<%=Localization.GetSafeJSString(LocalizeString("EmptyLocation")) %>';
-            self.EmptyGetInTouchText = '<%=Localization.GetSafeJSString(LocalizeString("EmptyGetInTouch")) %>';
+            self.AboutMeText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("AboutMe")) %>';
+            self.LocationText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("Location")) %>';
+            self.GetInTouchText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("GetInTouch")) %>';
+            self.EmptyAboutMeText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("EmptyAboutMe")) %>';
+            self.EmptyLocationText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("EmptyLocation")) %>';
+            self.EmptyGetInTouchText = '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("EmptyGetInTouch")) %>';
             
             <% = ProfileProperties %>
 

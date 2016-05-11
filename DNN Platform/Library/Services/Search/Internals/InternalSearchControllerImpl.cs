@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         foreach (var def in list)
                         {
-                            var text = Localization.Localization.GetSafeJSString("Module_" + def.DefinitionName, LocalizedResxFile);
+                            var text = Localization.HttpUtility.JavaScriptStringEncode("Module_" + def.DefinitionName, LocalizedResxFile);
                             if (string.IsNullOrEmpty(text))
                             {
                                 text = def.FriendlyName;
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
                         var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);                       
-                        var localizedName = Localization.Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
+                        var localizedName = Localization.HttpUtility.JavaScriptStringEncode(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource
                         {

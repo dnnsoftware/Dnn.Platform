@@ -7,15 +7,15 @@
         %>
         <li id="moduleActions-<% = ModuleContext.Configuration.ModuleID %>-QuickSettings" style="display:none">
             <div>
-                <div class="qsHeader"><%=Localization.GetSafeJSString("QuickSettings", Localization.SharedResourceFile) %></div>
+                <div class="qsHeader"><%=HttpUtility.JavaScriptStringEncode("QuickSettings", Localization.SharedResourceFile) %></div>
                 <div class="qsContainer">
                     <asp:Panel id="quickSettings" runat="server">
     
                     </asp:Panel>
                 </div>
                 <div class="qsFooter">
-                    <a class="secondarybtn"><%=Localization.GetSafeJSString("Cancel", Localization.SharedResourceFile) %></a>
-                    <a class="primarybtn"><%=Localization.GetSafeJSString("Save", Localization.SharedResourceFile) %></a>
+                    <a class="secondarybtn"><%=HttpUtility.JavaScriptStringEncode("Cancel", Localization.SharedResourceFile) %></a>
+                    <a class="primarybtn"><%=HttpUtility.JavaScriptStringEncode("Save", Localization.SharedResourceFile) %></a>
                 </div>
             </div>
         </li>
@@ -44,15 +44,15 @@
                     customText: "<% = CustomText %>",
                     adminText: "<% = AdminText %>",
                     moveText: "<% = MoveText %>",
-                    topText: '<% = Localization.GetSafeJSString(LocalizeString("MoveTop.Action"))%>',
-                    upText: '<% = Localization.GetSafeJSString(LocalizeString("MoveUp.Action"))%>',
-                    downText: '<% = Localization.GetSafeJSString(LocalizeString("MoveDown.Action"))%>',
-                    bottomText: '<% = Localization.GetSafeJSString(LocalizeString("MoveBottom.Action"))%>',
-                    movePaneText: '<% = Localization.GetSafeJSString(LocalizeString("MoveToPane.Action"))%>',
-                    deleteText: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                    confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                    topText: '<% = HttpUtility.JavaScriptStringEncode(LocalizeString("MoveTop.Action"))%>',
+                    upText: '<% = HttpUtility.JavaScriptStringEncode(LocalizeString("MoveUp.Action"))%>',
+                    downText: '<% = HttpUtility.JavaScriptStringEncode(LocalizeString("MoveDown.Action"))%>',
+                    bottomText: '<% = HttpUtility.JavaScriptStringEncode(LocalizeString("MoveBottom.Action"))%>',
+                    movePaneText: '<% = HttpUtility.JavaScriptStringEncode(LocalizeString("MoveToPane.Action"))%>',
+                    deleteText: '<%= HttpUtility.JavaScriptStringEncode("DeleteItem.Text", Localization.SharedResourceFile) %>',
+                    yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                    noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                    confirmTitle: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
                     supportsQuickSettings: supportsQuickSettings,

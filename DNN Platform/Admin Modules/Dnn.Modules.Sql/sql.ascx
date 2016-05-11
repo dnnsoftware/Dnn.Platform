@@ -167,18 +167,18 @@
                     ]
                 },
                 oLanguage: {
-                    "sInfo": "<%=Localization.GetSafeJSString(LocalizeString("sInfo"))%>",
-                    "sInfoFiltered": "<%=Localization.GetSafeJSString(LocalizeString("sInfoFiltered"))%>",
-                    "sInfoEmpty": "<%=Localization.GetSafeJSString(LocalizeString("sInfoEmpty"))%>",
-                    "sLengthMenu": "<%=Localization.GetSafeJSString(LocalizeString("sLengthMenu"))%>",
-                    "sLoadingRecords": "<%=Localization.GetSafeJSString(LocalizeString("sLoadingRecords"))%>",
-                    "sProcessing": "<%=Localization.GetSafeJSString(LocalizeString("sProcessing"))%>",
-                    "sSearch": "<%=Localization.GetSafeJSString(LocalizeString("sSearch"))%>",
+                    "sInfo": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sInfo"))%>",
+                    "sInfoFiltered": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sInfoFiltered"))%>",
+                    "sInfoEmpty": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sInfoEmpty"))%>",
+                    "sLengthMenu": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sLengthMenu"))%>",
+                    "sLoadingRecords": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sLoadingRecords"))%>",
+                    "sProcessing": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sProcessing"))%>",
+                    "sSearch": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sSearch"))%>",
                     "oPaginate": {
-                        "sFirst": "<%=Localization.GetSafeJSString(LocalizeString("sFirst"))%>",
-                        "sLast": "<%=Localization.GetSafeJSString(LocalizeString("sLast"))%>",
-                        "sNext": "<%=Localization.GetSafeJSString(LocalizeString("sNext"))%>",
-                        "sPrevious": "<%=Localization.GetSafeJSString(LocalizeString("sPrevious"))%>"
+                        "sFirst": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sFirst"))%>",
+                        "sLast": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sLast"))%>",
+                        "sNext": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sNext"))%>",
+                        "sPrevious": "<%=HttpUtility.JavaScriptStringEncode(LocalizeString("sPrevious"))%>"
                     }
                 }
             });

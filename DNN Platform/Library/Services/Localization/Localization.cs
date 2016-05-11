@@ -1,21 +1,21 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -54,7 +54,7 @@ using System.Text.RegularExpressions;
 namespace DotNetNuke.Services.Localization
 {
     /// <summary>
-    /// <para>CultureDropDownTypes allows the user to specify which culture name is displayed in the drop down list that is filled 
+    /// <para>CultureDropDownTypes allows the user to specify which culture name is displayed in the drop down list that is filled
     /// by using one of the helper methods.</para>
     /// </summary>
     [Serializable]
@@ -94,8 +94,8 @@ namespace DotNetNuke.Services.Localization
     /// Localization class support localization in system.
     /// </summary>
     /// <remarks>
-    /// <para>As DNN is used in more and more countries it is very important to provide modules with 
-    /// good support for international users. Otherwise we are limiting our potential user base to 
+    /// <para>As DNN is used in more and more countries it is very important to provide modules with
+    /// good support for international users. Otherwise we are limiting our potential user base to
     /// that using English as their base language.</para>
     /// <para>
     /// You can store the muti language content in resource files and use the api below to get localization content.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Localization
         #endregion
 
         #region Public Shared Properties
-        
+
         /// <summary>
         /// Returns ~/App_GlobalResources
         /// </summary>
@@ -597,9 +597,9 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Converts old TimeZoneOffset to new TimeZoneInfo. 
+        /// Converts old TimeZoneOffset to new TimeZoneInfo.
         /// </summary>
-        /// <param name="timeZoneOffsetInMinutes">An offset in minutes, e.g. -480 (-8 times 60) for Pasicif Time Zone</param>        
+        /// <param name="timeZoneOffsetInMinutes">An offset in minutes, e.g. -480 (-8 times 60) for Pasicif Time Zone</param>
         /// <returns>TimeZoneInfo is returned if timeZoneOffsetInMinutes is valid, otherwise TimeZoneInfo.Local is returned.</returns>
         /// <remarks>Initial mapping is based on hard-coded rules. These rules are hard-coded from old standard TimeZones.xml data.
         /// When offset is not found hard-coded mapping, a lookup is performed in timezones defined in the system. The first found entry is returned.
@@ -939,7 +939,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Tries to get a valid language from the browser preferences if the portal has the setting 
+        /// Tries to get a valid language from the browser preferences if the portal has the setting
         /// to use browser languages enabled.
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings</param>
@@ -1094,7 +1094,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    //Drill up to the next level 
+                    //Drill up to the next level
                     localizedText = GetString(key, parentControl);
                 }
             }
@@ -1245,13 +1245,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            var safeString = string.IsNullOrEmpty(unsafeString) ? "" : UnsafeJsRegex.Replace(unsafeString, "\\$1");
-			if (safeString.Length > 0)
-	        {
-				safeString = safeString.Replace("\r", string.Empty).Replace("\n", string.Empty);
-	        }
-
-			return safeString;
+            return string.IsNullOrEmpty(unsafeString) ? String.Empty : HttpUtility.JavaScriptStringEncode(unsafeString);
         }
 
         /// <summary>
@@ -1404,7 +1398,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1425,7 +1419,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1447,7 +1441,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1471,7 +1465,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="accessingUserID">UserID of the user accessing the system message</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1497,7 +1491,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="accessingUserID">UserID of the user accessing the system message</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
