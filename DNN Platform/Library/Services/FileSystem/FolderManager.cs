@@ -2157,9 +2157,18 @@ namespace DotNetNuke.Services.FileSystem
                         folderInfo.MappedPath = folderPath;
                     }
                 }
-                else if (provider.SupportsMappedPaths && originalFolderPath == folderInfo.MappedPath)
+                else if (provider.SupportsMappedPaths)
                 {
-                    folderInfo.MappedPath = folderPath;
+                    if (originalFolderPath == folderInfo.MappedPath)
+                    {
+                        folderInfo.MappedPath = folderPath;
+                    }
+                    else if (folderInfo.MappedPath.EndsWith("/" + originalFolderPath, StringComparison.Ordinal))
+                    {
+                        var newMappedPath = PathUtils.Instance.FormatFolderPath(
+                        folderInfo.MappedPath.Substring(0, folderInfo.MappedPath.LastIndexOf("/" + originalFolderPath, StringComparison.Ordinal)) + "/" + folderPath);
+                        folderInfo.MappedPath = newMappedPath;
+                    }
                 }
 
                 UpdateFolderInternal(folderInfo, false);
