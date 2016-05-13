@@ -917,7 +917,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFolderAlreadyExists", "The destination folder already exists. The folder has not been renamed."));
             }
 
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, GetParentFolder(folder.PortalID, folder.FolderPath).FolderMappingID);
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
             RenameFolderInFileSystem(folder, newFolderPath);
@@ -2156,6 +2156,10 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         folderInfo.MappedPath = folderPath;
                     }
+                }
+                else if (provider.SupportsMappedPaths && originalFolderPath == folderInfo.MappedPath)
+                {
+                    folderInfo.MappedPath = folderPath;
                 }
 
                 UpdateFolderInternal(folderInfo, false);
