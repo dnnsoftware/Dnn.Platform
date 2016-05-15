@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Controllers
         public static void SetModuleSettingValue(int moduleId, string settingName, string settingValue)
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteModuleSetting", moduleId, settingName);
-            DatabaseHelper.ExecuteStoredProcedure("AddModuleSetting", moduleId, settingName, settingValue, -1);
+            DatabaseHelper.ExecuteStoredProcedure("UpdateModuleSetting", moduleId, settingName, settingValue, -1);
         }
 
         public static IList<IDictionary<string, object>> GetModulesByFriendlyName(int portalId, string friendlyName)
@@ -105,7 +105,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Controllers
         public static void SetTabModuleSettingValue(int tabModuleId, string settingName, string settingValue)
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteTabModuleSetting", tabModuleId, settingName);
-            DatabaseHelper.ExecuteStoredProcedure("AddTabModuleSetting", tabModuleId, settingName, settingValue, -1);
+            DatabaseHelper.ExecuteStoredProcedure("UpdateTabModuleSetting", tabModuleId, settingName, settingValue, -1);
         }
     }
 }

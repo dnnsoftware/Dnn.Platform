@@ -87,10 +87,6 @@ GO
 UPDATE {databaseOwner}{objectQualifier}HostSettings SET SettingValue = N'http://www.dnnsoftware.com/help' WHERE SettingName='HelpURL'
 GO
 
-/************************************************************/
-/*****              SqlDataProvider                     *****/
-/************************************************************/
-
 /* CONTENT-5905 Add/Update RegEx to allow DnnImageHandler and stop throwing 404 Error */
 
 DECLARE @DoNotRedirectUrlRegex_Value NVARCHAR(2000);
@@ -166,3 +162,389 @@ AS
 
 	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
 GO
+
+/* ****************************************************************
+   DNN-8659: Adjust size of value column for site and host settings
+             Use same pattern to add and update settings
+   **************************************************************** 
+ */
+DECLARE @colSize smallint = 0;
+
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}HostSettings]', 'U')
+   AND name = N'SettingValue';
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}HostSettings] 
+        ALTER Column SettingValue  nVarChar(Max) Not Null;
+
+-- disallow null values, as DNN cannot distinguish between empty string and null anyways.
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] 
+ SET   SettingValue = N''
+ WHERE SettingValue Is Null;
+
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}PortalSettings]', 'U')
+   AND name = N'SettingValue';
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}PortalSettings] 
+        ALTER Column SettingValue  nVarChar(Max) Not Null;
+  
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}RoleSettings]', 'U')
+   AND name = N'SettingValue';
+
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}RoleSettings] 
+        ALTER Column SettingValue nVarChar(Max) Not Null;
+GO  
+
+-- moved out of GetPortalSettings -  this doesn't need to be processed more than once:
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'GUID' )
+    INSERT INTO {databaseOwner}[{objectQualifier}HostSettings]
+            (SettingName, SettingValue, SettingIsSecure) 
+     VALUES ( N'GUID',    NewId(),      0              ); 
+GO
+
+-- Adjust stored procedures:
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetHostSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
+AS
+BEGIN
+	SELECT SettingName,
+		   SettingValue,
+		   SettingIsSecure,
+		   CreatedByUserID,
+		   CreatedOnDate,
+	       LastModifiedByUserID,
+		   LastModifiedOnDate
+	 FROM  {databaseOwner}[{objectQualifier}HostSettings];
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetHostSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHostSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSetting]
+    @SettingName nvarchar(50)
+AS
+BEGIN
+    SELECT SettingValue
+     FROM  {databaseOwner}[{objectQualifier}HostSettings]
+     WHERE SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF EXISTS (select * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateHostSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateHostSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateHostSetting]
+	@SettingName	   nvarchar( 50),
+	@SettingValue	   nvarchar(Max),
+	@SettingIsSecure   bit,
+	@UserID	           int
+AS
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+	 SET   SettingValue         = IsNull(@SettingValue, N''), 
+		   SettingIsSecure      = @SettingIsSecure,
+		   LastModifiedByUserID = @UserID,	
+		   LastModifiedOnDate   = GetDate()
+	 WHERE SettingName = @SettingName;
+
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}HostSettings]
+		 WHERE SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}HostSettings] S
+		 USING (SELECT @SettingName SN, @SettingValue SV, @SettingIsSecure Sec) Q
+		    ON (S.SettingName = Q.SN)
+		 WHEN MATCHED AND (IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') OR S.SettingIsSecure != Q.Sec) THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [SettingIsSecure] = Q.Sec, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( SettingName,  SettingValue,  SettingIsSecure, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@SettingName, @SettingValue, @SettingIsSecure, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateHostSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddHostSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddHostSetting]
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- Null|-1 for neutral language
+AS
+BEGIN
+	SELECT TOP (1)
+		   SettingName,
+		   CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue,
+		   CreatedByUserID,
+		   CreatedOnDate,
+		   LastModifiedByUserID,
+		   LastModifiedOnDate,
+		   CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	   AND COALESCE(CultureCode, @CultureCode, N'') = IsNull(@CultureCode, N'')
+	 ORDER BY IsNull(CultureCode, N'') DESC
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = N'';
+
+	IF EXISTS (SELECT * 
+                FROM  {databaseOwner}[{objectQualifier}PortalLocalization] L
+			    JOIN  {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+				WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		 FROM  {databaseOwner}[{objectQualifier}Portals] 
+		 WHERE PortalID = @PortalID;
+
+	SELECT PS.SettingName,
+		   CASE WHEN Lower(PS.SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](PS.SettingValue)
+			    ELSE PS.SettingValue 
+           END   AS SettingValue,
+		   PS.CreatedByUserID,
+		   PS.CreatedOnDate,
+		   PS.LastModifiedByUserID,
+		   PS.LastModifiedOnDate,
+		   PS.CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] PS
+     WHERE PortalSettingID = (SELECT Top(1) PortalSettingID FROM {databaseOwner}[{objectQualifier}PortalSettings] S 
+		                       WHERE PS.PortalID = S.PortalID AND PS.SettingName = S.SettingName 
+							   ORDER BY CASE CultureCode WHEN @CultureCode THEN 2 WHEN Null THEN 1 ELSE 0 END DESC)
+	   AND PortalID = @PortalID
+	 ORDER BY SettingName;
+END; -- Procedure
+GO
+
+
+-- prevent duplicates when adding/updating portal setting:
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+--  covers delete, add and update scenarios:
+	@PortalID       Int,		   -- Key, Not Null (unless for delete)
+	@SettingName    nVarChar( 50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(Max), -- Not Null
+	@UserID			Int,		   -- Not Null (editing user)
+	@CultureCode    nVarChar( 10)  -- Key, Null|'' for neutral language 
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( PortalID,  SettingName,  SettingValue, CultureCode,               CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@PortalID, @SettingName, @SettingValue, NULLIF(@CultureCode, N''), IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;		       
+	END; -- Else If
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+	@PortalID      Int,          -- Not Null
+	@SettingName   nVarChar(50), -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (SettingName = @SettingName)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+	@PortalID      Int,          -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleSettings]
+	@RoleId     int -- Not Null|-1
+AS
+BEGIN
+	SELECT *
+	 FROM  {databaseOwner}[{objectQualifier}RoleSettings]
+	 WHERE RoleID = @RoleId
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateRoleSetting]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleSetting]
+	@RoleID				int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}RoleSettings]
+		 WHERE IsNull(RoleID, -1) = IsNull(@RoleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@RoleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}RoleSettings] S
+		 USING (SELECT @RoleID RID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.RoleID = Q.RID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( RoleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@RoleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- use same pattern for modulesettings and tabmodulesettings:
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateMOduleSetting]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleSetting]
+	@ModuleID			int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}ModuleSettings]
+		 WHERE IsNull(ModuleID, -1) = IsNull(@ModuleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@ModuleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}ModuleSettings] S
+		 USING (SELECT @ModuleID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.ModuleID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( ModuleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@ModuleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateModuleSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModuleSetting]
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabModuleSetting]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleSetting]
+	@TabModuleID		int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}TabModuleSettings]
+		 WHERE IsNull(TabModuleID, -1) = IsNull(@TabModuleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@TabModuleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}TabModuleSettings] S
+		 USING (SELECT @TabModuleID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.TabModuleID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( TabModuleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@TabModuleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateTabModuleSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabModuleSetting]
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

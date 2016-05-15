@@ -717,7 +717,7 @@ namespace DotNetNuke.Entities.Modules
 
 				dr.Close();
 
-				if (settingExist && existValue != settingValue)
+				if (existValue != settingValue)
 	            {
 					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
@@ -726,7 +726,7 @@ namespace DotNetNuke.Entities.Modules
 				}
 				else if (!settingExist)
 				{
-					dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
 													"ModuleId", moduleId, settingName, settingValue,
 													currentUser.UserID);
@@ -2107,16 +2107,17 @@ namespace DotNetNuke.Entities.Modules
                         EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "TabModuleId", tabModuleId, settingName, settingValue,
                                                         currentUser.UserID);
+                        UpdateTabModuleVersion(tabModuleId);
                     }
                 }
                 else
                 {
-                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
+                    dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
                                                     "TabModuleId", tabModuleId, settingName, settingValue,
                                                     currentUser.UserID);
+                    UpdateTabModuleVersion(tabModuleId);
                 }
-                UpdateTabModuleVersion(tabModuleId);
             }
             catch (Exception ex)
             {
