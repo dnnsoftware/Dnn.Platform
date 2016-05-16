@@ -40,7 +40,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 
@@ -284,10 +283,6 @@ namespace DotNetNuke.Services.Search.Internals
                     {
                         AddSearchDocumentInternal(searchDoc, (++idx%commitBatchSize) == 0);
                         //added = true;
-                    }
-                    catch (SearchException ex)
-                    {
-                        Logger.DebugFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
                     }
                     catch (Exception ex)
                     {
