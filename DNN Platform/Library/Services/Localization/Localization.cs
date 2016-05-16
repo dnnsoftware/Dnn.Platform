@@ -1243,6 +1243,11 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
+            if (string.IsNullOrEmpty(unsafeString))
+            {
+                return string.Empty;
+            }
+
             return HttpUtility.JavaScriptStringEncode(unsafeString);
         }
 

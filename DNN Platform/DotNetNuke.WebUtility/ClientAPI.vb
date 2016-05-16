@@ -549,6 +549,10 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
+            If String.IsNullOrEmpty(strString) Then
+                Return String.Empty
+            End If
+
             Return HttpUtility.JavaScriptStringEncode(strString)
         End Function
 
