@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.FileSystem
                                     var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                                     var directUrl = fileManager.GetUrl(file);
 
-                                    EventManager.Instance.OnFileDownload(new FileDownloadEventArgs()
+                                    EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
                                     {
                                         FileInfo = file,
                                         UserId = UserController.Instance.GetCurrentUserInfo().UserID

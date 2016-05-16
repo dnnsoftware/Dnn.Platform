@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities
 
         void OnFileRenamed(FileRenamedEventArgs args);
 
-        void OnFileDownload(FileDownloadEventArgs e);
+        void OnFileDownloaded(FileDownloadedEventArgs e);
 
         void OnFolderAdded(FolderChangedEventArgs args);
 

@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.FileSystem
 
         void FileMetadataChanged(object sender, FileChangedEventArgs args);
 
-        void FileDownload(object sender, FileDownloadEventArgs args);
+        void FileDownloaded(object sender, FileDownloadedEventArgs args);
 
         void FolderAdded(object sender, FolderChangedEventArgs args);
 

@@ -690,7 +690,7 @@
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
-    <Compile Include="Services\FileSystem\EventArgs\FileDownloadEventArgs.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileDownloadedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />

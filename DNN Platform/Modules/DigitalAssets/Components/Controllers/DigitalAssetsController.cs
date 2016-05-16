@@ -511,7 +511,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             fileName = file.FileName;
             contentType = file.ContentType;
 
-            EventManager.Instance.OnFileDownload(new FileDownloadEventArgs()
+            EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
                                                     {
                                                         FileInfo = file,
                                                         UserId = UserController.Instance.GetCurrentUserInfo().UserID
