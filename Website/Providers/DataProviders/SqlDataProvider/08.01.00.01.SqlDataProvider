@@ -204,6 +204,17 @@ SELECT @colSize = max_length
 IF @colSize != -1
     ALTER Table {databaseOwner}[{objectQualifier}RoleSettings] 
         ALTER Column SettingValue nVarChar(Max) Not Null;
+
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}TabSettings]', 'U')
+   AND name = N'SettingValue';
+
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}TabSettings] 
+        ALTER Column SettingValue nVarChar(Max) Not Null;
 GO  
 
 -- moved out of GetPortalSettings -  this doesn't need to be processed more than once:
@@ -222,7 +233,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
 AS
 BEGIN
 	SELECT SettingName,
-		   SettingValue,
+		   CASE WHEN Lower(SettingValue) Like N'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue,
 		   SettingIsSecure,
 		   CreatedByUserID,
 		   CreatedOnDate,
@@ -241,7 +255,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSetting]
     @SettingName nvarchar(50)
 AS
 BEGIN
-    SELECT SettingValue
+    SELECT CASE WHEN Lower(SettingValue) Like N'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue,
      FROM  {databaseOwner}[{objectQualifier}HostSettings]
      WHERE SettingName = @SettingName;
 END; -- Procedure
@@ -294,7 +311,7 @@ AS
 BEGIN
 	SELECT TOP (1)
 		   SettingName,
-		   CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		   CASE WHEN Lower(SettingValue) Like N'fileid=%'
 		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
 		        ELSE SettingValue 
 		   END   AS SettingValue,
@@ -430,14 +447,24 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleSettings]
 	@RoleId     int -- Not Null|-1
 AS
 BEGIN
-	SELECT *
+	SELECT RoleSettingID,
+		   RoleID,
+		   SettingName,
+		   CASE WHEN Lower(PS.SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+			    ELSE SettingValue 
+           END    AS SettingValue,
+		   CreatedByUserID,
+		   CreatedOnDate,
+		   LastModifiedByUserID,
+		   LastModifiedOnDate
 	 FROM  {databaseOwner}[{objectQualifier}RoleSettings]
 	 WHERE RoleID = @RoleId
 END; -- Procedure
 GO
 
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateRoleSetting]') AND type in (N'P', N'PC'))
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateRoleSetting]'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleSetting]
 GO
 
@@ -466,9 +493,72 @@ BEGIN
 END; -- Procedure
 GO
 
--- use same pattern for modulesettings and tabmodulesettings:
+-- use same pattern for ModuleSettings, TabModuleSettings, TabSettings:
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateMOduleSetting]') AND type in (N'P', N'PC'))
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+    @ModuleId      Int,          -- not null!
+    @SettingName   nVarChar(50)  -- not null or empty!
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] 
+	 WHERE ModuleID    = @ModuleId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+    @ModuleId Int -- Null: settings from all modules
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue 
+		   END       AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] 
+	 WHERE ModuleID = @ModuleId OR IsNull(@ModuleId, -1) = -1
+	 OPTION (OPTIMIZE FOR (@ModuleId UNKNOWN))
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettingsByTab]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+    @TabId Int -- Not Null
+AS
+BEGIN
+	SELECT S.ModuleID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+			    ELSE S.SettingValue 
+		   END		 AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}TabModules]     M ON S.ModuleID = M.ModuleID
+	 WHERE M.TabID = @TabId
+	 ORDER BY S.ModuleID
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateMOduleSetting]'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleSetting]
 GO
 
@@ -502,8 +592,123 @@ IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseO
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModuleSetting]
 GO
 
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSetting]
+GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabModuleSetting]') AND type in (N'P', N'PC'))
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSetting]
+	@ModuleId      int,          -- Not Null
+	@SettingName   nVarChar(50)  -- Not Null or empty
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings]
+	 WHERE ModuleId    = @ModuleId
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSettings]
+	@ModuleId int -- Not Null
+AS
+BEGIN
+	DELETE 
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings]
+	 WHERE ModuleId = @ModuleId
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+    @TabModuleId   Int,              -- not null!
+    @SettingName   nVarChar(50)      -- not null or empty!
+AS
+BEGIN
+	SELECT S.SettingName,
+		   CASE WHEN S.SettingValue LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+	 WHERE TabModuleID = @TabModuleId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+    @TabModuleId Int -- Null: all tabmodules
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue 
+		   END  AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] 
+	 WHERE TabModuleID = @TabModuleId OR IsNull(@TabModuleId, -1) = -1
+	 OPTION (OPTIMIZE FOR (@TabModuleId UNKNOWN))
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+    @TabId Int -- Not Null
+AS
+BEGIN
+	SELECT S.TabModuleID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END	AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+     JOIN  {databaseOwner}[{objectQualifier}TabModules]        M ON S.TabModuleID = M.TabModuleID
+	 WHERE M.TabID = @TabId
+	 ORDER BY S.TabModuleID
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]
+	@PortalId    Int,         -- Not Null
+	@SettingName NVarChar(50) -- Not Null
+AS
+BEGIN
+	SELECT S.TabModuleID, 
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END	AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}TabModules]        M ON S.TabModuleID = M.TabModuleID
+	 JOIN {databaseOwner}[{objectQualifier}Tabs]               T ON M.TabID       = T.TabID AND (T.PortalID = @PortalID OR T.PortalID IS NULL)
+	 WHERE S.SettingName = @SettingName
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabModuleSetting]'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleSetting]
 GO
 
@@ -537,6 +742,145 @@ IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseO
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabModuleSetting]
 GO
 
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSetting]
+	@TabModuleId   int,
+	@SettingName   nVarChar(50)
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings]
+	 WHERE TabModuleId = @TabModuleId
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSettings]
+	@TabModuleId Int
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] 
+	 WHERE TabModuleId = @TabModuleId;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+    @TabId         Int,         -- not null!
+    @SettingName   nVarChar(50) -- not null or empty!
+AS
+BEGIN
+	SELECT S.SettingName,
+		   CASE WHEN SettingValue LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings] 
+	 WHERE TabID = @TabId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @PortalId Int -- Null|-1 for Host Pages
+AS
+BEGIN
+	SELECT S.TabID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+			 	THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}Tabs]        T ON t.TabID = S.TabID
+	 WHERE  ISNull(PortalId, -1) = isNull(@PortalId, -1)
+	 ORDER BY S.TabID;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabSetting]
+	@TabID	      	    int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}TabModuleSettings]
+		 WHERE IsNull(TabID, -1) = IsNull(@TabID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@TabID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}TabModuleSettings] S
+		 USING (SELECT @TabID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.TabID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( TabID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@TabID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateTabSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabSetting]
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabSetting]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSetting]
+	@TabID      	Int,         -- Not Null
+	@SettingName	nVarChar(50) -- Not Null or empty
+AS
+BEGIN
+	DELETE	
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings]
+	 WHERE TabID       = @TabID
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabSettings]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSettings]
+	@TabID  Int -- Not Null!
+AS
+BEGIN
+	DELETE	
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings]
+	 WHERE TabID = @TabID;
+END; -- Procedure
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

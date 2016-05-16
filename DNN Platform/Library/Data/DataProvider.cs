@@ -779,10 +779,6 @@ namespace DotNetNuke.Data
                                         tab.IsSystem);
         }
 
-		public virtual void AddTabSetting(int TabId, string SettingName, string SettingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabSetting", TabId, SettingName, SettingValue, createdByUserID);
-		}
 
         public virtual int AddTabToEnd(TabInfo tab, int createdByUserID)
         {

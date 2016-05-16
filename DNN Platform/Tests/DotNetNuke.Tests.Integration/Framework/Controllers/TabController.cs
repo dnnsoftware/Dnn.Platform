@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Controllers
         /// </summary>
         public static void AddTabSetting(int tabId, string settingName, string settingValue)
         {
-            DatabaseHelper.ExecuteStoredProcedure("AddTabSetting",
+            DatabaseHelper.ExecuteStoredProcedure("UpdateTabSetting",
                 tabId,
                 settingName,
                 settingValue,

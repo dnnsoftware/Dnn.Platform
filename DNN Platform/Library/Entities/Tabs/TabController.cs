@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
@@ -811,7 +811,8 @@ namespace DotNetNuke.Entities.Tabs
             }
             else
             {
-                _dataProvider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                _dataProvider.UpdateTabSetting(tabId, settingName, settingValue, 
+                                               UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
                                                  "TabId", tabId, settingName, settingValue,
                                                  UserController.Instance.GetCurrentUserInfo().UserID);
