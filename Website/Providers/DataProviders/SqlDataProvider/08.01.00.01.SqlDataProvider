@@ -258,7 +258,7 @@ BEGIN
     SELECT CASE WHEN Lower(SettingValue) Like N'fileid=%'
 		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
 		        ELSE SettingValue 
-		   END   AS SettingValue,
+		   END   AS SettingValue
      FROM  {databaseOwner}[{objectQualifier}HostSettings]
      WHERE SettingName = @SettingName;
 END; -- Procedure
@@ -450,7 +450,7 @@ BEGIN
 	SELECT RoleSettingID,
 		   RoleID,
 		   SettingName,
-		   CASE WHEN Lower(PS.SettingValue) LIKE N'fileid=%'
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
 			    THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
 			    ELSE SettingValue 
            END    AS SettingValue,
@@ -783,7 +783,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
     @SettingName   nVarChar(50) -- not null or empty!
 AS
 BEGIN
-	SELECT S.SettingName,
+	SELECT SettingName,
 		   CASE WHEN SettingValue LIKE N'fileid=%'
 				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
 				ELSE SettingValue  
@@ -830,11 +830,11 @@ AS
 BEGIN
 	-- empty value: remove setting
 	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
-		DELETE FROM {databaseOwner}[{objectQualifier}TabModuleSettings]
+		DELETE FROM {databaseOwner}[{objectQualifier}TabSettings]
 		 WHERE IsNull(TabID, -1) = IsNull(@TabID, -1)
 		   AND SettingName = @SettingName;
 	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@TabID, -1) != -1 BEGIN -- key must be valid
-		MERGE INTO {databaseOwner}[{objectQualifier}TabModuleSettings] S
+		MERGE INTO {databaseOwner}[{objectQualifier}TabSettings] S
 		 USING (SELECT @TabID MID, @SettingName SN, @SettingValue SV) Q
 		    ON (S.TabID = Q.MID AND S.SettingName = Q.SN)
 		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
