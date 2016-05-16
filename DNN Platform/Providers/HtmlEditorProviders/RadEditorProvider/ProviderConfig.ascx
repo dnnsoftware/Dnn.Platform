@@ -59,12 +59,12 @@
 	(function ($, Sys) {
 	    function setupDnnProviderConfig() {
 	        $('#<%=pnlEditor.ClientID%>').dnnTabs().dnnPanels();
-	        $('#dnnEditorConfig .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#dnnEditorConfig' });
+	        $('#dnnEditorConfig .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#dnnEditorConfig' });
 	        $('.dnnDeleteTab').dnnConfirm({
 	            text: '<%=LocalizeSafeJsString("DeleteItem")%>',
-	            yesText: '<%=Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile)%>',
-	            noText: '<%=Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile)%>',
-	            title: '<%=Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile)%>'
+	            yesText: '<%=HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile)%>',
+	            noText: '<%=HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile)%>',
+	            title: '<%=HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile)%>'
 	        });
 	    }
 

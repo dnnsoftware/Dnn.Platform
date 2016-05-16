@@ -89,9 +89,9 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			if (!$(".dnnControlPanel").data("loaded")) {
-				var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
-				var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
-				var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+				var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>';
+				var noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>';
+				var titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
 
 				// Client IDs for the following three have _CPCommandBtn appended as a rule
 				$('#<%= DeletePage.ClientID %>_CPCommandBtn').dnnConfirm({

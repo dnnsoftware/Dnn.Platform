@@ -51,9 +51,9 @@
 		var setUpRecycleBin = function() {
 			$('#dnnRecycleBin').dnnTabs();
 
-			var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
-			var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
-			var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+			var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>';
+			var noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>';
+			var titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
 			$('#<%= cmdEmpty.ClientID %>').dnnConfirm({
 				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteAll")) %>',
 				yesText: yesText,

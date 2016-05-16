@@ -1,21 +1,21 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.Skins
         #endregion
 
         #region Friend Properties
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleCommunicate instance for the skin
@@ -270,7 +270,7 @@ namespace DotNetNuke.UI.Skins
             //if querystring dnnprintmode=true, controlpanel will not be shown
             if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && Request.QueryString["hidecommandbar"] != "true")
             {
-                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
+                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
                 {
                     //ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
@@ -509,7 +509,7 @@ namespace DotNetNuke.UI.Skins
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);    
+                TabController.Instance.UpdateTab(tabInfo);
             }
         }
 
@@ -554,7 +554,7 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                
+
                 string permissionKey;
                 switch (slaveModule.ModuleControl.ControlSrc)
                 {
@@ -681,10 +681,10 @@ namespace DotNetNuke.UI.Skins
                 sb.AppendLine("     $(document).ready(function () {");
                 sb.AppendLine("         $('.dnnSortable').dnnModuleDragDrop({");
                 sb.AppendLine("             tabId: " + PortalSettings.ActiveTab.TabID + ",");
-                sb.AppendLine("             draggingHintText: '" + Localization.GetSafeJSString("DraggingHintText", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dragHintText: '" + Localization.GetSafeJSString("DragModuleHint", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dropHintText: '" + Localization.GetSafeJSString("DropModuleHint", Localization.GlobalResourceFile) + "',");
-                sb.AppendLine("             dropTargetText: '" + Localization.GetSafeJSString("DropModuleTarget", Localization.GlobalResourceFile) + "'");
+                sb.AppendLine("             draggingHintText: '" + HttpUtility.JavaScriptStringEncode("DraggingHintText", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dragHintText: '" + HttpUtility.JavaScriptStringEncode("DragModuleHint", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dropHintText: '" + HttpUtility.JavaScriptStringEncode("DropModuleHint", Localization.GlobalResourceFile) + "',");
+                sb.AppendLine("             dropTargetText: '" + HttpUtility.JavaScriptStringEncode("DropModuleTarget", Localization.GlobalResourceFile) + "'");
                 sb.AppendLine("         });");
                 sb.AppendLine("     });");
                 sb.AppendLine(" } (jQuery));");
@@ -1003,11 +1003,11 @@ namespace DotNetNuke.UI.Skins
                     if (profileModule == null || profileModule.DisplayModule)
                     {
                         pane.InjectModule(module);
-                    }                    
+                    }
                 }
                 else
                 {
-                    pane.InjectModule(module);                   
+                    pane.InjectModule(module);
                 }
 
             }

@@ -118,7 +118,7 @@
         if(typeof dnn != 'undefined' && dnn.searchResult){
             dnn.searchResult.moduleId = <%= ModuleId %>;
             dnn.searchResult.queryOptions = {
-                searchTerm: '<%= Localization.GetSafeJSString(SearchTerm) %>',
+                searchTerm: '<%= HttpUtility.JavaScriptStringEncode(SearchTerm) %>',
                 sortOption: <%= SortOption %>,
                 pageIndex: <%= PageIndex %>,
                 pageSize: <%= PageSize %>

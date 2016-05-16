@@ -37,7 +37,7 @@
 
                     var message = {
                         messages: toastMessages,
-                        seeMoreLink: '<%= GetNotificationLink() %>', seeMoreText: '<%= Localization.GetSafeJSString(GetNotificationLabel()) %>'
+                        seeMoreLink: '<%= GetNotificationLink() %>', seeMoreText: '<%= HttpUtility.JavaScriptStringEncode(GetNotificationLabel()) %>'
                     };
 
                     $().dnnToastMessage('showAllToasts', message);

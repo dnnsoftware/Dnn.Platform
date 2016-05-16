@@ -290,7 +290,7 @@
             };
             this.confirmPasswords = function () {
                 if ($('#<%= txtPassword.ClientID %>')[0].value != $('#<%= txtConfirmPassword.ClientID %>')[0].value) {
-                    $('#<%= lblAdminInfoError.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("PasswordMismatch"))%>');
+                    $('#<%= lblAdminInfoError.ClientID %>').text('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("PasswordMismatch"))%>');
                     $("#continueLink").addClass('dnnDisabledAction');
                 } else {
                     $('#<%= lblAdminInfoError.ClientID %>').text('');
@@ -311,7 +311,7 @@
                             $('#<%= lblAdminInfoError.ClientID %>').text('');
                             $("#continueLink").removeClass('dnnDisabledAction');
                         } else {
-                            $('#<%= lblAdminInfoError.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("InputErrorInvalidPassword"))%>');
+                            $('#<%= lblAdminInfoError.ClientID %>').text('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("InputErrorInvalidPassword"))%>');
                             $("#continueLink").addClass('dnnDisabledAction');
                         }
                     });
@@ -422,7 +422,7 @@
                 $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessageError");
             	$('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessage");
                 var i = 0;
-                $(".databaseCheck").html('<%= Localization.GetSafeJSString(LocalizeString("TestingDatabase"))%>');
+                $(".databaseCheck").html('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("TestingDatabase"))%>');
             	var origtext = $(".databaseCheck").html();
                 var text = origtext;
                 installWizard.loadingIntervalId = setInterval(function () {
@@ -434,7 +434,7 @@
         		clearInterval(installWizard.checkPermissionIntervalId);
         		$('.permissionCheck').removeClass("promptMessageError").addClass("promptMessage").parent().show();
 	        	var i = 0;
-	        	$(".permissionCheck").html('<%= Localization.GetSafeJSString(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
+	        	$(".permissionCheck").html('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
         		var origtext = $(".permissionCheck").html();
                 var text = origtext;
                 installWizard.checkPermissionIntervalId = setInterval(function () {
@@ -536,7 +536,7 @@
     <script type="text/javascript">
 
         function LegacyLangaugePack(version) {
-            $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '<%= Localization.GetSafeJSString(LocalizeString("LegacyLangaugePack"))%>' + version;
+            $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '<%= HttpUtility.JavaScriptStringEncode(LocalizeString("LegacyLangaugePack"))%>' + version;
         }
         function ClearLegacyLangaugePack() {
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
@@ -700,7 +700,7 @@
                                         $("#databaseError").show();
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                                     	$('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessageError");
-                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("DatabaseError"))%>');
+                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').text('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("DatabaseError"))%>');
                                         $('#<%= lblDatabaseError.ClientID %>').html(valid.Item2);
                                     }
                                     $("#continueLink").removeClass('dnnDisabledAction');
@@ -763,9 +763,9 @@
                 $.applyCssStyle(result.check4, $('#SuperUserCreation'));
                 $.applyCssStyle(result.check5, $('#LicenseActivation'));
                 //If operation is complete
-                if (result.progress >= 100 || result.details == '<%= Localization.GetSafeJSString(LocalizeString("InstallationDone"))%>') {
+                if (result.progress >= 100 || result.details == '<%= HttpUtility.JavaScriptStringEncode(LocalizeString("InstallationDone"))%>') {
                     installWizard.finishInstall();
-                    $('#<%= lblInstallationIntroInfo.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("InstallationComplete"))%>');
+                    $('#<%= lblInstallationIntroInfo.ClientID %>').text('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("InstallationComplete"))%>');
                 }
                 //If not
                 else {
@@ -856,7 +856,7 @@
                         setTimeout(getInstallationLog, 1000);
                     } else {
                         if (installationLogStartLine === 0)
-                            $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
+                            $('#installation-log').html('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("NoInstallationLog"))%>');
                     }
                     $('#installation-log-container').jScrollPane();
                 }, function (err) {

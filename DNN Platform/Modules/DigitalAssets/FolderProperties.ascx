@@ -102,8 +102,8 @@
         }, 
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',
-            canAdminPermissions: '<%=Localization.GetSafeJSString((HasFullControl && !IsHostPortal).ToString().ToLowerInvariant()) %>',
-            dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
+            canAdminPermissions: '<%=HttpUtility.JavaScriptStringEncode((HasFullControl && !IsHostPortal).ToString().ToLowerInvariant()) %>',
+            dialogTitle: '<%=HttpUtility.JavaScriptStringEncode(DialogTitle)%>'
         }
     );
 

@@ -343,8 +343,8 @@
         function setupLanguageEnabler() {
             $('#dnnLanguages').dnnTabs();
 
-            $('#<%= cmdDisableLocalization.ClientID %>').dnnConfirm({ text: '<%= Localization.GetSafeJSString("DisableLocalization.Confirm", LocalResourceFile) %>', yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>', title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>' });
-            $('#<%= MakeNeutral.ClientID %>').dnnConfirm({ text: '<%= Localization.GetSafeJSString("MakeNeutral.Confirm", LocalResourceFile) %>', yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>', title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>' });
+            $('#<%= cmdDisableLocalization.ClientID %>').dnnConfirm({ text: '<%= HttpUtility.JavaScriptStringEncode("DisableLocalization.Confirm", LocalResourceFile) %>', yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>', title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>' });
+            $('#<%= MakeNeutral.ClientID %>').dnnConfirm({ text: '<%= HttpUtility.JavaScriptStringEncode("MakeNeutral.Confirm", LocalResourceFile) %>', yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>', title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>' });
 
             <%= BuildConfirmationJS("cmdDeleteTranslation", "DeleteTranslations.Confirm") %>
             

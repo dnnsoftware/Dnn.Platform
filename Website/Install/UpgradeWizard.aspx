@@ -287,7 +287,7 @@
                 $("#progressbar").progressbar('value', result.progress);
                 upgradeWizard.dnnProgressbar.update(result.progress);
                 $("#percentage").text(result.progress + '% ' + result.details);
-                var upgradeError = result.details.toUpperCase().indexOf('<%= Localization.GetSafeJSString(LocalizeString("Error"))%>') > -1;
+                var upgradeError = result.details.toUpperCase().indexOf('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("Error"))%>') > -1;
                 if (upgradeError) {
                     // go through all the result and mark error state
                     var i = 0;
@@ -308,7 +308,7 @@
                 $.applyCssStyle(result.check1, $('#ExtensionsUpgrade'));
 
                 //If operation is complete
-                if (result.progress >= 100 || result.details == '<%= Localization.GetSafeJSString(LocalizeString("UpgradeDone"))%>') {
+                if (result.progress >= 100 || result.details == '<%= HttpUtility.JavaScriptStringEncode(LocalizeString("UpgradeDone"))%>') {
                     upgradeWizard.finishInstall();
                     //Enable button
                     $('#seeLogs, #visitSite').removeClass('dnnDisabledAction');
@@ -403,7 +403,7 @@
                         setTimeout(getInstallationLog, 100);
                     } else {
                         if (installationLogStartLine === 0)
-                            $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
+                            $('#installation-log').html('<%= HttpUtility.JavaScriptStringEncode(LocalizeString("NoInstallationLog"))%>');
                     }
                     $('#installation-log-container').jScrollPane();
                 }, function (err) {

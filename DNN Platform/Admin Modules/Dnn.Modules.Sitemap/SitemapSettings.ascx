@@ -165,8 +165,8 @@
             function setUpSitemapSettings() {
                 $('#dnnSiteMap').dnnPanels()
 				.find('.dnnFormExpandContent a').dnnExpandAll({
-				    expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
-				    collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
+				    expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>',
+				    collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>',
 				    targetArea: '#dnnSiteMap'
 				});
             }

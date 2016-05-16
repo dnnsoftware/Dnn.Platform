@@ -236,68 +236,68 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string DefaultText
         {
-            get { return Localization.GetSafeJSString("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string NoResultsText
         {
-            get { return Localization.GetSafeJSString("NoResults", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("NoResults", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string AdvancedText
         {
-            get { return Localization.GetSafeJSString("Advanced", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Advanced", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string SourceText
         {
-            get { return Localization.GetSafeJSString("Source", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Source", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string TagsText
         {
-            get { return Localization.GetSafeJSString("Tags", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Tags", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string AuthorText
         {
-            get { return Localization.GetSafeJSString("Author", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Author", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string LikesText
         {
-            get { return Localization.GetSafeJSString("Likes", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Likes", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string ViewsText
         {
-            get { return Localization.GetSafeJSString("Views", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Views", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string CommentsText
         {
-            get { return Localization.GetSafeJSString("Comments", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Comments", Localization.GetResourceFile(this, MyFileName)); }
         }
 
 
         protected string RelevanceText
         {
-            get { return Localization.GetSafeJSString("Relevance", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Relevance", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string DateText
         {
-            get { return Localization.GetSafeJSString("Date", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("Date", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string SearchButtonText
         {
-            get { return Localization.GetSafeJSString("btnSearch", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("btnSearch", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string ClearButtonText
         {
-            get { return Localization.GetSafeJSString("btnClear", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("btnClear", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string AdvancedSearchHintText
@@ -322,19 +322,19 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string AddTagText
         {
-            get { return Localization.GetSafeJSString("AddTag", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("AddTag", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string ResultsCountText
         {
-            get { return Localization.GetSafeJSString("ResultsCount", Localization.GetResourceFile(this, MyFileName)); }
+            get { return HttpUtility.JavaScriptStringEncode("ResultsCount", Localization.GetResourceFile(this, MyFileName)); }
         }
 
         protected string CurrentPageIndexText
         {
             get
             {
-                return Localization.GetSafeJSString("CurrentPageIndex", Localization.GetResourceFile(this, MyFileName));
+                return HttpUtility.JavaScriptStringEncode("CurrentPageIndex", Localization.GetResourceFile(this, MyFileName));
             }
         }
 

@@ -725,8 +725,8 @@
                 containerSelector: '<%= hostContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
                 noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
-                alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
-                alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
+                alertCloseText: '<%= HttpUtility.JavaScriptStringEncode("Close.Text", Localization.SharedResourceFile)%>',
+                alertOkText: '<%= HttpUtility.JavaScriptStringEncode("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
             });
             $('#adminSkinSettings').dnnPreview({
@@ -734,13 +734,13 @@
                 containerSelector: '<%= editContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
                 noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
-                alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
-                alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
+                alertCloseText: '<%= HttpUtility.JavaScriptStringEncode("Close.Text", Localization.SharedResourceFile)%>',
+                alertOkText: '<%= HttpUtility.JavaScriptStringEncode("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
             });
 
-            $('#basicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#basicSettings' });
-            $('#advancedSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#advancedSettings' });
+            $('#basicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#basicSettings' });
+            $('#advancedSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#advancedSettings' });
 
             toggleSmtpCredentials(false);
             $('#<%= optSMTPAuthentication.ClientID %>').change(function () {
@@ -762,9 +762,9 @@
                 toggleSection('telerikCdnSettingsRow', this.checked);
             });
 
-            var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+            var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
 
             $('#<%= IncrementCrmVersionButton.ClientID %>').dnnConfirm({
                 text: '<%= LocalizeSafeJsString("IncrementCrmVersionConfirm") %>',

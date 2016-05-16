@@ -129,8 +129,8 @@
             // synonyms config
             synonymsSelectedPortalIdCtrl: '<%= hdnSynonymsSelectedPortalID.ClientID %>',
             synonymsSelectedCultureCodeCtrl: '<%= hdnSynonymsSelectedCultureCode.ClientID %>',
-            msgSynonymsTagRequired: '<%= Localization.GetSafeJSString("SynonymsTagRequired", Localization.GetResourceFile(this, MyFileName)) %>',
-            msgSynonymsTagDuplicated: '<%= Localization.GetSafeJSString("SynonymsTagDuplicated", Localization.GetResourceFile(this, MyFileName)) %>',
+            msgSynonymsTagRequired: '<%= HttpUtility.JavaScriptStringEncode("SynonymsTagRequired", Localization.GetResourceFile(this, MyFileName)) %>',
+            msgSynonymsTagDuplicated: '<%= HttpUtility.JavaScriptStringEncode("SynonymsTagDuplicated", Localization.GetResourceFile(this, MyFileName)) %>',
 
             // stopwords config
             stopwordsSelectedPortalIdCtrl: '<%= hdnStopWordsSelectedPortalID.ClientID %>',
@@ -138,8 +138,8 @@
             
             // reindex
             btnReIndex: '<%= btnReIndex.ClientID %>',
-            titleReIndexConfirmation: '<%= Localization.GetSafeJSString("ReIndexConfirmationTitle", Localization.GetResourceFile(this, MyFileName)) %>',
-            msgReIndexConfirmation: '<%= Localization.GetSafeJSString("ReIndexConfirmationMessage", Localization.GetResourceFile(this, MyFileName)) %>',
+            titleReIndexConfirmation: '<%= HttpUtility.JavaScriptStringEncode("ReIndexConfirmationTitle", Localization.GetResourceFile(this, MyFileName)) %>',
+            msgReIndexConfirmation: '<%= HttpUtility.JavaScriptStringEncode("ReIndexConfirmationMessage", Localization.GetResourceFile(this, MyFileName)) %>',
             reIndexConfirmationYes: '<%= Localization.GetString("ReIndexConfirmationYes", Localization.GetResourceFile(this, MyFileName)) %>',
             reIndexConfirmationCancel: '<%= Localization.GetString("ReIndexConfirmationCancel", Localization.GetResourceFile(this, MyFileName)) %>'
         });

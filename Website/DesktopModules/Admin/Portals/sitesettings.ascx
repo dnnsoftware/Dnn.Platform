@@ -801,8 +801,8 @@
             containerSelector: '<%= portalContainerCombo.ClientID %>',
             baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
             noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
-            alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
-            alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
+            alertCloseText: '<%= HttpUtility.JavaScriptStringEncode("Close.Text", Localization.SharedResourceFile)%>',
+            alertOkText: '<%= HttpUtility.JavaScriptStringEncode("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
         });
          $('#editSkinSettings').dnnPreview({
@@ -810,18 +810,18 @@
             containerSelector: '<%= editContainerCombo.ClientID %>',
             baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
             noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
-            alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
-            alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
+            alertCloseText: '<%= HttpUtility.JavaScriptStringEncode("Close.Text", Localization.SharedResourceFile)%>',
+            alertOkText: '<%= HttpUtility.JavaScriptStringEncode("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
         });
 
-        $('#ssBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssBasicSettings' });
-        $('#ssAdvancedSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssAdvancedSettings' });
-		$('#ssUserAccountSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssUserAccountSettings' });
+        $('#ssBasicSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssBasicSettings' });
+        $('#ssAdvancedSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssAdvancedSettings' });
+		$('#ssUserAccountSettings .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#ssUserAccountSettings' });
 
-        var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
-        var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
-        var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+        var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>';
+        var noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>';
+        var titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
 
         $('.dnnDeleteSite').dnnConfirm({
             text: '<%= LocalizeSafeJsString("DeleteMessage") %>',

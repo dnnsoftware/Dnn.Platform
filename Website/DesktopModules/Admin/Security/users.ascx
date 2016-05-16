@@ -93,34 +93,34 @@
     (function ($, Sys) {
         function setUpDnnUsers() {
             $('#<%= deleteUnAuthorizedButton.ClientID %>').dnnConfirm({
-                text: '<%= Localization.GetSafeJSString("DeleteItems.Text", Localization.SharedResourceFile) %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                text: '<%= HttpUtility.JavaScriptStringEncode("DeleteItems.Text", Localization.SharedResourceFile) %>',
+                yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
             });
             $('#<%= removeDeletedButton.ClientID %>').dnnConfirm({
-                text: '<%= Localization.GetSafeJSString("RemoveItems.Confirm", Localization.SharedResourceFile) %>',
-                yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+                text: '<%= HttpUtility.JavaScriptStringEncode("RemoveItems.Confirm", Localization.SharedResourceFile) %>',
+                yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
             });
 	        $('.dnnSecurityRolesGrid td input[type="image"]').each(function(index, item) {
 		        var $this = $(this);
 		        var name = $this.attr('name');
-		        var text = '<%= Localization.GetSafeJSString("RemoveItems.Confirm", Localization.SharedResourceFile) %>';
+		        var text = '<%= HttpUtility.JavaScriptStringEncode("RemoveItems.Confirm", Localization.SharedResourceFile) %>';
 		        if (name.indexOf('Delete') > 0) {
-			        text = '<%= Localization.GetSafeJSString("Delete.Confirm", LocalResourceFile) %>';
+			        text = '<%= HttpUtility.JavaScriptStringEncode("Delete.Confirm", LocalResourceFile) %>';
 		        } else if (name.indexOf('Restore') > 0) {
-			        text = '<%= Localization.GetSafeJSString("Restore.Confirm", LocalResourceFile) %>';
+			        text = '<%= HttpUtility.JavaScriptStringEncode("Restore.Confirm", LocalResourceFile) %>';
 		        } else if (name.indexOf('Remove') > 0) {
-			        text = '<%= Localization.GetSafeJSString("Remove.Confirm", LocalResourceFile) %>';
+			        text = '<%= HttpUtility.JavaScriptStringEncode("Remove.Confirm", LocalResourceFile) %>';
 		        }
 
 				$this.dnnConfirm({
 					text: text,
-					yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-					noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-					title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+					yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+					noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+					title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>',
 					isButton: true
 				});
 	        });

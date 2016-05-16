@@ -48,12 +48,12 @@
         }
 
         function initializeDeleteIPFilterConfirm() {
-            var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
+            var yesText = '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+                noText = '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+                titleText = '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>';
 
             $("#<%= grdFilters.ClientID %> a.delete").dnnConfirm({
-                text: '<%= Localization.GetSafeJSString("DeleteItem", LocalResourceFile) %>',
+                text: '<%= HttpUtility.JavaScriptStringEncode("DeleteItem", LocalResourceFile) %>',
                 yesText: yesText,
                 noText: noText,
                 title: titleText

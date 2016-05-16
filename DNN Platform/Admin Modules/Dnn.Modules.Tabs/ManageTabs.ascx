@@ -332,35 +332,35 @@
     function setUpDnnManageTabs() {
         $('#tabSettingsForm').dnnTabs().dnnPanels();
         $('#dnnAdvancedSettings .dnnFormExpandContent a').dnnExpandAll({
-            expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
-            collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
+            expandText: '<%=HttpUtility.JavaScriptStringEncode("ExpandAll", Localization.SharedResourceFile)%>',
+            collapseText: '<%=HttpUtility.JavaScriptStringEncode("CollapseAll", Localization.SharedResourceFile)%>',
             targetArea: '#dnnAdvancedSettings'
         });
         $('#<%= cmdDelete.ClientID %>').dnnConfirm({
-            text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+            text: '<%= HttpUtility.JavaScriptStringEncode("DeleteItem.Text", Localization.SharedResourceFile) %>',
+            yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+            title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
         });
         $('#<%= cmdCopyPerm.ClientID %>').dnnConfirm({
-            text: '<%= Localization.GetSafeJSString("CopyPermissionsToChildren.Text", Localization.SharedResourceFile) %>',
-            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+            text: '<%= HttpUtility.JavaScriptStringEncode("CopyPermissionsToChildren.Text", Localization.SharedResourceFile) %>',
+            yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+            title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
         });
         $('#<%= cmdCopySkin.ClientID %>').dnnConfirm({
-            text: '<%= Localization.GetSafeJSString("CopyDesignToChildren.Confirm", LocalResourceFile) %>',
-            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
+            text: '<%= HttpUtility.JavaScriptStringEncode("CopyDesignToChildren.Confirm", LocalResourceFile) %>',
+            yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>',
+            title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>'
         });
         $('#tabSkinSettings').dnnPreview({
             skinSelector: '<%= pageSkinCombo.ClientID %>',
             containerSelector: '<%= pageContainerCombo.ClientID %>',
             baseUrl: '<%= DotNetNuke.Common.Globals.NavigateURL(this.TabId) %>',
             noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
-            alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
-            alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
+            alertCloseText: '<%= HttpUtility.JavaScriptStringEncode("Close.Text", Localization.SharedResourceFile)%>',
+            alertOkText: '<%= HttpUtility.JavaScriptStringEncode("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
         });
 
@@ -400,7 +400,7 @@
             $('#' + activeTab + ' a').click();
         }
         
-        $('#<%= MakeNeutral.ClientID %>').dnnConfirm({ text: '<%= Localization.GetSafeJSString("MakeNeutral.Confirm", LocalResourceFile) %>', yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>', title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>' });
+        $('#<%= MakeNeutral.ClientID %>').dnnConfirm({ text: '<%= HttpUtility.JavaScriptStringEncode("MakeNeutral.Confirm", LocalResourceFile) %>', yesText: '<%= HttpUtility.JavaScriptStringEncode("Yes.Text", Localization.SharedResourceFile) %>', noText: '<%= HttpUtility.JavaScriptStringEncode("No.Text", Localization.SharedResourceFile) %>', title: '<%= HttpUtility.JavaScriptStringEncode("Confirm.Text", Localization.SharedResourceFile) %>' });
 
 
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
