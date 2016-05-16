@@ -4254,6 +4254,11 @@ namespace DotNetNuke.Common
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 
+        internal static void ResetAppStartElapseTime()
+        {
+            AppStopwatch.Restart();
+        }
+
         public static TimeSpan ElapsedSinceAppStart
         {
             get

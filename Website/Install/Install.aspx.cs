@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Install
                         Initialize.LogStart();
 
                         //Start Scheduler
-                        Initialize.StartScheduler();
+                        Initialize.StartScheduler(true);
                     }
                     else
                     {
