@@ -484,11 +484,16 @@ namespace DotNetNuke.Common
         /// <summary>
         /// StartScheduler starts the Scheduler
         /// </summary>
+        /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static void StartScheduler()
+        public static void StartScheduler(bool resetAppStartElapseTime = false)
         {
+            if (resetAppStartElapseTime)
+            {
+                Globals.ResetAppStartElapseTime();
+            }
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 

@@ -73,6 +73,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 Percentage = percentForEachStep * counter++;
             }
 
+            Globals.ResetAppStartElapseTime();
+
             Status = StepStatus.Done;
         }
 
