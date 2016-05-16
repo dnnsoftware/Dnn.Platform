@@ -259,13 +259,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateHostSetting]
 	@UserID	           int
 AS
 BEGIN
-	UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-	 SET   SettingValue         = IsNull(@SettingValue, N''), 
-		   SettingIsSecure      = @SettingIsSecure,
-		   LastModifiedByUserID = @UserID,	
-		   LastModifiedOnDate   = GetDate()
-	 WHERE SettingName = @SettingName;
-
 	-- empty value: remove setting
 	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
 		DELETE FROM {databaseOwner}[{objectQualifier}HostSettings]
