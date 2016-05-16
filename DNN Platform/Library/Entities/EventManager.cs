@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
+        private event EventHandler<FileDownloadedEventArgs> FileDownloaded; 
 
         private event EventHandler<FolderChangedEventArgs> FolderAdded;
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
@@ -97,6 +98,7 @@ namespace DotNetNuke.Entities
                 FileAdded += handler.Value.FileAdded;
                 FileOverwritten += handler.Value.FileOverwritten;
                 FileMetadataChanged += handler.Value.FileMetadataChanged;
+                FileDownloaded += handler.Value.FileDownloaded;
 
                 FolderAdded += handler.Value.FolderAdded;
                 FolderDeleted += handler.Value.FolderDeleted;
@@ -204,6 +206,14 @@ namespace DotNetNuke.Entities
             if (FileMetadataChanged != null)
             {
                 FileMetadataChanged(this, args);
+            }
+        }
+
+        public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
+        {
+            if (FileDownloaded != null)
+            {
+                FileDownloaded(this, args);
             }
         }
 
