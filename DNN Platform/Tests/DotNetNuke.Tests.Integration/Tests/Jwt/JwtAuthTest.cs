@@ -376,7 +376,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
             // These will set a moniker for the Activity Feed module of the user profile
             DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
-            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}AddTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}UpdateTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
             WebApiTestHelper.ClearHostCache();
 
             // Act

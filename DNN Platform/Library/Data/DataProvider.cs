@@ -451,12 +451,6 @@ namespace DotNetNuke.Data
 
 		#region Host Settings Methods
 
-		public virtual void AddHostSetting(string SettingName, string SettingValue, bool SettingIsSecure,
-										   int CreatedByUserID)
-		{
-			ExecuteNonQuery("AddHostSetting", SettingName, SettingValue, SettingIsSecure, CreatedByUserID);
-		}
-
 		public virtual IDataReader GetHostSetting(string SettingName)
 		{
 			return ExecuteReader("GetHostSetting", SettingName);
@@ -785,10 +779,6 @@ namespace DotNetNuke.Data
                                         tab.IsSystem);
         }
 
-		public virtual void AddTabSetting(int TabId, string SettingName, string SettingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabSetting", TabId, SettingName, SettingValue, createdByUserID);
-		}
 
         public virtual int AddTabToEnd(TabInfo tab, int createdByUserID)
         {
@@ -1089,10 +1079,6 @@ namespace DotNetNuke.Data
 											createdByUserID);
 		}
 
-		public virtual void AddModuleSetting(int moduleId, string settingName, string settingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddModuleSetting", moduleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void AddTabModule(int TabId, int ModuleId, string ModuleTitle, string Header, string Footer,
 										 int ModuleOrder, string PaneName, int CacheTime, string CacheMethod,
@@ -1134,11 +1120,6 @@ namespace DotNetNuke.Data
 									  createdByUserID);
 		}
 
-		public virtual void AddTabModuleSetting(int tabModuleId, string settingName, string settingValue,
-												int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabModuleSetting", tabModuleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void DeleteModule(int moduleId)
 		{
