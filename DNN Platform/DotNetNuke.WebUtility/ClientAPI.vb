@@ -46,8 +46,6 @@ Namespace DotNetNuke.UI.Utilities
     ''' -----------------------------------------------------------------------------
     Public Class ClientAPI
 
-        Dim Shared ReadOnly UnsafeJsRegex As Regex = new Regex("(['""\\])", RegexOptions.Compiled)
-
 #Region "Public Constants"
 
         Public Const SCRIPT_CALLBACKID As String = "__DNNCAPISCI"
@@ -551,11 +549,11 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
-            If Len(strString) > 0 Then
-                Return UnsafeJsRegex.Replace(strString, "\$1")
-            Else
-                Return strString
+            If String.IsNullOrEmpty(strString) Then
+                Return String.Empty
             End If
+
+            Return HttpUtility.JavaScriptStringEncode(strString)
         End Function
 
         Public Shared Function IsInCallback(ByVal objPage As Page) As Boolean

@@ -122,8 +122,6 @@ namespace DotNetNuke.Services.Localization
         //private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         //private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? _showMissingKeys;
-
-        private static readonly Regex UnsafeJsRegex = new Regex("(['\"\\\\])", RegexOptions.Compiled);
         #endregion
 
         #region Public Shared Properties
@@ -1245,13 +1243,12 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            var safeString = string.IsNullOrEmpty(unsafeString) ? "" : UnsafeJsRegex.Replace(unsafeString, "\\$1");
-			if (safeString.Length > 0)
-	        {
-				safeString = safeString.Replace("\r", string.Empty).Replace("\n", string.Empty);
-	        }
+            if (string.IsNullOrEmpty(unsafeString))
+            {
+                return string.Empty;
+            }
 
-			return safeString;
+            return HttpUtility.JavaScriptStringEncode(unsafeString);
         }
 
         /// <summary>
