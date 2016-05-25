@@ -83,6 +83,8 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+DELETE FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'InstallerFilesRemoved'
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
