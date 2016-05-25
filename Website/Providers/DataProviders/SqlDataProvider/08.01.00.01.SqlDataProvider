@@ -83,6 +83,9 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+DELETE FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'InstallerFilesRemoved'
+GO
+
 /***** DNN-8529: update help url. *****/
 UPDATE {databaseOwner}{objectQualifier}HostSettings SET SettingValue = N'http://www.dnnsoftware.com/help' WHERE SettingName='HelpURL'
 GO
