@@ -108,6 +108,8 @@ namespace DotNetNuke.Entities
 
         void OnUserRemoved(UserEventArgs args);
 
+        void OnUserUpdated(UpdateUserEventArgs args);
+
         void RefreshTabSyncHandlers();
     }
 }

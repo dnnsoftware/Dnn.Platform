@@ -55,6 +55,10 @@ namespace DotNetNuke.Entities.Users
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
+        public void UserUpdated(object sender, UpdateUserEventArgs args)
+        {
+        }
+
         private static void DeleteAllNewUnauthorizedUserRegistrationNotifications(int userId)
         {
             var nt = NotificationsController.Instance.GetNotificationType("NewUnauthorizedUserRegistration");

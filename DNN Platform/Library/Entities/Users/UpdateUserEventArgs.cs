@@ -19,20 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace DotNetNuke.Entities.Users
 {
-    public interface IUserEventHandlers
+    public class UpdateUserEventArgs : UserEventArgs
     {
-        void UserAuthenticated(object sender, UserEventArgs args);
-
-        void UserCreated(object sender, UserEventArgs args);
-
-        void UserDeleted(object sender, UserEventArgs args);
-
-        void UserRemoved(object sender, UserEventArgs args);
-
-        void UserApproved(object sender, UserEventArgs args);
-
-        void UserUpdated(object sender, UpdateUserEventArgs args);
+        public UserInfo OldUser { get; set; }
     }
 }

@@ -85,6 +85,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<UserEventArgs> UserCreated;
         private event EventHandler<UserEventArgs> UserDeleted;
         private event EventHandler<UserEventArgs> UserRemoved;
+        private event EventHandler<UpdateUserEventArgs> UserUpdated;
 
 
         public EventManager()
@@ -168,6 +169,7 @@ namespace DotNetNuke.Entities
                 UserDeleted += handler.Value.UserDeleted;
                 UserRemoved += handler.Value.UserRemoved;
                 UserApproved += handler.Value.UserApproved;
+                UserUpdated += handler.Value.UserUpdated;
             }
 
         }
@@ -494,6 +496,14 @@ namespace DotNetNuke.Entities
             if (UserRemoved != null)
             {
                 UserRemoved(this, args);
+            }
+        }
+
+        public virtual void OnUserUpdated(UpdateUserEventArgs args)
+        {
+            if (UserUpdated != null)
+            {
+                UserUpdated(this, args);
             }
         }
 
