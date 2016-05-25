@@ -35,7 +35,6 @@ using System.Web.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
@@ -1671,8 +1670,6 @@ namespace DotNetNuke.Security.Membership
                 displayName = firstName + " " + lastName;
             }
 
-            var oldUser = GetUser(user.PortalID, user.UserID);
-
             //Persist the Membership to the Data Store
             UpdateUserMembership(user);
 
@@ -1693,8 +1690,6 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
                                      UserController.Instance.GetCurrentUserInfo().UserID);
-
-            EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs {User = user, OldUser = oldUser});
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);

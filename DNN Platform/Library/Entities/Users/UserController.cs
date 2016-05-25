@@ -1914,8 +1914,10 @@ namespace DotNetNuke.Entities.Users
 			portalId = GetEffectivePortalId(portalId);
 			user.PortalID = portalId;
 
-			//Update the User
-			MembershipProvider.Instance().UpdateUser(user);
+            var oldUser = Instance.GetUser(user.PortalID, user.UserID);
+
+            //Update the User
+            MembershipProvider.Instance().UpdateUser(user);
 			if (loggedAction)
 			{
                 //if the httpcontext is null, then get portal settings by portal id.
@@ -1932,11 +1934,13 @@ namespace DotNetNuke.Entities.Users
                 EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 
+            EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
+
             //Reset PortalId
             FixMemberPortalId(user, originalPortalId);
 
-			//Remove the UserInfo from the Cache, as it has been modified
-			if (clearCache)
+            //Remove the UserInfo from the Cache, as it has been modified
+            if (clearCache)
 			{
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
