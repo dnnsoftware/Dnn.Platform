@@ -4093,10 +4093,18 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void DeleteInstallerFiles()
         {
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config"));
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config.resources"));
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx"));
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx.cs"));
+            var files = new List<string> {"DotNetNuke.install.config", "InstallWizard.aspx", "InstallWizard.aspx.cs"};
+            foreach (var file in files)
+            {
+                try
+                {
+                    FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", file));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("File deletion failed for [Install\\" + file + "]. PLEASE REMOVE THIS MANUALLY." + ex);
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------
