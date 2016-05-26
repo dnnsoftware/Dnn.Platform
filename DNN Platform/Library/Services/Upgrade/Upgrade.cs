@@ -4093,7 +4093,21 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void DeleteInstallerFiles()
         {
-            var files = new List<string> {"DotNetNuke.install.config", "InstallWizard.aspx", "InstallWizard.aspx.cs"};
+            var files = new List<string>
+            {
+                "DotNetNuke.install.config",
+                "DotNetNuke.install.config.resources",
+                "InstallWizard.aspx",
+                "InstallWizard.aspx.cs",
+                "InstallWizard.aspx.designer.cs",
+                "UpgradeWizard.aspx",
+                "UpgradeWizard.aspx.cs",
+                "UpgradeWizard.aspx.designer.cs",
+                "Install.aspx",
+                "Install.aspx.cs",
+                "Install.aspx.designer.cs",
+            };
+
             foreach (var file in files)
             {
                 try
@@ -4659,9 +4673,14 @@ namespace DotNetNuke.Services.Upgrade
                 // parse Host Settings if available
                 InitialiseHostSettings(xmlDoc, true);
 
-                // parse SuperUser if Available
-                UserInfo superUser = GetSuperUser(xmlDoc, true);
-                UserController.CreateUser(ref superUser);
+                //Create SuperUser only when it's not there (even soft deleted)
+                var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
+                if (superUsers == null || superUsers.Count == 0)
+                {
+                    // parse SuperUser if Available
+                    UserInfo superUser = GetSuperUser(xmlDoc, true);
+                    UserController.CreateUser(ref superUser);
+                }
 
                 // parse File List if available
                 InstallFiles(xmlDoc, true);
