@@ -284,6 +284,12 @@ namespace DotNetNuke.Services.Install
         
         private static void LaunchAutoInstall()
         {
+            if (Globals.Status == Globals.UpgradeStatus.None)
+            {
+                HttpContext.Current.Response.Redirect("~/");
+                return;
+            }
+
             //Get current Script time-out
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
 
