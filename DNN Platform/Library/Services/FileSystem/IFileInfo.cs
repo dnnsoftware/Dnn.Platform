@@ -54,6 +54,8 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         string Title { get; set; }
 
+        string Description { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether publish period is enabled for the file
         /// </summary>
