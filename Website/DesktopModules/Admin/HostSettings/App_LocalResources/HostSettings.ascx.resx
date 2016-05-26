@@ -979,7 +979,7 @@
     <value>Enable MS Ajax CDN:</value>
   </data>
   <data name="plTelerikBasicUrl.Help" xml:space="preserve">
-    <value>Enter the basic URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. you can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
+    <value>Enter the basic URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. You can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
   </data>
   <data name="plTelerikBasicUrl.Text" xml:space="preserve">
     <value>Telerik CDN Basic URL:</value>
@@ -1163,7 +1163,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Show Critical Errors on Screen:</value>
   </data>
   <data name="lblCustomAnalyzer.Help" xml:space="preserve">
-    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
+    <value>If this is empty, system will use standard analyzer to index content. If you want to use custom analyzer, please type the full name of analyzer class in this field. Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
     <value>Custom Analyzer Type:</value>
