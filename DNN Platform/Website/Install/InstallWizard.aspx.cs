@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Install
         private static void Install()
         {
             //bail out early if we are already running
-            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress())
+            if (_installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (Globals.Status != Globals.UpgradeStatus.Install))
                 return;
 
             var percentForEachStep = 100 / _steps.Count;
