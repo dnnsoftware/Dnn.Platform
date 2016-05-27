@@ -370,6 +370,8 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         /// <summary>
         /// Gets or sets the date on which the file starts to be published
         /// </summary>
@@ -438,6 +440,7 @@ namespace DotNetNuke.Services.FileSystem
             LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
             FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
             Title = Null.SetNullString(dr["Title"]);
+            Description = Null.SetNullString(dr["Description"]);
             EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
             StartDate = Null.SetNullDateTime(dr["StartDate"]);
             EndDate  = Null.SetNullDateTime(dr["EndDate"]);
