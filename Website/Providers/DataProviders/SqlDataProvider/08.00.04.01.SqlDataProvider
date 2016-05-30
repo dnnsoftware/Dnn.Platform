@@ -884,6 +884,7 @@ BEGIN
 	 WHERE TabID = @TabID;
 END; -- Procedure
 GO
+
 /***** DNN-8697: add description field for file. *****/
 IF NOT EXISTS
 (SELECT * FROM sys.all_columns c INNER JOIN sys.tables t
@@ -1429,11 +1430,49 @@ AS
             F.PublishedVersion,
             F.ContentItemID,
             F.HasBeenPublished
-        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F
         WHERE F.FolderID = @FolderID
         ORDER BY [FolderID], [FileName]
     END
 GO
+
+/* ************************************************************* 
+   DNN-8668: Event Viewer : Allow for simplified Purge procedure 
+   ************************************************************* */
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}PurgeEventLog]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+AS
+BEGIN
+	DECLARE @keepDays Int;
+	SELECT @keepDays = SettingValue 
+	 FROM  {databaseOwner}[{objectQualifier}HostSettings] 
+	 WHERE SettingName = N'EventLogKeepForDays';
+	
+	-- delete entries, older than specified time:
+	IF IsNull(@keepDays, -1) >= 0
+		DELETE FROM el
+		FROM  {databaseOwner}[{objectQualifier}EventLog]       el 
+		JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc ON elc.ID = el.LogConfigID
+		WHERE (elc.KeepMostRecent < 0 AND LogCreateDate < DateAdd(d, @keepDays, GetDate()));
+
+    -- delete entries, older than number to keep (as specified for log type):
+	WITH logcounts AS
+	( SELECT LogEventID, 
+		     ROW_NUMBER() OVER(PARTITION BY LogConfigID ORDER BY LogCreateDate DESC) AS logEventSequence
+	   FROM  {databaseOwner}[{objectQualifier}EventLog]
+	) DELETE FROM el
+	   FROM  {databaseOwner}[{objectQualifier}EventLog]       el 
+	   JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc ON el.LogConfigID = elc.ID
+	   JOIN  logcounts                                        lc  ON el.LogEventID  = lc.LogEventID
+	   WHERE (elc.KeepMostRecent > -1 AND lc.logEventSequence > elc.KeepMostRecent)
+	      OR (elc.loggingisActive = 0);
+END; -- Procedure
+GO
+
 
 
 /************************************************************/
