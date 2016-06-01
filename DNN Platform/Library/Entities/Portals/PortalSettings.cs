@@ -117,7 +117,10 @@ namespace DotNetNuke.Entities.Portals
 		{
 		    PortalId = portalAliasInfo.PortalID;
 			PortalAlias = portalAliasInfo;
-			var portal = PortalController.Instance.GetPortal(portalAliasInfo.PortalID);
+			var portal = string.IsNullOrEmpty(portalAliasInfo.CultureCode) ? 
+                            PortalController.Instance.GetPortal(portalAliasInfo.PortalID)
+                            : PortalController.Instance.GetPortal(portalAliasInfo.PortalID, portalAliasInfo.CultureCode);
+
             BuildPortalSettings(tabId, portal);
         }
 
