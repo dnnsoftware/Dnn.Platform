@@ -98,7 +98,16 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}DesktopModules/{1}/API/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return string.Format("{0}API/{1}/Action/{2}", GeneratePrefixString(count), moduleFolderName, url);
+        }
+
+        //TODO: this method need remove after drop use old api format.
+        public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
+        {
+            Requires.NotNegative("count", count);
+            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+
+            return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
         }
 
         public void ClearCachedData()

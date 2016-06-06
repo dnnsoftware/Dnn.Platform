@@ -79,10 +79,17 @@ namespace DotNetNuke.Web.Api.Internal
             foreach (int count in prefixCounts)
             {
                 string fullRouteName = _portalAliasRouteManager.GetRouteName(moduleFolderName, routeName, count);
-                string routeUrl = _portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
+                var routeUrl = _portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 Route route = MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 routes.Add(route);
                 Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+
+                //compatible with old service path: DesktopModules/{namespace}/API/{controller}/{action}.
+                var oldRouteName = $"{fullRouteName}-old";
+                var oldRouteUrl = PortalAliasRouteManager.GetOldRouteUrl(moduleFolderName, url, count);
+                var oldRoute = MapHttpRouteWithNamespace(oldRouteName, oldRouteUrl, defaults, constraints, namespaces);
+                routes.Add(oldRoute);
+                Logger.Trace("Mapping route: " + oldRouteName + " @ " + oldRouteUrl);
             }
 
             return routes;

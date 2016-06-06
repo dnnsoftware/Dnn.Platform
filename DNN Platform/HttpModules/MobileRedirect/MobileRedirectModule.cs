@@ -65,7 +65,7 @@ namespace DotNetNuke.HttpModules
             var rawUrl = app.Request.RawUrl;
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
-                    || ServicesModule.ServiceApi.IsMatch(rawUrl) 
+                    || ServicesModule.ServiceApi.IsMatch(rawUrl.ToLowerInvariant()) 
                     || MvcServicePath.IsMatch(rawUrl)
                     || IsSpecialPage(rawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))
