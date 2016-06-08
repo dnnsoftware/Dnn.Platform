@@ -394,11 +394,11 @@
 
         $("#moduleActions-" + moduleId + " .dnn_mact > li").hoverIntent({
             over: function () {
-                showMenu($(this).find("ul"));
+                showMenu($(this).find("ul").first());
             },
             out: function () {
                 if (!($(this).hasClass("actionQuickSettings") && $(this).data('displayQuickSettings'))) {
-                    closeMenu($(this).find("ul"));
+                    closeMenu($(this).find("ul").first());
                 }
             },
             timeout: 400,
