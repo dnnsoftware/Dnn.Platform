@@ -87,59 +87,38 @@ namespace Dnn.Module.ModuleCreator
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
 
-            var modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
+            var relativePath = $"DesktopModules/{(objModuleControl.ControlSrc.EndsWith(".mvc") ? "MVC/" : string.Empty)}{objDesktopModule.FolderName}/";
+            var modulePath = Server.MapPath(relativePath);
 
             if (Directory.Exists(modulePath))
             {
                 //iterate through files in desktopmodules folder
-                fileList = Directory.GetFiles(modulePath);
+                fileList = Directory.GetFiles(modulePath, "*", SearchOption.AllDirectories);
                 foreach (string filePath in fileList)
                 {
                     switch (Path.GetExtension(filePath).ToLower())
                     {
                         case ".ascx":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
+                            cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), filePath));
                             var resxPath = filePath.Replace(Path.GetFileName(filePath), "App_LocalResources\\" + Path.GetFileName(filePath)) + ".resx";
                             if (File.Exists(resxPath))
                             {
-                                cboFile.Items.Add(new ListItem(Path.GetFileName(resxPath), resxPath));
+                                cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), resxPath));
                             }
                             break;
                         case ".vb":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".cs":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".vbhtml":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".cshtml":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".css":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".js":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".txt":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".html":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".xml":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".xslt":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".sql":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
-                            break;
                         case ".sqldataprovider":
-                            cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
+                            cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), filePath));
                             break;
                     }
                 }
