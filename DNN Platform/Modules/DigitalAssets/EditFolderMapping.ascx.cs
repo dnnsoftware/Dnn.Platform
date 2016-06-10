@@ -75,6 +75,11 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnInit(e);
 
+            if (!UserInfo.IsSuperUser && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            {
+                Response.Redirect(Globals.AccessDeniedURL(), true);
+            }
+
             UpdateButton.Text = (FolderMappingID == Null.NullInteger) ? Localization.GetString("Add") : Localization.GetString("Update", LocalResourceFile);
             CancelHyperLink.NavigateUrl = EditUrl("FolderMappings");
 
