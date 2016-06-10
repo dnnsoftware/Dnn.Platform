@@ -88,6 +88,16 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         #region Event Handlers
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (!UserInfo.IsSuperUser && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            {
+                Response.Redirect(Globals.AccessDeniedURL(), true);
+            }
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
