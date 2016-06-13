@@ -4269,6 +4269,10 @@
             var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
             if (script != null) {
                 var confirmContent = script[2].split("\\" + script[1]).join(script[1]);
+                //restore unicode chars.
+                confirmContent = confirmContent.replace(/\\u([\d\w]{4})/gi, function(match, charCode) {
+                    return String.fromCharCode(parseInt(charCode, 16));
+                });
                 instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
                     text: confirmContent,
                     isButton: isButton
