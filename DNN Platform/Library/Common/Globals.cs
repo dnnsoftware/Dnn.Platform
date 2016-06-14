@@ -2534,7 +2534,7 @@ namespace DotNetNuke.Common
             {
                 if (strURL.IndexOf("mailto:") == -1 && strURL.IndexOf("://") == -1 && strURL.IndexOf("~") == -1 && strURL.IndexOf("\\\\") == -1)
                 {
-                    strURL = (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https://" : "http://") + strURL;
+                    strURL = ((HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request)) ? "https://" : "http://") + strURL;
                 }
             }
             return strURL;
