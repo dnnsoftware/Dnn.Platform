@@ -4193,7 +4193,6 @@
     </None>
     <None Include="Portals\_default\Templates\Default.page.template" />
     <None Include="Portals\_default\Templates\UserProfile.page.template" />
-    <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.02.SqlDataProvider" />
