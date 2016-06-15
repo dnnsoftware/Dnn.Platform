@@ -454,15 +454,15 @@ namespace DotNetNuke.UI.ControlPanels
         protected string GetPublishConfirmText()
         {
             return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
-                    ? ClientAPI.GetSafeJSString(GetButtonConfirmMessage("UnpublishPage"))
-                    : ClientAPI.GetSafeJSString(GetButtonConfirmMessage("PublishPage"));
+                    ? GetButtonConfirmMessage("UnpublishPage")
+                    : GetButtonConfirmMessage("PublishPage");
         }
 
         protected string GetPublishConfirmHeader()
         {
             return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
-                    ? ClientAPI.GetSafeJSString(GetButtonConfirmHeader("UnpublishPage"))
-                    : ClientAPI.GetSafeJSString(GetButtonConfirmHeader("PublishPage"));
+                    ? GetButtonConfirmHeader("UnpublishPage")
+                    : GetButtonConfirmHeader("PublishPage");
         }
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
