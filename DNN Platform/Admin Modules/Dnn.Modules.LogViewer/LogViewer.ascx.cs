@@ -367,12 +367,7 @@ namespace Dnn.Modules.LogViewer
                 {
                     txtSubject.Text = Localization.GetString("LogEntryDefaultSubject", LocalResourceFile);
                     txtMessage.Text = Localization.GetString("LogEntryDefaultMsg", LocalResourceFile);
-
-                    if (AutoPurgeLogBuffer)
-                    {
-                        LogController.Instance.PurgeLogBuffer();
-                    }
-
+                    LogController.Instance.PurgeLogBuffer();
                     if (Request.QueryString["PageRecords"] != null)
                     {
                         ddlRecordsPerPage.SelectedValue = Request.QueryString["PageRecords"];
@@ -502,14 +497,6 @@ namespace Dnn.Modules.LogViewer
         }
 
         public string EventFilter { get; set; }
-
-        public bool AutoPurgeLogBuffer
-        {
-            get
-            {
-                return Settings.ContainsKey("AutoPurgeLogBuffer")  && Convert.ToBoolean(Settings["AutoPurgeLogBuffer"]);
-            }
-        }
 
         #endregion
 
