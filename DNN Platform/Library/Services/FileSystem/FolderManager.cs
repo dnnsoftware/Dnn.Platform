@@ -1913,28 +1913,35 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void ProcessMergedTreeItemInAddMode(MergedTreeItem item, int portalId)
         {
-            if (item.ExistsInFileSystem)
+            try
             {
-                if (!item.ExistsInDatabase)
+                if (item.ExistsInFileSystem)
                 {
-	                var folderMappingId = FindFolderMappingId(item, portalId);
-                    CreateFolderInDatabase(portalId, item.FolderPath, folderMappingId);
-                }
-            }
-            else
-            {
-                if (item.ExistsInDatabase)
-                {
-                    if (item.ExistsInFolderMapping)
+                    if (!item.ExistsInDatabase)
                     {
-                        CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        var folderMappingId = FindFolderMappingId(item, portalId);
+                        CreateFolderInDatabase(portalId, item.FolderPath, folderMappingId);
                     }
                 }
-                else // by exclusion it exists in the Folder Mapping
+                else
                 {
-                    CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
-                    CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID, item.MappedPath);
+                    if (item.ExistsInDatabase)
+                    {
+                        if (item.ExistsInFolderMapping)
+                        {
+                            CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        }
+                    }
+                    else // by exclusion it exists in the Folder Mapping
+                    {
+                        CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID, item.MappedPath);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(string.Format("Could not create folder {0}. EXCEPTION: {1}", item.FolderPath, ex.Message), ex);
             }
         }
         private void InitialiseSyncFoldersData(int portalId, string relativePath)
