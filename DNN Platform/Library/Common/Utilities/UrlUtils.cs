@@ -324,7 +324,12 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-            if (url.Contains("://"))
+            var urlWithNoQuery = url;
+            if (urlWithNoQuery.Contains("?"))
+            {
+                urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (urlWithNoQuery.Contains("://"))
             {
                 var portalSettings = PortalSettings.Current;
                 if (portalSettings == null ||
