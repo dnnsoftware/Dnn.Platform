@@ -141,7 +141,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 {
 					//Try and cast the value to an DateTime
                     var dteString = OldValue as string;
-                    dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
+                    if (!string.IsNullOrEmpty(dteString))
+                    {
+                        dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -244,8 +247,16 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 			string postedValue = postCollection[postDataKey + "_control"];
             if (!presentValue.Equals(postedValue))
             {
-                Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
-                dataChanged = true;
+                if (string.IsNullOrEmpty(postedValue))
+                {
+                    Value = Null.NullDate;
+                    dataChanged = true;
+                }
+                else
+                {
+                    Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                    dataChanged = true;
+                }
             }
             LoadDateControls();
             return dataChanged;
