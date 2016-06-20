@@ -1214,7 +1214,7 @@ namespace Dnn.Modules.Tabs
         private bool MoveTab(TabInfo tab, TabInfo targetTab, Position position)
         {
             //Validate Tab Path
-            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath(targetTab.TabID, tab.TabName)))
+            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath(targetTab.ParentId, tab.TabName)))
             {
                 return false;
             }
