@@ -304,7 +304,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetSearchIndexItems gets the SearchInfo Items for the Portal
@@ -313,7 +313,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             var searchItems = new SearchItemInfoCollection();
@@ -345,7 +345,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'GetSearchModules' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'GetSearchModules' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetModuleList gets a collection of SearchContentModuleInfo Items for the Portal
@@ -355,7 +355,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchModules' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'GetSearchModules' instead.")]
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)
         {
             var results = new SearchContentModuleInfoCollection();
