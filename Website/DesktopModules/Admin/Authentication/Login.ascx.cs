@@ -814,7 +814,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     //check if the user is an admin/host and validate their IP
                     if (Host.EnableIPChecking)
                     {
-                        bool isAdminUser = objUser.IsSuperUser || PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName); ;
+                        bool isAdminUser = objUser.IsSuperUser || objUser.IsInRole(PortalSettings.AdministratorRoleName);
                         if (isAdminUser) 
                         {
                             if (IPFilterController.Instance.IsIPBanned(Request.UserHostAddress))
