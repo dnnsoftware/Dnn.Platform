@@ -339,7 +339,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 if (!string.IsNullOrEmpty(currentSettings.Config.ContentsCss))
                 {
-                    var customCss = Globals.ResolveUrl(ReFormatURL(currentSettings.Config.ContentsCss));
+                    var customCss = Globals.ResolveUrl(FormatUrl(currentSettings.Config.ContentsCss));
                     resolvedCssFiles.Add(customCss);
                 }
 
