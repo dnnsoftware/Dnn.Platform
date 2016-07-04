@@ -83,6 +83,47 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+AS
+BEGIN
+	SELECT   
+	  FileId,  
+	  PortalId,  
+	  [FileName],  
+	  Extension,  
+	  Size,  
+	  Width,  
+	  Height,  
+	  ContentType,  
+	  FolderID,  
+	  Folder,  
+	  StorageLocation,  
+	  IsCached,
+	  UniqueId,
+	  VersionGuid,
+	  SHA1Hash,
+	  FolderMappingID,  
+	  LastModificationTime,  
+	  Title,  
+      Description,
+	  EnablePublishPeriod,  
+	  StartDate,  
+	  EndDate,  
+	  CreatedByUserID,  
+	  CreatedOnDate,  
+	  LastModifiedByUserID,  
+	  LastModifiedOnDate,  
+	  PublishedVersion,  
+	  ContentItemID,
+      HasBeenPublished
+	FROM {databaseOwner}[{objectQualifier}vw_Files] 	
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
