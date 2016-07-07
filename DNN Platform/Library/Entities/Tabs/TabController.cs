@@ -734,6 +734,13 @@ namespace DotNetNuke.Entities.Tabs
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
+            //Remove the Content Item
+            if (tab != null && tab.ContentItemId > Null.NullInteger)
+            {
+                IContentController contentController = Util.GetContentController();
+                contentController.DeleteContentItem(tab);
+            }
+
             EventManager.Instance.OnTabDeleted(new TabEventArgs { Tab = tab });
         }
 
