@@ -26,7 +26,7 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
 using System.Text;
-
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -46,6 +46,7 @@ namespace DotNetNuke.Entities.Content
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService _dataService;
+        private static SharedDictionary<int, ContentItem> _contentItemsDict;
 
         protected override Func<IContentController> GetFactory()
         {
@@ -54,6 +55,7 @@ namespace DotNetNuke.Entities.Content
 
         public ContentController() : this(Util.GetDataService())
         {
+            _contentItemsDict = new SharedDictionary<int, ContentItem>();
         }
 
         public ContentController(IDataService dataService)
@@ -69,6 +71,8 @@ namespace DotNetNuke.Entities.Content
             contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
 
             SaveMetadataDelta(contentItem);
+
+	        UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
         }
@@ -89,6 +93,8 @@ namespace DotNetNuke.Entities.Content
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 
             _dataService.DeleteContentItem(contentItem.ContentItemId);
+
+            UpdateContentItemsCache(contentItem, true);
         }
 
         public void DeleteContentItem(int contentItemId)
@@ -101,8 +107,22 @@ namespace DotNetNuke.Entities.Content
         {
             //Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
+            ContentItem contentItem;
+            using (_contentItemsDict.GetReadLock())
+            {
+                _contentItemsDict.TryGetValue(contentItemId, out contentItem);
+            }
 
-            return CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId));
+            if (contentItem == null)
+            {
+                using (_contentItemsDict.GetWriteLock())
+                {
+                    contentItem = CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId));
+                    _contentItemsDict.Add(contentItemId, contentItem);
+                }
+            }
+
+            return contentItem;
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
@@ -183,6 +203,8 @@ namespace DotNetNuke.Entities.Content
             SaveMetadataDelta(contentItem);
             
             _dataService.UpdateContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
+
+            UpdateContentItemsCache(contentItem);
         }
 
         public void AddMetaData(ContentItem contentItem, string name, string value)
@@ -193,6 +215,8 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNullOrEmpty("name", name);
 
             _dataService.AddMetaData(contentItem, name, value);
+
+            UpdateContentItemsCache(contentItem, true);
         }
 
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
@@ -203,6 +227,8 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNullOrEmpty("name", name);
 
             _dataService.DeleteMetaData(contentItem, name, value);
+
+            UpdateContentItemsCache(contentItem, true);
         }
 
         public void DeleteMetaData(ContentItem contentItem, string name)
@@ -254,6 +280,8 @@ namespace DotNetNuke.Entities.Content
             var added = rh.Except(lh).ToArray();
 
             _dataService.SynchronizeMetaData(contentItem, added, deleted);
+
+            UpdateContentItemsCache(contentItem, true);
         }
 
         private static bool MetaDataChanged(
@@ -261,6 +289,32 @@ namespace DotNetNuke.Entities.Content
             IEnumerable<KeyValuePair<string, string>> rh)
         {
             return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
+        }
+
+        private void UpdateContentItemsCache(ContentItem contentItem, bool deleted = false)
+        {
+            var contentItemId = contentItem.ContentItemId;
+            using (_contentItemsDict.GetWriteLock())
+            {
+                if (deleted)
+                {
+                    if (_contentItemsDict.ContainsKey(contentItemId))
+                    {
+                        _contentItemsDict.Remove(contentItemId);
+                    }
+                }
+                else
+                {
+                    if (_contentItemsDict.ContainsKey(contentItemId))
+                    {
+                        _contentItemsDict[contentItemId] = contentItem;
+                    }
+                    else
+                    {
+                        _contentItemsDict.Add(contentItemId, contentItem);
+                    }
+                }
+            }
         }
     }
 }

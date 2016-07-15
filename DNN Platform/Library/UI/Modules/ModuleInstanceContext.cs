@@ -671,7 +671,8 @@ namespace DotNetNuke.UI.Modules
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!Configuration.IsShared)
                     {
-                        if (ModuleController.Instance.GetTabModulesByModule(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
+                        var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                        if (PortalGroupController.Instance.IsModuleShared(Configuration.ModuleID, portal))
                         {
                             confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteSharedModule.Confirm")) + "')";
                         }

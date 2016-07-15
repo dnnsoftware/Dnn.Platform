@@ -166,6 +166,18 @@ namespace DotNetNuke.Common.Utilities
         public const int ModuleCacheTimeOut = 20;
         public const CacheItemPriority ModuleCachePriority = CacheItemPriority.AboveNormal;
 
+        public const string SharedModulesByPortalCacheKey = "SharedModulesByPortal{0}";
+        public const int SharedModulesByPortalCacheTimeOut = 20;
+        public const CacheItemPriority SharedModulesByPortalCachePriority = CacheItemPriority.Normal;
+
+        public const string ContentItemsCacheKey = "ContentItems{0}";
+        public const int ContentItemsCacheTimeOut = 20;
+        public const CacheItemPriority ContentItemsCachePriority = CacheItemPriority.Normal;
+
+        public const string SharedModulesWithPortalCacheKey = "SharedModulesWithPortal{0}";
+        public const int SharedModulesWithPortalCacheTimeOut = 20;
+        public const CacheItemPriority SharedModulesWithPortalCachePriority = CacheItemPriority.Normal;
+
         public const string FolderCacheKey = "Folders{0}";
         public const int FolderCacheTimeOut = 20;
         public const CacheItemPriority FolderCachePriority = CacheItemPriority.Normal;
@@ -415,6 +427,10 @@ namespace DotNetNuke.Common.Utilities
                         outputProvider.Remove(TabId);
                     }
                 }
+
+                var portalId = portals[TabId];
+                RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
+                RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
