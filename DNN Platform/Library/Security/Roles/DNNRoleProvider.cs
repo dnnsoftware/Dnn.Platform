@@ -91,7 +91,7 @@ namespace DotNetNuke.Security.Roles
                     Convert.ToInt32(dataProvider.AddRole(role.PortalID,
                                                          role.RoleGroupID,
                                                          role.RoleName.Trim(),
-                                                         role.Description.Trim(),
+                                                         role.Description != null ? role.Description.Trim() : string.Empty,
                                                          role.ServiceFee,
                                                          role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                                          role.BillingFrequency,
