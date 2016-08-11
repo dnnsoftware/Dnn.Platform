@@ -380,6 +380,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkAutoSync.Checked = Entities.Host.Host.EnableFileAutoSync;
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
+            chkImprovementProgram.Checked = Entities.Host.Host.ParticipateInImprovementProg;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
@@ -863,6 +864,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "True" : "False", false);
+                    HostController.Instance.Update("DNNImprovementProgram", chkImprovementProgram.Checked ? "True" : "False", false);
                     HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     HostController.Instance.Update("UpgradeForceSSL", chkUpgradeForceSSL.Checked ? "Y" : "N", false);

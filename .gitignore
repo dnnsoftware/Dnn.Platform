@@ -238,3 +238,7 @@ Website/Portals/_default/CK*.xml
 Website/Portals/_default/Install/CK*.xml
 Website/Portals/_default/Skins/Xcillion/
 Website/Portals/_default/Containers/Xcillion/
+DNN Platform/Dnn.AuthServices.Jwt/Package/
+Website/Portals/_default/Install/Dnn.CKEditorDefaultSettings.xml
+Website/Portals/_default/Install/Dnn.CKToolbarButtons.xml
+Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
