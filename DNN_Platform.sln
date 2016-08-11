@@ -1,5 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
@@ -377,6 +378,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\08.00.00.22.config = DNN Platform\Website\Install\Config\08.00.00.22.config
 		DNN Platform\Website\Install\Config\08.00.00.26.config = DNN Platform\Website\Install\Config\08.00.00.26.config
 		DNN Platform\Website\Install\Config\08.00.00.30.config = DNN Platform\Website\Install\Config\08.00.00.30.config
+		DNN Platform\Website\Install\Config\08.00.04.config = DNN Platform\Website\Install\Config\08.00.04.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
 		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
 		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config

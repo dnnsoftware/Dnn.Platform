@@ -41,9 +41,9 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.ImprovementsProgram;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
@@ -250,13 +250,13 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 foreach (var p in panes)
                 {
-                    var topPane = new string[]{
+                    var topPane = new[]{
                         string.Format(GetString("Pane.AddTop.Text"), p),
                         p.ToString(),
                         "TOP"
                     };
 
-                    var botPane = new string[]{
+                    var botPane = new[]{
                         string.Format(GetString("Pane.AddBottom.Text"), p),
                         p.ToString(),
                         "BOTTOM"
@@ -271,7 +271,7 @@ namespace DotNetNuke.UI.ControlPanels
                 foreach (var p in panes)
                 {
 
-                    var botPane = new string[]{
+                    var botPane = new[]{
                         string.Format(GetString("Pane.Add.Text"), p),
                         p.ToString(),
                         "BOTTOM"
@@ -293,12 +293,12 @@ namespace DotNetNuke.UI.ControlPanels
         protected string BuildToolUrl(string toolName, bool isHostTool, string moduleFriendlyName, 
                                       string controlKey, string navigateUrl, bool showAsPopUp)
         {
-            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return "javascript:void(0);";
             }
 
-            if ((!string.IsNullOrEmpty(navigateUrl)))
+            if (!string.IsNullOrEmpty(navigateUrl))
             {
                 return navigateUrl;
             }
@@ -367,7 +367,7 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                     break;
                 default:
-                    if ((!string.IsNullOrEmpty(moduleFriendlyName)))
+                    if (!string.IsNullOrEmpty(moduleFriendlyName))
                     {
                         var additionalParams = new List<string>();
                         returnValue = GetTabURL(additionalParams, toolName, isHostTool, 
@@ -381,21 +381,21 @@ namespace DotNetNuke.UI.ControlPanels
         protected string GetTabURL(List<string> additionalParams, string toolName, bool isHostTool, 
                                    string moduleFriendlyName, string controlKey, bool showAsPopUp)
         {
-            int portalId = (isHostTool) ? Null.NullInteger : PortalSettings.PortalId;
+            int portalId = isHostTool ? Null.NullInteger : PortalSettings.PortalId;
 
             string strURL = string.Empty;
 
-            if (((additionalParams == null)))
+            if (additionalParams == null)
             {
                 additionalParams = new List<string>();
             }
 
             var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, moduleFriendlyName);
 
-            if (((moduleInfo != null)))
+            if (moduleInfo != null)
             {
-                bool isHostPage = (portalId == Null.NullInteger);
-                if ((!string.IsNullOrEmpty(controlKey)))
+                bool isHostPage = portalId == Null.NullInteger;
+                if (!string.IsNullOrEmpty(controlKey))
                 {
                     additionalParams.Insert(0, "mid=" + moduleInfo.ModuleID);
                     if (showAsPopUp && PortalSettings.EnablePopUps)
@@ -418,12 +418,12 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetTabURL(string tabName, bool isHostTool, int? parentId)
         {
-            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return "javascript:void(0);";
             }
 
-            int portalId = (isHostTool) ? Null.NullInteger : PortalSettings.PortalId;
+            int portalId = isHostTool ? Null.NullInteger : PortalSettings.PortalId;
             return GetTabURL(tabName, portalId, parentId);
         }
 
@@ -466,12 +466,12 @@ namespace DotNetNuke.UI.ControlPanels
         }
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
-            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return string.Empty;
             }
 
-            List<TabInfo> tabList = null;
+            List<TabInfo> tabList;
             if(isHostTool)
             {
                 if(_hostTabs == null) GetHostTabs();
@@ -483,18 +483,18 @@ namespace DotNetNuke.UI.ControlPanels
                 tabList = _adminTabs;
             }
 
-            var tab = tabList.SingleOrDefault(t => t.TabName == tabName);
+            var tab = tabList?.SingleOrDefault(t => t.TabName == tabName);
             return GetMenuItem(tab);
         }
 
         protected string GetMenuItem(string tabName, bool isHostTool, bool isRemoveBookmark, bool isHideBookmark = false)
         {
-            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return string.Empty;
             }
 
-            List<TabInfo> tabList = null;
+            List<TabInfo> tabList;
             if (isHostTool)
             {
                 if (_hostTabs == null) GetHostTabs();
@@ -506,7 +506,7 @@ namespace DotNetNuke.UI.ControlPanels
                 tabList = _adminTabs;
             }
 
-            var tab = tabList.SingleOrDefault(t => t.TabName == tabName);
+            var tab = tabList?.SingleOrDefault(t => t.TabName == tabName);
             return GetMenuItem(tab, isRemoveBookmark, isHideBookmark);
         }
 
@@ -759,7 +759,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var children = TabController.GetTabsByParent(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID);
 
-            if (((children == null) || children.Count < 1))
+            if ((children == null) || children.Count < 1)
             {
                 return false;
             }
@@ -780,7 +780,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                return string.Format("{0}/{1}/{2}.ascx.resx", TemplateSourceDirectory, Localization.LocalResourceDirectory, GetType().BaseType.Name);
+                return string.Format("{0}/{1}/{2}.ascx.resx", TemplateSourceDirectory, Localization.LocalResourceDirectory, GetType().BaseType?.Name);
             }
         }
 
@@ -855,7 +855,7 @@ namespace DotNetNuke.UI.ControlPanels
             HttpCookie cookie = Request.Cookies["StayInEditMode"];
             if (cookie != null && cookie.Value == "YES")
             {
-                if (PortalSettings.Current.UserMode != Entities.Portals.PortalSettings.Mode.Edit)
+                if (PortalSettings.Current.UserMode != PortalSettings.Mode.Edit)
                 {
                     SetUserMode("EDIT");
                     SetLastPageHistory(pageId);
@@ -888,12 +888,12 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void SetLastPageHistory(string pageId)
         {
-            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
         }
 
         private string GetLastPageHistory()
         {
-            HttpCookie cookie = Request.Cookies["LastPageId"];
+            var cookie = Request.Cookies["LastPageId"];
             if (cookie != null)
                 return cookie.Value;
 
@@ -1037,15 +1037,9 @@ namespace DotNetNuke.UI.ControlPanels
             var hosts = TabController.GetTabsByParent(hostTab, -1);
 
             var professionalTab = TabController.Instance.GetTabByName("Professional Features", -1);
-            List<TabInfo> professionalTabs;
-            if (professionalTab != null)
-            {
-                professionalTabs = TabController.GetTabsByParent(professionalTab.TabID, -1);
-            }
-            else
-            {
-                professionalTabs = new List<TabInfo>();
-            }
+            var professionalTabs = professionalTab != null
+                ? TabController.GetTabsByParent(professionalTab.TabID, -1)
+                : new List<TabInfo>();
 
             _hostTabs = new List<TabInfo>();
             _hostTabs.AddRange(hosts);
@@ -1103,6 +1097,28 @@ namespace DotNetNuke.UI.ControlPanels
         }
 
         #endregion
+
+        #region Beacon code
+
+        protected string GetBeaconUrl()
+        {
+            var beaconService = BeaconService.Instance;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return
+                beaconService.GetBeaconEndpoint() +
+                beaconService.GetBeaconQuery(user);
+        }
+
+        protected bool IsBeaconEnabled
+        {
+            get
+            {
+                var user = UserController.Instance.GetCurrentUserInfo();
+                return BeaconService.Instance.IsBeaconEnabled(user);
+            }
+        }
+
+        #endregion
     }
-    
+
 }

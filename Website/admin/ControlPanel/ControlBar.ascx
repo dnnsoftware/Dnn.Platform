@@ -435,6 +435,10 @@
         $('a#ControlBar_ViewInPreview').click(function() {
             <%=PreviewPopup() %>;
         });
+
+        <% if (IsBeaconEnabled) { %>
+        (new Image()).src = "<%= GetBeaconUrl() %>";
+        <% } %>
     });
 
     function openFileUploader() {
