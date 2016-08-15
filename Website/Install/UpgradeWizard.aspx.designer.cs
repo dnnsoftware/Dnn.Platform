@@ -229,6 +229,24 @@ namespace DotNetNuke.Services.Install {
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
         
         /// <summary>
+        /// lblImprovementProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblImprovementProgram;
+        
+        /// <summary>
+        /// chkImprovementProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkImprovementProgram;
+        
+        /// <summary>
         /// continueLink control.
         /// </summary>
         /// <remarks>

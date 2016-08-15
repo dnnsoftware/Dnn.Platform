@@ -226,7 +226,6 @@
                             <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                             <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
                         </div>
-
                     </div>
                 </div>
                 <hr/>
@@ -677,7 +676,7 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            dnnImprovementProgram: true
+                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>')[0].is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');
                         var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val();
@@ -691,8 +690,7 @@
                             installWizard.installInfo.databaseUsername = $('#<%= txtDatabaseUsername.ClientID %>')[0].value;
                             installWizard.installInfo.databasePassword = $('#<%= txtDatabasePassword.ClientID %>')[0].value;
                             installWizard.installInfo.databaseRunAsOwner = $('#<%= databaseRunAs.ClientID %>')[0].value;
-                            installWizard.installInfo.dnnImprovementProgram = $('#<%= chkImprovementProgram.ClientID %>')[0].value;
-                        }
+                       }
 
                         PageMethods.ValidateInput(installWizard.installInfo, function(result) {
                             if (result.Item1) {

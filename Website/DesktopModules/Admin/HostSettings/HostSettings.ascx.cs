@@ -864,8 +864,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "True" : "False", false);
-                    HostController.Instance.Update("DnnImprovementProgram", chkImprovementProgram.Checked ? "True" : "False", false);
-                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
+                    HostController.Instance.Update("DnnImprovementProgram", chkImprovementProgram.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     HostController.Instance.Update("UpgradeForceSSL", chkUpgradeForceSSL.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("SSLDomain", txtSSLDomain.Text, false);
@@ -922,7 +922,8 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
                 finally
                 {
-                    //TODO: this is temporary until the AUM Caching is moved into the core.                    
+                    //TODO: this is temporary until the AUM Caching is moved into the core.
+                    //TODO: when removed mist set the last call with true => HostController.Instance.Update(..., true)
                     DataCache.ClearCache();
                 }
             }
