@@ -231,10 +231,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     settingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, "settings", null);
                 }
-                else
-                {
-                    settingsNode.RemoveAll();
-                }
+                // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
+                //else
+                //{
+                //    settingsNode.RemoveAll();
+                //}
 
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {

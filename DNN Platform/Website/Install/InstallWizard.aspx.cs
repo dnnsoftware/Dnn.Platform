@@ -618,7 +618,7 @@ namespace DotNetNuke.Services.Install
                     new HostSettingConfig
                     {
                         Name = "DnnImprovementProgram",
-                        Value = installInfo["DnnImprovementProgram"],
+                        Value = installInfo["dnnImprovementProgram"],
                         IsSecure = false
                     }
                 }
@@ -666,7 +666,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.Connection = _connectionConfig;
             InstallController.Instance.SetInstallConfig(_installConfig);
         }
-        
+
         private void BindLanguageList()
         {
             try
@@ -906,8 +906,6 @@ namespace DotNetNuke.Services.Install
             var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
 
             Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", confirmScript, true);
-
-
         }
 
         /// -----------------------------------------------------------------------------
