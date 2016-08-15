@@ -1,7 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
-VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -308,6 +307,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Install", "Install", "{2230
 		DNN Platform\Website\Install\InstallWizard.aspx = DNN Platform\Website\Install\InstallWizard.aspx
 		DNN Platform\Website\Install\InstallWizard.aspx.cs = DNN Platform\Website\Install\InstallWizard.aspx.cs
 		DNN Platform\Website\Install\InstallWizard.aspx.designer.cs = DNN Platform\Website\Install\InstallWizard.aspx.designer.cs
+		Website\Install\UpgradeWizard.aspx = Website\Install\UpgradeWizard.aspx
+		Website\Install\UpgradeWizard.aspx.cs = Website\Install\UpgradeWizard.aspx.cs
+		Website\Install\UpgradeWizard.aspx.designer.cs = Website\Install\UpgradeWizard.aspx.designer.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E}"

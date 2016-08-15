@@ -1114,7 +1114,7 @@ namespace DotNetNuke.UI.ControlPanels
             get
             {
                 var user = UserController.Instance.GetCurrentUserInfo();
-                return BeaconService.Instance.IsBeaconEnabled(user);
+                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
             }
         }
 
