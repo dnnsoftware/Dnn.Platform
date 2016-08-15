@@ -6,6 +6,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
     {
         string GetBeaconEndpoint();
         string GetBeaconQuery(UserInfo user, string filePath = null);
-        bool IsBeaconEnabled(UserInfo user);
+        bool IsBeaconEnabledForControlBar(UserInfo user);
     }
 }

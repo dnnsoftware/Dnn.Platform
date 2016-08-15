@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
             return _beaconEndpoint;
         }
 
-        public bool IsBeaconEnabled(UserInfo user)
+        public bool IsBeaconEnabledForControlBar(UserInfo user)
         {
             //check for Update Service Opt-in
             //check if a host or admin
@@ -74,8 +74,8 @@ namespace DotNetNuke.Services.ImprovementsProgram
             // h: Host GUID - hashed
             // p: Portal ID
             // a: Portal Alias
-            // r: Role(s) - bitmask - Host = 1, Admin = 2,  ContentManager=4, ContentEditor=8, CommunityManager=16
-            // u: UserSession - hashed
+            // r: Role(s) - bitmask - see RolesEnum
+            // u: User ID - hashed
             // f: filename/path (optional; unused here)
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
             if (!string.IsNullOrEmpty(filePath))
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
 
-            return "/log?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
+            return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
         }
 
         private string GetHash(string data)

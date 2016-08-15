@@ -612,7 +612,16 @@ namespace DotNetNuke.Services.Install
                     FirstName = "SuperUser",
                     LastName = "Account"
                 },
-                InstallCulture = installInfo["language"]
+                InstallCulture = installInfo["language"],
+                Settings = new List<HostSettingConfig>
+                {
+                    new HostSettingConfig
+                    {
+                        Name = "DnnImprovementProgram",
+                        Value = installInfo["DnnImprovementProgram"],
+                        IsSecure = false
+                    }
+                }
             };
 
             // Website Portal Config

@@ -4,7 +4,7 @@
     <script name="Schema">DotNetNuke.Schema</script>
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
-  <version>08.00.01</version>
+  <version>08.00.04</version>
   <installCulture>en-US</installCulture>
   <superuser>
     <firstname>SuperUser</firstname>
@@ -33,6 +33,7 @@
     <DemoPeriod></DemoPeriod>
     <DemoSignup>N</DemoSignup>
     <DisplayBetaNotice>Y</DisplayBetaNotice>
+    <DnnImprovementProgram>Y</DnnImprovementProgram>
     <EnableFileAutoSync>Y</EnableFileAutoSync>
     <EnableContentLocalization>N</EnableContentLocalization>
     <EnableModuleOnLineHelp>Y</EnableModuleOnLineHelp>

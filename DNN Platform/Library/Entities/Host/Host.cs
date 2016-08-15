@@ -433,7 +433,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetBoolean("DNNImprovementProgram", true);
+                return HostController.Instance.GetBoolean("DnnImprovementProgram", true);
             }
         }
 
