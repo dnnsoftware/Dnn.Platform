@@ -612,7 +612,16 @@ namespace DotNetNuke.Services.Install
                     FirstName = "SuperUser",
                     LastName = "Account"
                 },
-                InstallCulture = installInfo["language"]
+                InstallCulture = installInfo["language"],
+                Settings = new List<HostSettingConfig>
+                {
+                    new HostSettingConfig
+                    {
+                        Name = "DnnImprovementProgram",
+                        Value = installInfo["dnnImprovementProgram"],
+                        IsSecure = false
+                    }
+                }
             };
 
             // Website Portal Config
@@ -657,7 +666,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.Connection = _connectionConfig;
             InstallController.Instance.SetInstallConfig(_installConfig);
         }
-        
+
         private void BindLanguageList()
         {
             try
@@ -897,8 +906,6 @@ namespace DotNetNuke.Services.Install
             var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
 
             Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", confirmScript, true);
-
-
         }
 
         /// -----------------------------------------------------------------------------

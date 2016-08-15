@@ -277,6 +277,9 @@ namespace DotNetNuke.Entities.Controllers
         {
             try
             {
+                var dbProvider = DataProvider.Instance();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 var settings = GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {
@@ -284,21 +287,21 @@ namespace DotNetNuke.Entities.Controllers
                     settings.TryGetValue(config.Key, out currentconfig);
                     if (currentconfig != null && currentconfig.Value != config.Value)
                     {
-                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                        dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                         EventLogController.Instance.AddLog(config.Key,
                                            config.Value,
-                                           PortalController.Instance.GetCurrentPortalSettings(),
-                                           UserController.Instance.GetCurrentUserInfo().UserID,
+                                           portalSettings,
+                                           userId,
                                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
-                    DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                    dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                     EventLogController.Instance.AddLog(config.Key,
                                        config.Value,
-                                       PortalController.Instance.GetCurrentPortalSettings(),
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
+                                       portalSettings,
+                                       userId,
                                        EventLogController.EventLogType.HOST_SETTING_CREATED);
                 }
             }
@@ -307,7 +310,7 @@ namespace DotNetNuke.Entities.Controllers
                 Exceptions.LogException(ex);
             }
 
-            if ((clearCache))
+            if (clearCache)
             {
                 DataCache.RemoveCache(DataCache.HostSettingsCacheKey);
             }

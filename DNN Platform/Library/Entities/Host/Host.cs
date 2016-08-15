@@ -426,6 +426,19 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets whether the installation participates in the improvements program.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static bool ParticipateInImprovementProg
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DnnImprovementProgram", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Gets whether a css class based on the Module Name is automatically rendered
         /// </summary>
         /// <remarks>

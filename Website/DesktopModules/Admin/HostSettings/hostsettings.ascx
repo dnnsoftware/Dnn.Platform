@@ -644,6 +644,10 @@
                     <asp:CheckBox ID="chkDebugMode" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plImprovementProgram" controlname="chkImprovementProgram" runat="server" />
+                    <asp:CheckBox ID="chkImprovementProgram" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plShowCriticalErrors" controlname="chkCriticalErrors" runat="server" />
                     <asp:CheckBox ID="chkCriticalErrors" runat="server" />
                 </div>

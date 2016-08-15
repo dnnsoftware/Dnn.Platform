@@ -384,6 +384,7 @@ namespace DotNetNuke.Services.Install
             if (!Page.IsPostBack)
             {
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
+                chkImprovementProgram.Checked = DotNetNuke.Entities.Host.Host.ParticipateInImprovementProg;
             }
         }
         #endregion
@@ -443,11 +444,13 @@ namespace DotNetNuke.Services.Install
             string errorMsg;
             var result = VerifyHostUser(accountInfo, out errorMsg);
 
-           if (result==true)
-           {
-            _upgradeRunning = false;
-            LaunchUpgrade();
-           }
+            if (result == true)
+            {
+                _upgradeRunning = false;
+                LaunchUpgrade();
+                // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
+                HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+            }
         }
 
         [System.Web.Services.WebMethod()]

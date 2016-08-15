@@ -1,12 +1,15 @@
 <%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.UpgradeWizard" Codebehind="UpgradeWizard.aspx.cs" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css" />
-    <link rel="stylesheet" type="text/css" class="needVer" href="Install.css" />
+    <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+    <link rel="stylesheet" type="text/css" class="needVer" href="Install.css?refresh" />
     <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery-ui.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
@@ -76,12 +79,16 @@
                 <div class="upgradeAccountInfo dnnClear" id="upgradeAccountInfo">
                     <asp:Label ID="lblAccountInfoError" runat="server" CssClass="NormalRed"/>
                     <div class="dnnFormItem">
-                        <asp:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="Username" CssClass="dnnFormRequired dnnLabel" />
+                        <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="Username" CssClass="dnnFormRequired" />
                         <asp:TextBox ID="txtUsername" runat="server" />
                     </div>
                     <div class="dnnFormItem">
-                        <asp:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired dnnLabel" />
+                        <dnn:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired" />
                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
+                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
                     </div>
                     <hr />
                     <ul class="dnnActions dnnClear">
@@ -117,9 +124,7 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="upgradeViewWebsite dnnClear" id="upgradeViewWebsite"></div>
-
             </div>
         </div>
 
@@ -242,7 +247,8 @@
             $('#<%= continueLink.ClientID %>').click(function () {
                 upgradeWizard.accountInfo = {
                     username: $('#<%= txtUsername.ClientID %>')[0].value,
-                    password: $('#<%= txtPassword.ClientID %>')[0].value
+                    password: $('#<%= txtPassword.ClientID %>')[0].value,
+                    dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
                 };
 
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
