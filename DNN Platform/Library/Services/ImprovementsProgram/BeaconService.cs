@@ -78,14 +78,15 @@ namespace DotNetNuke.Services.ImprovementsProgram
             // u: User ID - hashed
             // f: filename/path (optional; unused here)
 
+            var uid = user.UserID.ToString("D") + user.CreatedOnDate.ToString("O");
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var qparams = new Dictionary<string, string>
             {
                 // Remember to URL ENCODE values that can be ambigious
                 {"h", HttpUtility.UrlEncode(GetHash(Host.GUID))},
-                {"p", portalSettings.PortalId.ToString("D")},
-                {"a", HttpUtility.UrlEncode(portalSettings.PortalAlias.HTTPAlias)},
-                {"u", HttpUtility.UrlEncode(GetHash(user.UserID.ToString("D")))},
+                {"p", HttpUtility.UrlEncode(GetHash(portalSettings.GUID.ToString()))},
+                {"a", HttpUtility.UrlEncode(GetHash(portalSettings.PortalAlias.HTTPAlias))},
+                {"u", HttpUtility.UrlEncode(GetHash(uid))},
                 {"r", roles.ToString("D")},
             };
 
@@ -93,6 +94,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
 
             return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
+        }
+
+        public string GetBeaconUrl(UserInfo user, string filePath = null)
+        {
+            return GetBeaconEndpoint() + GetBeaconQuery(user, filePath);
         }
 
         private string GetHash(string data)

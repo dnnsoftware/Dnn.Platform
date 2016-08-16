@@ -384,7 +384,6 @@ namespace DotNetNuke.Services.Install
             if (!Page.IsPostBack)
             {
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
-                chkImprovementProgram.Checked = DotNetNuke.Entities.Host.Host.ParticipateInImprovementProg;
             }
         }
         #endregion

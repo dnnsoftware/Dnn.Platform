@@ -180,11 +180,10 @@
   <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
     <value>Product Improvement Program</value>
   </data>
-  <data name="ImprovementProgramLabel.Help" xml:space="preserve">
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
     <value>The product improvement program allows us to better understand how we can
 improve DNN for you. The data will help us analyze usage and what is important
-for people using the product. All of the data is anonymous and for internal use only.&lt;br /&gt;
-Learn more about the &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
+for people using the product. All of the data is anonymous and for internal use only. Learn more about the &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
   </data>
   <data name="ImprovementProgramLabel.Text" xml:space="preserve">
     <value>Send anonymous usage information to DNN</value>
@@ -532,7 +531,7 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   <data name="InstallVersion.Text" xml:space="preserve">
     <value>Adding InstallVersion</value>
   </data>
-    <data name="FcnMode.Text" xml:space="preserve">
+  <data name="FcnMode.Text" xml:space="preserve">
     <value>Adding FcnMode</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
