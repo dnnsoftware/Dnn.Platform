@@ -676,7 +676,7 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>')[0].is(":checked") ? "Y" : "N"
+                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');
                         var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val();
