@@ -72,11 +72,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
             }
 
             // h: Host GUID - hashed
-            // p: Portal ID
-            // a: Portal Alias
+            // p: Portal GUID - hashed
+            // a: Portal Alias - hashed
             // r: Role(s) - bitmask - see RolesEnum
             // u: User ID - hashed
-            // f: filename/path (optional; unused here)
+            // f: page name / tab path
 
             var uid = user.UserID.ToString("D") + user.CreatedOnDate.ToString("O");
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();

@@ -225,9 +225,9 @@
                         <dnn:Label ID="Label2" runat="server"/>
                         <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
-                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
+                    <div class="dnnFormItem information-checkbox">
+                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
+                        <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                     </div>
                 </div>
                 <hr/>
