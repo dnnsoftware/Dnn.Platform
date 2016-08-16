@@ -74,8 +74,11 @@ hr {
 }
 .dnnFormItem .information {
     width: 55%;
-    margin-left: 34%;
+    margin-left: 22%;
     text-align: left;
+}
+.dnnFormItem.information-checkbox .dnnLabel{
+    margin-left: -7%;
 }
 .dnnFormItem .databaseRadioButtons label {
     width: auto;
