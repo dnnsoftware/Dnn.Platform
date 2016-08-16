@@ -222,10 +222,12 @@
                 <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
                     <div class="dnnFormItem">
-                        <div class="dnnFormItem">
-                            <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
-                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
-                        </div>
+                        <dnn:Label ID="Label2" runat="server"/>
+                        <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
+                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
                     </div>
                 </div>
                 <hr/>

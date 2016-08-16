@@ -79,16 +79,23 @@
                 <div class="upgradeAccountInfo dnnClear" id="upgradeAccountInfo">
                     <asp:Label ID="lblAccountInfoError" runat="server" CssClass="NormalRed"/>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="Username" CssClass="dnnFormRequired" />
+                        <asp:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="Username" CssClass="dnnFormRequired dnnLabel" />
                         <asp:TextBox ID="txtUsername" runat="server" />
                     </div>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired" />
+                        <asp:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired dnnLabel" />
                         <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
-                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
+                    <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
+                        <asp:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
+                        <div class="dnnFormItem">
+                            <asp:Label ID="Label2" runat="server" CssClass="dnnLabel" />
+                            <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" CssClass="dnnLabel" ResourceKey="ImprovementProgramLabel" />
+                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" />
+                        </div>
                     </div>
                     <hr />
                     <ul class="dnnActions dnnClear">

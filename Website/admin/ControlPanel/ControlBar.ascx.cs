@@ -1104,9 +1104,8 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var beaconService = BeaconService.Instance;
             var user = UserController.Instance.GetCurrentUserInfo();
-            return
-                beaconService.GetBeaconEndpoint() +
-                beaconService.GetBeaconQuery(user);
+            var path = PortalSettings.ActiveTab.TabPath;
+            return beaconService.GetBeaconUrl(user, path);
         }
 
         protected bool IsBeaconEnabled
