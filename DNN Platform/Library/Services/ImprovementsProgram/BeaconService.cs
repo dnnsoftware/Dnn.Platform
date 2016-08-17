@@ -27,14 +27,14 @@ namespace DotNetNuke.Services.ImprovementsProgram
         {
             if (string.IsNullOrEmpty(_beaconEndpoint))
             {
-                var ep = ConfigurationManager.AppSettings["ImprovementProgram.Epdpoint"];
+                var ep = ConfigurationManager.AppSettings["ImprovementProgram.Endpoint"];
 #if DEBUG
                 _beaconEndpoint = string.IsNullOrEmpty(ep)
                     ? "https://dev-bcn.dnnapi.com/beacon"
                     : ep;
 #else
                 _beaconEndpoint = string.IsNullOrEmpty(ep)
-                    ? "https://bcn.dnnapi.com/beacon"
+                    ? "https://dnnapi.com/beacon"
                     : ep;
 #endif
             }
