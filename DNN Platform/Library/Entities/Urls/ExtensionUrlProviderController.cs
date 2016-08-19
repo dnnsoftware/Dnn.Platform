@@ -504,65 +504,70 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         var id = (int)c.Params[0];
                                         IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
-                                        var providers = new List<ExtensionUrlProvider>();
-                                        var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
-
-                                        foreach (var providerConfig in providerConfigs)
+                                        try
                                         {
-                                            var providerType = Reflection.CreateType(providerConfig.ProviderType);
-                                            if (providerType == null)
+                                            var providers = new List<ExtensionUrlProvider>();
+                                            var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
+
+                                            foreach (var providerConfig in providerConfigs)
                                             {
-                                                continue;
-                                            }
-
-                                            var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
-                                            if (provider == null)
-                                            {
-                                                continue;
-                                            }
-
-                                            provider.ProviderConfig = providerConfig;
-                                            provider.ProviderConfig.PortalId = id;
-                                            providers.Add(provider);
-                                        }
-
-                                        if (dr.NextResult())
-                                        {
-                                            //Setup Settings
-                                            while (dr.Read())
-                                            {
-                                                var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                var key = Null.SetNullString(dr["SettingName"]);
-                                                var value = Null.SetNullString(dr["SettingValue"]);
-
-                                                var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                if (provider != null)
+                                                var providerType = Reflection.CreateType(providerConfig.ProviderType);
+                                                if (providerType == null)
                                                 {
-                                                    provider.ProviderConfig.Settings[key] = value;
+                                                    continue;
+                                                }
+
+                                                var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
+                                                if (provider == null)
+                                                {
+                                                    continue;
+                                                }
+
+                                                provider.ProviderConfig = providerConfig;
+                                                provider.ProviderConfig.PortalId = id;
+                                                providers.Add(provider);
+                                            }
+
+                                            if (dr.NextResult())
+                                            {
+                                                //Setup Settings
+                                                while (dr.Read())
+                                                {
+                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                                    var key = Null.SetNullString(dr["SettingName"]);
+                                                    var value = Null.SetNullString(dr["SettingValue"]);
+
+                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                                    if (provider != null)
+                                                    {
+                                                        provider.ProviderConfig.Settings[key] = value;
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        if (dr.NextResult())
-                                        {
-                                            //Setup Tabs
-                                            while (dr.Read())
+                                            if (dr.NextResult())
                                             {
-                                                var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                var tabId = Null.SetNullInteger(dr["TabID"]);
-
-                                                var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
+                                                //Setup Tabs
+                                                while (dr.Read())
                                                 {
-                                                    provider.ProviderConfig.TabIds.Add(tabId);
+                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                                    var tabId = Null.SetNullInteger(dr["TabID"]);
+
+                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                                    if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
+                                                    {
+                                                        provider.ProviderConfig.TabIds.Add(tabId);
+                                                    }
                                                 }
                                             }
+
+                                            return providers;
                                         }
-
-                                        //Close reader
-                                        CBO.CloseDataReader(dr, true);
-
-                                        return providers;
+                                        finally
+                                        {
+                                            //Close reader
+                                            CBO.CloseDataReader(dr, true);
+                                        }
                                     });
 
             return moduleProviders;

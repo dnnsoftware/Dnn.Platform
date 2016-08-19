@@ -347,7 +347,10 @@ namespace Dnn.Module.ModuleCreator
                         objModule.ModuleTitle = txtModule.Text;
 
                         //HACK - need core enhancement to be able to update ModuleDefID
-                        DotNetNuke.Data.DataProvider.Instance().ExecuteSQL("Update dbo.Modules set ModuleDefID = " + objModule.ModuleDefID.ToString() + " where ModuleID = " + ModuleId.ToString());
+                        using (DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(
+                            "UPDATE {databaseOwner}{objectQualifier}Modules SET ModuleDefID=" + objModule.ModuleDefID + " WHERE ModuleID=" + ModuleId))
+                        {
+                        }
 
                         ModuleController.Instance.UpdateModule(objModule);
 

@@ -1008,13 +1008,18 @@ namespace DotNetNuke.Common
         {
             // add datatable to dataset
             var objDataSet = new DataSet();
-	        
-			do
-	        {
-		        objDataSet.Tables.Add(ConvertDataReaderToDataTable(reader, false));
-	        } while (reader.NextResult());
-            
-			reader.Close();
+
+            try
+            {
+                do
+                {
+                    objDataSet.Tables.Add(ConvertDataReaderToDataTable(reader, false));
+                } while (reader.NextResult());
+            }
+            finally
+            {
+			    reader.Close();
+            }
 
             return objDataSet;
         }
@@ -1037,29 +1042,34 @@ namespace DotNetNuke.Common
 		/// <returns>the datatable instance</returns>
         public static DataTable ConvertDataReaderToDataTable(IDataReader reader, bool closeReader)
         {
-            // create datatable from datareader
-            var objDataTable = new DataTable();
-            int intFieldCount = reader.FieldCount;
-            int intCounter;
-            for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
-            {
-                objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
+		    try
+		    {
+                // create datatable from datareader
+                var objDataTable = new DataTable();
+		        int intFieldCount = reader.FieldCount;
+		        int intCounter;
+		        for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
+		        {
+		            objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
+		        }
+		        // populate datatable
+		        objDataTable.BeginLoadData();
+		        var objValues = new object[intFieldCount];
+		        while (reader.Read())
+		        {
+		            reader.GetValues(objValues);
+		            objDataTable.LoadDataRow(objValues, true);
+		        }
+		        objDataTable.EndLoadData();
+		        return objDataTable;
+		    }
+		    finally
+		    {
+                if (closeReader)
+                {
+                    reader.Close();
+                }
             }
-            // populate datatable
-            objDataTable.BeginLoadData();
-            var objValues = new object[intFieldCount];
-            while (reader.Read())
-            {
-                reader.GetValues(objValues);
-                objDataTable.LoadDataRow(objValues, true);
-            }
-
-	        if (closeReader)
-	        {
-		        reader.Close();
-	        }
-	        objDataTable.EndLoadData();
-            return objDataTable;
         }
 
         /// <summary>

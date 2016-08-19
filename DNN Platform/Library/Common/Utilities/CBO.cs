@@ -538,7 +538,7 @@ namespace DotNetNuke.Common.Utilities
 			//close datareader
             if (dr != null && closeReader)
             {
-                dr.Close();
+                using (dr) { dr.Close(); }
             }
         }
 

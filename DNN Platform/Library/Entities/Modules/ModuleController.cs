@@ -546,27 +546,28 @@ namespace DotNetNuke.Entities.Modules
                             c =>
                             {
                                 var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
-                                IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
-                                while (dr.Read())
+                                using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
                                 {
-                                    int tMId = dr.GetInt32(0);
-                                    Hashtable settings;
-                                    if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                    while (dr.Read())
                                     {
-                                        settings = new Hashtable();
-                                        tabModuleSettingsDic[tMId] = settings;
-                                    }
+                                        int tMId = dr.GetInt32(0);
+                                        Hashtable settings;
+                                        if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                        {
+                                            settings = new Hashtable();
+                                            tabModuleSettingsDic[tMId] = settings;
+                                        }
 
-                                    if (!dr.IsDBNull(2))
-                                    {
-                                        settings[dr.GetString(1)] = dr.GetString(2);
-                                    }
-                                    else
-                                    {
-                                        settings[dr.GetString(1)] = "";
+                                        if (!dr.IsDBNull(2))
+                                        {
+                                            settings[dr.GetString(1)] = dr.GetString(2);
+                                        }
+                                        else
+                                        {
+                                            settings[dr.GetString(1)] = "";
+                                        }
                                     }
                                 }
-                                CBO.CloseDataReader(dr, true);
                                 return tabModuleSettingsDic;
                             });
 
@@ -2094,11 +2095,10 @@ namespace DotNetNuke.Entities.Modules
         /// <remarks>empty SettingValue will relove the setting</remarks>
         public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
         {
-            IDataReader dr = null;
+            IDataReader dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
             try
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
                 if (dr.Read())
                 {
                     if (dr.GetString(1) != settingValue)

@@ -61,7 +61,7 @@ namespace Dnn.AuthServices.Jwt.Data
 
         public virtual void AddToken(PersistedToken token)
         {
-            _dataProvider.ExecuteReader("JsonWebTokens_Add", token.TokenId, token.UserId,
+            _dataProvider.ExecuteNonQuery("JsonWebTokens_Add", token.TokenId, token.UserId,
                 token.TokenExpiry, token.RenewalExpiry, token.TokenHash, token.RenewalHash);
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
