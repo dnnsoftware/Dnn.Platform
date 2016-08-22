@@ -42,6 +42,7 @@ using DotNetNuke.Modules.SQL.Components;
 using System.Text.RegularExpressions;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
+using DotNetNuke.UI.Skins;
 
 #endregion
 
@@ -132,34 +133,36 @@ namespace Dnn.Modules.Sql
                     try
                     {
                         string errorMessage;
-                        var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text, out errorMessage);
-                        if (dr != null)
+                        using (var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, txtQuery.Text, out errorMessage))
                         {
-                            var tables = new List<DataTable>();
-                            string tabs = "";
-                            int numTabs = 1;
-                            do
+                            if (dr != null)
                             {
-                                var table = new DataTable { Locale = CultureInfo.CurrentCulture };
-                                table.Load(dr);
-                                tables.Add(table);
-                                tabs += string.Format("<li><a href='#result_{0}'>{1} {0}</a></li>", numTabs.ToString(), LocalizeString("ResultTitle"));
-                                numTabs++;
+                                var tables = new List<DataTable>();
+                                string tabs = "";
+                                int numTabs = 1;
+                                do
+                                {
+                                    var table = new DataTable { Locale = CultureInfo.CurrentCulture };
+                                    table.Load(dr);
+                                    tables.Add(table);
+                                    tabs += string.Format("<li><a href='#result_{0}'>{1} {0}</a></li>", numTabs.ToString(), LocalizeString("ResultTitle"));
+                                    numTabs++;
+                                }
+                                while (!dr.IsClosed); // table.Load automatically moves to the next result and closes the reader once there are no more
+
+                                plTabs.Controls.Add(new LiteralControl(tabs));
+                                rptResults.DataSource = tables;
+                                rptResults.DataBind();
+
+                                pnlResults.Visible = true;
+                                Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                             }
-                            while (!dr.IsClosed); // table.Load automatically moves to the next result and closes the reader once there are no more
-
-                            plTabs.Controls.Add(new LiteralControl(tabs));
-                            rptResults.DataSource = tables;
-                            rptResults.DataBind();
-
-                            pnlResults.Visible = true;
-                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QuerySuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
-                        }
-                        else
-                        {
-                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            pnlError.Visible = true;
-                            txtError.Text = errorMessage;
+                            else
+                            {
+                                Skin.AddModuleMessage(this, Localization.GetString("QueryError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                                pnlError.Visible = true;
+                                txtError.Text = errorMessage;
+                            }
                         }
                     }
                     catch (SqlException sqlException)

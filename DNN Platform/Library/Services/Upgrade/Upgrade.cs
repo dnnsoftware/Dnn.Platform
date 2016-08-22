@@ -1647,7 +1647,9 @@ namespace DotNetNuke.Services.Upgrade
 
             // This procedure is not intended to be part of the database schema
             // and is therefore dropped once it has been executed.
-            DataProvider.Instance().ExecuteSQL("DROP PROCEDURE {databaseOwner}{objectQualifier}UpgradeDefaultLanguages");
+            using (DataProvider.Instance().ExecuteSQL("DROP PROCEDURE {databaseOwner}{objectQualifier}UpgradeDefaultLanguages"))
+            {
+            }
         }
 
         private static void UpgradeToVersion530()
@@ -3115,33 +3117,34 @@ namespace DotNetNuke.Services.Upgrade
             IDataReader dr;
             try
             {
-                dr = dataProvider.ExecuteReader("ImportDocumentLibraryCategoryAssoc");
                 var termController = new TermController();
                 var vocabulary = new VocabularyController().GetVocabularies().Single(v => v.Name == "Tags");
                 var terms = termController.GetTermsByVocabulary(vocabulary.VocabularyId);
-
-                while (dr.Read())
+                using (dr = dataProvider.ExecuteReader("ImportDocumentLibraryCategoryAssoc"))
                 {
-                    var file = FileManager.Instance.GetFile((int)dr["FileId"]);
-                    ContentItem attachContentItem;
-                    if (file.ContentItemID == Null.NullInteger)
+                    while (dr.Read())
                     {
-                        attachContentItem = CreateFileContentItem();
-                        file.ContentItemID = attachContentItem.ContentItemId;
-                        FileManager.Instance.UpdateFile(file);
-                    }
-                    else
-                    {
-                        attachContentItem = Util.GetContentController().GetContentItem(file.ContentItemID);
-                    }
+                        var file = FileManager.Instance.GetFile((int)dr["FileId"]);
+                        ContentItem attachContentItem;
+                        if (file.ContentItemID == Null.NullInteger)
+                        {
+                            attachContentItem = CreateFileContentItem();
+                            file.ContentItemID = attachContentItem.ContentItemId;
+                            FileManager.Instance.UpdateFile(file);
+                        }
+                        else
+                        {
+                            attachContentItem = Util.GetContentController().GetContentItem(file.ContentItemID);
+                        }
 
-                    var term = terms.SingleOrDefault(t => t.Name == dr["CategoryName"].ToString());
-                    if (term == null)
-                    {
-                        term = new Term(dr["CategoryName"].ToString(), null, vocabulary.VocabularyId);
-                        termController.AddTerm(term);
+                        var term = terms.SingleOrDefault(t => t.Name == dr["CategoryName"].ToString());
+                        if (term == null)
+                        {
+                            term = new Term(dr["CategoryName"].ToString(), null, vocabulary.VocabularyId);
+                            termController.AddTerm(term);
+                        }
+                        termController.AddTermToContent(term, attachContentItem);
                     }
-                    termController.AddTermToContent(term, attachContentItem);
                 }
             }
             catch (Exception ex)
@@ -3177,7 +3180,9 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Converting old Folders to new format. Total: {0} [Remaining: {1}]<br/>", foldersToConvert, foldersRemaining));
                 try
                 {
-                    DataProvider.Instance().UpdateLegacyFolders();
+                    using (DataProvider.Instance().UpdateLegacyFolders())
+                    {
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -4036,13 +4041,14 @@ namespace DotNetNuke.Services.Upgrade
 
             try
             {
-                dr = dataProvider.ExecuteReader("CheckUpgrade");
-
-                warnings = BuildUserTable(dr, "Duplicate SuperUsers", "We have detected that the following SuperUsers have duplicate entries as Portal Users. Although, no longer supported, these users may have been created in early Betas of DNN v3.0. You need to be aware that after the upgrade, these users will only be able to log in using the Super User Account's password.");
-
-                if (dr.NextResult())
+                using (dr = dataProvider.ExecuteReader("CheckUpgrade"))
                 {
-                    warnings += BuildUserTable(dr, "Duplicate Portal Users", "We have detected that the following Users have duplicate entries (they exist in more than one portal). You need to be aware that after the upgrade, the password for some of these users may have been automatically changed (as the system now only uses one password per user, rather than one password per user per portal). It is important to remember that your Users can always retrieve their password using the Password Reminder feature, which will be sent to the Email addess shown in the table.");
+                    warnings = BuildUserTable(dr, "Duplicate SuperUsers", "We have detected that the following SuperUsers have duplicate entries as Portal Users. Although, no longer supported, these users may have been created in early Betas of DNN v3.0. You need to be aware that after the upgrade, these users will only be able to log in using the Super User Account's password.");
+
+                    if (dr.NextResult())
+                    {
+                        warnings += BuildUserTable(dr, "Duplicate Portal Users", "We have detected that the following Users have duplicate entries (they exist in more than one portal). You need to be aware that after the upgrade, the password for some of these users may have been automatically changed (as the system now only uses one password per user, rather than one password per user per portal). It is important to remember that your Users can always retrieve their password using the Password Reminder feature, which will be sent to the Email addess shown in the table.");
+                    }
                 }
             }
             catch (SqlException ex)
@@ -4058,17 +4064,19 @@ namespace DotNetNuke.Services.Upgrade
 
             try
             {
-                dr = dataProvider.ExecuteReader("GetUserCount");
-                dr.Read();
-                int userCount = dr.GetInt32(0);
-                // ReSharper disable PossibleLossOfFraction
-                double time = userCount / 10834;
-                // ReSharper restore PossibleLossOfFraction
-                if (userCount > 1000)
+                using (dr = dataProvider.ExecuteReader("GetUserCount"))
                 {
-                    warnings += "<br/><h3>More than 1000 Users</h3><p>This DotNetNuke Database has " + userCount +
-                                   " users. As the users and their profiles are transferred to a new format, it is estimated that the script will take ~" + time.ToString("F2") +
-                                   " minutes to execute.</p>";
+                    dr.Read();
+                    int userCount = dr.GetInt32(0);
+                    // ReSharper disable PossibleLossOfFraction
+                    double time = userCount / 10834;
+                    // ReSharper restore PossibleLossOfFraction
+                    if (userCount > 1000)
+                    {
+                        warnings += "<br/><h3>More than 1000 Users</h3><p>This DotNetNuke Database has " + userCount +
+                                    " users. As the users and their profiles are transferred to a new format, it is estimated that the script will take ~" + time.ToString("F2") +
+                                    " minutes to execute.</p>";
+                    }
                 }
             }
             catch (Exception ex)

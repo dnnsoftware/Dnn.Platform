@@ -626,27 +626,28 @@ namespace DotNetNuke.Entities.Tabs
                         c =>
                         {
                             var tabSettings = new Dictionary<int, Hashtable>();
-                            IDataReader dr = _dataProvider.GetTabSettings(portalId);
-                            while (dr.Read())
+                            using (var dr = _dataProvider.GetTabSettings(portalId))
                             {
-                                int tabId = dr.GetInt32(0);
-                                Hashtable settings;
-                                if (!tabSettings.TryGetValue(tabId, out settings))
+                                while (dr.Read())
                                 {
-                                    settings = new Hashtable();
-                                    tabSettings[tabId] = settings;
-                                }
+                                    int tabId = dr.GetInt32(0);
+                                    Hashtable settings;
+                                    if (!tabSettings.TryGetValue(tabId, out settings))
+                                    {
+                                        settings = new Hashtable();
+                                        tabSettings[tabId] = settings;
+                                    }
 
-                                if (!dr.IsDBNull(2))
-                                {
-                                    settings[dr.GetString(1)] = dr.GetString(2);
-                                }
-                                else
-                                {
-                                    settings[dr.GetString(1)] = "";
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = "";
+                                    }
                                 }
                             }
-                            CBO.CloseDataReader(dr, true);
                             return tabSettings;
                         });
         }
@@ -804,27 +805,29 @@ namespace DotNetNuke.Entities.Tabs
 
         private void UpdateTabSettingInternal(int tabId, string settingName, string settingValue, bool clearCache)
         {
-            IDataReader dr = _dataProvider.GetTabSetting(tabId, settingName);
-            if (dr.Read())
+            using (var dr = _dataProvider.GetTabSetting(tabId, settingName))
             {
-                if (dr.GetString(0) != settingValue)
+                if (dr.Read())
+                {
+                    if (dr.GetString(0) != settingValue)
+                    {
+                        _dataProvider.UpdateTabSetting(tabId, settingName, settingValue,
+                            UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
+                            "TabId", tabId, settingName, settingValue,
+                            UserController.Instance.GetCurrentUserInfo().UserID);
+                    }
+                }
+                else
                 {
                     _dataProvider.UpdateTabSetting(tabId, settingName, settingValue,
-                                              UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
-                                                     "TabId", tabId, settingName, settingValue,
-                                                     UserController.Instance.GetCurrentUserInfo().UserID);
+                        UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
+                        "TabId", tabId, settingName, settingValue,
+                        UserController.Instance.GetCurrentUserInfo().UserID);
                 }
+                dr.Close();
             }
-            else
-            {
-                _dataProvider.UpdateTabSetting(tabId, settingName, settingValue, 
-                                               UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
-                                                 "TabId", tabId, settingName, settingValue,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
-            }
-            dr.Close();
 
             UpdateTabVersion(tabId);
             if (clearCache)
