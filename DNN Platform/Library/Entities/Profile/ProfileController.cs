@@ -593,6 +593,8 @@ namespace DotNetNuke.Entities.Profile
 
         private static string RemoveUnsafeAttributes(string content)
         {
+            if (content == null) return null;
+
             var cleanContent = content;
 
             var needEncode = false;
