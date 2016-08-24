@@ -8,5 +8,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
         string GetBeaconQuery(UserInfo user, string filePath = null);
         string GetBeaconUrl(UserInfo user, string filePath = null);
         bool IsBeaconEnabledForControlBar(UserInfo user);
+        bool IsBeaconEnabledForPersonaBar();
     }
 }

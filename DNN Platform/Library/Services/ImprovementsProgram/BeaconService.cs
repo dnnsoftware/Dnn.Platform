@@ -16,6 +16,8 @@ namespace DotNetNuke.Services.ImprovementsProgram
 {
     public class BeaconService : ServiceLocator<IBeaconService, BeaconService>, IBeaconService
     {
+        private static readonly bool IsAlphaMode = DotNetNukeContext.Current?.Application?.Status == ReleaseMode.Alpha;
+
         protected override Func<IBeaconService> GetFactory()
         {
             return () => new BeaconService();
@@ -49,7 +51,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
             //check if currently on a host/admin page
             var enabled = false;
 
-            if (Host.ParticipateInImprovementProg && DotNetNukeContext.Current?.Application?.Status != ReleaseMode.Alpha)
+            if (Host.ParticipateInImprovementProg && !IsAlphaMode)
             {
                 var roles = GetUserRolesBitValues(user);
                 var tabPath = TabController.CurrentPage.TabPath;
@@ -58,6 +60,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
             }
 
             return enabled;
+        }
+
+        public bool IsBeaconEnabledForPersonaBar()
+        {
+            return Host.ParticipateInImprovementProg && !IsAlphaMode;
         }
 
         public string GetBeaconQuery(UserInfo user, string filePath = null)
