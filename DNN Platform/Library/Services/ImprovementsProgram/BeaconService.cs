@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using DotNetNuke.Application;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -48,12 +49,12 @@ namespace DotNetNuke.Services.ImprovementsProgram
             //check if currently on a host/admin page
             var enabled = false;
 
-            if (Host.ParticipateInImprovementProg)
+            if (Host.ParticipateInImprovementProg && DotNetNukeContext.Current?.Application?.Status != ReleaseMode.Alpha)
             {
                 var roles = GetUserRolesBitValues(user);
                 var tabPath = TabController.CurrentPage.TabPath;
                 enabled = (roles & (RolesEnum.Host | RolesEnum.Admin)) != 0 &&
-                    (tabPath.StartsWith("//Admin") || tabPath.StartsWith("//Host"));
+                          (tabPath.StartsWith("//Admin") || tabPath.StartsWith("//Host"));
             }
 
             return enabled;
