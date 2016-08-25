@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -95,8 +96,7 @@ namespace DotNetNuke.Security.Permissions
             return ComponentFactory.GetComponent<PermissionProvider>();
         }
 
-        private static object _cacheLock = new object();
-        private static Dictionary<int, DNNCacheDependency> _cacheDependencyDict = new Dictionary<int, DNNCacheDependency>();
+        private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Permissions
             // ReSharper disable once InconsistentlySynchronizedField
             if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
             {
-                lock (_cacheLock)
+                lock (_cacheDependencyDict.GetWriteLock())
                 {
                     if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
                     {
@@ -122,7 +122,7 @@ namespace DotNetNuke.Security.Permissions
 
         internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
         {
-            lock (_cacheLock)
+            lock (_cacheDependencyDict.GetWriteLock())
             {
                 // first execute the cache clear action then check the dependency change
                 cacehClearAction.Invoke();
