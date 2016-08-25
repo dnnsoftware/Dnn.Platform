@@ -24,7 +24,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Web.Caching;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -101,7 +100,7 @@ namespace DotNetNuke.Security.Permissions
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
-            DNNCacheDependency dependency = null;
+            DNNCacheDependency dependency;
 
             // ReSharper disable once InconsistentlySynchronizedField
             if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
@@ -114,7 +113,7 @@ namespace DotNetNuke.Security.Permissions
                         var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
                         DataCache.SetCache(cacheKey, portalId); // no expiration set for this
                         _cacheDependencyDict[portalId] =
-                            dependency = new DNNCacheDependency(null, new string[] { cacheKey }, startAt);
+                            dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
                     }
                 }
             }
