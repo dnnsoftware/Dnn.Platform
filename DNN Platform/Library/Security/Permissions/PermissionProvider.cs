@@ -24,8 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.Web.Services.Description;
+using System.Web.Caching;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -34,6 +33,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -96,10 +96,51 @@ namespace DotNetNuke.Security.Permissions
             return ComponentFactory.GetComponent<PermissionProvider>();
         }
 
+        private static object _cacheLock = new object();
+        private static Dictionary<int, DNNCacheDependency> _cacheDependencyDict = new Dictionary<int, DNNCacheDependency>();
+
+        private static DNNCacheDependency GetCacheDependency(int portalId)
+        {
+            DNNCacheDependency dependency = null;
+
+            // ReSharper disable once InconsistentlySynchronizedField
+            if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
+            {
+                lock (_cacheLock)
+                {
+                    if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
+                    {
+                        var startAt = DateTime.UtcNow;
+                        var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                        DataCache.SetCache(cacheKey, portalId); // no expiration set for this
+                        _cacheDependencyDict[portalId] =
+                            dependency = new DNNCacheDependency(null, new string[] { cacheKey }, startAt);
+                    }
+                }
+            }
+            return dependency;
+        }
+
+        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        {
+            lock (_cacheLock)
+            {
+                // first execute the cache clear action then check the dependency change
+                cacehClearAction.Invoke();
+                DNNCacheDependency dependency;
+                if (_cacheDependencyDict.TryGetValue(portalId, out dependency))
+                {
+                    _cacheDependencyDict.Remove(portalId);
+                    dependency.Dispose();
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods
 
+#if false
         private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
             var PortalID = (int)cacheItemArgs.ParamList[0];
@@ -153,6 +194,7 @@ namespace DotNetNuke.Security.Permissions
                 CBO.GetCachedObject<Dictionary<string, FolderPermissionCollection>>(
                     new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority, PortalID), GetFolderPermissionsCallBack);
         }
+#endif
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -423,7 +465,7 @@ namespace DotNetNuke.Security.Permissions
             };
         } 
 
-        #endregion
+#endregion
 
         #region Protected Methods
 
@@ -540,6 +582,7 @@ namespace DotNetNuke.Security.Permissions
 
         public virtual FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int PortalID, string Folder)
         {
+#if fale
             string dictionaryKey = Folder;
             if (string.IsNullOrEmpty(dictionaryKey))
             {
@@ -557,6 +600,34 @@ namespace DotNetNuke.Security.Permissions
                 folderPermissions = new FolderPermissionCollection();
             }
             return folderPermissions;
+#else
+            var cacheKey = string.Format(DataCache.FolderPathPermissionCacheKey, PortalID, Folder);
+            return CBO.GetCachedObject<FolderPermissionCollection>(
+                new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
+                {
+                    CacheDependency = GetCacheDependency(PortalID)
+                },
+                _ =>
+                {
+                    var collection = new FolderPermissionCollection();
+                    try
+                    {
+                        using (var dr = dataProvider.GetFolderPermissionsByPortalAndPath(PortalID, Folder))
+                        {
+                            while (dr.Read())
+                            {
+                                var folderPermissionInfo = CBO.FillObject<FolderPermissionInfo>(dr, false);
+                                collection.Add(folderPermissionInfo);
+                            }
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Exceptions.LogException(exc);
+                    }
+                    return collection;
+                });
+#endif
         }
 
         public virtual bool HasFolderPermission(FolderPermissionCollection objFolderPermissions, string PermissionKey)
@@ -828,11 +899,7 @@ namespace DotNetNuke.Security.Permissions
                             else
                             {
                                 // Need to check if it was denied at Tab level
-                                if (IsDeniedTabPermission(tab, "CONTENT,EDIT"))
-                                {
-                                    isAuthorized = false;
-                                }
-                                else
+                                if (!IsDeniedTabPermission(tab, "CONTENT,EDIT"))
                                 {
                                     isAuthorized = HasModulePermission(moduleConfiguration, permissionKey);
                                 }

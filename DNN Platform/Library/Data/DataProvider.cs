@@ -1986,7 +1986,12 @@ namespace DotNetNuke.Data
 			return ExecuteReader("GetFolderPermissionsByPortal", GetNull(portalId));
 		}
 
-		public virtual void UpdateFolderPermission(int FolderPermissionID, int FolderID, int PermissionID, int roleID,
+        public virtual IDataReader GetFolderPermissionsByPortalAndPath(int portalId, string pathName)
+        {
+            return ExecuteReader("GetFolderPermissionsByPortalAndPath", GetNull(portalId), GetNull(pathName) ?? "");
+        }
+
+        public virtual void UpdateFolderPermission(int FolderPermissionID, int FolderID, int PermissionID, int roleID,
 												   bool AllowAccess, int UserID, int lastModifiedByUserID)
 		{
 			ExecuteNonQuery("UpdateFolderPermission",
@@ -1999,11 +2004,11 @@ namespace DotNetNuke.Data
 									  lastModifiedByUserID);
 		}
 
-		#endregion
+        #endregion
 
-		#region DesktopModulePermission Methods
+        #region DesktopModulePermission Methods
 
-		public virtual int AddDesktopModulePermission(int portalDesktopModuleID, int permissionID, int roleID,
+        public virtual int AddDesktopModulePermission(int portalDesktopModuleID, int permissionID, int roleID,
 											bool allowAccess, int userID, int createdByUserID)
 		{
 			return ExecuteScalar<int>("AddDesktopModulePermission",
