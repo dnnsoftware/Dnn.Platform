@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
@@ -190,7 +191,8 @@ namespace DotNetNuke.Common.Utilities
         public const int FolderMappingCacheTimeOut = 20;
         public const CacheItemPriority FolderMappingCachePriority = CacheItemPriority.High;
 
-        public const string FolderPermissionCacheKey = "FolderPermissions{0}";
+        public const string FolderPermissionCacheKey = "FolderPermissions{0}"; // parent cache dependency key
+        public const string FolderPathPermissionCacheKey = "FolderPathPermissions|{0}|{1}";
         public const CacheItemPriority FolderPermissionCachePriority = CacheItemPriority.Normal;
         public const int FolderPermissionCacheTimeOut = 20;
 
@@ -461,7 +463,8 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearFolderPermissionsCache(int PortalId)
         {
-            RemoveCache(string.Format(FolderPermissionCacheKey, PortalId));
+            PermissionProvider.ResetCacheDependency(PortalId,
+                () => RemoveCache(string.Format(FolderPermissionCacheKey, PortalId)));
         }
 
         public static void ClearListsCache(int PortalId)
