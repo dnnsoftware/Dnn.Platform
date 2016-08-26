@@ -115,10 +115,13 @@ namespace DotNetNuke.Entities.Content
 
             if (contentItem == null)
             {
-                using (_contentItemsDict.GetWriteLock())
+                contentItem = CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId));
+                if (contentItem != null)
                 {
-                    contentItem = CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId));
-                    _contentItemsDict.Add(contentItemId, contentItem);
+                    using (_contentItemsDict.GetWriteLock())
+                    {
+                        _contentItemsDict[contentItemId] = contentItem;
+                    }
                 }
             }
 

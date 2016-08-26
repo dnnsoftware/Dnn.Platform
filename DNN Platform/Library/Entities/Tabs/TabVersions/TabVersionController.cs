@@ -42,13 +42,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
-            //if we are not using the cache
+            //if we are not using the cache, then remove from cacehh and re-add loaded items when eeded later
+            var tabCacehKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
-                return CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId));
+                DataCache.RemoveCache(tabCacehKey);
             }
             
-            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(GetTabVersionsCacheKey(tabId),
+            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacehKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));            

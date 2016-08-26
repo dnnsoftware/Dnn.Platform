@@ -117,31 +117,31 @@ namespace DotNetNuke.Services.Personalization
         //override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public void SaveProfile(PersonalizationInfo personalization, int userId, int portalId)
         {
-            if (personalization != null)
+            if (personalization != null && personalization.IsModified)
             {
-                if (personalization.IsModified)
+                var profileData = Globals.SerializeHashTableXml(personalization.Profile);
+                if (userId > Null.NullInteger)
                 {
-                    var profileData = Globals.SerializeHashTableXml(personalization.Profile);
-                    if (userId > Null.NullInteger)
-                    {
-                        DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
+                    DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
 
-                        var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
-                        DataCache.RemoveCache(cacheKey);
-                    }
-                    else
+                    // remove then re-add the updated one
+                    var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                    DataCache.RemoveCache(cacheKey);
+                    CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey,
+                        DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority), _ => profileData);
+                }
+                else
+                {
+					//Anon User - so try and use cookie.
+                    var context = HttpContext.Current;
+                    if (context != null)
                     {
-						//Anon User - so try and use cookie.
-                        var context = HttpContext.Current;
-                        if (context != null)
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
                         {
-                            var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
-                            {
-                                Expires = DateTime.Now.AddDays(30),
-                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                            };
-                            context.Response.Cookies.Add(personalizationCookie);
-                        }
+                            Expires = DateTime.Now.AddDays(30),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
                     }
                 }
             }
