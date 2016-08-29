@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
@@ -455,7 +455,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 }
                 else
                 {
-                    file.Size = (int)folderProvider.GetFileSize(file);
+                    file.Size = (long)folderProvider.GetFileSize(file);
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
@@ -584,7 +584,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
 
         private void SetInitialFileMetadata(ref Stream fileContent, FileInfo file, FolderProvider folderProvider)
         {
-            file.Size = (int) fileContent.Length;
+            file.Size = (long) fileContent.Length;
             var fileHash = folderProvider.GetHashCode(file, fileContent);
             file.SHA1Hash = fileHash;
             fileContent.Position = 0;
@@ -1364,7 +1364,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 if (folderMapping != null)
                 {
                     var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-                    file.Size = (int)folderProvider.GetFileSize(file);
+                    file.Size = (long)folderProvider.GetFileSize(file);
                     file.LastModificationTime = folderProvider.GetLastModificationTime(file);
                 }
             }

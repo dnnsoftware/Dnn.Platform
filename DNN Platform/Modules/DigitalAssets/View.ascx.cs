@@ -127,11 +127,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        protected int MaxUploadSize
+        protected long MaxUploadSize
         {
             get
             {
-                return (int)Config.GetMaxUploadSize();
+                return (long)Config.GetMaxUploadSize();
             }
         }
 
