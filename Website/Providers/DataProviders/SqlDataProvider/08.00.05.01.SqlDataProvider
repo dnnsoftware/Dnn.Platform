@@ -83,6 +83,23 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortalAndPath]
+    @PortalId int,
+    @FolderPath nvarchar(300)
+AS
+BEGIN
+    SET @PortalId = IsNull(@PortalId, -1)
+
+    SELECT *
+    FROM   {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE  PortalID = @PortalId AND (FolderPath = @FolderPath OR @FolderPath IS NULL)
+END
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
 GO
