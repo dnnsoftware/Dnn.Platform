@@ -100,24 +100,19 @@ namespace DotNetNuke.Security.Permissions
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
-            DNNCacheDependency dependency;
-
-            // ReSharper disable once InconsistentlySynchronizedField
-            if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
+            lock (_cacheDependencyDict.GetWriteLock())
             {
-                lock (_cacheDependencyDict.GetWriteLock())
+                DNNCacheDependency dependency;
+                if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
                 {
-                    if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
-                    {
-                        var startAt = DateTime.UtcNow;
-                        var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
-                        DataCache.SetCache(cacheKey, portalId); // no expiration set for this
-                        _cacheDependencyDict[portalId] =
-                            dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
-                    }
+                    var startAt = DateTime.UtcNow;
+                    var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                    DataCache.SetCache(cacheKey, portalId); // no expiration set for this
+                    _cacheDependencyDict[portalId] =
+                        dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
                 }
+                return dependency;
             }
-            return dependency;
         }
 
         internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
