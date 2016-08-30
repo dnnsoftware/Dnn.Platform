@@ -100,33 +100,42 @@ namespace DotNetNuke.Security.Permissions
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
-            lock (_cacheDependencyDict.GetWriteLock())
+            DNNCacheDependency dependency;
+            using (_cacheDependencyDict.GetReadLock())
             {
-                DNNCacheDependency dependency;
-                if (!_cacheDependencyDict.TryGetValue(portalId, out dependency))
-                {
-                    var startAt = DateTime.UtcNow;
-                    var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
-                    DataCache.SetCache(cacheKey, portalId); // no expiration set for this
-                    _cacheDependencyDict[portalId] =
-                        dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
-                }
-                return dependency;
+                _cacheDependencyDict.TryGetValue(portalId, out dependency);
             }
+
+            if (dependency == null)
+            {
+                var startAt = DateTime.UtcNow;
+                var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                DataCache.SetCache(cacheKey, portalId); // no expiration set for this
+                dependency = new DNNCacheDependency(null, new[] {cacheKey}, startAt);
+                using (_cacheDependencyDict.GetWriteLock())
+                {
+                    _cacheDependencyDict[portalId] = dependency;
+                }
+            }
+            return dependency;
         }
 
         internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
         {
-            lock (_cacheDependencyDict.GetWriteLock())
+            // first execute the cache clear action then check the dependency change
+            cacehClearAction.Invoke();
+            DNNCacheDependency dependency;
+            using (_cacheDependencyDict.GetReadLock())
             {
-                // first execute the cache clear action then check the dependency change
-                cacehClearAction.Invoke();
-                DNNCacheDependency dependency;
-                if (_cacheDependencyDict.TryGetValue(portalId, out dependency))
+                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+            if (dependency != null)
+            {
+                using (_cacheDependencyDict.GetWriteLock())
                 {
                     _cacheDependencyDict.Remove(portalId);
-                    dependency.Dispose();
                 }
+                dependency.Dispose();
             }
         }
 

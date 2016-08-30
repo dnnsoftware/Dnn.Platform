@@ -899,7 +899,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             var file = DataCache.GetCache(strCacheKey);
             if (file == null)
             {
-                file = CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
+                file = CBO.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
                 if (file != null)
                 {
                     var intCacheTimeout = 20 * Convert.ToInt32(GetPerformanceSetting());
@@ -933,7 +933,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("folder", folder);
 
-            return CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
+            return CBO.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
         }
 
         /// <summary>

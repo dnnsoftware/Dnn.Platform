@@ -56,7 +56,8 @@ namespace DotNetNuke.Services.Personalization
             if (userId > Null.NullInteger)
             {
                var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
-                profileData = CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
+                profileData = CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
+                    DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
             {

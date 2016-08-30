@@ -211,6 +211,7 @@ namespace DotNetNuke.Common.Utilities
         public const string UserProfileCacheKey = "UserProfile|{0}|{1}";
         public const int UserProfileCacheTimeOut = UserCacheTimeOut;
 
+        public const string UserNotificationsConversationCountCacheKey = "UserNitifConversationCount|{0}|{1}";
         public const string UserNotificationsCountCacheKey = "UserNotificationsCount|{0}|{1}";
         public const string UserNewThreadsCountCacheKey = "UserNewThreadsCount|{0}|{1}";
         public const int NotificationsCacheTimeInSec = 30;
@@ -314,7 +315,12 @@ namespace DotNetNuke.Common.Utilities
         public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
-        
+
+        public const string ContentWorkflowCacheKey = "ContentWorkflows:{0}";
+        public const string ContentWorkflowStateCacheKey = "ContentWorkflowStates_{0}";
+        public const CacheItemPriority WorkflowsCachePriority = CacheItemPriority.Low;
+        public const int WorkflowsCacheTimeout = 2;
+
         private static string _CachePersistenceEnabled = "";
 
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();

@@ -20,6 +20,7 @@
 #endregion
 
 using System.ComponentModel.DataAnnotations;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Entities.Content.Workflow.Entities
