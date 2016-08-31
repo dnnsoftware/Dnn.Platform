@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.FileSystem
         public string Extension { get; set; }
         
         [XmlElement("size")]
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         [XmlElement("height")]
         public int Height { get; set; }
