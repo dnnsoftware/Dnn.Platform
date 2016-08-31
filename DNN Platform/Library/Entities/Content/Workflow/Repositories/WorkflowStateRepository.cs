@@ -96,6 +96,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
             CacheWorkflowState(state);
         }
 
@@ -111,6 +112,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
         #endregion
 

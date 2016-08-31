@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 workflow.PortalID, workflow.WorkflowName, workflow.WorkflowID).SingleOrDefault() != null;
         }
 
-        private static string GetWorkflowItemKey(int workflowId)
+        internal static string GetWorkflowItemKey(int workflowId)
         {
             return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
         }
