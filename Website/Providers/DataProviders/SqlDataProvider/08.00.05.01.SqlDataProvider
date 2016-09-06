@@ -137,7 +137,7 @@ BEGIN
 	  PublishedVersion,  
 	  ContentItemID,
       HasBeenPublished
-	FROM {databaseOwner}[{objectQualifier}vw_Files] WITH (NOLOCK)
+	FROM {databaseOwner}[{objectQualifier}vw_Files]
 END
 GO
 
