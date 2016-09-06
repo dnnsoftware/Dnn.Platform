@@ -114,6 +114,7 @@ namespace DotNetNuke.Common.Internal
                     case "mobilemodules":
                     case "premiummodules":
                     case "providers":
+                    case "api":
                         needExit = true;
                         break;
                     default:

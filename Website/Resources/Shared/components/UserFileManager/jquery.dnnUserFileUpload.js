@@ -86,7 +86,7 @@
 
     $.fn.dnnUserFileUpload.defaultOptions = {
         fileUploadWrapperSelector: '.fileUploadArea', // wrapper element for the main file upload content area
-        addImageServiceUrl: '/DesktopModules/Journal/API/FileUpload/UploadFile', // post files here
+        addImageServiceUrl: '/API/Action/Journal/FileUpload/UploadFile', // post files here
         progressContextSelector: '.progress_context', // wrapper element for the progress area
         progressFileNameSelector: '.upload_file_name', // element to update file name text w/ during upload
         progressBarSelector: '.progress-bar div', // the actual progress bar element itself, its width will be expanded dynamically

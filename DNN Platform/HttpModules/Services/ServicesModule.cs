@@ -27,7 +27,7 @@ namespace DotNetNuke.HttpModules.Services
 {
     public class ServicesModule : IHttpModule
     {
-        public static readonly Regex ServiceApi = DotNetNuke.Entities.Urls.RewriterUtils.ServicesFrameworkRegex;
+        public static readonly Regex ServiceApi = Globals.ServicesFrameworkRegex;
 
         public void Init(HttpApplication context)
         {

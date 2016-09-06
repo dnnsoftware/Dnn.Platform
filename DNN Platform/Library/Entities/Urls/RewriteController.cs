@@ -376,7 +376,7 @@ namespace DotNetNuke.Entities.Urls
 
             //Check for VanityUrl
             var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
-            if (!found && !RewriterUtils.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
+            if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
                 string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
                 if (urlParams.Length > 1)
@@ -1156,7 +1156,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else
                         {
-                            if (!RewriterUtils.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
+                            if (!Globals.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
                             {
                                 //nothing left to try 
                                 result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
