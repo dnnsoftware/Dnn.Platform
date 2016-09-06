@@ -268,7 +268,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 //541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
                 return _doNotRedirectRegex ?? (_doNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting,
-                    @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview"));
+                    @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview|/API/Action/"));
             }
             internal set { _doNotRedirectRegex = value; }
         }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return _doNotRewriteRegex ??
                        (_doNotRewriteRegex =
-                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/"));
+                           GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/|/API/Action/"));
             }
             internal set { _doNotRewriteRegex = value; }
         }

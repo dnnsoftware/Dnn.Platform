@@ -106,6 +106,16 @@
             </resourceFile>
           </resourceFiles>
         </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\SocialGroups</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>08.00.05.SqlDataProvider</name>
+              <version>08.00.05</version>
+            </script>
+          </scripts>
+        </component>
       </components>
     </package>
   </packages>

@@ -694,7 +694,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 else
                                 {
-                                    if (!RewriterUtils.ServicesFrameworkRegex.IsMatch(context.Request.RawUrl))
+                                    if (!Globals.ServicesFrameworkRegex.IsMatch(context.Request.RawUrl))
                                     {
                                         //no physical path, intercept the request and hand out a 404 error
                                         result.Action = ActionType.Output404;
