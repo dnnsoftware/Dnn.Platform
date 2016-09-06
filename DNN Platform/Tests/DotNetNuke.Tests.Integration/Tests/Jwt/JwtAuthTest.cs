@@ -51,13 +51,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 #endif
 
-        private const string LoginQuery = "/API/JwtAuth/Action/mobile/login";
-        private const string LogoutQuery = "/API/JwtAuth/Action/mobile/logout";
-        public const string ExtendTokenQuery = "/API/JwtAuth/Action/mobile/extendtoken";
-        private const string TestGetQuery = "/API/JwtAuth/Action/mobile/testget";
-        private const string TestPostQuery = "/API/JwtAuth/Action/mobile/testpost";
-        private const string GetMonikerQuery = "/API/web/Action/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/Action/mobilehelper/moduledetails?moduleList=";
+        private const string LoginQuery = "/API/Action/JwtAuth/mobile/login";
+        private const string LogoutQuery = "/API/Action/JwtAuth/mobile/logout";
+        public const string ExtendTokenQuery = "/API/Action/JwtAuth/mobile/extendtoken";
+        private const string TestGetQuery = "/API/Action/JwtAuth/mobile/testget";
+        private const string TestPostQuery = "/API/Action/JwtAuth/mobile/testpost";
+        private const string GetMonikerQuery = "/API/Action/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/Action/web/mobilehelper/moduledetails?moduleList=";
 
         public JwtAuthTest()
         {
@@ -384,7 +384,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetMonikerHeader("myjournal");
             var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = _httpClient.PostAsJsonAsync(
-                "/API/Journal/Action/Services/GetListForProfile", postItem).Result;
+                "/API/Action/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetMonikerHeader("myjournal");
             var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = _httpClient.PostAsJsonAsync(
-                "/API/Journal/Action/Services/GetListForProfile", postItem).Result;
+                "/API/Action/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);

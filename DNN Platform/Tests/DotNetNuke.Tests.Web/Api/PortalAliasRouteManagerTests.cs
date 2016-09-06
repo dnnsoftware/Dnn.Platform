@@ -47,10 +47,10 @@ namespace DotNetNuke.Tests.Web.Api
 
 
         [Test]
-        [TestCase("mfn", "url", 0, "API/mfn/Action/url")]
-        [TestCase("mfn", "url", 1, "{prefix0}/API/mfn/Action/url")]
-        [TestCase("mfn", "url", 2, "{prefix0}/{prefix1}/API/mfn/Action/url")]
-        [TestCase("fee/foo", "{contoller}/{action}/{id}", 4, "{prefix0}/{prefix1}/{prefix2}/{prefix3}/API/fee/foo/Action/{contoller}/{action}/{id}")]
+        [TestCase("mfn", "url", 0, "API/Action/mfn/url")]
+        [TestCase("mfn", "url", 1, "{prefix0}/API/Action/mfn/url")]
+        [TestCase("mfn", "url", 2, "{prefix0}/{prefix1}/API/Action/mfn/url")]
+        [TestCase("fee/foo", "{contoller}/{action}/{id}", 4, "{prefix0}/{prefix1}/{prefix2}/{prefix3}/API/Action/fee/foo/{contoller}/{action}/{id}")]
         public void GetRouteUrl(string moduleFolderName, string url, int count, string expected)
         {
             //Arrange

@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                             Name = Localization.GetString("Dismiss.Text"),
                             Description = Localization.GetString("DismissNotification.Text"),
                             Confirm = "",
-                            APICall = "API/InternalServices/Action/NotificationsService/Dismiss"
+                            APICall = "API/Action/InternalServices/NotificationsService/Dismiss"
                         });
                     }
 

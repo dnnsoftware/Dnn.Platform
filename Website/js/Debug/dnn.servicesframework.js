@@ -6,7 +6,7 @@
 
         base.getServiceRoot = function (moduleName) {
             var serviceRoot = dnn.getVar("sf_siteRoot", "/");
-            serviceRoot += "API/" + moduleName + "/Action/";
+            serviceRoot += "API/Action/" + moduleName + "/";
             return serviceRoot;
         };
 

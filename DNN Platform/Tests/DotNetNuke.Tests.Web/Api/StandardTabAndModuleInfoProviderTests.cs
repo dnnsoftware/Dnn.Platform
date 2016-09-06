@@ -155,7 +155,7 @@ namespace DotNetNuke.Tests.Web.Api
             //Arrange
             var request = new HttpRequestMessage();
             request.RequestUri = new Uri(
-                "http://mysite.lvh.me/API/internalservices/Action/controlbar/ToggleUserMode?moniker=" + HttpUtility.UrlEncode(MonikerSettingValue));
+                "http://mysite.lvh.me/API/Action/internalservices/controlbar/ToggleUserMode?moniker=" + HttpUtility.UrlEncode(MonikerSettingValue));
 
             //Act
             ModuleInfo returnedModuleInfo;

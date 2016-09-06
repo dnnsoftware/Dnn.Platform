@@ -38,8 +38,8 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
 
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 
-        private const string GetMonikerQuery = "/API/web/Action/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/Action/mobilehelper/moduledetails?moduleList=";
+        private const string GetMonikerQuery = "/API/Action/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/Action/web/mobilehelper/moduledetails?moduleList=";
 
         public DotNetNukeWebTests()
         {

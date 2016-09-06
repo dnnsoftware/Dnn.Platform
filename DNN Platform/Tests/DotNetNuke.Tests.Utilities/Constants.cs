@@ -440,7 +440,7 @@ namespace DotNetNuke.Tests.Utilities
         public const string Messaging_NotificationTypeActionNameResourceKey = "Accept";
         public const string Messaging_NotificationTypeActionDescriptionResourceKey = "Accept a friend request";
         public const string Messaging_NotificationTypeActionConfirmResourceKey = "Are you sure you want to accept this friend?";
-        public const string Messaging_NotificationTypeActionAPICall = "~/DesktopModules/ModuleName/API/ModuleService.ashx/Accept";
+        public const string Messaging_NotificationTypeActionAPICall = "~/API/Action/ModuleName/ModuleService.ashx/Accept";
         public const int Messaging_NotificationActionId = 4;
         public const string Messaging_NotificationActionKey = "{F:1}{U:2}";
         public const string Messaging_NotificationSubject = "Friend Request Received";
