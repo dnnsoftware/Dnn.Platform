@@ -210,7 +210,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
         {
-            var fileCollection = CBO.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID));
+            var fileCollection = CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID));
 
             var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
 
@@ -618,7 +618,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            var fileCollection = CBO.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles));
+            var fileCollection = CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles));
 
             var files = fileCollection.Cast<IFileInfo>().ToList();
 
@@ -686,10 +686,10 @@ namespace DotNetNuke.Services.FileSystem
             if (portalSettings != null)
             {
                 var folders = GetFolders(portalSettings.PortalId);
-                folder = folders.SingleOrDefault(f => f.FolderID == folderId) ?? CBO.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
+                folder = folders.SingleOrDefault(f => f.FolderID == folderId) ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
             }
 
-            return folder ?? (CBO.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId)));
+            return folder ?? (CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId)));
         }
 
         /// <summary>
@@ -705,7 +705,7 @@ namespace DotNetNuke.Services.FileSystem
             folderPath = PathUtils.Instance.FormatFolderPath(folderPath);
 
             var folders = GetFolders(portalId);
-            return folders.SingleOrDefault(f => f.FolderPath == folderPath) ?? CBO.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(portalId, folderPath));
+            return folders.SingleOrDefault(f => f.FolderPath == folderPath) ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(portalId, folderPath));
         }
 
         /// <summary>
@@ -715,7 +715,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(Guid uniqueId)
         {
-            return CBO.FillObject<FolderInfo>(DataProvider.Instance().GetFolderByUniqueID(uniqueId));
+            return CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolderByUniqueID(uniqueId));
         }
 
         /// <summary>
@@ -755,7 +755,7 @@ namespace DotNetNuke.Services.FileSystem
             var folders = new List<IFolderInfo>();
 
             var cacheKey = string.Format(DataCache.FolderCacheKey, portalId);
-            CBO.GetCachedObject<List<FolderInfo>>(new CacheItemArgs(cacheKey, DataCache.FolderCacheTimeOut, DataCache.FolderCachePriority, portalId), GetFoldersSortedCallBack, false).ForEach(folders.Add);
+            CBO.Instance.GetCachedObject<List<FolderInfo>>(new CacheItemArgs(cacheKey, DataCache.FolderCacheTimeOut, DataCache.FolderCachePriority, portalId), GetFoldersSortedCallBack, false).ForEach(folders.Add);
 
             return folders;
         }
@@ -773,7 +773,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var cacheKey = string.Format(DataCache.FolderUserCacheKey, portalId, permissions, userId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.FolderUserCacheTimeOut, DataCache.FolderUserCachePriority, portalId, permissions, userId);
-            CBO.GetCachedObject<List<FolderInfo>>(cacheItemArgs, GetFoldersByPermissionSortedCallBack, false).ForEach(folders.Add);
+            CBO.Instance.GetCachedObject<List<FolderInfo>>(cacheItemArgs, GetFoldersByPermissionSortedCallBack, false).ForEach(folders.Add);
 
             return folders;
         }
@@ -1680,14 +1680,14 @@ namespace DotNetNuke.Services.FileSystem
             var portalId = (int)cacheItemArgs.ParamList[0];
             var permissions = (string)cacheItemArgs.ParamList[1];
             var userId = (int)cacheItemArgs.ParamList[2];
-            return CBO.FillCollection<FolderInfo>(DataProvider.Instance().GetFoldersByPortalAndPermissions(portalId, permissions, userId));
+            return CBO.Instance.FillCollection<FolderInfo>(DataProvider.Instance().GetFoldersByPortalAndPermissions(portalId, permissions, userId));
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual object GetFoldersSortedCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillCollection<FolderInfo>(DataProvider.Instance().GetFoldersByPortal(portalId));
+            return CBO.Instance.FillCollection<FolderInfo>(DataProvider.Instance().GetFoldersByPortal(portalId));
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
