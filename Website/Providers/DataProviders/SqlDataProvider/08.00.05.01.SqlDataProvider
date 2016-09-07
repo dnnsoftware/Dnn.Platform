@@ -142,25 +142,24 @@ END
 GO
 
 /***** DNN-6221: update DoNotRedirect and DoNotRewrite settings to include API path.  *****/
-/***** DNN-6221: update DoNotRedirect and DoNotRewrite settings to include API path.  *****/
 UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/Action/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/Action/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/Action/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/Action/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/Action/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/Action/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/Action/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/Action/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]

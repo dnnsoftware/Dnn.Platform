@@ -201,7 +201,6 @@
     <None Include="App_LocalResources\View.ascx.resx" />
     <Content Include="Module.build" />
     <Content Include="packages.config" />
-    <Content Include="Data\08.00.05.SqlDataProvider" />
     <None Include="SocialGroups.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -222,6 +221,7 @@
     <Content Include="List.ascx" />
     <Content Include="ListSettings.ascx" />
     <Content Include="Loader.ascx" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.05.SqlDataProvider" />
     <Content Include="Setup.ascx" />
     <Content Include="View.ascx" />
   </ItemGroup>
