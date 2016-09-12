@@ -197,6 +197,15 @@ UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
     WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Reject'
 GO
 
+/* Issue: CONTENT-7438 */
+/***********************/
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ALTER COLUMN [WorkflowName] nvarchar(50) NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ALTER COLUMN [Description] nvarchar(2000) NULL
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ALTER COLUMN [WorkflowKey] nvarchar(50) NOT NULL
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ALTER COLUMN [StateName] nvarchar(50) NOT NULL
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
