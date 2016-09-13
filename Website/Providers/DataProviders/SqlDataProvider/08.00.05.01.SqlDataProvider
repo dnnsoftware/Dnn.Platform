@@ -144,57 +144,57 @@ GO
 /***** DNN-6221: update DoNotRedirect and DoNotRewrite settings to include API path.  *****/
 /***** DNN-6221: update DoNotRedirect and DoNotRewrite settings to include API path.  *****/
 UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRedirectUrlRegex' AND CHARINDEX('|/API/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-    SET SettingValue = SettingValue + |/API/Action/'
-    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX(|/API/Action/', SettingValue) = 0
+    SET SettingValue = SettingValue + '|/API/'
+    WHERE SettingName='AUM_DoNotRewriteRegEx' AND CHARINDEX('|/API/', SettingValue) = 0
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/RelationshipService/AcceptFriend'
+    SET APICall = 'API/InternalServices/RelationshipService/AcceptFriend'
     WHERE APICall = 'DesktopModules/InternalServices/API/RelationshipService/AcceptFriend'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/RelationshipService/FollowBack'
+    SET APICall = 'API/InternalServices/RelationshipService/FollowBack'
     WHERE APICall = 'DesktopModules/InternalServices/API/RelationshipService/FollowBack'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/Journal/NotificationServices/ViewJournal'
+    SET APICall = 'API/Journal/NotificationServices/ViewJournal'
     WHERE APICall = 'DesktopModules/Journal/API/NotificationServices/ViewJournal'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/ContentWorkflowService/Approve'
+    SET APICall = 'API/InternalServices/ContentWorkflowService/Approve'
     WHERE APICall = 'DesktopModules/InternalServices/API/ContentWorkflowService/Approve'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/ContentWorkflowService/Reject'
+    SET APICall = 'API/InternalServices/ContentWorkflowService/Reject'
     WHERE APICall = 'DesktopModules/InternalServices/API/ContentWorkflowService/Reject'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/NewUserNotificationService/Authorize'
+    SET APICall = 'API/InternalServices/NewUserNotificationService/Authorize'
     WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Authorize'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
-    SET APICall = 'API/Action/InternalServices/NewUserNotificationService/Reject'
+    SET APICall = 'API/InternalServices/NewUserNotificationService/Reject'
     WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Reject'
 GO
 

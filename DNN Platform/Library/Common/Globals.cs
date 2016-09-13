@@ -94,7 +94,7 @@ namespace DotNetNuke.Common
         public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
-        public static readonly Regex ServicesFrameworkRegex = new Regex("/API/Action/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         #region PerformanceSettings enum
 
