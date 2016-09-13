@@ -210,7 +210,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            connector.PostJson("API/Action/internalservices/controlbar/ClearHostCache", null);
+            connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
             return connector;
         }
 
@@ -221,7 +221,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
         public static void RecycleApplication()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            connector.PostJson("API/Action/internalservices/controlbar/RecycleApplicationPool ", null);
+            connector.PostJson("API/internalservices/controlbar/RecycleApplicationPool ", null);
         }
 
         /// <summary>
