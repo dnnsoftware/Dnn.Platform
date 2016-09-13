@@ -126,6 +126,8 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual int CountNotifications(int userId, int portalId)
         {
+            if (userId <= 0) return 0;
+
             var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
             var cacheObject = cache.GetItem(cacheKey);

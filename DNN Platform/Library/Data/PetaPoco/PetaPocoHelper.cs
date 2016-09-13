@@ -39,19 +39,20 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, int timeout, string sql, params object[] args)
 		{
-			var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };
+            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            { 
+                if (type == CommandType.StoredProcedure)
+                {
+                    sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
+                }
 
-			if (type == CommandType.StoredProcedure)
-			{
-				sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
-			}
+                if (timeout > 0)
+                {
+                    database.CommandTimeout = timeout;
+                }
 
-			if (timeout > 0)
-			{
-				database.CommandTimeout = timeout;
-			}
-
-			database.Execute(sql, args);
+                database.Execute(sql, args);
+            }
 		}
 
         public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable)
@@ -109,19 +110,20 @@ namespace DotNetNuke.Data.PetaPoco
 
 		public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeout, string sql, params object[] args)
 		{
-			var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };
+            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            {
+                if (type == CommandType.StoredProcedure)
+                {
+                    sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
+                }
 
-			if (type == CommandType.StoredProcedure)
-			{
-				sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
-			}
+                if (timeout > 0)
+                {
+                    database.CommandTimeout = timeout;
+                }
 
-			if (timeout > 0)
-			{
-				database.CommandTimeout = timeout;
-			}
-
-			return database.ExecuteScalar<T>(sql, args);
+                return database.ExecuteScalar<T>(sql, args);
+            }
 		}
 
         // ReSharper disable once InconsistentNaming
@@ -133,14 +135,15 @@ namespace DotNetNuke.Data.PetaPoco
         // ReSharper disable once InconsistentNaming
 		public static void ExecuteSQL(string connectionString, string sql, int timeout)
 		{
-			var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };
+            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            {
+                if (timeout > 0)
+                {
+                    database.CommandTimeout = timeout;
+                }
 
-			if (timeout > 0)
-			{
-				database.CommandTimeout = timeout;
-			}
-
-			database.Execute(sql);
+                database.Execute(sql);
+            }
 		}
 
         #endregion

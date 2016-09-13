@@ -343,26 +343,42 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int CheckReplyHasRecipients(int conversationId, int userId)
         {
-            return _dataService.CheckReplyHasRecipients(conversationId, userId);
+            return userId <= 0 ? 0 :
+                conversationId <= 0 ? 0 : _dataService.CheckReplyHasRecipients(conversationId, userId);
         }
 
         public virtual int CountArchivedMessagesByConversation(int conversationId)
         {
-            return _dataService.CountArchivedMessagesByConversation(conversationId);
+            return conversationId <= 0 ? 0 : _dataService.CountArchivedMessagesByConversation(conversationId);
         }
 
         public virtual int CountMessagesByConversation(int conversationId)
         {
-            return _dataService.CountMessagesByConversation(conversationId);
+            return conversationId <= 0 ? 0 : _dataService.CountMessagesByConversation(conversationId);
         }
 
         public virtual int CountConversations(int userId, int portalId)
         {
-            return _dataService.CountTotalConversations(userId, portalId);
+            if (userId <= 0) return 0;
+
+            var cacheKey = string.Format(DataCache.UserNotificationsConversationCountCacheKey, portalId, userId);
+            var cache = CachingProvider.Instance();
+            var cacheObject = cache.GetItem(cacheKey);
+            if (cacheObject is int)
+            {
+                return (int)cacheObject;
+            }
+
+            var count = _dataService.CountTotalConversations(userId, portalId);
+            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            return count;
         }
 
         public virtual int CountUnreadMessages(int userId, int portalId)
         {
+            if (userId <= 0) return 0;
+
             var cacheKey = string.Format(DataCache.UserNewThreadsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
             var cacheObject = cache.GetItem(cacheKey);
@@ -379,22 +395,22 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int CountSentMessages(int userId, int portalId)
         {
-            return _dataService.CountSentMessages(userId, portalId);
+            return userId <= 0 ? 0 : _dataService.CountSentMessages(userId, portalId);
         }
 
         public virtual int CountArchivedMessages(int userId, int portalId)
         {
-            return _dataService.CountArchivedMessages(userId, portalId);
+            return userId <= 0 ? 0 : _dataService.CountArchivedMessages(userId, portalId);
         }
 
         public virtual int CountSentConversations(int userId, int portalId)
         {
-            return _dataService.CountSentConversations(userId, portalId);
+            return userId <= 0 ? 0 : _dataService.CountSentConversations(userId, portalId);
         }
 
         public virtual int CountArchivedConversations(int userId, int portalId)
         {
-            return _dataService.CountArchivedConversations(userId, portalId);
+            return userId <= 0 ? 0 : _dataService.CountArchivedConversations(userId, portalId);
         }
 
         /// <summary>Gets the attachments.</summary>
@@ -402,7 +418,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns>A list of message attachments for the given message</returns>
         public IEnumerable<MessageFileView> GetAttachments(int messageId)
         {
-           return this._dataService.GetMessageAttachmentsByMessage(messageId);
+           return _dataService.GetMessageAttachmentsByMessage(messageId);
         }
 
         #endregion

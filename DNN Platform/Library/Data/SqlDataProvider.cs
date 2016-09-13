@@ -133,11 +133,12 @@ namespace DotNetNuke.Data
                         using (var connection = new SqlConnection(connectionString))
                         {
                             //Create a new command (with no timeout)
-                            var command = new SqlCommand(query, connection) { CommandTimeout = 0 };
-
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
+                            using (var command = new SqlCommand(query, connection) {CommandTimeout = 0})
+                            {
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                                connection.Close();
+                            }
                         }
                     }
                     catch (SqlException objException)
