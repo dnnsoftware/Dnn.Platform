@@ -3,6 +3,7 @@ import ReactTooltip from "react-tooltip";
 import uniqueId from "lodash/uniqueId";
 import InfoIcon from "./InfoIcon";
 import ErrorIcon from "./ErrorIcon";
+import GlobalIcon from "./GlobalIcon";
 import "./style.less";
 
 const getTooltipText = function (messages) {
@@ -20,6 +21,7 @@ function getIconComponent(type) {
     switch (type) {
         case "info": return InfoIcon;
         case "error": return ErrorIcon;
+        case "global": return GlobalIcon;
     }
 }
 
@@ -51,7 +53,7 @@ const Tooltip = ({messages, type, rendered, tooltipPlace, style, className}) => 
 
 Tooltip.propTypes = {
     messages: PropTypes.array.isRequired,
-    type: PropTypes.oneOf(["error", "info"]).isRequired,
+    type: PropTypes.oneOf(["error", "info", "global"]).isRequired,
     rendered: PropTypes.bool,
     tooltipPlace: PropTypes.string,
     style: PropTypes.object,
