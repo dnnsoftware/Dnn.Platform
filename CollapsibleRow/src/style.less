@@ -1,0 +1,61 @@
+.dnn-collapsible-component {
+    display: table;
+    width: 100%;
+    div.collapsible-header {
+        text-transform: uppercase;
+        color: rgb(178, 189, 195);
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 20px;
+        box-sizing: border-box;
+        cursor: pointer;
+        .collapse-icon {
+            position: absolute;
+            right: 20px;
+            top: 17px;
+            font-size: 30px;
+            line-height: 16px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Chrome/Safari/Opera */
+            -khtml-user-select: none;
+            /* Konqueror */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE/Edge */
+            user-select: none;
+            &:after {
+                border: 6px solid transparent;
+                border-bottom: 6px solid black;
+                content: "";
+                position: absolute;
+                left: -15px;
+                top: 0;
+            }
+            &.collapsed {
+                &:after {
+                    border-top: 6px solid black;
+                    border-bottom: 6px solid transparent;
+                    top: 5px;
+                }
+            }
+        }
+    }
+    .collapsible-footer {
+        margin-left: auto;
+        margin-right: auto;
+        display: table;
+        padding: 25px 0;
+        button {
+            margin-right: 15px;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}

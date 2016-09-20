@@ -1,0 +1,17 @@
+@import "~dnn-global-styles/index";
+.dnn-uicommon-select {
+    resize: none;       
+    border-radius: 3px;       
+    background-color: @white;
+    border: 1px solid @alto;
+    box-sizing: border-box;
+    padding: 8px 16px;
+    &:focus {
+        background: @white;
+        border: 1px solid @curiousBlue;
+    }
+    &:disabled {
+        background: @mercury;
+        border: 1px solid @mercury;
+    }
+}

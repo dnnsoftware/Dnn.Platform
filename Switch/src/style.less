@@ -1,0 +1,73 @@
+@import "~dnn-global-styles/index";
+.dnn-switch-container {
+    display: inline-block;
+    >label {
+        &.left {
+            float: left;
+            margin-right: 10px;
+        }
+        &.right {
+            float: right;
+            margin-left: 10px;
+        }
+        margin-top: 4px;
+        color: @bulgarianRose;
+    }
+    .dnn-switch {
+        display: inline-block;
+        position: relative;
+        width: 45px;
+        height: 21px;
+        -webkit-border-radius: 14px;
+        -moz-border-radius: 14px;
+        border-radius: 14px;
+        border: 1px solid @mountainMist;
+        background-color: @alto;
+        margin: 0;
+        cursor: pointer;
+        -webkit-transition: background 100ms linear;
+        -moz-transition: background 100ms linear;
+        -o-transition: background 100ms linear;
+        transition: background 100ms linear;
+        &.dnn-switch-active {
+            background-color: @cerulean;
+            border-color: @matisse;
+            .mark {
+                left: 24px;
+                border-color: @matisse;
+            }
+        }
+        &.dnn-switch-readonly {
+            border: 1px solid @mercury;
+            cursor: not-allowed;
+            background-color: @mercury;
+            .mark {
+                border: 1px solid @mercury;
+                background-color: @gallery;
+            }
+        }
+        .mark {
+            width: 21px;
+            height: 21px;
+            display: inline-block;
+            -webkit-border-radius: 13px;
+            -moz-border-radius: 13px;
+            border-radius: 13px;
+            background-color: @white;
+            border: 1px solid @mountainMist;
+            position: absolute;
+            top: -1px;
+            left: 0px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            -moz-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            -o-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            img {
+                display: none;
+            }
+        }
+    }
+}

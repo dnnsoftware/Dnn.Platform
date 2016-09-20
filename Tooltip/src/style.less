@@ -1,0 +1,77 @@
+.dnn-ui-common-tooltip {
+    .tooltip-text {
+        z-index: 10000;
+        margin-left: 3px;
+        &.place-top {
+            &:after {
+                border-top: 6px solid !important;
+            }
+        }
+        
+        &.place-bottom {
+            &:after {
+                border-bottom: 6px solid !important;
+            }
+        }
+        
+        &.place-left {
+            &:after {
+                border-left: 6px solid !important;
+            }
+        }
+        &.place-right {
+            &:after {
+                border-right: 6px solid !important;
+            }
+        }
+
+    }
+    
+    &.error {
+        .icon svg {
+            color: #eb0028;
+            fill: #eb0028;
+        }
+        .tooltip-text {
+            background-color: #eb0028 !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: #eb0028 !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color:  #eb0028 !important;
+                }
+            }    
+
+        }
+    } 
+
+    &.info {
+        .icon svg {
+            color: #ddd;
+            fill: #ddd;
+        }
+        .tooltip-text {
+            background-color: #222 !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: #222 !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color:  #222 !important;
+                }
+            }  
+        }
+    }
+
+    .icon svg {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -1,0 +1,63 @@
+@import "~dnn-global-styles/index";
+.dnn-single-line-input-with-error {
+    display: inline-block;
+    position: relative;
+    &.disabled {
+        .dnn-label {
+            label {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+        .input-tooltip-container {
+            .dnn-ui-common-single-line-input {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+    }
+    .dnn-label {
+        label {
+            font-weight: 700;
+            cursor: pointer;
+            float: left;
+        }
+    }
+    input {
+        color: @bulgarianRose;
+    }
+    &.error {
+        input {
+            border-bottom: 2px solid @alizarinCrimson;
+        }
+    }
+    .input-tooltip-container {
+        float: left;
+        position: relative;
+        width: 100%;
+        .dnn-ui-common-single-line-input{
+            width: 100%;
+            border-radius: 0px;
+        }
+        &.inline {
+            width: auto;
+        }
+        .dnn-ui-common-tooltip {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            .tooltip-text {
+                max-width: 255px;
+                text-align: center;
+                padding: 7px 15px;
+            }
+            &.outside {
+                right: -25px;
+            }
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}

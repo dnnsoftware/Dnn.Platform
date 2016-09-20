@@ -1,0 +1,68 @@
+@import "~dnn-global-styles/index";
+.dnn-radio-buttons {
+    >label {
+        display: inline;
+    }
+    ul {
+        list-style: none;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        li {
+            display: inline-block;
+            position: relative;
+            vertical-align: top;
+            label {
+                position: relative;
+                float: right;
+                font-weight: 600;
+                font-size: 16px;
+                padding: 0;
+                z-index: 9;
+                cursor: pointer;
+                padding-left: 28px;
+                word-wrap: break-word;
+                height: auto;
+                margin-bottom: 24px;
+                max-width: calc(100% - 35px);
+                color: @thunder;
+            }
+            .check {
+                display: block;
+                border: 1px solid @thunder;
+                border-radius: 100%;
+                box-sizing: border-box;
+                height: 16px;
+                width: 16px;
+                z-index: 5;
+                position: absolute;
+                top: 2px;
+                left: 0;
+            }
+            input[type=radio] {
+                position: absolute;
+                visibility: hidden;
+            }
+            input[type=radio]:checked ~ .check {
+                border: 3px solid @curiousBlue;
+            }
+            &.disabled {
+                label {
+                    color: @alto;
+                    cursor: not-allowed;
+                }
+                &.checked {
+                    input[type=radio]:checked ~ .check {
+                        border: 3px solid @alto;
+                        background: 1px solid @gallery;
+                    }
+                }
+                .check {
+                    border: 1px solid @mercury;
+                    background-color: @gallery;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}
