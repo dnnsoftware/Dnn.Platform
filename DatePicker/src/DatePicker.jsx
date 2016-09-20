@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
-import TimePicker from "./timePicker";
+import TimePicker from "./TimePicker";
 import "./style.less";
 
 function Weekday({ weekday, className, localeUtils, locale }) {
