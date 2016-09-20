@@ -4,17 +4,17 @@ import {Scrollbars} from "react-custom-scrollbars";
 import { XThinIcon } from "dnn-svg-icons";
 import "./style.less";
 
-const scrollBarStyle = {
-    width: "100%",
-    height: "calc(100% - 55px)",
-    boxSizing: "border-box",
-    padding: "25px 30px"
-};
 
 class Modal extends Component {
-    /*eslint-disable react/no-danger*/
-    render() {
-        const {props} = this;
+    getScrollbarStyle(props) {
+        return {
+            width: "100%",
+            height: props.header ? "calc(100% - 55px)" : "100%",
+            boxSizing: "border-box",
+            padding: "25px 30px"
+        };
+    }
+    getModalStyles(props) {
         let modalWidth = props.modalWidth;
         let modalTopMargin = props.modalTopMargin;
         if (document.getElementsByClassName("socialpanel") && document.getElementsByClassName("socialpanel").length > 0 && !props.modalWidth) {
@@ -23,7 +23,7 @@ class Modal extends Component {
         if (document.getElementsByClassName("socialpanelheader") && document.getElementsByClassName("socialpanelheader").length > 0 && !props.modalHeight) {
             modalTopMargin = document.getElementsByClassName("socialpanelheader")[0].offsetHeight;
         }
-        const modalStyles = (props.style || {
+        return (props.style || {
             overlay: {
                 zIndex: "99999",
                 backgroundColor: "rgba(0,0,0,0.6)"
@@ -45,20 +45,28 @@ class Modal extends Component {
                 boxSizing: "border-box"
             }
         });
+    }
+    /*eslint-disable react/no-danger*/
+    render() {
+        const {props} = this;
+        const modalStyles = this.getModalStyles(props);
+        const scrollBarStyle = this.getScrollbarStyle(props);
         return (
             <ReactModal
                 isOpen={props.isOpen}
                 onRequestClose={props.onRequestClose}
                 style={modalStyles}>
-                <div className="modal-header">
-                    <h3>{props.header}</h3>
-                    {props.headerChildren}
-                    <div
-                        className="close-modal-button"
-                        dangerouslySetInnerHTML={{ __html: XThinIcon }}
-                        onClick={props.onRequestClose}>
+                {props.header &&
+                    <div className="modal-header">
+                        <h3>{props.header}</h3>
+                        {props.headerChildren}
+                        <div
+                            className="close-modal-button"
+                            dangerouslySetInnerHTML={{ __html: XThinIcon }}
+                            onClick={props.onRequestClose}>
+                        </div>
                     </div>
-                </div>
+                }
                 <Scrollbars style={scrollBarStyle}>
                     <div style={props.contentStyle}>
                         {props.children}

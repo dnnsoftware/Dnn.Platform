@@ -39,5 +39,6 @@ module.exports = {
         "dnn-tabs": "dnn.nodeModules.CommonComponents.Tabs",
         "dnn-tags": "dnn.nodeModules.CommonComponents.Tags",
         "dnn-text-overflow-wrapper": "dnn.nodeModules.CommonComponents.TextOverflowWrapper",
-        "dnn-tooltip": "dnn.nodeModules.CommonComponents.Tooltip"
+        "dnn-tooltip": "dnn.nodeModules.CommonComponents.Tooltip",
+        "dnn-modal": "dnn.nodeModules.CommonComponents.Modal"
 };
