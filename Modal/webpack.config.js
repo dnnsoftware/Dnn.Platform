@@ -1,10 +1,10 @@
 module.exports = {
-    entry: "./src/SocialPanelHeader.jsx",
+    entry: "./src/Modal.jsx",
     output: {
         path: "./lib/",
-        filename: "SocialPanelHeader.js",
+        filename: "Modal.js",
         libraryTarget: "umd",
-        library: "SocialPanelHeader"
+        library: "Modal"
     },
     module: {
         loaders: [
@@ -23,7 +23,9 @@ module.exports = {
     },
     externals: {
         "react": "react",
-        "react-modal": "react-modal"
+        "react-modal": "react-modal",
+        "react-custom-scrollbars": "react-custom-scrollbars",
+        "dnn-svg-icons": "dnn-svg-icons"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
