@@ -1,0 +1,253 @@
+@import "~dnn-global-styles/index";
+.prefixes(@property, @value) {
+    -webkit-@{property}: @value;
+     -khtml-@{property}: @value;
+       -moz-@{property}: @value;
+        -ms-@{property}: @value;
+            @{property}: @value;
+}
+@transition: .18s;
+.dnn-day-picker {
+    float: left;
+    width: 226px;
+    height: 34px;
+    box-sizing: border-box;
+    position: relative;
+    .calendar-container {
+        position: absolute;
+        width: 256px;
+        left: 0px;
+        top: calc(100% + 12px);
+        border: 1px solid @alto;
+        box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+        opacity: 0;
+        transition: @transition;
+        & > div {
+            width: 256px;
+            float: left;
+        }
+        &.show {
+            opacity: 1;
+        }
+    }
+    .calendar-icon {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 3px solid @alto;
+        right: 0px;
+        top: 50%;
+        transform: translate(140%, -50%);
+        cursor: pointer;
+        transition: @transition;
+        &.active, &.active:after {
+            border-color: @curiousBlue !important;
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 9px;
+            border: 3px solid @alto;
+            border-bottom: 0px;
+            border-top: 0px;
+            left: 50%;
+            transition: @transition;
+            top: -1px;
+            transform: translate(-50%, -50%);
+        }
+        &:hover, &:hover:after {
+            border-color: @rollingStone;
+        }
+    }
+    .calendar-text {
+        border: 1px solid #b0afae;
+        padding: 8px 16px;
+        cursor: pointer;
+        min-height: 16px;
+        text-align: right;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .DayPicker {
+        float: left;
+        width: 240px;
+        margin: 8px;
+        outline: 0 !important;
+        &, * {
+            .prefixes(user-select, none);
+        }
+        .DayPicker-NavBar {
+            position: relative;
+            width: 100%;
+        }
+        .DayPicker-NavButton {
+            position: absolute;
+            display: block;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 3px;
+            text-indent: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            background-color: transparent;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: .5;
+            &:hover {
+                opacity: 1;
+            }
+            &.DayPicker-NavButton--prev {
+                left: 2px;
+                background-image: url(./img/leftBlack.png);
+            }
+            &.DayPicker-NavButton--next {
+                right: 2px;
+                background-image: url(./img/rightBlack.png);
+            }
+        }
+        .DayPicker-Caption {
+            width: 100%;
+            text-align: center;
+            text-transform: uppercase;
+            padding: 10px 0;
+            font-weight: 600;
+            color: @bulgarianRose;
+        }
+        .DayPicker-Weekdays {
+            width: 100%;
+            float: left;
+            .DayPicker-WeekdaysRow {
+                width: 100%;
+                float: left;
+                .DayPicker-Weekday {
+                    color: #fff;
+                    line-height: 30px;
+                    text-align: center;
+                    background-color: @alto;
+                    width: 14.28%;
+                    box-sizing: border-box;
+                    float: left;
+                    border: 2px solid #fff;
+                }
+            }
+        }
+        .DayPicker-Week {
+            width: 100%;
+            float: left;
+        }
+        .DayPicker-Day {
+            width: 14.28%;
+            float: left;
+            height: 32px;
+            cursor: pointer;
+            display: block;
+            padding: 6px 0 6px 0;
+            color: @rollingStone;
+            font-size: 11px;
+            font-family: proxima_nova_semibold;
+            line-height: 15px;
+            text-align: center;
+            background: @mercury;
+            box-sizing: border-box;
+            border: 2px solid #fff;
+            outline: 0 !important;
+            &.DayPicker-Day--selected {
+                background: @curiousBlue !important;
+                color: #fff;
+            }
+            &.DayPicker-Day--outside {
+                opacity: 0;
+                pointer-events: none;
+            }
+            &.DayPicker-Day--disabled {
+                pointer-events: none;
+                cursor: default;
+                color: #999;
+                opacity: .3;
+            }
+            &:hover {
+                background: @alto;
+            }
+        }
+    }
+    button[role="primary"] {
+        float: right;
+        margin: 10px;
+        background: @curiousBlue;
+        color: white;
+        padding: 9px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+}
+
+.dnn-time-picker {
+    width: 240px;
+    text-align: center;
+    float: left;
+    border-top: 1px solid @mercury;
+    margin-left: 8px;
+    pointer-events: none;
+    .time-text {
+        width: 82px;
+        margin: auto;
+        padding: 8px 0 0 0;
+        position: relative;
+        color: @curiousBlue;
+        font-weight: 600;
+        letter-spacing: 1px;
+        height: 16px;
+        pointer-events: all;
+        &:after {
+            position: absolute;
+            content: "";
+            right: 0px;
+            top: 13px;
+            width: 0;
+            height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 4px solid @curiousBlue;
+        }
+        .time-selector {
+            width: 134px;
+            height: 132px;
+            overflow: hidden;
+            background: white;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            top: 31px;
+            border: 1px solid @alto;
+            padding: 5px 0px;
+            box-sizing: border-box;
+            box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+            transition: @transition;
+            opacity: 0;
+            &.show {
+                opacity: 1;
+            }
+            .time-options {
+                overflow-y: scroll;
+                overflow-x: auto;
+                width: 147px;
+                height: 100%;
+                .time-option {
+                    color: @rollingStone;
+                    padding: 5px;
+                    cursor: pointer;
+                    &:hover {
+                        background: @gallery;
+                        color: @curiousBlue;
+                    }
+                }
+            }
+        }
+    }
+}
