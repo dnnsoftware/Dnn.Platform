@@ -55,6 +55,9 @@ class Modal extends Component {
             <ReactModal
                 isOpen={props.isOpen}
                 onRequestClose={props.onRequestClose}
+                onAfterOpen={props.onAfterOpen}
+                closeTimeoutMS={props.closeTimeoutMS}
+                shouldCloseOnOverlayClick={props.shouldCloseOnOverlayClick}
                 style={modalStyles}>
                 {props.header &&
                     <div className="modal-header">
@@ -88,13 +91,17 @@ Modal.propTypes = {
     modalTopMargin: PropTypes.number,
     header: PropTypes.string,
     headerChildren: PropTypes.node,
-    contentStyle: PropTypes.object
+    contentStyle: PropTypes.object,
+    onAfterOpen: PropTypes.func,
+    closeTimeoutMS: PropTypes.number,
+    shouldCloseOnOverlayClick: PropTypes.bool
 };
 Modal.defaultProps = {
     modalWidth: 861,
     modalTopMargin: 100,
     dialogVerticalMargin: 25,
     dialogHorizontalMargin: 30,
-    contentStyle: { padding: "25px 30px" }
+    contentStyle: { padding: "25px 30px" },
+    shouldCloseOnOverlayClick: true
 };
 export default Modal;
