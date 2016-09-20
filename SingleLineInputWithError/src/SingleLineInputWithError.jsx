@@ -27,6 +27,7 @@ class SingleLineInputWithError extends Component {
                         style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
                         />
                 }
+                {props.extraToolTips}
                 <div className={"input-tooltip-container " + props.labelType}>
                     <Input
                         id={props.inputId}
@@ -82,7 +83,8 @@ SingleLineInputWithError.propTypes = {
     placeholder: PropTypes.string,
     type: PropTypes.string,
     style: PropTypes.object,
-    labelStyle: PropTypes.object
+    labelStyle: PropTypes.object,
+    extraToolTips: PropTypes.node
 };
 SingleLineInputWithError.defaultProps = {
     error: false,
