@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
-import TimePicker from "./timePicker";
+import TimePicker from "./TimePicker";
 import "./style.less";
 
 function Weekday({ weekday, className, localeUtils, locale }) {
@@ -77,7 +77,7 @@ export default class DatePicker extends Component {
                 MaxDate = new Date(this.formatDate(maxDate, "L") + " " + this.state.maxTime);
             }
         }
-        if (this.props.isString) {
+        if (typeof this.props.date === "string") {
             if (minDate) {
                 MinDate = this.formatDate(minDate, "L") + " " + this.formatDate(minDate, "LT");
             }
@@ -150,8 +150,8 @@ export default class DatePicker extends Component {
     }
 
     render() {
-        this.date = this.props.isString  ? new Date(this.props.date) : this.props.date;
-        this.maxDate = this.props.isString ? new Date(this.props.maxDate) : this.props.maxDate;
+        this.date = typeof this.props.date === "string" ? new Date(this.props.date) : this.props.date;
+        this.maxDate = typeof this.props.maxDate === "string" ? new Date(this.props.maxDate) : this.props.maxDate;
 
         const minDate = this.date;
         const maxDate = this.maxDate;
@@ -201,13 +201,10 @@ export default class DatePicker extends Component {
     }
 }
 
-
 DatePicker.propTypes = {
     date: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
     isDateRange: PropTypes.bool,
     updateDate: PropTypes.func.isRequired,
-    hasTimePicker: PropTypes.bool,
-    isString: PropTypes.bool
+    hasTimePicker: PropTypes.bool
 };
-
