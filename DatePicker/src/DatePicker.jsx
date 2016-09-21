@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
-import TimePicker from "./TimePicker";
+import TimePicker from "./timePicker";
 import "./style.less";
 
 function Weekday({ weekday, className, localeUtils, locale }) {
@@ -50,17 +50,17 @@ export default class DatePicker extends Component {
 
 
     minDisableDates(day) {
-        if (!this.props.maxDate) {
+        if (!this.maxDate) {
             return false;
         }
-        return day > this.props.maxDate;
+        return day > this.maxDate;
     }
 
     maxDisableDates(day) {
-        if (!this.props.date) {
+        if (!this.date) {
             return false;
         }
-        return day < this.props.date;
+        return day < this.date;
     }
 
     updateDate(minDate, maxDate, disabled) {
@@ -77,6 +77,14 @@ export default class DatePicker extends Component {
                 MaxDate = new Date(this.formatDate(maxDate, "L") + " " + this.state.maxTime);
             }
         }
+        if (this.props.isString) {
+            if (minDate) {
+                MinDate = this.formatDate(minDate, "L") + " " + this.formatDate(minDate, "LT");
+            }
+            if (maxDate) {
+                MaxDate = this.formatDate(maxDate, "L") + " " + this.formatDate(maxDate, "LT");
+            }
+        }
         this.props.updateDate(MinDate, MaxDate);
         if (!this.props.isDateRange && !this.props.hasTimePicker) {
             this.hideCalendar();
@@ -85,14 +93,14 @@ export default class DatePicker extends Component {
 
     updateTime(time) {
         this.setState({ minTime: time },
-            this.updateDate.bind(this, this.props.date, this.props.maxDate)
+            this.updateDate.bind(this, this.date, this.maxDate)
         );
     }
 
 
     updateMaxTime(time) {
         this.setState({ maxTime: time },
-            this.updateDate.bind(this, this.props.date, this.props.maxDate)
+            this.updateDate.bind(this, this.date, this.maxDate)
         );
     }
 
@@ -142,14 +150,17 @@ export default class DatePicker extends Component {
     }
 
     render() {
-        const minDate = this.props.date;
-        const maxDate = this.props.maxDate;
+        this.date = this.props.isString  ? new Date(this.props.date) : this.props.date;
+        this.maxDate = this.props.isString ? new Date(this.props.maxDate) : this.props.maxDate;
+
+        const minDate = this.date;
+        const maxDate = this.maxDate;
         let displayMinDate = minDate ? this.formatDate(minDate, "L") : "";
         let displayMaxDate = maxDate ? this.formatDate(maxDate, "L") : "";
-        
+
         if (this.props.hasTimePicker) {
             displayMinDate += (displayMinDate ? " " + this.state.minTime : "");
-            displayMaxDate += (displayMaxDate ? " " + this.state.maxTime: "");
+            displayMaxDate += (displayMaxDate ? " " + this.state.maxTime : "");
         }
         let displayDate = displayMinDate;
         if (this.props.isDateRange && maxDate) {
@@ -196,6 +207,7 @@ DatePicker.propTypes = {
     maxDate: PropTypes.instanceOf(Date),
     isDateRange: PropTypes.bool,
     updateDate: PropTypes.func.isRequired,
-    hasTimePicker: PropTypes.bool
+    hasTimePicker: PropTypes.bool,
+    isString: PropTypes.bool
 };
 
