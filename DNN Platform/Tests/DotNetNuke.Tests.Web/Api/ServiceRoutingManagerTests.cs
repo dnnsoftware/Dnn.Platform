@@ -198,7 +198,7 @@ namespace DotNetNuke.Tests.Web.Api
             var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
             route = (Route)routeCollection[1];
-            Assert.AreEqual("folder-another-0", route.DataTokens["Name"]);
+            Assert.AreEqual("folder-default-0-old", route.DataTokens["Name"]);
         }
 
         [Test]

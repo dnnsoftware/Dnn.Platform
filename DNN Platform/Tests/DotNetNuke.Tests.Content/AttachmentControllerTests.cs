@@ -44,9 +44,13 @@ namespace DotNetNuke.Tests.Content
     [TestFixture]
     public class AttachmentControllerTests
     {
+        private Mock<CachingProvider> mockCache;
+
         [SetUp]
         public void SetUp()
         {
+            //Register MockCachingProvider
+            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
         }
 

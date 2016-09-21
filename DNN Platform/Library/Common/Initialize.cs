@@ -402,7 +402,7 @@ namespace DotNetNuke.Common
                         shutdownDetail = "The AppDomain shut down because of a call to UnloadAppDomain.";
                         break;
                     default:
-                        shutdownDetail = "No shutdown reason provided.";
+                        shutdownDetail = "Shutdown reason: " + shutdownReason;
                         break;
                 }
                 var log = new LogInfo
