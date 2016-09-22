@@ -18,6 +18,7 @@ module.exports = {
         "dnn-button": "dnn.nodeModules.CommonComponents.Button",
         "dnn-checkbox": "dnn.nodeModules.CommonComponents.Checkbox",
         "dnn-collapsible-row": "dnn.nodeModules.CommonComponents.CollapsibleRow",
+        "dnn-date-picker": "dnn.nodeModules.CommonComponents.DatePicker",
         "dnn-dropdown": "dnn.nodeModules.CommonComponents.Dropdown",
         "dnn-editable-field": "dnn.nodeModules.CommonComponents.EditableField",
         "dnn-grid-cell": "dnn.nodeModules.CommonComponents.GridCell",
