@@ -22,9 +22,7 @@ export default class DatePicker extends Component {
         super();
         this.state = {
             isCalendarVisible: false,
-            className: "",
-            minTime: "00:00 AM",
-            maxTime: "00:00 AM"
+            className: ""
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -69,14 +67,6 @@ export default class DatePicker extends Component {
         }
         let MinDate = minDate;
         let MaxDate = maxDate;
-        if (this.props.hasTimePicker) {
-            if (minDate && this.state.minTime) {
-                MinDate = new Date(this.formatDate(minDate, "L") + " " + this.state.minTime);
-            }
-            if (maxDate && this.state.maxTime) {
-                MaxDate = new Date(this.formatDate(maxDate, "L") + " " + this.state.maxTime);
-            }
-        }
         if (typeof this.props.date === "string") {
             if (MinDate) {
                 MinDate = this.formatDate(MinDate, "L") + " " + this.formatDate(MinDate, "LT");
@@ -92,21 +82,19 @@ export default class DatePicker extends Component {
     }
 
     updateTime(time) {
-        this.setState({ minTime: time },
-            this.updateDate.bind(this, this.date, this.maxDate)
-        );
+        const date = new Date(this.formatDate(this.date, "L") + " " + time);
+        this.updateDate(date, this.maxDate);
     }
 
-
     updateMaxTime(time) {
-        this.setState({ maxTime: time },
-            this.updateDate.bind(this, this.date, this.maxDate)
-        );
+        const maxDate = new Date(this.formatDate(this.maxDate, "L") + " " + time);
+        this.updateDate(this.date, maxDate);
     }
 
     minDateClick(e, day, { disabled }) {
         this.updateDate(day, undefined, disabled);
     }
+    
     maxDateClick(e, day, { disabled }) {
         this.updateDate(undefined, day, disabled);
     }
@@ -152,15 +140,15 @@ export default class DatePicker extends Component {
     render() {
         this.date = typeof this.props.date === "string" ? new Date(this.props.date) : this.props.date;
         this.maxDate = typeof this.props.maxDate === "string" ? new Date(this.props.maxDate) : this.props.maxDate;
-
+        
         const minDate = this.date;
         const maxDate = this.maxDate;
         let displayMinDate = minDate ? this.formatDate(minDate, "L") : "";
         let displayMaxDate = maxDate ? this.formatDate(maxDate, "L") : "";
 
         if (this.props.hasTimePicker) {
-            displayMinDate += (displayMinDate ? " " + this.state.minTime : "");
-            displayMaxDate += (displayMaxDate ? " " + this.state.maxTime : "");
+            displayMinDate += (displayMinDate ? " " + this.formatDate(minDate, "LT") : "");
+            displayMaxDate += (displayMaxDate ? " " + this.formatDate(maxDate, "LT") : "");
         }
         let displayDate = displayMinDate;
         if (this.props.isDateRange && maxDate) {
@@ -182,7 +170,7 @@ export default class DatePicker extends Component {
                             onDayClick={this.minDateClick.bind(this) }
                             disabledDays={ this.minDisableDates.bind(this) }
                             />
-                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateTime.bind(this) } time={this.state.minTime}/>}
+                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateTime.bind(this) } time={this.formatDate(this.date, "LT")}/>}
                     </div>
 
                     {this.props.isDateRange && <div>
@@ -193,7 +181,7 @@ export default class DatePicker extends Component {
                             onDayClick={this.maxDateClick.bind(this) }
                             disabledDays={ this.maxDisableDates.bind(this) }
                             />
-                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateMaxTime.bind(this) } time={this.state.maxTime}/>}
+                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateMaxTime.bind(this) } time={this.formatDate(this.maxDate, "LT")}/>}
                     </div>}
                     {showButton && <button role="primary" onClick={this.hideCalendar.bind(this) }>Apply</button>}
                 </div>}
