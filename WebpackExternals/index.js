@@ -20,6 +20,7 @@ module.exports = {
         "dnn-collapsible-row": "dnn.nodeModules.CommonComponents.CollapsibleRow",
         "dnn-date-picker": "dnn.nodeModules.CommonComponents.DatePicker",
         "dnn-dropdown": "dnn.nodeModules.CommonComponents.Dropdown",
+        "dnn-dropdown-with-error": "dnn.nodeModules.CommonComponents.DropdownWithError",
         "dnn-editable-field": "dnn.nodeModules.CommonComponents.EditableField",
         "dnn-grid-cell": "dnn.nodeModules.CommonComponents.GridCell",
         "dnn-grid-system": "dnn.nodeModules.CommonComponents.GridSystem",
