@@ -63,6 +63,28 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         util = $.extend(util, utility);
         // end define util
 
+        var loadMenuResources = function (item) {
+            if (!item.loader) {
+                return;
+            }
+
+            var templateSuffix = '.html';
+            var cssSuffix = '.css';
+            var initMethod = 'init';
+            var requiredArray = ['../' + item.loader, 'text!../../' + item.loader + templateSuffix];
+            requiredArray.push('css!../../css/' + item.loader + cssSuffix);
+
+            window.require(requiredArray, function (loader, html) {
+                if (typeof loader === "undefined") {
+                    return;
+                }
+
+                var params = { html: html };
+
+                loader[initMethod].call(loader, item, utility, params, null);
+            });
+        }
+
         var buildViewModel = function() {
             var viewModel = {};
             viewModel.leftMenus = ko.observableArray([]);
@@ -79,6 +101,8 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                         break;
                 default:
                 }
+
+                loadMenuResources(menuItem);
             }
 
             return viewModel;
@@ -86,7 +110,6 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
         var loadMenus = function() {
             var viewModel = buildViewModel();
-            console.log(config.items);
             ko.applyBindings(viewModel, $("#edit-bar")[0]);
         }
 

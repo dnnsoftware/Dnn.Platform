@@ -15,13 +15,11 @@ namespace Dnn.EditBar.UI.Items
     {
         public override string Name { get; } = "PrivatePage";
 
-        public override string Button { get; } = "<div class=\"private-page\" title=\"" + LocalizationHelper.GetString("PrivatePage") + "\" />";
-
-        public override string CssClass { get; } = "";
+        public override string Template { get; } = "<div class=\"private-page\" title=\"" + LocalizationHelper.GetString("PrivatePage") + "\" />";
 
         public override string Parent { get; } = Constants.RightMenu;
 
-        public override string Loader { get; } = "";
+        public override string Loader { get; } = "test";
 
         public override bool Visible()
         {

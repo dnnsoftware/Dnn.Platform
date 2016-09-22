@@ -4,7 +4,7 @@
     <div id="edit-bar" class="editbar">
         <div>
             <ul id="LeftMenu"class="menuEditBar" data-bind="foreach: leftMenus">
-                <li data-bind="attr: {'class': 'left-butto ' + cssClass}, html: button">
+                <li class="left-button" data-bind="html: template, attr: {'id': 'menu-' + name}">
                 </li>
             </ul>
         </div>
@@ -12,7 +12,7 @@
         <div class="right-section">
             <div>
                 <ul id="RightMenu" class="menuEditBar" data-bind="foreach: rightMenus">
-                    <li class="right-button" data-bind="html: button"></li>
+                    <li class="right-button" data-bind="html: template, attr: {'id': 'menu-' + name}"></li>
                 </ul>
             </div>
         </div>

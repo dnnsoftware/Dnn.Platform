@@ -169,6 +169,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="editBar\css\test.css" />
     <Content Include="editBar\css\editBarContainer.css" />
     <Content Include="editBar\css\main.css" />
     <Content Include="editBar\css\ProximaNova-Reg-webfont.svg" />
@@ -218,6 +219,7 @@
     <Content Include="editBar\scripts\gateway.js" />
     <Content Include="editBar\scripts\main.js" />
     <Content Include="editBar\scripts\sf.js" />
+    <Content Include="editBar\scripts\test.js" />
     <Content Include="editBar\scripts\util.js" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />

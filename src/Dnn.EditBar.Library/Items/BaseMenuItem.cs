@@ -19,15 +19,8 @@ namespace Dnn.EditBar.Library.Items
         /// <summary>
         /// the content will render as the menu item.
         /// </summary>
-        [DataMember(Name = "button")]
-        public abstract string Button { get; }
-
-        /// <summary>
-        /// the css class for menu item.
-        /// </summary>
-        [DataMember(Name = "cssClass")]
-        public abstract string CssClass { get; }
-
+        [DataMember(Name = "template")]
+        public abstract string Template { get; }
         /// <summary>
         /// parent which the menu item will stay in.
         /// currently we have LeftMenu and RightMenu defined in edit bar.
