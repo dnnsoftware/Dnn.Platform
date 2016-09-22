@@ -198,6 +198,43 @@ UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]
     WHERE APICall = 'DesktopModules/InternalServices/API/NewUserNotificationService/Reject'
 GO
 
+
+
+/* DNN-6615: Users cannot subscribe to public security role */
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetServices]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+GO
+
+-- intendedly EffectiveDate & ExpiryDate are not taken into account 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+    @PortalID  Int, -- pass Null for roles of all sites
+    @UserID    Int  -- not null!
+AS
+BEGIN
+    SELECT
+        R.*,
+        UR.IsOwner,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed,
+        UR.EffectiveDate,
+        U.DisplayName,
+        U.Email
+    FROM         {databaseOwner}[{objectQualifier}Users]      U
+     INNER JOIN  {databaseOwner}[{objectQualifier}UserRoles] UR ON UR.UserID = U.UserID AND (UR.UserID = @UserID OR UR.UserID IS Null)
+     RIGHT JOIN  {databaseOwner}[{objectQualifier}Roles]      R ON UR.RoleID = R.RoleID
+    WHERE (R.PortalId = @PortalID OR IsNull(@PortalID, -1) = -1)
+      AND  R.IsPublic = 1
+      AND  R.RoleId  >= 0  -- DNN-4288: hide system role atm to prevent duplicates. Might be removed, after API has been adopted
+    ORDER BY R.RoleName
+    OPTION (OPTIMIZE FOR (@PortalID UNKNOWN));
+END -- PROCEDURE
+GO
+
+/* DNN-6615 /////////////////////////////////////////////// */
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
