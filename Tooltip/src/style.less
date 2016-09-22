@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 .dnn-ui-common-tooltip {
     .tooltip-text {
         z-index: 10000;
@@ -29,20 +30,20 @@
     
     &.error {
         .icon svg {
-            color: #eb0028;
-            fill: #eb0028;
+            color: @alizarinCrimson;
+            fill: @alizarinCrimson;
         }
         .tooltip-text {
-            background-color: #eb0028 !important;
+            background-color: @alizarinCrimson !important;
             color: white;
             &.place-top {
                 &:after {
-                    border-top-color: #eb0028 !important;
+                    border-top-color: @alizarinCrimson !important;
                 }
             }
             &.place-bottom {
                 &:after {
-                    border-bottom-color:  #eb0028 !important;
+                    border-bottom-color:  @alizarinCrimson !important;
                 }
             }    
 
@@ -51,25 +52,44 @@
 
     &.info {
         .icon svg {
-            color: #ddd;
-            fill: #ddd;
+            color: @alto;
+            fill: @alto;
         }
         .tooltip-text {
-            background-color: #222 !important;
+            background-color: @thunder !important;
             color: white;
             &.place-top {
                 &:after {
-                    border-top-color: #222 !important;
+                    border-top-color: @thunder !important;
                 }
             }
             &.place-bottom {
                 &:after {
-                    border-bottom-color:  #222 !important;
+                    border-bottom-color:  @thunder !important;
                 }
             }  
         }
     }
-
+    &.global {
+        .icon svg {
+            color: @cerulean;
+            fill: @cerulean;
+        }
+        .tooltip-text {
+            background-color: @cerulean !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: @cerulean !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color:  @cerulean !important;
+                }
+            }  
+        }
+    }
     .icon svg {
         width: 20px;
         height: 20px;
