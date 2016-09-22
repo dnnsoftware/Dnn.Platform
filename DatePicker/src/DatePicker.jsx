@@ -78,11 +78,11 @@ export default class DatePicker extends Component {
             }
         }
         if (typeof this.props.date === "string") {
-            if (minDate) {
-                MinDate = this.formatDate(minDate, "L") + " " + this.formatDate(minDate, "LT");
+            if (MinDate) {
+                MinDate = this.formatDate(MinDate, "L") + " " + this.formatDate(MinDate, "LT");
             }
-            if (maxDate) {
-                MaxDate = this.formatDate(maxDate, "L") + " " + this.formatDate(maxDate, "LT");
+            if (MaxDate) {
+                MaxDate = this.formatDate(MaxDate, "L") + " " + this.formatDate(MaxDate, "LT");
             }
         }
         this.props.updateDate(MinDate, MaxDate);
