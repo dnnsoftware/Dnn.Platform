@@ -27,6 +27,7 @@ class MultiLineInputWithError extends Component {
                         style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
                         />
                 }
+                {props.extraToolTips}
                 <div className={"input-tooltip-container " + props.labelType}>
                     <TextArea
                         id={props.inputId}
@@ -79,7 +80,8 @@ MultiLineInputWithError.propTypes = {
     inputStyle: PropTypes.object,
     placeholder: PropTypes.string,
     style: PropTypes.object,
-    labelStyle: PropTypes.object
+    labelStyle: PropTypes.object,
+    extraToolTips: PropTypes.node
 };
 MultiLineInputWithError.defaultProps = {
     error: false,
