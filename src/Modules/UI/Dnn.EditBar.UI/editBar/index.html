@@ -1,0 +1,33 @@
+﻿<div id="editBarContainer">
+    <div id="editBarPanelsExtensionPoint"></div>
+
+    <div id="edit-bar" class="editbar">
+        <div>
+            <ul id="LeftMenu"class="menuEditBar" data-bind="foreach: leftMenus">
+                <li data-bind="attr: {'class': 'left-butto ' + cssClass}, html: button">
+                </li>
+            </ul>
+        </div>
+
+        <div class="right-section">
+            <div>
+                <ul id="RightMenu" class="menuEditBar" data-bind="foreach: rightMenus">
+                    <li class="right-button" data-bind="html: button"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function injectboostrap() {
+            var debugMode = window.parent['editBarSettings']['debugMode'] === true;
+            var cdv = window.parent['editBarSettings']['buildNumber'];
+            var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
+            var body = document.getElementsByTagName('body')[0];
+            var boostrapScript = document.createElement('script');
+            boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
+            body.appendChild(boostrapScript);
+        })();
+    </script>
+</div>
+

@@ -1,0 +1,120 @@
+﻿#region Copyright
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
+// by DotNetNuke Corporation
+// All Rights Reserved
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Controllers;
+using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.PersonaBar.Repository;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Web.Api;
+using Newtonsoft.Json;
+
+namespace Dnn.PersonaBar.UI.Services.PersonaBar
+{
+    [DnnAuthorize]
+    public class ExtensionsController : PersonaBarApiController
+    {
+        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(ExtensionsController));
+
+        #region Public API methods
+
+        /// <summary>
+        /// Retrieve a list of extensions for menu. 
+        /// </summary>
+        [HttpGet]
+        public HttpResponseMessage GetExtensions(string menu)
+        {
+            try
+            {
+                var menuItem = PersonaBarRepository.Instance.GetMenuItem(menu);
+
+                if (menuItem != null)
+                {
+                    var extensions = PersonaBarExtensionRepository.Instance.GetExtensions(menuItem.MenuId)
+                        .Where(IsVisible)
+                        .Select(t => new
+                        {
+                            identifier = t.Identifier,
+                            container = t.Container,
+                            path = GetExtensionPathByController(t),
+                            settings = GetExtensionSettings(t)
+                        });
+
+                    return Request.CreateResponse(HttpStatusCode.OK, extensions);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+        #endregion
+
+        private string GetExtensionPathByController(PersonaBarExtension extension)
+        {
+            var menuItem = PersonaBarRepository.Instance.GetMenuItem(extension.MenuId);
+            if (menuItem == null)
+            {
+                return extension.Path;
+            }
+
+            var extensionController = GetExtensionController(extension);
+            var path = extensionController?.GetPath(extension);
+            return !string.IsNullOrEmpty(path) ? path : extension.Path;
+        }
+
+        private bool IsVisible(PersonaBarExtension extension)
+        {
+            var extensionController = GetExtensionController(extension);
+            return extensionController == null || extensionController.Visible(extension);
+        }
+
+        private IDictionary<string, object> GetExtensionSettings(PersonaBarExtension extension)
+        {
+            var extensionController = GetExtensionController(extension);
+            var settings = extensionController?.GetSettings(extension);
+            return settings != null ? settings : null;
+        }
+
+        private IExtensionController GetExtensionController(PersonaBarExtension extension)
+        {
+            var identifier = extension.Identifier;
+            var controller = extension.Controller;
+
+            if (string.IsNullOrEmpty(controller))
+            {
+                return null;
+            }
+
+            try
+            {
+                var cacheKey = $"PersonaBarExtensionController_{identifier}";
+                return Reflection.CreateObject(controller, cacheKey) as IExtensionController;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return null;
+            }
+
+        }
+    }
+}

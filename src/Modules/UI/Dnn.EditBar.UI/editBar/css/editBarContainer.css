@@ -1,0 +1,11 @@
+﻿/* Person Bar iFrame */
+.dnnEditState iframe#editBar-iframe{
+	width: 85px;
+}
+iframe#editBar-iframe{
+	width: 100%; 
+	position: fixed;
+    bottom: 0; 
+	height: 85px; 
+	z-index: 9999999;
+}

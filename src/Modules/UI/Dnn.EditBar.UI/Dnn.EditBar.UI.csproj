@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7D92D57E-EB66-4816-A0FA-B39213452539}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dnn.EditBar.UI</RootNamespace>
+    <AssemblyName>Dnn.EditBar.UI</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <OptionInfer>On</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <NoWarn>1591</NoWarn>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE;CLOUD;CLOUD_DEBUG</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <NoWarn>1591</NoWarn>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE;CLOUD;CLOUD_RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.HttpModules, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Log4Net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\BusinessController.cs" />
+    <Compile Include="Controllers\EditBarController.cs" />
+    <Compile Include="Controllers\IEditBarController.cs" />
+    <Compile Include="Helpers\LocalizationHelper.cs" />
+    <Compile Include="HttpModules\EditBarModule.cs" />
+    <Compile Include="Items\PrivatePageMenu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Dnn.EditBar.UI.dnn" />
+    <None Include="editBar\css\ProximaNova-Reg-webfont.eot" />
+    <None Include="editBar\css\ProximaNova-Reg-webfont.ttf" />
+    <None Include="editBar\css\ProximaNova-Reg-webfont.woff" />
+    <None Include="editBar\css\ProximaNova-Sbold-webfont.eot" />
+    <None Include="editBar\css\ProximaNova-Sbold-webfont.ttf" />
+    <None Include="editBar\css\ProximaNova-Sbold-webfont.woff" />
+    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.eot" />
+    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.ttf" />
+    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.woff" />
+    <None Include="Module.build">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="editBar\css\editBarContainer.css" />
+    <Content Include="editBar\css\main.css" />
+    <Content Include="editBar\css\ProximaNova-Reg-webfont.svg" />
+    <Content Include="editBar\css\ProximaNova-Sbold-webfont.svg" />
+    <Content Include="editBar\css\ProximaNovaCond-Sbold-webfont.svg" />
+    <Content Include="editBar\images\AddModule_Sprite.png" />
+    <Content Include="editBar\images\bottomArrow.png" />
+    <Content Include="editBar\images\ClosePreview.png" />
+    <Content Include="editBar\images\CompareVersionArrow.png" />
+    <Content Include="editBar\images\DeleteVersionIcon.png" />
+    <Content Include="editBar\images\DropImageUpload.png" />
+    <Content Include="editBar\images\fallback-thumbnail.png" />
+    <Content Include="editBar\images\HistoryTabCloseIcon.png" />
+    <Content Include="editBar\images\History_Sprite.png" />
+    <Content Include="editBar\images\icon-layout-landscape.png" />
+    <Content Include="editBar\images\icon-layout-portrait.png" />
+    <Content Include="editBar\images\icon-non-viewable.png" />
+    <Content Include="editBar\images\icon-preview-desktop_off.png" />
+    <Content Include="editBar\images\icon-preview-desktop_on.png" />
+    <Content Include="editBar\images\icon-preview-phone_off.png" />
+    <Content Include="editBar\images\icon-preview-phone_on.png" />
+    <Content Include="editBar\images\icon-preview-tablet_off.png" />
+    <Content Include="editBar\images\icon-preview-tablet_on.png" />
+    <Content Include="editBar\images\phone-landscape.png" />
+    <Content Include="editBar\images\phone-portrait.png" />
+    <Content Include="editBar\images\Preview_Sprite.png" />
+    <Content Include="editBar\images\RestoreVersionIcon.png" />
+    <Content Include="editBar\images\Settings_Sprite.png" />
+    <Content Include="editBar\images\ShowVersionIcon.png" />
+    <Content Include="editBar\images\tablet-landscape.png" />
+    <Content Include="editBar\images\tablet-portrait.png" />
+    <Content Include="editBar\index.html" />
+    <Content Include="editBar\scripts\bootstrap.js" />
+    <Content Include="editBar\scripts\config.js" />
+    <Content Include="editBar\scripts\contrib\domReady.js" />
+    <Content Include="editBar\scripts\contrib\jqeury-ui-1.10.03-patched.js" />
+    <Content Include="editBar\scripts\contrib\jquery-ui.min.js" />
+    <Content Include="editBar\scripts\contrib\jquery.iframe-transport.js" />
+    <Content Include="editBar\scripts\contrib\jquery.js" />
+    <Content Include="editBar\scripts\contrib\knockout.js" />
+    <Content Include="editBar\scripts\contrib\knockout.mapping.js" />
+    <Content Include="editBar\scripts\contrib\knockout.validation.min.js" />
+    <Content Include="editBar\scripts\contrib\require.js" />
+    <Content Include="editBar\scripts\contrib\text.js" />
+    <Content Include="editBar\scripts\editBarContainer.js" />
+    <Content Include="editBar\scripts\eventEmitter.js" />
+    <Content Include="editBar\scripts\gateway.js" />
+    <Content Include="editBar\scripts\main.js" />
+    <Content Include="editBar\scripts\sf.js" />
+    <Content Include="editBar\scripts\util.js" />
+    <Content Include="license.txt" />
+    <Content Include="releaseNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Dnn.EditBar.Library\Dnn.EditBar.Library.csproj">
+      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
+      <Name>Dnn.EditBar.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="Module.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

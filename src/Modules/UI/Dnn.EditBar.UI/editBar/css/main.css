@@ -1,0 +1,468 @@
+﻿body{
+    margin: 0;
+    padding: 0;
+}
+#editBarContainer * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#editBarContainer h2 {
+    font-size: 28px;
+}
+
+.editbar {
+    visibility: visible;
+    height: 59px;
+    display: block;
+    background-color: #0F0F0F;
+    color: white;
+    min-height: 20px;
+    padding: 26px 26px 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.editbar div {
+    margin-left:10px;
+    float: left;
+}
+
+.editbar ul.menuEditBar  {
+    position:relative;
+    margin: 0;
+    padding: 0;
+}
+
+    .editbar ul.menuEditBar li .submenuEditBar {
+        position: absolute;
+        display:none;
+        background-color: #0F0F0F;
+        padding: 20px;
+        border-radius: 3px;
+        bottom: 78px;
+        min-width: 95px;
+        white-space: nowrap;
+        box-sizing: content-box;
+    }
+
+    .editbar ul.menuEditBar li:hover .submenuEditBar {
+        display:block;
+    }
+    .editbar .submenuEditBar:after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        border: 16px solid;
+        border-color: #0F0F0F transparent transparent transparent;
+        position: absolute;
+        left: 33%;
+        bottom: -26px;
+    }
+
+        .editbar .submenuEditBar.previewUrlsMenu {
+            left: -17px;
+        }
+
+            .editbar .submenuEditBar.previewUrlsMenu:after {
+                left: 26px;
+            }
+
+
+        .editbar .submenuEditBar.viewModesMenu {
+            left: -46px;
+        }
+
+            .editbar .submenuEditBar.viewModesMenu:after {
+                left: 46px;
+            }
+
+
+        .editbar .submenuEditBar.portraitTooltip {
+            left: -10px;
+        }
+
+            .editbar .submenuEditBar.portraitTooltip:after {
+                left: 21px;
+            }
+
+
+        .editbar .submenuEditBar.landscapeTooltip {
+            left: -21px;
+        }
+
+            .editbar .submenuEditBar.landscapeTooltip:after {
+                left: 35px;
+            }
+
+.editbar ul.menuEditBar  li {
+    list-style-type: none;
+    list-style: none;
+    float: left;
+    position: relative;
+    padding: 0;
+}
+.editbar div.textInEditHoverMenu {
+    position: relative;
+    float: none;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    margin-left: -5px;
+}
+
+.editbar ul.menuEditBar .hover-menu  li.ViewMenuButton {
+    float: none;
+    color: #727272;
+    background-repeat: no-repeat;
+    width: 0;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+}
+
+.editbar ul.menuEditBar .hover-menu  li.ViewMenuButton.selected {
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+.editbar ul.menuEditBar .hover-menu  li.ViewMenuButton:hover {
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+
+.editbar ul.menuEditBar li.DesktopModeButton {
+    background-image: url('../images/icon-preview-desktop_off.png');
+    background-size: 17px 17px;
+}
+.editbar ul.menuEditBar li.DesktopModeButton:hover {
+    background-image: url('../images/icon-preview-desktop_on.png');
+}
+
+.editbar ul.menuEditBar li.TabletModeButton {
+    background-image: url('../images/icon-preview-tablet_off.png');
+    background-size: 15px 17px;
+    background-position-x: 1px;
+}
+.editbar ul.menuEditBar li.TabletModeButton:hover {
+    background-image: url('../images/icon-preview-tablet_on.png');
+}
+
+.editbar ul.menuEditBar li.PhoneModeButton {
+    background-image: url('../images/icon-preview-phone_off.png');
+    background-size: 12px 17px;
+    background-position-x: 2px;
+}
+.editbar ul.menuEditBar li.PhoneModeButton:hover {
+    background-image: url('../images/icon-preview-phone_on.png');
+}
+
+.editbar .submenuBottom {
+    position: absolute;
+    background-color: transparent;
+    width: 100%;
+    height: 100px;
+    bottom: -82px;
+}
+
+.editbar .left-button {
+    margin-left: 7px;
+    background-position: 0 0;
+    border: 0 none;
+    height: 33px;
+    width: 47px;
+    color: #727272;
+}
+.editbar .left-button:first-child {
+    margin-left: 0;
+}
+
+.editbar .left-button:hover {
+    background-position: 0 -33px;
+    cursor: pointer;
+}
+
+.editbar .AddModule {
+    background-image: url('../images/AddModule_Sprite.png');
+}
+
+.editbar .Settings {
+    background-image: url('../images/Settings_Sprite.png');
+}
+
+.editbar .History {
+    background-image: url('../images/History_Sprite.png');
+}
+
+.editbar .ClosePreviewMode {
+    background-image: url('../images/ClosePreview.png');
+}
+
+.editbar .Viewmodes {
+    background-image: url('../images/Preview_Sprite.png');
+}
+
+.editbar .right-section {
+    float: right;
+    padding-right: 144px;
+}
+
+.editbar .right-button {
+    border: 0 none;
+    height: 35px;
+    width: 98px;
+    color: #FFFFFF;
+    margin-left: 12px;
+    border-radius: 3px;
+}
+
+.editbar .right-button:disabled,
+.editbar .left-button:disabled {
+    opacity: 0.5;
+}
+
+.editbar .edit-mode-message {
+    margin-left: 33px;
+    padding-top: 8px;
+}
+
+.editbar .editbar-Publish {
+    background-color: #0087C6;
+    cursor: pointer;
+}
+
+.editbar .mobileOptions {
+    display: none;
+}
+
+.editbar .editbar-Discard {
+    background-color: #515151;
+    cursor: pointer;
+}
+
+.editbar .editbar-Save {
+    background-color: #515151;
+}
+
+.editbar .editbar-Close {
+    background-color: #000000;
+    border-color: #FFFFFF;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+}
+
+.editbar .Desktop {
+    margin-right: 108px;
+}
+
+.editbar .desktopOptions {
+    display: none;
+}
+
+.editbar .previewModeLabel  {
+    padding-left: 10px;
+    padding-top: 7px;
+    color: #fff;
+    width: 100%;
+}
+
+.editbar ul.menuEditBar li.Portrait {
+    background-image: url('../images/icon-layout-portrait.png');
+    background-repeat: no-repeat;
+    border: 0 none;
+    width: 52px;
+    height: 33px;
+    margin-left: 55px;
+}
+
+.editbar ul.menuEditBar li.Portrait:hover {
+    background-position: 0px -33px;
+    cursor: pointer;
+}
+.editbar ul.menuEditBar li.Portrait.selected {
+    background-position: 0px -33px;
+}
+
+.editbar ul.menuEditBar li.Landscape {
+    background-image: url('../images/icon-layout-landscape.png');
+    background-repeat: no-repeat;
+    border: 0 none;
+    width: 55px;
+    height: 33px;
+    margin-left: 0px;
+    background-position: 0px -33px;
+}
+
+.editbar ul.menuEditBar li.Landscape:hover {
+    background-position: 0px 0px;
+    cursor: pointer;
+}
+
+.editbar ul.menuEditBar li.Landscape.selected {
+    background-position: 0px 0px;
+}
+
+.previewModeContainer {
+    position: fixed;
+    display: none;
+    background-color: #FFFFFF;
+    margin-top:50px;
+    top: 0px;
+    left: 0px;
+    z-index: 1005;
+    width: 100%;
+    /* Firefox */
+    height: -moz-calc(100% - 65px);
+    /* WebKit */
+    height: -webkit-calc(100% - 65px);
+    /* Opera */
+    height: -o-calc(100% - 65px);
+    /* Standard */
+    height: calc(100% - 65px);
+    overflow: scroll;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#editBarContainer.personaBarShown .previewModeContainer {
+    padding-left: 85px;
+}
+
+.previewModeFrame{
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+}
+
+#previewModeImage {
+    margin: auto;
+}
+
+.phone-portrait {
+    background-image: url('../images/phone-portrait.png');
+    background-repeat: no-repeat;
+    height: 676px;
+    width: 342px;
+    padding-top: 103px;
+    padding-left: 38px;
+}
+
+.phone-landscape {
+    background-image: url('../images/phone-landscape.png');
+    background-repeat: no-repeat;
+    height: 343px;
+    width: 665px;
+    padding-top: 40px;
+    padding-left: 98px;
+}
+
+.desktop {
+    height: 100%;
+    width: 100%;
+}
+
+.tablet-portrait {
+    background-image: url('../images/tablet-portrait.png');
+    background-repeat: no-repeat;
+    height: 920px;
+    width: 782px;
+    padding-top: 90px;
+    padding-left: 88px;
+
+    box-sizing: content-box;
+}
+
+.tablet-landscape {
+    background-image: url('../images/tablet-landscape.png');
+    background-repeat: no-repeat;
+    height: 736px;
+    width: 1017px;
+    padding-top: 63px;
+    padding-left: 111px;
+}
+
+/* Validators */
+span.validationMessage {
+    position: absolute;
+    background-color: red;
+    padding: 10px;
+    border-radius: 3px;
+    color: white;
+    margin-top: -206px;
+    margin-left: 200px;
+}
+
+.EditBarDialog.ff span.validationMessage {
+    margin-top: -230px;
+}
+
+.EditBarDialog.ffosx span.validationMessage {
+    margin-top: -193px;
+}
+
+.EditBarDialog.ie span.validationMessage {
+    margin-top: -45px;
+    margin-left: -200px;
+}
+
+span.validationMessage:after {
+    position: absolute;
+    bottom: -7px;
+    left: 15px;
+    content: "";
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid red;
+}
+
+/*Notification dialog*/
+.noTittle .ui-dialog-titlebar,
+.noTittle .ui-dialog-titlebar-close {
+    display:none
+}
+
+.dnnDialogBlue.ui-dialog-content.ui-widget-content {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+
+    position: absolute;
+    padding: 15px;
+    background-color: #002e47;
+    opacity: 0.9;
+    z-index: 99999;
+    border-radius: 3px;
+    color: #fff;
+    display: none;
+}
+
+.blueIcon {
+    background-image: url('/DesktopModules/DNNCorp/EvoqContentLibrary/SharedAssets/Images/notify.png');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    padding: 7px 0 0 40px;
+    min-height: 31px;
+}
+
+.dnnDialogBlue.warningDialog .blueIcon {
+    background-image: url('/DesktopModules/DNNCorp/EvoqContentLibrary/SharedAssets/Images/warning.png');
+} 
+
+.blueIcon p {
+    color: #fff;
+}
+#editBarOptionsExtensionPoint{ margin-left: 7px;}
+
+.editbar .private-page {
+    background-image: url('../images/icon-non-viewable.png');
+    background-repeat: no-repeat;
+    border: 0 none;
+    width: 20px;
+    height: 33px;
+    margin-left: 20px;
+    margin-top: 12px;
+}
