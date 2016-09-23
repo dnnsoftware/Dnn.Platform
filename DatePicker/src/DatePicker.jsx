@@ -24,8 +24,7 @@ export default class DatePicker extends Component {
         let secondDate = typeof props.secondDate === "string" ? new Date(props.secondDate) : props.secondDate;
 
         this.state = {
-            isCalendarVisible: false,
-            className: "",
+            isCalendarVisible: props.isCalendarVisible,
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
@@ -33,8 +32,11 @@ export default class DatePicker extends Component {
         };
         this.handleClick = this.handleClick.bind(this);
     }
+
     componentWillReceiveProps(newProps) {
+        this.setState({ isCalendarVisible: newProps.isCalendarVisible });
     }
+
     componentDidMount() {
         document.addEventListener("click", this.handleClick, false);
         this._isMounted = true;
@@ -57,19 +59,20 @@ export default class DatePicker extends Component {
         this.hideCalendar();
     }
 
-
     firstDisableDates(day) {
-        if (!this.secondDate) {
+        if (!this.state.Date.SecondDate) {
             return false;
         }
-        return day > this.secondDate;
+        const SecondDate = new Date(this.state.Date.SecondDate);
+        return day > SecondDate;
     }
 
     secondDisableDates(day) {
-        if (!this.date) {
+        if (!this.state.Date.FirstDate) {
             return false;
         }
-        return day < this.date;
+        const FirstDate = new Date(this.state.Date.FirstDate);
+        return day < FirstDate;
     }
 
     updateDate(firstDate, secondDate, disabled) {
@@ -93,30 +96,21 @@ export default class DatePicker extends Component {
             Date
         });
         if (!this.props.isDateRange && !this.props.hasTimePicker) {
-            this.CallUpdateDate();
+            this.callUpdateDate();
             this.hideCalendar();
         }
     }
-    CallUpdateDate() {
+
+    callUpdateDate() {
         let {Date} = this.state;
         this.props.updateDate(Date.FirstDate, Date.SecondDate);
     }
-    Apply() {
-        if (this.props.isDateRange && this.props.hasTimePicker) {
-            this.CallUpdateDate();
-            this.hideCalendar();
-        }
+
+    apply() {
+        this.callUpdateDate();
+        this.hideCalendar();
     }
-    hideCalendar() {
-        // if (this.props.hideCalendar) {
-        //     return this.props.hideCalendar();
-        // }
-        this.setState({ className: "" }, () => {
-            setTimeout(() => {
-                this.setState({ isCalendarVisible: false });
-            }, 200);
-        });
-    }
+
 
     updateFirstTime(time) {
         const date = new Date(this.formatDate(this.date, "L") + " " + time);
@@ -143,19 +137,17 @@ export default class DatePicker extends Component {
         return false;
     }
 
-    toggleCalendar() {
-        if (this.state.isCalendarVisible) {
-            return this.hideCalendar();
-        }
-        this.showCalendar();
+    showCalendar() {
+        this.setState({ isCalendarVisible: true });
     }
 
-    showCalendar() {
-        this.setState({ isCalendarVisible: true }, () => {
-            setTimeout(() => {
-                this.setState({ className: "show" });
-            }, 0);
-        });
+    hideCalendar() {
+        this.setState({ isCalendarVisible: false });
+    }
+
+    toggleCalendar() {
+        const isCalendarVisible = !this.state.isCalendarVisible;
+        this.setState({ isCalendarVisible });
     }
 
     getStyle() {
@@ -167,11 +159,12 @@ export default class DatePicker extends Component {
     }
 
     render() {
-        this.date = this.state.Date.FirstDate;// typeof this.props.date === "string" ? new Date(this.props.date) : this.props.date;
-        this.secondDate = this.state.Date.SecondDate;//typeof this.props.secondDate === "string" ? new Date(this.props.secondDate) : this.props.secondDate;
+        this.date = this.state.Date.FirstDate;
+        this.secondDate = this.state.Date.SecondDate;
 
-        const firstDate = this.date;
-        const secondDate = this.secondDate;
+        let firstDate = this.date;
+        let secondDate = this.secondDate;
+
         let displayFirstDate = firstDate ? this.formatDate(firstDate, "L") : "";
         let displaySecondDate = secondDate ? this.formatDate(secondDate, "L") : "";
 
@@ -184,40 +177,42 @@ export default class DatePicker extends Component {
             displayDate += " - " + displaySecondDate;
         }
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
-        const showCalendar = this.state.isCalendarVisible;//|| this.props.isCalendarVisible;
-
         const showInput = this.props.showInput !== false;
-        const calendarClassName = "calendar-container " + this.state.className + (this.state.isCalendarVisible ? " show" : "");
+        const isCalendarVisible = typeof this.props.isCalendarVisible !== "undefined" ? this.props.isCalendarVisible : this.state.isCalendarVisible;
+        const calendarClassName = "calendar-container" + (isCalendarVisible ? " show" : "");
+
+        firstDate = firstDate ? new Date(firstDate) : new Date();
+        secondDate = secondDate ? new Date(secondDate) : new Date();
+
         return <div className="dnn-day-picker">
-            {showInput && <div className={"calendar-icon" + (this.state.className ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
+            {showInput && <div className={"calendar-icon" + (isCalendarVisible ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
             {showInput && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
                 {displayDate}
             </div>}
-            {showCalendar &&
-                <div className={calendarClassName} style={this.getStyle() }>
-                    <div>
-                        <DayPicker
-                            weekdayElement={ <Weekday/> }
-                            initialMonth={firstDate || new Date() }
-                            selectedDays={day => DateUtils.isSameDay(firstDate, day) }
-                            onDayClick={this.firstDateClick.bind(this) }
-                            disabledDays={ this.firstDisableDates.bind(this) }
-                            />
-                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateFirstTime.bind(this) } time={this.formatDate(this.date, "LT") }/>}
-                    </div>
+            <div className={calendarClassName} style={this.getStyle() }>
+                <div>
+                    <DayPicker
+                        weekdayElement={ <Weekday/> }
+                        initialMonth={firstDate || new Date() }
+                        selectedDays={day => DateUtils.isSameDay(firstDate, day) }
+                        onDayClick={this.firstDateClick.bind(this) }
+                        disabledDays={ this.firstDisableDates.bind(this) }
+                        />
+                    {this.props.hasTimePicker && <TimePicker updateTime={this.updateFirstTime.bind(this) } time={this.formatDate(this.date, "LT") }/>}
+                </div>
 
-                    {this.props.isDateRange && <div>
-                        <DayPicker
-                            weekdayElement={ <Weekday/> }
-                            initialMonth={secondDate || new Date() }
-                            selectedDays={day => DateUtils.isSameDay(secondDate, day) }
-                            onDayClick={this.secondDateClick.bind(this) }
-                            disabledDays={ this.secondDisableDates.bind(this) }
-                            />
-                        {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
-                    </div>}
-                    {showButton && <button role="primary" onClick={this.Apply.bind(this) }>Apply</button>}
+                {this.props.isDateRange && <div>
+                    <DayPicker
+                        weekdayElement={ <Weekday/> }
+                        initialMonth={secondDate || new Date() }
+                        selectedDays={day => DateUtils.isSameDay(secondDate, day) }
+                        onDayClick={this.secondDateClick.bind(this) }
+                        disabledDays={ this.secondDisableDates.bind(this) }
+                        />
+                    {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
+                {showButton && <button role="primary" onClick={this.apply.bind(this) }>Apply</button>}
+            </div>
         </div >;
     }
 }
@@ -234,9 +229,7 @@ DatePicker.propTypes = {
 
     //if showInput is false the controll of showing/hiding the calendar 
     // should be performed outside of the component. 
-    //In this case isCalendarVisible.bool and hideCalendar.func are Required 
+    //In this case isCalendarVisible.bool is Required. Parent Component should handle show/hide logic
     showInput: PropTypes.bool,
     isCalendarVisible: PropTypes.bool
-    //,
-    //    hideCalendar: PropTypes.func
 };
