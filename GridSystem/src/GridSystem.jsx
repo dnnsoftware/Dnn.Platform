@@ -25,8 +25,9 @@ class GridSystem extends Component {
         return children;
     }
     render() {
+        const {props} = this;
         return (
-            <div className="dnn-grid-system" style={this.getStyle() }>
+            <div className={"dnn-grid-system " + props.className}  style={this.getStyle() }>
                 {this.getColumns() }
             </div>
         );
@@ -39,7 +40,12 @@ GridSystem.PropTypes = {
     type: PropTypes.string,
     numberOfColumns: PropTypes.number,
     gridCellStyle: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.object,
+    className: PropTypes.string
+};
+
+GridSystem.defaultProps = {
+    className: ""
 };
 
 export default GridSystem;
