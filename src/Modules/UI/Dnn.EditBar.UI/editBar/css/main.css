@@ -126,7 +126,7 @@ body {
 }
 .editbar .left-section ul li button {
     display: block;
-
+    text-indent: -1000px;
     background-position: 0 0;
     border: 0 none;
     height: 33px;

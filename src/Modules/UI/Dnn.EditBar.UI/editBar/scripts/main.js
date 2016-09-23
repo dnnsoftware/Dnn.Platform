@@ -108,12 +108,16 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             for (var name in menuLoaders) {
                 if (menuLoaders.hasOwnProperty(name) && name !== menuItem.name) {
                     var loader = menuLoaders[name];
-                    loader["onBlur"].call(loader);
+                    if (typeof loader["onBlur"] === "function") {
+                        loader["onBlur"].call(loader);
+                    }
                 }
             }
 
-            getMenuLoader(menuItem, function(loader) {
-                loader["onClick"].call(loader, menuItem);
+            getMenuLoader(menuItem, function (loader) {
+                if (typeof loader["onClick"] === "function") {
+                    loader["onClick"].call(loader, menuItem);
+                }
             });
         }
 

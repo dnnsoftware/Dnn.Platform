@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Dnn.EditBar.AddModule.HttpModules
 {
-    public class AddModuleModule : IHttpModule
+    public class HttpModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();
         private static bool _hasAppStarted = false;

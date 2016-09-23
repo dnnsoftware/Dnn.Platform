@@ -35,5 +35,10 @@ namespace Dnn.EditBar.UI.Items
         public override string Parent { get;} = Constants.LeftMenu;
 
         public override string Loader { get; } = "AddModule";
+
+        public override bool Visible()
+        {
+            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+        }
     }
 }
