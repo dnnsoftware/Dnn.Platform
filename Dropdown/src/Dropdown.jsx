@@ -99,6 +99,8 @@ class Dropdown extends Component {
 
         className += (" " + props.size);
 
+        className += (" " + props.className);
+
         if (!props.enabled)
         {
             className += " disabled";
@@ -163,6 +165,7 @@ Dropdown.PropTypes = {
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
     keepCollapsedContent: PropTypes.bool,
+    className: PropTypes.string,
     scrollAreaStyle: PropTypes.object,
     options: PropTypes.array,
     onSelect: PropTypes.func,
@@ -180,7 +183,8 @@ Dropdown.defaultProps = {
     withBorder: true,
     size: "small",
     closeOnClick: true,
-    enabled: true
+    enabled: true,
+    className: ""
 };
 
 export default Dropdown;
