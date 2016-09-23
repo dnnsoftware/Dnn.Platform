@@ -180,7 +180,7 @@ namespace Dnn.EditBar.AddModule.ContentEditor
                     pane.Parent.Controls.AddAt(paneIndex, ajaxPanel);
                     ajaxPanel.Controls.Add(pane);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     SupportAjax = false;
                     return;

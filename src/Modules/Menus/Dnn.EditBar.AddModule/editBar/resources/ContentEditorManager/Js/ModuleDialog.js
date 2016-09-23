@@ -7,7 +7,7 @@
 if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager === null) { dnn.ContentEditorManager = {}; };
 
 (function ($) {
-    var htmlModuleName = 'HTML Pro';
+    var htmlModuleName = 'HTML';
     var layoutModuleName = 'Content Layout';
     var moduleAlias = { 'Content Layout': 'Grids' };
     var recommendedList = [];
@@ -1128,7 +1128,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         _getEditorService: function () {
             if (!this._editorServiceController) {
                 this._editorServiceController = new dnn.dnnModuleService({
-                    service: 'EvoqContentLibrary',
+                    service: 'editBar/addModule',
                     controller: 'ContentEditor'
                 });
             }

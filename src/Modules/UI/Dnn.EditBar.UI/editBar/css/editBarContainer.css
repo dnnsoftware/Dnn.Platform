@@ -7,7 +7,7 @@ iframe#editBar-iframe{
 	position: fixed;
     bottom: 0; 
 	height: 85px; 
-	z-index: 9999999;
+	z-index: 1105 !important;
 }
 iframe#editBar-iframe.summary {
     height: 170px;

@@ -155,6 +155,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\ContentEditorController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

@@ -303,7 +303,7 @@
     -webkit-box-shadow: none;
     -ms-box-shadow: none;
     box-shadow: none;
-
+    outline: none;
     height: 100%;
     line-height: 100%;
     -webkit-box-sizing: border-box;
@@ -582,6 +582,7 @@ div.module-motion {
 .module-drag-tip p {
     margin: 0;
     line-height: 20px;
+    font-size: 12px;
 }
 .module-drag-tip:after {
     width: 0;

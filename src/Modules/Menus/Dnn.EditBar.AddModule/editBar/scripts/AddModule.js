@@ -12,7 +12,12 @@
     };
 
     var onClick = function () {
-        
+        var dialog = window.top.dnn.ContentEditorManager.getModuleDialog();
+        var contentPane = dialog.getDefaultPane();
+        var moduleManager = contentPane.data('dnnModuleManager');
+        if (moduleManager) {
+            moduleManager.getHandler().click();
+        }
     }
 
     return {
