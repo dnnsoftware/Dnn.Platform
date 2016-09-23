@@ -19,7 +19,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Parent { get; } = Constants.RightMenu;
 
-        public override string Loader { get; } = "test";
+        public override string Loader { get; } = "";
 
         public override bool Visible()
         {

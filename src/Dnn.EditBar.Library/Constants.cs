@@ -8,6 +8,7 @@ namespace Dnn.EditBar.Library
 {
     public static class Constants
     {
+        public const string EditBarRelativePath = "~/admin/Dnn.EditBar";
         public const string LeftMenu = "LeftMenu";
         public const string RightMenu = "RightMenu";
 

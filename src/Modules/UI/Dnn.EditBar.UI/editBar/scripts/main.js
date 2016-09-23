@@ -10,24 +10,7 @@
             'templatePath': '../../',
             'cssPath': '../../css/'
         },
-        urlArgs: (cdv ? 'cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : ''),
-        map: {
-			'*': {
-		        'dnn.jquery': ['../../../../Resources/Shared/Scripts/dnn.jquery'],
-		        'dnn.jquery.extensions': ['../../../../Resources/Shared/Scripts/dnn.jquery.extensions'],
-		        'dnn.extensions': ['../../../../Resources/Shared/scripts/dnn.extensions'],
-		        'jquery.tokeninput': ['../../../../Resources/Shared/components/Tokeninput/jquery.tokeninput'],
-		        'dnn.jScrollBar': ['../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar'],
-		        'dnn.servicesframework': ['../../../../js/dnn.servicesframework'],
-		        'dnn.DataStructures': ['../../../../Resources/Shared/scripts/dnn.DataStructures'],
-		        'jquery.mousewheel': ['../../../../Resources/Shared/scripts/jquery/jquery.mousewheel'],
-				'dnn.TreeView': ['../../../../Resources/Shared/scripts/TreeView/dnn.TreeView'],
-				'dnn.DynamicTreeView': ['../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView'],
-				'dnn.DropDownList': ['../../../../Resources/Shared/Components/DropDownList/dnn.DropDownList'],
-                'css.DropDownList': ['css!../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'],
-		        'css.jScrollBar': ['css!../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar.css']
-	        }
-        }
+        urlArgs: (cdv ? 'cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '')
     });
     requirejs.onError = function (err) {
         // If requireJs throws a timeout reload the page
@@ -50,6 +33,8 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         var config = cf.init();
         var utility = ut.init(config);
 
+        var menuLoaders = {};
+
         window.requirejs.config({
             paths: {
                 'rootPath': utility.getApplicationRootPath()
@@ -63,16 +48,21 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         util = $.extend(util, utility);
         // end define util
 
-        var loadMenuResources = function (item) {
+        var getMenuLoader = function (item, callback) {
             if (!item.loader) {
                 return;
             }
 
+            if (typeof menuLoaders[item.name] !== "undefined") {
+                if (typeof callback === "function") {
+                    callback(menuLoaders[item.name]);
+                }
+                return;
+            }
+
             var templateSuffix = '.html';
-            var cssSuffix = '.css';
             var initMethod = 'init';
             var requiredArray = ['../' + item.loader, 'text!../../' + item.loader + templateSuffix];
-            requiredArray.push('css!../../css/' + item.loader + cssSuffix);
 
             window.require(requiredArray, function (loader, html) {
                 if (typeof loader === "undefined") {
@@ -81,7 +71,46 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
                 var params = { html: html };
 
-                loader[initMethod].call(loader, item, utility, params, null);
+                loader[initMethod].call(loader, item, util, params, function() {
+                    menuLoaders[item.name] = loader;
+
+                    if (typeof callback === "function") {
+                        callback(loader);
+                    }
+                });
+            });
+        }
+
+        var loadMenuStyles = function (item) {
+            if (!item.loader) {
+                return;
+            }
+
+            var cssSuffix = '.css';
+            var requiredArray = ['css!../../css/' + item.loader + cssSuffix];
+
+            window.require(requiredArray);
+        }
+
+        var renderMenu = function (menuItem) {
+            if (menuItem.template) {
+                return menuItem.template;
+            } else {
+                var text = menuItem.resx[menuItem.text];
+                return '<a href="#" title="' + text + '">' + text + '</a>';
+            }
+        }
+
+        var menuItemClick = function (menuItem) {
+            for (var name in menuLoaders) {
+                if (menuLoaders.hasOwnProperty(name) && name !== menuItem.name) {
+                    var loader = menuLoaders[name];
+                    loader["onBlur"].call(loader);
+                }
+            }
+
+            getMenuLoader(menuItem, function(loader) {
+                loader["onClick"].call(loader, menuItem);
             });
         }
 
@@ -92,18 +121,21 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
             for (var i = 0; i < config.items.length; i++) {
                 var menuItem = config.items[i];
+                menuItem.resx = util.resx[menuItem.name] || util.resx.Common;
+                loadMenuStyles(menuItem);
+
                 switch (menuItem.parent.toLowerCase()) {
-                case "leftmenu":
-                    viewModel.leftMenus.push(menuItem);
-                    break;
-                case "rightmenu":
+                    case "leftmenu":
+                        viewModel.leftMenus.push(menuItem);
+                        break;
+                    case "rightmenu":
                         viewModel.rightMenus.push(menuItem);
                         break;
-                default:
                 }
-
-                loadMenuResources(menuItem);
             }
+
+            viewModel.renderMenu = renderMenu;
+            viewModel.menuItemClick = menuItemClick;
 
             return viewModel;
         }
@@ -113,7 +145,9 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             ko.applyBindings(viewModel, $("#edit-bar")[0]);
         }
 
-        loadMenus();
+        util.loadResx(function() {
+            loadMenus();
+        });
         
         // Register a PersonaBar object in the parent window global scope
         // to allow easy integration between the site and the persona bar

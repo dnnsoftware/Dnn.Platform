@@ -1,7 +1,4 @@
 ﻿/* Person Bar iFrame */
-.dnnEditState iframe#editBar-iframe{
-	width: 85px;
-}
 iframe#editBar-iframe{
 	width: 100%; 
 	position: fixed;

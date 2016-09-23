@@ -141,12 +141,16 @@
     <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Controllers\EditBarController.cs" />
     <Compile Include="Controllers\IEditBarController.cs" />
+    <Compile Include="Controllers\ILocalizationController.cs" />
+    <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="HttpModules\EditBarModule.cs" />
+    <Compile Include="Items\EditPageMenu.cs" />
     <Compile Include="Items\PrivatePageMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\LocalizationController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
@@ -169,7 +173,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="editBar\css\test.css" />
+    <Content Include="editBar\css\EditPage.css" />
     <Content Include="editBar\css\editBarContainer.css" />
     <Content Include="editBar\css\main.css" />
     <Content Include="editBar\css\ProximaNova-Reg-webfont.svg" />
@@ -201,6 +205,7 @@
     <Content Include="editBar\images\ShowVersionIcon.png" />
     <Content Include="editBar\images\tablet-landscape.png" />
     <Content Include="editBar\images\tablet-portrait.png" />
+    <Content Include="editBar\editpage.html" />
     <Content Include="editBar\index.html" />
     <Content Include="editBar\scripts\bootstrap.js" />
     <Content Include="editBar\scripts\config.js" />
@@ -219,7 +224,7 @@
     <Content Include="editBar\scripts\gateway.js" />
     <Content Include="editBar\scripts\main.js" />
     <Content Include="editBar\scripts\sf.js" />
-    <Content Include="editBar\scripts\test.js" />
+    <Content Include="editBar\scripts\EditPage.js" />
     <Content Include="editBar\scripts\util.js" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />
@@ -232,6 +237,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="editBar\App_LocalResources\EditPage.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

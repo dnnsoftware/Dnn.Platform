@@ -6,7 +6,7 @@ define(['jquery'], function ($) {
                 loadResx: function(cb) {
                     var self = this;
                     
-					self.sf.moduleRoot = 'personaBar/common';
+					self.sf.moduleRoot = 'editBar/common';
                     self.sf.controller = 'localization';
                     self.sf.getsilence('gettable', { culture: config.culture }, function (d) {
                         self.resx = d;
