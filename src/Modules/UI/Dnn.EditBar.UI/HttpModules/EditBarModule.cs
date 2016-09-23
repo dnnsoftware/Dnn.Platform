@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using Dnn.EditBar.UI.Controllers;
 using DotNetNuke.Application;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
@@ -46,7 +52,52 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
+            if (!IsPageEditor())
+            {
+                return;
+            }
+
             RegisterEditBarResources(e.Skin.PortalSettings, e.Skin.Page);
+        }
+
+        private bool IsPageEditor()
+        {
+            return HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(PortalSettings.Current);
+
+        }
+
+        public static bool HasTabPermission(string permissionKey)
+        {
+            var principal = Thread.CurrentPrincipal;
+            if (!principal.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+
+            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            if (isAdminUser) return true;
+
+            return TabPermissionController.HasTabPermission(permissionKey);
+        }
+
+        private bool IsModuleAdmin(PortalSettings portalSettings)
+        {
+            bool isModuleAdmin = false;
+            foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
+            {
+                if (!objModule.IsDeleted)
+                {
+                    bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
+                    if (blnHasModuleEditPermissions)
+                    {
+                        isModuleAdmin = true;
+                        break;
+                    }
+                }
+            }
+            return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
 
         private void RegisterEditBarResources(PortalSettings portalSettings, Page page)
