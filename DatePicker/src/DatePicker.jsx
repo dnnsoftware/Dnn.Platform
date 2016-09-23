@@ -3,7 +3,10 @@ import ReactDOM from "react-dom";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
+import DateInput from "./DateInput";
 import "./style.less";
+
+const DefaultControllerClassName = "calendar-controller";
 
 function Weekday({ weekday, className, localeUtils, locale }) {
     const weekdayName = localeUtils.formatWeekdayLong(weekday, locale);
@@ -12,6 +15,10 @@ function Weekday({ weekday, className, localeUtils, locale }) {
             {weekdayName.slice(0, 1) }
         </div>
     );
+}
+
+function hasClass(element, className) {
+    return (" " + element.className + " ").indexOf(" " + className + " ") > -1;
 }
 
 Weekday.propTypes = WeekdayPropTypes;
@@ -23,17 +30,26 @@ export default class DatePicker extends Component {
         let firstDate = typeof props.date === "string" ? new Date(props.date) : props.date;
         let secondDate = typeof props.secondDate === "string" ? new Date(props.secondDate) : props.secondDate;
 
+        this.savedDate = {
+            FirstDate: firstDate !== undefined ? firstDate : null,
+            SecondDate: secondDate !== undefined ? secondDate : null
+        };
+
         this.state = {
             isCalendarVisible: props.isCalendarVisible,
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
             }
+
         };
         this.handleClick = this.handleClick.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
+        if (newProps.isCalendarVisible === undefined) {
+            return;
+        }
         this.setState({ isCalendarVisible: newProps.isCalendarVisible });
     }
 
@@ -48,15 +64,18 @@ export default class DatePicker extends Component {
     }
 
     handleClick(e) {
+        e.preventDefault();
+        const isController = hasClass(e.target, DefaultControllerClassName) || this.props.controllerClassName && hasClass(e.target, this.props.controllerClassName);
+
         if (!this._isMounted) { return; }
         const node = ReactDOM.findDOMNode(this);
         if (node && node.contains(e.target)) {
             return;
         }
-        if (this.props.showInput === false) {
+        if (isController) {
             return;
         }
-        this.hideCalendar();
+        this.cancel();
     }
 
     firstDisableDates(day) {
@@ -75,7 +94,7 @@ export default class DatePicker extends Component {
         return day < FirstDate;
     }
 
-    updateDate(firstDate, secondDate, disabled) {
+    updateDate(firstDate, secondDate, disabled, options = {}) {
         if (disabled) {
             return;
         }
@@ -95,20 +114,37 @@ export default class DatePicker extends Component {
         this.setState({
             Date
         });
-        if (!this.props.isDateRange && !this.props.hasTimePicker) {
+        if (options.callUpdateDate || !this.props.isDateRange && !this.props.hasTimePicker) {
             this.callUpdateDate();
-            this.hideCalendar();
+            if (!options.preventHide) {
+                this.hideCalendar();
+            }
         }
     }
 
     callUpdateDate() {
         let {Date} = this.state;
         this.props.updateDate(Date.FirstDate, Date.SecondDate);
+        this.cashPreviousDates();
+    }
+
+    cashPreviousDates() {
+        const {Date} = this.state;
+        const FirstDate = Date.FirstDate;
+        const SecondDate = Date.SecondDate;
+        this.savedDate = {FirstDate, SecondDate};
     }
 
     apply() {
         this.callUpdateDate();
         this.hideCalendar();
+    }
+
+    cancel() {
+        this.hideCalendar();
+        const FirstDate = this.savedDate.FirstDate;
+        const SecondDate = this.savedDate.SecondDate;
+        this.setState({ Date: {FirstDate, SecondDate} }, this.callUpdateDate.bind(this));
     }
 
 
@@ -158,6 +194,18 @@ export default class DatePicker extends Component {
         return style;
     }
 
+    updateFirstDate(date) {
+        const firstDate = date ? date : this.state.Date.FirstDate;
+        const secondDate = this.state.Date.SecondDate;
+        this.updateDate(firstDate, secondDate, false, { preventHide: true, callUpdateDate: true });
+    }
+
+    updateSecondDate(date) {
+        const secondDate = date ? date : this.state.Date.SecondDate;
+        const firstDate = this.state.Date.FirstDate;
+        this.updateDate(firstDate, secondDate, false, { preventHide: true, callUpdateDate: true });
+    }
+
     render() {
         this.date = this.state.Date.FirstDate;
         this.secondDate = this.state.Date.SecondDate;
@@ -177,17 +225,28 @@ export default class DatePicker extends Component {
             displayDate += " - " + displaySecondDate;
         }
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
-        const showInput = this.props.showInput !== false;
+
         const isCalendarVisible = typeof this.props.isCalendarVisible !== "undefined" ? this.props.isCalendarVisible : this.state.isCalendarVisible;
         const calendarClassName = "calendar-container" + (isCalendarVisible ? " show" : "");
 
         firstDate = firstDate ? new Date(firstDate) : new Date();
         secondDate = secondDate ? new Date(secondDate) : new Date();
 
+        const showStaticText = !this.props.hasOutsideShowHideControl && this.props.isInputReadOnly;
+        const showInputFields = !this.props.hasOutsideShowHideControl && !this.props.isInputReadOnly;
+        const showIcon = this.props.showIcon !== false && !this.props.hasOutsideShowHideControl;
+
         return <div className="dnn-day-picker">
-            {showInput && <div className={"calendar-icon" + (isCalendarVisible ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
-            {showInput && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
-                {displayDate}
+            {showIcon && <div className={"calendar-icon" + (isCalendarVisible ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
+            {!this.props.hasOutsideShowHideControl && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
+                {showStaticText && displayDate}
+                {showInputFields && <div style={{ float: "right" }}>
+                    <DateInput date={firstDate} onUpdateDate={this.updateFirstDate.bind(this) } hasTimePicker={this.props.hasTimePicker || false}/>
+                    {this.props.isDateRange && <div>
+                        <span>&nbsp; -&nbsp; </span>
+                        <DateInput date={secondDate} onUpdateDate={this.updateSecondDate.bind(this) } hasTimePicker={this.props.hasTimePicker || false}/>
+                    </div>}
+                </div>}
             </div>}
             <div className={calendarClassName} style={this.getStyle() }>
                 <div>
@@ -211,7 +270,7 @@ export default class DatePicker extends Component {
                         />
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
-                {showButton && <button role="primary" onClick={this.apply.bind(this) }>Apply</button>}
+                {showButton && <button role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
             </div>
         </div >;
     }
@@ -224,12 +283,24 @@ DatePicker.propTypes = {
 
     // Optional Props
     secondDate: PropTypes.instanceOf(Date),
+
+    // if set to true, it shows 2 calendars
     isDateRange: PropTypes.bool,
+
+    // if set ot to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
 
-    //if showInput is false the controll of showing/hiding the calendar 
-    // should be performed outside of the component. 
-    //In this case isCalendarVisible.bool is Required. Parent Component should handle show/hide logic
-    showInput: PropTypes.bool,
-    isCalendarVisible: PropTypes.bool
+    // showInput is true by default. 
+    // If showInput is false the controll of showing/hiding the calendar should be performed outside of the component. 
+    // In this case isCalendarVisible.bool is Required. Parent Component should handle show/hide logic
+    hasOutsideShowHideControl: PropTypes.bool,
+    isCalendarVisible: PropTypes.bool,
+    controllerClassName: PropTypes.string,
+
+    //if set to true it shows static text insted of input fields
+    isInputReadOnly: PropTypes.bool,
+
+    //show/hide an icon
+    showIcon: PropTypes.bool,
+    applyButtonText: PropTypes.string
 };
