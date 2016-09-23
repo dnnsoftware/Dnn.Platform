@@ -1,10 +1,36 @@
-﻿body {
+﻿@font-face {
+    font-family: 'proxima_nova';
+    src: url('ProximaNova-Reg-webfont.woff') format('woff'),
+         url('ProximaNova-Reg-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_semibold';
+    src: url('ProximaNova-Sbold-webfont.woff') format('woff'),
+         url('ProximaNova-Sbold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_c_semibold';
+    src: url('ProximaNovaCond-Sbold-webfont.woff') format('woff'),
+         url('ProximaNovaCond-Sbold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
     margin: 0;
     padding: 0;
     font-size: 12px;
 }
 #editBarContainer {
     display: block !important;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 #editBarContainer * {
     font-family: Arial, Helvetica, sans-serif;
@@ -27,7 +53,7 @@
     box-sizing: content-box;
 }
 
-.editbar div {
+.editbar > div {
     margin-left: 10px;
     float: left;
 }
@@ -35,6 +61,15 @@
 .editbar ul.menuEditBar {
     position: relative;
     margin: 0;
+    padding: 0;
+}
+
+
+.editbar ul.menuEditBar li {
+    list-style-type: none;
+    list-style: none;
+    float: left;
+    position: relative;
     padding: 0;
 }
 
@@ -48,6 +83,10 @@
     min-width: 95px;
     white-space: nowrap;
     box-sizing: content-box;
+    transform: translateX(-50%);
+    left: 50%;
+    text-align: center;
+    margin-left: 0;
 }
 
 .editbar ul.menuEditBar li:hover .submenuEditBar {
@@ -62,77 +101,12 @@
     border: 16px solid;
     border-color: #0F0F0F transparent transparent transparent;
     position: absolute;
-    left: 33%;
+    transform: translateX(-50%);
+    left: 50%;
     bottom: -26px;
 }
 
-.editbar .submenuEditBar.previewUrlsMenu {
-    left: -17px;
-}
 
-.editbar .submenuEditBar.previewUrlsMenu:after {
-    left: 26px;
-}
-
-.editbar .submenuEditBar.viewModesMenu {
-    left: -46px;
-}
-
-.editbar .submenuEditBar.viewModesMenu:after {
-    left: 46px;
-}
-
-.editbar .submenuEditBar.portraitTooltip {
-    left: -10px;
-}
-
-.editbar .submenuEditBar.portraitTooltip:after {
-    left: 21px;
-}
-
-.editbar .submenuEditBar.landscapeTooltip {
-    left: -21px;
-}
-
-.editbar .submenuEditBar.landscapeTooltip:after {
-    left: 35px;
-}
-
-.editbar ul.menuEditBar li {
-    list-style-type: none;
-    list-style: none;
-    float: left;
-    position: relative;
-    padding: 0;
-}
-
-.editbar div.textInEditHoverMenu {
-    position: relative;
-    float: none;
-    margin-bottom: 10px;
-    color: #FFFFFF;
-    margin-left: -5px;
-}
-
-.editbar ul.menuEditBar .hover-menu li.ViewMenuButton {
-    float: none;
-    color: #727272;
-    background-repeat: no-repeat;
-    width: 0;
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 5px;
-}
-
-.editbar ul.menuEditBar .hover-menu li.ViewMenuButton.selected {
-    font-weight: bolder;
-    color: #FFFFFF;
-}
-
-.editbar ul.menuEditBar .hover-menu li.ViewMenuButton:hover {
-    font-weight: bolder;
-    color: #FFFFFF;
-}
 
 .editbar .submenuBottom {
     position: absolute;
@@ -141,25 +115,26 @@
     height: 100px;
     bottom: -82px;
 }
+.editbar .left-section {
+    margin-left: 20px;
+}
+.editbar .left-section ul {
+    
+}
+.editbar .left-section ul li {
+        margin-left: 7px;
+}
+.editbar .left-section ul li button {
+    display: block;
 
-.editbar .left-button {
-    margin-left: 7px;
     background-position: 0 0;
     border: 0 none;
     height: 33px;
     width: 47px;
     color: #727272;
-}
-
-.editbar .left-button:first-child {
-    margin-left: 0;
-}
-
-.editbar .left-button:hover {
-    background-position: 0 -33px;
     cursor: pointer;
+    outline: none;
 }
-
 .editbar .right-section {
     float: right;
     padding-right: 144px;
@@ -170,7 +145,7 @@
     float: left;
     margin-left: 12px;
 }
-.editbar .right-section ul li a {
+.editbar .right-section ul li button {
     display: block;
     height: 35px;
     width: 98px;
@@ -182,17 +157,17 @@
     border-width: 1px;
     cursor: pointer;
     color: #fff;
-    line-height: 35px;
     text-align: center;
     text-decoration: none;
+    outline: none;
 }
 
-.editbar .right-section ul li.gray-button a {
+.editbar .right-section ul li.gray-button button {
     background-color: #515151;
     border-color: #515151;
     color: #000;
 }
-.editbar .right-section ul li.main-button a {
+.editbar .right-section ul li.main-button button {
     background-color: #0087C6;
     border-color: #0087C6;
 }

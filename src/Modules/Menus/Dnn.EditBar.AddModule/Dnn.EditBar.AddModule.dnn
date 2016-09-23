@@ -1,0 +1,71 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Dnn.EditBar.AddModule" type="Library" version="01.00.00">
+            <friendlyName>Dnn.EditBar.AddModule</friendlyName>
+            <description></description>
+            <dependencies/>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <dependencies>
+                <dependency type="CoreVersion">08.00.00</dependency>
+                <dependency type="ManagedPackage" version="01.00.00">Dnn.EditBar.UI</dependency>
+            </dependencies>
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.EditBar.AddModule.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer/modules/add[@name='EditBar.AddModule']" action="remove" />
+                                    <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+                                        <add name="EditBar.AddModule" type="Dnn.EditBar.AddModule.HttpModules.AddModuleModule, Dnn.EditBar.AddModule" preCondition="managedHandler" />
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer/modules/add[@name='EditBar.AddModule']" action="remove" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>admin\Dnn.EditBar</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+            </components>
+            <eventMessage>
+                <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                <processorCommand>UpgradeModule</processorCommand>
+                <attributes>
+                    <businessControllerClass>Dnn.EditBar.AddModule.Components.BusinessController, Dnn.EditBar.AddModule</businessControllerClass>
+                    <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                    <upgradeVersionsList>01.00.00</upgradeVersionsList>
+                </attributes>
+            </eventMessage>
+        </package>
+    </packages>
+</dotnetnuke>

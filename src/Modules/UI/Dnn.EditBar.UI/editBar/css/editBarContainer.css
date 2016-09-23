@@ -1,4 +1,7 @@
-﻿/* Person Bar iFrame */
+﻿/* Edit Bar iFrame */
+body {
+    margin-bottom: 85px !important;
+}
 iframe#editBar-iframe{
 	width: 100%; 
 	position: fixed;
@@ -6,3 +9,10 @@ iframe#editBar-iframe{
 	height: 85px; 
 	z-index: 9999999;
 }
+iframe#editBar-iframe.summary {
+    height: 170px;
+}
+iframe#editBar-iframe.detail {
+    height: 480px;
+}
+

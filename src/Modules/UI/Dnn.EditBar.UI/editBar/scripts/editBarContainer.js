@@ -18,7 +18,12 @@
             src += '?cdv=' + settings.buildNumber + (debugMode ? '&t=' + Math.random() : '');
             var $iframe = $('<iframe id="editBar-iframe" allowTransparency="true" frameBorder="0" scrolling="false"></iframe>');
 
-            $iframe.appendTo(document.body).attr('src', src);
+            $iframe.appendTo(document.body).attr('src', src)
+                .mouseenter(function() {
+                    $iframe.addClass("summary");
+                }).mouseleave(function () {
+                    $iframe.removeClass("summary detail");
+                });
         }
 
         loadEditBar();

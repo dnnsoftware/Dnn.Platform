@@ -146,8 +146,8 @@ namespace Dnn.EditBar.UI.Services
 
         private IList<string> GetAllResourceFiles(string culture)
         {
-            var personaBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
-            var physicalPath = HttpContext.Current.Server.MapPath(personaBarResourcesPath);
+            var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
+            var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);
             return Directory.GetFiles(physicalPath, "*.resx");
         } 
 

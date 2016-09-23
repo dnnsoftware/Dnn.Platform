@@ -2,7 +2,7 @@
     <div id="editBarPanelsExtensionPoint"></div>
 
     <div id="edit-bar" class="editbar">
-        <div>
+        <div class="left-section">
             <ul id="leftMenu"class="menuEditBar" data-bind="foreach: leftMenus">
                 <li data-bind="html: $root.renderMenu($data), attr: {'id': 'menu-' + name, 'class': cssClass}, click: $root.menuItemClick, clickBubble: false"></li>
             </ul>

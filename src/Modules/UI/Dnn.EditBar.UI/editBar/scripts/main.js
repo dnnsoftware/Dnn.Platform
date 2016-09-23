@@ -33,6 +33,8 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         var config = cf.init();
         var utility = ut.init(config);
 
+        var $editBar = $("#edit-bar");
+
         var menuLoaders = {};
 
         window.requirejs.config({
@@ -96,8 +98,9 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             if (menuItem.template) {
                 return menuItem.template;
             } else {
-                var text = menuItem.resx[menuItem.text];
-                return '<a href="#" title="' + text + '">' + text + '</a>';
+                var text = menuItem.resx[menuItem.text] || menuItem.text;
+                return '<button href="javascript:void(0);">' + text + '</button>' +
+                    '<div class="submenuEditBar">' + text + '</div>';
             }
         }
 
@@ -142,7 +145,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
         var loadMenus = function() {
             var viewModel = buildViewModel();
-            ko.applyBindings(viewModel, $("#edit-bar")[0]);
+            ko.applyBindings(viewModel, $editBar[0]);
         }
 
         util.loadResx(function() {
