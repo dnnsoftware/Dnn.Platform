@@ -78,20 +78,32 @@ export default class DatePicker extends Component {
         this.cancel();
     }
 
+    resetHours(date) {
+        let newDate = date;
+        newDate.setHours(0);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        return newDate;
+    }
+
     firstDisableDates(day) {
-        if (!this.state.Date.SecondDate) {
-            return false;
-        }
-        const SecondDate = new Date(this.state.Date.SecondDate);
-        return day > SecondDate;
+        const SecondDate = this.state.Date.SecondDate ? this.resetHours(new Date(this.state.Date.SecondDate)) : null;
+        let maxDate = this.resetHours(new Date(this.props.maxDate));
+        maxDate = SecondDate && SecondDate < maxDate ? SecondDate : maxDate;
+        const minDate = this.resetHours(new Date(this.props.minDate));
+        
+        const thisDay = this.resetHours(day);
+        return thisDay < minDate || thisDay > maxDate;
     }
 
     secondDisableDates(day) {
-        if (!this.state.Date.FirstDate) {
-            return false;
-        }
-        const FirstDate = new Date(this.state.Date.FirstDate);
-        return day < FirstDate;
+        const FirstDate = this.state.Date.FirstDate ? this.resetHours(new Date(this.state.Date.FirstDate)) : null;
+        let minDate =  this.resetHours(new Date( this.props.minSecondDate));
+        minDate = FirstDate && FirstDate > minDate ? FirstDate : minDate;
+        const maxDate = this.resetHours(new Date(this.props.maxSecondDate));
+
+        const thisDay = this.resetHours(day);
+        return thisDay < minDate || thisDay > maxDate;
     }
 
     updateDate(firstDate, secondDate, disabled, options = {}) {
@@ -132,7 +144,7 @@ export default class DatePicker extends Component {
         const {Date} = this.state;
         const FirstDate = Date.FirstDate;
         const SecondDate = Date.SecondDate;
-        this.savedDate = {FirstDate, SecondDate};
+        this.savedDate = { FirstDate, SecondDate };
     }
 
     apply() {
@@ -144,7 +156,7 @@ export default class DatePicker extends Component {
         this.hideCalendar();
         const FirstDate = this.savedDate.FirstDate;
         const SecondDate = this.savedDate.SecondDate;
-        this.setState({ Date: {FirstDate, SecondDate} }, this.callUpdateDate.bind(this));
+        this.setState({ Date: { FirstDate, SecondDate } }, this.callUpdateDate.bind(this));
     }
 
 
@@ -284,6 +296,13 @@ DatePicker.propTypes = {
     // Optional Props
     secondDate: PropTypes.instanceOf(Date),
 
+    //min and max dates to reduce dates user can select.
+    minDate: PropTypes.instanceOf(Date),
+    maxDate: PropTypes.instanceOf(Date),
+
+    minSecondDate: PropTypes.instanceOf(Date),
+    maxSecondDate: PropTypes.instanceOf(Date),
+
     // if set to true, it shows 2 calendars
     isDateRange: PropTypes.bool,
 
@@ -302,5 +321,6 @@ DatePicker.propTypes = {
 
     //show/hide an icon
     showIcon: PropTypes.bool,
+
     applyButtonText: PropTypes.string
 };

@@ -206,3 +206,4 @@ DateInput.propTypes = {
     onUpdateDate: PropTypes.func.isRequired,
     hasTimePicker: PropTypes.bool
 };
+
