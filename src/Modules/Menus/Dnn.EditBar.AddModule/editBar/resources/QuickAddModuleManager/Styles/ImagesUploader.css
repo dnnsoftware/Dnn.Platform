@@ -1,0 +1,11 @@
+﻿.EvoqEmptyPane, .DnnModule-DNN_HTML {
+    -webkit-transition: background linear 200ms;
+    -moz-transition: background linear 200ms;
+    -ms-transition: background linear 200ms;
+    -o-transition: background linear 200ms;
+    transition: background linear 200ms;
+}
+
+.EvoqEmptyPane.images-dragover, .DnnModule-DNN_HTML.images-dragover {
+    background: rgba(255, 250, 205, 255);
+}

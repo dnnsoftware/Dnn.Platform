@@ -1,9 +1,13 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.UI;
+using Dnn.EditBar.AddModule.ContentEditor;
 using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
@@ -35,10 +39,33 @@ namespace Dnn.EditBar.AddModule.HttpModules
 
         private void ApplicationStart()
         {
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, OnSkinInit));
         }
 
         public void Dispose()
         {
         }
+
+        public static void OnSkinInit(object sender, SkinEventArgs e)
+        {
+            try
+            {
+                if (ContentEditorManager.GetCurrent(e.Skin.Page) == null && !Globals.IsAdminControl())
+                {
+                    if (PortalSettings.Current.UserId > 0)
+                    {
+                        e.Skin.Page.Form.Controls.Add(new ContentEditorManager { Skin = e.Skin });
+                        e.Skin.Page.Form.Controls.Add(new QuickAddModuleManager());
+                    }
+                }
+
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+        }
+
     }
 }

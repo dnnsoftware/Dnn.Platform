@@ -1,0 +1,52 @@
+﻿.dnnQuickAddModuleManager, .body .dnnSortable.dnnQuickAddModuleManager {
+    position: relative;
+    border-color: #5EB8D7 !important;
+    min-height: 110px !important;
+}
+.dnnQuickAddModuleManager .QuickAddModuleHandler {
+    background: url('../Images/Icon-QuickAdd-Module.png') no-repeat;
+}
+
+.dnnQuickAddModuleManager .QuickAddImageHandler {
+    background: url('../Images/Icon-QuickAdd-Module-Image.png') no-repeat;
+
+}
+
+.dnnQuickAddModuleManager .QuickAddTextHandler {
+
+    background: url('../Images/Icon-QuickAdd-Module-Text.png') no-repeat;
+
+}
+.dnnQuickAddModuleManager .handlerContainer {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    text-align: center;
+    max-width: 200px;
+    min-width: 96px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.dnnQuickAddModuleManager .handlerContainer .QuickAddHandler {
+    width: 30%;
+    padding-top: 30%;
+    margin-left: 4%;
+    cursor: pointer;
+    display: block;
+    background-size: auto 100%;
+    background-position: center center;
+    opacity: 0.5;
+    float: left;
+        box-shadow: inset 0 1px 0 #c1c1c1,
+                    inset -1px 0 0 #c1c1c1,
+                    inset 0px -1px 0 #c1c1c1,
+                    inset 1px 0 0 #c1c1c1;
+
+    zoom: 1;
+}
+.dnnQuickAddModuleManager .handlerContainer .QuickAddHandler:first-child {
+    margin-left: 0;
+}
