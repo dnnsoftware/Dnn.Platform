@@ -126,6 +126,9 @@
   <data name="PageSettings.Text" xml:space="preserve">
     <value>Page Settings</value>
   </data>
+  <data name="PageSettings.Tooltip" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
   <data name="PrivatePage.Text" xml:space="preserve">
     <value>Private Page</value>
   </data>

@@ -124,10 +124,36 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                 return menuItem.template;
             } else {
                 var text = menuItem.resx[menuItem.text] || menuItem.text;
-                return '<button href="javascript:void(0);">' + text + '</button>' +
-                    '<div class="submenuEditBar">' + text + '</div>';
+                var menu = '<button href="javascript:void(0);">' + text + '</button>';
+
+                var tooltip = menuItem.resx[menuItem.name + ".Tooltip"];
+                if (tooltip) {
+                    menu += '<div class="submenuEditBar">' + tooltip + '</div>';
+                }
+
+                return menu;
             }
         }
+
+        var authorizeCheck = function (callback) {
+            util.sf.moduleRoot = 'editBar/common';
+            util.sf.controller = 'Common';
+            util.sf.getsilence('CheckAuthorized', {}, function (data) {
+                if (data.success) {
+                    if (typeof callback === "function") {
+                        callback();
+                    }
+                } else {
+                    var loginUrl = config.loginUrl;
+                    if (typeof window.parent.dnnModal != "undefined") {
+                        window.parent.dnnModal.show(loginUrl + (loginUrl.indexOf('?') === -1 ? '?' : '&') + 'popUp=true', true, 300, 650, true, '');
+                    } else {
+                        location.href = loginUrl;
+                    }
+                }
+            });
+        };
+
 
         var menuItemClick = function (menuItem) {
             for (var name in menuLoaders) {
@@ -138,11 +164,12 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                     }
                 }
             }
-
-            getMenuLoader(menuItem, function (loader) {
-                if (typeof loader["onClick"] === "function") {
-                    loader["onClick"].call(loader, menuItem);
-                }
+            authorizeCheck(function() {
+                getMenuLoader(menuItem, function(loader) {
+                    if (typeof loader["onClick"] === "function") {
+                        loader["onClick"].call(loader, menuItem);
+                    }
+                });
             });
         }
 
