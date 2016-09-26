@@ -9,8 +9,8 @@
 @transition: .18s;
 .dnn-day-picker {
     float: left;
-    width: 226px;
-    height: 34px;
+    width: auto;
+    height: 30px;
     box-sizing: border-box;
     position: relative;
     &.has-outside-controle {
@@ -40,44 +40,30 @@
         }
     }
     .calendar-icon {
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        border: 3px solid @alto;
-        right: 0px;
-        top: 50%;
-        transform: translate(140%, -50%);
+        width: 30px;
+        height: 30px;
         cursor: pointer;
         transition: @transition;
-        &.active, &.active:after {
-            border-color: @curiousBlue !important;
+        float: left;
+        color: @alto;
+        &:hover {
+            color: @rollingStone;
         }
-        &:after {
-            content: "";
-            position: absolute;
-            width: 6px;
-            height: 9px;
-            border: 3px solid @alto;
-            border-bottom: 0px;
-            border-top: 0px;
-            left: 50%;
-            transition: @transition;
-            top: -1px;
-            transform: translate(-50%, -50%);
-        }
-        &:hover, &:hover:after {
-            border-color: @rollingStone;
+        &.active, &.active:hover {
+            color: @curiousBlue;
         }
     }
     .calendar-text {
         border: 1px solid #b0afae;
-        padding: 8px 16px;
+        padding: 6px 12px;
         cursor: pointer;
         min-height: 16px;
         text-align: right;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        float: left;
+        width: 204px;
         div, span {
             float: left;
             }

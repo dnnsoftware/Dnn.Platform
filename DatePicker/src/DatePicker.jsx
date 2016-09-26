@@ -88,20 +88,32 @@ export default class DatePicker extends Component {
 
     firstDisableDates(day) {
         const SecondDate = this.state.Date.SecondDate ? this.resetHours(new Date(this.state.Date.SecondDate)) : null;
-        let maxDate = this.resetHours(new Date(this.props.maxDate));
-        maxDate = SecondDate && SecondDate < maxDate ? SecondDate : maxDate;
+        let maxDate = this.props.maxDate ? this.resetHours(new Date(this.props.maxDate)) : null;
+        if (!SecondDate && !maxDate) {
+            return;
+        }
+        if (SecondDate && maxDate) {
+            maxDate = SecondDate < maxDate ? SecondDate : maxDate;    
+        } else {
+            maxDate = SecondDate || maxDate;
+        }
         const minDate = this.resetHours(new Date(this.props.minDate));
-
         const thisDay = this.resetHours(day);
         return thisDay < minDate || thisDay > maxDate;
     }
 
     secondDisableDates(day) {
         const FirstDate = this.state.Date.FirstDate ? this.resetHours(new Date(this.state.Date.FirstDate)) : null;
-        let minDate = this.resetHours(new Date(this.props.minSecondDate));
-        minDate = FirstDate && FirstDate > minDate ? FirstDate : minDate;
+        let minDate = this.props.minSecondDate ? this.resetHours(new Date(this.props.minSecondDate)) : null;
+        if (!FirstDate && !minDate) {
+            return;
+        }
+        if (FirstDate && minDate) {
+            minDate =  FirstDate > minDate ? FirstDate : minDate;
+        } else {
+            minDate = FirstDate || minDate;
+        }
         const maxDate = this.resetHours(new Date(this.props.maxSecondDate));
-
         const thisDay = this.resetHours(day);
         return thisDay < minDate || thisDay > maxDate;
     }
@@ -244,12 +256,19 @@ export default class DatePicker extends Component {
         secondDate = secondDate ? new Date(secondDate) : new Date();
 
         const showStaticText = !this.props.hasOutsideShowHideControl && this.props.isInputReadOnly;
-        const showInputFields = !this.props.hasOutsideShowHideControl && !this.props.isInputReadOnly;
         const showIcon = this.props.showIcon !== false && !this.props.hasOutsideShowHideControl;
+        const showInputFields = !this.props.hasOutsideShowHideControl && !this.props.isInputReadOnly;
+        const showInput = !this.props.hasOutsideShowHideControl && this.props.showInput !== false;
 
+        const mode = this.props.mode ? "_" + this.props.mode : "";
+        let icon = require(`!raw!./img/calendar${mode}.svg`);
+        if (this.props.icon) {
+            icon = this.props.icon;
+        }
+
+        /* eslint-disable react/no-danger */
         return <div className={"dnn-day-picker" + (this.props.hasOutsideShowHideControl ? " has-outside-controle" : "")}>
-            {showIcon && <div className={"calendar-icon" + (isCalendarVisible ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
-            {!this.props.hasOutsideShowHideControl && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
+            {showInput && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
                 {showStaticText && displayDate}
                 {showInputFields && <div style={{ float: "right" }}>
                     <DateInput date={firstDate} onUpdateDate={this.updateFirstDate.bind(this) } hasTimePicker={this.props.hasTimePicker || false}/>
@@ -258,6 +277,11 @@ export default class DatePicker extends Component {
                         <DateInput date={secondDate} onUpdateDate={this.updateSecondDate.bind(this) } hasTimePicker={this.props.hasTimePicker || false}/>
                     </div>}
                 </div>}
+            </div>}
+            {showIcon && <div 
+                    dangerouslySetInnerHTML={{ __html: icon }}
+                    className={"calendar-icon" + (isCalendarVisible ? " active" : "") }
+                    onClick={this.toggleCalendar.bind(this) }>
             </div>}
             <div className={calendarClassName} style={this.getStyle() }>
                 <div>
@@ -288,11 +312,11 @@ export default class DatePicker extends Component {
 }
 
 DatePicker.propTypes = {
-    // REQUIRED PROPS:
+    // -----REQUIRED PROPS--------:
     date: PropTypes.instanceOf(Date),
     updateDate: PropTypes.func.isRequired,
 
-    // OPTIONAL PROPS:
+    // -----OPTIONAL PROPS--------:
     
     // if set to true, it shows 2 calendars
     isDateRange: PropTypes.bool,
@@ -316,6 +340,15 @@ DatePicker.propTypes = {
 
     //show/hide an icon
     showIcon: PropTypes.bool,
+
+    //icon mode: "start" or "end". Default icon shows up if mode is not provided
+    mode: PropTypes.string,
+    
+    //different icon from default
+    icon: PropTypes.string,
+
+    //show/hide input
+    showInput: PropTypes.bool,
 
     applyButtonText: PropTypes.string,
 
