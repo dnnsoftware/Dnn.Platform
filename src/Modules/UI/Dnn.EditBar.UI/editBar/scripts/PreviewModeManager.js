@@ -339,7 +339,8 @@ define(['jquery'], function($) {
                 }
             };
 
-            this.showPreview = function() {
+            this.showPreview = function () {
+                this.util.switchMode('large');
                 var viewModeHighlighted = $('.ViewMenuButton.selected');
                 if (!self._selectedViewMode && viewModeHighlighted) {
                     $.each(ViewMode.PreviewModeTypes, function(key, type) {

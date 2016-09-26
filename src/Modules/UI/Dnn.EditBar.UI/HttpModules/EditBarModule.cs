@@ -53,7 +53,9 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
-            if (!IsPageEditor() || Globals.IsAdminControl())
+            var request = e.Skin.Page.Request;
+            var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
+            if (isSpecialPageMode || !IsPageEditor() || Globals.IsAdminControl())
             {
                 return;
             }

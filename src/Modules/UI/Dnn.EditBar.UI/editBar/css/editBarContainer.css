@@ -2,12 +2,17 @@
 body {
     margin-bottom: 85px !important;
 }
-iframe#editBar-iframe{
-	width: 100%; 
-	position: fixed;
-    bottom: 0; 
-	height: 85px; 
+.editBarFrameContainer {
+    position: fixed;
+    bottom: 0;
+    left: 85px;
+    right: 0;
 	z-index: 1105 !important;
+}
+iframe#editBar-iframe{
+	height: 85px;
+    width: 100%;
+    vertical-align: top;
 }
 iframe#editBar-iframe.small {
     height: 170px;

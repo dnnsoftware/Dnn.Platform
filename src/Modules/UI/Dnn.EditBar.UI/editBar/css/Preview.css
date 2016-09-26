@@ -63,3 +63,26 @@
 #menu-Preview ul.menuEditBar li.PhoneModeButton:hover {
     background-image: url('../images/icon-preview-phone_on.png');
 }
+
+.previewModeContainer {
+    position: fixed;
+    display: none;
+    background-color: #FFFFFF;
+    margin-top:50px;
+    top: 0px;
+    left: 0px;
+    z-index: 1005;
+    width: 100%;
+    /* Firefox */
+    height: -moz-calc(100% - 65px);
+    /* WebKit */
+    height: -webkit-calc(100% - 65px);
+    /* Opera */
+    height: -o-calc(100% - 65px);
+    /* Standard */
+    height: calc(100% - 65px);
+    overflow: scroll;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

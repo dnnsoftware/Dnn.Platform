@@ -48,7 +48,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
             callAction: callAction,
             switchMode: function(mode) {
-                window.top.$('#editBar-iframe').removeClass('small middle large').addClass(mode);
+                window.top.$('#editBar-iframe').removeClass('small middle').addClass(mode);
             }
         };
         util = $.extend(util, utility);

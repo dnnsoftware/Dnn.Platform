@@ -7,7 +7,11 @@
         util = utility;
         customLayout = params.html;
         $menu = $('#menu-' + menu.name);
-        $menu.append('<div class="submenuEditBar">' + customLayout + '</div>');
+        var $customLayout = $(customLayout);
+        console.log($customLayout.find('.previewModeContainer'));
+        $('#editBarContainer').prepend($customLayout.find('.previewModeContainer'));
+        $('#edit-bar').prepend($customLayout.find('.previewModeOptions'));
+        $menu.append('<div class="submenuEditBar">' + $customLayout.html() + '</div>');
 
         var previewManager = previewModeManager.getInstance(menuItem, util, params);
         previewManager.initViewMode();

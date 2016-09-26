@@ -106,19 +106,6 @@ namespace Dnn.EditBar.AddModule.ContentEditor
                 ClientAPI.RegisterClientVariable(Page, "dnn_current_userid", PortalSettings.UserInfo.UserID.ToString(), true);
             }
 
-            var controlPanelVisible = true;
-            if (!user.IsSuperUser && !PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
-            {
-                if (hasContentEditorRole)
-                {
-                    controlPanelVisible = false;
-                }
-                else
-                {
-                    controlPanelVisible = PageSecurityHelper.IsPageAdmin() || PageSecurityHelper.IsModuleAdmin(PortalSettings);
-                }
-            }
-
             var isSpecialPageMode = Request.QueryString["dnnprintmode"] == "true" || Request.QueryString["popUp"] == "true";
             if (isSpecialPageMode
                 || PortalSettings.UserMode != PortalSettings.Mode.Edit)

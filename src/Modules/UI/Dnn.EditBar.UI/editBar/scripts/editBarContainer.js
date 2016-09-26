@@ -16,10 +16,12 @@
             var debugMode = settings.debugMode === true;
             var src = appPath + 'admin/Dnn.EditBar/index.html';
             src += '?cdv=' + settings.buildNumber + (debugMode ? '&t=' + Math.random() : '');
+            var $container = $('<div class="editBarFrameContainer"></div>');
             var $iframe = $('<iframe id="editBar-iframe" allowTransparency="true" frameBorder="0" scrolling="false"></iframe>');
 
-            $iframe.appendTo(document.body).attr('src', src)
-                .mouseenter(function() {
+            $container.append($iframe).appendTo(document.body);
+
+            $iframe.attr('src', src).mouseenter(function () {
                     $iframe.addClass("small");
                 }).mouseleave(function () {
                     $iframe.removeClass("small middle");

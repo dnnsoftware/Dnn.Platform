@@ -1,11 +1,10 @@
 ﻿<div>
-    <div class="caption">[resx:ViewSite]</div>
-    <ul class="menuEditBar hover-menu">
-        <li id="DesktopModeButton" class="DesktopModeButton ViewMenuButton">[resx:DesktopMode]</li>
-        <li id="TabletModeButton" class="TabletModeButton ViewMenuButton">[resx:TabletMode]</li>
-        <li id="PhoneModeButton" class="PhoneModeButton ViewMenuButton">[resx:PhoneMode]</li>
-    </ul>
-    <div class="submenuBottom"></div>
+    <div class="previewModeContainer">
+        <div id="previewModeImage">
+            <iframe id="previewModeFrame"></iframe>
+        </div>
+        <div id="perviewBottomBar"></div>
+    </div>
     <div class="previewModeOptions">
         <ul class="menuEditBar">
             <li class="Desktop left-button desktopOptions">
@@ -29,5 +28,14 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div>
+        <div class="caption">[resx:ViewSite]</div>
+        <ul class="menuEditBar hover-menu">
+            <li id="DesktopModeButton" class="DesktopModeButton ViewMenuButton">[resx:DesktopMode]</li>
+            <li id="TabletModeButton" class="TabletModeButton ViewMenuButton">[resx:TabletMode]</li>
+            <li id="PhoneModeButton" class="PhoneModeButton ViewMenuButton">[resx:PhoneMode]</li>
+        </ul>
+        <div class="submenuBottom"></div>
     </div>
 </div>
