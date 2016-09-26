@@ -15,25 +15,17 @@ namespace Dnn.EditBar.UI.Items
     {
         public override string Name { get; } = "PrivatePage";
 
-        public override string Template { get; } = "<div class=\"private-page\" title=\"" + LocalizationHelper.GetString("PrivatePage") + "\" />";
+        public override string Text { get; } = "PrivatePage";
 
         public override string Parent { get; } = Constants.RightMenu;
 
-        public override string Loader { get; } = "";
+        public override string Loader { get; } = "PrivatePage";
+
+        public override int Order { get; } = 100;
 
         public override bool Visible()
         {
-            var portalSettings = PortalSettings.Current;
-            if (portalSettings == null)
-            {
-                return false;
-            }
-
-            var viewRoles = TabPermissionController.GetTabPermissions(portalSettings.ActiveTab.TabID, portalSettings.PortalId).ToString("VIEW");
-            var roles = viewRoles.Split(';');
-            var numRoles = roles.Count(r => !r.StartsWith("!") && !String.IsNullOrEmpty(r));
-
-            return numRoles == TabPermissionController.ImplicitRoles(portalSettings.PortalId).Count();
+            return PagesHelper.IsPrivatePage();
         }
     }
 }

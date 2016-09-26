@@ -50,6 +50,16 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         util = $.extend(util, utility);
         // end define util
 
+        var getMenuItem = function(name) {
+            for (var i = 0; i < config.items.length; i++) {
+                if (config.items[i].name === name) {
+                    return config.items[i];
+                }
+            }
+
+            return null;
+        }
+
         var getMenuLoader = function (item, callback) {
             if (!item.loader) {
                 return;
@@ -62,9 +72,13 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                 return;
             }
 
-            var templateSuffix = '.html';
+            
             var initMethod = 'init';
-            var requiredArray = ['../' + item.loader, 'text!../../' + item.loader + templateSuffix];
+            var requiredArray = ['../' + item.loader];
+            if (item.customLayout) {
+                var templateSuffix = '.html';
+                requiredArray.push('text!../../' + item.loader + templateSuffix);
+            }
 
             window.require(requiredArray, function (loader, html) {
                 if (typeof loader === "undefined") {
@@ -81,6 +95,17 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                     }
                 });
             });
+        }
+
+        util.callAction = function (menuName, actionName, params) {
+            var menuItem = getMenuItem(menuName);
+            if (menuItem) {
+                getMenuLoader(menuItem, function(loader) {
+                    if (typeof loader[actionName] === "function") {
+                        loader[actionName].apply(menuLoaders[menuName], params);
+                    }
+                });
+            }
         }
 
         var loadMenuStyles = function (item) {

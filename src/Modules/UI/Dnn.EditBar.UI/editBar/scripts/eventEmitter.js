@@ -7,23 +7,17 @@
      * With this module consumers can subscribe, unsubscribe to events and emit events
      */
     var eventEmitter = {
-        addPanelOpenEventListener: function addPanelOpenEventListener(callback) {
-            $(document).on('personabar:onOpenPanel', callback);
+        addOpenEventListener: function (callback) {
+            $(document).on('editbar:onOpen', callback);
         },
-        removePanelOpenEventListener: function removePanelOpenEventListener(callback) {
-            $(document).off('personabar:onOpenPanel', callback);
+        removeOpenEventListener: function (callback) {
+            $(document).off('editbar:onOpen', callback);
         },
-        addPanelCloseEventListener: function addPanelCloseEventListener(callback) {
-            $(document).on('personabar:onClosePanel', callback);
+        addCloseEventListener: function (callback) {
+            $(document).on('editbar:onClose', callback);
         },
-        removePanelCloseEventListener: function removePanelCloseEventListener(callback) {
-            $(document).off('personabar:onClosePanel', callback);
-        },
-        emitOpenPanelEvent: function emitOpenPanelEvent() {
-            $(document).trigger('personabar:onOpenPanel');
-        },
-        emitClosePanelEvent: function emitClosePanelEvent() {
-            $(document).trigger('personabar:onClosePanel');
+        removeCloseEventListener: function (callback) {
+            $(document).off('editbar:onClose', callback);
         }
     };
     return eventEmitter;

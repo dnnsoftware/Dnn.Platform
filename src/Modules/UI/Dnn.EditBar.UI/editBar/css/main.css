@@ -216,13 +216,3 @@ body {
 #editBarOptionsExtensionPoint {
     margin-left: 7px;
 }
-
-.editbar .private-page {
-    background-image: url('../images/icon-non-viewable.png');
-    background-repeat: no-repeat;
-    border: 0 none;
-    width: 20px;
-    height: 33px;
-    margin-left: 20px;
-    margin-top: 12px;
-}

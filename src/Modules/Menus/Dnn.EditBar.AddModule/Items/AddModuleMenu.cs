@@ -36,6 +36,8 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Loader { get; } = "AddModule";
 
+        public override int Order { get; } = 5;
+
         public override bool Visible()
         {
             return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;

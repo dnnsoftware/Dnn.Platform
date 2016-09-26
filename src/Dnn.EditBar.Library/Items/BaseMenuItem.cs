@@ -55,6 +55,12 @@ namespace Dnn.EditBar.Library.Items
         public abstract string Loader { get; }
 
         /// <summary>
+        /// the menu have custom layout.
+        /// </summary>
+        [DataMember(Name = "customLayout")]
+        public virtual bool CustomLayout { get; } = false;
+
+        /// <summary>
         /// menu custom settings.
         /// </summary>
         [DataMember(Name = "settings")]

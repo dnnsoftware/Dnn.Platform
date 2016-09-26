@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using Dnn.EditBar.UI.Controllers;
 using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -52,7 +53,7 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
-            if (!IsPageEditor())
+            if (!IsPageEditor() || Globals.IsAdminControl())
             {
                 return;
             }

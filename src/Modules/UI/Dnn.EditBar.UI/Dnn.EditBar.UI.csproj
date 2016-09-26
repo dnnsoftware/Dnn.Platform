@@ -143,13 +143,16 @@
     <Compile Include="Controllers\IEditBarController.cs" />
     <Compile Include="Controllers\ILocalizationController.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
+    <Compile Include="Helpers\PagesHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="HttpModules\EditBarModule.cs" />
     <Compile Include="Items\EditPageMenu.cs" />
+    <Compile Include="Items\PageSettingsMenu.cs" />
     <Compile Include="Items\PrivatePageMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\CommonController.cs" />
     <Compile Include="Services\LocalizationController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="..\..\..\SolutionInfo.cs">
@@ -173,6 +176,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="editBar\css\PrivatePage.css" />
+    <Content Include="editBar\css\PageSettings.css" />
     <Content Include="editBar\css\EditPage.css" />
     <Content Include="editBar\css\editBarContainer.css" />
     <Content Include="editBar\css\main.css" />
@@ -180,8 +185,8 @@
     <Content Include="editBar\css\ProximaNova-Sbold-webfont.svg" />
     <Content Include="editBar\css\ProximaNovaCond-Sbold-webfont.svg" />
     <Content Include="editBar\images\bottomArrow.png" />
+    <Content Include="editBar\images\icon-non-viewable.png" />
     <Content Include="editBar\images\Settings_Sprite.png" />
-    <Content Include="editBar\editpage.html" />
     <Content Include="editBar\index.html" />
     <Content Include="editBar\scripts\bootstrap.js" />
     <Content Include="editBar\scripts\config.js" />
@@ -196,6 +201,8 @@
     <Content Include="editBar\scripts\contrib\require.js" />
     <Content Include="editBar\scripts\contrib\text.js" />
     <Content Include="editBar\scripts\editBarContainer.js" />
+    <Content Include="editBar\scripts\PrivatePage.js" />
+    <Content Include="editBar\scripts\PageSettings.js" />
     <Content Include="editBar\scripts\eventEmitter.js" />
     <Content Include="editBar\scripts\gateway.js" />
     <Content Include="editBar\scripts\main.js" />
@@ -213,7 +220,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="editBar\App_LocalResources\EditPage.resx" />
+    <EmbeddedResource Include="editBar\App_LocalResources\Common.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

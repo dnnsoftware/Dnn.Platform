@@ -171,7 +171,6 @@
   <ItemGroup>
     <Content Include="editBar\css\AddModule.css" />
     <Content Include="editBar\images\AddModule_Sprite.png" />
-    <Content Include="editBar\AddModule.html" />
     <Content Include="editBar\resources\ContentEditorManager\Images\icon-add-module.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\Icon-AddModule-D-Back.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\Icon-AddModule-D.png" />

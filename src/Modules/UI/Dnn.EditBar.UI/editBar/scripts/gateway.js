@@ -9,63 +9,54 @@
      */
     return function Gateway(util) {
         /**
-        * Subscribes to the panel open event
+        * Subscribes to the edit bar open event
         *
-        * @method onPanelOpen
+        * @method onOpen
         * @param {Function} callback callback called when the event happens
         */
-        this.onPanelOpen = function onPanelOpen(callback) {
-            eventEmitter.addPanelOpenEventListener(callback);
+        this.onOpen = function (callback) {
+            eventEmitter.addOpenEventListener(callback);
         };
 
         /**
-        * Unsubscribes to the panel open event
+        * Unsubscribes to the edit bar open event
         *
-        * @method offPanelOpen
+        * @method offOpen
         * @param {Function} callback callback called when the event happens
         */
-        this.offPanelOpen = function offPanelOpen(callback) {
-            eventEmitter.removePanelOpenEventListener(callback);
+        this.offOpen = function (callback) {
+            eventEmitter.removeOpenEventListener(callback);
         };
 
         /**
-        * Subscribes to the panel close event
+        * Subscribes to the edit bar close event
         *
-        * @method onPanelClose
+        * @method onClose
         * @param {Function} callback callback called when the event happens
         */
-        this.onPanelClose = function onPanelClose(callback) {
-            eventEmitter.addPanelCloseEventListener(callback);
+        this.onClose = function (callback) {
+            eventEmitter.addCloseEventListener(callback);
         };
 
         /**
-        * Unsubscribes to the panel close event
+        * Unsubscribes to the edit bar close event
         *
-        * @method onPanelClose
+        * @method offClose
         * @param {Function} callback callback called when the event happens
         */
-        this.offPanelOpen = function offPanelClose(callback) {
-            eventEmitter.removePanelCloseEventListener(callback);
+        this.offClose = function (callback) {
+            eventEmitter.removeCloseEventListener(callback);
         };
 
         /**
-        * Opens the persona bar panel
+        * trigger menu item's action
         *
-        * @method openPanel
+        * @method action
         * @param {String} path identifier of the path
         * @param {Object} params parameters for the panel
         */
-        this.openPanel = function openPanel(path, params) {
-            util.loadPanel(path, params);
-        };
-
-        /**
-        * Closes the persona bar panel
-        *
-        * @method closePanel
-        */
-        this.closePanel = function closePanel() {
-            util.closePersonaBar();
+        this.action = function (menuName, actionName, params) {
+            util.callAction(menuName, actionName, params);
         };
     };
 });
