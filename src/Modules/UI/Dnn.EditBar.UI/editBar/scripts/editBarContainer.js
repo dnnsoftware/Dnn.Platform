@@ -20,9 +20,9 @@
 
             $iframe.appendTo(document.body).attr('src', src)
                 .mouseenter(function() {
-                    $iframe.addClass("summary");
+                    $iframe.addClass("small");
                 }).mouseleave(function () {
-                    $iframe.removeClass("summary detail");
+                    $iframe.removeClass("small middle");
                 });
         }
 

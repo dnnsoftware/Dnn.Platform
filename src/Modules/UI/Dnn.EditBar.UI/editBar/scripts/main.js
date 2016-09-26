@@ -35,7 +35,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
         var $editBar = $("#edit-bar");
 
-        var menuLoaders = {};
+        var menuLoaders = {}, callAction;
 
         window.requirejs.config({
             paths: {
@@ -45,7 +45,11 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
         // define util -- very important
         var util = {
-            sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken)
+            sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
+            callAction: callAction,
+            switchMode: function(mode) {
+                window.top.$('#editBar-iframe').removeClass('small middle large').addClass(mode);
+            }
         };
         util = $.extend(util, utility);
         // end define util
@@ -85,6 +89,11 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                     return;
                 }
 
+                if (html) {
+                    html = html.replace(/\[resx:(.+?)\]/gi, function (matches, key) {
+                        return item.resx[key] || key;
+                    });
+                }
                 var params = { html: html };
 
                 loader[initMethod].call(loader, item, util, params, function() {
@@ -97,7 +106,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             });
         }
 
-        util.callAction = function (menuName, actionName, params) {
+        callAction = function (menuName, actionName, params) {
             var menuItem = getMenuItem(menuName);
             if (menuItem) {
                 getMenuLoader(menuItem, function(loader) {
@@ -108,7 +117,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             }
         }
 
-        var loadMenuStyles = function (item) {
+        var loadMenu = function (item) {
             if (!item.loader) {
                 return;
             }
@@ -117,6 +126,10 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             var requiredArray = ['css!../../css/' + item.loader + cssSuffix];
 
             window.require(requiredArray);
+
+            if (item.customLayout) {
+                getMenuLoader(item);
+            }
         }
 
         var renderMenu = function (menuItem) {
@@ -154,7 +167,6 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             });
         };
 
-
         var menuItemClick = function (menuItem) {
             for (var name in menuLoaders) {
                 if (menuLoaders.hasOwnProperty(name) && name !== menuItem.name) {
@@ -181,7 +193,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             for (var i = 0; i < config.items.length; i++) {
                 var menuItem = config.items[i];
                 menuItem.resx = util.resx[menuItem.name] || util.resx.Common;
-                loadMenuStyles(menuItem);
+                loadMenu(menuItem);
 
                 switch (menuItem.parent.toLowerCase()) {
                     case "leftmenu":

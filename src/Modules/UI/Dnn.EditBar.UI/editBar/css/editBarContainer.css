@@ -9,10 +9,13 @@ iframe#editBar-iframe{
 	height: 85px; 
 	z-index: 1105 !important;
 }
-iframe#editBar-iframe.summary {
+iframe#editBar-iframe.small {
     height: 170px;
 }
-iframe#editBar-iframe.detail {
+iframe#editBar-iframe.middle {
     height: 480px;
+}
+iframe#editBar-iframe.large {
+    height: 100%;
 }
 

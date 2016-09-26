@@ -1,0 +1,65 @@
+﻿#menu-Preview button {
+    background: url('../images/Preview_Sprite.png') no-repeat 0 0;
+}
+#menu-Preview button:hover {
+    background-position: 0 -33px;
+}
+
+#menu-Preview ul.menuEditBar  li {
+    list-style-type: none;
+    list-style: none;
+    float: left;
+    position: relative;
+    padding: 0;
+}
+#menu-Preview div.caption {
+    position: relative;
+    float: none;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    margin-left: -5px;
+    text-align: left;
+}
+#menu-Preview ul.menuEditBar.hover-menu  li.ViewMenuButton {
+    float: none;
+    color: #727272;
+    background-repeat: no-repeat;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+}
+#menu-Preview ul.menuEditBar.hover-menu  li.ViewMenuButton.selected {
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+#menu-Preview ul.menuEditBar.hover-menu  li.ViewMenuButton:hover {
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+#menu-Preview ul.menuEditBar li.DesktopModeButton {
+    background-image: url('../images/icon-preview-desktop_off.png');
+    background-size: 17px 17px;
+}
+#menu-Preview ul.menuEditBar li.DesktopModeButton:hover {
+    background-image: url('../images/icon-preview-desktop_on.png');
+}
+#menu-Preview ul.menuEditBar li.TabletModeButton {
+    background-image: url('../images/icon-preview-tablet_off.png');
+    background-size: 15px 17px;
+    background-position-x: 1px;
+}
+#menu-Preview ul.menuEditBar li.TabletModeButton:hover {
+    background-image: url('../images/icon-preview-tablet_on.png');
+}
+#menu-Preview ul.menuEditBar li.PhoneModeButton {
+    background-image: url('../images/icon-preview-phone_off.png');
+    background-size: 12px 17px;
+    background-position-x: 2px;
+}
+#menu-Preview ul.menuEditBar li.PhoneModeButton:hover {
+    background-image: url('../images/icon-preview-phone_on.png');
+}

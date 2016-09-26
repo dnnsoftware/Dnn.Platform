@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dnn.EditBar.UI.Helpers;
+using Dnn.EditBar.UI.Services.DTO;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -32,6 +33,42 @@ namespace Dnn.EditBar.UI.Services
         public HttpResponseMessage CheckAuthorized()
         {
             return Request.CreateResponse(HttpStatusCode.OK, new { success = IsPageEditor() });
+        }
+
+        [HttpGet]
+        [DnnPageEditor]
+        public HttpResponseMessage GetUserSetting(string key)
+        {
+            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
+            var value = personalization.Profile[key + PortalSettings.PortalId];
+
+            if (value == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Value = false });
+            }
+
+            var userSetting = new UserSetting
+            {
+                Key = key,
+                Value = value
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, userSetting);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnPageEditor]
+        public HttpResponseMessage SetUserSetting(UserSetting setting)
+        {
+            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
+            personalization.Profile[setting.Key + PortalSettings.PortalId] = setting.Value;
+            personalization.IsModified = true;
+            personalizationController.SaveProfile(personalization);
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         private bool IsPageEditor()
