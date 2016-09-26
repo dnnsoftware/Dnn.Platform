@@ -134,9 +134,9 @@ export default class DatePicker extends Component {
         }
     }
 
-    callUpdateDate() {
+    callUpdateDate(cancel=false) {
         let {Date} = this.state;
-        this.props.updateDate(Date.FirstDate, Date.SecondDate);
+        this.props.updateDate(Date.FirstDate, Date.SecondDate, cancel);
         this.cashPreviousDates();
     }
 
@@ -156,9 +156,8 @@ export default class DatePicker extends Component {
         this.hideCalendar();
         const FirstDate = this.savedDate.FirstDate;
         const SecondDate = this.savedDate.SecondDate;
-        this.setState({ Date: { FirstDate, SecondDate } }, this.callUpdateDate.bind(this));
+        this.setState({ Date: { FirstDate, SecondDate } }, this.callUpdateDate.bind(this, true));
     }
-
 
     updateFirstTime(time) {
         const date = new Date(this.formatDate(this.date, "L") + " " + time);
@@ -289,32 +288,28 @@ export default class DatePicker extends Component {
 }
 
 DatePicker.propTypes = {
-    // Required Props
+    // REQUIRED PROPS:
     date: PropTypes.instanceOf(Date),
     updateDate: PropTypes.func.isRequired,
 
-    // Optional Props
+    // OPTIONAL PROPS:
+    
+    // if set to true, it shows 2 calendars
+    isDateRange: PropTypes.bool,
+    
+    //if isDateRange is true the secondDate is Required
     secondDate: PropTypes.instanceOf(Date),
 
-    //min and max dates to reduce dates user can select.
+    //min and max dates to reduce dates user can select. 
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
 
     minSecondDate: PropTypes.instanceOf(Date),
     maxSecondDate: PropTypes.instanceOf(Date),
 
-    // if set to true, it shows 2 calendars
-    isDateRange: PropTypes.bool,
-
     // if set ot to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
 
-    // showInput is true by default. 
-    // If showInput is false the controll of showing/hiding the calendar should be performed outside of the component. 
-    // In this case isCalendarVisible.bool is Required. Parent Component should handle show/hide logic
-    hasOutsideShowHideControl: PropTypes.bool,
-    isCalendarVisible: PropTypes.bool,
-    controllerClassName: PropTypes.string,
 
     //if set to true it shows static text insted of input fields
     isInputReadOnly: PropTypes.bool,
@@ -322,5 +317,14 @@ DatePicker.propTypes = {
     //show/hide an icon
     showIcon: PropTypes.bool,
 
-    applyButtonText: PropTypes.string
+    applyButtonText: PropTypes.string,
+
+    //CONTROL OF HIDING/SHOWING THE CALENDAR IS OUTSIDE OF THE COMPONENT OPTIONS:
+
+    // If hasOutsideShowHideControl is true the controll of showing/hiding the calendar should be performed outside of the component. 
+    // In this case isCalendarVisible.bool is Required. Parent Component should handle show/hide logic
+    hasOutsideShowHideControl: PropTypes.bool,
+    isCalendarVisible: PropTypes.bool,
+    //to be able to click on controller it's needed to provide class name of a controller or give to controller a default className - "calendar-controller"
+    controllerClassName: PropTypes.string
 };
