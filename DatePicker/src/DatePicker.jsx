@@ -207,6 +207,9 @@ export default class DatePicker extends Component {
     toggleCalendar() {
         const isCalendarVisible = !this.state.isCalendarVisible;
         this.setState({ isCalendarVisible });
+        if (typeof this.props.onIconClick === "function") {
+            this.props.onIconClick();
+        }
     }
 
     getStyle() {
@@ -278,7 +281,7 @@ export default class DatePicker extends Component {
                     </div>}
                 </div>}
             </div>}
-            {showIcon && <div 
+            {showIcon && <div
                     dangerouslySetInnerHTML={{ __html: icon }}
                     className={"calendar-icon" + (isCalendarVisible ? " active" : "") }
                     onClick={this.toggleCalendar.bind(this) }>
@@ -331,7 +334,7 @@ DatePicker.propTypes = {
     minSecondDate: PropTypes.instanceOf(Date),
     maxSecondDate: PropTypes.instanceOf(Date),
 
-    // if set ot to true, it shows time picker 
+    // if set to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
 
 
@@ -341,10 +344,13 @@ DatePicker.propTypes = {
     //show/hide an icon
     showIcon: PropTypes.bool,
 
-    //icon mode: "start" or "end". Default icon shows up if mode is not provided
+    //function that will be called when icon is clicked
+    onIconClick: PropTypes.func,
+
+    //icon mode: "start" or "end". Default icon shows up if mode or custom icon is not provided
     mode: PropTypes.string,
     
-    //different icon from default
+    //custom icon
     icon: PropTypes.string,
 
     //show/hide input
