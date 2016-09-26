@@ -91,14 +91,14 @@ export default class DatePicker extends Component {
         let maxDate = this.resetHours(new Date(this.props.maxDate));
         maxDate = SecondDate && SecondDate < maxDate ? SecondDate : maxDate;
         const minDate = this.resetHours(new Date(this.props.minDate));
-        
+
         const thisDay = this.resetHours(day);
         return thisDay < minDate || thisDay > maxDate;
     }
 
     secondDisableDates(day) {
         const FirstDate = this.state.Date.FirstDate ? this.resetHours(new Date(this.state.Date.FirstDate)) : null;
-        let minDate =  this.resetHours(new Date( this.props.minSecondDate));
+        let minDate = this.resetHours(new Date(this.props.minSecondDate));
         minDate = FirstDate && FirstDate > minDate ? FirstDate : minDate;
         const maxDate = this.resetHours(new Date(this.props.maxSecondDate));
 
@@ -248,7 +248,7 @@ export default class DatePicker extends Component {
         const showInputFields = !this.props.hasOutsideShowHideControl && !this.props.isInputReadOnly;
         const showIcon = this.props.showIcon !== false && !this.props.hasOutsideShowHideControl;
 
-        return <div className="dnn-day-picker">
+        return <div className={"dnn-day-picker" + (this.props.hasOutsideShowHideControl ? " has-outside-controle" : "")}>
             {showIcon && <div className={"calendar-icon" + (isCalendarVisible ? " active" : "") } onClick={this.toggleCalendar.bind(this) }></div>}
             {!this.props.hasOutsideShowHideControl && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
                 {showStaticText && displayDate}
