@@ -139,9 +139,9 @@ export default class DatePicker extends Component {
         }
     }
 
-    callUpdateDate(cancel=false) {
+    callUpdateDate() {
         let {Date} = this.state;
-        this.props.updateDate(Date.FirstDate, Date.SecondDate, cancel);
+        this.props.updateDate(Date.FirstDate, Date.SecondDate);
         this.cashPreviousDates();
     }
 
