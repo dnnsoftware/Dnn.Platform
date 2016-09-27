@@ -42,5 +42,6 @@ module.exports = {
         "dnn-tags": "dnn.nodeModules.CommonComponents.Tags",
         "dnn-text-overflow-wrapper": "dnn.nodeModules.CommonComponents.TextOverflowWrapper",
         "dnn-tooltip": "dnn.nodeModules.CommonComponents.Tooltip",
-        "dnn-modal": "dnn.nodeModules.CommonComponents.Modal"
+        "dnn-modal": "dnn.nodeModules.CommonComponents.Modal",
+        "dnn-page-picker": "dnn.nodeModules.CommonComponents.PagePicker"
 };
