@@ -28,6 +28,7 @@ module.exports = {
         "dnn-label": "dnn.nodeModules.CommonComponents.Label",
         "dnn-multi-line-input": "dnn.nodeModules.CommonComponents.MultiLineInput",
         "dnn-multi-line-input-with-error": "dnn.nodeModules.CommonComponents.MultiLineInputWithError",
+        "dnn-pager": "dnn.nodeModules.CommonComponents.Pager",
         "dnn-persona-bar-page": "dnn.nodeModules.CommonComponents.PersonaBarPage",
         "dnn-radio-buttons": "dnn.nodeModules.CommonComponents.RadioButtons",
         "dnn-search-box": "dnn.nodeModules.CommonComponents.SearchBox",
