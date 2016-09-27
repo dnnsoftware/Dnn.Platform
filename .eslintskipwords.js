@@ -37,5 +37,8 @@ module.exports = [
     "rect",
     "readonly",
     "resize",
-    "dropdown"
+    "dropdown",
+    "selectable",
+    "scrollarea",
+    "searchbox"
 ];
