@@ -79,36 +79,46 @@ export default class DatePicker extends Component {
         return newDate;
     }
 
-    firstDisableDates(day) {
-        const SecondDate = this.state.Date.SecondDate ? this.resetHours(new Date(this.state.Date.SecondDate)) : null;
-        let maxDate = this.props.maxDate ? this.resetHours(new Date(this.props.maxDate)) : null;
-        if (!SecondDate && !maxDate) {
+    disableDates(FirstDate, SecondDate, day, maxDay, minDay) {
+        let maxDate = maxDay;
+        let minDate = minDay;
+        if (!FirstDate && !SecondDate && !maxDate && !minDate) {
             return;
         }
         if (SecondDate && maxDate) {
-            maxDate = SecondDate < maxDate ? SecondDate : maxDate;    
+            maxDate = SecondDate < maxDate ? SecondDate : maxDate;
         } else {
             maxDate = SecondDate || maxDate;
         }
-        const minDate = this.resetHours(new Date(this.props.minDate));
+        if (FirstDate && minDate) {
+            minDate = FirstDate > minDate ? FirstDate : minDate;
+        } else {
+            minDate = FirstDate || minDate;
+        }
         const thisDay = this.resetHours(day);
-        return thisDay < minDate || thisDay > maxDate;
+        if (minDate && maxDate) {
+            return thisDay < minDate || thisDay > maxDate;
+        }
+        if (minDate) {
+            return thisDay < minDate;
+        }
+        if (maxDate) {
+            return thisDay > maxDate;
+        }
+    }
+
+    firstDisableDates(day) {
+        const maxDate = this.props.maxDate ? this.resetHours(new Date(this.props.maxDate)) : null;
+        const minDate = this.props.minDate ? this.resetHours(new Date(this.props.minDate)) : null;
+        const SecondDate = this.state.Date.SecondDate ? this.resetHours(new Date(this.state.Date.SecondDate)) : null;
+        return this.disableDates(null, SecondDate, day, maxDate, minDate);
     }
 
     secondDisableDates(day) {
         const FirstDate = this.state.Date.FirstDate ? this.resetHours(new Date(this.state.Date.FirstDate)) : null;
-        let minDate = this.props.minSecondDate ? this.resetHours(new Date(this.props.minSecondDate)) : null;
-        if (!FirstDate && !minDate) {
-            return;
-        }
-        if (FirstDate && minDate) {
-            minDate =  FirstDate > minDate ? FirstDate : minDate;
-        } else {
-            minDate = FirstDate || minDate;
-        }
-        const maxDate = this.resetHours(new Date(this.props.maxSecondDate));
-        const thisDay = this.resetHours(day);
-        return thisDay < minDate || thisDay > maxDate;
+        const minDate = this.props.minSecondDate ? this.resetHours(new Date(this.props.minSecondDate)) : null;
+        const maxDate = this.props.maxSecondDate ? this.resetHours(new Date(this.props.maxSecondDate)) : null;
+        return this.disableDates(FirstDate, null, day, maxDate, minDate);
     }
 
     updateDate(firstDate, secondDate, disabled, options = {}) {
@@ -271,9 +281,9 @@ export default class DatePicker extends Component {
                 </div>}
             </div>}
             {showIcon && <div
-                    dangerouslySetInnerHTML={{ __html: icon }}
-                    className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
-                    onClick={this.toggleCalendar.bind(this) }>
+                dangerouslySetInnerHTML={{ __html: icon }}
+                className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
+                onClick={this.toggleCalendar.bind(this) }>
             </div>}
             <div className={calendarClassName} style={this.getStyle() }>
                 <div>
@@ -309,10 +319,10 @@ DatePicker.propTypes = {
     updateDate: PropTypes.func.isRequired,
 
     // -----OPTIONAL PROPS--------:
-    
+
     // if set to true, it shows 2 calendars
     isDateRange: PropTypes.bool,
-    
+
     //if isDateRange is true the secondDate is Required
     secondDate: PropTypes.instanceOf(Date),
 
@@ -338,7 +348,7 @@ DatePicker.propTypes = {
 
     //icon mode: "start" or "end". Default icon shows up if mode or custom icon is not provided
     mode: PropTypes.string,
-    
+
     //custom icon
     icon: PropTypes.string,
 
