@@ -28,6 +28,7 @@ export default class DatePicker extends Component {
     constructor(props) {
         super(props);
         let firstDate = typeof props.date === "string" ? new Date(props.date) : props.date;
+
         let secondDate = typeof props.secondDate === "string" ? new Date(props.secondDate) : props.secondDate;
 
         this.savedDate = {
@@ -121,12 +122,40 @@ export default class DatePicker extends Component {
         return this.disableDates(FirstDate, null, day, maxDate, minDate);
     }
 
-    updateDate(firstDate, secondDate, disabled, options = {}) {
-        if (disabled) {
+    updateTime(date, timeDate) {
+        if (!date) {
+            return null;
+        }
+        if (!timeDate) {
+            return date;
+        }
+
+        let newDate = new Date(date);
+        const TimeDate = new Date(timeDate);
+        const hours = TimeDate.getHours();
+        const minutes = TimeDate.getMinutes();
+        newDate.setHours(hours);
+        newDate.setMinutes(minutes);
+        return newDate;
+    }
+
+    updateDate(firstDate, secondDate, options = {}) {
+        if (options.disabled) {
             return;
         }
         let FirstDate = firstDate;
         let SecondDate = secondDate;
+        let {Date} = this.state;
+
+        if (!options.preventUpdateTime && this.props.hasTimePicker) {
+            if (FirstDate && Date.FirstDate) {
+                FirstDate = this.updateTime(FirstDate, Date.FirstDate);
+            }
+            if (SecondDate && Date.SecondDate) {
+                SecondDate = this.updateTime(SecondDate, Date.SecondDate);
+            }
+        }
+
         if (typeof this.props.date === "string") {
             if (FirstDate) {
                 FirstDate = this.formatDate(FirstDate, "L") + " " + this.formatDate(FirstDate, "LT");
@@ -135,9 +164,10 @@ export default class DatePicker extends Component {
                 SecondDate = this.formatDate(SecondDate, "L") + " " + this.formatDate(SecondDate, "LT");
             }
         }
-        let {Date} = this.state;
+
         Date.FirstDate = FirstDate !== undefined ? FirstDate : Date.FirstDate;
         Date.SecondDate = SecondDate !== undefined ? SecondDate : Date.SecondDate;
+
         this.setState({
             Date
         });
@@ -175,21 +205,23 @@ export default class DatePicker extends Component {
     }
 
     updateFirstTime(time) {
-        const date = new Date(this.formatDate(this.date, "L") + " " + time);
-        this.updateDate(date, this.secondDate);
+        let date = this.date || new Date();
+        date = new Date(this.formatDate(date, "L") + " " + time);
+        this.updateDate(date, this.secondDate, { preventUpdateTime: true });
     }
 
     updateSecondTime(time) {
-        const secondDate = new Date(this.formatDate(this.secondDate, "L") + " " + time);
-        this.updateDate(this.date, secondDate);
+        let date = this.secondDate || new Date();
+        date = new Date(this.formatDate(date, "L") + " " + time);
+        this.updateDate(this.date, date, { preventUpdateTime: true });
     }
 
     firstDateClick(e, day, { disabled }) {
-        this.updateDate(day, undefined, disabled);
+        this.updateDate(day, undefined, { disabled });
     }
 
     secondDateClick(e, day, { disabled }) {
-        this.updateDate(undefined, day, disabled);
+        this.updateDate(undefined, day, { disabled });
     }
 
     formatDate(date, format = "dddd, MMMM, Do, YYYY") {
@@ -223,16 +255,25 @@ export default class DatePicker extends Component {
         return style;
     }
 
-    updateFirstDate(date) {
+    updateFirstDate(date, preventUpdateTime=false) {
         const firstDate = date ? date : this.state.Date.FirstDate;
         const secondDate = this.state.Date.SecondDate;
-        this.updateDate(firstDate, secondDate, false, { preventHide: true, callUpdateDate: true });
+        this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
     }
 
-    updateSecondDate(date) {
+    updateSecondDate(date, preventUpdateTime=false) {
         const secondDate = date ? date : this.state.Date.SecondDate;
         const firstDate = this.state.Date.FirstDate;
-        this.updateDate(firstDate, secondDate, false, { preventHide: true, callUpdateDate: true });
+        this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
+    }
+
+    clearDates() {
+        this.hideCalendar();
+        let Date = {};
+        Date.FirstDate = null;
+        Date.SecondDate = null;
+        this.setState({Date});
+        this.callUpdateDate();
     }
 
     render() {
@@ -256,8 +297,8 @@ export default class DatePicker extends Component {
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
         const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " show" : "");
 
-        firstDate = firstDate ? new Date(firstDate) : new Date();
-        secondDate = secondDate ? new Date(secondDate) : new Date();
+        firstDate = firstDate ? new Date(firstDate) : null;
+        secondDate = secondDate ? new Date(secondDate) : null;
 
         const showIcon = this.props.showIcon !== false;
         const showInput = this.props.showInput !== false;
@@ -285,6 +326,7 @@ export default class DatePicker extends Component {
                 className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
                 onClick={this.toggleCalendar.bind(this) }>
             </div>}
+            {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
             <div className={calendarClassName} style={this.getStyle() }>
                 <div>
                     <DayPicker
@@ -358,5 +400,7 @@ DatePicker.propTypes = {
     applyButtonText: PropTypes.string,
 
     //to be able to click on element without hiding the calendar it's needed to provide class name of a controller or give to controller a default className - "calendar-controller"
-    controllerClassName: PropTypes.string
+    controllerClassName: PropTypes.string,
+
+    showClearDateButton:  PropTypes.bool
 };

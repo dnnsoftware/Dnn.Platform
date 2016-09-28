@@ -100,4 +100,3 @@ TimePicker.propTypes = {
     updateTime: PropTypes.func.isRequired,
     time: PropTypes.string
 };
-

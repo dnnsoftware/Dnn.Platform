@@ -7,38 +7,28 @@ export default class DateInput extends Component {
     constructor(props) {
         super(props);
 
-        const month = this.addZero(this.props.date.getMonth() + 1);
-        const day = this.addZero(this.props.date.getDate());
-        const year = this.props.date.getFullYear();
-        const hours = this.getHour(this.props.date.getHours());
-        const minutes = this.addZero(this.props.date.getMinutes());
-        const period = this.getPeriod(this.props.date.getHours());
+        const month = this.props.date ? this.addZero(this.props.date.getMonth() + 1) : "";
+        const day = this.props.date ? this.addZero(this.props.date.getDate()) : "";
+        const year = this.props.date ? this.props.date.getFullYear() : "";
+        const hours = this.props.date ? this.getHour(this.props.date.getHours()) : "";
+        const minutes = this.props.date ? this.addZero(this.props.date.getMinutes()) : "";
+        const period = this.props.date ? this.getPeriod(this.props.date.getHours()) : "";
 
         this.state = { month, day, year, hours, minutes, period };
 
     }
 
     componentWillReceiveProps(props) {
-        const month = this.addZero(props.date.getMonth() + 1);
-        const day = this.addZero(props.date.getDate());
-        const year = props.date.getFullYear();
-        const hours = this.getHour(props.date.getHours());
-        const minutes = this.addZero(props.date.getMinutes());
-        const period = this.getPeriod(props.date.getHours());
+        const month = props.date ? this.addZero(props.date.getMonth() + 1) : "";
+        const day = props.date ? this.addZero(props.date.getDate()) : "";
+        const year = props.date ? props.date.getFullYear() : "";
+        const hours = props.date ? this.getHour(props.date.getHours()) : "";
+        const minutes = props.date ? this.addZero(props.date.getMinutes()) : "";
+        const period = props.date ? this.getPeriod(props.date.getHours()) : "";
 
         this.state = { month, day, year, hours, minutes, period };
     }
 
-
-    setDate() {
-        let date = this.props.date;
-        date.setMonth(this.state.month - 1);
-        date.setDate(this.state.day);
-        date.setFullYear(this.state.year);
-        date.setHours(this.state.hours);
-        date.setMinutes(this.state.minutes);
-        this.props.onUpdateDate(date);
-    }
 
     setMonth() {
         let {month} = this.state;
@@ -50,7 +40,7 @@ export default class DateInput extends Component {
         }
         month = this.addZero(month);
         this.setState({ month });
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         date.setMonth(month - 1);
         this.props.onUpdateDate(date);
     }
@@ -65,7 +55,7 @@ export default class DateInput extends Component {
         }
         day = this.addZero(day);
         this.setState({ day });
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         date.setDate(day);
         this.props.onUpdateDate(date);
     }
@@ -83,9 +73,9 @@ export default class DateInput extends Component {
         if (this.state.period === "PM" && hours < 12) {
             hours = +hours + 12;
         }
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         date.setHours(hours);
-        this.props.onUpdateDate(date);
+        this.props.onUpdateDate(date, true);
     }
 
     setMinutes() {
@@ -98,16 +88,16 @@ export default class DateInput extends Component {
         }
         minutes = this.addZero(minutes);
         this.setState({ minutes });
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         date.setMinutes(minutes);
-        this.props.onUpdateDate(date);
+        this.props.onUpdateDate(date, true);
     }
 
     setYear() {
         let {year} = this.state;
         year = this.formatYear(year);
         this.setState({ year });
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         date.setFullYear(year);
         this.props.onUpdateDate(date);
     }
@@ -165,7 +155,7 @@ export default class DateInput extends Component {
     setPeriod(e) {
         const value = e.target.value;
         this.setState({ period: value });
-        let date = this.props.date;
+        let date = this.props.date || new Date();
         let hours = date.getHours();
         if (value === "PM" && hours < 12) {
             hours = +hours + 12;
@@ -174,7 +164,7 @@ export default class DateInput extends Component {
             hours -= 12;
         }
         date.setHours(hours);
-        this.props.onUpdateDate(date);
+        this.props.onUpdateDate(date, true);
     }
 
     render() {
@@ -206,4 +196,3 @@ DateInput.propTypes = {
     onUpdateDate: PropTypes.func.isRequired,
     hasTimePicker: PropTypes.bool
 };
-
