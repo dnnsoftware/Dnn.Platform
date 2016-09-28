@@ -50,6 +50,11 @@ namespace Dnn.EditBar.AddModule.HttpModules
         {
             try
             {
+                if (DotNetNukeContext.Current.Application.SKU != "DNN")
+                {
+                    return;
+                }
+
                 if (ContentEditorManager.GetCurrent(e.Skin.Page) == null && !Globals.IsAdminControl())
                 {
                     if (PortalSettings.Current.UserId > 0)
