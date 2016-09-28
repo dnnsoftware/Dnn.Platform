@@ -141,6 +141,7 @@
                 resultsCountText: '<%= ResultsCountText %>',
                 currentPageIndexText: '<%= CurrentPageIndexText %>',
                 linkTarget: '<%= LinkTarget %>',
+                showDescriptionForSnippet: <%= ShowDescriptionForSnippet%>,
                 cultureCode: '<%= CultureCode %>'
 
             });

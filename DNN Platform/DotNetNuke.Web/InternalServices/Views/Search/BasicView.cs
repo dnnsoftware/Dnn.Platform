@@ -44,6 +44,11 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         public string Snippet { get; set; }
 
         /// <summary>
+        /// Description from document
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Link to the Document
         /// </summary>
         public string DocumentUrl { get; set; }

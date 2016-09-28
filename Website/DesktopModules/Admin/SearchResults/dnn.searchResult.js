@@ -18,6 +18,7 @@
         resultsCountText: 'About {0} Results',
         currentPageIndexText: 'Current Page Number:',
         linkTarget: '',
+        showDescriptionForSnippet: false,
         cultureCode: 'en-US'
     };
 
@@ -108,8 +109,10 @@
         markup += '<a href="' + data.DocumentUrl + '"' + dnn.searchResult.defaultSettings.linkTarget + '>' + data.Title + '</a></div>';
         if(renderUrl)
             markup += '<div class="dnnSearchResultItem-Link"><a href="' + data.DocumentUrl + '"' + dnn.searchResult.defaultSettings.linkTarget + '>' + data.DocumentUrl + '</a></div>';
-        
-        markup += '<div class="dnnSearchResultItem-Description">' + data.Snippet + '</div>';
+
+        var showDescriptionForSnippet = dnn.searchResult.defaultSettings.showDescriptionForSnippet;
+        var description = showDescriptionForSnippet && data.Description ? data.Description : data.Snippet;
+        markup += '<div class="dnnSearchResultItem-Description">' + description + '</div>';
         markup += '<div class="dnnSearchResultItem-Others">';
         markup += '<span>' + dnn.searchResult.defaultSettings.lastModifiedText + ' </span>';
         markup += data.DisplayModifiedTime;

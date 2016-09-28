@@ -312,6 +312,7 @@ namespace DotNetNuke.Web.InternalServices
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
+                        Description = result.Description,
                         DisplayModifiedTime = result.DisplayModifiedTime,
                         Tags = result.Tags.ToList(),
                         AuthorProfileUrl = result.AuthorUserId > 0 ? Globals.UserProfileURL(result.AuthorUserId) : string.Empty,
@@ -357,6 +358,7 @@ namespace DotNetNuke.Web.InternalServices
                         {
                             Title = preview.Title,
                             Snippet = preview.Snippet,
+                            Description = preview.Description,
                             DocumentUrl = preview.DocumentUrl,
                             Attributes = preview.Attributes
                         });
