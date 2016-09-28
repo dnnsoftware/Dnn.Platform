@@ -62,9 +62,20 @@ class PagePicker extends Component {
     }
     componentWillMount() {
         const {props} = this;
+        this._isMounted = false;
         this.setState({
             selectedPage: props.defaultLabel
         });
+    }
+    componentWillReceiveProps(props) {
+        if (props.defaultLabel && props.selectedPage && this._isMounted) {
+            const {props} = this;
+            let path = props.selectedPage.split("//").filter(page => {
+                return page !== "";
+            });
+            let index = 0;
+            this.findSelectedPage(path, index);
+        }
     }
     recursivelyFind(items, value, callback, findDescendants) {
         if (items && items.children) {
@@ -113,6 +124,7 @@ class PagePicker extends Component {
         });
     }
     componentDidMount() {
+        this._isMounted = true;
         const {props} = this;
         if (props.closeOnBlur) {
             document.addEventListener("click", this.handleClick);
