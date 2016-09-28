@@ -46,7 +46,6 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         // define util -- very important
         var util = {
             sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
-            callAction: callAction,
             switchMode: function(mode) {
                 window.top.$('#editBar-iframe').removeClass('small middle').addClass(mode);
             }
@@ -106,7 +105,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
             });
         }
 
-        callAction = function (menuName, actionName, params) {
+        util.callAction = function (menuName, actionName, params) {
             var menuItem = getMenuItem(menuName);
             if (menuItem) {
                 getMenuLoader(menuItem, function(loader) {

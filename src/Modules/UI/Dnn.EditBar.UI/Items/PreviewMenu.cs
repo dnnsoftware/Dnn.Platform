@@ -41,5 +41,10 @@ namespace Dnn.EditBar.UI.Items
                 return settings;
             }
         }
+
+        public override bool Visible()
+        {
+            return false;
+        }
     }
 }

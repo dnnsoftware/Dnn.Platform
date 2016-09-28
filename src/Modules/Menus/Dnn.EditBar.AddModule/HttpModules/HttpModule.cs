@@ -55,7 +55,7 @@ namespace Dnn.EditBar.AddModule.HttpModules
                     if (PortalSettings.Current.UserId > 0)
                     {
                         e.Skin.Page.Form.Controls.Add(new ContentEditorManager { Skin = e.Skin });
-                        e.Skin.Page.Form.Controls.Add(new QuickAddModuleManager());
+                        //e.Skin.Page.Form.Controls.Add(new QuickAddModuleManager());
                     }
                 }
 

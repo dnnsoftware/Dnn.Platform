@@ -7,6 +7,7 @@ using Dnn.EditBar.Library;
 using Dnn.EditBar.Library.Items;
 using Dnn.EditBar.UI.Helpers;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 
@@ -26,7 +27,8 @@ namespace Dnn.EditBar.UI.Items
 
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit
+                && Host.ControlPanel == "admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx";
         }
     }
 }
