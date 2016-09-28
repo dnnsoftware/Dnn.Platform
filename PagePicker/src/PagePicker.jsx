@@ -27,6 +27,15 @@ class PagePicker extends Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.loaded = false;
+
+        String.prototype.replaceSpecialCharacters = function (specialCharacters) {
+            let _this = this.split(" ").join("");
+            for (let i = 0; i < specialCharacters.length; i++) {
+                _this = _this.split(specialCharacters[i]).join("");
+            }
+            return _this;
+        };
+
     }
     toggleDropdown() {
         const {props} = this;
@@ -53,18 +62,14 @@ class PagePicker extends Component {
     }
     componentWillMount() {
         const {props} = this;
-        let path = props.selectedPage.split("//").filter(page => {
-            return page !== "";
-        });
-
         this.setState({
-            selectedPage: path[path.length - 1]
+            selectedPage: props.defaultLabel
         });
     }
     recursivelyFind(items, value, callback, findDescendants) {
         if (items && items.children) {
             for (let i = 0; i < items.children.length; i++) {
-                if (items.children[i].data.value === value) {
+                if (items.children[i].data.value.replaceSpecialCharacters(["&", "?", ".", "'", "#", ":", "*"]) === value) {
                     if (findDescendants) {
                         this.getDescendants(items.children[i], callback);
                     }
@@ -164,7 +169,7 @@ class PagePicker extends Component {
         let parentToAddChildrenTo = page;
         if (parentToAddChildrenTo.children && parentToAddChildrenTo.children.length > 0) {
             parentToAddChildrenTo.isOpen = !parentToAddChildrenTo.isOpen;
-            
+
             //Add timeout to let render through - the dropdown will close on collapse of children if this is not here.
             setTimeout(() => {
                 this.setState({});
@@ -280,23 +285,23 @@ class PagePicker extends Component {
                         keepCollapsedContent={props.keepCollapsedContent}
                         isOpened={state.dropDownOpen}>
                         <SearchBox
-                            style={Object.assign({ display: "block" }, props.searchBoxStyle)}
+                            style={Object.assign({ display: "block" }, props.searchBoxStyle) }
                             placeholder={props.placeholderText}
                             className="page-picker-search"
                             onSearch={this.onSearch.bind(this) }
-                            iconStyle={Object.assign({right: 4}, props.iconStyle)}
+                            iconStyle={Object.assign({ right: 4 }, props.iconStyle) }
                             />
                         <Scrollbars style={props.scrollAreaStyle}>
                             <div className="pages-container">
                                 <ul>
-                                    <li className="page-item">
+                                    {props.noneSpecified.visible && <li className="page-item">
                                         <div
                                             className={this.getSelected(props.noneSpecified) }
                                             onClick={this.onPageSelect.bind(this, props.noneSpecified) }
-                                            style={Object.assign({ textIndent: 0 }, props.noneSpecifiedStyle)}>
+                                            style={Object.assign({ textIndent: 0 }, props.noneSpecifiedStyle) }>
                                             {props.noneSpecified.data.value}
                                         </div>
-                                    </li>
+                                    </li>}
                                     {children}
                                 </ul>
                             </div>
@@ -312,7 +317,7 @@ PagePicker.PropTypes = {
     //Selected page - format should be page names separated by //. 
     //Example: //Activity Feed//My Profile, My Profile will be the selected page.
     selectedPage: PropTypes.string,
-    
+
     //React Collapse prop - set to false if you want to re-render the items every time.
     keepCollapsedContent: PropTypes.bool,
 
@@ -359,7 +364,10 @@ PagePicker.PropTypes = {
     moduleRoot: PropTypes.string,
 
     //Service Framework controller
-    controller: PropTypes.string
+    controller: PropTypes.string,
+
+    //Default label shown before pinging API.
+    defaultLabel: PropTypes.string
 };
 
 PagePicker.defaultProps = {
@@ -375,8 +383,10 @@ PagePicker.defaultProps = {
     noneSpecified: {
         data: {
             key: "-1",
-            value: "<None Specified>"
-        }
+            value: "<None Specified>",
+            selectable: true
+        },
+        visible: true
     },
     selectedPage: "//< None Specified >",
     withIcon: true,
