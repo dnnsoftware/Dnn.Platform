@@ -40,6 +40,9 @@ class Switch extends Component {
 
         if (props.readOnly) {
             className += " dnn-switch-readonly";
+        }        
+        if (props.labelPlacement) {
+            className += (" place-" + props.labelPlacement);
         }
 
         return className;
@@ -49,10 +52,11 @@ class Switch extends Component {
         const {props, state} = this;
         return (
             <div className="dnn-switch-container">
+                {props.label && <span className="switch-label">{props.label}</span>}
                 <span className={this.getClassName() } onClick={this.toggleStatus.bind(this) }>
                     <span className="mark" />
+                    {!props.labelHidden && <label>{(state.switchActive ? props.onText : props.offText) }</label>}
                 </span>
-                {!props.labelHidden && <label className={props.labelPlacement}>{(state.switchActive ? props.onText : props.offText) }</label>}
             </div>
         );
     }

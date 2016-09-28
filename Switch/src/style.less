@@ -1,17 +1,12 @@
 @import "~dnn-global-styles/index";
 .dnn-switch-container {
     display: inline-block;
-    >label {
-        &.left {
-            float: left;
-            margin-right: 10px;
-        }
-        &.right {
-            float: right;
-            margin-left: 10px;
-        }
-        margin-top: 4px;
-        color: @bulgarianRose;
+    padding: 5px 0;
+    .switch-label {
+        float: left;
+        font-size: 14px;
+        font-weight: bold;
+        padding-top: 1px;
     }
     .dnn-switch {
         display: inline-block;
@@ -29,6 +24,23 @@
         -moz-transition: background 100ms linear;
         -o-transition: background 100ms linear;
         transition: background 100ms linear;
+        &.place-left {
+            margin-left: 25px;
+            > label {
+                left: -25px;
+            }
+        }
+        &.place-right {
+            margin-right: 25px;
+            > label {
+                right: -25px;
+            }
+        }
+        >label {
+            position: absolute;
+            margin-top: 2px;
+            color: @bulgarianRose;
+        }
         &.dnn-switch-active {
             background-color: @cerulean;
             border-color: @matisse;
