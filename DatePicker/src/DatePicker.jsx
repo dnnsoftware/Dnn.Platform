@@ -268,12 +268,10 @@ export default class DatePicker extends Component {
     }
 
     clearDates() {
-        this.hideCalendar();
         let Date = {};
         Date.FirstDate = null;
         Date.SecondDate = null;
-        this.setState({Date});
-        this.callUpdateDate();
+        this.setState({Date}, this.apply.bind(this));
     }
 
     render() {
