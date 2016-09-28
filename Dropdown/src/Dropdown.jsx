@@ -17,14 +17,12 @@ class Dropdown extends Component {
     }
     toggleDropdown() {
         const {props} = this;
-        if (props.enabled)
-        {
+        if (props.enabled) {
             this.setState({
                 dropDownOpen: !this.state.dropDownOpen
             });
         }
-        else
-        {
+        else {
             this.setState({
                 dropDownOpen: false
             });
@@ -41,7 +39,7 @@ class Dropdown extends Component {
     }
     componentWillMount() {
         const {props} = this;
-        if (props.options.length > 0) {
+        if (props.options && props.options.length > 0) {
             let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
             this.setState({
                 fixedHeight
@@ -49,7 +47,7 @@ class Dropdown extends Component {
         }
     }
     componentWillReceiveProps(props) {
-        if (props.options.length > 0) {
+        if (props.options && props.options.length > 0) {
             let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
             this.setState({
                 fixedHeight
@@ -83,12 +81,13 @@ class Dropdown extends Component {
     }
     onSelect(option) {
         const {props} = this;
-        if (props.enabled)
-        {
+        if (props.enabled) {
             this.setState({
                 dropDownOpen: false
             });
-            props.onSelect(option);
+            if (props.onSelect) {
+                props.onSelect(option);
+            }
         }
     }
     getClassName() {
@@ -101,12 +100,10 @@ class Dropdown extends Component {
 
         className += (" " + props.className);
 
-        if (!props.enabled)
-        {
+        if (!props.enabled) {
             className += " disabled";
         }
-        else
-        {
+        else {
             className += (state.dropDownOpen ? " open" : "");
         }
         return className;
@@ -115,10 +112,13 @@ class Dropdown extends Component {
     getDropdownLabel() {
         const {props} = this;
         let label = props.label;
-        if (props.value !== undefined && props.options !==undefined && props.options.length > 0) {
-            label = props.options.find((option) => {
+        if (props.value !== undefined && props.options !== undefined && props.options.length > 0) {
+            const selectedValue = props.options.find((option) => {
                 return option.value === props.value;
-            }).label;
+            });
+            if (selectedValue && selectedValue.label) {
+                label = selectedValue.label;
+            }
         }
         return label;
     }
@@ -126,7 +126,7 @@ class Dropdown extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const options = props.options.map((option, index) => {
+        const options = props.options && props.options.map((option, index) => {
             return <li onClick={this.onSelect.bind(this, option) } key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""}>{option.label}</li>;
         });
         return (
@@ -134,7 +134,7 @@ class Dropdown extends Component {
                 <div className="collapsible-label">
                     {this.getDropdownLabel() }
                 </div>
-                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>}                
+                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") }>
                     <Collapse
                         fixedHeight={state.fixedHeight}
