@@ -124,7 +124,7 @@ namespace DotNetNuke.Security.Profile
             //Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
-                var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.UserID);
+                var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
                 var cachedProperties = (ProfilePropertyDefinitionCollection)DataCache.GetCache(key);
                 if (cachedProperties != null)
                 {
