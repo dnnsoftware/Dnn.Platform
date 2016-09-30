@@ -124,7 +124,7 @@ namespace DotNetNuke.Security.Profile
             //Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
-                var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+                var key = GetProfileCacheKey(user);
                 var cachedProperties = (ProfilePropertyDefinitionCollection)DataCache.GetCache(key);
                 if (cachedProperties != null)
                 {
@@ -198,7 +198,7 @@ namespace DotNetNuke.Security.Profile
         /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
-            var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+            var key = GetProfileCacheKey(user);
             DataCache.ClearCache(key);
 
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
@@ -238,5 +238,10 @@ namespace DotNetNuke.Security.Profile
         }
 
         #endregion
+
+        private string GetProfileCacheKey(UserInfo user)
+        {
+            return string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+        }
     }
 }
