@@ -198,7 +198,7 @@ namespace DotNetNuke.Security.Profile
         /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
-            var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.UserID);
+            var key = string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
             DataCache.ClearCache(key);
 
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
