@@ -231,7 +231,10 @@ export default class DatePicker extends Component {
         return false;
     }
 
-    showCalendar() {
+    showCalendar(e) {
+        if (e.target.tagName === "SELECT") {
+            return;
+        }
         this.setState({ isCalendarVisible: true });
     }
 
