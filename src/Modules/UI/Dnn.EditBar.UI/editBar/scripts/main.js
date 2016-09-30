@@ -64,23 +64,24 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         }
 
         var getMenuLoader = function (item, callback) {
-            if (!item.loader) {
+            if (!item.loader && !item.group) {
                 return;
             }
 
-            if (typeof menuLoaders[item.name] !== "undefined") {
+            var loaderName = item.loader || item.group;
+            if (typeof menuLoaders[loaderName] !== "undefined") {
                 if (typeof callback === "function") {
-                    callback(menuLoaders[item.name]);
+                    callback(menuLoaders[loaderName]);
                 }
                 return;
             }
 
             
             var initMethod = 'init';
-            var requiredArray = ['../' + item.loader];
+            var requiredArray = ['../' + loaderName];
             if (item.customLayout) {
                 var templateSuffix = '.html';
-                requiredArray.push('text!../../' + item.loader + templateSuffix);
+                requiredArray.push('text!../../' + loaderName + templateSuffix);
             }
 
             window.require(requiredArray, function (loader, html) {
@@ -95,9 +96,9 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
                 }
                 var params = { html: html };
 
-                loader[initMethod].call(loader, item, util, params, function() {
-                    menuLoaders[item.name] = loader;
+                menuLoaders[loaderName] = loader;
 
+                loader[initMethod].call(loader, item, util, params, function() {
                     if (typeof callback === "function") {
                         callback(loader);
                     }
@@ -117,12 +118,12 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
         }
 
         var loadMenu = function (item) {
-            if (!item.loader) {
+            if (!item.loader && !item.group) {
                 return;
             }
 
             var cssSuffix = '.css';
-            var requiredArray = ['css!../../css/' + item.loader + cssSuffix];
+            var requiredArray = ['css!../../css/' + (item.loader || item.group) + cssSuffix];
 
             window.require(requiredArray);
 
