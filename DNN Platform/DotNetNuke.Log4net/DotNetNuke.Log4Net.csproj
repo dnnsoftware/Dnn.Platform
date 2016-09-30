@@ -13,7 +13,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
     <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>TRACE;DEBUG;NET_4_0</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
     <Optimize>false</Optimize>
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
     <DebugSymbols>false</DebugSymbols>
-    <DefineConstants>TRACE;NET_4_0</DefineConstants>
+    <DefineConstants>TRACE;NET_2_0</DefineConstants>
     <Optimize>true</Optimize>
     <WarningLevel>4</WarningLevel>
     <DebugType>pdbonly</DebugType>
