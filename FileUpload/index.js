@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("./lib/FileUploader");
+module.exports = require("./lib/FileUpload");
