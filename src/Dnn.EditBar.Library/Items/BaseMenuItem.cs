@@ -17,6 +17,12 @@ namespace Dnn.EditBar.Library.Items
         public abstract string Name { get; }
 
         /// <summary>
+        /// the menu item's group.
+        /// </summary>
+        [DataMember(Name = "group")]
+        public virtual string Group { get; }
+
+        /// <summary>
         /// the menu's css class.
         /// </summary>
         [DataMember(Name = "cssClass")]

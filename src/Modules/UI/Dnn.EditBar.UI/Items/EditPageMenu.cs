@@ -37,6 +37,8 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Loader { get; } = "EditPage";
 
+        public override int Order { get; } = 100;
+
         public override IDictionary<string, object> Settings
         {
             get

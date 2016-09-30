@@ -191,7 +191,7 @@ require(['jquery', 'knockout', '../util', '../sf', '../config', '../eventEmitter
 
             for (var i = 0; i < config.items.length; i++) {
                 var menuItem = config.items[i];
-                menuItem.resx = util.resx[menuItem.name] || util.resx.Common;
+                menuItem.resx = util.resx[menuItem.name] || (menuItem.group ? util.resx[menuItem.group] : null) || util.resx.Common;
                 loadMenu(menuItem);
 
                 switch (menuItem.parent.toLowerCase()) {
