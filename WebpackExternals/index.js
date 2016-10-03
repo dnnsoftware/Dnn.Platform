@@ -22,6 +22,7 @@ module.exports = {
         "dnn-dropdown": "dnn.nodeModules.CommonComponents.Dropdown",
         "dnn-dropdown-with-error": "dnn.nodeModules.CommonComponents.DropdownWithError",
         "dnn-editable-field": "dnn.nodeModules.CommonComponents.EditableField",
+        "dnn-file-upload": "dnn.nodeModules.CommonComponents.FileUpload",
         "dnn-grid-cell": "dnn.nodeModules.CommonComponents.GridCell",
         "dnn-grid-system": "dnn.nodeModules.CommonComponents.GridSystem",
         "dnn-input-group": "dnn.nodeModules.CommonComponents.InputGroup",
