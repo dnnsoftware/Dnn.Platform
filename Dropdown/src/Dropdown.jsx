@@ -120,14 +120,14 @@ class Dropdown extends Component {
                 label = selectedValue.label;
             }
         }
-        return label;
+        return props.prependWith + label;
     }
 
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
         const options = props.options && props.options.map((option, index) => {
-            return <li onClick={this.onSelect.bind(this, option) } key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""}>{option.label}</li>;
+            return <li onClick={this.onSelect.bind(this, option) } key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""}>{props.prependWith + option.label}</li>;
         });
         return (
             <div className={this.getClassName() } style={props.style} onClick={this.toggleDropdown.bind(this) }>
@@ -174,7 +174,8 @@ Dropdown.PropTypes = {
     withIcon: PropTypes.bool,
     enabled: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    closeOnClick: PropTypes.bool
+    closeOnClick: PropTypes.bool,
+    prependWith: PropTypes.string
 };
 
 Dropdown.defaultProps = {
@@ -184,7 +185,8 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
-    className: ""
+    className: "",
+    prependWith: ""
 };
 
 export default Dropdown;
