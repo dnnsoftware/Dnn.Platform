@@ -150,14 +150,11 @@
     <Compile Include="Controllers\ILocalizationController.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Helpers\PageSecurityHelper.cs" />
-    <Compile Include="Helpers\PagesHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="HttpModules\EditBarModule.cs" />
     <Compile Include="Items\AddModuleMenu.cs" />
-    <Compile Include="Items\PreviewMenu.cs" />
     <Compile Include="Items\EditPageMenu.cs" />
     <Compile Include="Items\PageSettingsMenu.cs" />
-    <Compile Include="Items\PrivatePageMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,8 +184,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="editBar\css\Preview.css" />
-    <Content Include="editBar\css\PrivatePage.css" />
     <Content Include="editBar\css\PageSettings.css" />
     <Content Include="editBar\css\EditPage.css" />
     <Content Include="editBar\css\editBarContainer.css" />
@@ -241,7 +236,6 @@
     <Content Include="editBar\images\icon-preview-tablet_on.png" />
     <Content Include="editBar\images\Preview_Sprite.png" />
     <Content Include="editBar\images\Settings_Sprite.png" />
-    <Content Include="editBar\preview.html" />
     <Content Include="editBar\index.html" />
     <Content Include="editBar\scripts\bootstrap.js" />
     <Content Include="editBar\scripts\config.js" />
@@ -256,9 +250,6 @@
     <Content Include="editBar\scripts\contrib\require.js" />
     <Content Include="editBar\scripts\contrib\text.js" />
     <Content Include="editBar\scripts\editBarContainer.js" />
-    <Content Include="editBar\scripts\Preview.js" />
-    <Content Include="editBar\scripts\PreviewModeManager.js" />
-    <Content Include="editBar\scripts\PrivatePage.js" />
     <Content Include="editBar\scripts\PageSettings.js" />
     <Content Include="editBar\scripts\eventEmitter.js" />
     <Content Include="editBar\scripts\gateway.js" />

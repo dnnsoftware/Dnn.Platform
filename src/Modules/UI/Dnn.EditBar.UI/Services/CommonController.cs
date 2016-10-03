@@ -23,12 +23,6 @@ namespace Dnn.EditBar.UI.Services
     public class CommonController : DnnApiController
     {
         [HttpGet]
-        public HttpResponseMessage IsPrivatePage()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, new { IsPrivate = PagesHelper.IsPrivatePage() });
-        }
-
-        [HttpGet]
         [AllowAnonymous]
         public HttpResponseMessage CheckAuthorized()
         {
