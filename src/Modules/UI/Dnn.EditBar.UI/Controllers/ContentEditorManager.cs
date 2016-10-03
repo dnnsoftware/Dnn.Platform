@@ -13,18 +13,12 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Dnn.EditBar.AddModule.Helpers;
-using Dnn.EditBar.Library;
 using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -36,7 +30,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace Dnn.EditBar.AddModule.ContentEditor
+namespace Dnn.EditBar.UI.Controllers
 {
     /// <summary>
     /// Content Editor Manager

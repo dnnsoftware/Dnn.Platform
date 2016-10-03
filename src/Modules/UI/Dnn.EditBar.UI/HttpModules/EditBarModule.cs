@@ -53,11 +53,24 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
+            if (DotNetNukeContext.Current.Application.SKU != "DNN")
+            {
+                return;
+            }
+
             var request = e.Skin.Page.Request;
             var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
             if (isSpecialPageMode || !IsPageEditor() || Globals.IsAdminControl())
             {
                 return;
+            }
+
+            if (ContentEditorManager.GetCurrent(e.Skin.Page) == null && !Globals.IsAdminControl())
+            {
+                if (PortalSettings.Current.UserId > 0)
+                {
+                    e.Skin.Page.Form.Controls.Add(new ContentEditorManager { Skin = e.Skin });
+                }
             }
 
             RegisterEditBarResources(e.Skin.PortalSettings, e.Skin.Page);

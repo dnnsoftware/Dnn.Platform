@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 
-namespace Dnn.EditBar.AddModule.Helpers
+namespace Dnn.EditBar.UI.Helpers
 {
     /// <summary>
     /// This class offers some common methods to work with pages and their permission

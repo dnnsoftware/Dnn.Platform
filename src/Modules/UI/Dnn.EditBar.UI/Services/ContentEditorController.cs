@@ -27,7 +27,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Dnn.EditBar.AddModule.ContentEditor;
+using Dnn.EditBar.UI.Controllers;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -39,7 +39,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 using DotNetNuke.Web.InternalServices;
 
-namespace Dnn.EditBar.AddModule.Services
+namespace Dnn.EditBar.UI.Services
 {
     [DnnAuthorize]
     [DnnPageEditor]

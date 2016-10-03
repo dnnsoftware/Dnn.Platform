@@ -1128,7 +1128,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         _getEditorService: function () {
             if (!this._editorServiceController) {
                 this._editorServiceController = new dnn.dnnModuleService({
-                    service: 'editBar/addModule',
+                    service: 'editBar/common',
                     controller: 'ContentEditor'
                 });
             }
