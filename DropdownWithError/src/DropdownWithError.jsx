@@ -44,6 +44,7 @@ class DropdownWithError extends Component {
                         enabled={props.enabled}
                         value={props.value}
                         closeOnClick={props.closeOnClick}
+                        prependWith={props.prependWith}
                         />
                     <Tooltip
                         messages={errorMessages}
@@ -86,7 +87,8 @@ DropdownWithError.propTypes = {
     closeOnClick: PropTypes.bool,
     style: PropTypes.object,
     labelStyle: PropTypes.object,
-    extraToolTips: PropTypes.node
+    extraToolTips: PropTypes.node,
+    prependWith: PropTypes.string
 };
 DropdownWithError.defaultProps = {
     error: false,
@@ -95,6 +97,7 @@ DropdownWithError.defaultProps = {
     placement: "outside",
     inputSize: "small",
     labelType: "block",
-    errorMessage: ["This field has an error."]
+    errorMessage: ["This field has an error."],
+    prependWith: ""
 };
 export default DropdownWithError;
