@@ -78,6 +78,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
+        public string DisplayMode => Request.QueryString["Display"];
+
         protected PackageInfo Package
         {
             get
@@ -274,6 +276,19 @@ namespace DotNetNuke.Modules.Admin.Extensions
             if (!IsPostBack)
             {
                 ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
+
+                if (!string.IsNullOrEmpty(DisplayMode))
+                {
+                    switch (DisplayMode.ToLowerInvariant())
+                    {
+                        case "editor":
+                            packageSettingsSection.Visible = false;
+                            break;
+                        case "settings":
+                            extensionSection.Visible = false;
+                            break;
+                    }
+                }
             }
 
         }
