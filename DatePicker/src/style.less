@@ -30,6 +30,7 @@
         transition: @transition;
         z-index: 1;
         background: white;
+        text-align: center;
         & > div {
             width: 256px;
             float: left;
@@ -53,11 +54,13 @@
         }
     }
     .clear-button {
-        float: left;
-        font-size: 35px;
-        line-height: 32px;
         color: @alto;
         cursor: pointer;
+        height: 9px;
+        position: absolute;
+        left: 5px;
+        top: 0px;
+        font-size: 26px;
         &:hover {
             color: @rollingStone;
         }

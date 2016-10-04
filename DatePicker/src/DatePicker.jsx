@@ -310,9 +310,13 @@ export default class DatePicker extends Component {
             icon = this.props.icon;
         }
 
+        const style = this.props.isDateRange && this.props.hasTimePicker ? {width: 380} : {}; 
+        const buttonStyle = this.props.isDateRange ? {} : {margin: "10px auto", float: "none"};
+
         /* eslint-disable react/no-danger */
         return <div className="dnn-day-picker">
-            {showInput && <div className="calendar-text" onClick={this.showCalendar.bind(this) }>
+            {showInput && <div className="calendar-text" style={style} onClick={this.showCalendar.bind(this) }>
+                {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
                 {this.props.isInputReadOnly && displayDate}
                 {!this.props.isInputReadOnly && <div style={{ float: "right" }}>
                     <DateInput date={firstDate} onUpdateDate={this.updateFirstDate.bind(this) } hasTimePicker={this.props.hasTimePicker || false}/>
@@ -327,7 +331,6 @@ export default class DatePicker extends Component {
                 className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
                 onClick={this.toggleCalendar.bind(this) }>
             </div>}
-            {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
             <div className={calendarClassName} style={this.getStyle() }>
                 <div>
                     <DayPicker
@@ -350,7 +353,7 @@ export default class DatePicker extends Component {
                         />
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
-                {showButton && <button role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
+                {showButton && <button style={buttonStyle} role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
             </div>
         </div >;
     }
