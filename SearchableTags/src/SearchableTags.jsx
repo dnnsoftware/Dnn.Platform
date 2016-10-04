@@ -191,6 +191,10 @@ export default class SearchableTags extends Component {
         }
     }
 
+    focusInput() {
+        this.refs.inputField.focus();
+    }
+
     render() {
         const Tags = this.state.tags.map((tag) => {
             return <Tag tag={tag.name} key={tag.id} onRemove={this.removeTagByName.bind(this, tag.id) }/>;
@@ -201,7 +205,10 @@ export default class SearchableTags extends Component {
         };
         const searchResults = this.getResultsItems();
         const placeholderText = this.props.isDisabled || this.state.tags.length ? "" : "Begin typing to search tags";
-        return <div className={"tags-field" + (this.state.tagInputActive ? " active " : "") + (this.props.isDisabled ? " disabled" : "") } ref="tagsField">
+        return <div 
+            className={"tags-field" + (this.state.tagInputActive ? " active " : "") + (this.props.isDisabled ? " disabled" : "") }
+            onClick={this.focusInput.bind(this)} 
+            ref="tagsField">
             <div type="text" className="dark-form-control">
                 {Tags}
                 <input
