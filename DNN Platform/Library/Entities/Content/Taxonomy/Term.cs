@@ -30,6 +30,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -67,6 +68,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Term : BaseEntityInfo, IHydratable
     {
+        private static readonly PortalSecurity Security = new PortalSecurity();
+
         private List<Term> _childTerms;
         private string _description;
         private int _left;
@@ -172,7 +175,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
-                _name = value;
+                _name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
