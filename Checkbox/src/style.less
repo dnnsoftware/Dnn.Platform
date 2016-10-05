@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 .dnn-checkbox-container {
     > label {
         display: inline;
@@ -76,5 +77,13 @@
                 }
             }
         }
+    }
+    &.disabled {
+        background: @mercury;
+        color: @mountainMist;
+        svg {
+            fill: @mountainMist;
+        }
+        cursor: not-allowed;
     }
 }

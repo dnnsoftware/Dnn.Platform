@@ -18,7 +18,7 @@ export default class Checkbox extends Component {
     }
 
     onChange() {
-        if (typeof this.props.onChange === "function") {
+        if (typeof this.props.onChange === "function" && this.props.enabled) {
             this.props.onChange(!this.state.checked);
         }
     }
@@ -32,13 +32,14 @@ export default class Checkbox extends Component {
             height: props.size
         };
         return (
-            <div className={"dnn-checkbox-container " + props.labelPlace}>
+            <div className={"dnn-checkbox-container " + props.labelPlace + (!this.props.enabled ? " disabled" : "" )}>
                 <div className={className} style={Object.assign(checkBoxStyle, props.style) }>
                     <input
                         type="checkbox"
                         id={this.id}
                         checked={props.value}
-                        onChange={this.onChange.bind(this) } />
+                        onChange={this.onChange.bind(this) } 
+                        />
                     <label htmlFor={this.id}></label>
                 </div>
                 {!!label && <label htmlFor={this.id}>{label}</label>}
@@ -53,10 +54,12 @@ Checkbox.propTypes = {
     size: PropTypes.number,
     checkBoxStyle: PropTypes.object,
     label: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    enabled: PropTypes.bool
 };
 
 Checkbox.defaultProps = {
+    enabled: true,
     size: 17,
     labelPlace: "right"
 };
