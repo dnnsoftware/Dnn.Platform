@@ -1,4 +1,5 @@
 /* eslint-disable quotes */
+const ActivityIcon = require(`!raw!./svg/activity.svg`);
 const AddIcon = require(`!raw!./svg/add.svg`);
 const EditIcon = require(`!raw!./svg/edit.svg`);
 const CardViewIcon = require(`!raw!./svg/card_view.svg`);
@@ -35,16 +36,19 @@ const GlobalIcon = require(`!raw!./svg/global.svg`);
 const HistoryIcon = require(`!raw!./svg/history.svg`);
 const LinkIcon = require(`!raw!./svg/link.svg`);
 const LockClosedIcon = require(`!raw!./svg/lock_closed.svg`);
+const MoreMenuIcon = require(`!raw!./svg/more.svg`);
 const PagesIcon = require(`!raw!./svg/pages.svg`);
 const SearchFileSystemIcon = require(`!raw!./svg/search_filesystem.svg`);
 const SearchIcon = require(`!raw!./svg/search.svg`);
+const ShieldIcon = require(`!raw!./svg/shield.svg`);
 const SiteGroupIcon = require(`!raw!./svg/site_group.svg`);
 const ToolTipIcon = require(`!raw!./svg/tool_tip.svg`);
 const UploadIcon = require(`!raw!./svg/upload.svg`);
 const UploadCircleIcon = require(`!raw!./svg/upload_circle.svg`);
 const XIcon = require(`!raw!./svg/x.svg`);
 const XThinIcon = require(`!raw!./svg/x_thin.svg`);
-export { 
+export {
+    ActivityIcon, 
     AddIcon,
     EditIcon,
     CardViewIcon,
@@ -81,9 +85,11 @@ export {
     HistoryIcon,
     LinkIcon,
     LockClosedIcon,
+    MoreMenuIcon,
     PagesIcon,
     SearchFileSystemIcon,
     SearchIcon,
+    ShieldIcon,
     SiteGroupIcon,
     ToolTipIcon,
     UploadIcon,
