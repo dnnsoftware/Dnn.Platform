@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import Tooltip from "dnn-tooltip";
 import Tag from "./Tag";
 
 import "./style.less";
@@ -78,7 +79,7 @@ export default class SearchableTags extends Component {
         let width = this.refs.tagsField.getBoundingClientRect().width - 30;
         if (this.state.tags.length) {
             width = this.state.newTagText.length ? this.state.newTagText.length * 7 + 6 : 13;
-        } 
+        }
         this.setState({ inputWidth: width, isInputVisible: true });
     }
 
@@ -168,6 +169,7 @@ export default class SearchableTags extends Component {
     updateTags(tags) {
         this.setState({ tags, newTagText: "", searchResults: [] }, () => {
             this.resizeInputField();
+            this.props.onUpdateTags(tags);
         });
     }
 
@@ -196,18 +198,24 @@ export default class SearchableTags extends Component {
     }
 
     render() {
-        const Tags = this.state.tags.map((tag) => {
-            return <Tag tag={tag.name} key={tag.id} onRemove={this.removeTagByName.bind(this, tag.id) }/>;
+        const Tags = this.state.tags.map((tag, index) => {
+            return <Tag tag={tag.name} key={tag.id  + index} onRemove={this.removeTagByName.bind(this, tag.id) }/>;
         });
+        
         const inputStyle = {
             width: this.state.inputWidth,
             display: (this.state.isInputVisible === false ? "none" : "block")
         };
         const searchResults = this.getResultsItems();
         const placeholderText = this.props.isDisabled || this.state.tags.length ? "" : "Begin typing to search tags";
-        return <div 
-            className={"tags-field" + (this.state.tagInputActive ? " active " : "") + (this.props.isDisabled ? " disabled" : "") }
-            onClick={this.focusInput.bind(this)} 
+        let className = "tags-field" +
+            (this.state.tagInputActive ? " active " : "") +
+            (this.props.isDisabled ? " disabled" : "") +
+            (this.props.error ? " error" : "");
+
+        return <div
+            className={ className }
+            onClick={this.focusInput.bind(this) }
             ref="tagsField">
             <div type="text" className="dark-form-control">
                 {Tags}
@@ -226,6 +234,11 @@ export default class SearchableTags extends Component {
             {searchResults && <div className="tag-search-results">
                 {searchResults}
             </div>}
+            {this.props.error && this.props.errorMessage && <Tooltip
+                messages={[this.props.errorMessage]}
+                type="error"
+                tooltipPlace={"top"}
+                rendered={this.props.error}/>}
         </div>;
     }
 }
@@ -234,6 +247,9 @@ SearchableTags.propTypes = {
     utils: PropTypes.object.isRequired,
     tags: PropTypes.array.isRequired,
     onUpdateTags: PropTypes.func.isRequired,
-
+    
+    error: PropTypes.bool,
+    errorMessage: PropTypes.string,
+    
     isDisabled: PropTypes.bool
 };

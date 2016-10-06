@@ -6,6 +6,9 @@
     border: 1px solid @mountainMist;
     box-sizing: border-box;
     position: relative;
+    &.error {
+        border-bottom: 2px solid red;
+    }
     &.disabled {
         &, * {
             pointer-events: none;
@@ -56,9 +59,11 @@
         width: 100%;
         border: 1px solid @mountainMist;
         top: 100%;
+        margin-top: 1px;
         border-top: none;
         left: -1px;
         padding: 6px 0px;
+        background: white;
         .result-item {
             padding: 6px 10px;
             cursor: pointer;
@@ -66,6 +71,15 @@
                 background: @gallery;
                 color: @curiousBlue;
             }
+        }
+    }
+    .dnn-ui-common-tooltip {
+        position: absolute;
+        right: 0px;
+        .icon {
+            float: right;
+            margin-top: 6px;
+            margin-right: 4px;
         }
     }
 }
