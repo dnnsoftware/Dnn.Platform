@@ -3,23 +3,26 @@ import "./style.less";
 
 export default class Checkbox extends Component {
 
+    constructor() {
+        super();
+
+        this.id = "checkbox-" + Math.random() + Date.now();
+    }
+
     componentWillMount() {
         const {props} = this;
         this.setState({
             checked: props.value
         });
-        this.id = "checkbox-" + Math.random() + Date.now();
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            checked: props.value
-        });
-    }
-
-    onChange() {
+    onClick() {
         if (typeof this.props.onChange === "function" && this.props.enabled) {
-            this.props.onChange(!this.state.checked);
+            this.setState({
+                checked: !this.state.checked
+            }, () => {
+                this.props.onChange(this.state.checked);
+            });
         }
     }
 
@@ -32,17 +35,16 @@ export default class Checkbox extends Component {
             height: props.size
         };
         return (
-            <div className={"dnn-checkbox-container " + props.labelPlace + (!this.props.enabled ? " disabled" : "" )}>
+            <div className={"dnn-checkbox-container " + props.labelPlace + (!this.props.enabled ? " disabled" : "") }>
                 <div className={className} style={Object.assign(checkBoxStyle, props.style) }>
                     <input
                         type="checkbox"
                         id={this.id}
-                        checked={props.value}
-                        onChange={this.onChange.bind(this) } 
+                        checked={this.state.checked}
                         />
-                    <label htmlFor={this.id}></label>
+                    <label htmlFor={this.id} onClick={this.onClick.bind(this) }></label>
                 </div>
-                {!!label && <label htmlFor={this.id}>{label}</label>}
+                {!!label && <label htmlFor={this.id} onClick={this.onClick.bind(this) }>{label}</label>}
             </div>
         );
     }
