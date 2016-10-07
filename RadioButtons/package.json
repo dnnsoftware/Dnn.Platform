@@ -1,6 +1,6 @@
 {
   "name": "dnn-radio-buttons",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Radio Buttons",
   "main": "index.js",
   "scripts": {
