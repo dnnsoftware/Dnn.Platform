@@ -24,7 +24,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -299,9 +298,20 @@ namespace DotNetNuke.Services.FileSystem
             folderProvider.DeleteFolder(new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
         }
 
+        /// <summary>
+        /// Gets the decrypted value of an encrypted folder mapping setting
+        /// </summary>
+        /// <remarks>If the value is not set the method returns null</remarks>
+        /// <param name="folderMappingSettings">Folder mapping settings</param>
+        /// <param name="settingName">Setting name</param>
+        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null</exception>
+        /// <returns>decrypted value</returns>
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
-            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName].ToString());
+            Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
+            Requires.NotNullOrEmpty(nameof(settingName), settingName);
+            
+            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
         public string EncryptValue(string settingValue)
