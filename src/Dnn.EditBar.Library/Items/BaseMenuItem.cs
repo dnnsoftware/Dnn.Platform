@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dnn.EditBar.Library.Items
 {
+    [Serializable]
     [DataContract]
     public abstract class BaseMenuItem
     {
