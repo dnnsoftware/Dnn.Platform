@@ -13,6 +13,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.EditBar.UI.Items
 {
+    [Serializable]
     public class PageSettingsMenu : BaseMenuItem
     {
         public override string Name { get; } = "PageSettings";

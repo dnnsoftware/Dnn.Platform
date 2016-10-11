@@ -11,6 +11,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.EditBar.UI.Items
 {
+    [Serializable]
     public class EditPageMenu : BaseMenuItem
     {
         public override string Name { get; } = "EditPage";
