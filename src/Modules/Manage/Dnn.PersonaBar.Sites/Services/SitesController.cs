@@ -18,6 +18,7 @@ using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Sites.Services.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
@@ -37,18 +38,32 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <summary>
         /// Gets list of portals
         /// </summary>
+        /// <param name="portalGroupId"></param>
         /// <param name="filter"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns>List of portals</returns>
         [HttpGet]
-        public HttpResponseMessage GetPortals(string filter, int pageIndex, int pageSize)
+        public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)
         {
             try
             {
                 var totalRecords = 0;
-                var portals = PortalController.GetPortalsByName(string.Format("%{0}%", filter), pageIndex, pageSize,
-                    ref totalRecords);
+                IEnumerable<PortalInfo> portals;
+
+                if (portalGroupId > Null.NullInteger)
+                {
+                    portals = PortalGroupController.Instance.GetPortalsByGroup(portalGroupId)
+                                .Where(p => string.IsNullOrEmpty(filter) 
+                                                || p.PortalName.ToLowerInvariant().Contains(filter.ToLowerInvariant()));
+                    totalRecords = portals.Count();
+                    portals = portals.Skip(pageIndex*pageSize).Take(pageSize);
+                }
+                else
+                {
+                    portals = PortalController.GetPortalsByName(string.Format("%{0}%", filter), pageIndex, pageSize,
+                                ref totalRecords).Cast<PortalInfo>();
+                }
                 string contentLocalizable;
                 var query = (from PortalInfo portal in portals
                     select new
@@ -75,7 +90,7 @@ namespace Dnn.PersonaBar.Sites.Services
                 {
                     Success = true,
                     Results = query,
-                    TotalResults = query.Count()
+                    TotalResults = totalRecords
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
