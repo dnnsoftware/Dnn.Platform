@@ -99,7 +99,7 @@ namespace Dnn.EditBar.UI.Services
                 .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
             if (!expired)
             {
-                DataCache.SetCache(cacheKey, new {}, TimeSpan.FromMinutes(5));
+                DataCache.SetCache(cacheKey, new CacheDto(), TimeSpan.FromMinutes(5));
             }
 
             return expired;
@@ -152,5 +152,11 @@ namespace Dnn.EditBar.UI.Services
         } 
 
         #endregion
+    }
+
+    [Serializable]
+    public class CacheDto
+    {
+
     }
 }
