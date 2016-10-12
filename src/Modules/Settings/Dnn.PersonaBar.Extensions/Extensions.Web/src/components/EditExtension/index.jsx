@@ -13,12 +13,9 @@ import Localization from "localization";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
+import { EditAuthenticationSystem } from "./CustomSettings";
 import styles from "./style.less";
 
-const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class EditExtension extends Component {
     constructor() {
         super();
@@ -58,10 +55,18 @@ class EditExtension extends Component {
         });
     }
 
+    getExtensionSetting(type) {
+        switch (type) {
+            case "Auth_System":
+                return <EditAuthenticationSystem primaryButtonText="Next"/>;
+            default:
+                return <p>Extension Settings</p>;
+        }
+    }
+
     render() {
         const {props, state} = this;
         const {extensionBeingEdited} = state;
-        const version = extensionBeingEdited.version.split(".");
         return (
             <GridCell className={styles.editExtension}>
                 <SocialPanelHeader title={extensionBeingEdited.friendlyName + " Extension"} />
@@ -69,16 +74,16 @@ class EditExtension extends Component {
                     <Tabs
                         tabHeaders={["Package Information", "Extension Settings", "Site Settings", "License", "Release Notes"]}
                         type="primary">
-                        <GridCell className="new-module-box">
+                        <GridCell className="package-information-box extension-form">
                             <PackageInformation
                                 extensionBeingEdited={extensionBeingEdited}
-                                onUpdateExtension={props.onUpdateExtension.bind(this, state.extensionBeingEdited)}
+                                onPrimaryButtonClick={props.onUpdateExtension.bind(this)}
                                 onCancel={props.onCancel.bind(this)}
                                 onChange={this.onChange.bind(this)}
                                 primaryButtonText="Update" />
                         </GridCell>
-                        <GridCell>
-                            Extension Settings
+                        <GridCell className="extension-form">
+                            {this.getExtensionSetting("Auth_System")}
                         </GridCell>
                         <GridCell>
                             Site Settings

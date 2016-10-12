@@ -1,4 +1,20 @@
 import util from "../utils";
+
+function mapPackageInformation(extensionBeingUpdated) {
+    return {
+        Name: extensionBeingUpdated.name,
+        FriendlyName: extensionBeingUpdated.friendlyName,
+        Description: extensionBeingUpdated.description,
+        Version: extensionBeingUpdated.version,
+        Owner: extensionBeingUpdated.owner,
+        Url: extensionBeingUpdated.url,
+        Organization: extensionBeingUpdated.organization,
+        Email: extensionBeingUpdated.email,
+        License: extensionBeingUpdated.license,
+        ReleaseNotes: extensionBeingUpdated.releaseNotes
+    };
+}
+
 class ExtensionService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
@@ -28,17 +44,7 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             id: extensionBeingUpdated.packageId,
-            settings: {
-                Name: extensionBeingUpdated.name,
-                Description: extensionBeingUpdated.description,
-                Version: extensionBeingUpdated.version,
-                Owner: extensionBeingUpdated.owner,
-                Url: extensionBeingUpdated.url,
-                Organization: extensionBeingUpdated.organization,
-                Email: extensionBeingUpdated.email,
-                License: extensionBeingUpdated.license,
-                ReleaseNotes: extensionBeingUpdated.releaseNotes
-            }
+            settings: mapPackageInformation(extensionBeingUpdated)
         };
         sf.post("SavePackageSettings", payload, callback);
     }
@@ -48,21 +54,20 @@ class ExtensionService {
             Type,
             Name
         };
-        console.log(payload);
         sf.post("DownloadPackage", payload, callback);
     }
     deletePackage(packageId, callback) {
         const sf = this.getServiceFramework("Extensions");
         sf.post("DeletePackage", { id: packageId }, callback);
     }
-    parsePackage(file, callback) {
+    parsePackage(file, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
 
         let formData = new FormData();
         formData.append("POSTFILE", file);
 
 
-        sf.postfile("ParsePackage", formData, callback);
+        sf.postfile("ParsePackage", formData, callback, errorCallback);
     }
     installPackage(file, callback) {
         const sf = this.getServiceFramework("Extensions");

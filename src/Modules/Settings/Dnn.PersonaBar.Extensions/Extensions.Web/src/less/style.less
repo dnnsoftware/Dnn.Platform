@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 .extensions-app {
     * {
         box-sizing: border-box;
@@ -10,7 +11,41 @@
     .socialpanelbody, .socialpanelbody > div, .normalPanel, .searchpanel {
         width: 100%;
     }
-    .dnn-persona-bar-page.hidden{
+    .dnn-persona-bar-page.hidden {
         display: none;
+    }
+    .extension-form {
+        padding: 40px 25px 25px;
+        .dnn-grid-cell {
+            padding: 10px 25px 15px;
+            box-sizing: border-box;
+            &.modal-footer {
+                text-align: center;
+                button {
+                    width: 100px;
+                    margin-right: 10px;
+                }
+            }
+            .version-dropdown {
+                width: 31.1%;
+                box-sizing: border-box;
+                margin-right: 8px;
+                vertical-align: bottom;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+        .dnn-grid-system.with-right-border {
+            &.bottom-half {
+                padding-top: 25px;
+            }
+            &.top-half {
+                padding-bottom: 25px;
+            }
+            .dnn-grid-cell:first-child {
+                border-right: 1px solid @alto;
+            }
+        }
     }
 }

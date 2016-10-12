@@ -9,7 +9,9 @@ import PackageInformation from "../EditExtension/PackageInformation";
 import ReleaseNotes from "../Editextension/ReleaseNotes";
 import License from "../EditExtension/License";
 import Button from "dnn-button";
-import Checkbox from "dnn-checkbox";
+import Localization from "localization";
+import utilities from "utils";
+import FileUpload from "./FileUpload";
 import styles from "./style.less";
 
 class InstallExtensionModal extends Component {
@@ -37,11 +39,31 @@ class InstallExtensionModal extends Component {
         props.dispatch(ExtensionActions.navigateWizard(wizardStep));
     }
 
-    parsePackage() {
+    parsePackage(file, callback, errorCallback) {
+        if (!file) {
+            utilities.utilities.notifyError(Localization.get("InstallExtension_EmptyPackage.Error"));
+            return;
+        }
         const {props} = this;
-        props.dispatch(ExtensionActions.parsePackage(this.state.package, () => {
-            this.goToStep(1);
-        }));
+        this.setState({
+            package: file
+        }, () => {
+            props.dispatch(ExtensionActions.parsePackage(file, data => {
+                data = JSON.parse(data);
+                if (!data.success) {
+                    if (errorCallback) {
+                        errorCallback();
+                    }
+                }
+                if (callback) {
+                    callback(data.alreadyInstalled);
+                }
+            }, () => {
+                if (errorCallback) {
+                    errorCallback();
+                }
+            }));
+        });
     }
 
     goToReleaseNotes() {
@@ -60,16 +82,17 @@ class InstallExtensionModal extends Component {
     }
 
     onCheckRepairInstall(value) {
-        console.log(value);
         this.setState({
             repairInstallChecked: value
         });
     }
 
-    cancelInstall() {
+    cancelInstall(cancelRevertStep) {
         const {props} = this;
         props.dispatch(ExtensionActions.clearParsedInstallationPackage(() => {
-            this.goToStep(0);
+            if (!cancelRevertStep) {
+                this.goToStep(0);
+            }
         }));
         this.setState({
             package: null
@@ -77,26 +100,15 @@ class InstallExtensionModal extends Component {
     }
 
     getPackageInformationStep() {
-        const {props, state} = this;
-        if (props.parsedInstallationPackage && !props.parsedInstallationPackage.alreadyInstalled) {
+        const {props} = this;
+        if (props.parsedInstallationPackage) {
             return <PackageInformation
                 extensionBeingEdited={props.parsedInstallationPackage}
                 onChange={() => { } }
                 onCancel={this.endInstallation.bind(this)}
-                onUpdateExtension={this.goToReleaseNotes.bind(this)}
+                onPrimaryButtonClick={this.goToReleaseNotes.bind(this)}
                 primaryButtonText="Next"
                 disabled={true} />;
-        } else {
-            return <GridCell>
-                This package is already installed
-                <GridCell>
-                    <Checkbox label="Repair install?" value={state.repairInstallChecked} onChange={this.onCheckRepairInstall.bind(this)} />
-                </GridCell>
-                <GridCell className="modal-footer">
-                    <Button onClick={this.cancelInstall.bind(this)}>Cancel</Button>
-                    <Button onClick={this.goToReleaseNotes.bind(this)} type="primary" disabled={!state.repairInstallChecked}>Next</Button>
-                </GridCell>
-            </GridCell>;
         }
     }
 
@@ -113,17 +125,20 @@ class InstallExtensionModal extends Component {
             <GridCell className={styles.installExtensionModal}>
                 <SocialPanelHeader title="Install Extension" />
                 <SocialPanelBody>
-                    <GridCell className="new-extension-box">
+                    <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
                             <GridCell>
-                                <h3 className="box-title">Upload Extension Package</h3>
-                                <p>To begin installation, upload the package by dragging the file into the field below.</p>
+                                <h3 className="box-title">{Localization.get("InstallExtension_UploadPackage.Header")}</h3>
+                                <p>{Localization.get("InstallExtension_UploadPackage.HelpText")}</p>
                                 <GridCell className="upload-package-box">
-                                    <input type="file" onChange={this.onPackageChange.bind(this)} />
+                                    <FileUpload
+                                        parsePackage={this.parsePackage.bind(this)}
+                                        repairInstall={this.goToStep.bind(this, 1)}
+                                        cancelInstall={this.cancelInstall.bind(this)} />
                                 </GridCell>
                                 <GridCell className="modal-footer">
-                                    <Button onClick={props.onCancel.bind(this)}>Cancel</Button>
-                                    <Button onClick={this.parsePackage.bind(this)} type="primary">Upload</Button>
+                                    <Button onClick={props.onCancel.bind(this)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
+                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary" disabled={!props.parsedInstallationPackage}>{Localization.get("InstallExtension_Upload.Button")}</Button>
                                 </GridCell>
                             </GridCell>
                         }
@@ -131,15 +146,14 @@ class InstallExtensionModal extends Component {
                         {wizardStep === 2 &&
                             <ReleaseNotes
                                 extensionBeingEdited={props.parsedInstallationPackage}
-                                onChange={() => { } }
                                 onCancel={this.endInstallation.bind(this)}
                                 onUpdateExtension={this.goToLicense.bind(this)}
                                 primaryButtonText="Next"
+                                readOnly={true}
                                 disabled={true} />}
                         {wizardStep === 3 &&
                             <License
                                 extensionBeingEdited={props.parsedInstallationPackage}
-                                onChange={() => { } }
                                 onCancel={this.endInstallation.bind(this)}
                                 readOnly={true}
                                 onUpdateExtension={this.installPackage.bind(this)}

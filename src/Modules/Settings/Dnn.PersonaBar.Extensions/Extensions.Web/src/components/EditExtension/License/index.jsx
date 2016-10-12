@@ -13,14 +13,19 @@ const licenseBoxStyle = {
     width: "100%"
 };
 
-class EditExtension extends Component {
+class License extends Component {
     render() {
         const {props} = this;
         const {extensionBeingEdited} = props;
         /* eslint-disable react/no-danger */
         return (
-            <GridCell style={{ padding: 50 }} className="extension-license">
-                {!props.readOnly && <MultiLineInputWithError label="License" tooltipMessage="hey" style={inputStyle} value={extensionBeingEdited.license} onChange={props.onChange.bind(this, "license")} />}
+            <GridCell style={{ padding: 50 }} className="extension-license extension-form">
+                {!props.readOnly &&
+                    <MultiLineInputWithError
+                        label="License"
+                        style={inputStyle}
+                        value={extensionBeingEdited.license}
+                        onChange={props.onChange && props.onChange.bind(this, "license")} />}
                 {props.readOnly &&
                     <Scrollbars style={licenseBoxStyle}>
                         <div className="read-only-license" dangerouslySetInnerHTML={{ __html: extensionBeingEdited.license }}></div>
@@ -35,11 +40,12 @@ class EditExtension extends Component {
     }
 }
 
-EditExtension.PropTypes = {
+License.PropTypes = {
     onCancel: PropTypes.func,
+    readOnly: PropTypes.bool,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
     primaryButtonText: PropTypes.string
 };
 
-export default EditExtension;
+export default License;

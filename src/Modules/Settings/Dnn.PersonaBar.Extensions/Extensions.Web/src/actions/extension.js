@@ -99,7 +99,7 @@ const extensionActions = {
             });
         };
     },
-    parsePackage(file, callback) {
+    parsePackage(file, callback, errorCallback) {
         return (dispatch) => {
             ExtensionService.parsePackage(file, (data) => {
                 dispatch({
@@ -109,7 +109,7 @@ const extensionActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
     navigateWizard(wizardStep, callback) {

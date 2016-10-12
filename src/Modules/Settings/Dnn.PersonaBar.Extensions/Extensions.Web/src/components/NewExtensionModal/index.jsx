@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
@@ -62,93 +63,98 @@ class NewExtensionModal extends Component {
         const version = extensionBeingAdded.version.split(".");
         return (
             <div className={styles.newExtensionModal}>
-                <SocialPanelHeader title="Create New Extension"/>
+                <SocialPanelHeader title="Create New Extension" />
                 <SocialPanelBody>
-                    <GridCell className="new-extension-box">
+                    <GridCell className="new-extension-box extension-form">
                         <GridSystem className="with-right-border top-half">
                             <div>
                                 <DropdownWithError
                                     className="extension-type"
-                                    options={[{ label: "Container", value: "blah" }]}
-                                    tooltipMessage={Localization.get("EditExtension_PackageType.HelpText") }
+                                    options={props.installedPackageTypes && props.installedPackageTypes.map((_package) => {
+                                        return {
+                                            label: _package.Type.split("_").join("").split(/(?=[A-Z])/).join(" "),
+                                            value: _package.Type
+                                        };
+                                    })}
+                                    tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                                     label="Extension Type"
                                     defaultDropdownValue={extensionBeingAdded.type}
                                     style={inputStyle}
                                     />
                                 <SingleLineInputWithError
                                     label="Name"
-                                    tooltipMessage={Localization.get("EditExtension_PackageName.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
                                     style={inputStyle}
-                                    value={extensionBeingAdded.name}/>
+                                    value={extensionBeingAdded.name} />
                                 <SingleLineInputWithError
                                     label="Friendly Name"
-                                    tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
                                     value={extensionBeingAdded.friendlyName}
                                     style={inputStyle}
-                                    onChange={this.onChange.bind(this, "friendlyName") }/>
+                                    onChange={this.onChange.bind(this, "friendlyName")} />
                             </div>
                             <div>
                                 <MultiLineInputWithError
                                     label="Description"
-                                    tooltipMessage={Localization.get("EditExtension_PackageDescription.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageDescription.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 28, height: 123 }}
                                     value={extensionBeingAdded.description}
-                                    onChange={this.onChange.bind(this, "description") }/>
+                                    onChange={this.onChange.bind(this, "description")} />
                                 <DropdownWithError
                                     options={this.versionDropdownOptions}
-                                    tooltipMessage={Localization.get("EditExtension_PackageVersion.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageVersion.HelpText")}
                                     label="Version"
-                                    defaultDropdownValue={formatVersionNumber(version[0]) }
+                                    defaultDropdownValue={formatVersionNumber(version[0])}
                                     className="version-dropdown"
                                     />
                                 <Dropdown
                                     options={this.versionDropdownOptions}
                                     className="version-dropdown"
-                                    label={formatVersionNumber(version[1]) }
+                                    label={formatVersionNumber(version[1])}
                                     />
                                 <Dropdown
                                     options={this.versionDropdownOptions}
-                                    label={formatVersionNumber(version[2]) }
+                                    label={formatVersionNumber(version[2])}
                                     className="version-dropdown"
                                     />
                             </div>
                         </GridSystem>
-                        <GridCell><hr/></GridCell>
+                        <GridCell><hr /></GridCell>
                         <GridCell className="box-title-container">
-                            <h3 className="box-title">{Localization.get("EditExtension_OwnerDetails.Label") }</h3>
+                            <h3 className="box-title">{Localization.get("EditExtension_OwnerDetails.Label")}</h3>
                         </GridCell>
                         <GridSystem className="with-right-border bottom-half">
                             <div>
                                 <SingleLineInputWithError
                                     label="Owner"
-                                    tooltipMessage={Localization.get("EditExtension_PackageOwner.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageOwner.HelpText")}
                                     style={inputStyle}
                                     value={extensionBeingAdded.owner}
-                                    onChange={this.onChange.bind(this, "owner") }/>
+                                    onChange={this.onChange.bind(this, "owner")} />
                                 <SingleLineInputWithError
                                     label="Organization"
-                                    tooltipMessage={Localization.get("EditExtension_PackageOrganization.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageOrganization.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 0 }}
                                     value={extensionBeingAdded.organization}
-                                    onChange={this.onChange.bind(this, "organization") }/>
+                                    onChange={this.onChange.bind(this, "organization")} />
                             </div>
                             <div>
                                 <SingleLineInputWithError
                                     label="URL"
-                                    tooltipMessage={Localization.get("EditExtension_PackageURL.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageURL.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 32 }}
                                     value={extensionBeingAdded.url}
-                                    onChange={this.onChange.bind(this, "url") }/>
+                                    onChange={this.onChange.bind(this, "url")} />
                                 <SingleLineInputWithError
                                     label="Email Address"
-                                    tooltipMessage={Localization.get("EditExtension_PackageEmailAddress.HelpText") }
+                                    tooltipMessage={Localization.get("EditExtension_PackageEmailAddress.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 32 }}
                                     value={extensionBeingAdded.email}
-                                    onChange={this.onChange.bind(this, "email") }/>
+                                    onChange={this.onChange.bind(this, "email")} />
                             </div>
                         </GridSystem>
                         <GridCell columnSize={100} className="modal-footer">
@@ -167,4 +173,10 @@ NewExtensionModal.PropTypes = {
     onCancel: PropTypes.func
 };
 
-export default NewExtensionModal;
+function mapStateToProps(state) {
+    return {
+        installedPackageTypes: state.extension.installedPackageTypes
+    };
+}
+
+export default connect(mapStateToProps)(NewExtensionModal);

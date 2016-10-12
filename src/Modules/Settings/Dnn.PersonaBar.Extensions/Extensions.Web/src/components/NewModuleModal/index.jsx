@@ -63,7 +63,7 @@ class NewModuleModal extends Component {
             <div className={styles.newModuleModal}>
                 <SocialPanelHeader title="Create New Module"/>
                 <SocialPanelBody>
-                    <GridCell className="new-module-box">
+                    <GridCell className="new-module-box extension-form">
                         <GridCell columnSize={100} style={{ marginBottom: 15 }}>
                             <DropdownWithError
                                 className="create-new-module-dropdown"

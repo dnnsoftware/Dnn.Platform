@@ -127,7 +127,7 @@
     <value>Uninstall this Extension</value>
   </data>
   <data name="ExtensionInstall.Action" xml:space="preserve">
-    <value>Install Extension Wizard</value>
+    <value>Install Extension</value>
   </data>
   <data name="Language.Header" xml:space="preserve">
     <value>Language</value>
@@ -259,7 +259,7 @@
     <value>Modules</value>
   </data>
   <data name="MoreExtensions.Text" xml:space="preserve">
-    <value> More Extensions</value>
+    <value>More Extensions</value>
   </data>
   <data name="Provider.Type" xml:space="preserve">
     <value>Providers</value>
@@ -401,5 +401,119 @@
   </data>
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Collapse All</value>
+  </data>
+  <data name="EditExtension_OwnerDetails.Label" xml:space="preserve">
+    <value>Owner Details</value>
+  </data>
+  <data name="EditExtension_PackageDescription.HelpText" xml:space="preserve">
+    <value>A description of the package.</value>
+  </data>
+  <data name="EditExtension_PackageEmailAddress.HelpText" xml:space="preserve">
+    <value>The email address of the package's author.</value>
+  </data>
+  <data name="EditExtension_PackageFriendlyName.HelpText" xml:space="preserve">
+    <value>The friendly name of the package.</value>
+  </data>
+  <data name="EditExtension_PackageIconFile.HelpText" xml:space="preserve">
+    <value>The icon filename for this package.</value>
+  </data>
+  <data name="EditExtension_PackageLicense.HelpText" xml:space="preserve">
+    <value>The license for this package.</value>
+  </data>
+  <data name="EditExtension_PackageName.HelpText" xml:space="preserve">
+    <value>The package name (e.g. CompanyName.Name).</value>
+  </data>
+  <data name="EditExtension_PackageOrganization.HelpText" xml:space="preserve">
+    <value>The organization responsible for the package.</value>
+  </data>
+  <data name="EditExtension_PackageOwner.HelpText" xml:space="preserve">
+    <value>The owner of the package.</value>
+  </data>
+  <data name="EditExtension_PackageReleaseNotes.HelpText" xml:space="preserve">
+    <value>The release notes for this version.</value>
+  </data>
+  <data name="EditExtension_PackageType.HelpText" xml:space="preserve">
+    <value>The type of package.</value>
+  </data>
+  <data name="EditExtension_PackageURL.HelpText" xml:space="preserve">
+    <value>The author's URL.</value>
+  </data>
+  <data name="EditExtension_PackageVersion.HelpText" xml:space="preserve">
+    <value>The version of the package.</value>
+  </data>
+  <data name="Showing.Label" xml:space="preserve">
+    <value>Showing:</value>
+  </data>
+  <data name="EditExtension_PackageDescription.Label" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="EditExtension_PackageEmailAddress.Label" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="EditExtension_PackageFriendlyName.Label" xml:space="preserve">
+    <value>Friendly Name</value>
+  </data>
+  <data name="EditExtension_PackageIconFile.Label" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="EditExtension_PackageName.Label" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EditExtension_PackageOrganization.Label" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="EditExtension_PackageOwner.Label" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="EditExtension_PackageURL.Label" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="EditExtension_PackageVersion.Label" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="InstallExtension_Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="InstallExtension_FileUploadDefault.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Click Icon To Browse</value>
+  </data>
+  <data name="InstallExtension_FileUploadDragOver.Text" xml:space="preserve">
+    <value>Drag and Drop a File</value>
+  </data>
+  <data name="InstallExtension_Or.Text" xml:space="preserve">
+    <value>or</value>
+  </data>
+  <data name="InstallExtension_PackageExists.Error" xml:space="preserve">
+    <value>The package is already installed.</value>
+  </data>
+  <data name="InstallExtension_PackageExists.HelpText" xml:space="preserve">
+    <value>If you have reached this page it is because the installer needs to gather some more information before proceeding.</value>
+  </data>
+  <data name="InstallExtension_PackageExists.Warning" xml:space="preserve">
+    <value>Warning: You have selected to repair the installation of this package. &lt;br/&gt; This will cause the files in the package to overwrite all files that were previously installed.</value>
+  </data>
+  <data name="InstallExtension_RepairInstall.Button" xml:space="preserve">
+    <value>Repair Install</value>
+  </data>
+  <data name="InstallExtension_Upload.Button" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="InstallExtension_UploadAFile.Text" xml:space="preserve">
+    <value>Upload a File</value>
+  </data>
+  <data name="InstallExtension_UploadComplete.Text" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="InstallExtension_UploadFailed.Text" xml:space="preserve">
+    <value>Upload Failed</value>
+  </data>
+  <data name="InstallExtension_Uploading.Text" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="InstallExtension_UploadPackage.Header" xml:space="preserve">
+    <value>Upload Extension Package</value>
+  </data>
+  <data name="InstallExtension_UploadPackage.HelpText" xml:space="preserve">
+    <value>To begin installation, upload the package by dragging the file into the field below.</value>
   </data>
 </root>
