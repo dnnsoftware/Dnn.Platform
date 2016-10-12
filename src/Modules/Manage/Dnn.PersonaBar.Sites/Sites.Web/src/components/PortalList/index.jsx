@@ -20,6 +20,7 @@ class PortalList extends Component {
     componentWillMount() {
         const {props} = this;
         props.dispatch(PortalActions.loadPortals({
+            portalGroupId: -1,
             filter: "",
             pageIndex: 0,
             pageSize: 10
@@ -52,6 +53,7 @@ class PortalList extends Component {
     onSearch(filter) {
         const {props} = this;
         props.dispatch(PaginationActions.searchPortals({
+            portalGroupId: -1,
             filter: filter,
             pageIndex: props.pagination.pageIndex,
             pageSize: props.pagination.pageSize
