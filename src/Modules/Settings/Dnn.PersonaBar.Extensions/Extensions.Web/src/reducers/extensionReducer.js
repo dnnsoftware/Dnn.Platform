@@ -12,10 +12,7 @@ export default function extension(state = {
     installedPackageTypes: [],
     availablePackageTypes: [],
     selectedInstalledPackageType: "",
-    selectedAvailablePackageType: "",
-    parsedInstallationPackage: null,
-    installWizardStep: 0,
-    installationLogs: []
+    selectedAvailablePackageType: ""
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
@@ -44,22 +41,6 @@ export default function extension(state = {
         case ActionTypes.RETRIEVED_AVAILABLE_PACKAGE_TYPES:
             return { ...state,
                 availablePackageTypes: action.payload.Results
-            };
-        case ActionTypes.PARSED_INSTALLATION_PACKAGE:
-            return { ...state,
-                parsedInstallationPackage: action.payload
-            };
-        case ActionTypes.CLEAR_PARSED_INSTALLATION_PACKAGE:
-            return { ...state,
-                parsedInstallationPackage: null
-            };
-        case ActionTypes.GO_TO_WIZARD_STEP:
-            return { ...state,
-                installWizardStep: action.payload.wizardStep
-            };
-        case ActionTypes.INSTALLED_EXTENSION_LOGS:
-            return { ...state,
-                installationLogs: action.payload.logs
             };
         default:
             return { ...state

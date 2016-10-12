@@ -444,6 +444,36 @@
   <data name="Showing.Label" xml:space="preserve">
     <value>Showing:</value>
   </data>
+  <data name="EditAuthSystem_Enabled.Label" xml:space="preserve">
+    <value>Enabled?</value>
+  </data>
+  <data name="EditAuthSystem_Enabled.Tooltip" xml:space="preserve">
+    <value>Check to enable this Authentication System.</value>
+  </data>
+  <data name="EditAuthSystem_LoginCtrlSource.Label" xml:space="preserve">
+    <value>Login Control Source</value>
+  </data>
+  <data name="EditAuthSystem_LoginCtrlSource.Tooltip" xml:space="preserve">
+    <value>The source of the Login Control for this Authentication System</value>
+  </data>
+  <data name="EditAuthSystem_LogoffCtrlSource.Label" xml:space="preserve">
+    <value>Logoff Control Source</value>
+  </data>
+  <data name="EditAuthSystem_LogoffCtrlSource.Tooltip" xml:space="preserve">
+    <value>The source of the Logoff Control for this Authentication System</value>
+  </data>
+  <data name="EditAuthSystem_SettingsCtrlSource.Label" xml:space="preserve">
+    <value>Settings Control Source</value>
+  </data>
+  <data name="EditAuthSystem_SettingsCtrlSource.Tooltip" xml:space="preserve">
+    <value>Check to enable this Authentication System.</value>
+  </data>
+  <data name="EditAuthSystem_Type.Label" xml:space="preserve">
+    <value>Authentication Type</value>
+  </data>
+  <data name="EditAuthSystem_Type.Tooltip" xml:space="preserve">
+    <value>The type of Authentication System (eg LiveID, OpenID etc)</value>
+  </data>
   <data name="EditExtension_PackageDescription.Label" xml:space="preserve">
     <value>Description</value>
   </data>

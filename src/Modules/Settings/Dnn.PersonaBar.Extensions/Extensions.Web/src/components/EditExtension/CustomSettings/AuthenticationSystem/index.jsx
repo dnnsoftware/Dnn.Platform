@@ -20,25 +20,26 @@ class AuthenticationSystem extends Component {
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError
-                            label="Name"
-                            tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
+                            label={Localization.get("EditAuthSystem_Type.Label")}
+                            tooltipMessage={Localization.get("EditAuthSystem_Type.Tooltip")}
                             style={inputStyle} />
                         <SingleLineInputWithError
-                            label="Friendly Name"
-                            tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
+                            label={Localization.get("EditAuthSystem_LoginCtrlSource.Label")}
+                            tooltipMessage={Localization.get("EditAuthSystem_LoginCtrlSource.Tooltip")}
                             style={inputStyle} />
                     </div>
                     <div>
                         <SingleLineInputWithError
-                            label="Name"
-                            tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
+                            label={Localization.get("EditAuthSystem_LogoffCtrlSource.Label")}
+                            tooltipMessage={Localization.get("EditAuthSystem_LogoffCtrlSource.Tooltip")}
                             style={inputStyle} />
                         <SingleLineInputWithError
-                            label="Friendly Name"
-                            tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
+                            label={Localization.get("EditAuthSystem_SettingsCtrlSource.Label")}
+                            tooltipMessage={Localization.get("EditAuthSystem_SettingsCtrlSource.Tooltip")}
                             style={inputStyle}
                             enabled={!props.disabled} />
-                        <Switch value={true} label="Add a Test Page:" />
+                        <Switch value={true}
+                            label={Localization.get("EditAuthSystem_Enabled.Label")} />
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">

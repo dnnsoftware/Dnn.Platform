@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import InstallLog from "./InstallLog";
-import { extension as ExtensionActions } from "actions";
+import { extension as ExtensionActions, installation as InstallationActions } from "actions";
 import PackageInformation from "../EditExtension/PackageInformation";
 import ReleaseNotes from "../Editextension/ReleaseNotes";
 import License from "../EditExtension/License";
@@ -36,7 +36,7 @@ class InstallExtensionModal extends Component {
 
     goToStep(wizardStep) {
         const { props } = this;
-        props.dispatch(ExtensionActions.navigateWizard(wizardStep));
+        props.dispatch(InstallationActions.navigateWizard(wizardStep));
     }
 
     parsePackage(file, callback, errorCallback) {
@@ -48,7 +48,7 @@ class InstallExtensionModal extends Component {
         this.setState({
             package: file
         }, () => {
-            props.dispatch(ExtensionActions.parsePackage(file, data => {
+            props.dispatch(InstallationActions.parsePackage(file, data => {
                 data = JSON.parse(data);
                 if (!data.success) {
                     if (errorCallback) {
@@ -76,7 +76,7 @@ class InstallExtensionModal extends Component {
 
     installPackage() {
         const {props} = this;
-        props.dispatch(ExtensionActions.installExtension(this.state.package, () => {
+        props.dispatch(InstallationActions.installExtension(this.state.package, () => {
             this.goToStep(4);
         }));
     }
@@ -89,7 +89,7 @@ class InstallExtensionModal extends Component {
 
     cancelInstall(cancelRevertStep) {
         const {props} = this;
-        props.dispatch(ExtensionActions.clearParsedInstallationPackage(() => {
+        props.dispatch(InstallationActions.clearParsedInstallationPackage(() => {
             if (!cancelRevertStep) {
                 this.goToStep(0);
             }
@@ -181,9 +181,9 @@ InstallExtensionModal.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        parsedInstallationPackage: state.extension.parsedInstallationPackage,
-        wizardStep: state.extension.installWizardStep,
-        installationLogs: state.extension.installationLogs
+        parsedInstallationPackage: state.installation.parsedInstallationPackage,
+        wizardStep: state.installation.installWizardStep,
+        installationLogs: state.installation.installationLogs
     };
 }
 
