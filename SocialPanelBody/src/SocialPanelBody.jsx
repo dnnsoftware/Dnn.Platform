@@ -2,8 +2,8 @@ import React, {PropTypes} from "react";
 import GridCell from "dnn-grid-cell";
 import "./style.less";
 
-const SocialPanelBody = ({children, workSpaceTrayOutside, workSpaceTrayVisible, workSpaceTray}) => (
-    <GridCell className="dnn-social-panel-body">
+const SocialPanelBody = ({children, workSpaceTrayOutside, workSpaceTrayVisible, workSpaceTray, style, className}) => (
+    <GridCell className={"dnn-social-panel-body" + (className ? " " + className : "")} style={style}>
         {(workSpaceTrayOutside && workSpaceTrayVisible) && 
             <GridCell className="dnn-workspace-tray">
                 {workSpaceTray}
@@ -29,6 +29,8 @@ SocialPanelBody.propTypes = {
     children: PropTypes.node,
     workSpaceTrayOutside: PropTypes.bool,
     workSpaceTrayVisible: PropTypes.bool,
-    workSpaceTray: PropTypes.node
+    workSpaceTray: PropTypes.node,
+    style: PropTypes.object,
+    className: PropTypes.string
 };
 export default SocialPanelBody;
