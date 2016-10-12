@@ -210,20 +210,22 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				newFile.FolderId = folder.FolderID;
 				newFile.Folder = FileSystemUtils.FormatFolderPath(folder.FolderPath);
 
-				var memStream = new MemoryStream();
-				byte[] fileDataBytes = Encoding.UTF8.GetBytes(fileContents);
-				memStream.Write(fileDataBytes, 0, fileDataBytes.Length);
-				memStream.Flush();
-				memStream.Position = 0;
+                using (var memStream = new MemoryStream())
+                {
+                    byte[] fileDataBytes = Encoding.UTF8.GetBytes(fileContents);
+                    memStream.Write(fileDataBytes, 0, fileDataBytes.Length);
+                    memStream.Flush();
+                    memStream.Position = 0;
 
-				if (newFile.FileId != Null.NullInteger)
-				{
-					FileManager.Instance.UpdateFile(newFile, memStream);
-				}
-				else
-				{
-					FileManager.Instance.AddFile(folder, newFileName, memStream, true);
-				}
+                    if (newFile.FileId != Null.NullInteger)
+                    {
+                        FileManager.Instance.UpdateFile(newFile, memStream);
+                    }
+                    else
+                    {
+                        FileManager.Instance.AddFile(folder, newFileName, memStream, true);
+                    }
+                }
 
 				ShowSaveTemplateMessage(string.Empty);
 			}

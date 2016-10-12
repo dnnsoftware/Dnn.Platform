@@ -145,9 +145,11 @@ namespace DotNetNuke.Services.UserProfile
 
                     }
 
-                    var memoryStream = new MemoryStream();
-                    content.CopyTo(memoryStream);
-                    memoryStream.WriteTo(context.Response.OutputStream);
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        content.CopyTo(memoryStream);
+                        memoryStream.WriteTo(context.Response.OutputStream);
+                    }
 
                     photoLoaded = true;
                 }

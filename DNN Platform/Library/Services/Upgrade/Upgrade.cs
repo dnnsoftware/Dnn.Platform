@@ -4831,9 +4831,10 @@ namespace DotNetNuke.Services.Upgrade
                         //Legacy Skin/Container
                         string tempInstallFolder = installer.TempInstallFolder;
                         string manifestFile = Path.Combine(tempInstallFolder, Path.GetFileNameWithoutExtension(file) + ".dnn");
-                        var manifestWriter = new StreamWriter(manifestFile);
-                        manifestWriter.Write(LegacyUtil.CreateSkinManifest(file, packageType, tempInstallFolder));
-                        manifestWriter.Close();
+                        using (var manifestWriter = new StreamWriter(manifestFile))
+                        {
+                            manifestWriter.Write(LegacyUtil.CreateSkinManifest(file, packageType, tempInstallFolder));
+                        }
 
                         installer = new Installer.Installer(tempInstallFolder, manifestFile, HttpContext.Current.Request.MapPath("."), true);
 

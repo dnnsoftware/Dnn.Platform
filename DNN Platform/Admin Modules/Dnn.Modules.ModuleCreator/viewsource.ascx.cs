@@ -264,9 +264,11 @@ namespace Dnn.Module.ModuleCreator
             if (File.Exists(templatePath + "\\readme.txt"))
             {
                 var readMe = Null.NullString;
-                TextReader tr = new StreamReader(templatePath + "\\readme.txt");
-                readMe = tr.ReadToEnd();
-                tr.Close();
+                using (TextReader tr = new StreamReader(templatePath + "\\readme.txt"))
+                {
+                    readMe = tr.ReadToEnd();
+                    tr.Close();
+                }
                 lblDescription.Text = readMe.Replace("\n", "<br/>");
             }
             else
@@ -332,9 +334,11 @@ namespace Dnn.Module.ModuleCreator
                 modulePath = Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
 
                 //open file
-                TextReader tr = new StreamReader(filePath);
-                sourceCode = tr.ReadToEnd();
-                tr.Close();
+                using (TextReader tr = new StreamReader(filePath))
+                {
+                    sourceCode = tr.ReadToEnd();
+                    tr.Close();
+                }
 
                 //replace tokens
                 var owner = objPackage.Owner.Replace(" ", "");
@@ -395,9 +399,11 @@ namespace Dnn.Module.ModuleCreator
                 if (!File.Exists(modulePath + fileName))
                 {
                     //create file
-                    TextWriter tw = new StreamWriter(modulePath + fileName);
-                    tw.WriteLine(sourceCode);
-                    tw.Close();
+                    using (TextWriter tw = new StreamWriter(modulePath + fileName))
+                    {
+                        tw.WriteLine(sourceCode);
+                        tw.Close();
+                    }
 
                     EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 

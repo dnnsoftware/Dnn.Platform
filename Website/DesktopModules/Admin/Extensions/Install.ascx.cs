@@ -325,9 +325,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
         private void CreateManifest()
         {
             ManifestFile = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(FileName) + ".dnn");
-            StreamWriter manifestWriter = new StreamWriter(ManifestFile);
-            manifestWriter.Write(LegacyUtil.CreateSkinManifest(FileName, rblLegacySkin.SelectedValue, TempInstallFolder));
-            manifestWriter.Close();
+            using (var manifestWriter = new StreamWriter(ManifestFile))
+            {
+                manifestWriter.Write(LegacyUtil.CreateSkinManifest(FileName, rblLegacySkin.SelectedValue, TempInstallFolder));
+                manifestWriter.Close();
+            }
         }
 
         private void Initialize()

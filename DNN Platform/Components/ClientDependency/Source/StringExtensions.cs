@@ -120,7 +120,7 @@ namespace ClientDependency.Core
         /// </summary>
         public static string GenerateMd5(this string str)
         {
-            using(var hasher = new MD5CryptoServiceProvider())
+            using (var hasher = new MD5CryptoServiceProvider())
             {
                 var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
                 return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));    

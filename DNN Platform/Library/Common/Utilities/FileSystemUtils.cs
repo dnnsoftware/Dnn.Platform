@@ -1564,8 +1564,10 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("Deprecated in DNN 6.0.")]
         public static string GetHash(byte[] bytes)
         {
-            var stream = new MemoryStream(bytes);
-            return ((FileManager)FileManager.Instance).GetHash(stream);
+            using (var stream = new MemoryStream(bytes))
+            {
+                return ((FileManager) FileManager.Instance).GetHash(stream);
+            }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

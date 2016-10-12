@@ -215,8 +215,10 @@ namespace Dnn.Modules.XmlMerge
             ValidateSuperUser();
             if (IsValidDocType(uplScript.PostedFile.ContentType))
             {
-                var scriptFile = new StreamReader(uplScript.PostedFile.InputStream);
-                txtScript.Text = scriptFile.ReadToEnd();
+                using (var scriptFile = new StreamReader(uplScript.PostedFile.InputStream))
+                {
+                    txtScript.Text = scriptFile.ReadToEnd();
+                }
             }
             else
             {

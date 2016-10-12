@@ -130,17 +130,16 @@ namespace DotNetNuke.Entities.Urls.Config
 					//make sure file is not read-only
                     File.SetAttributes(filePath, FileAttributes.Normal);
                 }
-                var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
+                using (var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                using (var writer = new StreamWriter(fileWriter))
+                {
+                    //Serialize the RewriterConfiguration
+                    ser.Serialize(writer, config);
 
-                //Open up the file to serialize
-                var writer = new StreamWriter(fileWriter);
-
-                //Serialize the RewriterConfiguration
-                ser.Serialize(writer, config);
-
-                //Close the Writers
-                writer.Close();
-                fileWriter.Close();
+                    //Close the Writers
+                    writer.Close();
+                    fileWriter.Close();
+                }
 
                 //Set Cache
                 DataCache.SetCache("RewriterConfig", config, new DNNCacheDependency(filePath));

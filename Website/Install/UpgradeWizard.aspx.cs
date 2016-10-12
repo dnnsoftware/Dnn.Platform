@@ -278,9 +278,11 @@ namespace DotNetNuke.Services.Install
             try
             {
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
-                var sw = new StreamWriter(StatusFile, true);
-                sw.WriteLine(obj.ToJson());
-                sw.Close();
+                using (var sw = new StreamWriter(StatusFile, true))
+                {
+                    sw.WriteLine(obj.ToJson());
+                    sw.Close();
+                }
             }
             catch (Exception)
             {

@@ -311,8 +311,10 @@ namespace Dnn.Modules.Sql
             {
                 if (!String.IsNullOrEmpty(uplSqlScript.PostedFile.FileName))
                 {
-                    var scriptFile = new StreamReader(uplSqlScript.PostedFile.InputStream);
-                    txtQuery.Text = scriptFile.ReadToEnd();
+                    using (var scriptFile = new StreamReader(uplSqlScript.PostedFile.InputStream))
+                    {
+                        txtQuery.Text = scriptFile.ReadToEnd();
+                    }
                 }
             }
         }

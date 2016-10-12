@@ -400,10 +400,12 @@ namespace DotNetNuke.Security
         /// </remarks>
         public string CreateKey(int numBytes)
         {
-            var rng = new RNGCryptoServiceProvider();
-            var buff = new byte[numBytes];
-            rng.GetBytes(buff);
-            return BytesToHexString(buff);
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var buff = new byte[numBytes];
+                rng.GetBytes(buff);
+                return BytesToHexString(buff);
+            }
         }
 
         public string Decrypt(string strKey, string strData)

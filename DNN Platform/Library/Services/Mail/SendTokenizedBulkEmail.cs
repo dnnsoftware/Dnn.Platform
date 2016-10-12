@@ -347,22 +347,24 @@ namespace DotNetNuke.Services.Mail
 			foreach (var attachment in _attachments)
 			{
 				var buffer = new byte[4096];
-				var memoryStream = new MemoryStream();
-				while (true)
-				{
-					var read = attachment.ContentStream.Read(buffer, 0, 4096);
-					if (read <= 0)
-					{
-						break;
-					}
-					memoryStream.Write(buffer, 0, read);
-				}
+                using (var memoryStream = new MemoryStream())
+                {
+                    while (true)
+                    {
+                        var read = attachment.ContentStream.Read(buffer, 0, 4096);
+                        if (read <= 0)
+                        {
+                            break;
+                        }
+                        memoryStream.Write(buffer, 0, read);
+                    }
 
-			    var newAttachment = new Attachment(memoryStream, attachment.ContentType);
-                newAttachment.ContentStream.Position = 0;
-                attachments.Add(newAttachment);
-                //reset original position
-				attachment.ContentStream.Position = 0;
+                    var newAttachment = new Attachment(memoryStream, attachment.ContentType);
+                    newAttachment.ContentStream.Position = 0;
+                    attachments.Add(newAttachment);
+                    //reset original position
+                    attachment.ContentStream.Position = 0;
+                }
 			}
 
 			return attachments;

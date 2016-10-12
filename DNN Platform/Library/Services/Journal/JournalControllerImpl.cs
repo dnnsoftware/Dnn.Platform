@@ -156,10 +156,11 @@ namespace DotNetNuke.Services.Journal
             int thumbnailHeight = 400;
             GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
             var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
-            var result = new MemoryStream();
-            thumbnail.Save(result, image.RawFormat);
-
-            return result;
+            using (var result = new MemoryStream())
+            {
+                thumbnail.Save(result, image.RawFormat);
+                return result;
+            }
         }
 
         private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)

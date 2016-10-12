@@ -1353,10 +1353,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                 if (File.Exists(toolspath))
                 {
-                    var tr = new StreamReader(toolspath);
-                    this.txtTools.Text = tr.ReadToEnd();
-                    tr.Close();
-                    tr.Dispose();
+                    using (var tr = new StreamReader(toolspath))
+                    {
+                        this.txtTools.Text = tr.ReadToEnd();
+                        tr.Close();
+                    }
                 }
                 else
                 {
@@ -1369,10 +1370,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                     if (File.Exists(toolspath))
                     {
-                        var tr = new StreamReader(toolspath);
-                        this.txtTools.Text = tr.ReadToEnd();
-                        tr.Close();
-                        tr.Dispose();
+                        using (var tr = new StreamReader(toolspath))
+                        {
+                            this.txtTools.Text = tr.ReadToEnd();
+                            tr.Close();
+                        }
                     }
                     else
                     {

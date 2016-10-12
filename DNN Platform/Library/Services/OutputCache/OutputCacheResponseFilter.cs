@@ -179,9 +179,11 @@ namespace DotNetNuke.Services.OutputCache
             if ((((CaptureStream) != null)))
             {
                 CaptureStream.Position = 0;
-                var reader = new StreamReader(CaptureStream, Encoding.Default);
-                string output = reader.ReadToEnd();
-                AddItemToCache(itemId, output);
+                using (var reader = new StreamReader(CaptureStream, Encoding.Default))
+                {
+                    string output = reader.ReadToEnd();
+                    AddItemToCache(itemId, output);
+                }
                 CaptureStream.Close();
                 CaptureStream = null;
             }

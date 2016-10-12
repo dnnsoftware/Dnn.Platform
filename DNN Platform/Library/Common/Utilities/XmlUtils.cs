@@ -147,10 +147,12 @@ namespace DotNetNuke.Common.Utilities
                 return obj;
             }
             var serializer = new XmlSerializer(type);
-            TextReader tr = new StreamReader(objStream);
-            obj = serializer.Deserialize(tr);
-            tr.Close();
-            return obj;
+            using (TextReader tr = new StreamReader(objStream))
+            {
+                obj = serializer.Deserialize(tr);
+                tr.Close();
+                return obj;
+            }
         }
 
         public static Dictionary<int, TValue> DeSerializeDictionary<TValue>(Stream objStream, string rootname)

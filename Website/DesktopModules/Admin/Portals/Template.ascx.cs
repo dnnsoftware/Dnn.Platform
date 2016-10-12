@@ -868,58 +868,60 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     filename += ".template";
                 }
-                XmlWriter writer = XmlWriter.Create(filename, settings);
 
-                writer.WriteStartElement("portal");
-                writer.WriteAttributeString("version", "5.0");
-
-                //Add template description
-                writer.WriteElementString("description", Server.HtmlEncode(txtDescription.Text));
-
-                //Serialize portal settings
-                var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
-
-                SerializePortalSettings(writer, portal);
-                SerializeEnabledLocales(writer, portal);
-                SerializeExtensionUrlProviders(writer, portal.PortalID);
-
-                if (chkProfile.Checked)
+                using (XmlWriter writer = XmlWriter.Create(filename, settings))
                 {
-                    //Serialize Profile Definitions
-                    SerializeProfileDefinitions(writer, portal);
+                    writer.WriteStartElement("portal");
+                    writer.WriteAttributeString("version", "5.0");
+
+                    //Add template description
+                    writer.WriteElementString("description", Server.HtmlEncode(txtDescription.Text));
+
+                    //Serialize portal settings
+                    var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+
+                    SerializePortalSettings(writer, portal);
+                    SerializeEnabledLocales(writer, portal);
+                    SerializeExtensionUrlProviders(writer, portal.PortalID);
+
+                    if (chkProfile.Checked)
+                    {
+                        //Serialize Profile Definitions
+                        SerializeProfileDefinitions(writer, portal);
+                    }
+
+                    if (chkModules.Checked)
+                    {
+                        //Serialize Portal Desktop Modules
+                        DesktopModuleController.SerializePortalDesktopModules(writer, portal.PortalID);
+                    }
+
+                    if (chkRoles.Checked)
+                    {
+                        //Serialize Roles
+                        RoleController.SerializeRoleGroups(writer, portal.PortalID);
+                    }
+
+                    //Serialize tabs
+                    SerializeTabs(writer, portal);
+
+                    if (chkFiles.Checked)
+                    {
+                        //Create Zip File to hold files
+                        var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
+                        resourcesFile.SetLevel(6);
+
+                        //Serialize folders (while adding files to zip file)
+                        SerializeFolders(writer, portal, ref resourcesFile);
+
+                        //Finish and Close Zip file
+                        resourcesFile.Finish();
+                        resourcesFile.Close();
+                    }
+                    writer.WriteEndElement();
+
+                    writer.Close();
                 }
-
-                if (chkModules.Checked)
-                {
-                    //Serialize Portal Desktop Modules
-                    DesktopModuleController.SerializePortalDesktopModules(writer, portal.PortalID);
-                }
-
-                if (chkRoles.Checked)
-                {
-                    //Serialize Roles
-                    RoleController.SerializeRoleGroups(writer, portal.PortalID);
-                }
-
-                //Serialize tabs
-                SerializeTabs(writer, portal);
-
-                if (chkFiles.Checked)
-                {
-                    //Create Zip File to hold files
-                    var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
-                    resourcesFile.SetLevel(6);
-
-                    //Serialize folders (while adding files to zip file)
-                    SerializeFolders(writer, portal, ref resourcesFile);
-
-                    //Finish and Close Zip file
-                    resourcesFile.Finish();
-                    resourcesFile.Close();
-                }
-                writer.WriteEndElement();
-
-                writer.Close();
 
                 UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
