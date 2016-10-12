@@ -36,6 +36,7 @@ using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Dnn.PersonaBar.Sites.Components.Dto;
 using Dnn.PersonaBar.Sites.Services.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
@@ -154,9 +155,9 @@ namespace Dnn.PersonaBar.Sites.Components
             }
         }
 
-        public List<object> FormatPortalAliases(int portalId)
+        public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {
-            var aliases = new List<object>();
+            var aliases = new List<HttpAliasDto>();
 
             var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
             foreach (var portalAliasInfo in arr)
@@ -165,7 +166,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 var originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString().ToLowerInvariant();
 
                 httpAlias = Globals.AddPort(httpAlias, originalUrl);
-                aliases.Add(new { url = portalAliasInfo.HTTPAlias, link = httpAlias});
+                aliases.Add(new HttpAliasDto{ Url = portalAliasInfo.HTTPAlias, Link = httpAlias});
             }
 
             return aliases;
