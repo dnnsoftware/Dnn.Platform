@@ -82,6 +82,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [DataMember(Name = "email")]
         public string Email { get; set; }
 
+        [DataMember(Name = "canDelete")]
+        public bool CanDelete { get; set; }
+
         public PackageInfoDto()
         {
             
@@ -104,6 +107,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             Organization = package.Organization;
             Url = package.Url;
             Email = package.Email;
+            CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
         }
 
         public PackageInfo ToPackageInfo()
