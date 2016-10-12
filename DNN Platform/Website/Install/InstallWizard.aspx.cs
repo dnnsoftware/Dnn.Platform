@@ -1211,37 +1211,10 @@ namespace DotNetNuke.Services.Install
                                     new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data"), 3)
                                 };
 
-			var failedList = verifiers.Where(v => !v.VerifyFolderCreate()).ToArray();
+			var failedList = verifiers.Where(v => !v.VerifyAll()).ToArray();
 			if (failedList.Any())
 			{
 				permissionsValid = false;
-			}
-
-			if (permissionsValid)
-			{
-				failedList = verifiers.Where(v => !v.VerifyFileCreate()).ToArray();
-				if (failedList.Any())
-				{
-					permissionsValid = false;
-				}
-			}
-
-			if (permissionsValid)
-			{
-				failedList = verifiers.Where(v => !v.VerifyFileDelete()).ToArray();
-				if (failedList.Any())
-				{
-					permissionsValid = false;
-				}
-			}
-
-			if (permissionsValid)
-			{
-				failedList = verifiers.Where(v => !v.VerifyFolderDelete()).ToArray();
-				if (failedList.Any())
-				{
-					permissionsValid = false;
-				}
 			}
 
 			if (!permissionsValid)
