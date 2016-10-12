@@ -1,0 +1,72 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsersByUserIds') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsersByUserIds
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsersByUserIds (
+	@PortalId INT,
+	@UserIds nvarchar(max) -- comma separated list of UserIds
+) AS
+BEGIN
+		SELECT DISTINCT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, U.IsDeleted, U.Authorised
+		FROM {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK)
+		INNER JOIN (Select RowValue FROM {databaseOwner}{objectQualifier}ConvertListToTable(',',@UserIds)) UserIds
+			ON U.UserID = UserIds.RowValue
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
+			ON U.UserID = UP.UserId
+		WHERE UP.PortalId = @PortalId
+END
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers (
+	@PortalId INT,
+	@SortColumn NVARCHAR(32),
+	@SortAscending BIT,
+    @PageIndex int = 0,
+    @PageSize int = 10
+) AS
+BEGIN
+	SELECT COUNT(*) AS TotalRecords
+	FROM {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
+	INNER JOIN {databaseOwner}{objectQualifier}Users U WITH (NOLOCK) ON UP.UserId = U.UserID
+	WHERE UP.PortalId = @PortalId
+	AND IsSuperUser = 0
+		
+	;WITH UsersCTE
+	AS
+	(	
+		SELECT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, U.IsDeleted, U.Authorised,
+		ROW_NUMBER() OVER ( ORDER BY CASE WHEN @SortColumn = 'Joined' AND @SortAscending = 1 THEN U.UserID END ASC, 
+									 CASE WHEN @SortColumn = 'Joined' AND @SortAscending = 0 THEN U.UserID END DESC,
+									 CASE WHEN @SortColumn = 'Email' AND @SortAscending = 1 THEN U.Email END ASC, 
+									 CASE WHEN @SortColumn = 'Email' AND @SortAscending = 0 THEN U.Email END DESC,
+									 CASE WHEN @SortColumn = 'DisplayName' AND @SortAscending = 1 THEN U.DisplayName END ASC, 
+									 CASE WHEN @SortColumn = 'DisplayName' AND @SortAscending = 0 THEN U.DisplayName END DESC) AS RowNumber 
+		FROM {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK)
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
+			ON U.UserID = UP.UserId
+		WHERE UP.PortalId = @PortalId
+		AND IsSuperUser = 0
+	)
+	SELECT * FROM UsersCTE
+	WHERE	RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize);
+END
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

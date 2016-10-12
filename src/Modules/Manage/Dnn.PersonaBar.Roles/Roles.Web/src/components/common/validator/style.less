@@ -1,0 +1,32 @@
+@import "~dnn-global-styles/index";
+div.form-validator {
+    position: relative;
+    div.validator {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: 12px;
+        bottom: 12px;
+        display: none;
+        div.type-error {
+            transform: translate(3px, 4px);
+        }
+    }
+}
+
+div.form-validator.required {
+    div>label:after {
+        content: "*";
+        color: @alizarinCrimson;
+        margin-left: 4px;
+    }
+}
+
+div.form-validator.not-validated {
+    input[type="text"] {
+        border-bottom: 2px solid @alizarinCrimson !important;
+    }
+    div.validator {
+        display: block;
+    }
+}

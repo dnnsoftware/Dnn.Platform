@@ -1,0 +1,64 @@
+@import "~dnn-global-styles/index";
+:local(.newExtensionModal) {
+    box-sizing: border-box;
+    .dnn-grid-system.with-right-border {
+        &.bottom-half {
+            padding-top: 25px;
+        }
+        &.top-half {
+            padding-bottom: 25px;
+        }
+        .dnn-grid-cell:first-child {
+            border-right: 1px solid @alto;
+        }
+    }
+    .dnn-grid-cell {
+        padding: 10px 25px 15px;
+        box-sizing: border-box;
+        > hr {
+            border: none;
+            height: 1px;
+            color: @alto;
+            background-color: @alto;
+        }
+        .extension-type{
+            margin-bottom: 32px;
+        }
+        .version-dropdown {
+            width: 30%;
+            box-sizing: border-box;
+            margin-right: 5%;
+            vertical-align: bottom;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+        &.modal-footer {
+            text-align: center;
+            margin-top: 30px;
+            .modal-pagination {
+                color: @alto;
+                margin-top: 50px;
+                font-size: 15px;
+            }
+            button {
+                width: 100px;
+                margin-right: 10px;
+            }
+        }
+    }
+    .new-extension-box {
+        padding: 25px 45px;
+    }
+    .box-title-container {
+        padding-top: 0;
+        padding-bottom: 0;
+        .box-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+    }
+}

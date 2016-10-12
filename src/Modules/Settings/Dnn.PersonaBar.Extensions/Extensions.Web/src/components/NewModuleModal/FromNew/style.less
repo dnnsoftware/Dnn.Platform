@@ -1,0 +1,45 @@
+@import "~dnn-global-styles/index";
+:local(.fromNew) {
+    .dnn-grid-system.with-right-border {
+        .dnn-grid-cell {
+            padding: 0;
+            padding-left: 25px;
+        }
+        &.bottom-half {
+            padding-top: 25px;
+        }
+        &.top-half {
+            padding-bottom: 25px;
+        }
+        .dnn-grid-cell:first-child {
+            padding-left: 0;
+            padding-right: 25px;
+            border-right: 1px solid @alto;
+        }
+        .owner-folder, .module-folder {
+            margin-bottom: 32px;
+            width: 100%;
+        }
+        .dnn-switch-container {
+            width: 100%;
+            .dnn-switch {
+                float: right;
+            }
+        }
+        .dnn-radio-buttons {
+            margin-top: 32px;
+            > label {
+                font-size: 15px;
+                margin-right: 25px;
+            }
+            ul {
+                li {
+                    margin-right: 15px;
+                    label {
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

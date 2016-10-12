@@ -1,0 +1,140 @@
+﻿<!-- panel -->
+<div class="socialpanelheader" id="recycleBin-header" >
+    <h3 class="caption" data-bind="html: resx.recyclebin_Title"></h3>  
+</div>
+<div class="socialpanelbody pagesPanelContainer recycleBinContainer body"
+     data-bind="tabs: {}"
+     id="recycleBin-body" >
+    <ul class="tabs-nav">
+        <li><a href="#pages" data-bind="html: resx.recyclebin_Pages, click: $root.refreshPages"></a></li>
+        <li><a href="#modules" data-bind="html: resx.recyclebin_Modules, click: $root.refreshModules"></a></li>
+        <li><a href="#templates" data-bind="html: resx.recyclebin_Templates, click: $root.refreshTemplates"></a></li>
+    </ul>
+    <div id="pages" data-bind="visible: deletedPagesReady()"
+         class="listOfItems">
+        <div data-bind="text: resx.recyclebin_NoPages, visible: deletedpagesList().length == 0, 
+                                css: { 'EmptyList NoPages': deletedpagesList().length == 0}"></div>
+        <div data-bind="visible: deletedpagesList().length > 0, jScrollPane: { observableElement: deletedpagesList,
+                                parentHeightOptions: { heightCorrection: -110 },
+                                jScrollPaneOptions: { autoReinitialise: true, contentWidth: $('#pages').width() } }"
+             id="pageList">
+            <table class="dnnRBGrid">
+                <tr class="dnnRBGridHeader">                    
+                    <td class="thumbnail pagename" colspan="3" data-bind="html: $root.resx.worflow_usages_dialog_table_name"></td>      
+                </tr>
+                <tbody class="pages-list-container" data-bind="template: { name: 'pages-list-recyclebin', foreach: deletedpagesList }"></tbody>
+            </table>
+        </div>
+        <div data-bind="visible: deletedpagesList().length > 0" class="actions">
+            <a class="secondarybtn" id="RestoreSelectedPages" data-bind="html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedPages"></a>
+            <a class="primarybtn" id="RemoveSelectedPages" data-bind="html: $root.resx.recyclebin_Delete, click: $root.removeSelectedPages"></a>
+        </div>
+    </div>
+    <div id="modules" data-bind="visible: deletedModulesReady()"
+         class="listOfItems">
+        <div data-bind="text: resx.recyclebin_NoModules, visible: deletedmodulesList().length == 0,
+                                css: { 'EmptyList NoModules': deletedmodulesList().length == 0}"></div>
+        <div data-bind="visible: deletedmodulesList().length > 0, jScrollPane: { observableElement: deletedmodulesList,
+                                parentHeightOptions: { heightCorrection: -110 },
+                                jScrollPaneOptions: { autoReinitialise: true } }" id="moduleList" style="display:none;">
+            <table class="dnnRBGrid">
+                <tr class="dnnRBGridHeader">                    
+                    
+                    <td class="mpage" colspan="3" data-bind="html: $root.resx.worflow_usages_dialog_table_name"></td>
+                                       
+                </tr>
+                <tbody class="pages-list-container" data-bind="template: { name: 'modules-list-recyclebin', foreach: deletedmodulesList }"></tbody>
+            </table>
+        </div>
+        <div data-bind="visible: deletedmodulesList().length > 0" class="actions">
+            <a class="secondarybtn" id="RestoreSelectedModules" data-bind="html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedModules "></a>
+            <a class="primarybtn" id="RemoveSelectedModules" data-bind="html: $root.resx.recyclebin_Delete, click: $root.removeSelectedModules"></a>
+        </div>
+    </div>
+    <div id="templates" data-bind="visible: deletedTemplatesReady() "
+         class="listOfItems">
+        <div data-bind="text: resx.recyclebin_NoTemplates, visible: deletedtemplatesList().length == 0,
+                                css: {'NoTemplates EmptyList' : deletedtemplatesList().length == 0 }"></div>
+        <div data-bind="visible: deletedtemplatesList().length > 0, jScrollPane: { observableElement: deletedtemplatesList,
+                                parentHeightOptions: { heightCorrection: -110 },
+                                jScrollPaneOptions: { autoReinitialise: true } }" id="templateList">
+            <table class="dnnRBGrid">
+                <tr class="dnnRBGridHeader">
+                   
+                    <td  colspan="3" stlye=" display:inline-block; " data-bind="html: $root.resx.worflow_usages_dialog_table_name" colspan="3"></td>
+                </tr>   
+                <tbody class="pages-list-container" data-bind="template: { name: 'templates-list-recyclebin', foreach: deletedtemplatesList }"></tbody>
+            </table>
+        </div>
+        <div data-bind="visible: deletedtemplatesList().length > 0" class="actions">
+            <a class="secondarybtn" id="RestoreSelectedTemplates" data-bind="html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedTemplates "></a>
+            <a class="primarybtn" id="RemoveSelectedTemplates" data-bind="html: $root.resx.recyclebin_Delete, click: $root.removeSelectedTemplates"></a>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="pages-list-recyclebin">
+    <tr class="dnnRBGridBody" data-bind="attr: { 'data-page-id': id }, css: { 'root' : !parent, 'withChildren': children().length > 0, 'child': parent, 'even': isItsRootElementEven }">
+       <td class="checkbox" data-bind="setWhenHover: mouseOver, css: {'hover': mouseOver() || selected() } ">
+            <input type="checkbox" class="page-item" data-bind="checked: selected" />
+        </td>
+        <!-- ko if: !parent -->
+        <td class="thumbnail pagename"  data-bind="
+                css: { 'has-children': childCount > 0 }, attr: { title: tabpath },
+                attr: { 'rowspan': numberOfNestedChildren }">
+            <div class="containerUlPages" data-bind="">
+                <!-- ko template: { name: 'pages-tree-recyclebin', foreach: $data } -->
+                <!-- /ko -->
+            </div>
+        </td>
+        <!-- /ko -->     
+    </tr>
+    <!-- ko if: children -->
+    <!-- ko template: { name: 'pages-list-recyclebin', foreach: children } -->
+    <!-- /ko -->
+    <!-- /ko -->
+</script>
+<script type="text/html" id="pages-tree-recyclebin">
+    <div class="rowAndChildrenContainer">
+    <div class="row" data-bind="click: $root.changeElementSelectedStatus, css: {'hover':selected() },style: { paddingLeft: depthInPixels }, attr: {'data-page-id': id}">
+        <div class="pageDataContainer" style="display:inline-block; width:400px !important;" data-bind="css: {'hover': mouseOver() || selected() }">
+            <div class="image-table"  style="display:inline-block;">
+                <img data-bind="attr: { src: thumbnail, alt: tabpath}" />
+            </div>
+            <div class="pages-preview"  style="display:inline-block;" data-bind="toggle: { value: thumbnailVisible, duration: 'fast' }, style: { top: thumbnailTop, left: thumbnailLeft }">
+                <img data-bind="attr: { src: largeThumbnail }" />
+            </div>
+            <div class="pagename" style="display:inline-block; position:absolute; width:320px;" data-bind="html: name" />
+        </div>
+    </div>
+    <!-- ko if: children -->
+    <!-- ko template: { name: 'pages-tree-recyclebin', foreach: children() } -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <div class="treeEdges" data-bind="style: { 'left': depthInPixels, 'height': totalHeight } " />
+    </div>
+</script>
+
+<script type="text/html" id="modules-list-recyclebin">
+    <tr class="dnnRBGridBody" data-bind="setWhenHover: mouseOver,
+                        attr: { 'data-module-id': Id, 'data-tab-id': TabID }, css: { 'deletedtab': TabDeleted }, css: {'hover': mouseOver() || selected() }">
+        <td class="checkbox">
+            <input type="checkbox" class="module-item" data-bind="enable: !TabDeleted, checked: selected" />
+        </td>
+       
+        <td class="pagename" data-bind="html: TabName, click: !TabDeleted ? $root.changeElementSelectedStatus : null, css: {'action-disabled': TabDeleted}"></td>   
+    </tr>
+</script>
+<script type="text/html" id="templates-list-recyclebin">
+    <tr class="dnnRBGridBody" data-bind="setWhenHover: mouseOver, attr: { 'data-template-id': id }, css: {'hover': mouseOver() || selected() }">
+         <td class="checkbox">
+            <input type="checkbox" class="template-item" data-bind="checked: selected" />
+        </td>
+      
+        <td class="thumbnail" data-bind="click: $root.changeElementSelectedStatus, css: { 'has-children': childCount > 0 }, attr: { title: tabpath }">
+            <img class="image-table"
+                 data-bind="attr: { src: thumbnail, alt: tabpath }" />
+            <div class="pages-preview" data-bind="toggle: {value: thumbnailVisible, duration: 'fast'}, style: {top: thumbnailTop, left: thumbnailLeft}"><img data-bind="attr: { src: largeThumbnail }" /></div>
+        </td>
+        <td class="pagename" data-bind="click: $root.changeElementSelectedStatus, html: name"></td>    
+    </tr>
+</script>

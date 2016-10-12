@@ -1,0 +1,25 @@
+﻿<div data-bind="datePicker: datePart, minDate: minDate"></div>
+
+<div class="calTime">
+    <span data-bind="html: resx.calendar_time"></span>
+
+    <select data-bind="value: hour">
+        <option value="01:00">1:00</option>
+        <option value="02:00">2:00</option>
+        <option value="03:00">3:00</option>
+        <option value="04:00">4:00</option>
+        <option value="05:00">5:00</option>
+        <option value="06:00">6:00</option>
+        <option value="07:00">7:00</option>
+        <option value="08:00">8:00</option>
+        <option value="09:00">9:00</option>
+        <option value="10:00">10:00</option>
+        <option value="11:00">11:00</option>
+        <option value="12:00">12:00</option>
+    </select>
+
+    <select data-bind="value: amPm">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+    </select>
+</div>

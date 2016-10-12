@@ -1,0 +1,83 @@
+@import "~dnn-global-styles/index";
+.collapsible-component1 {
+    display: table;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-header1 {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        &.false {}
+        .row {
+            .item-row-ruleType {
+                width: 20%;
+                float: left;
+                padding-left: 15px;
+                .item-row-ruleType-display {
+                    color: @mountainMist;
+                    margin: 0 0 0 -15px;
+                    .allow-icon, .deny-icon {
+                        > svg {
+                            padding: 0 15px 0 15px;
+                            width: 16px;
+                            float: left;
+                            height: 16px;
+                            fill: @mountainMist;
+                        }
+                    }
+                }
+            }
+            .item-row-ipAddress {
+                width: 65%;
+                float: left;
+            }
+            .item-row-editButton {
+                width: 13%;
+                float: left;
+                .edit-icon {
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .edit-icon-active {
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+                .delete-icon {
+                    cursor: pointer;
+                    > svg {
+                        padding: 0 15px 0 15px;
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

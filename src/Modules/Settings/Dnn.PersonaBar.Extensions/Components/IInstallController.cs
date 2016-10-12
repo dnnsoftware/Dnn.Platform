@@ -1,0 +1,15 @@
+﻿using System.IO;
+using Dnn.PersonaBar.Extensions.Components.Dto;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+
+namespace Dnn.PersonaBar.Extensions.Components
+{
+    public interface IInstallController
+    {
+        InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string fileName,
+            Stream stream);
+
+        ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string fileName, Stream stream);
+    }
+}

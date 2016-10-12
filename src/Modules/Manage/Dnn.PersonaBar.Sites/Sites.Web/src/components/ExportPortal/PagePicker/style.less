@@ -1,0 +1,106 @@
+@import "~dnn-global-styles/index";
+.dnn-page-picker-multi {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    box-sizing: border-box;
+    .page-picker-search {
+        display: block;
+        height: 34px;
+        input[type="search"] {
+            border-radius: 0px;
+        }
+    }
+    .dropdown-icon {
+        position: absolute;
+        width: 13px;
+        height: 13px;
+        right: 10px;
+        top: 11px;
+        svg {
+            fill: @rollingStone;
+        }
+    }
+    .collapsible-label {
+        cursor: pointer;
+        font-family: proxima_nova_semibold;
+        position: relative;
+        width: 100%;
+        font-size: 13px;
+        padding: 10px 40px 8px 15px;
+        box-sizing: border-box;
+        border: none;
+        color: @bulgarianRose;
+    }
+    .page-picker-content {
+        >div {
+            padding: 21px 21px 29px;
+        }
+        .pages-container {
+            padding: 8px 15px;
+            ul {
+                padding: 0 15px;
+                list-style: none;
+                font-size: 15px;
+                li {
+                    font-size: 15px;
+                    position: relative;
+                    &.has-children.closed > ul {
+                        max-height: 0;
+                        opacity: 0;
+                    }
+                    .arrow-icon {
+                        svg {
+                            position: absolute;
+                            left: -18px;
+                            fill: @mountainMist;
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                    .page-value {
+                        font-size: 15px;
+                        margin-top: 3px;
+                        text-indent: 20px;
+                        &:hover {
+                            color: @curiousBlue;
+                            svg {
+                                fill: @curiousBlue;
+                            }
+                        }
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                            fill: @mountainMist;
+                            position: absolute;
+                            left: 0;
+                        }
+                        &.selected {
+                            color: @curiousBlue;
+                            svg {
+                                fill: @curiousBlue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        input[type="search"] {
+            border: 1px solid @alto !important;
+            margin-bottom: 10px;
+            padding-right: 30px;
+            &:focus {
+                outline: none;
+                border: 1px solid @curiousBlue !important;
+            }
+        }
+    }
+    &.disabled {
+        background: @mercury;
+        color: @mountainMist;
+        svg {
+            fill: @mountainMist;
+        }
+        cursor: not-allowed;
+    }
+}

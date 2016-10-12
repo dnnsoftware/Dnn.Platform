@@ -1,0 +1,3 @@
+﻿DECLARE @OS VARCHAR(1000)
+EXECUTE xp_regread 'HKEY_LOCAL_MACHINE', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion', 'ProductName', @OS OUTPUT
+SELECT 1

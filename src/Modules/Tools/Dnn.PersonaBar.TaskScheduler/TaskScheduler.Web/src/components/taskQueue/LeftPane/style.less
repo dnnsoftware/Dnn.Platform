@@ -1,0 +1,62 @@
+@import "~dnn-global-styles/index";
+:local(.taskStatusItemLeftPane) {
+    padding: 5px 15px 5px 15px;
+    display: block;
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    height: auto;
+    border-right: 1px solid @alto;
+    margin: 10px 0 10px 0;
+    .taskIcon {
+        width: 35px;
+        height: 35px;
+        float: left;
+        > svg {
+            fill: @mountainMist;
+        }
+    }
+    .taskIconProcessing {
+        width: 35px;
+        height: 35px;
+        float: left;
+        > svg {
+            fill: @curiousBlue;
+        }
+    }
+    .taskDetail {
+        float: left;
+        width: 85%;
+        padding: 10px 0 0 10px;
+        > div {
+            padding: 0 0 10px 0;
+            float: left;
+            width: 100%;
+        }
+        .taskDetail-name {
+            font-weight: bolder;
+            font-size: 15px;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            width: 300px;
+        }
+        .taskDetail-common {
+            color: @thunder;
+            .taskDetail-common-title {
+                font-weight: bolder;
+                float: left;
+            }
+            .taskDetail-common-value {
+                float: right;
+            }
+            .taskDetail-common-title-processing {
+                font-weight: bolder;
+                float: left;
+                color: @curiousBlue;
+            }
+        }
+    }
+}

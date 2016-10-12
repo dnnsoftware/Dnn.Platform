@@ -1,0 +1,74 @@
+@import "~dnn-global-styles/index";
+:local(.newExtensionModal) {
+    box-sizing: border-box;
+    margin-top: 100px;
+    .box-title {
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+    .dnn-grid-system.with-right-border {
+        &.bottom-half {
+            padding-top: 25px;
+        }
+        &.top-half {
+            padding-bottom: 25px;
+        }
+        .dnn-grid-cell:first-child {
+            border-right: 1px solid @alto;
+        }
+        .dnn-switch-container {
+            margin-top: 25px;
+        }
+    }
+    .dnn-switch-container {
+        width: 100%;
+        .dnn-switch {
+            float: right;
+        }
+    }
+    .dnn-single-line-input-with-error {
+        .__react_component_tooltip {
+            max-width: 200px;
+        }
+    }
+    .dnn-grid-cell {
+        padding: 10px 25px 15px;
+        box-sizing: border-box;
+        > hr {
+            border: none;
+            height: 1px;
+            color: @alto;
+            background-color: @alto;
+        }
+        .version-dropdown {
+            width: 31.1%;
+            box-sizing: border-box;
+            margin-right: 10px;
+            vertical-align: bottom;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+        &.modal-footer {
+            text-align: center;
+            margin-top: 30px;
+            .modal-pagination {
+                color: @alto;
+                margin-top: 50px;
+                font-size: 15px;
+            }
+            button {
+                width: 100px;
+                margin-right: 10px;
+            }
+        }
+    }
+    .new-extension-box {
+        padding: 25px 45px;
+        .new-user-box {
+            background-color: white;
+            padding: 50px 25px;
+            border: 1px solid @alto;
+        }
+    }
+}

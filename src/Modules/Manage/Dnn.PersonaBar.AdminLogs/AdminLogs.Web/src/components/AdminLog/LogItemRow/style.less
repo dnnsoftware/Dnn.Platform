@@ -1,0 +1,45 @@
+.collapsible-logitemdetail {
+    display: table;
+    width: 100%;
+    &:not(:last-child) {
+        border-bottom: 1px solid #ddd;
+    }
+    div.collapsible-logitemdetail-header {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 15px 0;
+        box-sizing: border-box;
+        .term-header {
+            cursor: pointer;
+            .term-label-checkbox {
+                float: left;
+                width: 25px;
+            }
+            .term-label-createdate {
+                width: 140px;
+                float: left;
+            }
+            .term-label-typename {
+                width: 140px;
+                float: left;
+            }
+            .term-label-username {
+                width: 90px;
+                float: left;
+            }
+            .term-label-portalname {
+                width: 110px;
+                float: left;
+            }
+            .term-label-summary {
+                width: 230px;
+                float: left;
+            }
+            .term-label-wrapper {
+                padding: 0 5px 0 5px;
+                word-wrap: break-word;
+            }
+        }
+    }
+}

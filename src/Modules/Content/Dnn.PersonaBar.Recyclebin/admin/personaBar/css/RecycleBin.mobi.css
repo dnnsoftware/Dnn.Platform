@@ -1,0 +1,409 @@
+﻿
+tbody .pages-list-container tr.dnnRBGridBody td.checkbox{
+    width:5px;
+}
+
+#recycleBin-panel {
+    position:relative;
+}
+div.recycleBin h3.caption {
+    margin-bottom: 0px;
+  margin-top: 0px;
+}
+#pageList{
+    width:100% !important;
+}
+/* pageSettingsContainer Style*/
+#recycleBin-panel .socialpanelheader {
+    position: relative;
+}
+#recycleBin-panel .socialpanelbody > div {
+    padding: 10px;
+}
+#recycleBin-panel div#recycleBin-body {
+    margin-top: 0px;
+    max-height:700px;
+    overflow: hidden;
+    padding:0px;
+   position: relative;
+}
+
+#recycleBin-panel .socialpanelbody .listOfItems{
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div.socialpanel .recycleBinContainer {
+    height:550px;
+    z-index: 1120 !important;
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #fff;    
+    margin: 30px 30px 30px 30px;
+    background-color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 2px solid #e9e9ec;
+}
+.recycleBinContainer * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.recycleBinContainer div.actions {
+    padding: 0px;
+    text-align: center;
+}
+.recycleBinContainer div.title {
+    background-color: #FFF;
+    height: 70px;
+    line-height: 70px;
+}
+.recycleBinContainer div.title span.caption {
+    font-size: 28px;
+    margin-left: 30px;
+    font-weight: bold;
+}
+.recycleBinContainer div.title span.page-name {
+    color: #494949;
+    font-size: 14px;
+    margin-left: 16px;
+    font-weight: bold;
+}
+.recycleBinContainer div.title > a {
+    display: block;
+    height: 70px;
+    line-height: 70px;
+    color: #0386c4;
+    padding-left: 16px;
+    margin: 0 30px;
+    background: url('../Images/icon-back-blue.png') no-repeat left center;
+    float: right;
+    text-decoration: none;
+}
+.recycleBinContainer .content-container {
+    overflow: hidden;
+    outline: none;
+    background-color: #fff !important;
+}
+.recycleBinContainer .dnnFormMessage {
+    max-width: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 10px 25px 0 25px;
+}
+.recycleBinContainer ul.tabs-nav {
+    border-bottom: 1px solid #e4e4e8;
+    height: 42px;
+    margin-top:20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    clear: both;
+    background-color: #eee;
+}
+.recycleBinContainer ul.tabs-nav li {
+    padding: 0;  
+    width:30%;
+    line-height: 42px;
+    font-weight: bold;
+    float: left;
+    border: 1px solid #eeeeee;
+    border-bottom: none;
+    list-style: none;
+    background: none;
+}
+.recycleBinContainer ul.tabs-nav li a {
+    color: #000;
+    display: block;
+    padding: 0 5px;
+    text-decoration: none;
+    outline: none;
+    padding-left:7px;
+}
+.recycleBinContainer ul.tabs-nav li.ui-tabs-active,
+.recycleBinContainer ul.tabs-nav li.ui-state-active {
+    border: 1px solid #FFF;
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-top-right-radius: 3px;
+    border-top-right-radius: 3px;
+    background-color: #fff;
+}
+
+.recycleBinContainer ul.tabs-nav li.ui-tabs-active a,
+.recycleBinContainer ul.tabs-nav li.ui-state-active a {
+    color: #1488c3;
+}
+.recycleBinContainer div.ui-tabs-panel {
+    background-color: #fff;
+    padding: 25px;
+}
+
+
+.recyclbin-header {
+    width: 100%;
+    text-transform: uppercase;
+    border: 1px solid lightgrey;
+    padding: 10px;
+}
+.recyclbin-header .page{
+    width: 70%!important;
+    border-right: 1px solid lightgrey;
+}
+
+/*Recycle Bin Grid*/
+.recycleBinContainer table.dnnRBGrid {
+    width: 95% !important;
+    margin-bottom: 20px;
+    border: 1px solid #c9c9c9; 
+    border-collapse: collapse;
+    color: #000000; 
+}
+
+.recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader {
+    height: 20px;
+}
+
+.recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader td {
+    padding: 10px;
+    width:100%;
+    vertical-align: middle;
+    line-height: 120%;
+    text-align: left; 
+    text-transform: uppercase;
+    font-weight: bold;  
+    font-family: sourcecodepro, Arial;
+    font-size: 11px;
+    border:1px solid #c9c9c9;
+    background: white !important;   
+}
+
+.recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader td.mtitle
+{
+    border-left: 0px;
+}
+
+.recycleBinContainer table.dnnRBGrid tr td.thumbnail.pagename {
+   
+    max-width: 140px;
+    vertical-align: top;
+    overflow: hidden;
+}
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader td.thumbnail.pagename {
+        vertical-align: middle;    
+        border-left: 0px; 
+    }
+
+.recycleBinContainer table.dnnRBGrid td {
+	padding: 6px;
+    text-align: center;
+    color: #4b4d4f;
+	height: 16px;   
+	border: none;
+}
+
+.recycleBinContainer table.dnnRBGrid td.thumbnail .image-table {
+    height: 42px;
+    width: 48px;
+    border: 2px solid #e1e1e6;
+    float: left;
+}
+.recycleBinContainer table.dnnRBGrid td.thumbnail .image-table img {
+    height: 100%;
+    width: 100%;
+    margin-right: 20px;
+}
+
+.recycleBinContainer table.dnnRBGrid td.pagename {
+    width: 100% !important;
+    padding-left: 9px;
+    font-weight: bolder;
+    text-align: left;
+}
+
+.recycleBinContainer table.dnnRBGrid tr {
+    height: 60px;
+    border-bottom: 1px solid #e1e1e6;
+    border-top: 1px solid #e1e1e6;
+}
+
+.recycleBinContainer table.dnnRBGrid tr:nth-child(odd){
+    background: #F2F2F2;
+}
+
+.recycleBinContainer table.dnnRBGrid tr:nth-child(even){
+    background: #FAFAFA;
+}
+/*Recycle Bin Grid END*/
+.recycleBinContainer .NoItems {
+    background-color: #f2f2f2 !important; 
+}
+.recycleBinContainer .EmptyList {
+    width: 100%;
+    height: 100% !important;
+    background-color: #ffffff !important;
+    padding: 175px 0 !important;
+    background-position: 50% 92px;
+    background-repeat: no-repeat;
+    font-size: xx-large;
+    color: #D7D7D7;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+.recycleBinContainer .EmptyList.NoPages {
+    background-image: url('../Images/Icon-Empty-Pages-white.png');
+}
+.recycleBinContainer .EmptyList.NoModules {
+    background-image: url('../Images/Icon-Empty-Modules-white.png');
+}
+.recycleBinContainer .EmptyList.NoTemplates {
+    background-image: url('../Images/Icon-Empty-Templates-white.png');
+}
+
+.content-container .jspContainer {
+    width: 100% !important;
+
+}
+.content-container .jspContainer .jspPane {
+    width: 100% !important;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.content-container .jspVerticalBar {
+    background-color: #f2f2f2 !important;
+    border-left: 1px solid #d4d4d4;
+    width: 10px;
+}
+
+.content-container .jspVerticalBar .jspTrack {
+    width: 5px !important;
+    margin-left: 2px !important;
+}
+.content-container .jspVerticalBar .jspTrack .jspDrag {
+    filter: alpha(opacity=50) !important;
+    opacity: 0.5 !important;
+}
+
+/* TREE OF PAGES STYLES */
+.recycleBinContainer #pages table.dnnRBGrid tr td.thumbnail.pagename {
+    padding: 0px 0px 0px 0px;
+}
+    .recycleBinContainer #pages table.dnnRBGrid tr.dnnRBGridHeader td.thumbnail.pagename {
+        padding: 10px;
+    }
+
+    .recycleBinContainer #pages table.dnnRBGrid tr td.checkbox.hover {
+        background-color: #d9ecfa;
+    }
+
+   
+        .recycleBinContainer #templates table.dnnRBGrid tr.hover,
+        .recycleBinContainer #modules table.dnnRBGrid tr.hover {
+            background-color: #d9ecfa;
+        }
+
+.recycleBinContainer #pages table.dnnRBGrid tr {
+    background: #F2F2F2;
+}
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.thumbnail, 
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.title, 
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.pagename,
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.thumbnail.pagename {
+        cursor: default;      
+*/    }
+
+    
+
+.recycleBinContainer #pages table.dnnRBGrid tr.even{
+    background: #FAFAFA;
+}
+
+.recycleBinContainer #pages table.dnnRBGrid tr.withChildren {
+    border-bottom: 0px;
+}
+    .recycleBinContainer #pages table.dnnRBGrid tr.withChildren td.thumbnail.pagename .containerUlPages.shadow {
+        -webkit-box-shadow: inset 6px 1px 4px -4px rgba(0,0,0,0.50), inset -6px 1px 4px -4px rgba(0,0,0,0.50);
+        -moz-box-shadow: inset 6px 1px 4px -4px rgba(0,0,0,0.50), inset -6px 1px 4px -4px rgba(0,0,0,0.50);
+        box-shadow: inset 6px 1px 4px -4px rgba(0,0,0,0.50), inset -6px 1px 4px -4px rgba(0,0,0,0.50);
+    }    
+
+.recycleBinContainer #pages table.dnnRBGrid tr.child {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+.recycleBinContainer #pages table.dnnRBGrid tr.root {
+    border-top: 1px solid #c9c9c9;
+}
+.recycleBinContainer .containerUlPages {
+    width: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;	
+    position: relative;
+	margin: 0px;
+    padding: 0px;   
+    list-style: outside none none;
+}
+.recycleBinContainer .containerUlPages * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .recycleBinContainer .containerUlPages  .hover {
+        background-color: #d9ecfa;
+        cursor: pointer;
+    }
+
+    .recycleBinContainer .containerUlPages .row {              
+        height: 64px;
+    }
+    .recycleBinContainer .containerUlPages .pageDataContainer {
+          padding-top: 8px;
+        min-width: 150px;
+        position: relative;
+        padding-left:0px;
+        height: 100%;
+    }
+    .recycleBinContainer .containerUlPages .pageDataContainer .pagename{
+        float: left;
+        padding: 10px;
+    }
+    .recycleBinContainer .containerUlPages .pageDataContainer::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -20px;
+        bottom: -2px;
+        width: 17px;
+        border: 2px solid #d9d9d9;
+        border-top: 0px;
+        border-right: 0px;
+        height: 33px;
+    }
+
+    .recycleBinContainer .containerUlPages .pageDataContainer::before {
+        left: -22px;
+    }
+
+    .recycleBinContainer .containerUlPages .treeEdges {
+        content: '';
+        position: absolute;
+        width: 17px;
+        border-left: 2px solid #d9d9d9;
+        margin-left: 30px;
+        bottom: 60px;
+    }
+    
+        .recycleBinContainer .containerUlPages  .pageDataContainer {
+        border-left: 2px solid transparent;
+    }
+

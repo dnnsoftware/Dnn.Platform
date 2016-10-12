@@ -1,0 +1,37 @@
+@import "~dnn-global-styles/index";
+:local(.installExtensionModal) {
+    box-sizing: border-box;
+    .install-extension-iframe {
+        width: 100%;
+        float: left;
+        height: 500px;
+        border: 1px solid @alto;
+        html {
+            body {
+                iframe#personaBar-iframe {
+                    display: none;
+                }
+            }
+        }
+    }
+    .new-extension-box {
+        padding: 25px 45px;
+        .upload-package-box {
+            margin: 50px auto 25px;
+        }
+        .dnn-checkbox-container {
+            float: left;
+            margin-top: 25px;
+        }
+        .modal-footer {
+            margin: 25px 0;
+            text-align: center;
+            button {
+                margin-right: 10px;
+            }
+        }
+        .modal-pagination {
+            text-align: center;
+        }
+    }
+}

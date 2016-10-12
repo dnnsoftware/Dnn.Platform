@@ -1,0 +1,47 @@
+﻿<!-- panel -->
+<div class="socialpanelheader" id="configConsole-headerPanel">
+    <h3 data-bind="html: resx.ConfigConsole" class="title-small"></h3>
+</div>
+<div class="socialpanelbody configConsolePanelContainer configConsolePanel" id="configConsole-bodyPanel">
+    <div class="body">
+        <ul class="tabs-nav">
+            <li><a href="#configConsole-files" data-bind="html: resx.ConfigFilesTab"></a></li>
+            <li><a href="#configConsole-merge" data-bind="html: resx.MergeScriptsTab"></a></li>
+        </ul>
+        <div id="configConsole-files">
+            <div class="configForm">
+                <div class="form-item">
+                    <div>
+                        <select data-bind="options: configs, value: config, optionsCaption: caption()"></select>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <textarea class="config-xml" data-bind="value: configxml"></textarea>
+                </div>
+                <div class="actions">
+                    <a class="button create-page primarybtn" href="#" data-bind="html: resx.cmdSave, click: saveConfig"></a>
+                </div>
+            </div>
+        </div>
+        <div id="configConsole-merge">
+            <div class="configForm">
+                <div class="form-item">
+                    <span class="fileupload-wrapper">
+                        <a class="button secondarybtn uploadbtn" data-bind="html: resx.cmdUpload"></a>
+                        <input type="file" />
+                    </span>
+                    <div class="note">
+                        <span class="caption" data-bind="html: resx.plScriptNote"></span>
+                        <span class="description" data-bind="html: resx.plScriptNoteDesc"></span>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <textarea class="script-xml" data-bind="value: mergexml"></textarea>
+                </div>
+                <div class="actions">
+                    <a class="button create-page primarybtn" href="#" data-bind="html: resx.cmdExecute, click: mergeConfig"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
