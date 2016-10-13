@@ -1,12 +1,25 @@
 @import "~dnn-global-styles/index";
 .dnn-switch-container {
-    display: inline-block;
+    float: left;
     padding: 5px 0;
-    .switch-label {
+    .dnn-ui-common-tooltip {
         float: left;
-        font-size: 14px;
-        font-weight: bold;
+        margin-left: 10px;
+        .tooltip-text {
+            max-width: 255px;
+            text-align: center;
+            padding: 7px 15px;
+        }
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    .switch-label {
         padding-top: 1px;
+        color: @bulgarianRose;
+        font-size: 13px;
+        font-weight: bold;
     }
     .dnn-switch {
         display: inline-block;

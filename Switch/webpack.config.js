@@ -22,7 +22,8 @@ module.exports = {
         ]
     },
     externals: {
-        "react": "react"
+        "react": "react",
+        "dnn-tooltip": "dnn-tooltip"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 

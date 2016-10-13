@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Tooltip from "dnn-tooltip";
 import "./style.less";
 
 class Switch extends Component {
@@ -40,7 +41,7 @@ class Switch extends Component {
 
         if (props.readOnly) {
             className += " dnn-switch-readonly";
-        }        
+        }
         if (props.labelPlacement) {
             className += (" place-" + props.labelPlacement);
         }
@@ -50,12 +51,19 @@ class Switch extends Component {
 
     render() {
         const {props, state} = this;
+        const tooltipMessages = props.tooltipMessage instanceof Array ? props.tooltipMessage : [props.tooltipMessage];
         return (
             <div className="dnn-switch-container">
                 {props.label && <span className="switch-label">{props.label}</span>}
-                <span className={this.getClassName() } onClick={this.toggleStatus.bind(this) }>
+                <Tooltip
+                    messages={tooltipMessages}
+                    type="info"
+                    className={props.placement}
+                    tooltipPlace={props.tooltipPlace}
+                    rendered={props.tooltipMessage} />
+                <span className={this.getClassName()} onClick={this.toggleStatus.bind(this)}>
                     <span className="mark" />
-                    {!props.labelHidden && <label>{(state.switchActive ? props.onText : props.offText) }</label>}
+                    {!props.labelHidden && <label>{(state.switchActive ? props.onText : props.offText)}</label>}
                 </span>
             </div>
         );
@@ -70,7 +78,10 @@ Switch.propTypes = {
     label: PropTypes.string,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool,
-    labelPlacement: PropTypes.oneOf(["left", "right"])
+    labelPlacement: PropTypes.oneOf(["left", "right"]),
+    tooltipMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    placement: PropTypes.string,
+    tooltipPlace: PropTypes.string
 };
 
 Switch.defaultProps = {
