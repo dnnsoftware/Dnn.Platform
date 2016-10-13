@@ -16,14 +16,15 @@ using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Users.Components.Contracts;
 using Dnn.PersonaBar.Users.Components.Dto;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -381,26 +382,96 @@ namespace Dnn.PersonaBar.Users.Services
 
         #endregion
 
-        #region Profiles API
+        #region User Roles API
 
         [HttpGet]
-        public HttpResponseMessage GetRelationships()
+        public HttpResponseMessage GetUserRoles(int userId, int pageIndex, int pageSize)
         {
             try
             {
-                var relationships = RelationshipController.Instance.GetRelationshipsByPortalId(PortalId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
+                if (user == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound"); ;
+                }
 
-                var relationshipTypes = RelationshipController.Instance.GetAllRelationshipTypes();
+                var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
+                var userRoles = allUserRoles
+                                    .Skip(pageIndex * pageSize)
+                                    .Take(pageSize)
+                                    .Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r));
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { relationships, relationshipTypes });
+                return Request.CreateResponse(HttpStatusCode.OK, new { UserRoles = userRoles, TotalRecords = allUserRoles.Count });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-            
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri]bool notifyUser, [FromUri]bool isOwner)
+        {
+            try
+            {
+                Validate(userRoleDto);
+
+                if (!UserRoleDto.AllowExpiredRole(PortalSettings, userRoleDto.UserId, userRoleDto.RoleId))
+                {
+                    userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
+                }
+
+                var user = UserController.Instance.GetUserById(PortalId, userRoleDto.UserId);
+                var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
+                if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
+                    isOwner = false;
+
+                RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
+                    userRoleDto.ExpiresTime, notifyUser, isOwner);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new UserRoleDto
+                {
+                    UserId = user.UserID,
+                    RoleId = role.RoleID,
+                    DisplayName = user.DisplayName,
+                    StartTime = userRoleDto.StartTime,
+                    ExpiresTime = userRoleDto.ExpiresTime,
+                    AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
+                    AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveUserRole(UserRoleDto userRoleDto)
+        {
+            try
+            {
+                Validate(userRoleDto);
+
+                RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
+                    RoleStatus.Approved, false, true);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+            }
+        }
+
+        #endregion
+
+        #region Profiles API
 
         [HttpGet]
         public HttpResponseMessage GetProfileDefinitions()
@@ -412,5 +483,11 @@ namespace Dnn.PersonaBar.Users.Services
         }
 
         #endregion
+
+        private void Validate(UserRoleDto userRoleDto)
+        {
+            Requires.NotNegative("UserId", userRoleDto.UserId);
+            Requires.NotNegative("RoleId", userRoleDto.RoleId);
+        }
     }
 }

@@ -32,9 +32,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "visible")]
         public bool Visible { get; set; }
 
-        [DataMember(Name = "profileVisibility")]
-        public ProfileVisibilityDto ProfileVisibility { get; set; }
-
         [DataMember(Name = "length")]
         public int Length { get; set; }
 
@@ -51,7 +48,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             ValidationExpression = definition.ValidationExpression;
             PropertyValue = definition.PropertyValue;
             Visible = definition.Visible;
-            ProfileVisibility = new ProfileVisibilityDto(definition.ProfileVisibility);
             Length = definition.Length;
 
             var dataTypeId = definition.DataType;
