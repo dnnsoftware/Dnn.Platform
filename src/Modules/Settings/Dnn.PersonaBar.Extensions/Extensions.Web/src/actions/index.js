@@ -1,10 +1,12 @@
-import pagination from "./pagination";
-import visiblePanel from "./visiblePanel";
-import extension from "./extension";
-import installation from "./installation";
+import PaginationActions from "./pagination";
+import VisiblePanelActions from "./visiblePanel";
+import ExtensionActions from "./extension";
+import InstallationActions from "./installation";
+import FolderActions from "./folder";
 export {
-    pagination,
-    visiblePanel,
-    extension,
-    installation
+    PaginationActions,
+    VisiblePanelActions,
+    ExtensionActions,
+    InstallationActions,
+    FolderActions
 };

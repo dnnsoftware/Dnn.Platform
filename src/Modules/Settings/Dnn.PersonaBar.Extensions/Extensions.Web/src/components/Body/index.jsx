@@ -2,8 +2,8 @@ import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
-    pagination as PaginationActions
-} from "../../actions";
+    PaginationActions
+} from "actions";
 import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
 import InstalledExtensions from "./InstalledExtensions";

@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import InstallLog from "./InstallLog";
-import { extension as ExtensionActions, installation as InstallationActions } from "actions";
+import { ExtensionActions, InstallationActions } from "actions";
 import PackageInformation from "../EditExtension/PackageInformation";
 import ReleaseNotes from "../Editextension/ReleaseNotes";
 import License from "../EditExtension/License";

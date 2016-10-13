@@ -546,4 +546,64 @@
   <data name="InstallExtension_UploadPackage.HelpText" xml:space="preserve">
     <value>To begin installation, upload the package by dragging the file into the field below.</value>
   </data>
+  <data name="NewModule_AddFolder.Button" xml:space="preserve">
+    <value>Add Folder</value>
+  </data>
+  <data name="NewModule_AddTestPage.HelpText" xml:space="preserve">
+    <value>Check this box to create a test page for your new module.</value>
+  </data>
+  <data name="NewModule_AddTestPage.Label" xml:space="preserve">
+    <value>Add a Test Page:</value>
+  </data>
+  <data name="NewModule_Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NewModule_Create.Button" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="NewModule_CreateFrom.HelpText" xml:space="preserve">
+    <value>You can create a new module in three ways. Select which method to use. New - creates a new module control, Control - creates a module from an existing control, Manifest - creates a module from an existing manifest.</value>
+  </data>
+  <data name="NewModule_CreateFrom.Label" xml:space="preserve">
+    <value>CreateNew Module From:</value>
+  </data>
+  <data name="NewModule_Description.HelpText" xml:space="preserve">
+    <value>You can provide a description for your module.</value>
+  </data>
+  <data name="NewModule_Description.Label" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="NewModule_FileName.HelpText" xml:space="preserve">
+    <value>Enter a name for the new module control</value>
+  </data>
+  <data name="NewModule_FileName.Label" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="NewModule_Language.HelpText" xml:space="preserve">
+    <value>Choose the language to use.</value>
+  </data>
+  <data name="NewModule_Language.Label" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="NewModule_ModuleFolder.HelpText" xml:space="preserve">
+    <value>This is the folder where your module files and folders are populated.</value>
+  </data>
+  <data name="NewModule_ModuleFolder.Label" xml:space="preserve">
+    <value>Module Folder</value>
+  </data>
+  <data name="NewModule_ModuleName.HelpText" xml:space="preserve">
+    <value>Enter a Friendly Name for your module.</value>
+  </data>
+  <data name="NewModule_ModuleName.Label" xml:space="preserve">
+    <value>Module Name</value>
+  </data>
+  <data name="NewModule_NoneSpecified.Text" xml:space="preserve">
+    <value>&lt;None Specified&gt;</value>
+  </data>
+  <data name="NewModule_OwnerFolder.HelpText" xml:space="preserve">
+    <value>Module Developers are encouraged to use a "unique" folder inside DesktopModules for all the development, to avoid potential clashes with other developers. Select the folder you would like to use for your Module Development. Note: Folders with user controls (.ascx files) and the core admin folder are excluded from this list.</value>
+  </data>
+  <data name="NewModule_OwnerFolder.Label" xml:space="preserve">
+    <value>Owner Folder</value>
+  </data>
 </root>

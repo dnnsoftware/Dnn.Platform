@@ -128,5 +128,6 @@ module.exports = [
     "uncollapse",
     "dev",
     "devtools",
-    "ctrl"
+    "ctrl",
+    "postfile"
 ]

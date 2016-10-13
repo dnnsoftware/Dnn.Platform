@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    extension as ExtensionActions,
-    pagination as PaginationActions
-} from "../../../actions";
+    ExtensionActions,
+    PaginationActions
+} from "actions";
 import Localization from "localization";
 import ExtensionList from "./ExtensionList";
 import GridCell from "dnn-grid-cell";

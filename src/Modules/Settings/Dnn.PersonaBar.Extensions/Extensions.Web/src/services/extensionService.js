@@ -75,7 +75,6 @@ class ExtensionService {
         let formData = new FormData();
         formData.append("POSTFILE", file);
 
-
         sf.postfile("InstallPackage", formData, callback);
     }
 }

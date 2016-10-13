@@ -1,4 +1,4 @@
-import { extension as ActionTypes } from "constants/actionTypes";
+import { installation as ActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
 const installationActions = {
     parsePackage(file, callback, errorCallback) {
