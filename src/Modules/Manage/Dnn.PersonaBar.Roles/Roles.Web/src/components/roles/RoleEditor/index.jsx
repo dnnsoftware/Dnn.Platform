@@ -64,7 +64,7 @@ class RolesEditor extends Component {
             this.setState({
                 createGroupVisible
             });
-        } 
+        }
         this.performChange(key, option.value);
     }
     onTextChange(key, event) {
@@ -147,7 +147,7 @@ class RolesEditor extends Component {
                 })
                 );
             }, () => {
-                util.utilities.notify(resx.get("ActionCancelled.Message"));
+                //util.utilities.notify(resx.get("ActionCancelled.Message"));
             });
         }
         else {
