@@ -29,18 +29,24 @@ class CreatePortal extends Component {
         super();
         this.state = {
             defaultTemplate: "",
-            newPortal: emptyNewPortal
+            newPortal: Object.assign({}, emptyNewPortal),
+            error: {
+                SiteName: false,
+                SiteAlias: false
+            },
+            triedToSave: false
         };
     }
 
     resetNewPortal() {
         this.setState({
-            newPortal: emptyNewPortal
+            newPortal: Object.assign({}, emptyNewPortal)
         });
     }
 
     componentWillMount() {
         const { props, state } = this;
+        // props.dispatch(PortalActions.deletePortal(8));
         props.dispatch(PortalActions.getPortalTemplates((data) => {
             let {newPortal} = state;
             newPortal.SiteTemplate = data.Results.DefaultTemplate;
@@ -52,8 +58,21 @@ class CreatePortal extends Component {
     }
     onChange(key, event) {
         const value = typeof event === "object" ? event.target.value : event;
-        let {newPortal} = this.state;
-        newPortal[key] = value;
+        let {newPortal, error} = this.state;
+        switch (key) {
+            case "IsChildSite"://Convert radio button's return of string to boolean.
+                newPortal[key] = (value === "true");
+                break;
+            case "SiteName":
+            case "SiteAlias":
+                newPortal[key] = value;
+                error[key] = false;
+                break;
+            default:
+                newPortal[key] = value;
+                break;
+
+        }
         this.setState({
             newPortal
         });
@@ -67,10 +86,32 @@ class CreatePortal extends Component {
     }
     createPortal() {
         const { props, state } = this;
-        props.dispatch(PortalActions.createPortal(state.newPortal, () => {
-            props.onCancel();
-            this.resetNewPortal();
-        }));
+        let {triedToSave, error} = state;
+        triedToSave = true;
+        if (state.newPortal.SiteName === "") {
+            error.SiteName = true;
+        }
+        if (state.newPortal.SiteAlias === "") {
+            error.SiteAlias = true;
+        }
+        this.setState({
+            triedToSave,
+            error
+        }, () => {
+            let withError = false;
+            Object.keys(state.error).forEach((errorKey) => {
+                if (state.error[errorKey]) {
+                    withError = true;
+                }
+            });
+            if (withError) {
+                return;
+            }
+            props.dispatch(PortalActions.createPortal(state.newPortal, () => {
+                this.resetNewPortal();
+                props.onCancel();
+            }));
+        });
     }
     render() {
         const {props, state} = this;
@@ -93,7 +134,7 @@ class CreatePortal extends Component {
                                 inputId="add-new-site-title"
                                 value={state.newPortal.SiteName}
                                 onChange={this.onChange.bind(this, "SiteName")}
-                                error={false}
+                                error={state.error.SiteName && state.triedToSave}
                                 />
                         </GridCell>
                         <GridCell>
@@ -125,7 +166,7 @@ class CreatePortal extends Component {
                                     buttonGroup="siteType"
                                     value={state.newPortal.IsChildSite}
                                     defaultValue={state.newPortal.IsChildSite}
-                                    buttonWidth={155}
+                                    buttonWidth={130}
                                     options={[
                                         {
                                             label: Localization.get("Domain"),
@@ -154,7 +195,7 @@ class CreatePortal extends Component {
                                     inputId="site-url"
                                     value={state.newPortal.SiteAlias}
                                     onChange={this.onChange.bind(this, "SiteAlias")}
-                                    error={false}
+                                    error={state.error.SiteAlias && state.triedToSave}
                                     />
                             </GridCell>
                         </GridCell>
