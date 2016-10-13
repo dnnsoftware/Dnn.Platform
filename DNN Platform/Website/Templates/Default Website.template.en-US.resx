@@ -928,21 +928,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Skins.Title.Text" xml:space="preserve">
     <value>Skins</value>
   </data>
-  <data name="Tab.Taxonomy.Content.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
-  <data name="Tab.Taxonomy.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Taxonomy Manager</value>
-  </data>
-  <data name="Tab.Taxonomy.Description.Text" xml:space="preserve">
-    <value>Manage the Taxonomy for your Site.</value>
-  </data>
-  <data name="Tab.Taxonomy.Name.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
-  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
   <data name="Tab.UserAccounts.Content.Text" xml:space="preserve">
     <value>User Accounts</value>
   </data>
