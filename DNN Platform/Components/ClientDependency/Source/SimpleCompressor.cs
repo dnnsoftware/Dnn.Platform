@@ -54,7 +54,7 @@ namespace ClientDependency.Core
                     decompressedStream = new GZipStream(ms, CompressionMode.Decompress, true);
                 }
 
-                if (type != CompressionType.none && compressedStream != null)
+                if (type != CompressionType.none && decompressedStream != null)
                 {
                     //write the bytes to the compressed stream
                     decompressedStream.Write(compressedBytes, 0, compressedBytes.Length);
