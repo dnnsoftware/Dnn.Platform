@@ -9,7 +9,7 @@ let store = configureStore();
 
 application.dispatch = store.dispatch;
 
-const appContainer = document.getElementById("siteinfo-container");
+const appContainer = document.getElementById("siteInfo-container");
 application.init(appContainer.dataset.initCallback);
 render(
     <Provider store={store}>

@@ -86,17 +86,14 @@ namespace Dnn.PersonaBar.SiteInfo.Services
             try
             {
                 var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
-                var portal = new PortalInfo
-                {
-                    PortalID = PortalId,
-                    PortalName = request.PortalName,
-                    LogoFile = request.LogoFile,
-                    FooterText = request.FooterText,
-                    Description = request.Description,
-                    KeyWords = request.KeyWords
-                };
+                var portalInfo = PortalController.Instance.GetPortal(PortalId);
+                portalInfo.PortalName = request.PortalName;
+                portalInfo.LogoFile = request.LogoFile;
+                portalInfo.FooterText = request.FooterText;
+                portalInfo.Description = request.Description;
+                portalInfo.KeyWords = request.KeyWords;
 
-                PortalController.Instance.UpdatePortalInfo(portal);
+                PortalController.Instance.UpdatePortalInfo(portalInfo);
                 PortalController.UpdatePortalSetting(PortalId, "TimeZone", request.TimeZone, false);
                 new FavIcon(PortalId).Update(request.FavIcon);
                 PortalController.UpdatePortalSetting(PortalId, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);

@@ -26,7 +26,7 @@ export class Body extends Component {
     render() {
         return (
             <SocialPanelBody>
-                <div>site Info</div>
+                <BasicSettings/>
             </SocialPanelBody>
         );
     }

@@ -1,33 +1,52 @@
-import {security as ActionTypes}  from "../constants/actionTypes";
+import {siteInfo as ActionTypes}  from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
 const siteInfoActions = {
-    getPortalSettings() {
+    getPortalSettings(callback) {
         return (dispatch) => {
             ApplicationService.getPortalSettings(data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITEINFO_PORTAL_SETTINGS,
                     data: {
-                        settings: data.Results.settings,
-                        timeZones: data.Results.timeZones,
-						iconSets: data.action.iconSets
-                    }
-                });                
-            });
-        };
-    },    
-    updatePortalSettings(payload, callback) {
-        return (dispatch) => {
-            ApplicationService.updatePortalSettings(payload, data => {
-                dispatch({
-                    type: ActionTypes.UPDATED_SITEINFO_PORTAL_SETTINS,
-                    data: {
-                        
+                        settings: data.Settings,
+                        timeZones: data.TimeZones,
+                        iconSets: data.IconSets,
+                        clientModified: false
                     }
                 });
                 if (callback) {
                     callback(data);
+                }
+            });
+        };
+    },
+    updatePortalSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updatePortalSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITEINFO_PORTAL_SETTINGS,
+                    data: {
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    portalSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITEINFO_PORTAL_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    clientModified: true
                 }
             });
         };
