@@ -317,8 +317,9 @@ namespace ClientDependency.Core.Module
             _cacheStream.Close();
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
+            base.Dispose();
             Dispose(true);
             GC.SuppressFinalize(this);
         }
