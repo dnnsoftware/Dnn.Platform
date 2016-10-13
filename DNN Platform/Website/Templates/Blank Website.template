@@ -500,17 +500,6 @@
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
     </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>SecurityAnalyzer</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
   </portalDesktopModules>
   <rolegroups>
     <rolegroup>
