@@ -894,34 +894,6 @@
     <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
       <DependentUpon>template.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.cs">
-      <DependentUpon>editschedule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.designer.cs">
-      <DependentUpon>editschedule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewSchedule.ascx.cs">
-      <DependentUpon>viewschedule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewSchedule.ascx.designer.cs">
-      <DependentUpon>viewschedule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleHistory.ascx.cs">
-      <DependentUpon>viewschedulehistory.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleHistory.ascx.designer.cs">
-      <DependentUpon>viewschedulehistory.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleStatus.ascx.cs">
-      <DependentUpon>viewschedulestatus.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleStatus.ascx.designer.cs">
-      <DependentUpon>viewschedulestatus.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.cs">
       <DependentUpon>searchadmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1949,11 +1921,6 @@
     <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
     <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
     <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\editschedule.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\module.css" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedule.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedulehistory.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedulestatus.ascx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
     <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
     <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
@@ -3827,10 +3794,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleStatus.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
