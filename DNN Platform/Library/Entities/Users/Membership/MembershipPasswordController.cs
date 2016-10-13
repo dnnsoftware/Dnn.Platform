@@ -61,10 +61,12 @@ namespace DotNetNuke.Entities.Users.Membership
 
         private byte[] GetRandomSaltValue()
         {
-            var rcsp = new RNGCryptoServiceProvider();
-            var bSalt = new byte[16];
-            rcsp.GetBytes(bSalt);
-            return bSalt;
+            using (var rcsp = new RNGCryptoServiceProvider())
+            {
+                var bSalt = new byte[16];
+                rcsp.GetBytes(bSalt);
+                return bSalt;
+            }
         }
 
         #endregion

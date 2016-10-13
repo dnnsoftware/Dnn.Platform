@@ -167,34 +167,17 @@ namespace DotNetNuke.Services.OutputCache.Providers
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
-            BinaryReader br = null;
-            FileStream fStream = null;
-            byte[] data;
-            try
+            if (!(File.Exists(cachedOutput)))
             {
-                if (!(File.Exists(cachedOutput)))
-                {
-                    return null;
-                }
-                var fInfo = new FileInfo(cachedOutput);
-                long numBytes = fInfo.Length;
-                fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read);
-                br = new BinaryReader(fStream);
-                data = br.ReadBytes(Convert.ToInt32(numBytes));
+                return null;
             }
-            finally
+            var fInfo = new FileInfo(cachedOutput);
+            long numBytes = fInfo.Length;
+            using (var fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read))
+            using (var br = new BinaryReader(fStream))
             {
-                if (br != null)
-                {
-                    br.Close();
-                }
-                if (fStream != null)
-                {
-                    fStream.Close();
-                }
+                return br.ReadBytes(Convert.ToInt32(numBytes));
             }
-
-            return data;
         }
 
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
@@ -296,9 +279,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     FileSystemUtils.DeleteFileWithWait(cachedOutputFile, 100, 200);
                 }
 
-                var captureStream = new FileStream(cachedOutputFile, FileMode.CreateNew, FileAccess.Write);
-                captureStream.Write(output, 0, output.Length);
-                captureStream.Close();
+                using (var captureStream = new FileStream(cachedOutputFile, FileMode.CreateNew, FileAccess.Write))
+                {
+                    captureStream.Write(output, 0, output.Length);
+                    captureStream.Close();
+                }
 
                 StreamWriter oWrite = File.CreateText(attribFile);
                 oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString());

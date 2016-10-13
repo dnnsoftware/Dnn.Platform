@@ -357,23 +357,24 @@ namespace DotNetNuke.Services.Installer
             {
                 case "module":
                     var sb = new StringBuilder();
-                    var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
-
-                    //Write manifest start element
-                    PackageWriterBase.WriteManifestStartElement(writer);
-
-                    //Legacy Module - Process each folder
-                    foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
+                    using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
                     {
-                        var modulewriter = new ModulePackageWriter(folderNav, info);
-                        modulewriter.WriteManifest(writer, true);
+                        //Write manifest start element
+                        PackageWriterBase.WriteManifestStartElement(writer);
+
+                        //Legacy Module - Process each folder
+                        foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
+                        {
+                            var modulewriter = new ModulePackageWriter(folderNav, info);
+                            modulewriter.WriteManifest(writer, true);
+                        }
+
+                        //Write manifest end element
+                        PackageWriterBase.WriteManifestEndElement(writer);
+
+                        //Close XmlWriter
+                        writer.Close();
                     }
-
-                    //Write manifest end element
-                    PackageWriterBase.WriteManifestEndElement(writer);
-
-                    //Close XmlWriter
-                    writer.Close();
 
                     //Load manifest into XPathDocument for processing
                     legacyDoc = new XPathDocument(new StringReader(sb.ToString()));

@@ -368,13 +368,11 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public static void ParsePackage(string file, string installPath, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
         {
-            Stream inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-            var unzip = new ZipInputStream(inputStream);
-
+            var unzip = new ZipInputStream(new FileStream(file, FileMode.Open, FileAccess.Read));
+            var manifestReader = new StreamReader(unzip);
             try
             {
                 ZipEntry entry = unzip.GetNextEntry();
-
                 while (entry != null)
                 {
                     if (!entry.IsDirectory)
@@ -384,7 +382,6 @@ namespace DotNetNuke.Services.Installer.Packages
                         if (extension != null && (extension.ToLower() == ".dnn" || extension.ToLower() == ".dnn5"))
                         {
                             //Manifest
-                            var manifestReader = new StreamReader(unzip);
                             var manifest = manifestReader.ReadToEnd();
 
                             var package = new PackageInfo { Manifest = manifest };
@@ -504,6 +501,7 @@ namespace DotNetNuke.Services.Installer.Packages
             }
             finally
             {
+                manifestReader.Dispose();
                 unzip.Close();
                 unzip.Dispose();
             }

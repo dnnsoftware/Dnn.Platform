@@ -172,33 +172,35 @@ namespace DotNetNuke.Services.Installer
 			
             //Create a writer to create the processed manifest
             var sb = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
-            PackageWriterBase.WriteManifestStartElement(writer);
-            if (isCombi)
+            using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
             {
-                if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
+                PackageWriterBase.WriteManifestStartElement(writer);
+                if (isCombi)
                 {
-					//Add Skin Package Fragment
-                    CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Skins");
+                    if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
+                    {
+                        //Add Skin Package Fragment
+                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Skins");
+                    }
+                    if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
+                    {
+                        //Add Container PAckage Fragment
+                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Containers");
+                    }
                 }
-                if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
+                else
                 {
-					//Add Container PAckage Fragment
-                    CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Containers");
+                    //Add Package Fragment
+                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "");
                 }
-            }
-            else
-            {
-				//Add Package Fragment
-                CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "");
-            }
-            PackageWriterBase.WriteManifestEndElement(writer);
+                PackageWriterBase.WriteManifestEndElement(writer);
 
-            //Close XmlWriter
-            writer.Close();
+                //Close XmlWriter
+                writer.Close();
 
-            //Return new manifest
-            return sb.ToString();
+                //Return new manifest
+                return sb.ToString();
+            }
         }
 
         public static void ParsePackageName(PackageInfo package)

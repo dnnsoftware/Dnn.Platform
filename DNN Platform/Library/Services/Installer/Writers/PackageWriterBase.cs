@@ -661,10 +661,12 @@ namespace DotNetNuke.Services.Installer.Writers
 		/// <remarks>This overload takes a package manifest and writes it to a file</remarks>
         public void WriteManifest(string manifestName, string manifest)
         {
-            XmlWriter writer = XmlWriter.Create(Path.Combine(Globals.ApplicationMapPath, Path.Combine(BasePath, manifestName)), XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
-            Log.StartJob(Util.WRITER_CreatingManifest);
-            WriteManifest(writer, manifest);
-            Log.EndJob(Util.WRITER_CreatedManifest);
+            using (XmlWriter writer = XmlWriter.Create(Path.Combine(Globals.ApplicationMapPath, Path.Combine(BasePath, manifestName)), XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+            {
+                Log.StartJob(Util.WRITER_CreatingManifest);
+                WriteManifest(writer, manifest);
+                Log.EndJob(Util.WRITER_CreatedManifest);
+            }
         }
 
         /// <summary>
@@ -696,15 +698,14 @@ namespace DotNetNuke.Services.Installer.Writers
         {
 			//Create a writer to create the processed manifest
             var sb = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
-
-            WriteManifest(writer, packageFragment);
-
-            //Close XmlWriter
-            writer.Close();
-
-            //Return new manifest
-            return sb.ToString();
+            using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+            {
+                WriteManifest(writer, packageFragment);
+                //Close XmlWriter
+                writer.Close();
+                //Return new manifest
+                return sb.ToString();
+            }
         }
 
         public void WriteManifest(XmlWriter writer, bool packageFragment)

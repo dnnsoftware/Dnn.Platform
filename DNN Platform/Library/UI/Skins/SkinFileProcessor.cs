@@ -1253,10 +1253,12 @@ namespace DotNetNuke.UI.Skins
 
             private string Read(string FileName)
             {
-                var objStreamReader = new StreamReader(FileName);
-                string strFileContents = objStreamReader.ReadToEnd();
-                objStreamReader.Close();
-                return strFileContents;
+                using (var objStreamReader = new StreamReader(FileName))
+                {
+                    string strFileContents = objStreamReader.ReadToEnd();
+                    objStreamReader.Close();
+                    return strFileContents;
+                }
             }
 
             public void Write()
@@ -1267,10 +1269,12 @@ namespace DotNetNuke.UI.Skins
                     File.Delete(WriteFileName);
                 }
                 m_Messages += SkinController.FormatMessage(FILE_WRITE, Path.GetFileName(WriteFileName), 2, false);
-                var objStreamWriter = new StreamWriter(WriteFileName);
-                objStreamWriter.WriteLine(Contents);
-                objStreamWriter.Flush();
-                objStreamWriter.Close();
+                using (var objStreamWriter = new StreamWriter(WriteFileName))
+                {
+                    objStreamWriter.WriteLine(Contents);
+                    objStreamWriter.Flush();
+                    objStreamWriter.Close();
+                }
             }
 
             /// -----------------------------------------------------------------------------

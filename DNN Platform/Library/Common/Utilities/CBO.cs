@@ -1026,10 +1026,13 @@ namespace DotNetNuke.Common.Utilities
         public static void SerializeObject(object objObject, XmlDocument document)
         {
             var sb = new StringBuilder();
-            //Serialize the object
-            SerializeObject(objObject, XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)));
-            //Load XmlDocument
-            document.LoadXml(sb.ToString());
+            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
+            {
+                //Serialize the object
+                SerializeObject(objObject, writer);
+                //Load XmlDocument
+                document.LoadXml(sb.ToString());
+            }
         }
 
         /// -----------------------------------------------------------------------------

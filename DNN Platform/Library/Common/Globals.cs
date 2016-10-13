@@ -3651,19 +3651,21 @@ namespace DotNetNuke.Common
             if (!String.IsNullOrEmpty(Source))
             {
                 byte[] bits = Convert.FromBase64String(Source);
-                var mem = new MemoryStream(bits);
-                var bin = new BinaryFormatter();
-                try
+                using (var mem = new MemoryStream(bits))
                 {
-                    objHashTable = (Hashtable)bin.Deserialize(mem);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
+                    var bin = new BinaryFormatter();
+                    try
+                    {
+                        objHashTable = (Hashtable) bin.Deserialize(mem);
+                    }
+                    catch (Exception exc)
+                    {
+                        Logger.Error(exc);
 
-                    objHashTable = new Hashtable();
+                        objHashTable = new Hashtable();
+                    }
+                    mem.Close();
                 }
-                mem.Close();
             }
             else
             {

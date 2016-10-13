@@ -350,13 +350,14 @@ namespace DotNetNuke.Services.Installer
                         string tmpInstallFolder = TempInstallFolder;
 
                         //Create Zip Stream from File
-                        var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read);
+                        using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
+                        {
+                            //Set TempInstallFolder
+                            TempInstallFolder = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
-                        //Set TempInstallFolder
-                        TempInstallFolder = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
-
-                        //Extract files from zip
-                        ReadZipStream(zipStream, true);
+                            //Extract files from zip
+                            ReadZipStream(zipStream, true);
+                        }
 
                         //Restore TempInstallFolder
                         TempInstallFolder = tmpInstallFolder;

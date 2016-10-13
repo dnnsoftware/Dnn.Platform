@@ -219,28 +219,30 @@ namespace DotNetNuke.Common.Utilities
             canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
 
             //newImg.Save
-            Stream content = new MemoryStream();
-            ImageFormat imgFormat = ImageFormat.Bmp;
-            if (extension.ToLowerInvariant() == ".png")
+            using (Stream content = new MemoryStream())
             {
-                imgFormat = ImageFormat.Png;
-            }
-            else if (extension.ToLowerInvariant() == ".gif")
-            {
-                imgFormat = ImageFormat.Gif;
-            }
-            else if (extension.ToLowerInvariant() == ".jpg")
-            {
-                imgFormat = ImageFormat.Jpeg;
-            }
+                ImageFormat imgFormat = ImageFormat.Bmp;
+                if (extension.ToLowerInvariant() == ".png")
+                {
+                    imgFormat = ImageFormat.Png;
+                }
+                else if (extension.ToLowerInvariant() == ".gif")
+                {
+                    imgFormat = ImageFormat.Gif;
+                }
+                else if (extension.ToLowerInvariant() == ".jpg")
+                {
+                    imgFormat = ImageFormat.Jpeg;
+                }
 
-            newImg.Save(content, imgFormat);
+                newImg.Save(content, imgFormat);
 
-            newImg.Dispose();
-            original.Dispose();
-            canvas.Dispose();
+                newImg.Dispose();
+                original.Dispose();
+                canvas.Dispose();
 
-            return content;
+                return content;
+            }
         }
 
         /// <summary>
