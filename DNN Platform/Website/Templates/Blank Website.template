@@ -225,17 +225,6 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>Log Viewer</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>Search Admin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -4339,109 +4328,6 @@
               </tabmodulesettings>
               <definition>Lists</definition>
               <moduledefinition>Lists</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>LogViewer</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>LogViewer</name>
-      <title />
-      <iconfile>~/Icons/Sigma/ViewStats_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>ControlBar_CommonTab</settingname>
-          <settingvalue>Y</settingvalue>
-        </tabsetting>
-      </tabsettings>
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>400</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/ViewStats_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>58f8de0a-e4d7-47fd-9553-795d2895e804</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>LogViewer</definition>
-              <moduledefinition>Log Viewer</moduledefinition>
             </module>
           </modules>
         </pane>

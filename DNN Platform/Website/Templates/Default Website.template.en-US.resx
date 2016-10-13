@@ -457,21 +457,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Lists.Title.Text" xml:space="preserve">
     <value>Lists</value>
   </data>
-  <data name="Tab.LogViewer.Content.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.Description.Text" xml:space="preserve">
-    <value>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</value>
-  </data>
-  <data name="Tab.LogViewer.Name.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.Title.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
   <data name="Tab.MyFriends.CenterPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
     <value>Member Directory</value>
   </data>
