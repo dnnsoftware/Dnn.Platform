@@ -31,6 +31,13 @@
             border-bottom: 2px solid @alizarinCrimson;
         }
     }
+    .dnn-ui-common-tooltip {
+        .tooltip-text {
+            max-width: 255px;
+            text-align: center;
+            padding: 7px 15px;
+        }
+    }
     .dropdown-tooltip-container {
         float: left;
         position: relative;
@@ -47,11 +54,6 @@
             position: absolute;
             top: 7px;
             right: 30px;
-            .tooltip-text {
-                max-width: 255px;
-                text-align: center;
-                padding: 7px 15px;
-            }
             &.outside {
                 right: -25px;
             }
