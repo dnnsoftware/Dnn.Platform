@@ -15,18 +15,24 @@ const Buttons = [
 const DefaultText = "Drag and Drop a File or Select an Option";
 const onDragOverText = "Drag and Drop a File";
 
-const acceptFormats = ["jpeg", "png", "bmp"];
+const acceptFormats = ["jpeg", "png", "bmp", "ico", "svg"];
 
 export default class FileUpload extends Component {
     constructor(props) {
         super(props);
         let imagePath = "";
         let imageExist = false;
-
+        let selectedFile = null;
+        let selectedFolder = null;
+            
         if (this.props.imagePath) {
-            imagePath = this.props.imagePath;
+            imagePath = "/Portals/0/" + this.props.imagePath;
             this.getImageDimensions(imagePath);
             imageExist = true;
+            
+            const pathArray = this.props.imagePath.split("/");
+            selectedFolder = {value: (pathArray.length > 1 ? pathArray[pathArray.length - 2] : "")};
+            selectedFile = {value: pathArray[pathArray.length - 1]};
         }
 
         this.state = {
@@ -34,8 +40,8 @@ export default class FileUpload extends Component {
             showLinkInput: false,
             showFolderPicker: false,
 
-            selectedFile: null,
-            selectedFolder: null,
+            selectedFile,
+            selectedFolder,
 
             linkPath: "",
             imagePath,
@@ -137,7 +143,9 @@ export default class FileUpload extends Component {
             return this.handleError("wrong format");
         }
         format = format.split("image/")[1];
-        const isAcceptFormat = acceptFormats.some(f => f === format);
+
+        const fileFormats = this.props.fileFormats || acceptFormats;
+        const isAcceptFormat = fileFormats.some(f => format.indexOf(f) !== -1 );
         if (!isAcceptFormat) {
             return this.handleError("wrong image format");
         }
@@ -166,7 +174,8 @@ export default class FileUpload extends Component {
         } else {
             this.setState({ imagePath, imageExist: true });
         }
-        this.props.onImageSelect(imagePath);
+        let path = imagePath.replace("/Portals/0/", "");
+        this.props.onImageSelect(path);
     }
 
     getImagePath() {
@@ -347,6 +356,6 @@ FileUpload.propTypes = {
     //---OPTIONAL PROPS---
     cropImage: PropTypes.bool,
     buttons: PropTypes.array,
-    folderName: PropTypes.string
+    folderName: PropTypes.string,
+    fileFormats: PropTypes.array
 };
-

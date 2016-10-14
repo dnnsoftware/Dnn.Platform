@@ -44,7 +44,7 @@ export default class UploadBar extends Component {
         text = this.props.errorText ? this.props.errorText : text;
         let svg = this.props.uploadComplete ? checkmark : upload;
         svg = this.props.errorText ? errorIcon : svg;
-        const className = "file-upload-container dnn-upload-bar" + (this.props.uploadComplete ? " complete" : "") + (this.props.errorText ? " upload-error" : "");
+        const className = "file-upload-container dnn-upload-bar" + (!this.props.errorText && this.props.uploadComplete ? " complete" : "") + (this.props.errorText ? " upload-error" : "");
 
         return <div className={className}>
             <div className="upload-bar-container">
