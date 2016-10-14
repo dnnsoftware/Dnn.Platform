@@ -36,8 +36,11 @@ using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Dnn.PersonaBar.Library.Controllers;
+using Dnn.PersonaBar.Library.DTO.Tabs;
 using Dnn.PersonaBar.Sites.Components.Dto;
 using Dnn.PersonaBar.Sites.Services.Dto;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
@@ -64,6 +67,7 @@ namespace Dnn.PersonaBar.Sites.Components
     public class SitesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
+        private readonly TabsController _tabsController = new TabsController();
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -249,74 +253,9 @@ namespace Dnn.PersonaBar.Sites.Components
             return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : "";
         }
 
-        public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true)
+        public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
         {
-            var rootNode = new TabDto
-            {
-                Name = PortalSettings.PortalName,
-                ImageUrl = IconPortal,
-                TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
-                ChildTabs = new List<TabDto>(),
-                HasChildren = true
-            };
-
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-            var tabs =
-                TabController.GetPortalTabs(
-                    isMultiLanguage
-                        ? TabController.GetTabsBySortOrder(portalId, portalInfo.DefaultLanguage, true)
-                        : TabController.GetTabsBySortOrder(portalId, cultureCode, true), Null.NullInteger, false,
-                    "<" + Localization.GetString("None_Specified") + ">", true, false, true, false, false)
-                    .Where(t => !t.IsSystem)
-                    .ToList();
-
-            tabs = excludeAdminTabs
-                ? tabs.Where(tab => tab.Level == 0 && tab.TabID != portalInfo.AdminTabId).ToList()
-                : tabs.Where(tab => tab.Level == 0).ToList();
-            rootNode.HasChildren = tabs.Count > 0;
-            foreach (var tab in tabs)
-            {
-                string tooltip;
-                var nodeIcon = GetNodeIcon(tab, out tooltip);
-                var node = new TabDto
-                {
-                    Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
-                    TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                    ImageUrl = nodeIcon,
-                    Tooltip = tooltip,
-                    ParentTabId = tab.ParentId,
-                    HasChildren = tab.HasChildren,
-                    ChildTabs = new List<TabDto>()
-                };
-                rootNode.ChildTabs.Add(node);
-            }
-
-            return rootNode;
-        }
-
-        public List<TabDto> GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage)
-        {
-            var descendants = new List<TabDto>();
-            var tabs =
-                GetExportableTabs(TabController.Instance.GetTabsByPortal(portalId)
-                    .WithCulture(cultureCode, true)).WithParentId(parentId);
-
-            foreach (var tab in tabs.Where(x => x.ParentId == parentId))
-            {
-                string tooltip;
-                var nodeIcon = GetNodeIcon(tab, out tooltip);
-                var node = new TabDto
-                {
-                    Name = tab.TabName,//$"{tab.TabName} {GetNodeStatusIcon(tab)}",
-                    TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                    ImageUrl = nodeIcon,
-                    Tooltip = tooltip,
-                    ParentTabId = tab.ParentId,
-                    HasChildren = tab.HasChildren
-                };
-                descendants.Add(node);
-            }
-            return descendants;
+            return _tabsController.GetTabByCulture(tabId, portalId, cultureCode);
         }
 
         public string ExportPortalTemplate(int portalId, string fileName, string description, bool isMultilanguage, IEnumerable<string> locales, bool includeProfile, 
@@ -410,7 +349,7 @@ namespace Dnn.PersonaBar.Sites.Components
         {
             if (tabsCollection == null)
             {
-                var tab = GetPortalTabs(portalId, cultureCode, isMultiLanguage);
+                var tab = _tabsController.GetPortalTabs(portalId, cultureCode, isMultiLanguage);
                 tabsCollection = tab.ChildTabs;
                 tab.ChildTabs = null;
                 tab.HasChildren = false;
@@ -442,8 +381,8 @@ namespace Dnn.PersonaBar.Sites.Components
                         checkedState = NodeCheckedState.Checked;
                     }
 
-                    var descendants = GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
-                        isMultiLanguage);
+                    var descendants = _tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
+                        isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
                     selectedTabs.AddRange(GetTabsToExport(portalId, cultureCode, isMultiLanguage, selectedTabs,

@@ -13,7 +13,7 @@ import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Button from "dnn-button";
 import Dropdown from "dnn-dropdown";
 import Switch from "dnn-switch";
-import PagePicker from "./PagePicker/PagePicker";
+import PagePicker from "dnn-page-picker";
 import "./style.less";
 import util from "../../utils";
 import stringUtils from "../../utils/string";
@@ -53,7 +53,7 @@ class ExportPortal extends Component {
                 }
             },
             portalBeingExported: emptyExport,
-            portalTabs: []
+            reloadPages: false
         };
     }
 
@@ -71,26 +71,7 @@ class ExportPortal extends Component {
             this.setState({
                 portalBeingExported,
                 localData
-            }, () => {
-                this.getPortalTabs();
             });
-        }));
-    }
-
-    getPortalTabs(cultureCode, callback) {
-        const { props, state } = this;
-        const portalTabsParameters = {
-            portalId: state.portalBeingExported.portalId,
-            cultureCode: cultureCode !== undefined ? cultureCode : state.portalBeingExported.localizationCulture,
-            isMultiLanguage: state.portalBeingExported.isMultiLanguage
-        };
-        props.dispatch(PortalActions.getPortalTabs(portalTabsParameters, (data) => {
-            this.setState({
-                portalTabs: [data.Results]
-            });
-            if (callback) {
-                callback();
-            }
         }));
     }
 
@@ -114,7 +95,7 @@ class ExportPortal extends Component {
                     let {portalBeingExported} = state;
                     portalBeingExported.fileName = "";
                     portalBeingExported.description = "";
-                    this.setState({ portalBeingExported },()=>{
+                    this.setState({ portalBeingExported }, () => {
                         props.onCancel();
                     });
                 }
@@ -155,10 +136,13 @@ class ExportPortal extends Component {
     }
     onLanguageSelectionChange(option) {
         let {portalBeingExported} = this.state;
-
+        let {reloadPages} = this.state;
+        reloadPages = true;
         portalBeingExported.localizationCulture = option.value;
-        this.getPortalTabs(option.value, () => {
-            this.setState({ portalBeingExported });
+        this.setState({ portalBeingExported, reloadPages }, () => {
+            this.setState({
+                reloadPages: false
+            });
         });
     }
     createLocaleOptions(native) {
@@ -208,6 +192,15 @@ class ExportPortal extends Component {
         const {props, state} = this;
         const localeOptions = this.createLocaleOptions();
         const dropdownOptions = this.createLanguageDropDownOptions();
+        const PortalTabsParameters = {
+            portalId: state.portalBeingExported.portalId,
+            cultureCode: state.portalBeingExported.localizationCulture,
+            isMultiLanguage: state.portalBeingExported.isMultiLanguage,
+            excludeAdminTabs: true,
+            disabledNotSelectable: false,
+            roles: "",
+            sortOrder: 0
+        };
         return (
             <div className="export-portal">
                 <SocialPanelHeader title={Localization.get("ControlTitle_template") }/>
@@ -300,15 +293,17 @@ class ExportPortal extends Component {
                                         </div>
                                     }
                                     <Label label={Localization.get("lblPages") } tooltipMessage={Localization.get("lblPages.Help") }/>
-                                    {state.portalTabs.length > 0 && <PagePicker portalId={state.portalBeingExported.portalId}
-                                        cultureCode={state.portalBeingExported.localizationCulture}
-                                        IsMultiLanguage={state.portalBeingExported.isMultiLanguage}
-                                        portalTabs={ state.portalTabs }
-                                        scrollAreaStyle={scrollAreaStyle}
-                                        updateSelectionData={this.updatePagesToExport.bind(this) }
+                                    <PagePicker
+                                        PortalTabsParameters={PortalTabsParameters }
+                                        scrollAreaStyle={ scrollAreaStyle }
+                                        OnSelect={ this.updatePagesToExport.bind(this) }
                                         allSelected={true}
+                                        IsMultiSelect={true}
+                                        IsInDropDown={false}
+                                        ShowCount={false}
+                                        Reload={this.state.reloadPages}
+                                        ShowIcon={false}
                                         />
-                                    }
                                 </div>
                             }
                         </GridSystem>

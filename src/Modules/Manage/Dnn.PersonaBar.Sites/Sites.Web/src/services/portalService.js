@@ -38,15 +38,6 @@ class PortalService {
         const sf = this.getServiceFramework("Sites");
         sf.post("DeletePortal?portalId=" + portalId, {}, callback, errorCallback);
     }
-
-    getPortalTabs(portalTabsParameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("Sites");
-        sf.get("GetPortalTabs?" + serializeQueryStringParameters(portalTabsParameters), {}, callback, errorCallback);
-    }
-    getTabsDescendants(portalTabsParameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("Sites");
-        sf.get("GetTabsDescendants?" + serializeQueryStringParameters(portalTabsParameters), {}, callback, errorCallback);
-    }
     exportPortal(payload, callback, errorCallback) {
         const sf = this.getServiceFramework("Sites");
         sf.post("ExportPortalTemplate", payload, callback, errorCallback);

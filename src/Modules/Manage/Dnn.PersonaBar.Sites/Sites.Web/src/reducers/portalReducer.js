@@ -4,8 +4,7 @@ export default function portal(state = {
     portals: [],
     templates: [],
     totalCount: 0,
-    totalTemplateCount: 0,
-    portalTabs: []
+    totalTemplateCount: 0
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_PORTALS:
@@ -17,10 +16,6 @@ export default function portal(state = {
             return { ...state,
                 templates: action.payload.templates,
                 totalTemplateCount: action.payload.totalCount
-            };
-        case ActionTypes.RETRIEVED_PORTAL_TABS:
-            return { ...state,
-                portalTabs: action.payload.portalTabs
             };
         case ActionTypes.DELETED_PORTAL_TEMPLATE:
             return { ...state,

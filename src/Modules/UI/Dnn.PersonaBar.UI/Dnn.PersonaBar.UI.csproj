@@ -162,6 +162,7 @@
     </Compile>
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\LocalizationController.cs" />
+    <Compile Include="Services\TabsController.cs" />
     <Compile Include="Services\UserSettingsController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="..\..\..\SolutionInfo.cs">
@@ -170,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\personaBarContainer.css" />
+    <EmbeddedResource Include="admin\personaBar\App_LocalResources\Tabs.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />

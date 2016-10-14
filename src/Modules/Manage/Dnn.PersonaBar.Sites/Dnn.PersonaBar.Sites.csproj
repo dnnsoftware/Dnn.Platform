@@ -105,8 +105,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
-    <Compile Include="Services\Dto\NodeCheckedState.cs" />
-    <Compile Include="Services\Dto\TabDto.cs" />
     <Compile Include="Services\SitesController.cs" />
   </ItemGroup>
   <ItemGroup>

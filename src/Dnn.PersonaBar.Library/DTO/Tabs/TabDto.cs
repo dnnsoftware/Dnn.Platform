@@ -20,23 +20,19 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace Dnn.PersonaBar.Sites.Services.Dto
+namespace Dnn.PersonaBar.Library.DTO.Tabs
 {
     public class TabDto
     {
         public TabDto()
         {
             CheckedState= NodeCheckedState.UnChecked;
+            IsOpen = false;
+            Selectable = true;
         }
         public string Name { get; set; }
 
@@ -49,6 +45,10 @@ namespace Dnn.PersonaBar.Sites.Services.Dto
         public int ParentTabId { get; set; }
 
         public  bool HasChildren { get; set; }
+
+        public bool IsOpen { get; set; }
+
+        public bool Selectable { get; set; }
 
         public NodeCheckedState CheckedState { get; set; }
 

@@ -146,6 +146,7 @@ namespace Dnn.PersonaBar.Sites.Services
                         portal.HostFee,
                         ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
                         portal.DefaultLanguage,
+                        portal.LastModifiedOnDate,
                         contentLocalizable =
                             PortalController.Instance.GetPortalSettings(portal.PortalID)
                                 .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
@@ -293,66 +294,6 @@ namespace Dnn.PersonaBar.Sites.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        /// GET: api/Sites/GetPortalTabs
-        /// <summary>
-        /// Gets list of portal tabs
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="isMultiLanguage"></param>
-        /// <param name="excludeAdminTabs"></param>
-        /// <returns>List of portal tabs</returns>
-        [HttpGet]
-        public HttpResponseMessage GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage = false,
-            bool excludeAdminTabs = true)
-        {
-            try
-            {
-                var response = new
-                {
-                    Success = true,
-                    Results = _controller.GetPortalTabs(portalId, cultureCode, isMultiLanguage, excludeAdminTabs)
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="parentId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="isMultiLanguage"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public HttpResponseMessage GetTabsDescendants(int portalId, int parentId, string cultureCode,
-            bool isMultiLanguage = false)
-        {
-            try
-            {
-                var response = new
-                {
-                    Success = true,
-                    Results = _controller.GetTabsDescendants(portalId, parentId, cultureCode, isMultiLanguage)
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
 
         /// POST: api/Sites/DeleteExpiredPortals
         /// <summary>

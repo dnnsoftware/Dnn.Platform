@@ -16,7 +16,7 @@ const portalActions = {
                     }
                 });
                 if (callback) {
-                    callback();
+                    callback(data);
                 }
             }, errorCallback);
         };
@@ -73,30 +73,6 @@ const portalActions = {
                         portalId
                     }
                 });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    getPortalTabs(portalTabsParameters, callback) {
-        return (dispatch) => {
-            PortalService.getPortalTabs(portalTabsParameters, data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTAL_TABS,
-                    payload: {
-                        portalTabs: [data.Results]
-                    }
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    getTabsDescendants(portalTabsParameters, callback) {
-        return () => {
-            PortalService.getTabsDescendants(portalTabsParameters, data => {
                 if (callback) {
                     callback(data);
                 }

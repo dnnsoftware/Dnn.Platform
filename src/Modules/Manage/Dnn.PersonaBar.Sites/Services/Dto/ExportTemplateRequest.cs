@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.Serialization;
+using Dnn.PersonaBar.Library.DTO.Tabs;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
