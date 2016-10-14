@@ -66,7 +66,9 @@
         float: left;
         width: 96%;
         .historyHeader-wrapper {
-            border-bottom: 1px solid @alto;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
             width: 100%;
             float: left;
             padding: 15px 0 15px 0;

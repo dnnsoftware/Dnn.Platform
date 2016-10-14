@@ -142,7 +142,8 @@ const taskActions = {
                     type: ActionTypes.RETRIEVED_SCHEDULE_ITEM,
                     data: {
                         scheduleItemDetail: data.Results,
-                        totalCount: data.TotalResults
+                        totalCount: data.TotalResults,
+                        settingsClientModified: false
                     }
                 });
                 if (callback) {
@@ -173,7 +174,8 @@ const taskActions = {
                 dispatch({
                     type: ActionTypes.CREATED_SCHEDULE_ITEM,
                     data: {
-                        Success: data.Success
+                        Success: data.Success,
+                        settingsClientModified: false
                     }
                 });
                 if (callback) {
@@ -192,7 +194,8 @@ const taskActions = {
                 dispatch({
                     type: ActionTypes.UPDATED_SCHEDULE_ITEM,
                     data: {
-                        Success: data.Success
+                        Success: data.Success,
+                        settingsClientModified: false
                     }
                 });
                 if (callback) {
@@ -216,6 +219,27 @@ const taskActions = {
                 });
                 if (callback) {
                     callback(data);
+                }
+            });
+        };
+    },
+    settingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    scheduleItemDetail: parameter,
+                    settingsClientModified: true
+                }
+            });
+        };
+    },
+    cancelSettingsClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED,
+                data: {                    
+                    settingsClientModified: false
                 }
             });
         };

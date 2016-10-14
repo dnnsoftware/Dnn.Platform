@@ -25,7 +25,7 @@ class SchedulerRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            this.props.Collapse();
+            //this.props.Collapse();
         } else {
             this.props.OpenCollapse(this.props.id);
         }
@@ -33,10 +33,13 @@ class SchedulerRow extends Component {
 
     /* eslint-disable react/no-danger */
     getEnabledDisplay() {
-        if (this.props.enabled) {
-            return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>;
+        if (this.props.id !== "add") {
+            if (this.props.enabled) {
+                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>;
+            }
+            else return <span>&nbsp; </span>;
         }
-        else return <span>&nbsp; </span>;
+        else return <span>-</span>;
     }
 
     toggleHistoryPanel() {
@@ -54,7 +57,7 @@ class SchedulerRow extends Component {
                 <div className={"collapsible-header1 " + !opened} >
                     <div className={"row"}>
                         <div title={props.name} className="schedule-item item-row-name">
-                            {props.name}&nbsp;</div>
+                            {props.name}&nbsp; </div>
                         <div className="schedule-item item-row-frequency">
                             {props.frequency}</div>
                         <div className="schedule-item item-row-retryTimeLapse">
@@ -67,19 +70,21 @@ class SchedulerRow extends Component {
                             <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
                             </div>
                         </div>
-                        <div className="schedule-item item-row-historyButton">
-                            <div className="history-icon" dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggleHistoryPanel.bind(this) }>
+                        { props.id !== "add" &&
+                            <div className="schedule-item item-row-historyButton">
+                                <div className="history-icon" dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggleHistoryPanel.bind(this) }>
+                                </div>
+                                <div className="collapsible-content">
+                                    <ItemHistory
+                                        fixedHeight={500}
+                                        isOpened={state.historyPanelOpen}
+                                        onClose={this.toggleHistoryPanel.bind(this) }
+                                        scheduleId={props.scheduleId}
+                                        scheduleName={props.name}>
+                                    </ItemHistory>
+                                </div>
                             </div>
-                            <div className="collapsible-content">
-                                <ItemHistory
-                                    fixedHeight={500}
-                                    isOpened={state.historyPanelOpen}
-                                    onClose={this.toggleHistoryPanel.bind(this) }
-                                    scheduleId={props.scheduleId}
-                                    scheduleName={props.name}>
-                                </ItemHistory>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
                 <Collapse isOpened={opened} style={{ float: "left" }}>{opened && props.children }</Collapse>

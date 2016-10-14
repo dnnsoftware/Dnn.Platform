@@ -44,8 +44,20 @@ export default function taskList(state = {
             };
         case ActionTypes.RETRIEVED_SCHEDULE_ITEM:
             return { ...state,
-                scheduleItemDetail: action.data.scheduleItemDetail
-            };        
+                scheduleItemDetail: action.data.scheduleItemDetail,
+                settingsClientModified: action.data.settingsClientModified
+            };      
+        case ActionTypes.CREATED_SCHEDULE_ITEM:            
+        case ActionTypes.UPDATED_SCHEDULE_ITEM:
+        case ActionTypes.CANCELED_SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                settingsClientModified: action.data.settingsClientModified
+            };
+        case ActionTypes.SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                scheduleItemDetail: action.data.scheduleItemDetail,
+                settingsClientModified: true
+            };  
         default:
             return { ...state
             };

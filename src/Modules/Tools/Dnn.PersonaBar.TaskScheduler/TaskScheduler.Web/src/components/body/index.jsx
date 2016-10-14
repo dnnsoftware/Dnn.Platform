@@ -12,6 +12,7 @@ import TopPane from "../topPane";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
 import resx from "../../resources";
+import util from "../../utils";
 
 export class Body extends Component {
     constructor() {
@@ -21,20 +22,31 @@ export class Body extends Component {
 
     handleSelect(index) {
         const {props} = this;
-        props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
+        if (props.settingsClientModified) {
+            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                props.dispatch(TaskActions.cancelSettingsClientModified());      
+                props.dispatch(PaginationActions.loadTab(index));
+            });
+        }
+        else {
+            props.dispatch(PaginationActions.loadTab(index));
+        }
+        this.setState({});
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
             <SocialPanelBody>
-                <TopPane/>
-                <Tabs onSelect={this.handleSelect.bind(this) }
+                <TopPane />
+                <Tabs
+                    onSelect={this.handleSelect.bind(this)}
+                    selectedIndex={this.props.tabIndex}
                     tabHeaders={[resx.get("TabTaskQueue"), resx.get("TabScheduler"), resx.get("TabHistory")]}
                     type="primary">
-                    <TaskQueue/>
-                    <Scheduler/>
-                    <History title={resx.get("TabHistoryTitle") } />
+                    <TaskQueue />
+                    <Scheduler />
+                    <History title={resx.get("TabHistoryTitle")} />
                 </Tabs>
             </SocialPanelBody>
         );
@@ -44,13 +56,15 @@ export class Body extends Component {
 Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    status: PropTypes.string
+    status: PropTypes.string,
+    settingsClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        tabIndex: state.pagination.index,
-        status: state.task.status
+        tabIndex: state.pagination.tabIndex,
+        status: state.task.status,
+        settingsClientModified: state.task.settingsClientModified
     };
 }
 

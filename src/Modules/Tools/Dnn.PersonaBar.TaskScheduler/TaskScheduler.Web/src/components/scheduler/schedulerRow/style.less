@@ -13,8 +13,9 @@
         padding: 15px 0 10px 0;
         box-sizing: border-box;
         cursor: auto;
-        &.false {}
-        .row {
+        .row {    
+            float: left;
+            width: 768px;      
             .item-row-name {
                 width: 28%;
                 float: left;
@@ -35,6 +36,7 @@
             .item-row-enabled {
                 width: 10%;
                 float: left;
+                text-align: center;
                 .checkMarkIcon {
                     width: 16px;
                     height: 16px;
@@ -47,7 +49,12 @@
             }
             .item-row-editButton {
                 width: 3%;
-                float: left;
+                float: right;
+                margin-right: 5px;
+                &:not(:last-child) {
+                   float: left; 
+                   margin-right: 0px;                  
+                }
                 .edit-icon {
                     cursor: pointer;
                     > svg {
@@ -61,7 +68,6 @@
                     }
                 }
                 .edit-icon-active {
-                    cursor: pointer;
                     > svg {
                         width: 16px;
                         float: left;

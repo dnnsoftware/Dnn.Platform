@@ -16,7 +16,6 @@ import util from "../../../utils";
 import resx from "../../../resources";
 
 const re = /^[1-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?$/;
-let formModified = false;
 let retainHistoryNumOptions = [];
 let timeLapseMeasurementOptions = [];
 let attachToEventOptions = [];
@@ -39,6 +38,12 @@ class SchedulerEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
+        /*if (props.scheduleItemDetail) {
+            this.setState({
+                scheduleItemDetail: props.scheduleItemDetail
+            });
+            return;
+        }*/
         if (props.scheduleId) {
             props.dispatch(TaskActions.getGetScheduleItem({
                 scheduleId: props.scheduleId
@@ -171,10 +176,14 @@ class SchedulerEditor extends Component {
     }
 
     onSettingChange(key, event) {
-        let {state} = this;
-        let {scheduleItemDetail} = this.state;
+        let {state, props} = this;
+        let scheduleItemDetail = Object.assign({}, state.scheduleItemDetail);
+
         if (key === "ScheduleStartDate") {
             scheduleItemDetail[key] = event;
+        }
+        else if (key === "CatchUpEnabled") {
+            scheduleItemDetail[key] = event.target.value === "true" ? true : false;
         }
         else {
             scheduleItemDetail[key] = typeof (event) === "object" ? event.target.value : event;
@@ -207,17 +216,8 @@ class SchedulerEditor extends Component {
             triedToSubmit: false,
             error: state.error
         });
-        formModified = true;
-    }
 
-    onCatchUpEnabledSettingChange(event) {
-        let {scheduleItemDetail} = this.state;
-        scheduleItemDetail["CatchUpEnabled"] = event.target.value === "true" ? true : false;
-        this.setState({
-            scheduleItemDetail: scheduleItemDetail,
-            triedToSubmit: false
-        });
-        formModified = true;
+        props.dispatch(TaskActions.settingsClientModified(scheduleItemDetail));
     }
 
     onUpdateItem(event) {
@@ -230,7 +230,20 @@ class SchedulerEditor extends Component {
             return;
         }
 
-        this.props.onUpdate(this.state.scheduleItemDetail);
+        props.onUpdate(this.state.scheduleItemDetail);
+    }
+
+    onCancel(event) {
+        const {props, state} = this;
+        if (props.settingsClientModified) {
+            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                props.dispatch(TaskActions.cancelSettingsClientModified());                
+                props.Collapse();
+            });
+        }
+        else {
+            props.Collapse();
+        }
     }
 
     /* eslint-disable react/no-danger */
@@ -331,7 +344,7 @@ class SchedulerEditor extends Component {
                 </div>
                 <div className="editor-row divider">
                     <Label label={resx.get("plCatchUpEnabled") } style={{ margin: '0 0 5px 0' }}/>
-                    <Select options={catchUpEnabledOptions} value={this.getValue("CatchUpEnabled") } onChange={this.onCatchUpEnabledSettingChange.bind(this) }
+                    <Select options={catchUpEnabledOptions} value={this.getValue("CatchUpEnabled") } onChange={this.onSettingChange.bind(this, "CatchUpEnabled") }
                         style={{ width: 100 + '%', float: 'left', margin: '0 0 35px 0' }}/>
                 </div>
                 <div className="editor-row divider">
@@ -352,9 +365,18 @@ class SchedulerEditor extends Component {
                     <Grid children={children} numberOfColumns={2} />
                     <div className="buttons-box">
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId) }>{resx.get("cmdDelete") }</Button>}
-                        <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{resx.get("Cancel") }</Button>
+                        <Button
+                            type="secondary"
+                            onClick={this.onCancel.bind(this) }>
+                            {resx.get("Cancel") }
+                        </Button>
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.runSchedule.bind(this) }>{resx.get("cmdRun") }</Button>}
-                        <Button type="primary" onClick={this.onUpdateItem.bind(this) }>{this.props.scheduleId !== undefined ? resx.get("Update") : resx.get("cmdSave") }</Button>
+                        <Button
+                            disabled={!this.props.settingsClientModified}
+                            type="primary"
+                            onClick={this.onUpdateItem.bind(this) }>
+                            {this.props.scheduleId !== undefined ? resx.get("Update") : resx.get("cmdSave") }
+                        </Button>
                     </div>
                 </div>
             );
@@ -371,12 +393,14 @@ SchedulerEditor.propTypes = {
     Collapse: PropTypes.func,
     onDelete: PropTypes.func,
     onUpdate: PropTypes.func,
-    id: PropTypes.string
+    id: PropTypes.string,
+    settingsClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        scheduleItemDetail: state.task.scheduleItemDetail
+        scheduleItemDetail: state.task.scheduleItemDetail,
+        settingsClientModified: state.task.settingsClientModified
     };
 }
 

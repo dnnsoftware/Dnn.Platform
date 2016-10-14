@@ -33,7 +33,7 @@ class SchedulerPanel extends Component {
             props.dispatch(TaskActions.getServerList());
         }
 
-        tableFields=[];
+        tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "FriendlyName" });
         tableFields.push({ "name": resx.get("Frequency.Header"), "id": "Frequency" });
         tableFields.push({ "name": resx.get("RetryTimeLapse.Header"), "id": "RetryTimeLapse" });
@@ -77,8 +77,9 @@ class SchedulerPanel extends Component {
     toggle(openId) {
         if (openId !== "") {
             this.uncollapse(openId);
-        } else {
-            this.collapse();
+        } 
+        else {
+            //this.collapse();
         }
     }
 
@@ -106,8 +107,8 @@ class SchedulerPanel extends Component {
                 this.collapse();
                 props.dispatch(TaskActions.getSchedulerItemList());
             }, (error) => {
-                const errorMessage = JSON.parse(error.responseText);  
-                util.utilities.notifyError(errorMessage.Message);  
+                const errorMessage = JSON.parse(error.responseText);
+                util.utilities.notifyError(errorMessage.Message);
             }));
         }
         else {
@@ -117,8 +118,8 @@ class SchedulerPanel extends Component {
                 props.dispatch(TaskActions.getSchedulerItemList());
             }, (error) => {
                 util.utilities.notify(resx.get("ScheduleItemCreateError"));
-                const errorMessage = JSON.parse(error.responseText);            
-                util.utilities.notifyError(errorMessage.Message);  
+                const errorMessage = JSON.parse(error.responseText);
+                util.utilities.notifyError(errorMessage.Message);
             }));
         }
     }
@@ -188,17 +189,30 @@ class SchedulerPanel extends Component {
                             </div> Add Task
                         </div>
                     </div>
-                    <Collapse isOpened={opened} style={{ float: "left" }}>
-                        <SchedulerEditor
-                            serverList={this.props.serverList}
-                            Collapse={this.collapse.bind(this) }
-                            onDelete={this.onDeleteSchedulerItem.bind(this) }
-                            onUpdate={this.onUpdateSchedulerItem.bind(this) }
-                            id={"add"}
-                            openId={this.state.openId}/>
-                    </Collapse>
                     <div className="schedule-items-grid">
                         {this.renderHeader() }
+                        <Collapse isOpened={opened} style={{ float: "left" }}>
+                            <SchedulerRow
+                                name={"-"}
+                                frequency={"-"}    
+                                retryTimeLapse={"-"}                 
+                                nextStart={"-"}
+                                index={"add"}
+                                key={"scheduleItem-add"}
+                                closeOnClick={true}
+                                openId={this.state.openId }
+                                OpenCollapse={this.toggle.bind(this) }
+                                Collapse={this.collapse.bind(this) }
+                                id={"add"}>
+                                <SchedulerEditor
+                                    serverList={this.props.serverList}
+                                    Collapse={this.collapse.bind(this) }
+                                    onDelete={this.onDeleteSchedulerItem.bind(this) }
+                                    onUpdate={this.onUpdateSchedulerItem.bind(this) }
+                                    id={"add"}
+                                    openId={this.state.openId}/>
+                            </SchedulerRow>
+                        </Collapse>
                         {this.renderedScedulerItemList() }
                     </div>
                 </div>
