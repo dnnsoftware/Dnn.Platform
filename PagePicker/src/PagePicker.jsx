@@ -72,7 +72,7 @@ class PagePicker extends Component {
 
     getPortalTabs(cultureCode, callback) {
         const { props } = this;
-        let service = new Service(this.props.moduleRoot, this.props.controller);
+        let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
         const portalTabsParameters = !props.IsMultiSelect ? Object.assign(props.PortalTabsParameters, { selectedTabId: props.selectedTabId }) : Object.assign(props.PortalTabsParameters);
         service.getPortalTabs(portalTabsParameters, (data) => {
             this.setState({
@@ -204,7 +204,7 @@ class PagePicker extends Component {
         }
         const portalTabsDescendantsParameters = Object.assign(props.PortalTabsParameters, { parentId: page.TabId });
 
-        let service = new Service(this.props.moduleRoot, this.props.controller);
+        let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
         service.getTabsDescendants(portalTabsDescendantsParameters,
             (data) => {
                 parentToAddChildrenTo.IsOpen = true;
@@ -304,7 +304,7 @@ class PagePicker extends Component {
     //Set the dropdown label to the default selected page name.
     setDefaultPage(props) {
         if (props.IsInDropDown && !props.IsMultiSelect && props.selectedTabId >= 0) {
-            let service = new Service(this.props.moduleRoot, this.props.controller);
+            let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
             service.getPortalTab({
                 portalId: props.PortalTabsParameters.portalId,
                 tabId: props.selectedTabId,
@@ -358,7 +358,7 @@ class PagePicker extends Component {
 
         if (value !== "") {
             const apiParameters = Object.assign(props.PortalTabsParameters, { searchText: value });
-            let service = new Service(this.props.moduleRoot, this.props.controller);
+            let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
 
             service.searchPortalTabs(apiParameters, (data) => {
                 this.setState({
@@ -509,7 +509,7 @@ class PagePicker extends Component {
                         <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this) }></div>
                     }
                     {props.IsInDropDown &&
-                        <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") }>
+                        <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") } style={props.style}>
                             <Collapse
                                 className="page-picker-content"
                                 ref="pagePickerContent"
@@ -616,7 +616,9 @@ PagePicker.propTypes = {
     moduleRoot: PropTypes.string,
 
     //Service Framework controller
-    controller: PropTypes.string
+    controller: PropTypes.string,
+
+    serviceFramework: PropTypes.object
 };
 
 PagePicker.defaultProps = {
@@ -648,7 +650,7 @@ PagePicker.defaultProps = {
     moduleRoot: "PersonaBar/Admin",
     controller: "Tabs",
     PortalTabsParameters: {
-        portalId: 0,
+        portalId: -2,
         cultureCode: "",
         isMultiLanguage: false,
         excludeAdminTabs: false,

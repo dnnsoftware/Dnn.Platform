@@ -10,8 +10,8 @@ function serializeQueryStringParameters(obj) {
 }
 let sf = null;
 class Service {
-    constructor(moduleRoot, controller) {
-        sf = window.dnn.initSites().utility.sf;
+    constructor(serviceFramework, moduleRoot, controller) {
+        sf = serviceFramework;
         sf.moduleRoot = moduleRoot;
         sf.controller = controller;
     }
