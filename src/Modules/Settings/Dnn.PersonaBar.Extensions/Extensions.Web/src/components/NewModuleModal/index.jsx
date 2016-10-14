@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
-import { FolderActions } from "actions";
+import { FolderActions, ExtensionActions } from "actions";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import FromControl from "./FromControl";
@@ -34,18 +34,20 @@ class NewModuleModal extends Component {
         };
     }
 
-    componentWillMount() {
-        const { props } = this;
-        props.dispatch(FolderActions.getOwnerFolders());
-        props.dispatch(FolderActions.getModuleFolders(""));
-    }
-
     onSelectOwnerFolder(ownerFolder) {
         const { props } = this;
         props.dispatch(FolderActions.getModuleFolders(ownerFolder));
     }
 
+    onSelectModuleFolder(parameters) {
+        const { props } = this;
+        props.dispatch(FolderActions.getModuleFiles(parameters));
+    }
+
     onSelectNewModuleType(option) {
+        const { props } = this;
+        props.dispatch(FolderActions.getOwnerFolders());
+        props.dispatch(FolderActions.getModuleFolders(""));
         this.setState({
             selectedType: option.value
         });
@@ -68,9 +70,15 @@ class NewModuleModal extends Component {
 
     onCreateNewModule(payload) {
         const { props } = this;
-        props.dispatch(FolderActions.createNewModule(payload, (data) => {
+        const shouldAppend = props.selectedInstalledPackageType === "Module";
+        props.dispatch(ExtensionActions.createNewModule(payload, shouldAppend, (data) => {
+            console.log(data.NewPageUrl);
             if (data.NewPageUrl) {
+                console.log("Firing!");
                 window.open(data.NewPageUrl);
+            }
+            if (!shouldAppend) {
+                props.dispatch(ExtensionActions.getInstalledPackages("Module"));
             }
             props.onCancel();
         }));
@@ -90,6 +98,12 @@ class NewModuleModal extends Component {
                 label: folder.split(/(?=[A-Z])/).join(" ")
             };
         });
+        const moduleFiles = props.moduleFiles.map(file => {
+            return {
+                value: file,
+                label: file
+            };
+        });
         switch (selectedType) {
             case 0:
                 return <FromNew
@@ -103,14 +117,24 @@ class NewModuleModal extends Component {
                 return <FromControl
                     ownerFolders={ownerFolders}
                     moduleFolders={moduleFolders}
+                    moduleFiles={moduleFiles}
                     onCancel={props.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
+                    onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
                     onCreateNewModule={this.onCreateNewModule.bind(this)} />;
             case 2:
-                return <FromManifest />;
+                return <FromManifest
+                    ownerFolders={ownerFolders}
+                    moduleFolders={moduleFolders}
+                    moduleFiles={moduleFiles}
+                    onCancel={props.onCancel.bind(this)}
+                    onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
+                    onAddNewFolder={this.onAddNewFolder.bind(this)}
+                    onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
+                    onCreateNewModule={this.onCreateNewModule.bind(this)} />;
             default:
-                return <div>Empty</div>;
+                return <div></div>;
         }
     }
 
@@ -152,8 +176,10 @@ NewModuleModal.PropTypes = {
 
 function mapStateToProps(state) {
     return {
+        selectedInstalledPackageType: state.extension.selectedInstalledPackageType,
         ownerFolders: state.folder.ownerFolders,
-        moduleFolders: state.folder.moduleFolders
+        moduleFolders: state.folder.moduleFolders,
+        moduleFiles: state.folder.moduleFiles
     };
 }
 

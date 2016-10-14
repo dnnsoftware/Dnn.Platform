@@ -27,15 +27,15 @@ class FolderService {
 
         sf.get("GetModuleFolders?ownerFolder=" + ownerFolder, {}, callback, errorCallback);
     }
+    getModuleFiles(parameters, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.get("GetModuleFiles?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+    }
     createNewFolder(payload, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
 
         sf.post("CreateFolder?" + serializeQueryStringParameters(payload), {}, callback, errorCallback);
-    }
-    createNewModule(payload, callback, errorCallback) {
-        const sf = this.getServiceFramework("Extensions");
-
-        sf.post("CreateModule", payload, callback, errorCallback);
     }
 }
 const folderService = new FolderService();

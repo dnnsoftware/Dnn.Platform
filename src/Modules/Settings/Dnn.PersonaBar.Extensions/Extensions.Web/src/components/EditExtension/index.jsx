@@ -13,7 +13,7 @@ import Localization from "localization";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
-import { EditAuthenticationSystem } from "./CustomSettings";
+import CustomSettings from "./CustomSettings";
 import styles from "./style.less";
 
 class EditExtension extends Component {
@@ -55,15 +55,6 @@ class EditExtension extends Component {
         });
     }
 
-    getExtensionSetting(type) {
-        switch (type) {
-            case "Auth_System":
-                return <EditAuthenticationSystem primaryButtonText="Next"/>;
-            default:
-                return <p>Extension Settings</p>;
-        }
-    }
-
     render() {
         const {props, state} = this;
         const {extensionBeingEdited} = state;
@@ -83,7 +74,7 @@ class EditExtension extends Component {
                                 primaryButtonText="Update" />
                         </GridCell>
                         <GridCell className="extension-form">
-                            {this.getExtensionSetting("Auth_System")}
+                            <CustomSettings type="Module" primaryButtonText="Next" />
                         </GridCell>
                         <GridCell>
                             Site Settings

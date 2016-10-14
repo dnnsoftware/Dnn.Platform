@@ -6,17 +6,21 @@ function addToFolders(value, folders){
 
 export default function folder(state = {
     ownerFolders: [],
-    moduleFolders: []
+    moduleFolders: [],
+    moduleFiles: []
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_OWNER_FOLDERS:
-            console.log(action.payload);
             return { ...state,
                 ownerFolders: action.payload
             };
         case ActionTypes.RETRIEVED_MODULE_FOLDERS:
             return { ...state,
                 moduleFolders: action.payload
+            };
+        case ActionTypes.RETRIEVED_MODULE_FILES:
+            return { ...state,
+                moduleFiles: action.payload  
             };
         case ActionTypes.CREATED_NEW_MODULE_FOLDER:
             return { ...state,

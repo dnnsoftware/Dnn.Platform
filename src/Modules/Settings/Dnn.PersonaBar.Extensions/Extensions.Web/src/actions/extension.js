@@ -1,5 +1,11 @@
 import { extension as ActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
+import utilities from "utils";
+
+function errorCallback(message){
+    utilities.utilities.notifyError(message);
+}
+
 const extensionActions = {
     getInstalledPackages(type, callback) {
         return (dispatch) => {
@@ -14,7 +20,7 @@ const extensionActions = {
                 if (callback) {
                     callback();
                 }
-            });
+            }, errorCallback);
         };
     },
     getAvailablePackages(type, callback) {
@@ -30,7 +36,7 @@ const extensionActions = {
                 if (callback) {
                     callback();
                 }
-            });
+            }, errorCallback);
         };
     },
     getPackageTypes(callback) {
@@ -43,7 +49,7 @@ const extensionActions = {
                 if (callback) {
                     callback();
                 }
-            });
+            }, errorCallback);
         };
     },
     getAvailablePackageTypes(callback) {
@@ -56,7 +62,7 @@ const extensionActions = {
                 if (callback) {
                     callback();
                 }
-            });
+            }, errorCallback);
         };
     },
     updateExtension(updatedExtension, index, callback) {
@@ -72,7 +78,7 @@ const extensionActions = {
                 if (callback) {
                     callback();
                 }
-            });
+            }, errorCallback);
         };
     },
     downloadPackage(packageType, packageName, callback) {
@@ -81,7 +87,7 @@ const extensionActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
     deletePackage(packageId, index, callback) {
@@ -96,7 +102,22 @@ const extensionActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
+        };
+    },
+    createNewModule(payload, shouldAppend, callback) {
+        return (dispatch) => {
+            ExtensionService.createNewModule(payload, (data) => {
+                if (shouldAppend) {
+                    dispatch({
+                        type: ActionTypes.CREATED_NEW_MODULE,
+                        payload: data
+                    });
+                }
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
         };
     }
 };

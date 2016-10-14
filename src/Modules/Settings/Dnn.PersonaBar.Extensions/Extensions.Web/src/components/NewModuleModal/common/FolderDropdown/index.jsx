@@ -50,7 +50,16 @@ class FolderDropdown extends Component {
 
     render() {
         const { props, state } = this;
-        const folders = [{ label: "[New Folder]", value: "AddNewFolder" }].concat(props.folders);
+        const folders = [
+            {
+                label: "[New Folder]",
+                value: "AddNewFolder"
+            },
+            {
+                label: "<Not Specified>",
+                value: ""
+            }
+        ].concat(props.folders);
         return (
             <GridCell className={styles.folderDropdown} style={{ padding: 0 }}>
                 <Collapsible isOpened={state.addNewFolderOpen} className="add-new-folder-box" fixedHeight={250} style={{ float: "left" }}>
@@ -78,6 +87,7 @@ class FolderDropdown extends Component {
                     onSelect={this.onOwnerFolderSelect.bind(this)}
                     value={props.value}
                     enabled={props.enabled}
+                    error={props.error}
                     />
             </GridCell>
         );
@@ -92,7 +102,8 @@ FolderDropdown.PropTypes = {
     type: PropTypes.string,
     tooltipMessage: PropTypes.string,
     label: PropTypes.string,
-    enabled: PropTypes.bool
+    enabled: PropTypes.bool,
+    error: PropTypes.bool
 };
 
 export default FolderDropdown;

@@ -1,5 +1,23 @@
+import React, { Component } from "react";
 import EditAuthenticationSystem from "./AuthenticationSystem";
+import Module from "./Module";
 
-export {
-    EditAuthenticationSystem
-};
+class CustomSettings extends Component {
+    getExtensionSetting(props) {
+        switch (props.type) {
+            case "Auth_System":
+                return <EditAuthenticationSystem {...props} />;
+            case "Module":
+                return <Module {...props} />;
+            default:
+                return <p>Extension Settings</p>;
+        }
+    }
+
+    render() {
+        const {props} = this;
+        return this.getExtensionSetting(props);
+    }
+}
+
+export default CustomSettings;

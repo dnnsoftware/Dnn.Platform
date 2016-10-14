@@ -6,6 +6,13 @@ function getAvailablePackageTypes(installedTypes) {
     });
 }
 
+function addToModuleList(value, list) {
+    return list.concat(value).sort(function (a, b) {
+        if (a.friendlyName.toLowerCase() < b.friendlyName.toLowerCase()) return -1;
+        if (a.friendlyName.toLowerCase() > b.friendlyName.toLowerCase()) return 1;
+        return 0;
+    });
+}
 export default function extension(state = {
     installedPackages: [],
     availablePackages: [],
@@ -41,6 +48,10 @@ export default function extension(state = {
         case ActionTypes.RETRIEVED_AVAILABLE_PACKAGE_TYPES:
             return { ...state,
                 availablePackageTypes: action.payload.Results
+            };
+        case ActionTypes.CREATED_NEW_MODULE:
+            return { ...state,
+                installedPackages: addToModuleList(action.payload.PackageInfo, state.installedPackages)
             };
         default:
             return { ...state

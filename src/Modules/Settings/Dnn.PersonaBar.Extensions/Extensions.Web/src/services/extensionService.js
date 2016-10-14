@@ -77,6 +77,11 @@ class ExtensionService {
 
         sf.postfile("InstallPackage", formData, callback);
     }
+    createNewModule(payload, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.post("CreateModule", payload, callback, errorCallback);
+    }
 }
 const extensionService = new ExtensionService();
 export default extensionService;
