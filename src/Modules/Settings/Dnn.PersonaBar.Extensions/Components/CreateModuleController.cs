@@ -29,53 +29,67 @@ namespace Dnn.PersonaBar.Extensions.Components
             return () => new CreateModuleController();
         }
 
-        public bool CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+        /// <summary>
+        /// create new module.
+        /// </summary>
+        /// <param name="createModuleDto"></param>
+        /// <param name="newPageUrl"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns>return the new package id.</returns>
+        public int CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {
             errorMessage = string.Empty;
             newPageUrl = string.Empty;
+            int packageId = Null.NullInteger;
             switch (createModuleDto.Type)
             {
                 case CreateModuleType.New:
-                    errorMessage = CreateNewModule(createModuleDto, out newPageUrl);
+                    packageId = CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Control:
-                    errorMessage = CreateModuleFromControl(createModuleDto, out newPageUrl);
+                    packageId = CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Manifest:
-                    errorMessage = CreateModuleFromManifest(createModuleDto, out newPageUrl);
+                    packageId = CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
                     break;
             }
 
-            return string.IsNullOrEmpty(errorMessage);
+            return packageId;
         }
 
-        private string CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl)
+        private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {
             newPageUrl = string.Empty;
+            errorMessage = string.Empty;
             if (string.IsNullOrEmpty(createModuleDto.ModuleFolder))
             {
-                return "NoModuleFolder";
+                errorMessage = "NoModuleFolder";
+                return Null.NullInteger;
             }
 
             if (string.IsNullOrEmpty(createModuleDto.Language))
             {
-                return "LanguageError";
+                errorMessage = "LanguageError";
+                return Null.NullInteger;
             }
 
             //remove spaces so file is created correctly
             var controlSrc = createModuleDto.FileName.Replace(" ", "");
             if (InvalidFilename(controlSrc))
             {
-                return "InvalidFilename";
+                errorMessage = "InvalidFilename";
+                return Null.NullInteger;
             }
 
             if (String.IsNullOrEmpty(controlSrc))
             {
-                return "MissingControl";
+                errorMessage = "MissingControl";
+                return Null.NullInteger;
             }
             if (String.IsNullOrEmpty(createModuleDto.ModuleName))
             {
-                return "MissingFriendlyname";
+                errorMessage = "MissingFriendlyname";
+                return Null.NullInteger;
             }
             if (!controlSrc.EndsWith(".ascx"))
             {
@@ -95,7 +109,8 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             if (!uniqueName)
             {
-                return "NonuniqueName";
+                errorMessage = "NonuniqueName";
+                return Null.NullInteger;
             }
             //First create the control
             createModuleDto.FileName = controlSrc;
@@ -103,18 +118,20 @@ namespace Dnn.PersonaBar.Extensions.Components
             if (string.IsNullOrEmpty(message))
             {
                 //Next import the control
-                message = CreateModuleFromControl(createModuleDto, out newPageUrl);
+                return CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
             }
 
-            return message;
+            return Null.NullInteger;
         }
 
-        private string CreateModuleFromControl(CreateModuleDto createModuleDto, out string newPageUrl)
+        private int CreateModuleFromControl(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {
             newPageUrl = string.Empty;
+            errorMessage = string.Empty;
             if (string.IsNullOrEmpty(createModuleDto.FileName))
             {
-                return "NoControl";
+                errorMessage = "NoControl";
+                return Null.NullInteger;
             }
 
             try
@@ -130,7 +147,8 @@ namespace Dnn.PersonaBar.Extensions.Components
                 if (packageInfo != null)
                 {
 
-                    return "NonuniqueName";
+                    errorMessage = "NonuniqueName";
+                    return Null.NullInteger;
                 }
 
                 var package = new PackageInfo
@@ -199,21 +217,24 @@ namespace Dnn.PersonaBar.Extensions.Components
                     newPageUrl = CreateNewPage(moduleDefinition);
                 }
 
-                return string.Empty;
+                return package.PackageID;
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Exceptions.LogException(exc);
-                return "CreateModuleFailed";
+                Exceptions.LogException(ex);
+                errorMessage = "CreateModuleFailed";
+                return Null.NullInteger;
             }
         }
 
-        private string CreateModuleFromManifest(CreateModuleDto createModuleDto, out string newPageUrl)
+        private int CreateModuleFromManifest(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {
             newPageUrl = string.Empty;
+            errorMessage = string.Empty;
             if (string.IsNullOrEmpty(createModuleDto.Manifest))
             {
-                return "MissingManifest";
+                errorMessage = "MissingManifest";
+                return Null.NullInteger;
             }
 
             try
@@ -245,22 +266,25 @@ namespace Dnn.PersonaBar.Extensions.Components
                             }
                         }
 
-                        return string.Empty;
+                        return installer.InstallerInfo.PackageID;
                     }
                     else
                     {
-                        return "InstallError";
+                        errorMessage = "InstallError";
+                        return Null.NullInteger;
                     }
                 }
                 else
                 {
-                    return "InstallError";
+                    errorMessage = "InstallError";
+                    return Null.NullInteger;
                 }
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Exceptions.LogException(exc);
-                return "CreateModuleFailed";
+                Exceptions.LogException(ex);
+                errorMessage = "CreateModuleFailed";
+                return Null.NullInteger;
             }
         }
 

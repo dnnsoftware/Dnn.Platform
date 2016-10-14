@@ -82,6 +82,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [DataMember(Name = "email")]
         public string Email { get; set; }
 
+        [DataMember(Name = "canEdit")]
+        public bool CanEdit { get; set; }
+
         [DataMember(Name = "canDelete")]
         public bool CanDelete { get; set; }
 

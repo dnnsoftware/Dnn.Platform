@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Extensions.Components.Editors;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -31,13 +30,13 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.UI.WebControls;
 using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.PersonaBar.Extensions.Services
@@ -452,6 +451,92 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        [HttpPost]
+        [RequireHost]
+        public HttpResponseMessage ParseLanguagePackage([FromUri]string cultureCode)
+        {
+            try
+            {
+                DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
+                const string packageFileName = "installlanguage.resources";
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install/Language/" + packageFileName);
+                return Request.CreateResponse(HttpStatusCode.OK, ParsePackageFile(packagePath));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [RequireHost]
+        public HttpResponseMessage InstallAvailablePackage([FromUri]string packageType, string packageName)
+        {
+            try
+            {
+                var installFolder = GetPackageInstallFolder(packageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(packageName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, packageName);
+                var installResult = InstallPackageFile(packagePath);
+
+                return Request.CreateResponse(HttpStatusCode.OK, installResult);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [RequireHost]
+        public HttpResponseMessage DownloadLanguagePackage([FromUri]string cultureCode)
+        {
+            try
+            {
+                const string packageFileName = "installlanguage.resources";
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install/Language/" + packageFileName);
+
+                if (!File.Exists(packagePath))
+                {
+                    DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
+                }
+                return DownLoadFile(packagePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [RequireHost]
+        public HttpResponseMessage DownloadAvailablePackage([FromUri]string packageType, string packageName)
+        {
+            try
+            {
+                var installFolder = GetPackageInstallFolder(packageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(packageName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, packageName);
+                return DownLoadFile(packagePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region Create Extension API
@@ -583,9 +668,9 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage GetModuleFolders(string ownerFolder)
         {
-            if (string.IsNullOrEmpty(ownerFolder) 
-                    || ownerFolder.Replace("\\", "/").Contains("/")
-                    || ownerFolder.StartsWith("."))
+            if (!string.IsNullOrEmpty(ownerFolder) && 
+                    (ownerFolder.Replace("\\", "/").Contains("/")
+                    || ownerFolder.StartsWith(".")))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
@@ -702,11 +787,14 @@ namespace Dnn.PersonaBar.Extensions.Services
                 string errorMessage;
                 string newPageUrl;
 
-                CreateModuleController.Instance.CreateModule(createModuleDto, out newPageUrl, out errorMessage);
+                var packageId = CreateModuleController.Instance.CreateModule(createModuleDto, out newPageUrl, out errorMessage);
+                var newPackage = packageId > Null.NullInteger
+                    ? PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageId) : null;
 
                 var result = new
                 {
-                    Success = string.IsNullOrEmpty(errorMessage),
+                    Success = packageId > Null.NullInteger,
+                    PackageInfo = newPackage != null ? new PackageInfoDto(Null.NullInteger, newPackage) : null,
                     NewPageUrl = newPageUrl,
                     Error = errorMessage
                 };
@@ -859,6 +947,73 @@ namespace Dnn.PersonaBar.Extensions.Services
         private IList<string> GetFiles(string rootFolder, string extension)
         {
             return Directory.GetFiles(rootFolder, extension).Select(Path.GetFileName).ToList();
+        }
+
+        private ParseResultDto ParsePackageFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return new ParseResultDto() {Success = false, Message = "FileNotFound"};
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                var fileName = Path.GetFileName(filePath);
+                return InstallController.Instance.ParsePackage(PortalSettings, UserInfo, fileName, stream);
+            }
+        }
+
+        private InstallResultDto InstallPackageFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return new InstallResultDto() { Success = false, Message = "FileNotFound" };
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                var fileName = Path.GetFileName(filePath);
+                return InstallController.Instance.InstallPackage(PortalSettings, UserInfo, fileName, stream);
+            }
+        }
+
+        private string GetPackageInstallFolder(string packageType)
+        {
+            switch (packageType.ToLowerInvariant())
+            {
+                case "auth_system":
+                    return "AuthSystem";
+                case "corelanguagepack":
+                case "extensionlanguagepack":
+                    return "Language";
+                case "javascript_library":
+                    return "JavaScriptLibrary";
+                case "module":
+                case "skin":
+                case "container":
+                case "provider":
+                case "library":
+                    return packageType;
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private HttpResponseMessage DownLoadFile(string packagePath)
+        {
+            if (!File.Exists(packagePath))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "FileNotFound");
+            }
+
+            var stream = FileWrapper.Instance.OpenRead(packagePath);
+            var fileName = Path.GetFileNameWithoutExtension(packagePath) + ".zip";
+
+            var result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new StreamContent(stream)};
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition.FileName = fileName;
+            return result;
         }
 
         #endregion

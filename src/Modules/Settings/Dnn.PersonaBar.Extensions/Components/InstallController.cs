@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             var parseResult = new ParseResultDto();
             var extension = Path.GetExtension(fileName);
 
-            if (extension.ToLowerInvariant() != ".zip")
+            if (extension.ToLowerInvariant() != ".zip" && extension.ToLowerInvariant() != ".resources")
             {
                 parseResult.Failed("InvalidExt");
             }
