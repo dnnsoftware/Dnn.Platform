@@ -39,7 +39,11 @@ class EditExtension extends Component {
         this.setState({
             extensionBeingEdited: props.extensionBeingEdited
         });
+    }
 
+    getPackageSettings(){
+        const { props } = this;
+        props.getPackageSettings();
     }
 
     onVersionChange(index, event) {
@@ -74,7 +78,12 @@ class EditExtension extends Component {
                                 primaryButtonText="Update" />
                         </GridCell>
                         <GridCell className="extension-form">
-                            <CustomSettings type="Module" primaryButtonText="Next" />
+                            <CustomSettings 
+                            type="Module" 
+                            primaryButtonText="Next"
+                            getPackageSettings={this.getPackageSettings.bind(this)}
+                            packageBeingEditedSettings={props.packageBeingEditedSettings}
+                            />
                         </GridCell>
                         <GridCell>
                             Site Settings
@@ -100,7 +109,8 @@ class EditExtension extends Component {
 EditExtension.PropTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
-    disabled: PropTypes.func
+    disabled: PropTypes.func,
+    packageBeingEditedSettings: PropTypes.object
 };
 
 export default EditExtension;

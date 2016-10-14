@@ -18,6 +18,7 @@ export default function extension(state = {
     availablePackages: [],
     installedPackageTypes: [],
     availablePackageTypes: [],
+    packageBeingEditedSettings: {},
     selectedInstalledPackageType: "",
     selectedAvailablePackageType: ""
 }, action) {
@@ -52,6 +53,10 @@ export default function extension(state = {
         case ActionTypes.CREATED_NEW_MODULE:
             return { ...state,
                 installedPackages: addToModuleList(action.payload.PackageInfo, state.installedPackages)
+            };
+        case ActionTypes.RETRIEVED_PACKAGE_SETTINGS:
+            return { ...state,
+                packageBeingEditedSettings: action.payload
             };
         default:
             return { ...state

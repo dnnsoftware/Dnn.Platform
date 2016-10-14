@@ -15,6 +15,15 @@ function mapPackageInformation(extensionBeingUpdated) {
     };
 }
 
+function serializeQueryStringParameters(obj) {
+    let s = [];
+    for (let p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+    }
+    return s.join("&");
+}
 class ExtensionService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
@@ -81,6 +90,11 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
 
         sf.post("CreateModule", payload, callback, errorCallback);
+    }
+    getPackageSettings(parameters, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.get("GetPackageSettings?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 }
 const extensionService = new ExtensionService();

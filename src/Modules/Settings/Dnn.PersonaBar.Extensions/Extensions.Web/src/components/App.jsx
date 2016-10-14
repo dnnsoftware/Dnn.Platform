@@ -59,7 +59,15 @@ class App extends Component {
         props.dispatch(ExtensionActions.updateExtension(extensionBeingEdited, state.extensionBeingEditedIndex));
         this.selectPanel(0);
     }
-    /* End Extension CRUD methods */
+
+    getPackageSettings(packageId) {
+        const { props } = this;
+        props.dispatch(ExtensionActions.getPackageSettings({
+            packageId: this.state.extensionBeingEdited.packageId,
+            siteId: -1
+        }));
+    }         
+    /* End Extension CRUD methods */                                                   
 
     render() {
         const {props, state} = this;
@@ -81,7 +89,9 @@ class App extends Component {
                     {props.selectedPage === 4 &&
                         <EditExtension
                             extensionBeingEdited={state.extensionBeingEdited}
+                            packageBeingEditedSettings={props.packageBeingEditedSettings}
                             onCancel={this.selectPanel.bind(this, 0)}
+                            getPackageSettings={this.getPackageSettings.bind(this)}
                             onUpdateExtension={this.onUpdateExtension.bind(this)}
                             />
                     }
@@ -103,7 +113,8 @@ function mapStateToProps(state) {
         packageTypes: state.extension.packageTypes,
         installedPackages: state.extension.installedPackages,
         selectedPage: state.visiblePanel.selectedPage,
-        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex
+        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
+        packageBeingEditedSettings: state.extension.packageBeingEditedSettings
     };
 }
 

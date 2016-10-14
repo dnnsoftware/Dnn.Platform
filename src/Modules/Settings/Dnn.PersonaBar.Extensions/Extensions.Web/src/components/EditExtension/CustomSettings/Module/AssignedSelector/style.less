@@ -1,0 +1,26 @@
+@import "~dnn-global-styles/index";
+.extensions-app {
+    .extension-form {
+        :local(.assignedSelector) {
+            padding: 0;
+            margin-top: 32px;
+            .selector-box {
+                padding: 0;
+                border: 1px solid @alto;
+                height: 225px;
+                ul {
+                    li {
+                        padding: 15px 20px;
+                        &:hover{
+                            background-color: @gallery;
+                            cursor: pointer;
+                        }
+                        &.selected {
+                            color: @cerulean;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

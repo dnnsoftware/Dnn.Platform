@@ -24,6 +24,7 @@ define(['jquery',
                 window.dnn.initExtensions = function initializeExtensions() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'Extensions'
                     };
                 };

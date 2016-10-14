@@ -2,7 +2,7 @@ import { extension as ActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
 import utilities from "utils";
 
-function errorCallback(message){
+function errorCallback(message) {
     utilities.utilities.notifyError(message);
 }
 
@@ -114,6 +114,19 @@ const extensionActions = {
                         payload: data
                     });
                 }
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+    getPackageSettings(parameters, callback) {
+        return (dispatch) => {
+            ExtensionService.getPackageSettings(parameters, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PACKAGE_SETTINGS,
+                    payload: data
+                });
                 if (callback) {
                     callback(data);
                 }
