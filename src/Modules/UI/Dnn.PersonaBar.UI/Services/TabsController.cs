@@ -36,7 +36,8 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetPortalTabs(portalId, cultureCode, isMultiLanguage, excludeAdminTabs, roles,
+                        _controller.GetPortalTabs(portalId <= 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
+                            excludeAdminTabs, roles,
                             disabledNotSelectable, sortOrder, selectedTabId)
                 };
 
@@ -67,7 +68,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.SearchPortalTabs(searchText, portalId, roles, disabledNotSelectable, sortOrder)
+                        _controller.SearchPortalTabs(searchText, portalId <= 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -95,7 +96,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var response = new
                 {
                     Success = true,
-                    Results = _controller.GetTabByCulture(tabId, portalId, cultureCode)
+                    Results = _controller.GetTabByCulture(tabId, portalId <= 0 ? PortalId : portalId, cultureCode)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -128,7 +129,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetTabsDescendants(portalId, parentId, cultureCode, isMultiLanguage, roles,
+                        _controller.GetTabsDescendants(portalId <= 0 ? PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
                             disabledNotSelectable, sortOrder)
                 };
 

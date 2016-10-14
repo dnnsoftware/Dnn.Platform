@@ -65,12 +65,12 @@ class BasicSettingsPanelBody extends Component {
         return options;
     }
 
-    onSettingChange(key, event) {
+    onSettingChange(key, event, tabName) {
         const {props, state} = this;
         let basicLoginSettings = Object.assign({}, state.basicLoginSettings);
 
         if (key === "RedirectAfterLoginTabId" || key === "RedirectAfterLogoutTabId") {
-            basicLoginSettings[key] = event.tabId;
+            basicLoginSettings[key] = event;
         }
         else if (key === "DefaultAuthProvider" || key === "PrimaryAdministratorId") {
             basicLoginSettings[key] = event.value;
@@ -110,14 +110,7 @@ class BasicSettingsPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const noneSpecified = {
-            data: {
-                key: "-1",
-                value: "<" +resx.get("NoneSpecified") + ">",
-                selectable: true
-            },
-            visible: true
-        };
+        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
         if (state.basicLoginSettings) {
             return (
                 <div className={styles.loginSettings}>
@@ -149,12 +142,12 @@ class BasicSettingsPanelBody extends Component {
                             label={resx.get("Redirect_AfterLogin") }
                             />
                         <PagePicker
-                            style={{ width: "100%" }}
                             serviceFramework={util.utilities.sf}
-                            selectedPage={state.basicLoginSettings.RedirectAfterLoginTabPath}
-                            onPageSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
-                            defaultLabel={state.basicLoginSettings.RedirectAfterLoginTabName}
-                            noneSpecified={noneSpecified}
+                            style={{ width: "100%", zIndex: 2 }}
+                            selectedTabId={state.basicLoginSettings.RedirectAfterLoginTabId}
+                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
+                            noneSpecifiedText={noneSpecifiedText}
+                            CountText={"{0} Results"}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -163,12 +156,12 @@ class BasicSettingsPanelBody extends Component {
                             label={resx.get("Redirect_AfterLogout") }
                             />
                         <PagePicker
-                            style={{ width: "100%" }}
                             serviceFramework={util.utilities.sf}
-                            selectedPage={state.basicLoginSettings.RedirectAfterLogoutTabPath}
-                            onPageSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
-                            defaultLabel={state.basicLoginSettings.RedirectAfterLogoutTabName}
-                            noneSpecified={noneSpecified}
+                            style={{ width: "100%", zIndex: 1 }}
+                            selectedTabId={state.basicLoginSettings.RedirectAfterLogoutTabId}
+                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
+                            noneSpecifiedText={noneSpecifiedText}
+                            CountText={"{0} Results"}
                             />
                     </InputGroup>
                     <InputGroup>
