@@ -154,10 +154,8 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var portals = PortalController.Instance.GetPortals();
-                var query = from PortalInfo portal in portals
-                            select portal;
-                var availablePortals = query.Select(v => new
+                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
+                var availablePortals = portals.Select(v => new
                 {
                     v.PortalID,
                     v.PortalName
@@ -259,6 +257,38 @@ namespace Dnn.PersonaBar.Extensions.Services
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
             }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetSourceFolders( /*int moduleControlId*/)
+        {
+            var path = Path.Combine(Globals.ApplicationMapPath, "DesktopModules");
+            var controlfolders = (
+                from subdirectory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories)
+                select subdirectory).ToList();
+
+            controlfolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, "Admin\\Skins"));
+
+            //var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
+            //var currentControlFolder = moduleControl == null ? "" :
+            //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
+
+            var response = new List<KeyValuePair<string, string>>();
+            var appPathLen = Globals.ApplicationMapPath.Length + 1;
+            foreach (var folder in controlfolders)
+            {
+                var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly)
+                    .Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml") ||
+                                s.EndsWith(".vbhtml") || s.EndsWith(".html") || s.EndsWith(".htm"));
+                if (moduleControls > 0)
+                {
+                    var shortFolder = folder.Substring(appPathLen).Replace('\\', '/');
+                    var item = new KeyValuePair<string, string>(shortFolder, shortFolder.ToLower());
+                    response.Add(item);
+                }
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         #endregion
