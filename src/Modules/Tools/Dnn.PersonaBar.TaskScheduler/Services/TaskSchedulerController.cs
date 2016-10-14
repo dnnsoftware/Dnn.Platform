@@ -180,14 +180,16 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     switch (newSchedulerMode)
                     {
                         case SchedulerMode.DISABLED:
-                            SchedulingProvider.Instance().Halt("Host Settings");
+                            var newThread1 = new Thread(new ThreadStart(Halt)) { IsBackground = true };
+                            newThread1.Start();
                             break;
                         case SchedulerMode.TIMER_METHOD:
-                            var newThread = new Thread(SchedulingProvider.Instance().Start) { IsBackground = true };
-                            newThread.Start();
+                            var newThread2 = new Thread(SchedulingProvider.Instance().Start) { IsBackground = true };
+                            newThread2.Start();
                             break;
                         default:
-                            SchedulingProvider.Instance().Halt("Host Settings");
+                            var newThread3 = new Thread(new ThreadStart(Halt)) { IsBackground = true };
+                            newThread3.Start();
                             break;
                     }
                 }
@@ -598,6 +600,11 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     break;
             }
             return nextTime;
+        }
+
+        private static void Halt()
+        {
+            SchedulingProvider.Instance().Halt("Host Settings");
         }
     }
 }

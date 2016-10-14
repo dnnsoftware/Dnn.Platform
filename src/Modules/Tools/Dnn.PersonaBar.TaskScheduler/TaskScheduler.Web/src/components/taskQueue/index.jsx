@@ -17,13 +17,17 @@ class TaskQueuePanelBody extends Component {
 
     componentWillMount() {
         const {props} = this;
+
         props.dispatch(TaskActions.getTaskStatusList());
+        this.taskListTimeout = setInterval(() => {
+            props.dispatch(TaskActions.getTaskStatusList(() => {
+
+            }));
+        }, 5000);
     }
 
-
-    onEnter(key) {
-        const { state } = this;
-        alert("You pressed enter! My value is: " + state[key]);
+    componentWillUnmount(){
+        clearInterval(this.taskListTimeout);
     }
 
     /* eslint-disable react/no-danger */
@@ -78,6 +82,9 @@ class TaskQueuePanelBody extends Component {
                     <div className={props.schedulingEnabled === "True" ? "taskStatusList-title" : "taskStatusList-disabled"}>
                         {props.schedulingEnabled === "True" ? resx.get("TaskQueueTitle") : resx.get("DisabledMessage") }
                     </div>
+                    { props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
+                        <div className="noTasks">{resx.get("NoTasks")}</div>
+                    }
                     { this.renderedTaskProcessingList() }
                     { this.renderedTaskStatusList() }
                 </div>

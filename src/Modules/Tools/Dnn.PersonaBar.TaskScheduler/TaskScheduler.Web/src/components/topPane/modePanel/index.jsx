@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import Collapse from "react-collapse";
 import Button from "dnn-button";
@@ -25,7 +25,8 @@ class ModePanel extends Component {
             error: {
                 schedulerDelay: false
             },
-            triedToSubmit: false
+            triedToSubmit: false,
+            clientModified: false
         };
     }
 
@@ -41,17 +42,18 @@ class ModePanel extends Component {
                 SchedulerMode: props.schedulerMode,
                 SchedulerdelayAtAppStart: props.schedulerDelay
             }
-        });
+        });        
     }
 
     componentWillReceiveProps(props) {
         let {state} = this;
-        if (props.schedulerDelay === "" || !re.test(props.schedulerDelay)) {alert(1);
+        if (props.schedulerDelay === "" || !re.test(props.schedulerDelay)) {
+            alert(1);
             state.error["schedulerDelay"] = true;
         }
         this.setState({
             triedToSubmit: false,
-            error: state.error,
+            error: state.error,            
             updateRequest: {
                 SchedulerMode: props.schedulerMode,
                 SchedulerdelayAtAppStart: props.schedulerDelay
@@ -74,11 +76,18 @@ class ModePanel extends Component {
 
         props.dispatch(TaskActions.updateSchedulerSettings(state.updateRequest, () => {
             util.utilities.notify(resx.get("SchedulerUpdateSuccess"));
-            props.onClose();
             props.dispatch(TaskActions.getTaskStatusList());
         }, (error) => {
             util.utilities.notify(resx.get("SchedulerUpdateError"));
         }));
+
+        setTimeout(() => {
+            props.dispatch(TaskActions.getTaskStatusList(() => {
+
+            }));
+        }, 1000);
+
+        props.onClose();
     }
 
     onValueChange(key, event) {
@@ -97,15 +106,17 @@ class ModePanel extends Component {
         this.setState({
             triedToSubmit: false,
             updateRequest,
-            error: state.error
+            error: state.error,
+            clientModified: true
         });
     }
 
     onClose(event) {
         const {props, state} = this;
         state.error["schedulerDelay"] = false;
-        this.setState({            
-            error: state.error
+        this.setState({
+            error: state.error,
+            clientModified: false
         });
         props.onClose();
     }
@@ -124,26 +135,30 @@ class ModePanel extends Component {
                             <div className="modepanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
                                 <div className="">
                                     <div className="editor-row divider">
-                                        <label>{resx.get("plSchedulerMode") }</label>
+                                        <label>{resx.get("plSchedulerMode")}</label>
                                         <Select
-                                            onChange={this.onValueChange.bind(this, "SchedulerMode") }
-                                            options={props.schedulerModeOptions }
+                                            onChange={this.onValueChange.bind(this, "SchedulerMode")}
+                                            options={props.schedulerModeOptions}
                                             value={state.updateRequest.SchedulerMode} />
                                     </div>
                                     <div className="editor-row divider">
-                                        <label>{resx.get("plScheduleAppStartDelay") }</label>
+                                        <label>{resx.get("plScheduleAppStartDelay")}</label>
                                         <SingleLineInputWithError
                                             inputStyle={{ margin: "0" }}
                                             withLabel={false}
                                             error={this.state.error.schedulerDelay && this.state.triedToSubmit}
-                                            errorMessage={resx.get("ScheduleAppStartDelayValidation") }
+                                            errorMessage={resx.get("ScheduleAppStartDelayValidation")}
                                             value={state.updateRequest.SchedulerdelayAtAppStart}
-                                            onChange={this.onValueChange.bind(this, "SchedulerdelayAtAppStart") }
+                                            onChange={this.onValueChange.bind(this, "SchedulerdelayAtAppStart")}
                                             />
                                     </div>
                                     <div className="action-buttons">
-                                        <Button type="secondary" onClick={this.onClose.bind(this) }>{resx.get("Cancel") }</Button>
-                                        <Button type="primary" onClick={this.onSave.bind(this) }>{resx.get("Update") }</Button>
+                                        <Button type="secondary" onClick={this.onClose.bind(this)}>{resx.get("Cancel")}</Button>
+                                        <Button
+                                            type="primary"
+                                            disabled={!state.clientModified}
+                                            onClick={this.onSave.bind(this)}>{resx.get("Update")}
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

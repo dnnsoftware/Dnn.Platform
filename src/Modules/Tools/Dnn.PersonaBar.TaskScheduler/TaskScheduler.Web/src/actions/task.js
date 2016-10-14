@@ -1,4 +1,4 @@
-import {task as ActionTypes}  from "../constants/actionTypes";
+import { task as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const taskActions = {
@@ -87,6 +87,19 @@ const taskActions = {
             });
         };
     },
+    updateSchedulerStatusOnProgress(callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_SCHEDULE_SETTINGS_PENDING,
+                data: {
+                    schedulerMode: "Pending"
+                }
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
     getScheduleItemHistory(searchParameters, callback) {
         return (dispatch) => {
             ApplicationService.getScheduleItemHistory(searchParameters, data => {
@@ -108,7 +121,7 @@ const taskActions = {
             ApplicationService.getScheduleItems(searchParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SCHEDULE_ITEMS,
-                    data: {                        
+                    data: {
                         schedulerItemList: data.Results,
                         totalCount: data.TotalResults
                     }
@@ -238,7 +251,7 @@ const taskActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CANCELED_SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED,
-                data: {                    
+                data: {
                     settingsClientModified: false
                 }
             });

@@ -23,7 +23,7 @@ class ApplicationService {
         searchParameters = Object.assign({}, searchParameters, {
             //logType: "*"
         });
-        sf.get("GetScheduleStatus?" + serializeQueryStringParameters(searchParameters), {}, callback);
+        sf.getsilence("GetScheduleStatus?" + serializeQueryStringParameters(searchParameters), {}, callback);
     }
 
     startSchedule(callback) {

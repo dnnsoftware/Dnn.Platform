@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Collapsible from "react-collapse";
 import {
@@ -23,11 +23,6 @@ class TopPane extends Component {
     componentWillMount() {
         const {props} = this;
         props.dispatch(TaskActions.getSchedulerSettings());
-    }
-
-    onEnter(key, value) {
-        const {props} = this;
-        props.onEnter(key, value, props.index);
     }
 
     onClick() {
@@ -78,9 +73,18 @@ class TopPane extends Component {
     }
 
     toggleModePanel() {
-        this.setState({
-            modePanelOpen: !this.state.modePanelOpen
-        });
+        if (this.props.status !== "SHUTTING_DOWN") {
+            this.setState({
+                modePanelOpen: !this.state.modePanelOpen
+            });
+        }
+        else {
+            if (this.state.modePanelOpen) {
+                this.setState({
+                    modePanelOpen: !this.state.modePanelOpen
+                });
+            }
+        }
     }
 
     getModeOptions() {
@@ -96,26 +100,34 @@ class TopPane extends Component {
 
     renderButton() {
         const {props} = this;
-        if (props.schedulingEnabled === "True") {
-            if (props.schedulerMode === "2") {
-                return (<Button
-                    type="primary" disabled={true}>
-                    {this.getButtonDisplay() }
-                </Button>);
+        if (props.status !== "SHUTTING_DOWN") {
+            if (props.schedulingEnabled === "True") {
+                if (props.schedulerMode === "2") {
+                    return (<Button
+                        type="primary" disabled={true}>
+                        {this.getButtonDisplay()}
+                    </Button>);
+                }
+                else {
+                    return (<Button
+                        className={props.status !== "STOPPED" ? "topPane-button-start" : ""}
+                        type={props.status !== "STOPPED" ? "secondary" : "primary"}
+                        onClick={this.onClick.bind(this)}>
+                        {this.getButtonDisplay()}
+                    </Button>);
+                }
             }
             else {
                 return (<Button
-                    className={props.status !== "STOPPED" ? "topPane-button-start" : ""}
-                    type={props.status !== "STOPPED" ? "secondary" : "primary" }
-                    onClick={this.onClick.bind(this) }>
-                    {this.getButtonDisplay() }
+                    type="primary" disabled={true}>
+                    {this.getButtonDisplay()}
                 </Button>);
             }
         }
         else {
             return (<Button
                 type="primary" disabled={true}>
-                {this.getButtonDisplay() }
+                {this.getButtonDisplay()}
             </Button>);
         }
     }
@@ -125,50 +137,50 @@ class TopPane extends Component {
         const {props, state} = this;
         return (
             <div className={styles.topPane}>
-                <div className="topPane-left">{resx.get("lblStatusLabel") }</div>
+                <div className="topPane-left">{resx.get("lblStatusLabel")}</div>
                 <div className="topPane-middle">
-                    <div className={props.status === "STOPPED" ? "topPane-middle-name-stopped" : "topPane-middle-name" }>{resx.get(props.status) }</div>
+                    <div className={props.status === "STOPPED" ? "topPane-middle-name-stopped" : "topPane-middle-name"}>{resx.get(props.status)}</div>
                     <div className="topPane-middle-common">
-                        <div className="topPane-middle-common-title">{resx.get("plSchedulerMode") }</div>
+                        <div className="topPane-middle-common-title">{resx.get("plSchedulerMode")}</div>
                         <div>
-                            <div className="editIcon" dangerouslySetInnerHTML={{ __html: svgIcon }} onClick={this.toggleModePanel.bind(this) }/>
+                            <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} dangerouslySetInnerHTML={{ __html: svgIcon }} onClick={this.toggleModePanel.bind(this)} />
                             <div className="collapsible-content">
-                            {props.schedulerDelay &&
-                                <ModePanel
-                                    fixedHeight={200}
-                                    isOpened={state.modePanelOpen}
-                                    onClose={this.toggleModePanel.bind(this) }
-                                    schedulerDelay={props.schedulerDelay}
-                                    schedulerModeOptions={this.getModeOptions() }
-                                    schedulerMode={props.schedulerMode}>
-                                </ModePanel>
-                            }
+                                {props.schedulerDelay &&
+                                    <ModePanel
+                                        fixedHeight={200}
+                                        isOpened={state.modePanelOpen}
+                                        onClose={this.toggleModePanel.bind(this)}
+                                        schedulerDelay={props.schedulerDelay}
+                                        schedulerModeOptions={this.getModeOptions()}
+                                        schedulerMode={props.schedulerMode}>
+                                    </ModePanel>
+                                }
                             </div>
                         </div>
-                        <div className="topPane-middle-common-value">{this.getschedulerModeDisplay() }</div>
+                        <div className="topPane-middle-common-value">{this.getschedulerModeDisplay()}</div>
                     </div>
 
                     <div className="topPane-middle-common">
-                        <div className="topPane-middle-common-title">{resx.get("lblStartDelay") }</div>
+                        <div className="topPane-middle-common-title">{resx.get("lblStartDelay")}</div>
                         <div className="topPane-middle-common-value">{props.schedulerDelay}</div>
                     </div>
                 </div>
                 <div className="topPane-right">
                     <div className="topPane-right-common">
-                        <div className="topPane-right-common-title">{resx.get("lblMaxThreadsLabel") }</div>
+                        <div className="topPane-right-common-title">{resx.get("lblMaxThreadsLabel")}</div>
                         <div className="topPane-right-common-value">{props.maxThreads}</div>
                     </div>
                     <div className="topPane-right-common">
-                        <div className="topPane-right-common-title">{resx.get("lblActiveThreadsLabel") }</div>
+                        <div className="topPane-right-common-title">{resx.get("lblActiveThreadsLabel")}</div>
                         <div className="topPane-right-common-value">{props.activeThreads}</div>
                     </div>
                     <div className="topPane-right-common">
-                        <div className="topPane-right-common-title">{resx.get("lblFreeThreadsLabel") }</div>
+                        <div className="topPane-right-common-title">{resx.get("lblFreeThreadsLabel")}</div>
                         <div className="topPane-right-common-value">{props.freeThreads}</div>
                     </div>
                 </div>
                 <div className="topPane-button">
-                    { this.renderButton() }
+                    {this.renderButton()}
                 </div>
             </div>
         );
