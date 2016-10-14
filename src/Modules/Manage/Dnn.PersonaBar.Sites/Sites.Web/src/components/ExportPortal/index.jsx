@@ -294,7 +294,7 @@ class ExportPortal extends Component {
                                     }
                                     <Label label={Localization.get("lblPages") } tooltipMessage={Localization.get("lblPages.Help") }/>
                                     <PagePicker
-                                        serviceFramework={window.dnn.initSites().utility.sf}
+                                        serviceFramework={util.utilities.sf}
                                         PortalTabsParameters={PortalTabsParameters }
                                         scrollAreaStyle={ scrollAreaStyle }
                                         OnSelect={ this.updatePagesToExport.bind(this) }

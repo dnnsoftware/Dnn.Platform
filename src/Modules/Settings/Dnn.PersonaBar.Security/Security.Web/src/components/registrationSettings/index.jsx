@@ -67,7 +67,7 @@ class RegistrationSettingsPanelBody extends Component {
             registrationSettings[key] = parseInt(event);
         }
         else if (key === "RedirectAfterRegistrationTabId") {
-            registrationSettings[key] = event.tabId;
+            registrationSettings[key] = event;
         }
         else {
             registrationSettings[key] = typeof (event) === "object" ? event.target.value : event;
@@ -129,7 +129,7 @@ class RegistrationSettingsPanelBody extends Component {
         return false;
     }
 
-    getRegistrationFields(fields){
+    getRegistrationFields(fields) {
         let fieldList = [];
         if (fields !== undefined) {
             fieldList = fields.split(',').map((item) => {
@@ -143,24 +143,26 @@ class RegistrationSettingsPanelBody extends Component {
         let {state, props} = this;
         let registrationSettings = Object.assign({}, state.registrationSettings);
         let fields = event.map((field) => { return field.name; }).join(",");
-        registrationSettings["RegistrationFields"] = fields;  
+        registrationSettings["RegistrationFields"] = fields;
         this.setState({
             registrationSettings: registrationSettings,
             triedToSubmit: false
-        });  
+        });
         props.dispatch(SecurityActions.registrationSettingsClientModified(registrationSettings));
     }
 
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const noneSpecified = {
-            data: {
-                key: "-1",
-                value: "<" + resx.get("NoneSpecified") + ">",
-                selectable: true
-            },
-            visible: true
+        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
+        const RedirectAfterRegistrationParameters = {
+            portalId: -2,
+            cultureCode: "",
+            isMultiLanguage: false,
+            excludeAdminTabs: false,
+            disabledNotSelectable: false,
+            roles: "1;-1",
+            sortOrder: 0
         };
         if (state.registrationSettings) {
             return (
@@ -249,12 +251,14 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Redirect_AfterRegistration") }
                                 />
                             <PagePicker
-                                style={{ width: "100%" }}
                                 serviceFramework={util.utilities.sf}
-                                selectedPage={state.registrationSettings.RedirectAfterRegistrationTabPath}
-                                onPageSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId") }
-                                defaultLabel={state.registrationSettings.RedirectAfterRegistrationTabName}
-                                noneSpecified={noneSpecified}
+                                style={{ width: "100%", zIndex: 1 }}
+                                selectedTabId={state.registrationSettings.RedirectAfterRegistrationTabId}
+                                OnSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId") }
+                                defaultLabel={state.registrationSettings.RedirectAfterRegistrationTabName !== "" ? state.registrationSettings.RedirectAfterRegistrationTabName : noneSpecifiedText}
+                                noneSpecifiedText={noneSpecifiedText}
+                                CountText={"{0} Results"}
+                                PortalTabsParameters={RedirectAfterRegistrationParameters}
                                 />
                         </div>
                     </InputGroup>
@@ -325,7 +329,7 @@ class RegistrationSettingsPanelBody extends Component {
                                     />
                                 <SearchableTags
                                     utils={util}
-                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields)}
+                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields) }
                                     onUpdateTags={this.onUpdateTags.bind(this) }
                                     error={this.state.error.registrationFields !== ""}
                                     errorMessage={this.state.error.registrationFields }

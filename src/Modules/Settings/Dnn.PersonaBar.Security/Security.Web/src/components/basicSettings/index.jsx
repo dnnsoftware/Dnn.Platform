@@ -65,7 +65,7 @@ class BasicSettingsPanelBody extends Component {
         return options;
     }
 
-    onSettingChange(key, event, tabName) {
+    onSettingChange(key, event) {
         const {props, state} = this;
         let basicLoginSettings = Object.assign({}, state.basicLoginSettings);
 
@@ -111,6 +111,25 @@ class BasicSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
+        const RedirectAfterLogoutParameters = {
+            portalId: -2,
+            cultureCode: "",
+            isMultiLanguage: false,
+            excludeAdminTabs: false,
+            disabledNotSelectable: false,
+            roles: "-1",
+            sortOrder: 0
+        };
+        const RedirectAfterLoginParameters = {
+            portalId: -2,
+            cultureCode: "",
+            isMultiLanguage: false,
+            excludeAdminTabs: false,
+            disabledNotSelectable: false,
+            roles: "1;-1",
+            sortOrder: 0
+        };
+
         if (state.basicLoginSettings) {
             return (
                 <div className={styles.loginSettings}>
@@ -146,8 +165,10 @@ class BasicSettingsPanelBody extends Component {
                             style={{ width: "100%", zIndex: 2 }}
                             selectedTabId={state.basicLoginSettings.RedirectAfterLoginTabId}
                             OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
+                            defaultLabel={state.basicLoginSettings.RedirectAfterLoginTabName !== "" ? state.basicLoginSettings.RedirectAfterLoginTabName : noneSpecifiedText}
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
+                            PortalTabsParameters={RedirectAfterLoginParameters}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -160,8 +181,10 @@ class BasicSettingsPanelBody extends Component {
                             style={{ width: "100%", zIndex: 1 }}
                             selectedTabId={state.basicLoginSettings.RedirectAfterLogoutTabId}
                             OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
+                            defaultLabel={state.basicLoginSettings.RedirectAfterLogoutTabName !== "" ? state.basicLoginSettings.RedirectAfterLogoutTabName : noneSpecifiedText}
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
+                            PortalTabsParameters={RedirectAfterLogoutParameters}
                             />
                     </InputGroup>
                     <InputGroup>
