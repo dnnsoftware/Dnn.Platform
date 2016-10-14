@@ -325,8 +325,10 @@ namespace DotNetNuke.Tests.Web.Api
 
         private static string GetHashedStr(string data)
         {
-            var hasher = SHA384.Create();
-            return EncodeBase64(hasher.ComputeHash(Encoding.UTF8.GetBytes(data)));
+            using (var hasher = SHA384.Create())
+            {
+                return EncodeBase64(hasher.ComputeHash(Encoding.UTF8.GetBytes(data)));
+            }
         }
 
         #endregion

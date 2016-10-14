@@ -51,11 +51,13 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 			
             if (fi.Exists)
 				fi.Delete();
-			
-            var fs = fi.Create();
-			fs.Write(fileContents, 0, fileContents.Length);
-			fs.Close();
-			return fi;
+
+            using (var fs = fi.Create())
+            {
+                fs.Write(fileContents, 0, fileContents.Length);
+                fs.Close();
+            }
+            return fi;
 		}
 
 	    /// <summary>

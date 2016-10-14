@@ -51,6 +51,7 @@ using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Drawing.Imaging;
+using System.Text;
 
 namespace DotNetNuke.Services.FileSystem
 {
@@ -1730,20 +1731,17 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         internal virtual string GetHash(Stream stream)
         {
             Requires.NotNull("stream", stream);
-
-            var hashText = "";
-            string hexValue;
-
-            var hashData = SHA1.Create().ComputeHash(stream);
-
-            foreach (var b in hashData)
+            var hashText = new StringBuilder();
+            using (var hasher= SHA1.Create())
             {
-                hexValue = b.ToString("X").ToLower();
-                //Lowercase for compatibility on case-sensitive systems
-                hashText += (hexValue.Length == 1 ? "0" : "") + hexValue;
+                var hashData = hasher.ComputeHash(stream);
+                foreach (var b in hashData)
+                {
+                    hashText.Append(b.ToString("x2"));
+                }
             }
 
-            return hashText;
+            return hashText.ToString();
         }
 
         /// <summary>

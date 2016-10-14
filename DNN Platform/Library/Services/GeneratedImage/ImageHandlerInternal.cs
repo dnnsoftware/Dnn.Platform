@@ -342,15 +342,16 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static string GetIDFromBytes(byte[] buffer)
         {
-            byte[] result = SHA1.Create().ComputeHash(buffer);
-
-            var sb = new StringBuilder();
-            for (int i = 0; i < result.Length; i++)
+            using (var hasher = SHA1.Create())
             {
-                sb.Append(result[i].ToString("X2", CultureInfo.InvariantCulture));
+                byte[] result = hasher.ComputeHash(buffer);
+                var sb = new StringBuilder();
+                foreach (var b in result)
+                {
+                    sb.Append(b.ToString("X2"));
+                }
+                return sb.ToString();
             }
-
-            return sb.ToString();
         }
 
         private Image GetImageThroughTransforms(Image image)

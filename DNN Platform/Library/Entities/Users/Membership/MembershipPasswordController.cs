@@ -46,17 +46,19 @@ namespace DotNetNuke.Entities.Users.Membership
 
         private void AddPasswordHistory(int userId, string password, int retained)
         {
-            HashAlgorithm ha = HashAlgorithm.Create();
-            byte[] newSalt = GetRandomSaltValue();
-            byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-            var inputBuffer = new byte[bytePassword.Length + 16];
-            Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-            Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
-            byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-            string hashedPassword = Convert.ToBase64String(bhashedPassword);
+            using (HashAlgorithm ha = HashAlgorithm.Create())
+            {
+                byte[] newSalt = GetRandomSaltValue();
+                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                var inputBuffer = new byte[bytePassword.Length + 16];
+                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
+                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-            _dataProvider.AddPasswordHistory(userId, hashedPassword,
-                Convert.ToBase64String(newSalt), retained);
+                _dataProvider.AddPasswordHistory(userId, hashedPassword,
+                    Convert.ToBase64String(newSalt), retained);
+            }
         }
 
         private byte[] GetRandomSaltValue()
@@ -129,24 +131,25 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>true if previously used, false otherwise</returns>
         public bool IsPasswordPreviouslyUsed(int userId, string password)
         {
-            //use default algorithm (SHA1CryptoServiceProvider )
-            HashAlgorithm ha = HashAlgorithm.Create();
             bool foundMatch = false;
-
-            List<PasswordHistory> history = GetPasswordHistory(userId);
-            foreach (PasswordHistory ph in history)
+            //use default algorithm (SHA1CryptoServiceProvider )
+            using (HashAlgorithm ha = HashAlgorithm.Create())
             {
-                string oldEncodedPassword = ph.Password;
-                string oldEncodedSalt = ph.PasswordSalt;
-                byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
-                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-                var inputBuffer = new byte[bytePassword.Length + 16];
-                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-                Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
-                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-                string hashedPassword = Convert.ToBase64String(bhashedPassword);
-                if (hashedPassword == oldEncodedPassword)
-                    foundMatch = true;
+                List<PasswordHistory> history = GetPasswordHistory(userId);
+                foreach (PasswordHistory ph in history)
+                {
+                    string oldEncodedPassword = ph.Password;
+                    string oldEncodedSalt = ph.PasswordSalt;
+                    byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
+                    byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                    var inputBuffer = new byte[bytePassword.Length + 16];
+                    Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                    Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
+                    byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                    string hashedPassword = Convert.ToBase64String(bhashedPassword);
+                    if (hashedPassword == oldEncodedPassword)
+                        foundMatch = true;
+                }
             }
 
             return foundMatch;
