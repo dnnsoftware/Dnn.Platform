@@ -25,8 +25,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Installer.Packages;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
@@ -71,8 +73,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         public bool PremiumModule { get; set; }
 
         [DataMember(Name = "assignedPortals")]
-        public IList<int> AssignedPortals { get; set; } = new List<int>();
-        
+        public IList<IdNameDto> AssignedPortals { get; set; } = new List<IdNameDto>();
+
+        [DataMember(Name = "unassignedPortals")]
+        public IList<IdNameDto> UnassignedPortals { get; set; } = new List<IdNameDto>();
+
         [DataMember(Name = "moduleDefinitions")]
         public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; }  = new List<ModuleDefinitionDto>();
 
@@ -102,7 +107,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                     DesktopModuleController.GetPortalDesktopModulesByDesktopModuleID(desktopModule.DesktopModuleID);
                 foreach (var portalDesktopModuleInfo in portalDesktopModules)
                 {
-                    AssignedPortals.Add(portalDesktopModuleInfo.Value.PortalID);
+                    var value = portalDesktopModuleInfo.Value;
+                    AssignedPortals.Add(new IdNameDto { Id = value.PortalID, Name = value.PortalName });
+                }
+
+                var assignedIds = AssignedPortals.Select(p => p.Id).ToArray();
+                var allPortals = PortalController.Instance.GetPortals().OfType<PortalInfo>().Where(p => !assignedIds.Contains(p.PortalID));
+
+                foreach (var portalInfo in allPortals)
+                {
+                    UnassignedPortals.Add(new IdNameDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
                 }
             }
 
