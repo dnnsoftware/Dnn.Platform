@@ -75,6 +75,7 @@ namespace Dnn.PersonaBar.Sites.Services
                         portal.Pages,
                         portal.HostSpace,
                         portal.HostFee,
+                        portal.LastModifiedOnDate,
                         ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
                         portal.DefaultLanguage,
                         contentLocalizable =
