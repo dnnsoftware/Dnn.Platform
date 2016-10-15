@@ -283,12 +283,43 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (moduleControls > 0)
                 {
                     var shortFolder = folder.Substring(appPathLen).Replace('\\', '/');
-                    var item = new KeyValuePair<string, string>(shortFolder, shortFolder.ToLower());
+                    var item = new KeyValuePair<string, string>(shortFolder.ToLower(), shortFolder);
                     response.Add(item);
                 }
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetSourceFiles(string root)
+        {
+            var response = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">")
+            };
+
+            var path = Path.Combine(Globals.ApplicationMapPath, root.Replace('/', '\\'));
+            if (Directory.Exists(path))
+            {
+                AddFiles(response, path, root, "*.ascx");
+                AddFiles(response, path, root, "*.cshtml");
+                AddFiles(response, path, root, "*.vbhtml");
+                AddFiles(response, path, root, "*.html");
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path,string root, string filter)
+        {
+            var files = Directory.GetFiles(path, filter);
+            foreach (var strFile in files)
+            {
+                var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
+                var item = new KeyValuePair<string, string>(file.ToLower(), file);
+                collection.Add(item);
+            }
         }
 
         #endregion
