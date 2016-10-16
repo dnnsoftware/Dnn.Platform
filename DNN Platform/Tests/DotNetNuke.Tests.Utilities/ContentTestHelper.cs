@@ -79,12 +79,14 @@ namespace DotNetNuke.Tests.Utilities
         {
             var sb = new StringBuilder();
 
-            foreach (var b in Encoding.ASCII.GetChars(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(fileId.ToString()))))
+            using (var hasher = SHA1.Create())
             {
-                sb.Append(b);
-            }
+                foreach (var b in Encoding.ASCII.GetChars(hasher.ComputeHash(Encoding.UTF8.GetBytes(fileId.ToString()))))
+                {
+                    sb.Append(b);
+                }
 
-            return new FileInfo
+                return new FileInfo
                 {
                     ContentType = "text/plain",
                     Extension = ".txt",
@@ -104,6 +106,7 @@ namespace DotNetNuke.Tests.Utilities
                     VersionGuid = Guid.NewGuid(),
                     Width = 0
                 };
+            }
         }
 
         public static string GetContent(int i)
