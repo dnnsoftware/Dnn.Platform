@@ -149,15 +149,19 @@ class Pager extends Component {
                 }
             }
         }
+        else {
+            pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close"> {currentPage + 1}</li>);
+        }
         return pagingBoxes;
     }
     getPageSizeDropDown() {
         let pageSizeOptions = [];
-        pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText, 10) });
-        pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText, 25) });
-        pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText, 50) });
-        pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText, 100) });
-        pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, 250) });
+        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText, 10) });
+        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText, 25) });
+        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText, 50) });
+        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText, 100) });
+        if (this.props.totalRecords >= 250) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, 250) });
+
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
             pageSizeOptions =  pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
             pageSizeOptions = pageSizeOptions.sort(function (a, b) {
@@ -193,7 +197,7 @@ class Pager extends Component {
     }
     render() {
         const {state, props} = this;
-        return state.totalPages > 1 &&
+        return state.totalPages > 1 || (state.totalPages === 1 && this.props.showPageSizeOptions) &&
             <div className="pager do-not-close" style={props.style}>
                 <div className="pager-summary-box">
                     {this.getPageSummary() }
