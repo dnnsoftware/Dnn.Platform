@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -10,6 +11,9 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
     [DataContract]
     public class ThemeFileInfo
     {
+        [DataMember(Name = "themeName")]
+        public string ThemeName { get; set; }
+
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -24,5 +28,6 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
 
         [DataMember(Name = "canDelete")]
         public bool CanDelete { get; set; } = true;
+        
     }
 }

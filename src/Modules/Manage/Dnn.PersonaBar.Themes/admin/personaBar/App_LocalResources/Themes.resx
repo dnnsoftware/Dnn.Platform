@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Containers.Text" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="Layouts.Text" xml:space="preserve">
+    <value>Layouts</value>
+  </data>
   <data name="nav_Themes.Text" xml:space="preserve">
+    <value>Themes</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SiteTheme.Text" xml:space="preserve">
+    <value>Site Theme:</value>
+  </data>
+  <data name="Themes.Text" xml:space="preserve">
     <value>Themes</value>
   </data>
 </root>

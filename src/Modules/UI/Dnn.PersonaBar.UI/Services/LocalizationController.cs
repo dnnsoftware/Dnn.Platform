@@ -79,6 +79,8 @@ namespace Dnn.PersonaBar.UI.Services
 
         private bool Expired(string culture)
         {
+            return true;
+
             var cacheKey = $"PersonaBarResources{culture}";
             if (DataCache.GetCache(cacheKey) != null)
             {

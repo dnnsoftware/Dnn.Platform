@@ -1,0 +1,28 @@
+
+function serializeQueryStringParameters(obj) {
+    let s = [];
+    for (let p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+    }
+    return s.join("&");
+}
+class ThemeService {
+    getServiceFramework(controller) {
+        let sf = window.dnn.initThemes().utility.sf;
+
+        sf.moduleRoot = "PersonaBar/Admin";
+        sf.controller = controller;
+
+        return sf;
+    }
+
+    getCurrentTheme(callback, errorCallback) {
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetCurrentTheme", {}, callback, errorCallback);
+    }
+}
+    
+const themeService = new ThemeService();
+export default themeService;

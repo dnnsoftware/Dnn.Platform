@@ -1,10 +1,28 @@
-﻿define(['jquery', './extension'], function ($, ext) {
+﻿define(['jquery', './extension', './config'], function ($, ext, cf) {
     'use strict';
     var isMobile;
     var identifier;
+    var config = cf.init();
 
+    function loadScript() {
+        var url = "http://localhost:8080/dist/themes-bundle.js";
+        //var url = "scripts/bundles/themes-bundle.js";
+        $.ajax({
+            dataType: "script",
+            cache: true,
+            url: url
+        });
+    }
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
+        window.dnn.initThemes = function () {
+            return {
+                utility: util,
+                moduleName: "Themes"
+            };
+        };
+
+        loadScript();
 
         if (typeof callback === 'function') {
             callback();

@@ -66,5 +66,14 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="theme"></param>
         /// <param name="parseType"></param>
         void ParseTheme(PortalSettings portalSettings, ThemeInfo theme, ParseType parseType);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="portalSettings"></param>
+        /// <param name="filePath"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type);
     }
 }

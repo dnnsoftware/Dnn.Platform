@@ -21,6 +21,9 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         [DataMember(Name = "path")]
         public string Path { get; set; }
 
+        [DataMember(Name = "thumbnail")]
+        public string Thumbnail { get; set; }
+
         [DataMember(Name = "canDelete")]
         public bool CanDelete { get; set; } = true;
 

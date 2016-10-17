@@ -29,6 +29,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -54,7 +55,8 @@ namespace Dnn.PersonaBar.Themes.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
-        private static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png"};
+        internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png"};
+        internal static readonly IList<string> DefaultNames = new List<string>() {"Default", "Home", "Index", "Main"};
 
         protected override Func<IThemesController> GetFactory()
         {
@@ -143,6 +145,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     var file = strFile.ToLowerInvariant();
 
                     var themeFile = new ThemeFileInfo();
+                    themeFile.ThemeName = theme.PackageName;
 
                     var imagePath = string.Empty;
                     foreach (var ext in ImageExtensions)
@@ -165,7 +168,8 @@ namespace Dnn.PersonaBar.Themes.Components
 
                     var strUrl = file.Substring(strFile.IndexOf("\\" + strRootSkin + "\\", StringComparison.InvariantCultureIgnoreCase))
                         .Replace(".ascx", "")
-                        .Replace("\\", "/");
+                        .Replace("\\", "/")
+                        .TrimStart('/');
 
                     themeFile.Path = "[" + strSkinType + "]" + strUrl;
                     themeFile.CanDelete = (UserController.Instance.GetCurrentUserInfo().IsSuperUser || strSkinType == "L")
@@ -176,6 +180,24 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return themeFiles;
+        }
+
+        public ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type)
+        {
+            var themeName = SkinController.FormatSkinPath(filePath)
+                            .Substring(filePath.IndexOf("/", StringComparison.InvariantCultureIgnoreCase) + 1)
+                            .Replace("/", string.Empty);
+
+            var themeInfo = (type == ThemeType.Skin ? GetLayouts(portalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                                                    : GetContainers(portalSettings, ThemeLevel.Global | ThemeLevel.Site))
+                            .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (themeInfo != null)
+            {
+                return GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -456,7 +478,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
                     if (strName != "_default")
                     {
-                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").ToLowerInvariant();
+                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
                         var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
                         var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
 
@@ -465,6 +487,7 @@ namespace Dnn.PersonaBar.Themes.Components
                             PackageName = strName,
                             Type = type,
                             Path = themePath,
+                            Thumbnail = GetThumbnail(themePath),
                             CanDelete = canDelete
                         });
                     }
@@ -474,7 +497,30 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        private static string CreateThumbnail(string strImage)
+        internal static string GetThumbnail(string themePath)
+        {
+            var imageFiles = new List<string>();
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
+            foreach (var ext in ImageExtensions)
+            {
+                imageFiles.AddRange(Directory.GetFiles(folderPath, "*" + ext));
+            }
+
+            var defaultImage = imageFiles.FirstOrDefault(i =>
+            {
+                var fileName = Path.GetFileNameWithoutExtension(i);
+                return DefaultNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase);
+            });
+
+            if (string.IsNullOrEmpty(defaultImage))
+            {
+                defaultImage = imageFiles.FirstOrDefault();
+            }
+
+            return !string.IsNullOrEmpty(defaultImage) ? CreateThumbnail(defaultImage) : string.Empty;
+        }
+
+        internal static string CreateThumbnail(string strImage)
         {
             var blnCreate = true;
 

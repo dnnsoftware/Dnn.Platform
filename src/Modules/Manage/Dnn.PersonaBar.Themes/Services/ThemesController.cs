@@ -6,6 +6,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
@@ -14,7 +15,10 @@ using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Themes.Services
@@ -26,6 +30,35 @@ namespace Dnn.PersonaBar.Themes.Services
         private IThemesController _controller = Components.ThemesController.Instance;
 
         [HttpGet]
+        public HttpResponseMessage GetCurrentTheme()
+        {
+            try
+            {
+                var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
+                var siteLayout = PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, cultureCode);
+                var siteContainer = PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalContainer, cultureCode);
+                var editLayout = PortalController.GetPortalSetting("DefaultAdminSkin", PortalId, Host.DefaultAdminSkin, cultureCode);
+                var editContainer = PortalController.GetPortalSetting("DefaultAdminContainer", PortalId, Host.DefaultAdminContainer, cultureCode);
+
+                var responseObject = new
+                {
+                    SiteLayout = _controller.GetThemeFile(PortalSettings, siteLayout, ThemeType.Skin),
+                    SiteContainer = _controller.GetThemeFile(PortalSettings, siteContainer, ThemeType.Container),
+                    EditLayout = _controller.GetThemeFile(PortalSettings, editLayout, ThemeType.Skin),
+                    EditContainer = _controller.GetThemeFile(PortalSettings, editContainer, ThemeType.Container)
+
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, responseObject);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         public HttpResponseMessage GetThemes(ThemeLevel level)
         {
             try
@@ -35,6 +68,29 @@ namespace Dnn.PersonaBar.Themes.Services
                     layouts = _controller.GetLayouts(PortalSettings, level),
                     containers = _controller.GetContainers(PortalSettings, level)
                 });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetThemeFiles(string themeName, ThemeType type, ThemeLevel level)
+        {
+            try
+            {
+                var theme = (type == ThemeType.Skin ? _controller.GetLayouts(PortalSettings, level)
+                                                    : _controller.GetContainers(PortalSettings, level)
+                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+
+                if (theme == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, _controller.GetThemeFiles(PortalSettings, theme));
             }
             catch (Exception ex)
             {
