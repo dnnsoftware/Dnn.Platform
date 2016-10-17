@@ -8,7 +8,7 @@ const KEY = {
     ESCAPE: 27
 };
 
-const imageFormats = "bmp,gif,jpeg,jpg,jpe,png";
+const imageFormats = "bmp,gif,jpeg,jpg,jpe,png,svg,ico";
 
 
 function findKey(thisObject, id) {
@@ -80,8 +80,18 @@ export default class Browse extends Component {
 
     getFiles() {
         const sf = this.getServiceFramework();
-        sf.get("GetFiles", { parentId: this.state.selectedFolder.key, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
+        let parentId = this.state.selectedFolder.key;
+        if (parentId) {
+            sf.get("GetFiles", { parentId, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
+        } else {
+            sf.get("SearchFolders", {searchText: this.state.selectedFolder.value}, this.setFolderId.bind(this), this.handleError.bind(this));
+        }
+    }
 
+    setFolderId(result) {
+        const selectedFolder = result.Tree.children[0].data;
+        const sf = this.getServiceFramework();
+        sf.get("GetFiles", { parentId: selectedFolder.key, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
     }
 
     setFiles(result) {
@@ -146,4 +156,3 @@ Browse.propTypes = {
     onSave: PropTypes.func.isRequired,
     onCancel:PropTypes.func.isRequired
 };
-
