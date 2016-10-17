@@ -915,12 +915,12 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         #endregion
 
-        #region Update Module Control
+        #region Add / Update Module Control
 
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateModuleControl(ModuleControlDto controlDto)
+        public HttpResponseMessage AddOrUpdateModuleControl(ModuleControlDto controlDto)
         {
             try
             {
