@@ -67,5 +67,17 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 Controls.Add(new ModuleControlDto(moduleControlInfo));
             }
         }
+
+        public ModuleDefinitionInfo ToModuleDefinitionInfo()
+        {
+            return new ModuleDefinitionInfo
+            {
+                ModuleDefID = Id,
+                DesktopModuleID = DesktopModuleId,
+                DefinitionName = Name,
+                FriendlyName = FriendlyName,
+                DefaultCacheTime = CacheTime
+            };
+        }
     }
 }

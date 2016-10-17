@@ -27,6 +27,7 @@ using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -915,7 +916,54 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         #endregion
 
-        #region Add / Update Module Control
+        #region Module Definition Actions
+
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddOrUpdateModuleDefinition(ModuleDefinitionDto definition)
+        {
+            try
+            {
+                var existingName = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(definition.FriendlyName);
+                if (definition.Id < 0 && existingName != null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                        Localization.GetString("DuplicateDefinition.ErrorMessage"));
+                }
+
+                var moduleDefinition = definition.ToModuleDefinitionInfo();
+                    ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, DefinitionId = moduleDefinition.ModuleDefID });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteModuleDefinition([FromUri] int definitionId)
+        {
+            try
+            {
+                new ModuleDefinitionController().DeleteModuleDefinition(definitionId);
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, DefinitionId = definitionId});
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Module Control Actions
 
         [HttpPost]
         [RequireHost]
@@ -935,10 +983,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                         Localization.GetString("DuplicateKey.ErrorMessage"));
                 }
 
-                var moduleControl = controlDto.ToModuleControlInfo();
-
                 try
                 {
+                    var moduleControl = controlDto.ToModuleControlInfo();
                     ModuleControlController.SaveModuleControl(moduleControl, true);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, ModuleControlId = controlDto.Id });
                 }
@@ -947,6 +994,23 @@ namespace Dnn.PersonaBar.Extensions.Services
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("AddControl.ErrorMessage"));
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteModuleControl([FromUri] int controlId)
+        {
+            try
+            {
+                ModuleControlController.DeleteModuleControl(controlId);
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, ControlId = controlId});
             }
             catch (Exception ex)
             {

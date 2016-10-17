@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Web;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -86,6 +82,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "unassignportal":
                                 UnassignPortal(desktopModule, Convert.ToInt32(settingValue));
                                 break;
+                            /*
                             case "savedefinition":
                                 var definition = JsonConvert.DeserializeObject<ModuleDefinitionDto>(settingValue);
                                 SaveModuleDefinition(definition);
@@ -100,6 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "deletemodulecontrol":
                                 DeleteModuleControl(Convert.ToInt32(settingValue));
                                 break;
+                            */
                         }
                     }
 
@@ -253,17 +251,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             DesktopModuleController.RemoveDesktopModuleFromPortal(portalId, desktopModule.DesktopModuleID, true);
         }
 
+        /*
         private void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
         {
-            var moduleDefinition = new ModuleDefinitionInfo
-            {
-                ModuleDefID = definitionDto.Id,
-                DesktopModuleID = definitionDto.DesktopModuleId,
-                DefinitionName = definitionDto.Name,
-                FriendlyName = definitionDto.FriendlyName,
-                DefaultCacheTime = definitionDto.CacheTime
-            };
-
+            var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
             ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
         }
 
@@ -274,21 +265,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private void SaveModuleControl(ModuleControlDto moduleControlDto)
         {
-            var moduleControl = new ModuleControlInfo
-            {
-                ModuleControlID = moduleControlDto.Id,
-                ModuleDefID = moduleControlDto.DefinitionId,
-                ControlKey = moduleControlDto.Key,
-                ControlTitle = moduleControlDto.Title,
-                ControlSrc = moduleControlDto.Source,
-                ControlType = moduleControlDto.Type,
-                ViewOrder = moduleControlDto.Order,
-                IconFile = moduleControlDto.Icon,
-                HelpURL = moduleControlDto.HelpUrl,
-                SupportsPopUps = moduleControlDto.SupportPopups,
-                SupportsPartialRendering = moduleControlDto.SupportPartialRendering
-            };
-
+            var moduleControl = moduleControlDtoToModuleControlInfo();
             ModuleControlController.SaveModuleControl(moduleControl, true);
         }
 
@@ -296,6 +273,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         {
             ModuleControlController.DeleteModuleControl(controlId);
         }
+        */
 
         #endregion
 
