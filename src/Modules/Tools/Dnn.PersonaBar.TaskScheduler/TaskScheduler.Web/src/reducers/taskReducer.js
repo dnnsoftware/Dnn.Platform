@@ -7,6 +7,7 @@ export default function taskList(state = {
     switch (action.type) {
         case ActionTypes.RETRIEVED_TASK_STATUS_LIST:
             return { ...state,
+                serverTime: action.data.serverTime,
                 schedulingEnabled: action.data.schedulingEnabled,
                 status: action.data.status,
                 freeThreads: action.data.freeThreads,

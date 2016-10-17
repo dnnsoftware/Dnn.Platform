@@ -612,4 +612,10 @@
   <data name="No.Text" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="SettingsRestoreWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to cancel your changes?</value>
+  </data>
+  <data name="ServerTime.Text" xml:space="preserve">
+    <value>Server Time:</value>
+  </data>
 </root>

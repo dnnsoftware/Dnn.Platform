@@ -8,6 +8,7 @@ const taskActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_TASK_STATUS_LIST,
                     data: {
+                        serverTime: data.Results.ServerTime,
                         schedulingEnabled: data.Results.SchedulingEnabled,
                         status: data.Results.Status,
                         freeThreads: data.Results.FreeThreadCount,

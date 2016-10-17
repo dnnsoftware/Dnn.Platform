@@ -422,6 +422,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         Success = true,
                         Results = new
                         {
+                            ServerTime = DateTime.Now.ToString(),
                             SchedulingEnabled = SchedulingProvider.Enabled.ToString(),
                             Status = SchedulingProvider.Instance().GetScheduleStatus().ToString(),
                             FreeThreadCount = SchedulingProvider.Instance().GetFreeThreadCount().ToString(),

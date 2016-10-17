@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
@@ -15,7 +15,7 @@ class TaskQueuePanelBody extends Component {
         super();
     }
 
-    
+
 
     /* eslint-disable react/no-danger */
     renderedTaskStatusList() {
@@ -66,14 +66,16 @@ class TaskQueuePanelBody extends Component {
         return (
             <div>
                 <div>
-                    <div className={props.schedulingEnabled === "True" ? "taskStatusList-title" : "taskStatusList-disabled"}>
-                        {props.schedulingEnabled === "True" ? resx.get("TaskQueueTitle") : resx.get("DisabledMessage") }
-                    </div>
-                    { props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
+                    {((props.taskStatusList && props.taskStatusList.length > 0) || (props.taskProcessingList && props.taskProcessingList.length > 0)) &&
+                        <div className={props.schedulingEnabled === "True" ? "taskStatusList-title" : "taskStatusList-disabled"}>
+                            {props.schedulingEnabled === "True" ? resx.get("TaskQueueTitle") : resx.get("DisabledMessage")}
+                        </div>
+                    }
+                    {props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
                         <div className="noTasks">{resx.get("NoTasks")}</div>
                     }
-                    { this.renderedTaskProcessingList() }
-                    { this.renderedTaskStatusList() }
+                    {this.renderedTaskProcessingList()}
+                    {this.renderedTaskStatusList()}
                 </div>
             </div>
         );
