@@ -19,6 +19,21 @@ const themeActions = {
                 }
             }, errorCallback);
         };
+    },
+    getThemeFiles(themeName, themeType, themeLevel, callback) {
+        return (dispatch) => {
+            ThemeService.getThemeFiles(themeName, themeType, themeLevel, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_CURRENT_THEMEFILES,
+                    data: {
+                        themeFiles: data
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
     }
 };
 

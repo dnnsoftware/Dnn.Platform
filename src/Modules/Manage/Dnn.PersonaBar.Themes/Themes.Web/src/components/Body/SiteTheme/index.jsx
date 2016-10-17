@@ -22,8 +22,7 @@ class SiteTheme extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(ThemeActions.getCurrentTheme(function(){
-        }));
+        props.dispatch(ThemeActions.getCurrentTheme());
     }
 
 
@@ -42,7 +41,7 @@ class SiteTheme extends Component {
                     </div>
                     <Tabs tabHeaders={[Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]}
                             type="secondary">
-                        <ThemeFileList />
+                        <ThemeFileList theme={props.currentTheme} type={0} />
                         <div>222</div>
                         <div>333</div>
                     </Tabs>

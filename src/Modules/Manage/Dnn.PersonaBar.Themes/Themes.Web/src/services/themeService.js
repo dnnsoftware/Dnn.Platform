@@ -22,6 +22,11 @@ class ThemeService {
         const sf = this.getServiceFramework("Themes");
         sf.get("GetCurrentTheme", {}, callback, errorCallback);
     }
+
+    getThemeFiles(themeName, themeType, themeLevel, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetThemeFiles", {themeName: themeName, type: themeType, level: themeLevel}, callback, errorCallback);
+    }
 }
     
 const themeService = new ThemeService();
