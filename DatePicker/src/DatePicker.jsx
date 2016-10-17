@@ -58,7 +58,6 @@ export default class DatePicker extends Component {
     }
 
     handleClick(e) {
-        e.preventDefault();
         const isController = hasClass(e.target, DefaultControllerClassName) || this.props.controllerClassName && hasClass(e.target, this.props.controllerClassName);
 
         if (!this._isMounted) { return; }
