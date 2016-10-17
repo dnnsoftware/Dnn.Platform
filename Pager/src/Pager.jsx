@@ -159,7 +159,7 @@ class Pager extends Component {
         pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText, 100) });
         pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, 250) });
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
-            pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
+            pageSizeOptions =  pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
             pageSizeOptions = pageSizeOptions.sort(function (a, b) {
                 let valueA = a.value;
                 let valueB = b.value;
@@ -255,7 +255,7 @@ Pager.defaultProps = {
     pageSizeDropDownWithoutBorder: false,
     numericCounters: 1,
     showSummary: true,
-    showPageInfo: true,
+    showPageInfo: false,
     summaryText: "Showing {0}-{1} of {2}",
     pageInfoText: "Page {0} of {1}",
     pageSizeOptionText: "{0} per page",
