@@ -18,7 +18,7 @@ define(['jquery', '../scripts/loader'], function ($, loader) {
 				},
 				getServiceRoot: function () {
 					var self = this;
-					return siteRoot + 'DesktopModules/' + self.moduleRoot + '/API/';
+					return siteRoot + 'API/' + self.moduleRoot + '/';
 				},
 				getSiteRoot: function () {
 					return siteRoot;
