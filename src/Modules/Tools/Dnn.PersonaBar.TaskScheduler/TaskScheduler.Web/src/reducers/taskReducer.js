@@ -25,7 +25,8 @@ export default function taskList(state = {
         case ActionTypes.UPDATED_SCHEDULE_SETTINGS:
             return { ...state,
                 schedulerMode: action.data.schedulerMode,
-                schedulerDelay: action.data.schedulerDelay
+                schedulerDelay: action.data.schedulerDelay,
+                settingsClientModified: action.data.settingsClientModified
             };
         case ActionTypes.RETRIEVED_SCHEDULE_HISTORY:
             return { ...state,
@@ -56,7 +57,7 @@ export default function taskList(state = {
         case ActionTypes.SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED:
             return { ...state,
                 scheduleItemDetail: action.data.scheduleItemDetail,
-                settingsClientModified: true
+                settingsClientModified: action.data.settingsClientModified
             };  
         case ActionTypes.UPDATED_SCHEDULE_SETTINGS_PENDING:
             return { ...state,

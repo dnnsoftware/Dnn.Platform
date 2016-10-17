@@ -76,16 +76,13 @@ class ModePanel extends Component {
 
         props.dispatch(TaskActions.updateSchedulerSettings(state.updateRequest, () => {
             util.utilities.notify(resx.get("SchedulerUpdateSuccess"));
-            props.dispatch(TaskActions.getTaskStatusList());
         }, (error) => {
             util.utilities.notify(resx.get("SchedulerUpdateError"));
         }));
 
-        setTimeout(() => {
-            props.dispatch(TaskActions.getTaskStatusList(() => {
-
-            }));
-        }, 1000);
+        this.setState({
+            clientModified: false
+        });
 
         props.onClose();
     }
@@ -183,13 +180,15 @@ ModePanel.PropTypes = {
     onClose: PropTypes.func.isRequired,
     schedulerMode: PropTypes.string.isRequired,
     schedulerDelay: PropTypes.number.isRequired,
-    schedulerModeOptions: PropTypes.array.isRequired
+    schedulerModeOptions: PropTypes.array.isRequired,
+    clientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
         schedulerDelay: state.task.schedulerDelay,
-        schedulerMode: state.task.schedulerMode
+        schedulerMode: state.task.schedulerMode,
+        clientModified: state.task.settingsClientModified
     };
 }
 

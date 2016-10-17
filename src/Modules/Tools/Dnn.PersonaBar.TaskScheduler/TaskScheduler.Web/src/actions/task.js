@@ -78,7 +78,8 @@ const taskActions = {
                     type: ActionTypes.UPDATED_SCHEDULE_SETTINGS,
                     data: {
                         schedulerMode: payload.SchedulerMode,
-                        schedulerDelay: payload.SchedulerdelayAtAppStart
+                        schedulerDelay: payload.SchedulerdelayAtAppStart,
+                        settingsClientModified: false
                     }
                 });
                 if (callback) {
