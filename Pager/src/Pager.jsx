@@ -197,7 +197,7 @@ class Pager extends Component {
     }
     render() {
         const {state, props} = this;
-        return state.totalPages > 1 || (state.totalPages === 1 && this.props.showPageSizeOptions) &&
+        return (state.totalPages > 1 || (state.totalPages === 1 && this.props.showPageSizeOptions)) &&
             <div className="pager do-not-close" style={props.style}>
                 <div className="pager-summary-box">
                     {this.getPageSummary() }
