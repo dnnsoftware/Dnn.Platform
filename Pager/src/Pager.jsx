@@ -139,7 +139,7 @@ class Pager extends Component {
         let {startIndex} = state;
         let {endIndex} = state;
         let pagingBoxes = [];
-        if (this.props.numericCounters > 0) {
+        if (this.props.numericCounters > 1) {
             for (let i = startIndex; i < endIndex; i++) {
                 let step = i + 1;
                 if (i !== currentPage) {
