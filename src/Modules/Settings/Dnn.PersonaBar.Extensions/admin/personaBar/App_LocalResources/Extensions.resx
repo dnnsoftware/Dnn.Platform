@@ -606,4 +606,10 @@
   <data name="NewModule_OwnerFolder.Label" xml:space="preserve">
     <value>Owner Folder</value>
   </data>
+  <data name="AddControl.ErrorMessage" xml:space="preserve">
+    <value>There is already a control with the same key and source.</value>
+  </data>
+  <data name="DuplicateKey.ErrorMessage" xml:space="preserve">
+    <value>There is already a control with the same key in this module definition.</value>
+  </data>
 </root>

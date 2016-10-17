@@ -83,5 +83,23 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
             SupportPopups = moduleControl.SupportsPopUps;
             SupportPartialRendering = moduleControl.SupportsPartialRendering;
         }
+
+        public ModuleControlInfo ToModuleControlInfo()
+        {
+            return new ModuleControlInfo
+            {
+                ModuleControlID = Id,
+                ModuleDefID = DefinitionId,
+                ControlKey = Key,
+                ControlTitle = Title,
+                ControlSrc = Source,
+                ControlType = Type,
+                ViewOrder = Order,
+                IconFile = Icon,
+                HelpURL = HelpUrl,
+                SupportsPartialRendering = SupportPartialRendering,
+                SupportsPopUps = SupportPopups
+            };
+        }
     }
 }

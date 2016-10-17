@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
+using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Extensions.Components.Editors;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -467,7 +468,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-            
         }
 
         [HttpGet]
@@ -912,7 +912,49 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-        
+
+        #endregion
+
+        #region Update Module Control
+
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateModuleControl(ModuleControlDto controlDto)
+        {
+            try
+            {
+                //check whether have a same control key in the module definition
+                var controlKey = controlDto.Key ?? "";
+                var moduleControls = ModuleControlController.GetModuleControlsByModuleDefinitionID(controlDto.DefinitionId).Values;
+                var keyExists = moduleControls.Any(c => c.ModuleControlID != controlDto.Id &&
+                    c.ControlKey.Equals(controlKey, StringComparison.InvariantCultureIgnoreCase));
+                if (keyExists)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                        Localization.GetString("DuplicateKey.ErrorMessage"));
+                }
+
+                var moduleControl = controlDto.ToModuleControlInfo();
+
+                try
+                {
+                    ModuleControlController.SaveModuleControl(moduleControl, true);
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, ModuleControlId = controlDto.Id });
+                }
+                catch
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                        Localization.GetString("AddControl.ErrorMessage"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region Private Methods
