@@ -299,13 +299,16 @@ namespace Dnn.PersonaBar.Extensions.Services
                 new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">")
             };
 
-            var path = Path.Combine(Globals.ApplicationMapPath, root.Replace('/', '\\'));
-            if (Directory.Exists(path))
+            if (!string.IsNullOrEmpty(root))
             {
-                AddFiles(response, path, root, "*.ascx");
-                AddFiles(response, path, root, "*.cshtml");
-                AddFiles(response, path, root, "*.vbhtml");
-                AddFiles(response, path, root, "*.html");
+                var path = Path.Combine(Globals.ApplicationMapPath, root.Replace('/', '\\'));
+                if (Directory.Exists(path))
+                {
+                    AddFiles(response, path, root, "*.ascx");
+                    AddFiles(response, path, root, "*.cshtml");
+                    AddFiles(response, path, root, "*.vbhtml");
+                    AddFiles(response, path, root, "*.html");
+                }
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -320,6 +323,47 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var item = new KeyValuePair<string, string>(file.ToLower(), file);
                 collection.Add(item);
             }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage LoadIcons(string controlPath)
+        {
+            var response = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("", "<" + Localization.GetString("None_Specified") + ">")
+            };
+
+            if (!string.IsNullOrEmpty(controlPath))
+            {
+                var idx = controlPath.LastIndexOf("/", StringComparison.Ordinal);
+                var root = controlPath.Substring(0, Math.Max(0, idx));
+                var path = Path.Combine(Globals.ApplicationMapPath, root.Replace('/', '\\'));
+                if (Directory.Exists(path))
+                {
+                    var files = Directory.GetFiles(path);
+                    if (files.Length > 0)
+                    {
+                        var extensions = Globals.glbImageFileTypes.ToLowerInvariant().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var file in files)
+                        {
+                            var ext = Path.GetExtension(file) ?? "";
+                            var extension = ext.Length <= 1 ? "" : ext.Substring(1).ToLowerInvariant();
+                            if (extensions.Contains(extension))
+                            {
+                                path = Path.GetFileName(file);
+                                if (path != null)
+                                {
+                                    var item = new KeyValuePair<string, string>(path.ToLower(), Path.GetFileName(file));
+                                    response.Add(item);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         #endregion
