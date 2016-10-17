@@ -68,7 +68,7 @@ class BasicSettingsPanelBody extends Component {
         let basicSettings = Object.assign({}, state.basicSettings);
 
         if (key === "LogoFile" || key === "FavIcon") {
-            basicSettings[key] = event.split("?", 1);
+            basicSettings[key] = event.split("?")[0];
         }
         else if (key === "TimeZone" || key === "IconSets") {
             basicSettings[key] = event.value;

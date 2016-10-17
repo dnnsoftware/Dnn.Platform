@@ -15,20 +15,7 @@ class TaskQueuePanelBody extends Component {
         super();
     }
 
-    componentWillMount() {
-        const {props} = this;
-
-        props.dispatch(TaskActions.getTaskStatusList());
-        this.taskListTimeout = setInterval(() => {
-            props.dispatch(TaskActions.getTaskStatusList(() => {
-
-            }));
-        }, 5000);
-    }
-
-    componentWillUnmount(){
-        clearInterval(this.taskListTimeout);
-    }
+    
 
     /* eslint-disable react/no-danger */
     renderedTaskStatusList() {

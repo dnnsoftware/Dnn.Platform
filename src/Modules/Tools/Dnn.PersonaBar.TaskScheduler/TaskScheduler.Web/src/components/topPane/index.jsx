@@ -22,7 +22,18 @@ class TopPane extends Component {
 
     componentWillMount() {
         const {props} = this;
+
         props.dispatch(TaskActions.getSchedulerSettings());
+        props.dispatch(TaskActions.getTaskStatusList());
+        this.taskListTimeout = setInterval(() => {
+            props.dispatch(TaskActions.getTaskStatusList(() => {
+
+            }));
+        }, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.taskListTimeout);
     }
 
     onClick() {
