@@ -11,13 +11,26 @@
                 ul {
                     li {
                         padding: 15px 20px;
-                        &:hover{
+                        &:hover {
                             background-color: @gallery;
                             cursor: pointer;
                         }
                         &.selected {
                             color: @cerulean;
                         }
+                    }
+                }
+            }
+            .selector-controls {
+                padding: 0 15px;
+                .move-item {
+                    width: 30px;
+                    height: 30px;
+                    padding: 5px;
+                    /* box-sizing: content-box; */
+                    border: 1px solid #c8c8c8;
+                    &.double-right {
+                        margin-top: 105px;
                     }
                 }
             }

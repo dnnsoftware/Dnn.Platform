@@ -6,6 +6,7 @@ class CustomSettings extends Component {
     componentWillMount(){
         const { props } = this;
         props.getPackageSettings();
+
     }
     getExtensionSetting(props) {
         switch (props.type) {

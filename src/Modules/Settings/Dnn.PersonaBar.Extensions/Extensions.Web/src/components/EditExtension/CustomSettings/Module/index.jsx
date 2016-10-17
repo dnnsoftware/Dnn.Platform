@@ -7,11 +7,15 @@ import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Localization from "localization";
 import AssignedSelector from "./AssignedSelector";
+import ModuleDefinitions from "./ModuleDefinitions";
+import { AddIcon } from "dnn-svg-icons";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
 class Module extends Component {
+
+    /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
         const { packageBeingEditedSettings } = props;
@@ -94,8 +98,9 @@ class Module extends Component {
                     <Switch value={packageBeingEditedSettings.premiumModule}
                         label={Localization.get("EditModule_IsPremiumModule.Label")}
                         tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
-                    <AssignedSelector />
+                    <AssignedSelector assignedPortals={packageBeingEditedSettings.assignedPortals} unassignedPortals={packageBeingEditedSettings.unassignedPortals} />
                 </GridCell>
+                <ModuleDefinitions />
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary">Cancel</Button>
                     <Button type="primary">{props.primaryButtonText}</Button>
