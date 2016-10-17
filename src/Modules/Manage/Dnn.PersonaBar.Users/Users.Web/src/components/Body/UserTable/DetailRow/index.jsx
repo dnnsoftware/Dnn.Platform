@@ -9,20 +9,20 @@ import { SettingsIcon, UserIcon, MoreMenuIcon, ActivityIcon, ShieldIcon } from "
 const ExtensionDetailRow = ({user}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100}>
         <GridCell columnSize={ColumnSizes[0]} className="user-avatar">
-            <img src={user.AvatarUrl}/>
+            <img src={user.avatar}/>
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]} className="user-names">
-            <h6>{user.Displayname}</h6>
-            <p>{user.Username}</p>
+            <h6>{user.displayName}</h6>
+            <p>{user.userName}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[2]}>
-            <p>{user.Email}</p>
+            <p>{user.email}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[3]}>
-            <p>{user.Joined}</p>
+            <p>{user.createdOnDate}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[4]}>
-            <p>{user.Status || "Authorized"}</p>
+            <p>{user.authorized ? "Authorized" : "Un-authorized"}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[5]}>
             <div className="extension-action" dangerouslySetInnerHTML={{ __html: ActivityIcon }}></div>

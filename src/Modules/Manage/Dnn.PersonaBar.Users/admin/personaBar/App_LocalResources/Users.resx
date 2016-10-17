@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Deleted.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
   <data name="nav_Users.Text" xml:space="preserve">
     <value>Users</value>
+  </data>
+  <data name="RegisteredUsers.Text" xml:space="preserve">
+    <value>Registered Users</value>
+  </data>
+  <data name="SuperUsers.Text" xml:space="preserve">
+    <value>Superusers</value>
+  </data>
+  <data name="UnAuthorized.Text" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search Keyword</value>
   </data>
 </root>

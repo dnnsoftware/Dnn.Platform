@@ -1,5 +1,5 @@
-import {users as ActionTypes}  from "constants/actionTypes";
-import UserService from "services/userService";
+import {users as ActionTypes}  from "../constants/actionTypes";
+import UserService from "../services/userService";
 const userActions = {
     getUsers(searchParameters, callback) {
         return (dispatch) => {
@@ -9,7 +9,20 @@ const userActions = {
                     payload
                 });
                 if (callback) {
-                    callback();
+                    callback(payload);
+                }
+            });
+        };
+    },
+    getUserFilters(callback) {
+        return () => {
+            UserService.getUserFilters(payload => {
+                // dispatch({
+                //     type: ActionTypes.RETRIEVED_USER_FILTERS,
+                //     payload
+                // });
+                if (callback) {
+                    callback(payload);
                 }
             });
         };

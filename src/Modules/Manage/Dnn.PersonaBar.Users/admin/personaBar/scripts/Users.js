@@ -17,7 +17,8 @@
         identifier = params.identifier;
         window.dnn.initUsers = function initializeUsers() {
             return {
-                utility: util
+                utility: util,
+                moduleName: 'Users'
             };
         };
         loadScript();

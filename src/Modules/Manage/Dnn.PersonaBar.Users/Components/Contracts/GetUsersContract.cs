@@ -3,6 +3,7 @@
 // All Rights Reserved
 
 using System.Runtime.Serialization;
+using Dnn.PersonaBar.Users.Components.Dto;
 
 namespace Dnn.PersonaBar.Users.Components.Contracts
 {
@@ -15,5 +16,6 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         public int PageSize { get; set; }
         public string SortColumn { get; set; }
         public bool SortAscending { get; set; }
+        public UserFilters Filter { get; set; }
     }
 }

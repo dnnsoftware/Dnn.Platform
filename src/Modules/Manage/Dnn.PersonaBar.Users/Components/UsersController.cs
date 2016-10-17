@@ -26,7 +26,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Security;
@@ -46,6 +48,10 @@ using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Users.Components
 {
@@ -54,6 +60,10 @@ namespace Dnn.PersonaBar.Users.Components
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
         private const int SearchPageSize = 500;
 
+        private string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
+
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+
         protected override Func<IUsersController> GetFactory()
         {
             return () => new UsersController();
@@ -61,9 +71,23 @@ namespace Dnn.PersonaBar.Users.Components
 
         #region Public Methods
 
-        public IList<UserBasicDto> GetUsers(GetUsersContract usersContract, out int totalRecords)
+        public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, out int totalRecords)
         {
-            return !string.IsNullOrEmpty(usersContract.SearchText) ? GetUsersFromLucene(usersContract, out totalRecords) : GetUsersFromDb(usersContract, out totalRecords);
+            return !string.IsNullOrEmpty(usersContract.SearchText) && usersContract.Filter == UserFilters.All
+                ? GetUsersFromLucene(usersContract, out totalRecords)
+                : GetUsersFromDb(usersContract, out totalRecords);
+        }
+
+        public IEnumerable<KeyValuePair<string, int>> GetUserFilters()
+        {
+            var userFilters = new List<KeyValuePair<string, int>>();
+            for (var i = 0; i < 5; i++)
+            {
+                userFilters.Add(
+                    new KeyValuePair<string, int>(
+                        Localization.GetString(Convert.ToString((UserFilters) i), LocalResourcesFile), i));
+            }
+            return userFilters;
         }
 
         public UserDetailDto GetUserDetail(int portalId, int userId)
@@ -153,51 +177,76 @@ namespace Dnn.PersonaBar.Users.Components
 
         #region Private Methods
 
-        private static IList<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, out int totalRecords)
+        private static IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, out int totalRecords)
         {
             totalRecords = 0;
-            using (var reader = DataProvider.Instance()
-                                        .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
-                                                       usersContract.SortColumn,
-                                                       usersContract.SortAscending,
-                                                       usersContract.PageIndex,
-                                                       usersContract.PageSize))
+            var users = new List<UserBasicDto>();
+            ArrayList dbUsers = null;
+            IList<UserInfo> dbUsersList = null;
+            switch (usersContract.Filter)
             {
-                if (reader.Read())
-                {
-                    totalRecords = reader.GetInt32(0);
-                    reader.NextResult();
-                }
-                return CBO.FillCollection<UserBasicDto>(reader);
+                case UserFilters.All:
+//                        using (
+//                            var reader = DataProvider.Instance()
+//                                .ExecuteReader("Personabar_GetUsers", usersContract.PortalId, usersContract.SortColumn,
+//                                    usersContract.SortAscending, usersContract.PageIndex, usersContract.PageSize))
+//                        {
+//                            if (!reader.Read())
+//                            {
+//                                return CBO.FillCollection<UserBasicDto>(reader);
+//                            }
+//                            totalRecords = reader.GetInt32(0);
+//                            reader.NextResult();
+//                            return CBO.FillCollection<UserBasicDto>(reader);
+//                        }
+
+                    dbUsers = UserController.GetUsers(usersContract.PortalId, usersContract.PageIndex,
+                        usersContract.PageSize, ref totalRecords, true, false);
+                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+                case UserFilters.UnAuthorized:
+                    dbUsers = UserController.GetUnAuthorizedUsers(usersContract.PortalId, true, false);
+                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+                case UserFilters.Deleted:
+                    dbUsers = UserController.GetDeletedUsers(usersContract.PortalId);
+                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+//                    case UserFilters.Online:
+//                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
+//                        break;
+                case UserFilters.SuperUsers:
+                    dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId, "Superusers");
+                    users = dbUsersList?.Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+                case UserFilters.RegisteredUsers:
+                    dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId,
+                        PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                    users = dbUsersList?.Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+            return users;
         }
 
         private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, out int totalRecords)
         {
             var query = new SearchQuery
             {
-                KeyWords = usersContract.SearchText,
-                PortalIds = new List<int> { usersContract.PortalId },
-                PageIndex = 1,
-                SearchTypeIds = new List<int> { SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId },
-                PageSize = SearchPageSize,
-                WildCardSearch = true,
-                CultureCode = null,
-                NumericKeys = new Dictionary<string, int> { { "superuser", 0 } }
+                KeyWords = usersContract.SearchText, PortalIds = new List<int> {usersContract.PortalId}, PageIndex = 1, SearchTypeIds = new List<int> {SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId}, PageSize = SearchPageSize, WildCardSearch = true, CultureCode = null, NumericKeys = new Dictionary<string, int> {{"superuser", 0}}
             };
 
             var searchResults = SearchController.Instance.SiteSearch(query);
-            var userIds = searchResults.Results.Distinct(new UserSearchResultComparer()).Take(SearchPageSize)
-                            .Select(r => 
-                                        {
-                                            int userId;
-                                            TryConvertToInt32(r.UniqueKey.Split('_')[0], out userId);
-                                            return userId;
-                                        })
-                                        .Where(u => u > 0).ToList();
+            var userIds = searchResults.Results.Distinct(new UserSearchResultComparer()).Take(SearchPageSize).Select(r =>
+            {
+                int userId;
+                TryConvertToInt32(r.UniqueKey.Split('_')[0], out userId);
+                return userId;
+            }).Where(u => u > 0).ToList();
             totalRecords = userIds.Count;
-            
-            var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize));
+
+            var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex*usersContract.PageSize).Take(usersContract.PageSize));
             return UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds);
         }
 

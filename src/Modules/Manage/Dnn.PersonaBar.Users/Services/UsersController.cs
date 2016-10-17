@@ -84,14 +84,15 @@ namespace Dnn.PersonaBar.Users.Services
         /// Perform a search on Users registered in the Site.
         /// </summary>
         /// <param name="searchText">Search filter text (if any)</param>
+        /// <param name="filter">User filter. Send -1 to disable.</param>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
         /// <param name="pageSize">Number of records to return per page</param>
         /// <param name="sortColumn">Column to sort on</param>
         /// <param name="sortAscending">Sort ascending or descending</param>
         [HttpGet]
-        public HttpResponseMessage GetUsers(string searchText, int pageIndex, int pageSize,
-                                                        string sortColumn,
-                                                        bool sortAscending)
+        public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize,
+            string sortColumn,
+            bool sortAscending)
         {
             try
             {
@@ -103,7 +104,8 @@ namespace Dnn.PersonaBar.Users.Services
                     PageSize = pageSize,
                     SortColumn = sortColumn,
                     SortAscending = sortAscending,
-                    PortalId = PortalSettings.PortalId
+                    PortalId = PortalSettings.PortalId,
+                    Filter = filter
                 };
 
                 var results = Components.UsersController.Instance.GetUsers(getUsersContract, out totalRecords);
@@ -120,6 +122,26 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetUserFilters()
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Results = Components.UsersController.Instance.GetUserFilters()
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

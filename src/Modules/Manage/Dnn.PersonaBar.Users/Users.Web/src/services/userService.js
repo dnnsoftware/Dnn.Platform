@@ -21,6 +21,10 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback);
     }
+    getUserFilters(callback) {
+        const sf = this.getServiceFramework("Users");
+        sf.get("GetUserFilters", {}, callback);
+    }
 }
 const userService = new UserService();
 export default userService;

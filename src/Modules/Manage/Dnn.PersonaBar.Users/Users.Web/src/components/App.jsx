@@ -14,8 +14,9 @@ class App extends Component {
         const {props} = this;
         props.dispatch(UserActions.getUsers({
             searchText: "",
+            filter: 0,
             pageIndex: 0,
-            pageSize: 15,
+            pageSize: 10,
             sortColumn: "",
             sortAscending: false
         }));
@@ -24,7 +25,7 @@ class App extends Component {
         const {props} = this;
         return (
             <div className="boilerplate-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={props.selectedPage == 0}>
+                <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <Body />
                 </PersonaBarPage>
             </div>

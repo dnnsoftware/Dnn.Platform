@@ -8,7 +8,7 @@ const usersApplication = {
         let options = window.dnn.initUsers();
 
         utilities.init(options);
-
+        utilities.moduleName = options.moduleName;
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
         require("../less/style.less");
