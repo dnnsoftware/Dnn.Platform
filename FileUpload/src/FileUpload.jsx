@@ -24,15 +24,14 @@ export default class FileUpload extends Component {
         let imageExist = false;
         let selectedFile = null;
         let selectedFolder = null;
-            
+
         if (this.props.imagePath) {
             imagePath = "/Portals/0/" + this.props.imagePath;
             this.getImageDimensions(imagePath);
             imageExist = true;
-            
-            const pathArray = this.props.imagePath.split("/");
-            selectedFolder = {value: (pathArray.length > 1 ? pathArray[pathArray.length - 2] : "")};
-            selectedFile = {value: pathArray[pathArray.length - 1]};
+            const path = this.getPathObjFormString(this.props.imagePath);
+            selectedFolder = { value: path.folder };
+            selectedFile = { value: path.file };
         }
 
         this.state = {
@@ -59,6 +58,13 @@ export default class FileUpload extends Component {
             errorText: ""
         };
         setTimeout(this.compareDimensions.bind(this), 2000);
+    }
+
+    getPathObjFormString(path) {
+        const pathArray = path.split("/");
+        const folder = pathArray.length > 1 ? pathArray[pathArray.length - 2] : "";
+        const file = pathArray[pathArray.length - 1].split("?")[0];
+        return { folder, file };
     }
 
     componentDidMount() {
@@ -145,7 +151,7 @@ export default class FileUpload extends Component {
         format = format.split("image/")[1];
 
         const fileFormats = this.props.fileFormats || acceptFormats;
-        const isAcceptFormat = fileFormats.some(f => format.indexOf(f) !== -1 );
+        const isAcceptFormat = fileFormats.some(f => format.indexOf(f) !== -1);
         if (!isAcceptFormat) {
             return this.handleError("wrong image format");
         }
@@ -168,15 +174,30 @@ export default class FileUpload extends Component {
     setImagePath(imagePath, isLink) {
         this.setState({ imagePath: "" });
         this.getImageDimensions(imagePath);
+
         if (isLink) {
-            this.setState({ imagePath, linkPath: imagePath, imageExist: true, selectedFile: null, selectedFolder: null });
+            this.uploadFromUrl(imagePath);
             this.hideFields();
         } else {
-            this.setState({ imagePath, imageExist: true });
+            this.setState({ imagePath, imageExist: true }, this.sendResult.bind(this));
         }
-        let path = imagePath.replace("/Portals/0/", "");
-        this.props.onImageSelect(path);
     }
+
+    sendResult() {
+        let path = this.state.imagePath.replace("/Portals/0/", "");
+        let fileId = this.state.selectedFile.fileId;
+        this.props.onImageSelect({ path, fileId });
+    }
+
+
+    uploadFromUrl(url) {
+        const folder = this.props.folderName && typeof this.props.folderName === "string" ? this.props.folderName : "";
+        const sf = this.getServiceFramework();
+        sf.post("UploadFromUrl", {url, folder}, this.uploadComplete.bind(this), this.handleError.bind(this));
+        this.setState({ uploading: true, uploadComplete: false });
+    }
+
+
 
     getImagePath() {
         const fileId = this.state.selectedFile.key;
@@ -209,41 +230,28 @@ export default class FileUpload extends Component {
     postFile(file) {
         const formData = new FormData();
         formData.append("postfile", file);
+        const sf = this.getServiceFramework();
         if (this.props.folderName && typeof this.props.folderName === "string") {
             formData.append("folder", this.props.folderName);
         }
-        const request = new XMLHttpRequest();
-
-        request.addEventListener("load", this.uploadComplete.bind(this));
-        request.addEventListener("error", this.handleError.bind(this));
-        request.addEventListener("abort", this.handleError.bind(this));
-        request.open("POST", "http://auto.content326.com/API/InternalServices/FileUpload/UploadFromLocal");
-        request.send(formData);
-        request.onreadystatechange = this.onReadyState.bind(this, request);
-
+        sf.postfile("UploadFromLocal", formData, this.uploadComplete.bind(this), this.handleError.bind(this));
         this.setState({ uploading: true, uploadComplete: false });
     }
 
-    onReadyState(request) {
-        if (request.readyState !== 4) {
-            return;
-        }
-        if (request.status !== 200) {
-            this.handleError();
-        }
-    }
-
-    uploadComplete(e) {
+    uploadComplete(res) {
         this.setState({ uploadComplete: true }, () => {
             setTimeout(() => {
                 this.setState({ uploading: false });
             }, 1000);
         });
-        const response = JSON.parse(e.target.response);
+        const response = typeof res === "string" ? JSON.parse(res) : res;
         if (!response.path) {
             return;
         }
-        this.setImagePath(response.path);
+        const pathObj = this.getPathObjFormString(response.path);
+        const selectedFile = { value: pathObj.file, fileId: response.fileId };
+        const selectedFolder = { value: pathObj.folder };
+        this.setState({ selectedFile, selectedFolder }, this.setImagePath.bind(this, response.path));
     }
 
     callback(result) {
@@ -308,6 +316,7 @@ export default class FileUpload extends Component {
         const src = this.state.imagePath || "";
         const showImage = src && this.state.imageExist && !this.state.showLinkInput && !this.state.showFolderPicker;
         let className = "overlay" + (src && this.state.imageExist ? " has-image" : "") + (this.state.draggedOver ? " hover" : "");
+
 
         return <div className="dnn-file-upload">
             <div>

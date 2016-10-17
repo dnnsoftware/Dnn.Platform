@@ -24,10 +24,17 @@ export default class LinkInput extends Component {
     onKeyDown(event) {
         switch (event.keyCode) {
             case KEY.ENTER:
-                return this.props.onSave(this.state.url, true);
+                return this.onSave();
             case KEY.ESCAPE:
                 return this.props.onCancel();
         }
+    }
+
+    onSave() {
+        if (!this.state.url) {
+            this.props.onCancel();
+        }
+        return this.props.onSave(this.state.url, true);
     }
 
     onChange(e) {
@@ -39,7 +46,7 @@ export default class LinkInput extends Component {
             <h4>{"URL Link"}</h4>
             <div className="textarea-container">
                 <textarea value={this.state.url} onChange={this.onChange.bind(this) } placeholder="http://example.com/imagename.jpg"/>
-                <span>Press ENTER to save, or ESC to cancel</span>
+                <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
             </div>
         </div>;
     }

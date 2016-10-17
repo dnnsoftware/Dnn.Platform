@@ -52,6 +52,10 @@ export default class Browse extends Component {
         }
     }
 
+    onSave() {
+        return this.props.onSave(this.state.selectedFolder, this.state.selectedFile);
+    }
+
     componentWillUnmount() {
         document.removeEventListener("keyup", this.onKeyDown, false);
     }
@@ -143,7 +147,7 @@ export default class Browse extends Component {
                 onFileClick={this.onFileClick.bind(this) }
                 getFiles={this.getFiles.bind(this) }
                 />
-            <span>Press ENTER to save, or ESC to cancel</span>
+            <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
         </div>;
     }
 }
@@ -156,3 +160,4 @@ Browse.propTypes = {
     onSave: PropTypes.func.isRequired,
     onCancel:PropTypes.func.isRequired
 };
+
