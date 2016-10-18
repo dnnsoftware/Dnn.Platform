@@ -5,8 +5,8 @@
     var config = cf.init();
 
     function loadScript() {
-        var url = "http://localhost:8080/dist/themes-bundle.js";
-        //var url = "scripts/bundles/themes-bundle.js";
+        //var url = "http://localhost:8080/dist/themes-bundle.js";
+        var url = "scripts/bundles/themes-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

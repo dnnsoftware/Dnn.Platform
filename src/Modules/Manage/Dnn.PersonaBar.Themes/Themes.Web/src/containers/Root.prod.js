@@ -7,7 +7,7 @@ class Root extends Component {
     }
     render() {
         return (
-            <div className="boilerplate-app personaBar-mainContainer">
+            <div className="themes-app personaBar-mainContainer">
                 <App />
             </div>
         );
