@@ -28,7 +28,7 @@ export default class FilePicker extends Component {
     handleClick(e) {
         if (!this._isMounted) { return; }
         const node = ReactDOM.findDOMNode(this);
-        if (node && node.contains(e.target)) {
+        if (node && node.contains(e.target) || e.target.className === "clear-button") {
             return;
         }
         this.hide();
@@ -46,6 +46,10 @@ export default class FilePicker extends Component {
     onChangeSearchFileText(e) {
         const searchFileText = e.target.value;
         this.setState({ searchFileText });
+    }
+
+    clearSearch() {
+        this.setState({ searchFileText: "" });
     }
 
     onFilesClick() {
@@ -66,22 +70,29 @@ export default class FilePicker extends Component {
         return name.indexOf(this.state.searchFileText) !== -1;
     }
 
+    getItem(isMatchSearch, child) {
+        if (isMatchSearch) {
+            /* eslint-disable react/no-danger */
+            return <li>
+                <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this, child) }/>
+                <div className="item-name" onClick={this.onFileNameClick.bind(this, child) }>{child.data.value}</div>
+            </li>;
+        }
+        return false;
+    }
+
     getFiles() {
         if (!this.props.files) {
             return false;
         }
 
         const files = this.props.files.map((child) => {
-            /* eslint-disable react/no-danger */
             const isMatchSearch = this.isMatchSearch(child.data.value);
-            return <li>
-                {isMatchSearch && <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this, child) }/>}
-                {isMatchSearch && <div className="item-name" onClick={this.onFileNameClick.bind(this, child) }>{child.data.value}</div>}
-            </li>;
+            return this.getItem(isMatchSearch, child); 
         });
         return <ul>{files}</ul>;
     }
-    
+
 
     render() {
         /* eslint-disable react/no-danger */
@@ -97,6 +108,7 @@ export default class FilePicker extends Component {
                 <div className="inner-box">
                     <div className="search">
                         <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder="Search Files..." />
+                        {this.state.searchFileText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
                     <div className="items">

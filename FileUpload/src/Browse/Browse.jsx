@@ -33,7 +33,7 @@ export default class Browse extends Component {
     constructor(props) {
         super(props);
 
-        let selectedFolder = this.props.selectedFolder; 
+        let selectedFolder = this.props.selectedFolder;
         this.state = {
             showFolderPicker: false,
             showFilePicker: false,
@@ -74,9 +74,12 @@ export default class Browse extends Component {
         return sf;
     }
 
-    getFolders() {
+    getFolders(searchText) {
         const sf = this.getServiceFramework();
-        sf.get("GetFolders", {}, this.setFolders.bind(this), this.handleError.bind(this));
+        if (!searchText) {
+            return sf.get("GetFolders", {}, this.setFolders.bind(this), this.handleError.bind(this));
+        }
+        sf.get("SearchFolders", { searchText }, this.setFolders.bind(this), this.handleError.bind(this));
     }
 
     getChildrenFolders(parentId) {
@@ -90,7 +93,7 @@ export default class Browse extends Component {
         if (parentId) {
             sf.get("GetFiles", { parentId, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
         } else {
-            sf.get("SearchFolders", {searchText: this.state.selectedFolder.value}, this.setFolderId.bind(this), this.handleError.bind(this));
+            sf.get("SearchFolders", { searchText: this.state.selectedFolder.value }, this.setFolderId.bind(this), this.handleError.bind(this));
         }
     }
 
@@ -111,7 +114,7 @@ export default class Browse extends Component {
         this.setState({ folders: result.Tree });
         if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder.value == "0") {
             const selectedFolder = result.Tree.children[0].data;
-            this.setState({selectedFolder}); 
+            this.setState({ selectedFolder });
         }
     }
 
@@ -144,6 +147,7 @@ export default class Browse extends Component {
             <FolderPicker
                 selectedFolder={this.state.selectedFolder}
                 folders={this.state.folders}
+                searchFolder={this.getFolders.bind(this)}
                 onFolderClick={this.onFolderClick.bind(this) }
                 getChildren={this.getChildrenFolders.bind(this) }/>
             <h4>File</h4>
@@ -153,7 +157,7 @@ export default class Browse extends Component {
                 onFileClick={this.onFileClick.bind(this) }
                 getFiles={this.getFiles.bind(this) }
                 />
-            <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
+            <span>Press <strong onClick={this.onSave.bind(this) }>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
         </div>;
     }
 }
@@ -164,6 +168,6 @@ Browse.propTypes = {
     selectedFile: PropTypes.object.isRequired,
     selectedFolder: PropTypes.object.isRequired,
     onSave: PropTypes.func.isRequired,
-    onCancel:PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired
 };
 

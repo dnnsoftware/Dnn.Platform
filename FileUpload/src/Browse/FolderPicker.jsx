@@ -12,6 +12,7 @@ export default class FolderPicker extends Component {
             showFolderPicker: false,
             searchFolderText: ""
         };
+        this.timeOut = null;
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -28,24 +29,33 @@ export default class FolderPicker extends Component {
     handleClick(e) {
         if (!this._isMounted) { return; }
         const node = ReactDOM.findDOMNode(this);
-        if (node && node.contains(e.target)) {
+        if (node && node.contains(e.target) || e.target.className === "clear-button") {
             return;
         }
         this.hide();
     }
 
     hide() {
-        this.setState({ showFolderPicker: false, searchFolderText: "" });
+        this.setState({ showFolderPicker: false});
     }
+
     onFolderClick(folder) {
         this.hide();
         this.props.onFolderClick(folder);
     }
 
     onChangeSearchFolderText(e) {
-        const searchFolderText = e.target.value ? e.target.value.toLowerCase() : "";
+        const searchFolderText = e.target.value ? e.target.value : "";
         this.setState({ searchFolderText });
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(() => {this.props.searchFolder(searchFolderText.toLowerCase());}, 500);
     }
+
+    clearSearch(e) {
+        e.preventDefault();
+        this.setState({ searchFolderText: "" });
+        this.props.searchFolder();
+    }   
 
     onFoldersClick() {
         const {showFolderPicker} = this.state;
@@ -64,6 +74,7 @@ export default class FolderPicker extends Component {
                 <div className="inner-box">
                     <div className="search">
                         <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder="Search Folders..." />
+                        {this.state.searchFolderText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
                     <div className="items">
@@ -72,7 +83,6 @@ export default class FolderPicker extends Component {
                             autoHeightMin={0}
                             autoHeightMax={200}>
                             <Folders
-                                searchFolderText={this.state.searchFolderText}
                                 folders={this.props.folders}
                                 getChildren={this.props.getChildren}
                                 onFolderClick={this.onFolderClick.bind(this) }/>
@@ -89,5 +99,6 @@ FolderPicker.propTypes = {
     folders: PropTypes.object.isRequired,
     onFolderClick: PropTypes.func.isRequired,
     getChildren: PropTypes.func.isRequired,
-    selectedFolder: PropTypes.object.isRequired
+    selectedFolder: PropTypes.object.isRequired,
+    searchFolder: PropTypes.func.isRequired
 };
