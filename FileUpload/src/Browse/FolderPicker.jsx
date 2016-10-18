@@ -43,7 +43,7 @@ export default class FolderPicker extends Component {
     }
 
     onChangeSearchFolderText(e) {
-        const searchFolderText = e.target.value;
+        const searchFolderText = e.target.value ? e.target.value.toLowerCase() : "";
         this.setState({ searchFolderText });
     }
 

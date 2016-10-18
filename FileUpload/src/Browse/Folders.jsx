@@ -46,7 +46,8 @@ export default class Folders extends Component {
         if (!this.props.searchFolderText) {
             return true;
         }
-        return folderName.indexOf(this.props.searchFolderText) !== -1;
+        const name = folderName.toLowerCase(); 
+        return name.indexOf(this.props.searchFolderText) !== -1;
     }
 
     onFolderNameClick(folder, e) {

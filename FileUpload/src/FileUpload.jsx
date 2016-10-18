@@ -29,7 +29,7 @@ export default class FileUpload extends Component {
             imagePath = "/Portals/0/" + this.props.imagePath;
             this.getImageDimensions(imagePath);
             imageExist = true;
-            const path = this.getPathObjFormString(this.props.imagePath);
+            const path = this.getPathObjFormString(imagePath);
             selectedFolder = { value: path.folder };
             selectedFile = { value: path.file };
         }

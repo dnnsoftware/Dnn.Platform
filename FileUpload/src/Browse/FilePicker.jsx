@@ -62,7 +62,8 @@ export default class FilePicker extends Component {
         if (!this.state.searchFileText) {
             return true;
         }
-        return fileName.indexOf(this.state.searchFileText) !== -1;
+        const name = fileName.toLowerCase();
+        return name.indexOf(this.state.searchFileText) !== -1;
     }
 
     getFiles() {
@@ -80,6 +81,7 @@ export default class FilePicker extends Component {
         });
         return <ul>{files}</ul>;
     }
+    
 
     render() {
         /* eslint-disable react/no-danger */
