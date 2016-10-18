@@ -56,8 +56,10 @@ export default class Folders extends Component {
             const className = isOpen ? "open" : "";
             return <li className={className}>
                 {child.data.hasChildren && <div className="has-children" onClick={this.onParentClick.bind(this, child) }></div>}
-                <div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} onClick={this.onParentClick.bind(this, child) }/>
-                <div className="item-name" onClick={this.onFolderNameClick.bind(this, child)}>{child.data.value}</div>
+                <div onClick={this.onFolderNameClick.bind(this, child)}>
+                    <div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} />
+                    <div className="item-name">{child.data.value}</div>
+                </div>
                 {child.data.hasChildren && this.getFolders(child) }
             </li>;
         });

@@ -89,11 +89,13 @@ export default class Browse extends Component {
 
     getFiles() {
         const sf = this.getServiceFramework();
-        let parentId = this.state.selectedFolder.key;
+        let parentId = this.state.selectedFolder ? this.state.selectedFolder.key : null;
         if (parentId) {
             sf.get("GetFiles", { parentId, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
-        } else {
+        } else if (this.state.selectedFolder) {
             sf.get("SearchFolders", { searchText: this.state.selectedFolder.value }, this.setFolderId.bind(this), this.handleError.bind(this));
+        } else {
+            this.setFiles();
         }
     }
 
@@ -104,7 +106,7 @@ export default class Browse extends Component {
     }
 
     setFiles(result) {
-        if (!result.Tree || !result.Tree.children) {
+        if (!result || !result.Tree || !result.Tree.children) {
             return;
         }
         this.setState({ files: result.Tree.children });
@@ -112,7 +114,7 @@ export default class Browse extends Component {
 
     setFolders(result) {
         this.setState({ folders: result.Tree });
-        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder.value == "0") {
+        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder && this.state.selectedFolder.value == "0") {
             const selectedFolder = result.Tree.children[0].data;
             this.setState({ selectedFolder });
         }
@@ -127,7 +129,8 @@ export default class Browse extends Component {
     }
 
     onFileClick(file) {
-        this.setState({ selectedFile: file.data });
+        const selectedFile = file ? file.data : null;
+        this.setState({ selectedFile });
     }
 
     addChildFolders(parentId, result) {

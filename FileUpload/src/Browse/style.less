@@ -88,9 +88,19 @@
         li {
             list-style: none;
             position: relative;
-            margin-top: 4px;
             float: left;
             width: 100%;
+            margin-top: 0px;
+            & > div {
+                padding-top: 0px;
+                cursor: pointer;
+                float: left;
+                width: 100%;
+                padding-top: 4px;
+                &:hover {
+                    color: @curiousBlue;
+                }   
+            }
             & > ul {
                 height: 0px;
                 overflow: hidden;
@@ -119,8 +129,8 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                &:hover {
-                    color: @curiousBlue;
+                &.none-specified {
+                    font-weight: bold;
                 }
             }
             .has-children {

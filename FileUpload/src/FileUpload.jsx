@@ -180,7 +180,7 @@ export default class FileUpload extends Component {
 
     sendResult() {
         let path = this.state.imagePath.replace("/Portals/0/", "");
-        let fileId = this.state.selectedFile.fileId || +this.state.selectedFile.key;
+        let fileId = this.state.selectedFile ? this.state.selectedFile.fileId || +this.state.selectedFile.key : null;
         this.props.onImageSelect({ path, fileId });
     }
 
@@ -192,15 +192,14 @@ export default class FileUpload extends Component {
         this.setState({ uploading: true, uploadComplete: false });
     }
 
-
-
     getImagePath() {
-        const fileId = this.state.selectedFile.key;
+        const fileId = this.state.selectedFile ? this.state.selectedFile.key : "";
         if (!fileId) {
-            return;
+            this.setState({ imagePath: "", imageExist: false }, this.sendResult.bind(this));
+        } else {
+            const sf = this.getServiceFramework();
+            sf.get("loadimage", { fileId }, this.setImagePath.bind(this), this.callback);
         }
-        const sf = this.getServiceFramework();
-        sf.get("loadimage", { fileId }, this.setImagePath.bind(this), this.callback);
     }
 
     getImageDimensions(src) {

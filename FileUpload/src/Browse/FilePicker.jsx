@@ -4,6 +4,8 @@ const searchIcon = require("!raw!./img/search.svg");
 const fileIcon = require("!raw!./img/pages.svg");
 import { Scrollbars } from "react-custom-scrollbars";
 
+const notSpecifiedText = "<None Specified>";
+
 export default class FilePicker extends Component {
 
     constructor() {
@@ -88,15 +90,21 @@ export default class FilePicker extends Component {
 
         const files = this.props.files.map((child) => {
             const isMatchSearch = this.isMatchSearch(child.data.value);
-            return this.getItem(isMatchSearch, child); 
+            return this.getItem(isMatchSearch, child);
         });
-        return <ul>{files}</ul>;
+        return <ul>
+            <li>
+                <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this) }/>
+                <div className="item-name none-specified" onClick={this.onFileNameClick.bind(this) }>{notSpecifiedText}</div>
+            </li>
+            {files}
+        </ul>;
     }
 
 
     render() {
         /* eslint-disable react/no-danger */
-        const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : "<Not Specified>";
+        const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : notSpecifiedText;
 
         const files = this.getFiles();
 
@@ -108,7 +116,7 @@ export default class FilePicker extends Component {
                 <div className="inner-box">
                     <div className="search">
                         <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder="Search Files..." />
-                        {this.state.searchFileText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
+                        {this.state.searchFileText && <div onClick={this.clearSearch.bind(this) } className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
                     <div className="items">
