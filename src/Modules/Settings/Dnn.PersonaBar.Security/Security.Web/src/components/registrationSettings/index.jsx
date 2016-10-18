@@ -30,7 +30,8 @@ class RegistrationSettingsPanelBody extends Component {
             triedToSubmit: false,
             error: {
                 registrationFields: ""
-            }
+            },
+            resetPagePicker: false
         };
     }
 
@@ -106,6 +107,12 @@ class RegistrationSettingsPanelBody extends Component {
                 let registrationSettings = Object.assign({}, data.Results.Settings);
                 this.setState({
                     registrationSettings
+                }, () => {
+                    this.setState({
+                        resetPagePicker: true
+                    }, () => {
+                        this.setState({ resetPagePicker: false });
+                    });
                 });
             }));
         });
@@ -259,6 +266,7 @@ class RegistrationSettingsPanelBody extends Component {
                                 noneSpecifiedText={noneSpecifiedText}
                                 CountText={"{0} Results"}
                                 PortalTabsParameters={RedirectAfterRegistrationParameters}
+                                ResetSelected={state.resetPagePicker}
                                 />
                         </div>
                     </InputGroup>

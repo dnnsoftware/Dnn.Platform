@@ -23,7 +23,8 @@ class BasicSettingsPanelBody extends Component {
     constructor() {
         super();
         this.state = {
-            basicLoginSettings: undefined
+            basicLoginSettings: undefined,
+            resetPagePicker: false
         };
     }
 
@@ -102,6 +103,12 @@ class BasicSettingsPanelBody extends Component {
                 let basicLoginSettings = Object.assign({}, data.Results.Settings);
                 this.setState({
                     basicLoginSettings
+                }, () => {
+                    this.setState({
+                        resetPagePicker: true
+                    }, () => {
+                        this.setState({ resetPagePicker: false });
+                    });
                 });
             }));
         });
@@ -169,6 +176,7 @@ class BasicSettingsPanelBody extends Component {
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLoginParameters}
+                            ResetSelected={state.resetPagePicker}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -185,6 +193,7 @@ class BasicSettingsPanelBody extends Component {
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLogoutParameters}
+                            ResetSelected={state.resetPagePicker}
                             />
                     </InputGroup>
                     <InputGroup>
