@@ -18,9 +18,9 @@ class ApplicationService {
         return sf;
     }
 
-    getPortalSettings(callback) {
+    getPortalSettings(portalId, callback) {
         const sf = this.getServiceFramework("SiteInfo");        
-        sf.get("GetPortalSettings", {}, callback);
+        sf.get("GetPortalSettings?portalId=" + portalId, {}, callback);
     }    
 
     updatePortalSettings(payload, callback, failureCallback) {

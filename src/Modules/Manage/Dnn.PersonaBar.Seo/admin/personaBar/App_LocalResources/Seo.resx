@@ -200,4 +200,115 @@
   <data name="redirectOnWrongCaseLabel.Text" xml:space="preserve">
     <value>Redirect Mixed Case URLs</value>
   </data>
+  <data name="GlobalSetting.Text" xml:space="preserve">
+    <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
+  </data>
+  <data name="ignoreRegExLabel.Help" xml:space="preserve">
+    <value>The Ignore URL Regex pattern is used to stop processing of URLs by the URL Rewriting module.  This should be used when the URL in question doesn’t need to be rewritten, redirected or otherwise processed through the URL Rewriter.  Examples include images, css files, pdf files, service requests and requests for resources not associated with DotNetNuke.</value>
+  </data>
+  <data name="ignoreRegExLabel.Text" xml:space="preserve">
+    <value>Ignore URL Regular Expression</value>
+  </data>
+  <data name="ignoreRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Ignore URL Regular Expression is invalid</value>
+  </data>
+  <data name="RegularExpressions.Text" xml:space="preserve">
+    <value>REGULAR EXPRESSIONS</value>
+  </data>
+  <data name="SettingsUpdateSuccess.Text" xml:space="preserve">
+    <value>The settings have been updated.</value>
+  </data>
+  <data name="SettingsError.Text" xml:space="preserve">
+    <value>Could not update the settings. Please try later.</value>
+  </data>
+  <data name="SettingsRestoreWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to cancel your changes?</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="doNotRewriteRegExLabel.Help" xml:space="preserve">
+    <value>The Do Not Rewrite URL regular expression stops URL Rewriting from occurring on any URL that matches.  Use this value when a URL is being interpreted as a DotNetNuke page, but should not be.</value>
+  </data>
+  <data name="doNotRewriteRegExLabel.Text" xml:space="preserve">
+    <value>Do Not Rewrite URL Regular Expression</value>
+  </data>
+  <data name="doNotRewriteRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Do Not Rewrite URL Regular Expression is invalid</value>
+  </data>
+  <data name="siteUrlsOnlyRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Site URLs Only Regular Expression is invalid</value>
+  </data>
+  <data name="siteUrlsOnlyRegExLabel.Help" xml:space="preserve">
+    <value>The Site URLs Only regular expression pattern changes the processing order for matching URLs.  When matched, the URLs are evaluated against any of the regular expressions in the siteURLs.config file, without first being checked against the list of friendly URLs for the site.  Use this pattern to force processing through the siteURLs.config file for an explicit URL Rewrite or Redirect located within that file.</value>
+  </data>
+  <data name="siteUrlsOnlyRegExLabel.Text" xml:space="preserve">
+    <value>Site URLs Only Regular Expression</value>
+  </data>
+  <data name="doNotRedirectUrlRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Do Not Redirect URL Regular Expression is invalid</value>
+  </data>
+  <data name="doNotRedirectUrlRegExLabel.Help" xml:space="preserve">
+    <value>The Do Not Redirect URL regular expression pattern prevents matching URLs from being redirected in all cases.  Use this pattern when a URL is being redirected incorrectly.</value>
+  </data>
+  <data name="doNotRedirectUrlRegExLabel.Text" xml:space="preserve">
+    <value>Do Not Redirect URL Regular Expression</value>
+  </data>
+  <data name="doNotRedirectHttpsUrlRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Do Not Redirect Https URL Regular Expression is invalid</value>
+  </data>
+  <data name="doNotRedirectHttpsUrlRegExLabel.Help" xml:space="preserve">
+    <value>The Do Not Redirect https URL regular expression is used to stop unwanted redirects between http and https URLs.  It prevents the redirect for any matching URLs, and works both for http-&gt;https and https-&gt;http redirects.</value>
+  </data>
+  <data name="doNotRedirectHttpsUrlRegExLabel.Text" xml:space="preserve">
+    <value>Do Not Redirect Https URL Regular Expression</value>
+  </data>
+  <data name="preventLowerCaseUrlRegExLabel.Help" xml:space="preserve">
+    <value>The Prevent Lowercase URL regular expression stops the automatic conversion to lower case for any matching URLs.  Use this pattern to prevent the lowercase conversion of any URLs which need to remain in mixed/upper case.  This is frequently used to stop the conversion of URLs where the contents of the URL contain an encoded character or case-sensitive value.</value>
+  </data>
+  <data name="preventLowerCaseUrlRegExLabel.Text" xml:space="preserve">
+    <value>Prevent Lowercase URL Regular Expression</value>
+  </data>
+  <data name="preventLowerCaseUrlRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Prevent Lowercase URL Regular Expression is invalid</value>
+  </data>
+  <data name="doNotUseFriendlyUrlsRegExLabel.Help" xml:space="preserve">
+    <value>The Do Not Use Friendly URLs regular expression pattern is used to force certain DotNetNuke pages into using a longer URL for the page.  This is normally used to generate behaviour for backwards compatibility.</value>
+  </data>
+  <data name="doNotUseFriendlyUrlsRegExLabel.Text" xml:space="preserve">
+    <value>Do Not Use Friendly URLs Regular Expression</value>
+  </data>
+  <data name="doNotUseFriendlyUrlsRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Do Not Use Friendly URLs Regular Expression is invalid</value>
+  </data>
+  <data name="keepInQueryStringRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Keep In Querystring Regular Expression is invalid</value>
+  </data>
+  <data name="keepInQueryStringRegExLabel.Help" xml:space="preserve">
+    <value>The Keep in Querystring regular expression allows the matching of part of the friendly URL Path and ensuring that it stays in the querystring.  When a DotNetNuke URL of /pagename/key/value is generated, a ‘Keep in Querystring Regular Expression’ pattern of /key/value will match that part of the path and leave it as part of the querystring for the generated URL; e.g. /pagename?key=value.</value>
+  </data>
+  <data name="keepInQueryStringRegExLabel.Text" xml:space="preserve">
+    <value>Keep in Querystring Regular Expression</value>
+  </data>
+  <data name="urlsWithNoExtensionRegExLabel.Help" xml:space="preserve">
+    <value>The URLs with no Extension regular expression pattern is used to validate URLs that do not refer to a resource on the server, are not DotNetNuke pages, but can be requested with no URL extension.  URLs matching this regular expression will not be treated as a 404 when a matching DotNetNuke page can not be found for the URL.</value>
+  </data>
+  <data name="urlsWithNoExtensionRegExLabel.Text" xml:space="preserve">
+    <value>URLs With No Extension Regular Expression</value>
+  </data>
+  <data name="urlsWithNoExtensionRegExInvalidPattern.Text" xml:space="preserve">
+    <value>URLs With No Extension Regular Expression is invalid</value>
+  </data>
+  <data name="validFriendlyUrlRegExLabel.Help" xml:space="preserve">
+    <value>This pattern is used to determine whether the characters that make up a page name or URL segment are valid for forming a friendly URL path. Characters that do not match the pattern will be removed from page names</value>
+  </data>
+  <data name="validFriendlyUrlRegExLabel.Text" xml:space="preserve">
+    <value>Valid Friendly URL Regular Expression</value>
+  </data>
+  <data name="validFriendlyUrlRegExInvalidPattern.Text" xml:space="preserve">
+    <value>Valid Friendly URL Regular Expression is invalid</value>
+  </data>
 </root>

@@ -37,7 +37,7 @@ namespace Dnn.PersonaBar.SiteInfo.Services
         /// <param name="portalId"></param>
         /// <returns>site settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetPortalSettings(int? portalId)
+        public HttpResponseMessage GetPortalSettings([FromUri] int? portalId)
         {
             try
             {
