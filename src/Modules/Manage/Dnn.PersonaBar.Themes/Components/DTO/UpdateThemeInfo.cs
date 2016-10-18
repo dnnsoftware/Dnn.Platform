@@ -16,8 +16,8 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         [DataMember(Name = "token")]
         public string Token { get; set; }
 
-        [DataMember(Name = "key")]
-        public string Key { get; set; }
+        [DataMember(Name = "setting")]
+        public string Setting { get; set; }
 
         [DataMember(Name = "value")]
         public string Value { get; set; }

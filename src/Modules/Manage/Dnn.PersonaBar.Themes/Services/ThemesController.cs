@@ -6,20 +6,26 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
+using System.Xml;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Themes.Services
@@ -29,6 +35,8 @@ namespace Dnn.PersonaBar.Themes.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
         private IThemesController _controller = Components.ThemesController.Instance;
+
+        #region Public API
 
         [HttpGet]
         public HttpResponseMessage GetCurrentTheme()
@@ -136,13 +144,80 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage GetThemeFileTokens(string path)
+        public HttpResponseMessage GetEditableTokens()
         {
             try
             {
-                var skinSrc = SkinController.FormatSkinSrc(path, PortalSettings);
+                var tokens = SkinControlController.GetSkinControls().Values
+                    .Select(c => new ListItemInfo{Text = c.ControlKey, Value = c.ControlSrc});
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { });
+                return Request.CreateResponse(HttpStatusCode.OK, tokens);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetEditableSettings(string token)
+        {
+            try
+            {
+                var strFile = Globals.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var settings = new List<ListItemInfo>();
+                if (File.Exists(strFile))
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(strFile);
+                    foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
+                    {
+                        settings.Add(new ListItemInfo(xmlSetting.SelectSingleNode("Name").InnerText, xmlSetting.SelectSingleNode("Name").InnerText));
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, settings);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetEditableValues(string token, string setting)
+        {
+            try
+            {
+                var strFile = Globals.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var value = string.Empty;
+                if (File.Exists(strFile))
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(strFile);
+                    foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
+                    {
+                        if (xmlSetting.SelectSingleNode("Name").InnerText == setting)
+                        {
+                            string strValue = xmlSetting.SelectSingleNode("Value").InnerText;
+                            switch (strValue)
+                            {
+                                case "":
+                                    break;
+                                case "[TABID]":
+                                    value = "Pages";
+                                    break;
+                                default:
+                                    value = strValue;
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new {Value = value});
             }
             catch (Exception ex)
             {
@@ -153,6 +228,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage UpdateSkin(UpdateThemeInfo updateTheme)
         {
             try
@@ -169,6 +245,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage ParseTheme(ThemeInfo theme, [FromUri] ParseType type)
         {
             try
@@ -182,6 +259,10 @@ namespace Dnn.PersonaBar.Themes.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        #endregion
+
+        #region Private Methods
 
         private object GetCurrentThemeObject()
         {
@@ -202,5 +283,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
             return currentTheme;
         }
+
+        #endregion
     }
 }

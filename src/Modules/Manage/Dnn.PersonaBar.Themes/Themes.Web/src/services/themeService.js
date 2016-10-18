@@ -23,6 +23,11 @@ class ThemeService {
         sf.get("GetCurrentTheme", {}, callback, errorCallback);
     }
 
+    getThemes(level, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetThemes", {level: level}, callback, errorCallback);
+    }
+
     getThemeFiles(themeName, themeType, themeLevel, callback, errorCallback){
         const sf = this.getServiceFramework("Themes");
         sf.get("GetThemeFiles", {themeName: themeName, type: themeType, level: themeLevel}, callback, errorCallback);
@@ -33,9 +38,19 @@ class ThemeService {
         sf.post("ApplyTheme", {themeFile: themeFile, scope: scope}, callback, errorCallback);
     }
 
-    getThemes(level, callback, errorCallback){
+    getEditableTokens(callback, errorCallback){
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetThemes", {level: level}, callback, errorCallback);
+        sf.get("GetEditableTokens", {}, callback, errorCallback);
+    }
+
+    getEditableSettings(token, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetEditableSettings", {token: token}, callback, errorCallback);
+    }
+
+    getEditableValues(token, setting, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetEditableValues", {token: token, setting: setting}, callback, errorCallback);
     }
 }
     

@@ -23,7 +23,7 @@ class EditThemeAttributes extends Component {
             themeName: '',
             path: '',
             token: '',
-            key: '',
+            setting: '',
             value: '',
             openEditPopup: true,
             level: 3
@@ -38,6 +38,8 @@ class EditThemeAttributes extends Component {
         if(props.themes.layouts.length === 0){
             props.dispatch(ThemeActions.getThemes(state.level));
         }
+
+        props.dispatch(ThemeActions.getEditableTokens());
     }
 
     getThemeType(){
@@ -65,6 +67,26 @@ class EditThemeAttributes extends Component {
         });
     }
 
+    getTokenOptions(){
+        const {props, state} = this;
+
+        if(!state.path){
+            return [];
+        }
+
+        return props.tokens.map(function(t){
+            return {value: t.value, label: t.text};
+        });
+    }
+
+    getSettingOptions(){
+        const {props, state} = this;
+
+        return props.settings.map(function(t){
+            return {value: t.value, label: t.text};
+        });
+    }
+
     onThemeChanged(themeName){
         const {props, state} = this;
 
@@ -73,19 +95,34 @@ class EditThemeAttributes extends Component {
             let type = this.getThemeType();
             let level = state.level;
 
-            props.dispatch(ThemeActions.getEditThemeFiles(themeName, type, level));
+            props.dispatch(ThemeActions.getEditableThemeFiles(themeName, type, level));
         });
     }
 
     onThemeFileChanged(themeFile){
         const {props, state} = this;
 
-        this.setState({path: themeFile.value}, function(){
-            // let themeName = this.state.themeName;
-            // let type = this.getThemeType();
-            // let level = state.level;
+        this.setState({path: themeFile.value});
+    }
 
-            // props.dispatch(ThemeActions.getEditThemeFiles(themeName, type, level));
+    onTokenChanged(token){
+        const {props, state} = this;
+
+        this.setState({token: token.value}, function(){
+            let token = this.state.token;
+
+            props.dispatch(ThemeActions.getEditableSettings(token));
+        });
+    }
+
+    onSettingChanged(setting){
+        const {props, state} = this;
+
+        this.setState({setting: setting.value}, function(){
+            let token = this.state.token;
+            let setting = this.state.setting;
+
+            props.dispatch(ThemeActions.getEditableValues(token, setting));
         });
     }
 
@@ -93,6 +130,38 @@ class EditThemeAttributes extends Component {
         const {props, state} = this;
 
         this.setState({themeType: type});
+    }
+
+    renderValueField(){
+        const {props, state} = this;
+
+        let onFieldChange = function(value){
+            if(value.value){
+                value = value.value;
+            }
+
+            this.setState({value: value});
+        };
+
+        if(!props.value){
+            return <SingleLineInputWithError value={state.value} onChange={onFieldChange.bind(this)} label={Localization.get("Value")}/>;
+        }
+
+        if(props.value.toLowerCase() === "pages"){
+            //TODO: use combo box.
+        }
+
+        let options = props.value.split(',').map(function(value){
+            if(value){
+                return {value: value, label: value};
+            }
+        });
+
+        return <DropdownWithError
+                    options={options}
+                    value={state.value}
+                    onSelect={onFieldChange.bind(this)}
+                    label={Localization.get("Value")}/>;
     }
 
     render() {
@@ -127,16 +196,21 @@ class EditThemeAttributes extends Component {
                                 label={Localization.get("File")}/>
                         </GridCell>
                         <GridCell columnSize="50" className="right-column">
-                            <DropdownWithError 
+                            <DropdownWithError
+                                options={this.getSettingOptions()}
+                                value={state.setting}
+                                onSelect={this.onSettingChanged.bind(this)}
                                 label={Localization.get("Setting")}/>
                         </GridCell>
                         <GridCell columnSize="50">
                             <DropdownWithError 
+                                options={this.getTokenOptions()}
+                                value={state.token}
+                                onSelect={this.onTokenChanged.bind(this)}
                                 label={Localization.get("Token")}/>
                         </GridCell>
                         <GridCell columnSize="50" className="right-column">
-                            <SingleLineInputWithError 
-                                label={Localization.get("Value")}/>
+                            {this.renderValueField()}
                         </GridCell>
                         <GridCell columnSize="100" className="actions-cell">
                             <Button>{Localization.get("Cancel")}</Button>
@@ -156,7 +230,10 @@ EditThemeAttributes.propTypes = {
 function mapStateToProps(state) {
     return {
         themes: state.theme.themes,
-        themeFiles: state.theme.editThemeFiles
+        themeFiles: state.theme.editableThemeFiles,
+        tokens: state.theme.editableTokens,
+        settings: state.theme.editableSettings,
+        value: state.theme.editableValue
     };
 }
 

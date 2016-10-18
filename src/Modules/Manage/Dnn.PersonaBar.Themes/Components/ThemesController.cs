@@ -321,7 +321,7 @@ namespace Dnn.PersonaBar.Themes.Components
             if (intOpenTag != -1)
             {
                 var intCloseTag = strSkin.IndexOf(" />", intOpenTag);
-                var strAttribute = updateTheme.Key;
+                var strAttribute = updateTheme.Setting;
                 var intStartAttribute = strSkin.IndexOf(strAttribute, intOpenTag);
                 string strValue = updateTheme.Value;
                 if (intStartAttribute != -1 && intStartAttribute < intCloseTag)
@@ -438,7 +438,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 var blnUpdate = false;
                 foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
                 {
-                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Key)
+                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
                     {
                         xmlSetting.SelectSingleNode("Value").InnerText = strValue;
                         blnUpdate = true;
@@ -446,7 +446,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 }
                 if (blnUpdate == false)
                 {
-                    var strSetting = "<Name>" + updateTheme.Key + "</Name><Value>" + strValue + "</Value>";
+                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
                     XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
                     xmlSetting.InnerXml = strSetting;
                     xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
