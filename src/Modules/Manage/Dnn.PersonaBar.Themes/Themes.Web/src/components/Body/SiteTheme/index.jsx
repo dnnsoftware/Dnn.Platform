@@ -11,6 +11,7 @@ import Label from "dnn-label";
 
 import CurrentTheme from "./CurrentTheme";
 import ThemeFileList from "./ThemeFileList";
+import ThemeSettings from "./ThemeSettings";
 
 import "./style.less";
 
@@ -31,10 +32,10 @@ class SiteTheme extends Component {
 
         return (
             <GridCell className="site-theme">
-                <GridCell columnSize={150} type="px">
+                <GridCell columnSize={168} type="px">
                     <CurrentTheme theme={props.currentTheme} />
                 </GridCell>
-                <GridCell className="site-theme-tabs" columnSize={580} type="px">
+                <GridCell className="site-theme-tabs" columnSize={560} type="px">
                     <div className="site-theme-title">
                         <label>{Localization.get("SiteTheme")}</label>
                         <span>{props.currentTheme.SiteLayout.themeName}</span>
@@ -42,8 +43,8 @@ class SiteTheme extends Component {
                     <Tabs tabHeaders={[Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]}
                             type="secondary">
                         <ThemeFileList theme={props.currentTheme} type={0} />
-                        <div>222</div>
-                        <div>333</div>
+                        <ThemeFileList theme={props.currentTheme} type={1} />
+                        <ThemeSettings />
                     </Tabs>
                 </GridCell>
                 

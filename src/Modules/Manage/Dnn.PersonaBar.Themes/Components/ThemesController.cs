@@ -146,6 +146,7 @@ namespace Dnn.PersonaBar.Themes.Components
 
                     var themeFile = new ThemeFileInfo();
                     themeFile.ThemeName = theme.PackageName;
+                    themeFile.Type = theme.Type;
 
                     var imagePath = string.Empty;
                     foreach (var ext in ImageExtensions)
@@ -208,27 +209,29 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="scope">change skin or container.</param>
         public void ApplyTheme(int portalId, ThemeFileInfo themeFile, ApplyThemeScope scope)
         {
+            var skinPath = themeFile.Path + ".ascx";
+
             switch (themeFile.Type)
             {
                 case ThemeType.Container:
                     if ((scope & ApplyThemeScope.Site) == ApplyThemeScope.Site)
                     {
-                        SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Portal, themeFile.Path);
+                        SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Portal, skinPath);
                     }
 
                     if ((scope & ApplyThemeScope.Edit) == ApplyThemeScope.Edit)
                     {
-                        SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Admin, themeFile.Path);
+                        SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Admin, skinPath);
                     }
                     break;
                 case ThemeType.Skin:
                     if ((scope & ApplyThemeScope.Site) == ApplyThemeScope.Site)
                     {
-                        SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Portal, themeFile.Path);
+                        SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Portal, skinPath);
                     }
                     if ((scope & ApplyThemeScope.Edit) == ApplyThemeScope.Edit)
                     {
-                        SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Admin, themeFile.Path);
+                        SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Admin, skinPath);
                     }
                     DataCache.ClearPortalCache(portalId, true);
                     break;

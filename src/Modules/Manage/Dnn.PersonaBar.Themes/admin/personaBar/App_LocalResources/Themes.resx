@@ -135,4 +135,61 @@
   <data name="Themes.Text" xml:space="preserve">
     <value>Themes</value>
   </data>
+  <data name="Apply.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Container.Text" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="EditThemeAttributes.Text" xml:space="preserve">
+    <value>Edit Theme Attributes</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Layout.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="Localized.Text" xml:space="preserve">
+    <value>Localized</value>
+  </data>
+  <data name="ParseThemePackage.Text" xml:space="preserve">
+    <value>Parse Theme Package</value>
+  </data>
+  <data name="Portable.Text" xml:space="preserve">
+    <value>Portable</value>
+  </data>
+  <data name="SetEditContainer.Text" xml:space="preserve">
+    <value>Set Edit Container</value>
+  </data>
+  <data name="SetEditLayout.Text" xml:space="preserve">
+    <value>Set Edit Layout</value>
+  </data>
+  <data name="SetSiteContainer.Text" xml:space="preserve">
+    <value>Set Site Container</value>
+  </data>
+  <data name="SetSiteLayout.Text" xml:space="preserve">
+    <value>Set Site Layout</value>
+  </data>
+  <data name="Setting.Text" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="StatusEdit.Text" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="StatusSite.Text" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="Theme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Token.Text" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="Value.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
 </root>

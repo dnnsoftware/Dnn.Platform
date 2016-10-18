@@ -15,6 +15,22 @@
 }
 
 @font-face {
+    font-family: 'pb_regular';
+    src: url('SourceCodePro-Regular.ttf.woff') format('woff'),
+         url('SourceCodePro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'pb_semibold';
+    src: url('SourceCodePro-Semibold.ttf.woff') format('woff'),
+         url('SourceCodePro-Semibold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'robotoslab';
     src: url('RobotoSlab-Regular.ttf') format('truetype');
     font-weight: normal;

@@ -19,6 +19,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Themes.Services
@@ -34,22 +35,9 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
-                var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
-                var siteLayout = PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, cultureCode);
-                var siteContainer = PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalContainer, cultureCode);
-                var editLayout = PortalController.GetPortalSetting("DefaultAdminSkin", PortalId, Host.DefaultAdminSkin, cultureCode);
-                var editContainer = PortalController.GetPortalSetting("DefaultAdminContainer", PortalId, Host.DefaultAdminContainer, cultureCode);
+                
 
-                var responseObject = new
-                {
-                    SiteLayout = _controller.GetThemeFile(PortalSettings, siteLayout, ThemeType.Skin),
-                    SiteContainer = _controller.GetThemeFile(PortalSettings, siteContainer, ThemeType.Container),
-                    EditLayout = _controller.GetThemeFile(PortalSettings, editLayout, ThemeType.Skin),
-                    EditContainer = _controller.GetThemeFile(PortalSettings, editContainer, ThemeType.Container)
-
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, responseObject);
+                return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
             }
             catch (Exception ex)
             {
@@ -65,8 +53,8 @@ namespace Dnn.PersonaBar.Themes.Services
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    layouts = _controller.GetLayouts(PortalSettings, level),
-                    containers = _controller.GetContainers(PortalSettings, level)
+                    Layouts = _controller.GetLayouts(PortalSettings, level),
+                    Containers = _controller.GetContainers(PortalSettings, level)
                 });
             }
             catch (Exception ex)
@@ -106,7 +94,7 @@ namespace Dnn.PersonaBar.Themes.Services
             try
             {
                 _controller.ApplyTheme(PortalId, applyTheme.ThemeFile, applyTheme.Scope);
-                return Request.CreateResponse(HttpStatusCode.OK, new {});
+                return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
             }
             catch (Exception ex)
             {
@@ -147,6 +135,22 @@ namespace Dnn.PersonaBar.Themes.Services
             }
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetThemeFileTokens(string path)
+        {
+            try
+            {
+                var skinSrc = SkinController.FormatSkinSrc(path, PortalSettings);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSkin(UpdateThemeInfo updateTheme)
@@ -177,6 +181,26 @@ namespace Dnn.PersonaBar.Themes.Services
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        private object GetCurrentThemeObject()
+        {
+            var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
+            var siteLayout = PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, cultureCode);
+            var siteContainer = PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalContainer, cultureCode);
+            var editLayout = PortalController.GetPortalSetting("DefaultAdminSkin", PortalId, Host.DefaultAdminSkin, cultureCode);
+            var editContainer = PortalController.GetPortalSetting("DefaultAdminContainer", PortalId, Host.DefaultAdminContainer, cultureCode);
+
+            var currentTheme = new
+            {
+                SiteLayout = _controller.GetThemeFile(PortalSettings, siteLayout, ThemeType.Skin),
+                SiteContainer = _controller.GetThemeFile(PortalSettings, siteContainer, ThemeType.Container),
+                EditLayout = _controller.GetThemeFile(PortalSettings, editLayout, ThemeType.Skin),
+                EditContainer = _controller.GetThemeFile(PortalSettings, editContainer, ThemeType.Container)
+
+            };
+
+            return currentTheme;
         }
     }
 }

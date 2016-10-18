@@ -6,6 +6,9 @@ import {
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
+
+import EmptyThumbnail from "../../EmptyThumbnail";
+
 import "./style.less";
 
 class CurrentTheme extends Component {
@@ -20,7 +23,16 @@ class CurrentTheme extends Component {
 
         return (
             <div className="current-theme">
-                <img src={props.theme.SiteLayout.thumbnail} />
+            {
+                (function(){
+                    if(props.theme.SiteLayout.thumbnail){
+                        return <img src={props.theme.SiteLayout.thumbnail} />;
+                    }
+                    else{
+                        return <EmptyThumbnail />;
+                    }
+                })()
+            }
             </div>
         );
     }

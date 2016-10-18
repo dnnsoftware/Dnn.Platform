@@ -27,6 +27,16 @@ class ThemeService {
         const sf = this.getServiceFramework("Themes");
         sf.get("GetThemeFiles", {themeName: themeName, type: themeType, level: themeLevel}, callback, errorCallback);
     }
+
+    applyTheme(themeFile, scope, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.post("ApplyTheme", {themeFile: themeFile, scope: scope}, callback, errorCallback);
+    }
+
+    getThemes(level, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.get("GetThemes", {level: level}, callback, errorCallback);
+    }
 }
     
 const themeService = new ThemeService();

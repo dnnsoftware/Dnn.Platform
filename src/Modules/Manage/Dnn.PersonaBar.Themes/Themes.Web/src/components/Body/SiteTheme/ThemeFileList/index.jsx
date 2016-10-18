@@ -6,29 +6,41 @@ import {
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
+
+import ThemeFile from "./ThemeFile";
+
 import "./style.less";
 
 class ThemeFileList extends Component {
     constructor() {
         super();
         this.state = {
-            themeFiles: [],
             themeName: '',
             level: 0
         };
     }
 
     componentWillMount(){
-        //this.loadThemeFiles();
+        const {props, state} = this;
+        
+        this.parseProps(props);
     }
 
     componentWillReceiveProps(newProps){
         const {props, state} = this;
 
-        console.log(newProps);
+        this.parseProps(newProps);
+    }
 
-        let themeName = props.type == 0 ? newProps.theme.SiteLayout.themeName : newProps.theme.SiteContainer.themeName;
-        let path = props.type == 0 ? newProps.theme.SiteLayout.path : newProps.theme.SiteContainer.path;
+    parseProps(props){
+        const {state} = this;
+
+        if(!props.theme.SiteLayout.themeName){
+            return;
+        }
+
+        let themeName = props.type == 0 ? props.theme.SiteLayout.themeName : props.theme.SiteContainer.themeName;
+        let path = props.type == 0 ? props.theme.SiteLayout.path : props.theme.SiteContainer.path;
         let level = path.indexOf('[G]') > -1 ? 2 : 1;
 
         if(themeName === state.themeName){
@@ -37,20 +49,27 @@ class ThemeFileList extends Component {
 
         this.setState({themeName: themeName, level: level}, function(){
             this.loadThemeFiles();
-        });       
+        });  
     }
 
     loadThemeFiles(){
         const {props, state} = this;
 
-        props.dispatch(ThemeActions.getThemeFiles(state.themeName, props.type, state.level));
+        if(!state.themeName){
+            return;
+        }
+
+        props.dispatch(ThemeActions.getCurrentThemeFiles(state.themeName, props.type, state.level));
     }
     
     render() {
         const {props, state} = this;
 
         return (
-            <ul className="">
+            <ul className="theme-files-list">
+                {props.themeFiles.map((themeFile, index) => {
+                    return <ThemeFile themeFile={themeFile} />;
+                }) }
             </ul>
         );
     }
