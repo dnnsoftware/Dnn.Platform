@@ -120,4 +120,84 @@
   <data name="nav_Seo.Text" xml:space="preserve">
     <value>Seo</value>
   </data>
+  <data name="URLManagementTab.Text" xml:space="preserve">
+    <value>URL Management</value>
+  </data>
+  <data name="GeneralSettingsTab.Text" xml:space="preserve">
+    <value>GENERAL SETTINGS</value>
+  </data>
+  <data name="ExpressionsTab.Text" xml:space="preserve">
+    <value>EXPRESSIONS</value>
+  </data>
+  <data name="TestURLTab.Text" xml:space="preserve">
+    <value>TEST URL</value>
+  </data>
+  <data name="SitemapSettingsTab.Text" xml:space="preserve">
+    <value>Sitemap Settings</value>
+  </data>
+    <data name="minusCharacter.Text" xml:space="preserve">
+    <value>"-" e.g. page-name</value>
+  </data>
+  <data name="underscoreCharacter.Text" xml:space="preserve">
+    <value>"_" e.g. page_name</value>
+  </data>
+  <data name="Do301RedirectToPortalHome.Text" xml:space="preserve">
+    <value>Site Home Page</value>
+  </data>
+  <data name="Do404Error.Text" xml:space="preserve">
+    <value>404 Error</value>
+  </data>
+  <data name="ReplacementCharacter.Text" xml:space="preserve">
+    <value>Standard Replacement Character</value>
+  </data>
+  <data name="ReplacementCharacter.Help" xml:space="preserve">
+    <value>Standard Replacement Character</value>
+  </data>
+  <data name="enableSystemGeneratedUrlsLabel.Text" xml:space="preserve">
+    <value>Concatenate Page URLs</value>
+  </data>
+  <data name="enableSystemGeneratedUrlsLabel.Help" xml:space="preserve">
+    <value>You can configure how the system will generate URLs.</value>
+  </data>
+  <data name="enableLowerCaseLabel.Help" xml:space="preserve">
+    <value>Check this box to force URLs to be converted to lowercase.</value>
+  </data>
+  <data name="enableLowerCaseLabel.Text" xml:space="preserve">
+    <value>Convert URLs to Lowercase</value>
+  </data>
+  <data name="autoAsciiConvertLabel.Help" xml:space="preserve">
+    <value>When checked, any accented (diacritic) characters such as å and è will be converted to their plain-ascii equivalent.  Example : å -&gt; a and è -&gt; e.</value>
+  </data>
+  <data name="autoAsciiConvertLabel.Text" xml:space="preserve">
+    <value>Convert Accented Characters</value>
+  </data><data name="setDefaultSiteLanguageLabel.Help" xml:space="preserve">
+    <value>When checked, the default language for this site will always be set in the rewritten URL when no other language is found.</value>
+  </data>
+  <data name="setDefaultSiteLanguageLabel.Text" xml:space="preserve">
+    <value>Set Default Site Language</value>
+  </data>
+  <data name="UrlRewriter.Text" xml:space="preserve">
+    <value>URL REWRITER</value>
+  </data>
+  <data name="UrlRedirects.Text" xml:space="preserve">
+    <value>URL REDIRECTS</value>
+  </data>
+  <data name="plDeletedPages.Help" xml:space="preserve">
+    <value>Select the behavior that should occur when a user browses to a deleted, expired or disabled page.</value>
+  </data>
+  <data name="plDeletedPages.Text" xml:space="preserve">
+    <value>Redirect deleted, expired, disabled pages to</value>
+  </data>
+  <data name="enable301RedirectsLabel.Help" xml:space="preserve">
+    <value>Check this box if you want old "non-friendly" URLs to be redirected to the new URLs.</value>
+  </data>
+  <data name="enable301RedirectsLabel.Text" xml:space="preserve">
+    <value>Redirect to Friendly URLs</value>
+  </data>
+  <data name="redirectOnWrongCaseLabel.Help" xml:space="preserve">
+    <value>When checked, any URL that is not in lower case will be redirected to the lower case version of that URL.</value>
+  </data>
+  <data name="redirectOnWrongCaseLabel.Text" xml:space="preserve">
+    <value>Redirect Mixed Case URLs</value>
+  </data>
 </root>

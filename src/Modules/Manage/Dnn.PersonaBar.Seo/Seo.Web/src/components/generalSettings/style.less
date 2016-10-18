@@ -1,0 +1,62 @@
+@import "../../less/globals.less";
+@import "~dnn-global-styles/index";
+:local(.generalSettings) {
+    margin: 30px 30px;
+    .columnTitle {
+        font-weight: bolder;
+        padding: 0 0 25px 0;
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .generalSettings-row-options{
+            .dnn-label {
+                padding-top: 0;
+            }
+            .dnn-radio-buttons{
+                margin-left: -15px;
+                padding: 7px 0 0 0;
+            }
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-dropdown {
+            width: 681px;
+        }
+        .dnn-file-upload {
+            width: 313px;
+        }
+        input {
+            width: auto;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}

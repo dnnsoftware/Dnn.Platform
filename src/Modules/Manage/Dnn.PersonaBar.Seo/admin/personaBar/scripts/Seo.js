@@ -1,36 +1,60 @@
-﻿define(['jquery', './extension'], function ($, ext) {
-    'use strict';
-    var isMobile;
-    var identifier;
+﻿'use strict';
+define(['jquery',
+    '../scripts/config'
+],
+    function ($, cf) {
+        var utility;
+        var config = cf.init();
 
-    var init = function (wrapper, util, params, callback) {
-        identifier = params.identifier;
-
-        if (typeof callback === 'function') {
-            callback();
+        function loadScript() {
+            var url = "scripts/bundles/seo-bundle.js";
+            //var url = "http://localhost:8080/dist/seo-bundle.js";
+            $.ajax({
+                dataType: "script",
+                cache: true,
+                url: url
+            });
         }
-    };
 
-    var initMobile = function (wrapper, util, params, callback) {
-        isMobile = true;
-        this.init(wrapper, util, params, callback);
-    };
+        return {
+            init: function (wrapper, util, params, callback) {
+                utility = util;
 
-    var load = function (params, callback) {
-        if (typeof callback === 'function') {
-            callback();
-        }
-    };
 
-    var loadMobile = function (params, callback) {
-        isMobile = true;
-        this.load(params, callback);
-    };
+                window.dnn.initSeo = function initializeSeo() {
+                    return {
+                        utility: utility,
+                        moduleName: 'Seo'
+                    };
+                };
+                loadScript();
 
-    return {
-        init: init,
-        load: load,
-        initMobile: initMobile,
-        loadMobile: loadMobile
-    };
-});
+                if (config.debugMode === true) {
+                    window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+                }
+
+            },
+
+            initMobile: function (wrapper, util, params, callback) {
+                this.init(wrapper, util, params, callback);
+            },
+
+            load: function (params, callback) {
+                var fb = window.dnn.formBuilder;
+                if (fb && fb.load) {
+                    fb.load();
+                }
+                var optin = window.dnn.optIn;
+                if (optin && optin.load) {
+                    var mode = getOptInMode();
+                    optin.load(mode);
+                }
+            },
+
+            loadMobile: function (params, callback) {
+                this.load(params, callback);
+            }
+        };
+    });
+
+
