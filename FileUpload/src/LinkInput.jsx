@@ -32,9 +32,9 @@ export default class LinkInput extends Component {
 
     onSave() {
         if (!this.state.url) {
-            this.props.onCancel();
+            return this.props.onCancel();
         }
-        return this.props.onSave(this.state.url, true);
+        this.props.onSave(this.state.url, true);
     }
 
     onChange(e) {

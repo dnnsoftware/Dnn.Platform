@@ -180,7 +180,7 @@ export default class FileUpload extends Component {
 
     sendResult() {
         let path = this.state.imagePath.replace("/Portals/0/", "");
-        let fileId = this.state.selectedFile.fileId;
+        let fileId = this.state.selectedFile.fileId || +this.state.selectedFile.key;
         this.props.onImageSelect({ path, fileId });
     }
 
