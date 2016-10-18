@@ -62,7 +62,7 @@ export default class FileUpload extends Component {
 
     getPathObjFormString(path) {
         const pathArray = path.split("/");
-        const folder = pathArray.length > 1 ? pathArray[pathArray.length - 2] : "";
+        let folder = pathArray.length > 1 ? pathArray[pathArray.length - 2] : "";
         const file = pathArray[pathArray.length - 1].split("?")[0];
         return { folder, file };
     }
@@ -166,11 +166,6 @@ export default class FileUpload extends Component {
         return sf;
     }
 
-    getFolders() {
-        const sf = this.getServiceFramework();
-        sf.get("GetFolders", {}, this.setFolders.bind(this), this.handleError.bind(this));
-    }
-
     setImagePath(imagePath, isLink) {
         this.setState({ imagePath: "" });
         this.getImageDimensions(imagePath);
@@ -193,7 +188,7 @@ export default class FileUpload extends Component {
     uploadFromUrl(url) {
         const folder = this.props.folderName && typeof this.props.folderName === "string" ? this.props.folderName : "";
         const sf = this.getServiceFramework();
-        sf.post("UploadFromUrl", {url, folder}, this.uploadComplete.bind(this), this.handleError.bind(this));
+        sf.post("UploadFromUrl", { url, folder }, this.uploadComplete.bind(this), this.handleError.bind(this));
         this.setState({ uploading: true, uploadComplete: false });
     }
 
@@ -368,3 +363,4 @@ FileUpload.propTypes = {
     folderName: PropTypes.string,
     fileFormats: PropTypes.array
 };
+

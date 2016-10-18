@@ -32,12 +32,14 @@ export default class Browse extends Component {
 
     constructor(props) {
         super(props);
+
+        let selectedFolder = this.props.selectedFolder; 
         this.state = {
             showFolderPicker: false,
             showFilePicker: false,
             folders: null,
             files: null,
-            selectedFolder: this.props.selectedFolder,
+            selectedFolder,
             selectedFile: this.props.selectedFile
         };
         this.onKeyDown = this.onKeyDown.bind(this);
@@ -107,6 +109,10 @@ export default class Browse extends Component {
 
     setFolders(result) {
         this.setState({ folders: result.Tree });
+        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder.value == "0") {
+            const selectedFolder = result.Tree.children[0].data;
+            this.setState({selectedFolder}); 
+        }
     }
 
     handleError() {
