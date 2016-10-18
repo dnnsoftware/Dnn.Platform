@@ -20,30 +20,34 @@
 #endregion
 #region Usings
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Runtime.Serialization;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace Dnn.PersonaBar.SiteInfo.Services.Dto
+namespace Dnn.PersonaBar.Seo.Services.Dto
 {
-    public class UpdateSiteSettingsRequest
+    public class UpdateGeneralSettingsRequest
     {
-        public int? PortalId { get; set; }
+        public bool EnableSystemGeneratedUrls { get; set; }
 
-        public string PortalName { get; set; }
+        public string ReplaceSpaceWith { get; set; }
 
-        public string Description { get; set; }
+        public bool ForceLowerCase { get; set; }
 
-        public string KeyWords { get; set; }
+        public bool AutoAsciiConvert { get; set; }
 
-        public string FooterText { get; set; }
+        public string DeletedTabHandlingType { get; set; }
 
-        public string LogoFile { get; set; }
+        public bool RedirectUnfriendly { get; set; }
 
-        public string TimeZone { get; set; }
+        public bool RedirectWrongCase { get; set; }
 
-        public int FavIcon { get; set; }
-
-        public string IconSet { get; set; }
+        public bool ForcePortalDefaultLanguage { get; set; }
     }
 }

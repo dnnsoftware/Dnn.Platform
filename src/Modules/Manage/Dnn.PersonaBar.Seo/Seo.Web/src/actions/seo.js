@@ -9,7 +9,7 @@ const siteInfoActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SEO_GENERAL_SETTINGS,
                     data: {
-                        settings: data.Settings,
+                        generalSettings: data.Settings,
                         replacementCharacterList: data.ReplacementCharacterList,
                         deletedPageHandlingTypes: data.DeletedPageHandlingTypes,
                         clientModified: false
@@ -45,7 +45,53 @@ const siteInfoActions = {
             dispatch({
                 type: ActionTypes.SEO_GENERAL_SETTINS_CLIENT_MODIFIED,
                 data: {
-                    settings: parameter,
+                    generalSettings: parameter,
+                    clientModified: true
+                }
+            });
+        };
+    },
+    getRegexSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getRegexSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SEO_REGEX_SETTINGS,
+                    data: {
+                        regexSettings: data.Settings,                        
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateRegexSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateRegexSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SEO_REGEX_SETTINGS,
+                    data: {
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    regexSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_REGEX_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    regexSettings: parameter,
                     clientModified: true
                 }
             });

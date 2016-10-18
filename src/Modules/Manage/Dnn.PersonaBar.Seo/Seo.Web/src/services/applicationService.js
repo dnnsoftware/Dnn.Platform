@@ -27,6 +27,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SEO");
         sf.post("UpdateGeneralSettings", payload, callback, failureCallback);
     }
+
+    getRegexSettings(callback) {
+        const sf = this.getServiceFramework("SEO");        
+        sf.get("GetRegexSettings", {}, callback);
+    }    
+
+    updateRegexSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("UpdateRegexSettings", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

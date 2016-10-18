@@ -12,6 +12,7 @@ import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
 import RadioButtons from "dnn-radio-buttons";
+import Switch from "dnn-switch";
 import Button from "dnn-button";
 import "./style.less";
 import util from "../../utils";
@@ -55,7 +56,12 @@ class GeneralSettingsPanelBody extends Component {
         let {state, props} = this;
         let generalSettings = Object.assign({}, state.generalSettings);
 
-        generalSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        if (key === "ReplaceSpaceWith") {
+            generalSettings[key] = event.value;
+        }
+        else {
+            generalSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        }
 
         this.setState({
             generalSettings: generalSettings,
@@ -117,6 +123,62 @@ class GeneralSettingsPanelBody extends Component {
                         onSelect={this.onSettingChange.bind(this, "ReplaceSpaceWith")}
                         />
                 </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("enableSystemGeneratedUrlsLabel.Help")}
+                            label={resx.get("enableSystemGeneratedUrlsLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.EnableSystemGeneratedUrls}
+                            onChange={this.onSettingChange.bind(this, "EnableSystemGeneratedUrls")}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("enableLowerCaseLabel.Help")}
+                            label={resx.get("enableLowerCaseLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.ForceLowerCase}
+                            onChange={this.onSettingChange.bind(this, "ForceLowerCase")}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("autoAsciiConvertLabel.Help")}
+                            label={resx.get("autoAsciiConvertLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.AutoAsciiConvert}
+                            onChange={this.onSettingChange.bind(this, "AutoAsciiConvert")}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("setDefaultSiteLanguageLabel.Help")}
+                            label={resx.get("setDefaultSiteLanguageLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.ForcePortalDefaultLanguage}
+                            onChange={this.onSettingChange.bind(this, "ForcePortalDefaultLanguage")}
+                            />
+                    </div>
+                </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
                 <div className="columnTitle">{resx.get("UrlRedirects")}</div>
@@ -132,6 +194,34 @@ class GeneralSettingsPanelBody extends Component {
                             options={this.keyValuePairsToOptions(props.deletedPageHandlingTypes)}
                             buttonGroup="deletedTabHandlingType"
                             value={state.generalSettings.DeletedTabHandlingType} />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("enable301RedirectsLabel.Help")}
+                            label={resx.get("enable301RedirectsLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.RedirectUnfriendly}
+                            onChange={this.onSettingChange.bind(this, "RedirectUnfriendly")}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="generalSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("redirectOnWrongCaseLabel.Help")}
+                            label={resx.get("redirectOnWrongCaseLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.generalSettings.RedirectWrongCase}
+                            onChange={this.onSettingChange.bind(this, "RedirectWrongCase")}
+                            />
                     </div>
                 </InputGroup>
             </div>;
@@ -172,7 +262,7 @@ GeneralSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        generalSettings: state.seo.settings,
+        generalSettings: state.seo.generalSettings,
         deletedPageHandlingTypes: state.seo.deletedPageHandlingTypes,
         replacementCharacterList: state.seo.replacementCharacterList,
         clientModified: state.seo.clientModified

@@ -12,13 +12,26 @@
             font-weight: bolder;
             float: left;
         }
-        .generalSettings-row-options{
+        .generalSettings-row_switch {
+            border-bottom: 1px solid @alto;
+            margin: 10px 0 0 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
+            .dnn-switch-container{
+                float: right;
+            }
+        }
+        .generalSettings-row-options {
             .dnn-label {
                 padding-top: 0;
             }
-            .dnn-radio-buttons{
+            .dnn-radio-buttons {
                 margin-left: -15px;
                 padding: 7px 0 0 0;
+                label {
+                    margin-bottom: 8px;
+                }
             }
         }
         .sectionLabel {
@@ -42,7 +55,8 @@
     .buttons-box {
         width: 100%;
         text-align: center;
-        margin: 10px 0;
+        margin: 30px 0;
+        float: left;
         .dnn-ui-common-button {
             margin: 5px;
         }
@@ -50,13 +64,13 @@
     .dnn-grid-system {
         .left-column {
             padding-right: 30px;
+            border-right: 1px solid @alto;
             .dnn-dropdown {
                 width: 281px;
             }
         }
         .right-column {
-            padding-left: 30px;
-            border-left: 1px solid @alto;
+            padding-left: 30px;            
         }
     }
 }

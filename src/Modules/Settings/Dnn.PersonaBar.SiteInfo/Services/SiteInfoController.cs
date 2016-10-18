@@ -13,6 +13,7 @@ using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteInfo.Services.Dto;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
@@ -33,15 +34,17 @@ namespace Dnn.PersonaBar.SiteInfo.Services
         /// <summary>
         /// Gets site settings
         /// </summary>
-        /// <param></param>
+        /// <param name="portalId"></param>
         /// <returns>site settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetPortalSettings()
+        public HttpResponseMessage GetPortalSettings(int? portalId)
         {
             try
             {
-                var portal = PortalController.Instance.GetPortal(PortalId);
-                var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                
+                var portal = PortalController.Instance.GetPortal(pid);
+                var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
                 var settings = new
                 {
                     portal.PortalName,
@@ -53,7 +56,7 @@ namespace Dnn.PersonaBar.SiteInfo.Services
                     portal.HomeDirectory,
                     portal.LogoFile,
                     FavIcon = new FavIcon(portal.PortalID).GetSettingPath(),
-                    IconSet = PortalController.GetPortalSetting("DefaultIconLocation", PortalId, "Sigma", cultureCode).Replace("icons/", "")
+                    IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -85,8 +88,9 @@ namespace Dnn.PersonaBar.SiteInfo.Services
         {
             try
             {
-                var cultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
-                var portalInfo = PortalController.Instance.GetPortal(PortalId);
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
+                var portalInfo = PortalController.Instance.GetPortal(pid);
                 portalInfo.PortalName = request.PortalName;
                 portalInfo.LogoFile = request.LogoFile;
                 portalInfo.FooterText = request.FooterText;
@@ -94,9 +98,9 @@ namespace Dnn.PersonaBar.SiteInfo.Services
                 portalInfo.KeyWords = request.KeyWords;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
-                PortalController.UpdatePortalSetting(PortalId, "TimeZone", request.TimeZone, false);
-                new FavIcon(PortalId).Update(request.FavIcon);
-                PortalController.UpdatePortalSetting(PortalId, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false);
+                new FavIcon(pid).Update(request.FavIcon);
+                PortalController.UpdatePortalSetting(pid, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

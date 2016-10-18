@@ -20,30 +20,38 @@
 #endregion
 #region Usings
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Runtime.Serialization;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace Dnn.PersonaBar.SiteInfo.Services.Dto
+namespace Dnn.PersonaBar.Seo.Services.Dto
 {
-    public class UpdateSiteSettingsRequest
+    public class UpdateRegexSettingsRequest
     {
-        public int? PortalId { get; set; }
+        public string IgnoreRegex { get; set; }
 
-        public string PortalName { get; set; }
+        public string DoNotRewriteRegex { get; set; }
 
-        public string Description { get; set; }
+        public string UseSiteUrlsRegex { get; set; }
 
-        public string KeyWords { get; set; }
+        public string DoNotRedirectRegex { get; set; }
 
-        public string FooterText { get; set; }
+        public string DoNotRedirectSecureRegex { get; set; }
 
-        public string LogoFile { get; set; }
+        public string ForceLowerCaseRegex { get; set; }
 
-        public string TimeZone { get; set; }
+        public string NoFriendlyUrlRegex { get; set; }
 
-        public int FavIcon { get; set; }
+        public string DoNotIncludeInPathRegex { get; set; }
 
-        public string IconSet { get; set; }
+        public string ValidExtensionlessUrlsRegex { get; set; }
+
+        public string RegexMatch { get; set; }
     }
 }

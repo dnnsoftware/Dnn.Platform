@@ -6,6 +6,7 @@ import {
     seo as SeoActions
 } from "../../actions";
 import GeneralSettings from "../generalSettings";
+import RegexSettings from "../regexSettings";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
@@ -34,7 +35,7 @@ export class Body extends Component {
                         tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExpressionsTab"), resx.get("TestURLTab")]}
                         type="secondary">
                         <GeneralSettings/>
-                        <div>expressions</div>
+                        <RegexSettings/>
                         <div>test url</div>
                     </Tabs>
                     <div>sitemap settings</div>               
