@@ -7,6 +7,7 @@ import {
 } from "../../actions";
 import GeneralSettings from "../generalSettings";
 import RegexSettings from "../regexSettings";
+import TestUrl from "../testUrl";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
@@ -36,7 +37,7 @@ export class Body extends Component {
                         type="secondary">
                         <GeneralSettings/>
                         <RegexSettings/>
-                        <div>test url</div>
+                        <TestUrl/>
                     </Tabs>
                     <div>sitemap settings</div>               
                 </Tabs>                
