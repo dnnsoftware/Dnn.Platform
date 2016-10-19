@@ -52,6 +52,11 @@ class ThemeService {
         const sf = this.getServiceFramework("Themes");
         sf.get("GetEditableValues", {token: token, setting: setting}, callback, errorCallback);
     }
+
+    updateTheme(path, token, setting, value, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.post("UpdateTheme", {path: path, token: token, setting: setting, value: value}, callback, errorCallback);
+    }
 }
     
 const themeService = new ThemeService();

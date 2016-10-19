@@ -42,6 +42,8 @@ export default function theme(state = {
             return { ...state,
                 editableValue: action.data.values
             };
+        case ActionTypes.UPDATE_THEME:
+            return { ...state};
         default:
             return { ...state
             };

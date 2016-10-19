@@ -6,6 +6,7 @@ import {
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import ThemeFile from "./ThemeFile";
 
@@ -52,6 +53,40 @@ class ThemeFileList extends Component {
         });  
     }
 
+    selectedAsSite(themeFile){
+        const {props, state} = this;
+        let currentTheme = props.currentTheme;
+
+        if(themeFile.type === 0){
+            return currentTheme.SiteLayout.path.toLowerCase() === themeFile.path.toLowerCase();
+        } else {
+            return currentTheme.SiteContainer.path.toLowerCase() === themeFile.path.toLowerCase();
+        }
+    }
+
+    selectedAsEdit(themeFile){
+        const {props, state} = this;
+        let currentTheme = props.currentTheme;
+
+        if(themeFile.type === 0){
+            return currentTheme.EditLayout.path.toLowerCase() === themeFile.path.toLowerCase();
+        } else {
+            return currentTheme.EditContainer.path.toLowerCase() === themeFile.path.toLowerCase();
+        }
+    }
+
+    getListWidth(){
+        const {props, state} = this;
+
+        let width = 0;
+        let self = this;
+        props.themeFiles.forEach((themeFile, index) => {
+            width += (self.selectedAsSite(themeFile) || self.selectedAsEdit(themeFile)) ? 108 : 90;
+        });
+
+        return width - 10;
+    }
+
     loadThemeFiles(){
         const {props, state} = this;
 
@@ -66,11 +101,19 @@ class ThemeFileList extends Component {
         const {props, state} = this;
 
         return (
-            <ul className="theme-files-list">
-                {props.themeFiles.map((themeFile, index) => {
-                    return <ThemeFile themeFile={themeFile} />;
-                }) }
-            </ul>
+            <div  className="theme-files-list">
+                <Scrollbars
+                    className="theme-files-scroller"
+                    autoHeight
+                    autoHeightMin={0}
+                    autoHeightMax={150}>
+                    <ul style={{width: this.getListWidth()}}>
+                        {props.themeFiles.map((themeFile, index) => {
+                            return <ThemeFile themeFile={themeFile} />;
+                        }) }
+                    </ul>
+                </Scrollbars>
+            </div>
         );
     }
 }
@@ -83,7 +126,8 @@ ThemeFileList.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        themeFiles: state.theme.currentThemeFiles
+        themeFiles: state.theme.currentThemeFiles,
+        currentTheme: state.theme.currentTheme
     };
 }
 

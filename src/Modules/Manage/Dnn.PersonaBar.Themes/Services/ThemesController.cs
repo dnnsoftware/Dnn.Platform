@@ -113,6 +113,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage DeleteTheme(ThemeFileInfo themeFile)
         {
             try
@@ -129,6 +130,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
@@ -144,11 +146,13 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetEditableTokens()
         {
             try
             {
                 var tokens = SkinControlController.GetSkinControls().Values
+                    .Where(c => !string.IsNullOrEmpty(c.ControlKey) && !string.IsNullOrEmpty(c.ControlSrc))
                     .Select(c => new ListItemInfo{Text = c.ControlKey, Value = c.ControlSrc});
 
                 return Request.CreateResponse(HttpStatusCode.OK, tokens);
@@ -161,6 +165,7 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetEditableSettings(string token)
         {
             try
@@ -187,6 +192,7 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetEditableValues(string token, string setting)
         {
             try
@@ -229,10 +235,17 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-        public HttpResponseMessage UpdateSkin(UpdateThemeInfo updateTheme)
+        public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
             {
+                var token = SkinControlController.GetSkinControls().Values.FirstOrDefault(t => t.ControlSrc == updateTheme.Token);
+                if (token == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidParameter");
+                }
+
+                updateTheme.Token = token.ControlKey;
                 _controller.UpdateTheme(PortalSettings, updateTheme);
                 return Request.CreateResponse(HttpStatusCode.OK, new { });
             }

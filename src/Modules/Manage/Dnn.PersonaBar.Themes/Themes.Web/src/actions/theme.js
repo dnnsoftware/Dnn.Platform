@@ -125,8 +125,21 @@ const themeActions = {
                 }
             }, errorCallback);
         };
+    },
+    updateTheme(path, token, setting, value, callback) {
+        return (dispatch) => {
+            ThemeService.updateTheme(path, token, setting, value, data => {
+                dispatch({
+                    type: ActionTypes.UPDATE_THEME,
+                    data: {
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
     }
-    
 };
 
 export default themeActions;

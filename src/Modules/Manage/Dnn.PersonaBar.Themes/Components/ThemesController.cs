@@ -311,7 +311,8 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="updateTheme"></param>
         public void UpdateTheme(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
-            var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
+            var themePath = SkinController.FormatSkinSrc(updateTheme.Path + ".ascx", portalSettings);
+            themePath = Path.Combine(Globals.ApplicationMapPath, themePath.TrimStart('/'));
 
             var objStreamReader = File.OpenText(themePath);
             var strSkin = objStreamReader.ReadToEnd();
