@@ -98,7 +98,6 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Components\DTO\ParseThemeInfo.cs" />
     <Compile Include="Components\DTO\ListItemInfo.cs" />
     <Compile Include="Components\DTO\ApplyThemeInfo.cs" />
     <Compile Include="Components\DTO\ThemeFileInfo.cs" />

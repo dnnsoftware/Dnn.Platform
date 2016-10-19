@@ -139,35 +139,6 @@ const themeActions = {
                 }
             }, errorCallback);
         };
-    },
-    parseTheme(themeName, themeType, parseType, callback) {
-        return (dispatch) => {
-            ThemeService.parseTheme(themeName, themeType, parseType, data => {
-                dispatch({
-                    type: ActionTypes.PARSE_THEME,
-                    data: {
-                    }
-                });
-                if (callback) {
-                    callback();
-                }
-            }, errorCallback);
-        };
-    },
-    restoreTheme(callback) {
-        return (dispatch) => {
-            ThemeService.restoreTheme(data => {
-                dispatch({
-                    type: ActionTypes.RESTORE_THEME,
-                    data: {
-                        currentTheme: data
-                    }
-                });
-                if (callback) {
-                    callback();
-                }
-            }, errorCallback);
-        };
     }
 };
 

@@ -528,15 +528,7 @@ namespace Dnn.PersonaBar.Themes.Components
         {
             var blnCreate = true;
 
-            var imageFileName = Path.GetFileName(strImage);
-            if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
-            {
-                strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
-                strImage = strImage.Replace("\\", "/");
-                return strImage;
-            }
-
-            var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);
+            var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + Path.GetFileName(strImage));
 
             //check if image has changed
             if (File.Exists(strThumbnail))

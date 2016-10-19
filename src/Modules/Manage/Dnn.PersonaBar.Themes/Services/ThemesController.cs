@@ -19,7 +19,6 @@ using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -260,45 +259,12 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-        public HttpResponseMessage ParseTheme(ParseThemeInfo parseTheme)
+        public HttpResponseMessage ParseTheme(ThemeInfo theme, [FromUri] ParseType type)
         {
             try
             {
-                var themeType = parseTheme.ThemeType;
-                var themeName = parseTheme.ThemeName;
-
-                var theme = (themeType == ThemeType.Skin ? _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                                                    : _controller.GetContainers(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
-
-                if (theme == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
-                }
-
-                _controller.ParseTheme(PortalSettings, theme, parseTheme.ParseType);
+                _controller.ParseTheme(PortalSettings, theme, type);
                 return Request.CreateResponse(HttpStatusCode.OK, new { });
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage RestoreTheme()
-        {
-            try
-            {
-                SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Portal, "");
-                SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Portal, "");
-                SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Admin, "");
-                SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Admin, "");
-                DataCache.ClearPortalCache(PortalId, true);
-
-                return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
             }
             catch (Exception ex)
             {
