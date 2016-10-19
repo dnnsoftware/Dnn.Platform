@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>Themes</identifier>
                         <moduleName>Themes</moduleName>
+                        <controller>Dnn.PersonaBar.Themes.MenuControllers.ThemeMenuController, Dnn.PersonaBar.Themes</controller>
                         <resourceKey>nav_Themes</resourceKey>
                         <path>Themes</path>
                         <mobileSupport>true</mobileSupport>

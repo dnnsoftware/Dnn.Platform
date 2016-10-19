@@ -110,6 +110,7 @@
     <Compile Include="Components\ThemeType.cs" />
     <Compile Include="Components\ThemeLevel.cs" />
     <Compile Include="Components\ThemesController.cs" />
+    <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ThemesController.cs" />
   </ItemGroup>

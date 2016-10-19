@@ -710,6 +710,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 }
         ],
         function loadPanelFromPersistedSetting() {
+            var pageUrl = window.top.location.href.toLowerCase();
+            if (pageUrl.indexOf("skinsrc=") > -1 || pageUrl.indexOf("containersrc=") > -1 || pageUrl.indexOf("dnnprintmode=") > -1) {
+                return;
+            }
+
             var settings = util.persistent.load();
             if (settings.expandPersonaBar && settings.activePath) {
                 var path = settings.activePath;

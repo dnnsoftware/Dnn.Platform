@@ -18,6 +18,7 @@
         window.dnn.initThemes = function () {
             return {
                 utility: util,
+                params: params,
                 moduleName: "Themes"
             };
         };

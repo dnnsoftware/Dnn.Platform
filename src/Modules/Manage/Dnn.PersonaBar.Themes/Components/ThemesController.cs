@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Themes.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
-        internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png"};
+        internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png", ".jpeg"};
         internal static readonly IList<string> DefaultNames = new List<string>() {"Default", "Home", "Index", "Main"};
 
         protected override Func<IThemesController> GetFactory()
@@ -123,15 +123,12 @@ namespace Dnn.PersonaBar.Themes.Components
             if (Directory.Exists(themePath))
             {
                 bool fallbackSkin;
-                string strRootSkin;
                 if (theme.Type == ThemeType.Skin)
                 {
-                    strRootSkin = SkinController.RootSkin.ToLower();
                     fallbackSkin = IsFallbackSkin(themePath);
                 }
                 else
                 {
-                    strRootSkin = SkinController.RootContainer.ToLower();
                     fallbackSkin = IsFallbackContainer(themePath);
                 }
 
@@ -166,13 +163,7 @@ namespace Dnn.PersonaBar.Themes.Components
 
 
                     themeFile.Name = Path.GetFileNameWithoutExtension(file);
-
-                    var strUrl = file.Substring(strFile.IndexOf("\\" + strRootSkin + "\\", StringComparison.InvariantCultureIgnoreCase))
-                        .Replace(".ascx", "")
-                        .Replace("\\", "/")
-                        .TrimStart('/');
-
-                    themeFile.Path = "[" + strSkinType + "]" + strUrl;
+                    themeFile.Path = FormatThemePath(themePath, Path.GetFileName(strFile), theme.Type);
                     themeFile.CanDelete = (UserController.Instance.GetCurrentUserInfo().IsSuperUser || strSkinType == "L")
                                           && (!fallbackSkin && canDeleteSkin);
 
@@ -485,13 +476,14 @@ namespace Dnn.PersonaBar.Themes.Components
                         var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
                         var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
                         var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
-
+                        var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
                         themes.Add(new ThemeInfo()
                         {
                             PackageName = strName,
                             Type = type,
                             Path = themePath,
-                            Thumbnail = GetThumbnail(themePath),
+                            DefaultThemeFile = FormatThemePath(strFolder, defaultThemeFile, type),
+                            Thumbnail = GetThumbnail(themePath, defaultThemeFile),
                             CanDelete = canDelete
                         });
                     }
@@ -501,27 +493,42 @@ namespace Dnn.PersonaBar.Themes.Components
             return themes;
         }
 
-        internal static string GetThumbnail(string themePath)
+        private static string GetDefaultThemeFileName(string themePath, ThemeType type)
         {
-            var imageFiles = new List<string>();
+            var themeFiles = new List<string>();
             var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
-            foreach (var ext in ImageExtensions)
-            {
-                imageFiles.AddRange(Directory.GetFiles(folderPath, "*" + ext));
-            }
+            themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
 
-            var defaultImage = imageFiles.FirstOrDefault(i =>
+            var defaultFile = themeFiles.FirstOrDefault(i =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(i);
                 return DefaultNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase);
             });
 
-            if (string.IsNullOrEmpty(defaultImage))
+            if (string.IsNullOrEmpty(defaultFile))
             {
-                defaultImage = imageFiles.FirstOrDefault();
+                defaultFile = themeFiles.FirstOrDefault();
             }
 
-            return !string.IsNullOrEmpty(defaultImage) ? CreateThumbnail(defaultImage) : string.Empty;
+            return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
+        }
+
+        private static string GetThumbnail(string themePath, string themeFileName)
+        {
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
+            var filePath = Path.Combine(folderPath, themeFileName);
+            var imagePath = string.Empty;
+            foreach (var ext in ImageExtensions)
+            {
+                var path = Path.ChangeExtension(filePath, ext);
+                if (File.Exists(path))
+                {
+                    imagePath = path;
+                    break;
+                }
+            }
+
+            return !string.IsNullOrEmpty(imagePath) ? CreateThumbnail(imagePath) : string.Empty;
         }
 
         internal static string CreateThumbnail(string strImage)
@@ -607,21 +614,6 @@ namespace Dnn.PersonaBar.Themes.Components
             return strThumbnail;
         }
 
-        private string GetSkinPath(string type, string root, string name)
-        {
-            var strPath = Null.NullString;
-            switch (type)
-            {
-                case "G":  //global
-                    strPath = Globals.HostPath + root + "/" + name;
-                    break;
-                case "L": //local
-                    strPath = PortalSettings.Current.HomeDirectory + root + "/" + name;
-                    break;
-            }
-            return strPath;
-        }
-
         private static bool IsFallbackContainer(string skinPath)
         {
             var strDefaultContainerPath = (Globals.HostMapPath + SkinController.RootContainer + SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo).Folder).Replace("/", "\\");
@@ -640,6 +632,30 @@ namespace Dnn.PersonaBar.Themes.Components
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
             return skinPath.ToLowerInvariant() == strDefaultSkinPath.ToLowerInvariant();
+        }
+
+        private static string FormatThemePath(string themePath, string fileName, ThemeType type)
+        {
+            var filePath = Path.Combine(themePath, fileName);
+            var lowercasePath = filePath.ToLowerInvariant();
+            string strRootSkin;
+            if (type == ThemeType.Skin)
+            {
+                strRootSkin = SkinController.RootSkin.ToLower();
+            }
+            else
+            {
+                strRootSkin = SkinController.RootContainer.ToLower();
+            }
+
+            var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1 ? "G" : "L";
+
+            var strUrl = lowercasePath.Substring(filePath.IndexOf("\\" + strRootSkin + "\\", StringComparison.InvariantCultureIgnoreCase))
+                        .Replace(".ascx", "")
+                        .Replace("\\", "/")
+                        .TrimStart('/');
+
+            return "[" + strSkinType + "]" + strUrl;
         }
 
         #endregion

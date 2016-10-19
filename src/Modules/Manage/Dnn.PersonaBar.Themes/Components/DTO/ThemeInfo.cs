@@ -21,6 +21,9 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         [DataMember(Name = "path")]
         public string Path { get; set; }
 
+        [DataMember(Name = "defaultThemeFile")]
+        public string DefaultThemeFile { get; set; }
+
         [DataMember(Name = "thumbnail")]
         public string Thumbnail { get; set; }
 

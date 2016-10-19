@@ -24,7 +24,7 @@
             }
         }
 
-        svg{
+        & > svg{
             fill: @alto;
             width: 128px;
             position: absolute;
@@ -45,6 +45,41 @@
             background-color: rgba(30, 136, 195, 0.6);
             padding: 15px 10px;
             transition: opacity 100ms linear;
+            text-align: center;
+
+            ul{
+                margin: 0;
+                display: inline-block;
+                padding: 0;
+                list-style: none;
+                width: 116px;
+                height: 32px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+
+                li{
+                    width: 32px;
+                    height: 32px;
+                    float: left;
+                    margin-left: 10px;
+                    position: relative;
+                    cursor: pointer;
+
+                    svg{
+                        width: 32px;
+                        fill: @white;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+                li:first-child{
+                    margin-left: 0;
+                }
+            }
         }
 
         &:hover span.actions{

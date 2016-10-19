@@ -9,6 +9,7 @@ import Button from "dnn-button";
 import OverflowText from "dnn-text-overflow-wrapper";
 
 import SvgIcon from "../../SvgIcon";
+import utils from "utils";
 
 import "./style.less";
 
@@ -52,6 +53,14 @@ class Theme extends Component {
         //props.dispatch(ThemeActions.applyTheme(themeFile, 1));
     }
 
+    previewTheme(){
+        const {props, state} = this;
+        let theme = props.theme;
+
+        let previewUrl = utils.params.settings.previewUrl;
+        window.open(previewUrl + "?SkinSrc=" + theme.defaultThemeFile);
+    }
+
     renderActions(){
         const {props, state} = this;
         let theme = props.theme;
@@ -62,6 +71,11 @@ class Theme extends Component {
         }
 
         return <span className="actions">
+            <ul>
+                <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
+                <li><SvgIcon name="Apply" /></li>
+                <li><SvgIcon name="Trash" /></li>
+            </ul>
         </span>;
     }
 
