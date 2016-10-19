@@ -85,32 +85,31 @@ namespace Dnn.PersonaBar.Extensions.Components
             return false;
         }
 
-        public IList<PackageInfoDto> GetInstalledPackages(int portalId, string packageType)
+        public IList<PackageInfoSlimDto> GetInstalledPackages(int portalId, string packageType)
         {
-                var typePackages = new List<PackageInfo>();
-                switch (packageType)
-                {
-                    case "Module":
-                        if (portalId == Null.NullInteger)
-                        {
-                            typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module").ToList();
-                        }
-                        else
-                        {
-                            AddModulesToList(portalId, typePackages);
-                        }
-                        break;
-                    case "Skin":
-                    case "Container":
-                        typePackages = PackageController.Instance.GetExtensionPackages(portalId, p => p.PackageType == packageType).ToList();
-                        break;
-                    default:
-                        typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == packageType).ToList();
-                        break;
-                }
+            var typePackages = new List<PackageInfo>();
+            switch (packageType)
+            {
+                case "Module":
+                    if (portalId == Null.NullInteger)
+                    {
+                        typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module").ToList();
+                    }
+                    else
+                    {
+                        AddModulesToList(portalId, typePackages);
+                    }
+                    break;
+                case "Skin":
+                case "Container":
+                    typePackages = PackageController.Instance.GetExtensionPackages(portalId, p => p.PackageType == packageType).ToList();
+                    break;
+                default:
+                    typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == packageType).ToList();
+                    break;
+            }
 
-                var typePackageDtos = typePackages.Select(p => new PackageInfoDto(portalId, p));
-
+            var typePackageDtos = typePackages.Select(p => new PackageInfoSlimDto(portalId, p));
             return typePackageDtos.ToList();
         }
 
@@ -134,7 +133,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 packages.Add(new AvailablePackagesDto()
                 {
                     PackageType = packageType,
-                    ValidPackages = validpackages.Values.Select(p => new PackageInfoDto(Null.NullInteger, p)).ToList(),
+                    ValidPackages = validpackages.Values.Select(p => new PackageInfoSlimDto(Null.NullInteger, p)).ToList(),
                     InvalidPackages = invalidPackages
                 });
             }

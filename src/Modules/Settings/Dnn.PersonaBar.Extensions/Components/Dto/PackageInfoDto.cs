@@ -27,6 +27,7 @@ using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
@@ -82,11 +83,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [DataMember(Name = "email")]
         public string Email { get; set; }
 
-        [DataMember(Name = "canEdit")]
-        public bool CanEdit { get; set; }
-
         [DataMember(Name = "canDelete")]
         public bool CanDelete { get; set; }
+
+        [JsonProperty("readOnly")]
+        public bool ReadOnly { get; set; }
 
         public PackageInfoDto()
         {
@@ -111,6 +112,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             Url = package.Url;
             Email = package.Email;
             CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
+
+            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
+            ReadOnly = authService.AuthenticationType == Constants.DnnAuthTypeName;
         }
 
         public PackageInfo ToPackageInfo()

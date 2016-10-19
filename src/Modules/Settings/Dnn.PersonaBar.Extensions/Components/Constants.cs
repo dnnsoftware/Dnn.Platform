@@ -57,5 +57,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         internal const string DefaultLibraryImage = "icon_library.png";
         internal const string DefaultWidgetImage = "icon_widget.png";
         internal const string DefaultDashboardImage = "icon_dashboard.png";
+
+        internal const string DnnAuthTypeName = "DNN";
     }
 }

@@ -615,4 +615,7 @@
   <data name="DuplicateDefinition.ErrorMessage" xml:space="preserve">
     <value>There is already a module definition with the same friendly name.</value>
   </data>
+  <data name="ReadOnlyPackage.SaveErrorMessage" xml:space="preserve">
+    <value>There is a read-only package. Can not be updated!</value>
+  </data>
 </root>

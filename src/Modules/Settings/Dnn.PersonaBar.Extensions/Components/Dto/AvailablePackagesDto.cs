@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     {
         public string PackageType { get; set; }
 
-        public List<PackageInfoDto> ValidPackages { get; set; }
+        public List<PackageInfoSlimDto> ValidPackages { get; set; }
 
         public List<string> InvalidPackages { get; set; }
     }

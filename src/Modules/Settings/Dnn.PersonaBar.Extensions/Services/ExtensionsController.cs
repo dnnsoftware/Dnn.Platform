@@ -44,6 +44,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
+using Constants = Dnn.PersonaBar.Extensions.Components.Constants;
 using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.PersonaBar.Extensions.Services
@@ -428,6 +429,13 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
                     {
+                        var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
+                        if (authService.AuthenticationType == Constants.DnnAuthTypeName)
+                        {
+                            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                                Localization.GetString("ReadOnlyPackage.SaveErrorMessage"));
+                        }
+
                         var type = package.GetType();
                         var needUpdate = false;
                         foreach (var kvp in packageSettings.Settings)
