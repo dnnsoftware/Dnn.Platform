@@ -10,6 +10,7 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import SiteTheme from "./SiteTheme";
+import ThemeList from "./ThemeList";
 import RestoreTheme from "./RestoreTheme";
 import "./style.less";
 
@@ -47,6 +48,7 @@ class Body extends Component {
                     <GridCell className="middle-actions">
                         <RestoreTheme />
                     </GridCell>
+                    <ThemeList />
                 </SocialPanelBody >
 
             </GridCell>
