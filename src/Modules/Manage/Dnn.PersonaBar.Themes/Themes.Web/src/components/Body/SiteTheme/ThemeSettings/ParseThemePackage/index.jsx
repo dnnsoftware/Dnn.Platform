@@ -9,6 +9,7 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
 import Collapsible from "react-collapse";
+import utils from "utils";
 
 import "./style.less";
 
@@ -16,11 +17,55 @@ class ParseThemePackage extends Component {
     constructor() {
         super();
         this.state = {
-            parseType: "0"
+            parseType: "localized",
+            parsing: false
         };
     }
 
+    getParseType(){
+        const {props, state} = this;
+
+        return state.parseType == "portable" ? 1 : 0;
+    }
+
+    parseTheme(){
+        const {props, state} = this;
+
+        this.setState({parsing: true}, function(){
+            this.parseLayout();
+        });
+    }
+
+    parseLayout(){
+        const {props, state} = this;
+
+        let themeName = props.currentTheme.SiteLayout.themeName;
+        let themeType = 0;
+        let parseType = this.getParseType();
+
+        let self = this;
+        props.dispatch(ThemeActions.parseTheme(themeName, themeType, parseType, function(){
+            self.parseContainer();
+        }));
+    }
+
+    parseContainer(){
+        const {props, state} = this;
+
+        let themeName = props.currentTheme.SiteContainer.themeName;
+        let themeType = 1;
+        let parseType = this.getParseType();
+
+        let self = this;
+        props.dispatch(ThemeActions.parseTheme(themeName, themeType, parseType, function(){
+            self.setState({parsing: false});
+            utils.utilities.notify(Localization.get("Successful"));
+        }));
+    }
+
     onParseTypeChanged(type){
+        const {props, state} = this;
+
         this.setState({parseType: type});
     }
 
@@ -29,9 +74,11 @@ class ParseThemePackage extends Component {
 
         return (
             <div className="parse-theme-package">
-                <Button size="small">{Localization.get("ParseThemePackage")}</Button>
+                <Button size="small"
+                    onClick={this.parseTheme.bind(this)}
+                    disabled={state.parsing}>{Localization.get("ParseThemePackage")}</Button>
                 <RadioButtons 
-                    options={[{value: "0", label: Localization.get("Localized")}, {value: "1", label: Localization.get("Portable")}]} 
+                    options={[{value: "localized", label: Localization.get("Localized")}, {value: "portable", label: Localization.get("Portable")}]} 
                     onChange={this.onParseTypeChanged.bind(this)}
                     value={this.state.parseType}/>
                 <div className="clear" />
@@ -46,6 +93,7 @@ ParseThemePackage.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        currentTheme: state.theme.currentTheme
     };
 }
 

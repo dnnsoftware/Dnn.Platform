@@ -10,6 +10,7 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import SiteTheme from "./SiteTheme";
+import RestoreTheme from "./RestoreTheme";
 import "./style.less";
 
 const radioButtonOptions = [
@@ -43,6 +44,9 @@ class Body extends Component {
                 </SocialPanelHeader>
                 <SocialPanelBody>
                     <SiteTheme />
+                    <GridCell className="middle-actions">
+                        <RestoreTheme />
+                    </GridCell>
                 </SocialPanelBody >
 
             </GridCell>

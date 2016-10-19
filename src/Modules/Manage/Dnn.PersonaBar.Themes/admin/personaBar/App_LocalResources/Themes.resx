@@ -192,4 +192,13 @@
   <data name="Value.Text" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="RestoreTheme.Text" xml:space="preserve">
+    <value>[ Restore Default Theme ]</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="RestoreThemeConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to restore default theme?</value>
+  </data>
 </root>

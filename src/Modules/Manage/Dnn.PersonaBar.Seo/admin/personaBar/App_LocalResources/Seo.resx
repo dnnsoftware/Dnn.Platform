@@ -311,7 +311,6 @@
   <data name="validFriendlyUrlRegExInvalidPattern.Text" xml:space="preserve">
     <value>Valid Friendly URL Regular Expression is invalid</value>
   </data>
-<<<<<<< 4f1727d784a54e6d54708643ddf2d97aedcd04db
   <data name="TestPageUrl.Text" xml:space="preserve">
     <value>TEST A PAGE URL</value>
   </data>
