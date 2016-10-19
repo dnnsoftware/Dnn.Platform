@@ -183,6 +183,21 @@ const themeActions = {
                  }
              }, errorCallback);
          };
+     },
+     deleteTheme(theme, callback) {
+         return (dispatch) => {
+             ThemeService.deleteTheme(theme, data => {
+                 dispatch({
+                     type: ActionTypes.DELETE_THEME,
+                     data: {
+                         theme: theme
+                     }
+                 });
+                 if (callback) {
+                     callback();
+                 }
+             }, errorCallback);
+         };
      }
 };
 

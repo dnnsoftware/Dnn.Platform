@@ -55,6 +55,15 @@ class Theme extends Component {
         });
     }
 
+    deleteTheme(){
+        const {props, state} = this;
+        let theme = props.theme;
+
+        utils.utilities.confirm(Localization.get("DeleteConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function(){
+            props.dispatch(ThemeActions.deleteTheme(theme));
+        });
+    }
+
     previewTheme(){
         const {props, state} = this;
         let theme = props.theme;
@@ -76,7 +85,7 @@ class Theme extends Component {
             <ul>
                 <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
                 <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
-                <li><SvgIcon name="Trash" /></li>
+                <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>
             </ul>
         </span>;
     }

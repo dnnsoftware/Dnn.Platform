@@ -285,7 +285,7 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="theme"></param>
         public void DeleteThemePackage(PortalSettings portalSettings, ThemeInfo theme)
         {
-            var themePath = SkinController.FormatSkinSrc(theme.Path, portalSettings);
+            var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
             var user = UserController.Instance.GetCurrentUserInfo();
 
             if (!user.IsSuperUser  && themePath.IndexOf("\\portals\\_default\\", StringComparison.InvariantCultureIgnoreCase) != Null.NullInteger)

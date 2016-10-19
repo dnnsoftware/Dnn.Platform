@@ -207,4 +207,7 @@
   <data name="DeleteConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to delete this theme?</value>
   </data>
+  <data name="UsePackageUninstall.Text" xml:space="preserve">
+    <value>This theme installed as package, please go to Extensions and uninstall from there.</value>
+  </data>
 </root>
