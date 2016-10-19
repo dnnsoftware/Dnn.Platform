@@ -37,33 +37,6 @@ class PackageInformation extends Component {
         };
     }
 
-    resetExtensionBeingEdited() {
-        const { props } = this;
-        this.setState({
-            extensionBeingEdited: validationMapExtensionBeingEdited(props.extensionBeingEdited)
-        });
-    }
-
-    componentWillMount() {
-        this.resetExtensionBeingEdited();
-    }
-
-    onChange(key, event) {
-        const { props, state } = this;
-        const value = typeof event === "object" ? event.target.value : event;
-        let {triedToSave, extensionBeingEdited} = state;
-
-        extensionBeingEdited[key].value = value;
-        if (extensionBeingEdited[key].validateRequired && extensionBeingEdited[key].error) {
-            extensionBeingEdited[key].error = false;
-            triedToSave = false;
-        }
-        this.setState({
-            triedToSave,
-            extensionBeingEdited
-        });
-    }
-
     onCancel(event) {
         if (event) {
             event.preventDefault();
@@ -73,58 +46,19 @@ class PackageInformation extends Component {
         props.onCancel();
     }
 
-    validateFields() {
-        let {triedToSave, extensionBeingEdited} = this.state;
-        let errorCount = 0;
-        Object.keys(extensionBeingEdited).forEach((key) => {
-            let field = extensionBeingEdited[key];
-            if (field.validateRequired && field.value === "") {
-                field.error = true;
-                errorCount++;
-            }
-        });
-        triedToSave = true;
-        this.setState({
-            extensionBeingEdited,
-            triedToSave
-        });
-        return errorCount === 0;
-    }
-
-    onSave() {
-        if (!this.validateFields()) {
-            return;
-        }
-        const { props } = this;
-        props.onPrimaryButtonClick(valueMapExtensionBeingEdited(this.state.extensionBeingEdited));
-    }
-
-    onVersionChange(index, option) {
-        let {extensionBeingEdited} = this.state;
-        if (extensionBeingEdited.version && extensionBeingEdited.version.value) {
-            let versionArray = extensionBeingEdited.version.value.split(".");
-            versionArray[index] = option.value;
-            extensionBeingEdited.version.value = versionArray.join(".");
-        }
-        this.setState({
-            extensionBeingEdited
-        });
-    }
-
     render() {
         const {props, state} = this;
 
         if (!props.extensionBeingEdited) {
             return <p>Empty</p>;
         }
-        const {extensionBeingEdited} = state;
+        const {extensionBeingEdited} = props;
         const version = extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : "0.0.0";
 
         return (
             <GridCell className={styles.packageInformationBox}>
                 <GridCell columnSize={100} style={{ marginBottom: 15 }}>
                     <DropdownWithError
-                        options={[{ label: "Container", value: "blah" }]}
                         tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                         label="Extension Type"
                         defaultDropdownValue={extensionBeingEdited.packageType.value}
@@ -145,9 +79,9 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
                             value={extensionBeingEdited.friendlyName.value}
                             style={inputStyle}
-                            error={extensionBeingEdited.friendlyName.error && state.triedToSave}
+                            error={extensionBeingEdited.friendlyName.error && props.triedToSave}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "friendlyName")} />
+                            onChange={props.onChange.bind(this, "friendlyName")} />
 
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageIconFile.Label")}
@@ -156,7 +90,7 @@ class PackageInformation extends Component {
                             style={inputStyle}
                             inputStyle={{ marginBottom: 0 }}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "packageIcon")} />
+                            onChange={props.onChange.bind(this, "packageIcon")} />
                     </div>
                     <div>
                         <MultiLineInputWithError
@@ -166,28 +100,28 @@ class PackageInformation extends Component {
                             inputStyle={{ marginBottom: 28, height: 123 }}
                             value={extensionBeingEdited.description.value}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "description")} />
+                            onChange={props.onChange.bind(this, "description")} />
                         <DropdownWithError
                             options={getVersionDropdownValues()}
                             label={Localization.get("EditExtension_PackageVersion.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageVersion.HelpText")}
                             enabled={!props.disabled}
                             defaultDropdownValue={formatVersionNumber(version[0])}
-                            onSelect={this.onVersionChange.bind(this, 0)}
+                            onSelect={props.onVersionChange.bind(this, 0)}
                             className="version-dropdown"
                             />
                         <Dropdown
                             options={getVersionDropdownValues()}
                             className="version-dropdown"
                             label={formatVersionNumber(version[1])}
-                            onSelect={this.onVersionChange.bind(this, 1)}
+                            onSelect={props.onVersionChange.bind(this, 1)}
                             enabled={!props.disabled}
                             />
                         <Dropdown
                             options={getVersionDropdownValues()}
                             label={formatVersionNumber(version[2])}
                             className="version-dropdown"
-                            onSelect={this.onVersionChange.bind(this, 2)}
+                            onSelect={props.onVersionChange.bind(this, 2)}
                             enabled={!props.disabled}
                             />
                     </div>
@@ -201,7 +135,7 @@ class PackageInformation extends Component {
                             style={inputStyle}
                             value={extensionBeingEdited.owner.value}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "owner")} />
+                            onChange={props.onChange.bind(this, "owner")} />
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageOrganization.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageOrganization.HelpText")}
@@ -209,7 +143,7 @@ class PackageInformation extends Component {
                             inputStyle={{ marginBottom: 0 }}
                             value={extensionBeingEdited.organization.value}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "organization")} />
+                            onChange={props.onChange.bind(this, "organization")} />
                     </div>
                     <div>
                         <SingleLineInputWithError
@@ -219,7 +153,7 @@ class PackageInformation extends Component {
                             inputStyle={{ marginBottom: 32 }}
                             value={extensionBeingEdited.url.value}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "url")} />
+                            onChange={props.onChange.bind(this, "url")} />
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageEmailAddress.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageEmailAddress.HelpText")}
@@ -227,12 +161,12 @@ class PackageInformation extends Component {
                             inputStyle={{ marginBottom: 32 }}
                             value={extensionBeingEdited.email.value}
                             enabled={!props.disabled}
-                            onChange={this.onChange.bind(this, "email")} />
+                            onChange={props.onChange.bind(this, "email")} />
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={this.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" onClick={this.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -245,7 +179,9 @@ PackageInformation.PropTypes = {
     onPrimaryButtonClick: PropTypes.func,
     onChange: PropTypes.func,
     disabled: PropTypes.func,
-    primaryButtonText: PropTypes.string
+    primaryButtonText: PropTypes.string,
+    triedToSave: PropTypes.bool,
+    validateFields: PropTypes.func
 };
 
 export default PackageInformation;

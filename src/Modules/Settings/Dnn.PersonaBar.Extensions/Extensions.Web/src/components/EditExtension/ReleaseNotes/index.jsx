@@ -15,23 +15,23 @@ const releaseBoxStyle = {
 class EditExtension extends Component {
     render() {
         const {props} = this;
-        const {extensionBeingEdited} = props;
+        const {value} = props;
         /* eslint-disable react/no-danger */
         return (
             <GridCell style={{ padding: 50 }} className="release-notes extension-form">
                 {!props.readOnly && <MultiLineInputWithError
                     label="Release Notes"
                     style={inputStyle}
-                    value={extensionBeingEdited.releaseNotes}
+                    value={value}
                     onChange={props.onChange && props.onChange.bind(this, "releaseNotes")} />}
                 {props.readOnly &&
                     <Scrollbars style={releaseBoxStyle}>
-                        <div className="read-only-release-notes" dangerouslySetInnerHTML={{ __html: extensionBeingEdited.releaseNotes }}></div>
+                        <div className="read-only-release-notes" dangerouslySetInnerHTML={{ __html: value }}></div>
                     </Scrollbars>
                 }
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" onClick={props.onUpdateExtension.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -41,7 +41,8 @@ class EditExtension extends Component {
 EditExtension.PropTypes = {
     onCancel: PropTypes.func,
     readOnly: PropTypes.bool,
-    onUpdateExtension: PropTypes.func,
+    onSave: PropTypes.func,
+    value: PropTypes.string,
     onChange: PropTypes.func,
     primaryButtonText: PropTypes.string
 };

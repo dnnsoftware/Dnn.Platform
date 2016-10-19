@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import DropdownWithError from "dnn-dropdown-with-error";
@@ -14,11 +15,54 @@ import styles from "./style.less";
 const inputStyle = { width: "100%" };
 
 class Module extends Component {
+    onClickOnPortal(index, type) {
+        const { props } = this;
+        let _extensionBeingEdited = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+        _extensionBeingEdited[type].value[index].selected = !_extensionBeingEdited[type].value[index].selected;
 
+        props.onAssignedPortalsChange(type, _extensionBeingEdited[type].value);
+    }
+    moveItemsLeft() {
+        const { props } = this;
+        let assignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.assignedPortals.value));
+        let itemsToStay = [], itemsToMove = [];
+        assignedPortals.forEach((portal) => {
+            let {selected} = portal;
+            delete portal.selected;
+            selected ? itemsToMove.push(portal) : itemsToStay.push(portal);
+        });
+        props.onAssignedPortalsChange("unassignedPortals", itemsToMove, () => {
+            props.onAssignedPortalsChange("assignedPortals", itemsToStay);
+        });
+    }
+    moveItemsRight() {
+        const { props } = this;
+        let unassignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.unassignedPortals.value));
+        let itemsToStay = [], itemsToMove = [];
+        unassignedPortals.forEach((portal) => {
+            let {selected} = portal;
+            delete portal.selected;
+            selected ? itemsToMove.push(portal) : itemsToStay.push(portal);
+        });
+
+        props.onAssignedPortalsChange("assignedPortals", itemsToMove, () => {
+            props.onAssignedPortalsChange("unassignedPortals", itemsToStay);
+        });
+    }
+    moveAll(direction) {
+        switch (direction) {
+            case "right":
+
+                break;
+            default:
+
+                break;
+        }
+    }
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const { packageBeingEditedSettings } = props;
+        let { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editModule}>
                 <GridSystem className="with-right-border top-half">
@@ -27,24 +71,24 @@ class Module extends Component {
                             label={Localization.get("EditModule_ModuleName.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleName.HelpText")}
                             style={inputStyle}
-                            value={packageBeingEditedSettings.moduleName}
+                            value={extensionBeingEdited.moduleName.value}
                             enabled={false} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_ModuleCategory.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleCategory.HelpText")}
-                            value={packageBeingEditedSettings.category}
+                            value={extensionBeingEdited.category.value}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
-                            value={packageBeingEditedSettings.dependencies}
+                            value={extensionBeingEdited.dependencies.value}
                             style={inputStyle} />
-                        <Switch value={packageBeingEditedSettings.portable}
+                        <Switch value={extensionBeingEdited.portable.value}
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsPortable.Label")}
                             tooltipMessage={Localization.get("EditModule_IsPortable.HelpText")} />
-                        <Switch value={packageBeingEditedSettings.upgradeable}
+                        <Switch value={extensionBeingEdited.upgradeable.value}
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsUpgradable.Label")}
@@ -54,19 +98,19 @@ class Module extends Component {
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_FolderName.Label")}
                             tooltipMessage={Localization.get("EditModule_FolderName.HelpText")}
-                            value={packageBeingEditedSettings.folderName}
+                            value={extensionBeingEdited.folderName.value}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_BusinessControllerClass.Label")}
                             tooltipMessage={Localization.get("EditModule_BusinessControllerClass.HelpText")}
-                            value={packageBeingEditedSettings.businessController}
+                            value={extensionBeingEdited.businessController.value}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Permissions.Label")}
-                            value={packageBeingEditedSettings.permissions}
+                            value={extensionBeingEdited.permissions.value}
                             tooltipMessage={Localization.get("EditModule_Permissions.HelpText")}
                             style={inputStyle} />
-                        <Switch value={packageBeingEditedSettings.searchable}
+                        <Switch value={extensionBeingEdited.searchable.value}
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsSearchable.Label")}
@@ -95,12 +139,19 @@ class Module extends Component {
                 <GridCell><hr /></GridCell>
                 <GridCell className="premium-module">
                     <h3 className="box-title">Premium Module Assignment</h3>
-                    <Switch value={packageBeingEditedSettings.premiumModule}
+                    <Switch value={extensionBeingEdited.premiumModule.value}
                         label={Localization.get("EditModule_IsPremiumModule.Label")}
                         tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
-                    <AssignedSelector assignedPortals={packageBeingEditedSettings.assignedPortals} unassignedPortals={packageBeingEditedSettings.unassignedPortals} />
+                    <AssignedSelector
+                        assignedPortals={extensionBeingEdited.assignedPortals.value}
+                        unassignedPortals={extensionBeingEdited.unassignedPortals.value}
+                        onClickOnPortal={this.onClickOnPortal.bind(this)}
+                        moveItemsLeft={this.moveItemsLeft.bind(this)}
+                        moveItemsRight={this.moveItemsRight.bind(this)}
+                        moveAll={this.moveAll.bind(this)}
+                        onChange={props.onChange.bind(this)} />
                 </GridCell>
-                <ModuleDefinitions />
+                <ModuleDefinitions moduleDefinitions={extensionBeingEdited.moduleDefinitions.value} />
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary">Cancel</Button>
                     <Button type="primary">{props.primaryButtonText}</Button>
@@ -112,12 +163,19 @@ class Module extends Component {
 }
 
 Module.PropTypes = {
+    dispatch: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
     disabled: PropTypes.func,
     primaryButtonText: PropTypes.string,
-    packageBeingEditedSettings: PropTypes.object
+    extensionBeingEdited: PropTypes.object
 };
 
-export default Module;
+function mapStateToProps(state) {
+    return {
+        extensionBeingEdited: state.extension.extensionBeingEdited
+    };
+}
+
+export default connect(mapStateToProps)(Module);

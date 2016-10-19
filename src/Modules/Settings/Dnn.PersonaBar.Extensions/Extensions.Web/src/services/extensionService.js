@@ -1,18 +1,19 @@
 import util from "../utils";
 
 function mapPackageInformation(extensionBeingUpdated) {
-    return {
-        Name: extensionBeingUpdated.name,
-        FriendlyName: extensionBeingUpdated.friendlyName,
-        Description: extensionBeingUpdated.description,
-        Version: extensionBeingUpdated.version,
-        Owner: extensionBeingUpdated.owner,
-        Url: extensionBeingUpdated.url,
-        Organization: extensionBeingUpdated.organization,
-        Email: extensionBeingUpdated.email,
-        License: extensionBeingUpdated.license,
-        ReleaseNotes: extensionBeingUpdated.releaseNotes
-    };
+    return extensionBeingUpdated;
+    // return {
+    //     Name: extensionBeingUpdated.name,
+    //     FriendlyName: extensionBeingUpdated.friendlyName,
+    //     Description: extensionBeingUpdated.description,
+    //     Version: extensionBeingUpdated.version,
+    //     Owner: extensionBeingUpdated.owner,
+    //     Url: extensionBeingUpdated.url,
+    //     Organization: extensionBeingUpdated.organization,
+    //     Email: extensionBeingUpdated.email,
+    //     License: extensionBeingUpdated.license,
+    //     ReleaseNotes: extensionBeingUpdated.releaseNotes
+    // };
 }
 
 function serializeQueryStringParameters(obj) {

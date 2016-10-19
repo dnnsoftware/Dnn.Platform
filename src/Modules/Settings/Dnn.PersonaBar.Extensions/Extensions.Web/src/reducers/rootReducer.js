@@ -4,12 +4,14 @@ import visiblePanel from "./visiblePanelReducer";
 import extension from "./extensionReducer";
 import installation from "./installationReducer";
 import folder from "./folderReducer";
+import moduleDefinition from "./moduleDefinitionReducer";
 const rootReducer = combineReducers({
     pagination,
     visiblePanel,
     extension,
     installation,
-    folder
+    folder,
+    moduleDefinition
 });
 
 export default rootReducer;

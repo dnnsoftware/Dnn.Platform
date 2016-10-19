@@ -16,7 +16,7 @@ export function validationMapExtensionBeingEdited(extensionBeingEdited) {
     Object.keys(_extensionBeingEdited).forEach((key) => {
         let validateRequired = getValidateRequired(key);
         _extensionBeingEdited[key] = {
-            value: _extensionBeingEdited[key],
+            value: typeof _extensionBeingEdited[key] !== "object" ? _extensionBeingEdited[key] : _extensionBeingEdited[key].value,
             validateRequired,
             error: false
         };

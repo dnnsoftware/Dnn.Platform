@@ -3,11 +3,6 @@ import EditAuthenticationSystem from "./AuthenticationSystem";
 import Module from "./Module";
 
 class CustomSettings extends Component {
-    componentWillMount(){
-        const { props } = this;
-        props.getPackageSettings();
-
-    }
     getExtensionSetting(props) {
         switch (props.type) {
             case "Auth_System":

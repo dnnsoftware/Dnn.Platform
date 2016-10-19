@@ -1,8 +1,10 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
-    PaginationActions
+    PaginationActions,
+    VisiblePanelActions,
+    ExtensionActions
 } from "actions";
 import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
@@ -34,21 +36,44 @@ class Body extends Component {
         const {props} = this;
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
+    selectPanel(panel, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(panel));
+    }
 
+    getPackageSettings() {
+    }
+    onEditExtension(extensionBeingEditedIndex, packageId) {
+        const { props } = this;
+        props.dispatch(ExtensionActions.editExtension({
+            packageId,
+            siteId: -1
+        }, extensionBeingEditedIndex,
+            openEditPanel => {
+                this.selectPanel(4);
+            }
+        ));
+    }
     render() {
         const {props, state} = this;
         return (
             <GridCell className="extension-body">
-                <SocialPanelHeader title={Localization.get("ExtensionsLabel") }>
-                    <Button type="primary" size="large" onClick={props.selectPanel.bind(this, 3) }>{Localization.get("ExtensionInstall.Action") }</Button>
-                    <Button type="secondary" size="large" onClick={props.selectPanel.bind(this, 2) }>{Localization.get("CreateExtension.Action") }</Button>
-                    <Button type="secondary" size="large" onClick={props.selectPanel.bind(this, 1) }>{Localization.get("CreateModule.Action") }</Button>
+                <SocialPanelHeader title={Localization.get("ExtensionsLabel")}>
+                    <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>
+                    <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 2)}>{Localization.get("CreateExtension.Action")}</Button>
+                    <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>
                 </SocialPanelHeader>
                 <SocialPanelBody>
                     <Tabs onSelect={this.handleSelect}
                         selectedIndex={props.tabIndex}
                         tabHeaders={[Localization.get("InstalledExtensions"), Localization.get("AvailableExtensions")]}>
-                        <InstalledExtensions onEdit={props.onEditExtension.bind(this, props.selectedInstalledPackageType) }/>
+                        <InstalledExtensions
+                            onEdit={this.onEditExtension.bind(this)}
+                            onCancel={this.selectPanel.bind(this, 0)}
+                            />
                         <AvailableExtensions />
                     </Tabs>
                 </SocialPanelBody >

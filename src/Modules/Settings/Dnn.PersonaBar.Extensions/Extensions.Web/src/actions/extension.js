@@ -5,7 +5,13 @@ import utilities from "utils";
 function errorCallback(message) {
     utilities.utilities.notifyError(message);
 }
-
+function valueMapExtensionBeingEdited(extensionBeingEdited) {
+    let _extensionBeingEdited = Object.assign({}, extensionBeingEdited);
+    Object.keys(_extensionBeingEdited).forEach((key) => {
+        _extensionBeingEdited[key] = _extensionBeingEdited[key].value;
+    });
+    return _extensionBeingEdited;
+}
 const extensionActions = {
     getInstalledPackages(type, callback) {
         return (dispatch) => {
@@ -67,7 +73,7 @@ const extensionActions = {
     },
     updateExtension(updatedExtension, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(updatedExtension, () => {
+            ExtensionService.updateExtension(valueMapExtensionBeingEdited(updatedExtension), () => {
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
@@ -120,17 +126,51 @@ const extensionActions = {
             }, errorCallback);
         };
     },
-    getPackageSettings(parameters, callback) {
+    editExtension(parameters, extensionBeingEditedIndex, callback) {
         return (dispatch) => {
             ExtensionService.getPackageSettings(parameters, (data) => {
                 dispatch({
-                    type: ActionTypes.RETRIEVED_PACKAGE_SETTINGS,
-                    payload: data
+                    type: ActionTypes.EDIT_EXTENSION,
+                    payload: {
+                        extensionBeingEdited: data,
+                        extensionBeingEditedIndex: extensionBeingEditedIndex
+                    }
                 });
                 if (callback) {
                     callback(data);
                 }
             }, errorCallback);
+        };
+    },
+    toggleTriedToSave() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.TOGGLE_TRIED_TO_SAVE
+            });
+        };
+    },
+    updateExtensionBeingEdited(extensionBeingEdited, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                payload: extensionBeingEdited
+            });
+            if (callback) {
+                setTimeout(() => {  //let JS propagate
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    toggleTabError(tabIndex, action) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.TOGGLE_TAB_ERROR,
+                payload: {
+                    tabIndex,
+                    action
+                }
+            });
         };
     }
 };

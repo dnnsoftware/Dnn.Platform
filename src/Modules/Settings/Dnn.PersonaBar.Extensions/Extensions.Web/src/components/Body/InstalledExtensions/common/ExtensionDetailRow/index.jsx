@@ -9,7 +9,7 @@ import { EditIcon, TrashIcon } from "dnn-svg-icons";
 const ExtensionDetailRow = ({_package, onEdit, onDelete}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
-            <img src={_package.packageIcon.replace("~", "")} />
+            <img src={_package.packageIcon && _package.packageIcon.replace("~", "")} />
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]}>
             <span className="package-name">{_package.friendlyName}</span>
@@ -28,7 +28,7 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete}) => (
         </GridCell>
         <GridCell columnSize={ColumnSizes[6]}>
             {_package.canDelete && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
-            <div className="extension-action" onClick={onEdit.bind(this, _package)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+            <div className="extension-action" onClick={onEdit.bind(this, _package.packageId)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
         </GridCell>
     </GridCell>
 );

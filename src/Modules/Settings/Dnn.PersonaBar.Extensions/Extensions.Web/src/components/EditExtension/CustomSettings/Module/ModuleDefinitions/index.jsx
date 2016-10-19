@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import DropdownWithError from "dnn-dropdown-with-error";
 import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Localization from "localization";
 import { AddIcon } from "dnn-svg-icons";
 import ModuleDefinitionRow from "./ModuleDefinitionRow";
 import Collapse from "react-collapse";
+import { ModuleDefinitionActions } from "actions";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -25,10 +25,28 @@ class ModuleDefinitions extends Component {
             addDefinitionOpened: !this.state.addDefinitionOpened
         });
     }
+    onEditModuleDefinition(moduleDefinitionBeingEdited, moduleDefinitionBeingEditedIndex) {
+        const { props } = this;
+
+        props.dispatch(ModuleDefinitionActions.editModuleDefinition(moduleDefinitionBeingEdited, moduleDefinitionBeingEditedIndex));
+        this.setState({});
+    }
+    clearModuleDefinitionBeingEdited() {
+        const { props } = this;
+
+        props.dispatch(ModuleDefinitionActions.clearModuleDefinitionBeingEdited());
+    }
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const { packageBeingEditedSettings } = props;
+        const moduleDefinitions = props.moduleDefinitions.map((moduleDefinition, index) => {
+            return <ModuleDefinitionRow
+                moduleDefinition={moduleDefinition}
+                isEditMode={props.moduleDefinitionBeingEditedIndex === index}
+                onCancel={this.clearModuleDefinitionBeingEdited.bind(this)} // Set definition being edited as null.
+                onEdit={this.onEditModuleDefinition.bind(this, moduleDefinition, index)} />;
+        });
+
         return (
             <GridCell className="module-definitions">
                 <GridCell className="header-container">
@@ -62,9 +80,7 @@ class ModuleDefinitions extends Component {
                             </GridCell>
                         </GridCell>
                     </Collapse>
-                    <ModuleDefinitionRow />
-                    <ModuleDefinitionRow />
-                    <ModuleDefinitionRow />
+                    {moduleDefinitions}
                 </GridCell>
             </GridCell>
         );
@@ -73,12 +89,14 @@ class ModuleDefinitions extends Component {
 }
 
 ModuleDefinitions.PropTypes = {
-    onCancel: PropTypes.func,
-    onUpdateExtension: PropTypes.func,
-    onChange: PropTypes.func,
-    disabled: PropTypes.func,
-    primaryButtonText: PropTypes.string,
-    packageBeingEditedSettings: PropTypes.object
+    dispatch: PropTypes.func.isRequired
 };
 
-export default ModuleDefinitions;
+function mapStateToProps(state) {
+    return {
+        moduleDefinitionBeingEdited: state.moduleDefinition.moduleDefinitionBeingEdited,
+        moduleDefinitionBeingEditedIndex: state.moduleDefinition.moduleDefinitionBeingEditedIndex
+    };
+}
+
+export default connect(mapStateToProps)(ModuleDefinitions);

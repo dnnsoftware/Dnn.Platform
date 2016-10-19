@@ -16,7 +16,7 @@ const licenseBoxStyle = {
 class License extends Component {
     render() {
         const {props} = this;
-        const {extensionBeingEdited} = props;
+        const {value} = props;
         /* eslint-disable react/no-danger */
         return (
             <GridCell style={{ padding: 50 }} className="extension-license extension-form">
@@ -24,16 +24,16 @@ class License extends Component {
                     <MultiLineInputWithError
                         label="License"
                         style={inputStyle}
-                        value={extensionBeingEdited.license}
+                        value={value}
                         onChange={props.onChange && props.onChange.bind(this, "license")} />}
                 {props.readOnly &&
                     <Scrollbars style={licenseBoxStyle}>
-                        <div className="read-only-license" dangerouslySetInnerHTML={{ __html: extensionBeingEdited.license }}></div>
+                        <div className="read-only-license" dangerouslySetInnerHTML={{ __html: value }}></div>
                     </Scrollbars>
                 }
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" onClick={props.onUpdateExtension.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -43,7 +43,8 @@ class License extends Component {
 License.PropTypes = {
     onCancel: PropTypes.func,
     readOnly: PropTypes.bool,
-    onUpdateExtension: PropTypes.func,
+    onSave: PropTypes.func,
+    value: PropTypes.string,
     onChange: PropTypes.func,
     primaryButtonText: PropTypes.string
 };

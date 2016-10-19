@@ -3,11 +3,13 @@ import visiblePanel from "./visiblePanel";
 import extension from "./extension";
 import installation from "./installation";
 import folder from "./folder";
+import moduleDefinition from "./moduleDefinition";
 
 export {
     pagination,
     visiblePanel,
     extension,
     installation,
-    folder
+    folder,
+    moduleDefinition
 };

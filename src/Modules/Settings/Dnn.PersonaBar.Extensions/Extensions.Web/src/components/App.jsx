@@ -45,36 +45,14 @@ class App extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(panel));
     }
 
-    onEditExtension(extensionType, extensionBeingEditedIndex, extensionBeingEdited) {
-        const {props} = this;
-        extensionBeingEdited = Object.assign(JSON.parse(JSON.stringify(extensionBeingEdited)), { type: extensionType });
-        this.setState({
-            extensionBeingEdited,
-            extensionBeingEditedIndex
-        });
-        props.dispatch(VisiblePanelActions.selectPanel(4));
-    }
-    onUpdateExtension(extensionBeingEdited) {
-        const {props, state} = this;
-        props.dispatch(ExtensionActions.updateExtension(extensionBeingEdited, state.extensionBeingEditedIndex));
-        this.selectPanel(0);
-    }
-
-    getPackageSettings(packageId) {
-        const { props } = this;
-        props.dispatch(ExtensionActions.getPackageSettings({
-            packageId: this.state.extensionBeingEdited.packageId,
-            siteId: -1
-        }));
-    }         
-    /* End Extension CRUD methods */                                                   
+    /* End Extension CRUD methods */
 
     render() {
         const {props, state} = this;
         return (
             <div className="extensions-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0} className={(props.selectedPage !== 0 ? "hidden" : "")}>
-                    <Body onEditExtension={this.onEditExtension.bind(this)} selectPanel={this.selectPanel.bind(this)} />
+                    <Body />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
                     {props.selectedPage === 1 && <NewModuleModal onCancel={this.selectPanel.bind(this, 0)} />}
@@ -87,13 +65,7 @@ class App extends Component {
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 4}>
                     {props.selectedPage === 4 &&
-                        <EditExtension
-                            extensionBeingEdited={state.extensionBeingEdited}
-                            packageBeingEditedSettings={props.packageBeingEditedSettings}
-                            onCancel={this.selectPanel.bind(this, 0)}
-                            getPackageSettings={this.getPackageSettings.bind(this)}
-                            onUpdateExtension={this.onUpdateExtension.bind(this)}
-                            />
+                        <EditExtension />
                     }
                 </PersonaBarPage>
             </div>
@@ -113,8 +85,7 @@ function mapStateToProps(state) {
         packageTypes: state.extension.packageTypes,
         installedPackages: state.extension.installedPackages,
         selectedPage: state.visiblePanel.selectedPage,
-        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        packageBeingEditedSettings: state.extension.packageBeingEditedSettings
+        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex
     };
 }
 
