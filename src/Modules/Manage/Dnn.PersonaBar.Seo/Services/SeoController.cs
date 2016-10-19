@@ -11,17 +11,23 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.Seo.Components;
 using Dnn.PersonaBar.Seo.Services.Dto;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Seo.Services
@@ -30,7 +36,7 @@ namespace Dnn.PersonaBar.Seo.Services
     public class SeoController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
-        private readonly Components.SeoController _controller = new Components.SeoController();
+        //private readonly Components.SeoController _controller = new Components.SeoController();
         private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Seo.resx");
 
         /// GET: api/SEO/GetGeneralSettings
@@ -259,8 +265,106 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch
             {
+                //ignore
             }
             return false;
+        }
+
+        /// <summary>
+        /// Tests the internal URL
+        /// </summary>
+        /// <returns>Various forms of the URL and any messages when they exist</returns>
+        /// <example>
+        /// GET /API/PersonaBar/Admin/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page
+        /// </example>
+        [HttpGet]
+        public HttpResponseMessage TestUrl(int pageId, string queryString, string customPageName)
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Urls = TestUrlInternal(pageId, queryString, customPageName)
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private IEnumerable<string> TestUrlInternal(int pageId, string queryString, string customPageName)
+        {
+            var provider = new DNNFriendlyUrlProvider();
+            var tab = TabController.Instance.GetTab(pageId, PortalId, false);
+            var pageName = string.IsNullOrEmpty(customPageName) ? Globals.glbDefaultPage : customPageName;
+            return PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).
+                Select(alias => provider.FriendlyUrl(
+                    tab, "~/Default.aspx?tabId=" + pageId + "&" + queryString, pageName, alias.HTTPAlias));
+        }
+
+        /// GET: api/SEO/TestUrlRewrite
+        /// <summary>
+        /// Tests the rewritten URL
+        /// </summary>
+        /// <returns>Rewitten URL and few other information about the URL ( language, redirection result and reason, messages)</returns>
+        /// <example>
+        /// GET /API/PersonaBar/Admin/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page
+        /// </example>
+        [HttpGet]
+        public HttpResponseMessage TestUrlRewrite(string uri)
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    RewritingResult = TestUrlRewritingInternal(uri)
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private UrlRewritingResult TestUrlRewritingInternal(string uriString)
+        {
+            var rewritingResult = new UrlRewritingResult();
+            try
+            {
+                var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
+                var uri = new Uri(uriString);
+                var provider = new AdvancedUrlRewriter();
+                var result = new UrlAction(uri.Scheme, uriString, Globals.ApplicationMapPath)
+                {
+                    RawUrl = uriString
+                };
+                var httpContext = new HttpContext(HttpContext.Current.Request, new HttpResponse(new StringWriter()));
+                provider.ProcessTestRequestWithContext(httpContext, uri, true, result, new FriendlyUrlSettings(PortalId));
+                rewritingResult.RewritingResult = string.IsNullOrEmpty(result.RewritePath) ? noneText : result.RewritePath;
+                rewritingResult.Culture = string.IsNullOrEmpty(result.CultureCode) ? noneText : result.CultureCode;
+                var tab = TabController.Instance.GetTab(result.TabId, result.PortalId, false);
+                rewritingResult.IdentifiedPage = (tab != null ? tab.TabName : noneText);
+                rewritingResult.RedirectionReason = Localization.GetString(result.Reason.ToString());
+                rewritingResult.RedirectionResult = result.FinalUrl;
+                var messages = new StringBuilder();
+                foreach (var message in result.DebugMessages)
+                {
+                    messages.AppendLine(message);
+                }
+                rewritingResult.OperationMessages = messages.ToString();
+            }
+            catch (Exception ex)
+            {
+                rewritingResult.OperationMessages = ex.Message;
+            }
+            return rewritingResult;
         }
     }
 }

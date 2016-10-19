@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -311,6 +311,7 @@
   <data name="validFriendlyUrlRegExInvalidPattern.Text" xml:space="preserve">
     <value>Valid Friendly URL Regular Expression is invalid</value>
   </data>
+<<<<<<< 4f1727d784a54e6d54708643ddf2d97aedcd04db
   <data name="TestPageUrl.Text" xml:space="preserve">
     <value>TEST A PAGE URL</value>
   </data>
@@ -355,5 +356,101 @@
   </data>
   <data name="testUrlRewritingLabel.Help" xml:space="preserve">
     <value>Enter a fully-qualified URL (including http:// or https://) into this box in order to test out the URL Rewriting / Redirecting.</value>
+  </data>
+  <data name="Alias_In_Url.Text" xml:space="preserve">
+    <value>Alias In Url</value>
+  </data>
+  <data name="Built_In_Url.Text" xml:space="preserve">
+    <value>Built In Url</value>
+  </data>
+  <data name="Custom_Tab_Alias.Text" xml:space="preserve">
+    <value>Custom Tab Alias</value>
+  </data>
+  <data name="Deleted_Page.Text" xml:space="preserve">
+    <value>Deleted Page</value>
+  </data>
+  <data name="Diacritic_Characters.Text" xml:space="preserve">
+    <value>Diacritic Characters</value>
+  </data>
+  <data name="Disabled_Page.Text" xml:space="preserve">
+    <value>Disabled Page</value>
+  </data>
+  <data name="Error_Event.Text" xml:space="preserve">
+    <value>Error Event</value>
+  </data>
+  <data name="Exception.Text" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="File_Url.Text" xml:space="preserve">
+    <value>File Url</value>
+  </data>
+  <data name="Host_Portal_Used.Text" xml:space="preserve">
+    <value>Host Portal Used</value>
+  </data>
+  <data name="Module_Provider_Redirect.Text" xml:space="preserve">
+    <value>Module Provider Redirect</value>
+  </data>
+  <data name="Module_Provider_Rewrite_Redirect.Text" xml:space="preserve">
+    <value>Module Provider Rewrite Redirect</value>
+  </data>
+  <data name="Not_Redirected.Text" xml:space="preserve">
+    <value>Not Redirected</value>
+  </data>
+  <data name="No_Portal_Alias.Text" xml:space="preserve">
+    <value>No Portal Alias</value>
+  </data>
+  <data name="Page_404.Text" xml:space="preserve">
+    <value>Page 404</value>
+  </data>
+  <data name="Requested_404.Text" xml:space="preserve">
+    <value>Requested 404</value>
+  </data>
+  <data name="Requested_404_In_Url.Text" xml:space="preserve">
+    <value>Requested 404 In Url</value>
+  </data>
+  <data name="Requested_SplashPage.Text" xml:space="preserve">
+    <value>Requested SplashPage</value>
+  </data>
+  <data name="Secure_Page_Requested.Text" xml:space="preserve">
+    <value>Secure Page Requested</value>
+  </data>
+  <data name="SiteUrls_Config_Rule.Text" xml:space="preserve">
+    <value>SiteUrls Config Rule</value>
+  </data>
+  <data name="Site_Root_Home.Text" xml:space="preserve">
+    <value>Site Root Home</value>
+  </data>
+  <data name="Spaces_Replaced.Text" xml:space="preserve">
+    <value>Spaces Replaced</value>
+  </data>
+  <data name="Tab_External_Url.Text" xml:space="preserve">
+    <value>Tab External Url</value>
+  </data>
+  <data name="Tab_Permanent_Redirect.Text" xml:space="preserve">
+    <value>Tab Permanent Redirect</value>
+  </data>
+  <data name="Unfriendly_Url_Child_Portal.Text" xml:space="preserve">
+    <value>Unfriendly Url Child Portal</value>
+  </data>
+  <data name="Unfriendly_Url_TabId.Text" xml:space="preserve">
+    <value>Unfriendly Url TabId</value>
+  </data>
+  <data name="User_Profile_Url.Text" xml:space="preserve">
+    <value>User Profile Url</value>
+  </data>
+  <data name="Wrong_Portal_Alias.Text" xml:space="preserve">
+    <value>Wrong Portal Alias</value>
+  </data>
+  <data name="Wrong_Portal_Alias_For_Browser_Type.Text" xml:space="preserve">
+    <value>Wrong Portal Alias For Browser Type</value>
+  </data>
+  <data name="Wrong_Portal_Alias_For_Culture.Text" xml:space="preserve">
+    <value>Wrong Portal Alias For Culture</value>
+  </data>
+  <data name="Wrong_Portal_Alias_For_Culture_And_Browser.Text" xml:space="preserve">
+    <value>Wrong Portal Alias For Culture And Browser</value>
+  </data>
+  <data name="Wrong_Sub_Domain.Text" xml:space="preserve">
+    <value>Wrong Sub Domain</value>
   </data>
 </root>
