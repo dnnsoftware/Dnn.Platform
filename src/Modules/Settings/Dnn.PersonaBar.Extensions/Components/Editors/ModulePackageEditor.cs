@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
@@ -77,10 +78,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                                 desktopModule.Shareable = (ModuleSharing) Convert.ToInt32(settingValue);
                                 break;
                             case "assignportal":
-                                AssignPortal(desktopModule, Convert.ToInt32(settingValue));
+                                AssignPortals(desktopModule, settingValue);
                                 break;
                             case "unassignportal":
-                                UnassignPortal(desktopModule, Convert.ToInt32(settingValue));
+                                UnassignPortals(desktopModule, settingValue);
                                 break;
                             /*
                             case "savedefinition":
@@ -241,14 +242,33 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
         }
 
-        private void UnassignPortal(DesktopModuleInfo desktopModule, int portalId)
+        private static void UnassignPortals(DesktopModuleInfo desktopModule, string csvPortalsList)
         {
-            DesktopModuleController.AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, true, true);
+            foreach (var portalId in EnumerateCsvList(csvPortalsList))
+            {
+                DesktopModuleController.AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, true, true);
+            }
         }
 
-        private void AssignPortal(DesktopModuleInfo desktopModule, int portalId)
+        private static void AssignPortals(DesktopModuleInfo desktopModule, string csvPortalsList)
         {
-            DesktopModuleController.RemoveDesktopModuleFromPortal(portalId, desktopModule.DesktopModuleID, true);
+            foreach(var portalId in EnumerateCsvList(csvPortalsList))
+            {
+                DesktopModuleController.RemoveDesktopModuleFromPortal(portalId, desktopModule.DesktopModuleID, true);
+            }
+        }
+
+        private static IEnumerable<int> EnumerateCsvList(string csvList)
+        {
+            var list = (csvList ?? "").Split(',').Where(s => !string.IsNullOrEmpty(s));
+            foreach (var str in list)
+            {
+                int portalId;
+                if (int.TryParse(str, out portalId))
+                {
+                    yield return portalId;
+                }
+            }
         }
 
         /*
