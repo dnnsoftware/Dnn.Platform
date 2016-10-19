@@ -430,7 +430,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
                     {
                         var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                        if (authService.AuthenticationType == Constants.DnnAuthTypeName)
+                        if (authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName)
                         {
                             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                                 Localization.GetString("ReadOnlyPackage.SaveErrorMessage"));

@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-            ReadOnly = authService.AuthenticationType == Constants.DnnAuthTypeName;
+            ReadOnly = authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName;
         }
 
         public PackageInfo ToPackageInfo()
@@ -132,7 +132,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
                 Owner = Owner,
                 Organization = Organization,
                 Url = Url,
-                Email = Email
+                Email = Email,
+                IconFile = PackageIcon,
             };
         }
     }
