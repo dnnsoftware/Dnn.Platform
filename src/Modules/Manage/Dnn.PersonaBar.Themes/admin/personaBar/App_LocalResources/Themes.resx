@@ -201,4 +201,10 @@
   <data name="RestoreThemeConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to restore default theme?</value>
   </data>
+  <data name="ApplyConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to apply this theme?</value>
+  </data>
+  <data name="DeleteConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this theme?</value>
+  </data>
 </root>

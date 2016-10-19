@@ -12,6 +12,7 @@ const themeActionTypes = {
     RESTORE_THEME: "RESTORE_THEME",
 
     RETRIEVED_THEMES: "RETRIEVED_THEMES",
-    APPLY_THEME: "APPLY_THEME"
+    APPLY_THEME: "APPLY_THEME",
+    APPLY_DEFAULT_THEME: "APPLY_DEFAULT_THEME"    
 };
 export default themeActionTypes;

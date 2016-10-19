@@ -230,6 +230,36 @@ namespace Dnn.PersonaBar.Themes.Components
         }
 
         /// <summary>
+        /// update portal skin.
+        /// </summary>
+        /// <param name="portalSettings">portal settings.</param>
+        /// <param name="themeName"></param>
+        public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName)
+        {
+            var skin = GetLayouts(portalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                .FirstOrDefault(t => t.PackageName == themeName);
+            if (skin != null)
+            {
+                var skinFile = GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
+                if (skinFile != null)
+                {
+                    ApplyTheme(portalSettings.PortalId, skinFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                }
+            }
+
+            var container = GetContainers(portalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                .FirstOrDefault(t => t.PackageName == themeName);
+            if (container != null)
+            {
+                var containerFile = GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
+                if (containerFile != null)
+                {
+                    ApplyTheme(portalSettings.PortalId, containerFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                }
+            }
+        }
+
+        /// <summary>
         /// delete a skin or container.
         /// </summary>
         /// <param name="portalSettings"></param>

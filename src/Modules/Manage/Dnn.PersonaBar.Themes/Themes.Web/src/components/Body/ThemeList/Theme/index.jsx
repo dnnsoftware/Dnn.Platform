@@ -46,11 +46,13 @@ class Theme extends Component {
         return className;
     }
 
-    setSiteTheme(){
+    applyDefaultTheme(){
         const {props, state} = this;
         let theme = props.theme;
 
-        //props.dispatch(ThemeActions.applyTheme(themeFile, 1));
+        utils.utilities.confirm(Localization.get("ApplyConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function(){
+            props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName));
+        });
     }
 
     previewTheme(){
@@ -73,7 +75,7 @@ class Theme extends Component {
         return <span className="actions">
             <ul>
                 <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
-                <li><SvgIcon name="Apply" /></li>
+                <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
                 <li><SvgIcon name="Trash" /></li>
             </ul>
         </span>;

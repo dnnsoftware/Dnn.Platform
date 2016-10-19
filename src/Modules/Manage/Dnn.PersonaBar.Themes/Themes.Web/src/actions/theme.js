@@ -168,6 +168,21 @@ const themeActions = {
                  }
              }, errorCallback);
          };
+     },
+     applyDefaultTheme(themeName, callback) {
+         return (dispatch) => {
+             ThemeService.applyDefaultTheme(themeName, data => {
+                 dispatch({
+                     type: ActionTypes.APPLY_DEFAULT_THEME,
+                     data: {
+                         currentTheme: data
+                     }
+                 });
+                 if (callback) {
+                     callback();
+                 }
+             }, errorCallback);
+         };
      }
 };
 

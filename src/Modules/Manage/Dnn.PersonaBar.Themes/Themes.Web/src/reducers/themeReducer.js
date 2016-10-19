@@ -50,6 +50,10 @@ export default function theme(state = {
             return { ...state,
                 currentTheme: action.data.currentTheme
             };
+        case ActionTypes.APPLY_DEFAULT_THEME:
+            return { ...state,
+                currentTheme: action.data.currentTheme
+            };
         default:
             return { ...state
             };

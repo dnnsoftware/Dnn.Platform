@@ -75,5 +75,12 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="type"></param>
         /// <returns></returns>
         ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type);
+
+        /// <summary>
+        /// update portal skin.
+        /// </summary>
+        /// <param name="portalSettings">portal settings.</param>
+        /// <param name="themeName"></param>
+        void ApplyDefaultTheme(PortalSettings portalSettings, string themeName);
     }
 }

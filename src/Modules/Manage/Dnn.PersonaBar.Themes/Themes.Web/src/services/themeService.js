@@ -67,6 +67,11 @@ class ThemeService {
         const sf = this.getServiceFramework("Themes");
         sf.post("RestoreTheme", {}, callback, errorCallback);
     }
+
+    applyDefaultTheme(themeName, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.post("ApplyDefaultTheme", {themeName: themeName}, callback, errorCallback);
+    }
 }
     
 const themeService = new ThemeService();
