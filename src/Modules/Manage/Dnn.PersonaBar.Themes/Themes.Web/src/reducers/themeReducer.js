@@ -44,6 +44,12 @@ export default function theme(state = {
             };
         case ActionTypes.UPDATE_THEME:
             return { ...state};
+        case ActionTypes.PARSE_THEME:
+            return { ...state};
+        case ActionTypes.RESTORE_THEME:
+            return { ...state,
+                currentTheme: action.data.currentTheme
+            };
         default:
             return { ...state
             };

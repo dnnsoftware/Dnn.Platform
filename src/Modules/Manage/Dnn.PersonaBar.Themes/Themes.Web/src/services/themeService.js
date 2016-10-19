@@ -57,6 +57,16 @@ class ThemeService {
         const sf = this.getServiceFramework("Themes");
         sf.post("UpdateTheme", {path: path, token: token, setting: setting, value: value}, callback, errorCallback);
     }
+
+    parseTheme(themeName, themeType, parseType, callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.post("ParseTheme", {themeName: themeName, themeType: themeType, parseType: parseType}, callback, errorCallback);
+    }
+
+    restoreTheme(callback, errorCallback){
+        const sf = this.getServiceFramework("Themes");
+        sf.post("RestoreTheme", {}, callback, errorCallback);
+    }
 }
     
 const themeService = new ThemeService();
