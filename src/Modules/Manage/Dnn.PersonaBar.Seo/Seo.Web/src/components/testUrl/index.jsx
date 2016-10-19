@@ -35,16 +35,21 @@ class TestUrlPanelBody extends Component {
 
     }
 
-    componentWillReceiveProps(props) {
-
-    }
-
     onSettingChange(key, event) {
         let {state, props} = this;
         let test = Object.assign({}, state.test);
 
         if (key === "PageToTest") {
-            test[key] = event.value;
+            test[key] = event;
+            if(test[key] === "-1"){
+                props.dispatch(SeoActions.clearUrlTestResults());
+            }
+        }
+        else if(key === "UrlToTest") {
+            test[key] = typeof (event) === "object" ? event.target.value : event;
+            if(test[key] === ""){
+                props.dispatch(SeoActions.clearUrlRewritingTestResults());
+            }
         }
         else {
             test[key] = typeof (event) === "object" ? event.target.value : event;
@@ -66,11 +71,13 @@ class TestUrlPanelBody extends Component {
     }
 
     onTestPage() {
-
+        let {state, props} = this;
+        props.dispatch(SeoActions.testUrl(state.test.PageToTest, state.test.QueryString, state.test.CustomPageName));
     }
 
     onTestUrl() {
-
+        let {state, props} = this;
+        props.dispatch(SeoActions.testUrlRewrite(state.test.UrlToTest));
     }
 
     /* eslint-disable react/no-danger */
@@ -91,7 +98,7 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("selectPageToTestLabel.Help")}
-                    label={resx.get("selectPageToTestLabel")}
+                    label={resx.get("selectPageToTestLabel") + "*"}
                     />
                 <PagePicker
                     serviceFramework={util.utilities.sf}
@@ -112,8 +119,8 @@ class TestUrlPanelBody extends Component {
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
-                    value={state.test.CustomPageName}
-                    onChange={this.onSettingChange.bind(this, "CustomPageName")}
+                    value={state.test.QueryString}
+                    onChange={this.onSettingChange.bind(this, "QueryString")}
                     />
             </InputGroup>
             <InputGroup>
@@ -125,14 +132,14 @@ class TestUrlPanelBody extends Component {
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
-                    value={state.test.QueryString}
-                    onChange={this.onSettingChange.bind(this, "QueryString")}
+                    value={state.test.CustomPageName}
+                    onChange={this.onSettingChange.bind(this, "CustomPageName")}
                     />
             </InputGroup>
             <div className="buttons-box">
                 <Button
-                    disabled={!this.state.test.PageToTest}
-                    type="primary"
+                    disabled={!this.state.test.PageToTest || this.state.test.PageToTest === "-1"}
+                    type="secondary"
                     onClick={this.onTestPage.bind(this)}>
                     {resx.get("TestUrlButtonCaption")}
                 </Button>
@@ -145,7 +152,7 @@ class TestUrlPanelBody extends Component {
                     label={resx.get("resultingUrlsLabel")}
                     />
                 <MultiLineInput
-                    value={props.pageTestResults}
+                    value={props.urls}
                     enabled={false}
                     />
             </InputGroup>
@@ -155,7 +162,7 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("testUrlRewritingLabel.Help")}
-                    label={resx.get("testUrlRewritingLabel")}
+                    label={resx.get("testUrlRewritingLabel") + "*"}
                     />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
@@ -168,7 +175,7 @@ class TestUrlPanelBody extends Component {
             <div className="buttons-box">
                 <Button
                     disabled={!this.state.test.UrlToTest}
-                    type="primary"
+                    type="secondary"
                     onClick={this.onTestUrl.bind(this)}>
                     {resx.get("testUrlRewritingButton")}
                 </Button>
@@ -176,7 +183,84 @@ class TestUrlPanelBody extends Component {
         </div>;
 
         const columnFour = <div className="right-column">
-
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("rewritingResultLabel.Help")}
+                    label={resx.get("rewritingResultLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.rewritingResult}
+                    />
+            </InputGroup>
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("languageLabel.Help")}
+                    label={resx.get("languageLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.culture}
+                    />
+            </InputGroup>
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("identifiedTabLabel.Help")}
+                    label={resx.get("identifiedTabLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.identifiedPage}
+                    />
+            </InputGroup>
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("redirectionResultLabel.Help")}
+                    label={resx.get("redirectionResultLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.redirectionResult}
+                    />
+            </InputGroup>
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("redirectionReasonLabel.Help")}
+                    label={resx.get("redirectionReasonLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.redirectionReason}
+                    />
+            </InputGroup>
+            <InputGroup>
+                <Label
+                    tooltipMessage={resx.get("operationMessagesLabel.Help")}
+                    label={resx.get("operationMessagesLabel")}
+                    />
+                <SingleLineInputWithError
+                    inputStyle={{ margin: "0" }}
+                    withLabel={false}
+                    error={false}
+                    enabled={false}
+                    value={props.operationMessages}
+                    />
+            </InputGroup>
         </div>;
 
         return (
@@ -193,12 +277,25 @@ class TestUrlPanelBody extends Component {
 TestUrlPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    pageTestResults: PropTypes.string
+    urls: PropTypes.string,
+    rewritingResult: PropTypes.string,
+    culture: PropTypes.string,
+    identifiedPage: PropTypes.string,
+    redirectionReason: PropTypes.string,
+    redirectionResult: PropTypes.string,
+    operationMessages: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
-        tabIndex: state.pagination.tabIndex
+        tabIndex: state.pagination.tabIndex,
+        urls: state.seo.urls,
+        rewritingResult: state.seo.rewritingResult,
+        culture: state.seo.culture,
+        identifiedPage: state.seo.identifiedPage,
+        redirectionReason: state.seo.redirectionReason,
+        redirectionResult: state.seo.redirectionResult,
+        operationMessages: state.seo.operationMessages
     };
 }
 

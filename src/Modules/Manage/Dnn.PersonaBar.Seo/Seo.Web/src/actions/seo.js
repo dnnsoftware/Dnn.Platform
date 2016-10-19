@@ -1,4 +1,4 @@
-import {seo as ActionTypes}  from "../constants/actionTypes";
+import { seo as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
@@ -57,7 +57,7 @@ const siteInfoActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SEO_REGEX_SETTINGS,
                     data: {
-                        regexSettings: data.Settings,                        
+                        regexSettings: data.Settings,
                         clientModified: false
                     }
                 });
@@ -93,6 +93,66 @@ const siteInfoActions = {
                 data: {
                     regexSettings: parameter,
                     clientModified: true
+                }
+            });
+        };
+    },
+    testUrl(pageId, queryString, customPageName, callback) {
+        return (dispatch) => {
+            ApplicationService.testUrl(pageId, queryString, customPageName, data => {
+                dispatch({
+                    type: ActionTypes.TESTED_SEO_PAGE_URL,
+                    data: {
+                        urls: data.Urls.join("\n")
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    testUrlRewrite(uri, callback) {
+        return (dispatch) => {
+            ApplicationService.testUrlRewrite(uri, data => {
+                dispatch({
+                    type: ActionTypes.TESTED_SEO_URL_REWRITING,
+                    data: {
+                        rewritingResult: data.RewritingResult.rewritingResult,
+                        culture: data.RewritingResult.culture,
+                        identifiedPage: data.RewritingResult.identifiedPage,
+                        redirectionReason: data.RewritingResult.redirectionReason,
+                        redirectionResult: data.RewritingResult.redirectionResult,
+                        operationMessages: data.RewritingResult.operationMessages
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    clearUrlTestResults() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CLEARED_SEO_TEST_PAGE_URL_RESULTS,
+                data: {
+                    urls: ""
+                }
+            });
+        };
+    },
+    clearUrlRewritingTestResults() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CLEARED_SEO_TEST_URL_REWRITING_RESULTS,
+                data: {
+                    rewritingResult: "",
+                    culture: "",
+                    identifiedPage: "",
+                    redirectionReason: "",
+                    redirectionResult: "",
+                    operationMessages: ""
                 }
             });
         };

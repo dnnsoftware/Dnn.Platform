@@ -356,6 +356,42 @@
   <data name="testUrlRewritingLabel.Help" xml:space="preserve">
     <value>Enter a fully-qualified URL (including http:// or https://) into this box in order to test out the URL Rewriting / Redirecting.</value>
   </data>
+  <data name="rewritingResultLabel.Help" xml:space="preserve">
+    <value>Shows the rewritten URL, in the raw format that will be seen by the DNN platform and third-party extensions.</value>
+  </data>
+  <data name="rewritingResultLabel.Text" xml:space="preserve">
+    <value>Rewriting Result</value>
+  </data>
+  <data name="languageLabel.Help" xml:space="preserve">
+    <value>Shows the culture code as identified during the URL Rewriting process.</value>
+  </data>
+  <data name="languageLabel.Text" xml:space="preserve">
+    <value>Identified Language / Culture</value>
+  </data>
+  <data name="identifiedTabLabel.Help" xml:space="preserve">
+    <value>The name of the DNN page that has been identified during the URL Rewriting process.</value>
+  </data>
+  <data name="identifiedTabLabel.Text" xml:space="preserve">
+    <value>Identified Page</value>
+  </data>
+  <data name="redirectionResultLabel.Help" xml:space="preserve">
+    <value>If the tested URL is to be redirected, shows the redirect location of the URL.</value>
+  </data>
+  <data name="redirectionResultLabel.Text" xml:space="preserve">
+    <value>Redirection Result</value>
+  </data>
+  <data name="redirectionReasonLabel.Help" xml:space="preserve">
+    <value>Reason that this URL was redirected</value>
+  </data>
+  <data name="redirectionReasonLabel.Text" xml:space="preserve">
+    <value>Redirection Reason</value>
+  </data>
+  <data name="operationMessagesLabel.Help" xml:space="preserve">
+    <value>Any debug messages created during the test URL Rewriting process.</value>
+  </data>
+  <data name="operationMessagesLabel.Text" xml:space="preserve">
+    <value>Operation Messages</value>
+  </data>
   <data name="Alias_In_Url.Text" xml:space="preserve">
     <value>Alias In Url</value>
   </data>

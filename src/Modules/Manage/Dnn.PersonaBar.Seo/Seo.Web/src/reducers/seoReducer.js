@@ -33,6 +33,21 @@ export default function seoSettings(state = {
             return { ...state,
                 clientModified: action.data.clientModified
             };
+        case ActionTypes.TESTED_SEO_PAGE_URL:
+        case ActionTypes.CLEARED_SEO_TEST_PAGE_URL_RESULTS:
+            return { ...state,
+                urls: action.data.urls
+            };
+        case ActionTypes.TESTED_SEO_URL_REWRITING:
+        case ActionTypes.CLEARED_SEO_TEST_URL_REWRITING_RESULTS:
+            return { ...state,
+                rewritingResult: action.data.rewritingResult,
+                culture: action.data.culture,
+                identifiedPage: action.data.identifiedPage,
+                redirectionReason: action.data.redirectionReason,
+                redirectionResult: action.data.redirectionResult,
+                operationMessages: action.data.operationMessages
+            };
         default:
             return { ...state
             };

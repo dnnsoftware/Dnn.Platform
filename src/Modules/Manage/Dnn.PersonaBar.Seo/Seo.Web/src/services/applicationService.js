@@ -37,6 +37,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SEO");
         sf.post("UpdateRegexSettings", payload, callback, failureCallback);
     }
+
+    testUrl(pageId, queryString, customPageName, callback) {
+        const sf = this.getServiceFramework("SEO");        
+        sf.get("TestUrl?pageId=" + pageId + "&queryString=" + encodeURIComponent(queryString) + "&customPageName=" + encodeURIComponent(customPageName), {}, callback);
+    }   
+
+    testUrlRewrite(uri, callback) {
+        const sf = this.getServiceFramework("SEO");        
+        sf.get("TestUrlRewrite?uri=" + uri, {}, callback);
+    }   
 }
 const applicationService = new ApplicationService();
 export default applicationService;
