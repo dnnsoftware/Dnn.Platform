@@ -4,7 +4,11 @@ import HeaderRow from "./HeaderRow";
 import DetailRow from "./DetailRow";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
+import CollapsibleSwitcher from "../../common/CollapsibleSwitcher";
+import Button from "dnn-button";
+import CreateUserBox from "../CreateUserBox";
 import "./style.less";
+
 
 const radioButtonOptions = [
     {
@@ -20,19 +24,78 @@ const radioButtonOptions = [
 class UserTable extends Component {
     constructor() {
         super();
+        this.state = {
+            openId: "",
+            renderIndex: -1
+        };
     }
-
-
+    uncollapse(id, index) {
+        setTimeout(() => {
+            this.setState({
+                openId: id,
+                renderIndex: index
+            });
+        });
+    }
+    collapse() {
+        if (this.state.openId !== "") {
+            this.setState({
+                openId: "",
+                renderIndex: -1
+            });
+        }
+    }
+    toggle(openId, index) {
+        if (openId !== "") {
+            this.uncollapse(openId, index);
+        } else {
+            this.collapse();
+        }
+    }
+    onAddUser() {
+        this.toggle(this.state.openId === "add" ? "" : "add", 0);
+    }
     render() {
-        const {props, state} = this;
-
+        const {props} = this;
+        let i = 0;
+        let opened = (this.state.openId === "add");
         return (
             <GridCell>
                 <HeaderRow />
-                {props.users && props.users.map((user) => {
-
-                    return <DetailRow user={user}/>;
-                }) }
+                {opened && <DetailRow
+                    Collapse={this.collapse.bind(this) }
+                    OpenCollapse={this.toggle.bind(this) }
+                    currentIndex={this.state.renderIndex}
+                    openId={this.state.openId }
+                    key={"user-add"}
+                    id={"add"}>
+                    <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
+                </DetailRow>
+                }
+                {
+                    props.users && props.users.map((user, index) => {
+                        let id = "row-" + i++;
+                        let children = [
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 0. OpenId: {this.state.openId}
+                                <Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button>
+                            </div>,
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 1. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 2. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 3. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 4. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>
+                        ];
+                        return <DetailRow
+                            user={user}
+                            Collapse={this.collapse.bind(this) }
+                            OpenCollapse={this.toggle.bind(this) }
+                            currentIndex={this.state.renderIndex}
+                            openId={this.state.openId }
+                            key={"user-" + index}
+                            id={id}>
+                            <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex}/>
+                        </DetailRow>;
+                    })
+                }
             </GridCell>
         );
     }
@@ -40,14 +103,16 @@ class UserTable extends Component {
 
 UserTable.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number
+    tabIndex: PropTypes.number,
+    totalUsers: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        users: state.users.users
+        users: state.users.users,
+        totalUsers: state.users.totalUsers
     };
 }
 
-export default connect(mapStateToProps)(UserTable);
+export default connect(mapStateToProps, null, null, { withRef: true })(UserTable);

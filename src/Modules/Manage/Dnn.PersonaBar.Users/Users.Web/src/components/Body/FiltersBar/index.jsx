@@ -21,11 +21,13 @@ class FiltersBar extends Component {
         let { label} = option;
         let { value} = option;
         let {selectedUserFilter} = this.state;
-        selectedUserFilter.label = label;
-        selectedUserFilter.value = value;
-        this.setState({
-            selectedUserFilter
-        }, () => { this.props.onChange(option, this.state.searchText); });
+        if (value !== selectedUserFilter.value) {
+            selectedUserFilter.label = label;
+            selectedUserFilter.value = value;
+            this.setState({
+                selectedUserFilter
+            }, () => { this.props.onChange(option, this.state.searchText); });
+        }
     }
 
     onKeywordChanged(text) {
@@ -47,11 +49,11 @@ class FiltersBar extends Component {
 
     render() {
         let userFiltersOptions = this.BuildUserFiltersOptions();
-        return <div className="filter-container">
+        return <div className="users-filter-container">
             <GridCell columnSize={35} >
                 {
                     userFiltersOptions.length > 0 &&
-                    <div className="userFilters-filter">
+                    <div className="user-filters-filter">
                         <DropDown  style={{ width: "100%" }}
                             withBorder={false}
                             options={userFiltersOptions}

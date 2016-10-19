@@ -2,24 +2,40 @@
 :local(.extensionDetailRow) {
     padding: 15px 0 7.5px;
     border-bottom: 1px solid @alto;
-    .user-avatar{
-    text-align: center;
-        img{
+    .user-avatar {
+        text-align: center;
+        img {
             border-radius: 25px;
             width: 40px;
         }
     }
-    .user-names{
-        h6{
+    .user-names {
+        h6 {
             font-size: 15px;
+        }
+        p {
+            text-transform: lowercase;
         }
     }
     .extension-action {
-        width: 20px;
-        height: 20px;
-        float: left;
+        //width: 20px;
+        //height: 20px;
+        margin-left: 5px;
+        float: right;
         cursor: pointer;
-        margin-right: 5px;
+        svg {
+            width: 16px;
+            float: left;
+            height: 16px;
+        }
+        &.false {
+            svg {
+                fill: @curiousBlue;
+            }
+            svg:hover {
+                fill: @thunder;
+            }
+        }
     }
     .dnn-grid-cell {
         padding: 0 15px;

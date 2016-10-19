@@ -34,21 +34,17 @@ class Body extends Component {
             value: "Test Me!",
             textAreaValue: "Multi line!",
             singleLineValue: "Single line!",
-            selectValue: 1,
             userFilters: [],
             searchParameters
         };
     }
     componentWillMount() {
-        console.log(Localization.get("nav_Users"));
         this.props.dispatch(UserActions.getUserFilters((data) => {
             let userFilters = Object.assign([], JSON.parse(JSON.stringify(data.Results)));
             this.setState({
                 userFilters
             });
         }));
-        // const {props} = this;
-        //props.dispatch(); //Dispatch action to get data here
     }
 
     onRadioButtonChange(value) {
@@ -66,11 +62,6 @@ class Body extends Component {
         });
     }
 
-    onSelectChange(option) {
-        this.setState({
-            selectValue: option.value
-        });
-    }
     onFilterChange(option, searchText) {
         let {searchParameters} = this.state;
         searchParameters.searchText = searchText;
@@ -79,6 +70,7 @@ class Body extends Component {
         this.props.dispatch(UserActions.getUsers(searchParameters));
         this.setState({ searchParameters });
     }
+
     onPageChanged(currentPage, pageSize) {
         let {searchParameters} = this.state;
         searchParameters.pageIndex = currentPage;
@@ -86,40 +78,42 @@ class Body extends Component {
         this.props.dispatch(UserActions.getUsers(searchParameters));
         this.setState({ searchParameters });
     }
+
     getWorkSpaceTray() {
-        return this.state.userFilters.length > 0 && <GridCell className="users-workspace-tray">
-            <FiltersBar
-                onChange={this.onFilterChange.bind(this) }
-                userFilters={this.state.userFilters}
-                />
-        </GridCell>;
+        return this.state.userFilters.length > 0 &&
+            <GridCell className="users-workspace-tray">
+                <FiltersBar
+                    onChange={this.onFilterChange.bind(this) }
+                    userFilters={this.state.userFilters}
+                    />
+            </GridCell>;
     }
 
     toggleCreateBox() {
-        this.setState({
-            createBoxVisible: !this.state.createBoxVisible
-        });
+        this.refs["userTable"].getWrappedInstance().onAddUser();
     }
 
     render() {
         const {props, state} = this;
         const panelBodyMargin = state.createBoxVisible ? "without-margin" : "";
+
         return (
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
                     <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) }>{Localization.get("btn_CreateUser") }</Button>
                 </SocialPanelHeader>
-                <Collapse className="create-user-box-collapse" isOpened={state.createBoxVisible} keepCollapsedContent={true}><CreateUserBox /></Collapse>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable/>
-                    <div className="users-paging">
-                        <Pager pageSizeDropDownWithoutBorder={true} showSummary={true} showPageInfo={false}
-                            pageSizeOptionText={"{0} users per page"}
-                            pageSize={this.state.searchParameters.pageSize}
-                            totalRecords={props.totalUsers}
-                            onPageChanged={this.onPageChanged.bind(this) }
-                            />
-                    </div>
+                    <UserTable ref="userTable"/>
+                    {
+                        state.searchParameters.filter === 0 && <div className="users-paging">
+                            <Pager pageSizeDropDownWithoutBorder={true} showSummary={true} showPageInfo={false}
+                                pageSizeOptionText={"{0} users per page"}
+                                pageSize={this.state.searchParameters.pageSize}
+                                totalRecords={props.totalUsers}
+                                onPageChanged={this.onPageChanged.bind(this) }
+                                />
+                        </div>
+                    }
                 </SocialPanelBody >
             </GridCell>
         );

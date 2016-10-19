@@ -32,7 +32,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Users.Services
 {
-    [ServiceScope(Scope = ServiceScope.Regular, Identifier = "Users")]
+    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "Users")]
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
