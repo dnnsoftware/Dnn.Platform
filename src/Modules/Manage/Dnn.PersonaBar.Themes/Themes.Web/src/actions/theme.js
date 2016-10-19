@@ -1,8 +1,16 @@
 import {theme as ActionTypes}  from "constants/actionTypes";
 import ThemeService from "services/themeService";
-function errorCallback(message) {
+import Localization from "localization";
+
+function errorCallback(xhr) {
+    var response = eval('(' + xhr.responseText + ')');
+    var message = xhr.responseText;
+    if(response && response.Message){
+        message = response.Message;
+    }
+    
     let utils = window.dnn.initThemes().utility;
-    utils.notify(message);
+    utils.notify(Localization.get(message));
 }
 const themeActions = {
     getCurrentTheme(callback) {
