@@ -68,9 +68,12 @@ class PagePicker extends Component {
         this._isMounted = false;
     }
 
-    initialize(props) {
+    initialize(props, callback) {
         this.getPortalTabs(props.cultureCode, () => {
-            this.setPages();
+            this.setPages(() => {
+                if (callback)
+                    callback();
+            });
         });
     }
 
@@ -89,7 +92,7 @@ class PagePicker extends Component {
         });
     }
 
-    setPages() {
+    setPages(callback) {
         const {props} = this;
         this.loaded = true;
         let {portalTabs} = this.state;
@@ -112,7 +115,8 @@ class PagePicker extends Component {
             if (props.IsMultiSelect && props.allSelected) {
                 this.onPageSelect(portalTabs[0]);
             }
-
+            if (typeof callback === "function")
+                callback();
         });
     }
 
@@ -155,7 +159,8 @@ class PagePicker extends Component {
         return count;
     }
 
-    onPageSelect(page) {
+    onPageSelect(page, keepOpen) {
+        keepOpen = keepOpen === undefined || (typeof keepOpen) !== "boolean" ? false : keepOpen;
         const {props} = this;
         if (props.IsMultiSelect) {
             page.CheckedState = page.CheckedState === 1 ? 0 : 1;
@@ -170,23 +175,27 @@ class PagePicker extends Component {
         } else {
             let {portalTabs} = this.state;
             this.UnCheckAllExcept(Object.assign([], portalTabs[0]), page, (data) => {
-                page.CheckedState = 0;
+                if (props.selectedTabId === -1) {
+                    data.CheckedState = 0;
+                } else {
+                    data.CheckedState = 1;
+                }
                 portalTabs[0] = data;
-                portalTabs[0].CheckedState = 1;
+                page.CheckedState = 0;
                 this.setState({ portalTabs }, () => {
-
-                    this.props.OnSelect(page.TabId, page.Name);
+                    if (page.TabId !== props.selectedTabId) {
+                        this.props.OnSelect(page.TabId, page.Name);
+                    }
                     if (props.IsInDropDown) {
                         this.setState({
-                            dropDownOpen: false,
-                            selectedPage: page.Name
+                            selectedPage: page.Name,
+                            dropDownOpen: keepOpen
                         });
                     }
                 });
             });
         }
     }
-
     //page is passed by reference.
     getDescendants(page, callback, event) {
         if (event) {
@@ -286,7 +295,11 @@ class PagePicker extends Component {
     toggleDropdown() {
         const {props} = this;
         if (!this.loaded) {
-            this.initialize(props);
+            this.initialize(props, () => {
+                if (props.selectedTabId === -1) {
+                    this.setDefaultPage(props, true);
+                }
+            });
         }
         if (props.enabled) {
             this.setState({
@@ -304,24 +317,62 @@ class PagePicker extends Component {
         return format(this.props.CountText, this.state.totalCount);
     }
 
+    findTabById(tabId, tabs, tab) {
+        if (tab === null) {
+            for (let i = 0; i < tabs.length; i++) {
+                let child = tabs[i];
+                if (tab === null) {
+                    if (child.TabId == tabId) {
+                        tab = child;
+                    }
+                    else if (child.HasChildren && child.ChildTabs !== null && child.ChildTabs.length > 0) {
+                        tab = this.findTabById(tabId, child.ChildTabs, tab);
+                    }
+                } else {
+                    break;
+                }
+            }
+            // tabs.forEach(child => {
+            //     if (tab === null) {
+            //         if (child.TabId == tabId) {
+            //             tab = child;
+            //         }
+            //         else if (child.HasChildren && child.ChildTabs !== null && child.ChildTabs.length > 0) {
+            //             tab = this.findTabById(tabId, child.ChildTabs, tab);
+            //         }
+            //     }
+            // });
+        }
+        return tab;
+    }
     //Single Selection Methods
     //Set the dropdown label to the default selected page name.
-    setDefaultPage(props) {
-        if (props.IsInDropDown && !props.IsMultiSelect && props.selectedTabId >= 0) {
-            let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
-            service.getPortalTab({
-                portalId: props.PortalTabsParameters.portalId,
-                tabId: props.selectedTabId,
-                cultureCode: props.PortalTabsParameters.cultureCode
-            }, (tab) => {
-                let {selectedPage} = this.state;
-                selectedPage = tab.Results.Name;
-                this.setState({ selectedPage });
-            });
-        } else {
-            let {selectedPage} = this.state;
-            selectedPage = props.defaultLabel;
-            this.setState({ selectedPage });
+    setDefaultPage(props, keepOpen) {
+        if (props.IsInDropDown && !props.IsMultiSelect) {
+            let {portalTabs} = this.state;
+            if (portalTabs !== undefined && portalTabs.length > 0) {
+                let page = null;
+                if (props.selectedTabId === -1) {
+                    page = portalTabs[0];
+                } else {
+                    page = this.findTabById(props.selectedTabId, portalTabs[0].ChildTabs, null);
+                }
+                if (page !== undefined && page !== null) {
+                    this.onPageSelect(page, keepOpen);
+                }
+            }
+            else if (props.selectedTabId >= 0) {
+                let service = new Service(this.props.serviceFramework, this.props.moduleRoot, this.props.controller);
+                service.getPortalTab({
+                    portalId: props.PortalTabsParameters.portalId,
+                    tabId: props.selectedTabId,
+                    cultureCode: props.PortalTabsParameters.cultureCode
+                }, (tab) => {
+                    let {selectedPage} = this.state;
+                    selectedPage = tab.Results.Name;
+                    this.setState({ selectedPage });
+                });
+            }
         }
     }
 
