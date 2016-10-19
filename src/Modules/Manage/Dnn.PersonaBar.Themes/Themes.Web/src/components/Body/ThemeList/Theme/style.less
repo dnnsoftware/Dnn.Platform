@@ -1,7 +1,6 @@
 @import "~dnn-global-styles/index";
 .theme-skin, .theme-container{
-    float: left;
-    margin-left: 10px;
+
     img{
         width: 168px;
         height: 168px;
@@ -57,10 +56,7 @@
         display: block;
         text-align: center;
         font-family: 'pb_semibold';
-    }
-
-    &:first-child{
-        margin-left: 0;
+        line-height: 36px;
     }
 
     &.selected{
@@ -70,6 +66,21 @@
             width: 186px;
             height: 186px;
             padding: 5px;
+        }
+
+        span.checkmark{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: @curiousBlue;
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            svg{
+                width: 100%;
+                fill: @white;
+            }
         }
     }
 }

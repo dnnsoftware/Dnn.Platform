@@ -8,7 +8,7 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import OverflowText from "dnn-text-overflow-wrapper";
 
-import EmptyThumbnail from "../../EmptyThumbnail";
+import SvgIcon from "../../SvgIcon";
 
 import "./style.less";
 
@@ -58,7 +58,7 @@ class Theme extends Component {
         let type = theme.type;
 
         if(this.selectedAsSite()){
-            return null;
+            return <span className="checkmark"><SvgIcon name="Checkmark" /></span>;
         }
 
         return <span className="actions">
@@ -72,8 +72,8 @@ class Theme extends Component {
         let className = 'thumbnail' + (theme.thumbnail ? '' : ' empty');
 
         return <span className={className}>
-            {theme.thumbnail ? <img src={theme.thumbnail} /> : <EmptyThumbnail />}
-            {this.renderActions()}         
+            {theme.thumbnail ? <img src={theme.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
+            {this.renderActions()}
         </span>;
     }
     

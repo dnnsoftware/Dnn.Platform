@@ -7,7 +7,7 @@ import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 
-import EmptyThumbnail from "../../EmptyThumbnail";
+import SvgIcon from "../../SvgIcon";
 
 import "./style.less";
 
@@ -29,7 +29,7 @@ class CurrentTheme extends Component {
                         return <img src={props.theme.SiteLayout.thumbnail} />;
                     }
                     else{
-                        return <EmptyThumbnail />;
+                        return <SvgIcon name="EmptyThumbnail" />;
                     }
                 })()
             }

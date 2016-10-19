@@ -1,18 +1,11 @@
 @import "~dnn-global-styles/index";
-.theme-files-list{
-    width: 560px;
-    overflow: hidden;
+.theme-list{
+    padding: 30px 15px;
+    border: 1px solid @alto;
+    border-radius: 3px;
+    background-color: @white;
 
-    .theme-files-scroller{
-        margin: 10px 0 0 0;
-        & > div + div{
-            bottom: 22px !important;
-        }
-        ul{
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            height: 150px;
-        }
+    & > .dnn-grid-cell{
+        text-align: center;
     }
 }

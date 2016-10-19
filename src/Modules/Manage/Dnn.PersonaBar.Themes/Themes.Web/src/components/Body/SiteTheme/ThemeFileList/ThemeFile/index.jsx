@@ -8,7 +8,7 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import OverflowText from "dnn-text-overflow-wrapper";
 
-import EmptyThumbnail from "../../../EmptyThumbnail";
+import SvgIcon from "../../../SvgIcon";
 
 import "./style.less";
 
@@ -109,7 +109,7 @@ class ThemeFile extends Component {
         let className = 'thumbnail' + (themeFile.thumbnail ? '' : ' empty');
 
         return <span className={className}>
-            {themeFile.thumbnail ? <img src={themeFile.thumbnail} /> : <EmptyThumbnail />}
+            {themeFile.thumbnail ? <img src={themeFile.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
             <span className="status">
                 <span className="status-site">{Localization.get("StatusSite")}</span>
                 <span className="status-edit">{Localization.get("StatusEdit")}</span>
