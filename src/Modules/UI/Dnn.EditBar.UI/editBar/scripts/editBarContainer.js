@@ -7,14 +7,14 @@
                 g = d.getElementsByTagName('body')[0],
                 x = w.innerWidth || e.clientWidth || g.clientWidth,
                 settings = window.top.editBarSettings || {},
-                appPath = settings.applicationPath || "/";
+                appPath = settings.applicationPath;
 
             if (typeof settings.items == "undefined" || settings.items.length === 0) {
                 return;
             }
 
             var debugMode = settings.debugMode === true;
-            var src = appPath + 'admin/Dnn.EditBar/index.html';
+            var src = appPath + '/admin/Dnn.EditBar/index.html';
             src += '?cdv=' + settings.buildNumber + (debugMode ? '&t=' + Math.random() : '');
             var $container = $('<div class="editBarFrameContainer"></div>');
             if ($('#personaBar-iframe').length) {
