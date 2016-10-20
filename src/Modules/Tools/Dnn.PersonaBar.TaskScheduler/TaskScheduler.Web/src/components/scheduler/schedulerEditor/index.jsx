@@ -90,10 +90,10 @@ class SchedulerEditor extends Component {
 
     componentWillReceiveProps(props) {
         let {state} = this;
-        if (props.scheduleItemDetail["TypeFullName"] === "") {
+        if (props.scheduleItemDetail["TypeFullName"] === "" || props.scheduleItemDetail["TypeFullName"] === undefined) {
             state.error["name"] = true;
         }
-        else if (props.scheduleItemDetail["TypeFullName"] !== "") {
+        else if (props.scheduleItemDetail["TypeFullName"] !== "" && props.scheduleItemDetail["TypeFullName"] !== undefined) {
             state.error["name"] = false;
         }
         if (props.scheduleItemDetail["TimeLapse"] === "" || !re.test(props.scheduleItemDetail["TimeLapse"])) {
@@ -102,7 +102,7 @@ class SchedulerEditor extends Component {
         else if (props.scheduleItemDetail["TimeLapse"] !== "" && re.test(props.scheduleItemDetail["TimeLapse"])) {
             state.error["frequency"] = false;
         }
-        if (props.scheduleItemDetail["RetryTimeLapse"] === -1) {
+        if (props.scheduleItemDetail["RetryTimeLapse"] === -1 || props.scheduleItemDetail["RetryTimeLapse"] === undefined || props.scheduleItemDetail["RetryTimeLapse"] === "") {
             state.error["retry"] = false;
         }
         else {

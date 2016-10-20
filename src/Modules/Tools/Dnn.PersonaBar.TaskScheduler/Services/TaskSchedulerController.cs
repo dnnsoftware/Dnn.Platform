@@ -305,6 +305,16 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
+                if (scheduleDto.RetryTimeLapse == 0)
+                {
+                    scheduleDto.RetryTimeLapse = Null.NullInteger;
+                }
+
+                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
+                }
+
                 var scheduleItem = _controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
