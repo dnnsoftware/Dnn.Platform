@@ -131,6 +131,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// </summary>
         /// <returns>General SEO regex settings</returns>
         [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
         public HttpResponseMessage GetRegexSettings()
         {
             try
@@ -171,6 +172,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateRegexSettings(UpdateRegexSettingsRequest request)
         {

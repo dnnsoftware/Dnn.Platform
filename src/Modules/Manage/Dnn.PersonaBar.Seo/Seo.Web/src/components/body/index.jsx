@@ -29,19 +29,23 @@ export class Body extends Component {
     render() {
         return (
             <SocialPanelBody>
-            <Tabs onSelect={this.handleSelect.bind(this) }
-                    tabHeaders={[resx.get("URLManagementTab"),                        
-                        resx.get("SitemapSettingsTab")]}
+                <Tabs onSelect={this.handleSelect.bind(this)}
+                    tabHeaders={[resx.get("URLManagementTab"),
+                    resx.get("SitemapSettingsTab")]}
                     type="primary">
-                    <Tabs onSelect={this.handleSelect.bind(this) }
-                        tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExpressionsTab"), resx.get("TestURLTab")]}
+                    <Tabs onSelect={this.handleSelect.bind(this)}
+                        tabHeaders={[resx.get("GeneralSettingsTab"), <div style={{ fontSize: "9pt" }}>{resx.get("ExpressionsTab")} <Tooltip
+                            messages={[resx.get("GlobalSettingsTab")]}
+                            type="global"
+                            style={{ float: "right", height: "20", position: "static", margin: "-5px 0 0 5px" }}
+                            /></div>, resx.get("TestURLTab")]}
                         type="secondary">
-                        <GeneralSettings/>
-                        <RegexSettings/>
-                        <TestUrl/>
+                        <GeneralSettings />
+                        <RegexSettings />
+                        <TestUrl />
                     </Tabs>
-                    <SitemapSettings/>
-                </Tabs>                
+                    <SitemapSettings />
+                </Tabs>
             </SocialPanelBody>
         );
     }
