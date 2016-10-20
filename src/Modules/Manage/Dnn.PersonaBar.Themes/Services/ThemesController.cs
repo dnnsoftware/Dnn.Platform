@@ -163,7 +163,6 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-        [RequireHost]
         public HttpResponseMessage GetEditableTokens()
         {
             try
@@ -182,7 +181,6 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-        [RequireHost]
         public HttpResponseMessage GetEditableSettings(string token)
         {
             try
@@ -209,7 +207,6 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-        [RequireHost]
         public HttpResponseMessage GetEditableValues(string token, string setting)
         {
             try
@@ -251,7 +248,6 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
@@ -260,6 +256,13 @@ namespace Dnn.PersonaBar.Themes.Services
                 if (token == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidParameter");
+                }
+
+                var themeFilePath = updateTheme.Path.ToLowerInvariant();
+                if ((!themeFilePath.StartsWith("[g]") && !themeFilePath.StartsWith("[l]") && !themeFilePath.StartsWith("[s]"))
+                    || (themeFilePath.StartsWith("[g]") && !UserInfo.IsSuperUser))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPermission");
                 }
 
                 updateTheme.Token = token.ControlKey;

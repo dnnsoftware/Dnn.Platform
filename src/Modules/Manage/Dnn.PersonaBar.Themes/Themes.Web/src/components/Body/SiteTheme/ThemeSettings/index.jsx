@@ -8,6 +8,7 @@ import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
+import utils from "utils";
 
 import EditThemeAttributes from "./EditThemeAttributes";
 import ParseThemePackage from "./ParseThemePackage";
@@ -29,7 +30,8 @@ class ThemeSettings extends Component {
     }
 
     renderRightColumn(){
-        return <div className="right-column">
+        let isHost = utils.params.settings.isHost;
+        return isHost && <div className="right-column">
             <ParseThemePackage />
         </div>;
     }

@@ -106,7 +106,7 @@ class ThemeFileList extends Component {
                     className="theme-files-scroller"
                     autoHeight
                     autoHeightMin={0}
-                    autoHeightMax={150}>
+                    autoHeightMax={180}>
                     <ul style={{width: this.getListWidth()}}>
                         {props.themeFiles.map((themeFile, index) => {
                             return <ThemeFile themeFile={themeFile} />;

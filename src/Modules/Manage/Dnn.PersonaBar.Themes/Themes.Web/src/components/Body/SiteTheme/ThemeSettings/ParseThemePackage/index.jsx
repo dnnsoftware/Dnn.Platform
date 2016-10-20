@@ -43,7 +43,10 @@ class ParseThemePackage extends Component {
         let parseType = this.getParseType();
 
         let self = this;
-        props.dispatch(ThemeActions.parseTheme(themeName, parseType));
+        props.dispatch(ThemeActions.parseTheme(themeName, parseType, function(){
+            self.setState({parsing: false});
+            utils.utilities.notify(Localization.get("Successful"));
+        }));
     }
 
     onParseTypeChanged(type){

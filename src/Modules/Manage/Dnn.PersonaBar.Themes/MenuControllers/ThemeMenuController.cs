@@ -5,6 +5,7 @@ using System.Web;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Themes.MenuControllers
 {
@@ -21,7 +22,11 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
-            return new Dictionary<string, object> { {"previewUrl", Globals.NavigateURL()} };
+            return new Dictionary<string, object>
+            {
+                {"previewUrl", Globals.NavigateURL()},
+                {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser}
+            };
         }
     }
 }

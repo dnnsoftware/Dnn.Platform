@@ -210,4 +210,10 @@
   <data name="UsePackageUninstall.Text" xml:space="preserve">
     <value>This theme installed as package, please go to Extensions and uninstall from there.</value>
   </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Successful.Text" xml:space="preserve">
+    <value>Operation Complete!</value>
+  </data>
 </root>

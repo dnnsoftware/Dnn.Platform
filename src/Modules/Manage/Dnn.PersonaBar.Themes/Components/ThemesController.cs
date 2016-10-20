@@ -56,7 +56,8 @@ namespace Dnn.PersonaBar.Themes.Components
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
         internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png", ".jpeg"};
-        internal static readonly IList<string> DefaultNames = new List<string>() {"Default", "Home", "Index", "Main"};
+        internal static readonly IList<string> DefaultLayoutNames = new List<string>() {"Default", "2-Col", "Home", "Index", "Main"};
+        internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default"};
 
         protected override Func<IThemesController> GetFactory()
         {
@@ -532,7 +533,8 @@ namespace Dnn.PersonaBar.Themes.Components
             var defaultFile = themeFiles.FirstOrDefault(i =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(i);
-                return DefaultNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase);
+                return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase)
+                                              : DefaultContainerNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase);
             });
 
             if (string.IsNullOrEmpty(defaultFile))

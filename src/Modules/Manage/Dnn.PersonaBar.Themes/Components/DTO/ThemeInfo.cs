@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         public bool CanDelete { get; set; } = true;
 
         [DataMember(Name = "level")]
-        public ThemeLevel Level => Path.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
+        public ThemeLevel Level => Path.Replace("\\", "/").IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
             ? ThemeLevel.Global
             : ThemeLevel.Site;
     }

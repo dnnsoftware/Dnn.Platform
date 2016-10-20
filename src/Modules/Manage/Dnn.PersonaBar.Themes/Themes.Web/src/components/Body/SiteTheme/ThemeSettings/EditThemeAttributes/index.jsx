@@ -35,10 +35,6 @@ class EditThemeAttributes extends Component {
     {
         const {props, state} = this;
 
-        if(props.themes.layouts.length === 0){
-            props.dispatch(ThemeActions.getThemes(state.level));
-        }
-
         props.dispatch(ThemeActions.getEditableTokens());
     }
 
@@ -53,7 +49,10 @@ class EditThemeAttributes extends Component {
 
         let type = this.getThemeType();
         let source = type == 1 ? props.themes.containers : props.themes.layouts;
-        return source.map(function(t){
+        let isHost = utils.params.settings.isHost;
+        return source.filter(l => {
+            return isHost || l.level === 1;
+        }).map(function(t){
             return {value: t.packageName, label: t.packageName};
         });
     }

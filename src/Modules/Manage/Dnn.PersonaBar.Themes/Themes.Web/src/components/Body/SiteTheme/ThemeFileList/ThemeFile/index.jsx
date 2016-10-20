@@ -111,8 +111,8 @@ class ThemeFile extends Component {
         return <span className={className}>
             {themeFile.thumbnail ? <img src={themeFile.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
             <span className="status">
-                <span className="status-site">{Localization.get("StatusSite")}</span>
-                <span className="status-edit">{Localization.get("StatusEdit")}</span>
+                <span className="status-site"><SvgIcon name="Site" /></span>
+                <span className="status-edit"><SvgIcon name="Edit" /></span>
             </span>
             {this.renderActions()}
             

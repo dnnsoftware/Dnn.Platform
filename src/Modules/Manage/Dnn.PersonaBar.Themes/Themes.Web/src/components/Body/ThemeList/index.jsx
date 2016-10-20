@@ -15,26 +15,15 @@ import "./style.less";
 class ThemeList extends Component {
     constructor() {
         super();
-        this.state = {
-            level: 3
-        };
+        this.state = {};
     }
-
-    componentWillMount(){
-        const {props, state} = this;
-        
-        if(props.themes.layouts.length === 0){
-            props.dispatch(ThemeActions.getThemes(state.level));
-        }
-    }
-
     
     render() {
         const {props, state} = this;
 
         return (
             <GridCell  className="theme-list">
-                {props.themes.layouts.map((theme, index) => {
+                {props.dataSource.map((theme, index) => {
                     return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
                 }) }
             </GridCell>
@@ -43,12 +32,12 @@ class ThemeList extends Component {
 }
 
 ThemeList.propTypes = {
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    dataSource: PropTypes.array
 };
 
 function mapStateToProps(state) {
     return {
-        themes: state.theme.themes,
         currentTheme: state.theme.currentTheme
     };
 }

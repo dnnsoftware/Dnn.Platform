@@ -81,11 +81,12 @@ class Theme extends Component {
             return <span className="checkmark"><SvgIcon name="Checkmark" /></span>;
         }
 
+        let isHost = utils.params.settings.isHost;
         return <span className="actions">
-            <ul>
+            <ul className={(isHost || theme.level === 1) ? '' : 'short'}>
                 <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
                 <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
-                <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>
+                {(isHost || theme.level === 1) && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }

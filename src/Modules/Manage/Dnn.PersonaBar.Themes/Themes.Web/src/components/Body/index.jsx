@@ -2,7 +2,7 @@ import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
-    PaginationActions
+    theme as ThemeActions
 } from "actions";
 import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
@@ -10,8 +10,9 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import SiteTheme from "./SiteTheme";
+import MiddleActions from "./MiddleActions";
 import ThemeList from "./ThemeList";
-import RestoreTheme from "./RestoreTheme";
+
 import "./style.less";
 
 const radioButtonOptions = [
@@ -28,13 +29,27 @@ const radioButtonOptions = [
 class Body extends Component {
     constructor() {
         super();
-        this.handleSelect = this.handleSelect.bind(this);
-        this.state = {};
+        this.state = {
+            searchText: '',
+            level: 3
+        };
     }
 
-    handleSelect(index/*, last*/) {
-        const {props} = this;
-        props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
+    getThemesData(){
+        const {props, state} = this;
+
+        if(props.themes.layouts.length === 0){
+            props.dispatch(ThemeActions.getThemes(state.level));
+        }
+
+        let searchText = state.searchText;
+        return props.themes.layouts.filter(l => {
+            return !searchText || l.packageName.toLowerCase().indexOf(searchText) > -1;
+        });
+    }
+
+    onSearch(value){
+        this.setState({searchText: value});
     }
 
     render() {
@@ -45,10 +60,8 @@ class Body extends Component {
                 </SocialPanelHeader>
                 <SocialPanelBody>
                     <SiteTheme />
-                    <GridCell className="middle-actions">
-                        <RestoreTheme />
-                    </GridCell>
-                    <ThemeList />
+                    <MiddleActions onSearch={this.onSearch.bind(this)} />
+                    <ThemeList dataSource={this.getThemesData()}/>
                 </SocialPanelBody >
 
             </GridCell>
@@ -62,6 +75,7 @@ Body.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        themes: state.theme.themes
     };
 }
 
