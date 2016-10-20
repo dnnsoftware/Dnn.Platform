@@ -106,6 +106,7 @@ class ProviderEditor extends Component {
             /* eslint-disable react/no-danger */
             return (
                 <div className={styles.providerSettingEditor}>
+                    <div style={{height: "15px"}}/>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                     <div className="buttons-box-secondary">
                         <Button

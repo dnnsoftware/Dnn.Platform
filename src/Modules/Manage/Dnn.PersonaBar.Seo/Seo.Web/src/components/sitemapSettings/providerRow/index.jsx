@@ -11,17 +11,17 @@ class ProviderRow extends Component {
     }
 
     componentWillMount() {
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+        let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         this.setState({
             opened
         });
     }
 
     toggle() {
-        if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
+        if ((this.props.openId !== "" && this.props.name === this.props.openId)) {
             this.props.Collapse();
         } else {
-            this.props.OpenCollapse(this.props.id);
+            this.props.OpenCollapse(this.props.name);
         }
     }
 
@@ -45,7 +45,7 @@ class ProviderRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+        let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         if (props.visible) {
             return (
                 <div className={"collapsible-component1"}>
@@ -65,7 +65,7 @@ class ProviderRow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>
+                    <Collapse accordion={true} isOpened={opened} style={{ float: "left" }} fixedHeight={160}>{opened && props.children}</Collapse>
                 </div>
             );
         }
