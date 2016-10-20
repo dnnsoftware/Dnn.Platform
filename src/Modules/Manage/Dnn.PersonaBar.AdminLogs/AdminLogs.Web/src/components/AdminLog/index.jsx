@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     log as LogActions
@@ -190,7 +190,7 @@ class AdminLogPanelBody extends Component {
         const {props} = this;
         let portals = props.portalList.map((term, index) => {
             return (
-                <li onClick={this.onSelectPortal.bind(this, term.PortalID, term.PortalName) } value={term.PortalID}>{term.PortalName}</li>
+                <li onClick={this.onSelectPortal.bind(this, term.PortalID, term.PortalName)} value={term.PortalID}>{term.PortalName}</li>
             );
         });
         //portals.unshift(<li onClick={this.onSelectPortal.bind(this, "-1", "All Sites") } value={-1}>All Sites</li>);
@@ -202,7 +202,7 @@ class AdminLogPanelBody extends Component {
         const {props} = this;
         let logTypes = props.logTypeList.map((term, index) => {
             return (
-                <li onClick={this.onSelectLogType.bind(this, term.LogTypeKey, term.LogTypeFriendlyName) }>{term.LogTypeFriendlyName}</li>
+                <li onClick={this.onSelectLogType.bind(this, term.LogTypeKey, term.LogTypeFriendlyName)}>{term.LogTypeFriendlyName}</li>
             );
         });
         //logTypes.unshift(<li onClick={this.onSelectLogType.bind(this, "*", "All Types") }>All Types</li>);
@@ -231,7 +231,7 @@ class AdminLogPanelBody extends Component {
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} style={{ width: 20 }} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox checked={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this) }/>
+                <Checkbox checked={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
                 <label htmlFor="selectAll"></label>
             </div>
         </div>);
@@ -247,7 +247,7 @@ class AdminLogPanelBody extends Component {
                 <LogItemRow
                     cssClass={term.LogTypeCSSClass}
                     logId={term.LogGUID}
-                    allRowIds={this.props.logList.map((row) => row.LogGUID) }
+                    allRowIds={this.props.logList.map((row) => row.LogGUID)}
                     typeName={term.LogTypeFriendlyName}
                     createDate={term.LogCreateDate}
                     userName={term.LogUserName}
@@ -294,7 +294,7 @@ class AdminLogPanelBody extends Component {
                     numericCounters={4}
                     pageSize={state.pageSize}
                     totalRecords={props.totalCount}
-                    onPageChanged={this.onPageChange.bind(this) }
+                    onPageChanged={this.onPageChange.bind(this)}
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
@@ -344,9 +344,9 @@ class AdminLogPanelBody extends Component {
                             value={state.currentPortalId}
                             fixedHeight={200}
                             style={{ width: "100%" }}
-                            options={portalOptions }
+                            options={portalOptions}
                             withBorder={false}
-                            onSelect={this.onSelectPortal.bind(this) }
+                            onSelect={this.onSelectPortal.bind(this)}
                             />
                     </div>
                     <div className="sitegroup-filter-container">
@@ -354,31 +354,33 @@ class AdminLogPanelBody extends Component {
                             value={state.currentLogTypeKey}
                             fixedHeight={200}
                             style={{ width: "100%" }}
-                            options={logTypeOptions }
+                            options={logTypeOptions}
                             withBorder={false}
-                            onSelect={this.onSelectLogType.bind(this) }
+                            onSelect={this.onSelectLogType.bind(this)}
                             />
                     </div>
                     <div className="toolbar-button">
-                        <span onClick={this.toggleEmailPanel.bind(this) }>{resx.get("btnEmail") } </span>
+                        <span onClick={this.toggleEmailPanel.bind(this)}>{resx.get("btnEmail")} </span>
                         <div className="collapsible-content">
                             <EmailPanel
                                 fixedHeight={370}
                                 isOpened={state.emailPanelOpen}
                                 logIds={props.selectedRowIds}
-                                onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>
+                                onCloseEmailPanel={this.toggleEmailPanel.bind(this)}>
                             </EmailPanel>
                         </div>
                     </div>
-                    <div className="toolbar-button" onClick={this.onDeleteLogItems.bind(this) }>{resx.get("btnDelete") } </div>
-                    <div className="toolbar-button" onClick={this.onClearLog.bind(this) }>{resx.get("btnClear") } </div>
+                    <div className="toolbar-button" onClick={this.onDeleteLogItems.bind(this)}>{resx.get("btnDelete")} </div>
+                    <div className="toolbar-button" onClick={this.onClearLog.bind(this)}>{resx.get("btnClear")} </div>
                 </div>
                 <div className="logContainer">
-                    { this.renderLogListHeader() }
-                    { this.renderedLogList() }
+                    <div className="logContainerBox">
+                        {this.renderLogListHeader()}
+                        {this.renderedLogList()}
+                    </div>
                 </div>
-                { this.renderPager() }
-                { this.renderedLogLegend() }
+                {this.renderPager()}
+                {this.renderedLogLegend()}
             </div>
         );
     }

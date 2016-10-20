@@ -11,46 +11,44 @@ const languages = {
     // "nl": require("./localizations/nl.json")
 };
 
-module.exports = Object.keys(languages).map(function (language) {
-    return {
-        entry: "./src/main.jsx",
-        output: {
-            path: "./dist/",
-            filename: "bundle-" + language + ".js",
-            publicPath: isProduction ? "" : "http://localhost:8080/dist/"
-        },
+module.exports = {
+    entry: "./src/main.jsx",
+    output: {
+        path: "../admin/personaBar/scripts/bundles/",
+        filename: "adminLogs-bundle.js",
+        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
+    },
 
-        module: {
-            loaders: [
-                { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
-                { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-                { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
-            ],
+    module: {
+        loaders: [
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
+            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
+        ],
 
-            preLoaders: [
-                { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
-            ]
-        },
+        preLoaders: [
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+        ]
+    },
 
-        resolve: {
-            extensions: ["", ".js", ".json", ".jsx"]
-        },
+    resolve: {
+        extensions: ["", ".js", ".json", ".jsx"]
+    },
 
-        externals: require("dnn-webpack-externals"),
+    externals: require("dnn-webpack-externals"),
 
-        plugins: isProduction ? [
-            new webpack.optimize.UglifyJsPlugin(),
-            new webpack.optimize.DedupePlugin(),
+    plugins: isProduction ? [
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version),
+            "process.env": {
+                "NODE_ENV": JSON.stringify("production")
+            }
+        })
+    ] : [
             new webpack.DefinePlugin({
-                VERSION: JSON.stringify(packageJson.version),
-                "process.env": {
-                    "NODE_ENV": JSON.stringify("production")
-                }
+                VERSION: JSON.stringify(packageJson.version)
             })
-        ] : [
-                new webpack.DefinePlugin({
-                    VERSION: JSON.stringify(packageJson.version)
-                })
-            ]
-    };
-});
+        ]
+};
