@@ -44,7 +44,7 @@ define(['jquery'], function () {
     };
 
     function getParams(extension, params) {
-        var extensionParams = $.extend({}, params, {identifier: extension.identifier, path: extension.path});
+        var extensionParams = $.extend({}, params, {identifier: extension.identifier, path: extension.path, query: extension.query});
 
         return extensionParams;
     }

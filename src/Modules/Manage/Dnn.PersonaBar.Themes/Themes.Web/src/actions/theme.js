@@ -3,12 +3,12 @@ import ThemeService from "services/themeService";
 import Localization from "localization";
 
 function errorCallback(xhr) {
-    var response = eval('(' + xhr.responseText + ')');
-    var message = xhr.responseText;
+    let response = eval('(' + xhr.responseText + ')');
+    let message = xhr.responseText;
     if(response && response.Message){
         message = response.Message;
     }
-    
+
     let utils = window.dnn.initThemes().utility;
     utils.notify(Localization.get(message));
 }
