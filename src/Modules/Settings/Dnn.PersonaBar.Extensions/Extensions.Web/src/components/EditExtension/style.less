@@ -1,35 +1,38 @@
 @import "~dnn-global-styles/index";
-:local(.editExtension) {
-    box-sizing: border-box;
-    * {
+.extensions-app {
+    :local(.editExtension) {
         box-sizing: border-box;
-    }
-    .box-title {
-        margin-bottom: 25px;
-        text-transform: uppercase;
-    }
-    .socialpanelheader > h3 {
-        max-width: none;
-    }
-    .dnn-tabs.react-tabs.primary>ul li {
-        padding: 17px 28px;
-        margin-bottom: -3px;
-        > span {
-            float: left;
+        padding: 0;
+        * {
+            box-sizing: border-box;
         }
-        .dnn-ui-common-tooltip {
-            float: right;
-            margin-left: 5px;
-            svg {
-                width: 16px;
-                height: 16px;
+        .box-title {
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+        .socialpanelheader > h3 {
+            max-width: none;
+        }
+        .dnn-tabs.react-tabs.primary>ul li {
+            padding: 17px 28px;
+            margin-bottom: -3px;
+            > span {
+                float: left;
+            }
+            .dnn-ui-common-tooltip {
+                float: right;
+                margin-left: 5px;
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
             }
         }
-    }
-    .package-information-box {
-        .create-new-module-dropdown {
-            padding-bottom: 45px;
-            border-bottom: 1px solid @alto;
+        .package-information-box {
+            .create-new-module-dropdown {
+                padding-bottom: 45px;
+                border-bottom: 1px solid @alto;
+            }
         }
     }
 }

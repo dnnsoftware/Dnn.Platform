@@ -946,9 +946,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
 
                 var moduleDefinition = definition.ToModuleDefinitionInfo();
-                    ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+                var id = ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, DefinitionId = moduleDefinition.ModuleDefID });
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, DefinitionId = id });
             }
             catch (Exception ex)
             {

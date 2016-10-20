@@ -26,36 +26,58 @@ class Module extends Component {
         const { props } = this;
         let assignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.assignedPortals.value));
         let itemsToStay = [], itemsToMove = [];
+        let selectedCount = 0;
         assignedPortals.forEach((portal) => {
             let {selected} = portal;
             delete portal.selected;
-            selected ? itemsToMove.push(portal) : itemsToStay.push(portal);
+            if (selected) {
+                selectedCount++;
+                itemsToMove.push(portal);
+            } else {
+                itemsToStay.push(portal);
+            }
         });
-        props.onAssignedPortalsChange("unassignedPortals", itemsToMove, () => {
-            props.onAssignedPortalsChange("assignedPortals", itemsToStay);
-        });
+        if (selectedCount > 0) {
+            props.onAssignedPortalsChange("unassignedPortals", itemsToMove, () => {
+                props.onAssignedPortalsChange("assignedPortals", itemsToStay);
+            });
+        }
     }
     moveItemsRight() {
         const { props } = this;
         let unassignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.unassignedPortals.value));
         let itemsToStay = [], itemsToMove = [];
+        let selectedCount = 0;
         unassignedPortals.forEach((portal) => {
             let {selected} = portal;
             delete portal.selected;
-            selected ? itemsToMove.push(portal) : itemsToStay.push(portal);
+            if (selected) {
+                selectedCount++;
+                itemsToMove.push(portal);
+            } else {
+                itemsToStay.push(portal);
+            }
         });
-
-        props.onAssignedPortalsChange("assignedPortals", itemsToMove, () => {
-            props.onAssignedPortalsChange("unassignedPortals", itemsToStay);
-        });
+        if (selectedCount > 0) {
+            props.onAssignedPortalsChange("assignedPortals", itemsToMove, () => {
+                props.onAssignedPortalsChange("unassignedPortals", itemsToStay);
+            });
+        }
     }
     moveAll(direction) {
+        const { props} = this;
+        let assignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.assignedPortals.value));
+        let unassignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.unassignedPortals.value));
         switch (direction) {
             case "right":
-
+                props.onAssignedPortalsChange("assignedPortals", assignedPortals.concat(unassignedPortals), () => {
+                    props.onAssignedPortalsChange("unassignedPortals", []);
+                });
                 break;
             default:
-
+                props.onAssignedPortalsChange("unassignedPortals", unassignedPortals.concat(assignedPortals), () => {
+                    props.onAssignedPortalsChange("assignedPortals", []);
+                });
                 break;
         }
     }
@@ -71,17 +93,20 @@ class Module extends Component {
                             label={Localization.get("EditModule_ModuleName.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleName.HelpText")}
                             style={inputStyle}
+                            onChange={props.onChange.bind(this, "moduleName")}
                             value={extensionBeingEdited.moduleName.value}
                             enabled={false} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_ModuleCategory.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleCategory.HelpText")}
                             value={extensionBeingEdited.category.value}
+                            onChange={props.onChange.bind(this, "category")}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
                             value={extensionBeingEdited.dependencies.value}
+                            onChange={props.onChange.bind(this, "dependencies")}
                             style={inputStyle} />
                         <Switch value={extensionBeingEdited.portable.value}
                             readOnly={true}
@@ -99,15 +124,18 @@ class Module extends Component {
                             label={Localization.get("EditModule_FolderName.Label")}
                             tooltipMessage={Localization.get("EditModule_FolderName.HelpText")}
                             value={extensionBeingEdited.folderName.value}
+                            onChange={props.onChange.bind(this, "folderName")}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_BusinessControllerClass.Label")}
                             tooltipMessage={Localization.get("EditModule_BusinessControllerClass.HelpText")}
+                            onChange={props.onChange.bind(this, "businessController")}
                             value={extensionBeingEdited.businessController.value}
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Permissions.Label")}
                             value={extensionBeingEdited.permissions.value}
+                            onChange={props.onChange.bind(this, "permissions")}
                             tooltipMessage={Localization.get("EditModule_Permissions.HelpText")}
                             style={inputStyle} />
                         <Switch value={extensionBeingEdited.searchable.value}
@@ -141,6 +169,7 @@ class Module extends Component {
                     <h3 className="box-title">Premium Module Assignment</h3>
                     <Switch value={extensionBeingEdited.premiumModule.value}
                         label={Localization.get("EditModule_IsPremiumModule.Label")}
+                        onChange={props.onChange.bind(this, "premiumModule")}
                         tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
                     <AssignedSelector
                         assignedPortals={extensionBeingEdited.assignedPortals.value}
@@ -151,10 +180,13 @@ class Module extends Component {
                         moveAll={this.moveAll.bind(this)}
                         onChange={props.onChange.bind(this)} />
                 </GridCell>
-                <ModuleDefinitions moduleDefinitions={extensionBeingEdited.moduleDefinitions.value} />
+                <ModuleDefinitions 
+                moduleDefinitions={extensionBeingEdited.moduleDefinitions.value} 
+                desktopModuleId={extensionBeingEdited.desktopModuleId.value}
+                onSave={props.onChange.bind(this, "moduleDefinitions")}/>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary">Cancel</Button>
-                    <Button type="primary">{props.primaryButtonText}</Button>
+                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -165,6 +197,7 @@ class Module extends Component {
 Module.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    onSave: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
     disabled: PropTypes.func,

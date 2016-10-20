@@ -46,6 +46,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [DataMember(Name = "source")]
         public string Source { get; set; }
 
+
         [DataMember(Name = "type")]
         public SecurityAccessLevel Type { get; set; }
 

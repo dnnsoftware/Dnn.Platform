@@ -73,12 +73,12 @@ const extensionActions = {
     },
     updateExtension(updatedExtension, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(valueMapExtensionBeingEdited(updatedExtension), () => {
+            ExtensionService.updateExtension(updatedExtension, () => {
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
                         index,
-                        updatedExtension
+                        updatedExtension: valueMapExtensionBeingEdited(updatedExtension)
                     }
                 });
                 if (callback) {

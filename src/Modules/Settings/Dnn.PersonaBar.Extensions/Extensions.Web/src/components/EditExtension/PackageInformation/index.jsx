@@ -37,15 +37,6 @@ class PackageInformation extends Component {
         };
     }
 
-    onCancel(event) {
-        if (event) {
-            event.preventDefault();
-        }
-        const { props } = this;
-        this.resetExtensionBeingEdited();
-        props.onCancel();
-    }
-
     render() {
         const {props, state} = this;
 
@@ -165,7 +156,7 @@ class PackageInformation extends Component {
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={this.onCancel.bind(this)}>Cancel</Button>
+                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
                     <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>

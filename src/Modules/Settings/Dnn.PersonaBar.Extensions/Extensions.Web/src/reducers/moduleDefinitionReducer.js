@@ -1,18 +1,26 @@
 import { moduleDefinition as ActionTypes } from "constants/actionTypes";
 export default function moduleDefinition(state = {
-    moduleDefinitionBeingEdited: {},
-    moduleDefinitionBeingEditedIndex: -1
+    formIsDirty: false,
+    sourceFolders: [],
+    sourceFiles: [],
+    icons: []
 }, action) {
     switch (action.type) {
-        case ActionTypes.EDIT_MODULE_DEFINITION:
+        case ActionTypes.SET_FORM_DIRT:
             return { ...state,
-                moduleDefinitionBeingEdited: action.payload.moduleDefinitionBeingEdited,
-                moduleDefinitionBeingEditedIndex: action.payload.moduleDefinitionBeingEditedIndex
+                formIsDirty: action.payload
             };
-        case ActionTypes.CLEAR_EDITED_MODULE_DEFINITION:
+        case ActionTypes.RETRIEVED_SOURCE_FOLDERS:
             return { ...state,
-                moduleDefinitionBeingEdited: null,
-                moduleDefinitionBeingEditedIndex: -1
+                sourceFolders: action.payload
+            };
+        case ActionTypes.RETRIEVED_SOURCE_FILES:
+            return { ...state,
+                sourceFiles: action.payload
+            };
+        case ActionTypes.RETRIEVED_CONTROL_ICONS:
+            return { ...state,
+                icons: action.payload
             };
         default:
             return { ...state

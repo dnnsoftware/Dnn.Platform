@@ -1,19 +1,26 @@
 import util from "../utils";
 
 function mapPackageInformation(extensionBeingUpdated) {
-    return extensionBeingUpdated;
-    // return {
-    //     Name: extensionBeingUpdated.name,
-    //     FriendlyName: extensionBeingUpdated.friendlyName,
-    //     Description: extensionBeingUpdated.description,
-    //     Version: extensionBeingUpdated.version,
-    //     Owner: extensionBeingUpdated.owner,
-    //     Url: extensionBeingUpdated.url,
-    //     Organization: extensionBeingUpdated.organization,
-    //     Email: extensionBeingUpdated.email,
-    //     License: extensionBeingUpdated.license,
-    //     ReleaseNotes: extensionBeingUpdated.releaseNotes
-    // };
+    // return extensionBeingUpdated;
+    return {
+        Name: extensionBeingUpdated.name.value,
+        FriendlyName: extensionBeingUpdated.friendlyName.value,
+        Foldername: extensionBeingUpdated.folderName.value,
+        BusinessController: extensionBeingUpdated.businessController.value,
+        Category: extensionBeingUpdated.category.value,
+        Dependencies: extensionBeingUpdated.dependencies.value,
+        Permissions: extensionBeingUpdated.permissions.value,
+        Shareable: extensionBeingUpdated.shareable.value,
+        PremiumModule: extensionBeingUpdated.premiumModule.value,
+        Description: extensionBeingUpdated.description.value,
+        Version: extensionBeingUpdated.version.value,
+        Owner: extensionBeingUpdated.owner.value,
+        Url: extensionBeingUpdated.url.value,
+        Organization: extensionBeingUpdated.organization.value,
+        Email: extensionBeingUpdated.email.value,
+        License: extensionBeingUpdated.license.value,
+        ReleaseNotes: extensionBeingUpdated.releaseNotes.value
+    };
 }
 
 function serializeQueryStringParameters(obj) {
@@ -53,7 +60,7 @@ class ExtensionService {
     updateExtension(extensionBeingUpdated, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
-            id: extensionBeingUpdated.packageId,
+            id: extensionBeingUpdated.packageId.value,
             settings: mapPackageInformation(extensionBeingUpdated)
         };
         sf.post("SavePackageSettings", payload, callback);

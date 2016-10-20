@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
-import { ArrowLeftIcon, ArrowRightIcon } from "dnn-svg-icons";
+import { ArrowLeftIcon, ArrowRightIcon, DoubleArrowRightIcon, DoubleArrowLeftIcon } from "dnn-svg-icons";
 import styles from "./style.less";
 class AssignedSelector extends Component {
     constructor() {
@@ -18,7 +18,7 @@ class AssignedSelector extends Component {
     }
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const assignedPortals = this.getPortalList(props.assignedPortals, "assignedPortals");
         const unassignedPortals = this.getPortalList(props.unassignedPortals, "unassignedPortals");
         return (
@@ -34,8 +34,8 @@ class AssignedSelector extends Component {
                 <GridCell columnSize={10} className="selector-controls">
                     <div href="" className="move-item single-right" onClick={props.moveItemsRight.bind(this)} dangerouslySetInnerHTML={{ __html: ArrowRightIcon }}></div>
                     <div href="" className="move-item single-left" onClick={props.moveItemsLeft.bind(this)} dangerouslySetInnerHTML={{ __html: ArrowLeftIcon }}></div>
-                    <div href="" className="move-item double-right" onClick={props.moveAll.bind(this, "right")} dangerouslySetInnerHTML={{ __html: ArrowRightIcon }}></div>
-                    <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)} dangerouslySetInnerHTML={{ __html: ArrowLeftIcon }}></div>
+                    <div href="" className="move-item double-right" onClick={props.moveAll.bind(this, "right")} dangerouslySetInnerHTML={{ __html: DoubleArrowRightIcon }}></div>
+                    <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)} dangerouslySetInnerHTML={{ __html: DoubleArrowLeftIcon }}></div>
                 </GridCell>
                 <GridCell columnSize={45} className="selector-box">
                     <h6>Assigned</h6>

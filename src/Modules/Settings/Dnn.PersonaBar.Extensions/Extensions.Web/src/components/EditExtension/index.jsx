@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
-import { ExtensionActions, VisiblePanelActions } from "actions";
+import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions } from "actions";
 import Tabs from "dnn-tabs";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
 import CustomSettings from "./CustomSettings";
 import Tooltip from "dnn-tooltip";
+import utilities from "utils";
 import styles from "./style.less";
 
 class EditExtension extends Component {
@@ -26,7 +27,8 @@ class EditExtension extends Component {
                 url: "",
                 organization: "",
                 email: ""
-            }
+            },
+            selectedTabIndex: 0
         };
     }
 
@@ -69,9 +71,9 @@ class EditExtension extends Component {
         props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
     }
 
-    onSaveExtension(extensionBeingEdited) {
-        const {props, state} = this;
-        props.dispatch(ExtensionActions.updateExtension(extensionBeingEdited, state.extensionBeingEditedIndex));
+    onSaveExtension() {
+        const {props} = this;
+        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, props.extensionBeingEditedIndex));
         this.selectPanel(0);
     }
 
@@ -127,6 +129,25 @@ class EditExtension extends Component {
         }
         this.onSaveExtension();
     }
+    confirmAction(callback) {
+        const { props } = this;
+        if (props.moduleDefinitionFormIsDirty) {
+            this.setState({});
+            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+                callback();
+                props.dispatch(ModuleDefinitionActions.setFormDirt(false));
+            });
+        } else {
+            callback();
+        }
+    }
+    onTabSelect(index) {
+        this.confirmAction(() => {
+            this.setState({
+                selectedTabIndex: index
+            });
+        });
+    }
 
     render() {
         const {props, state} = this;
@@ -137,6 +158,8 @@ class EditExtension extends Component {
                 <SocialPanelBody>
                     <Tabs
                         tabHeaders={this.getTabHeaders()}
+                        onSelect={this.onTabSelect.bind(this)}
+                        selectedIndex={state.selectedTabIndex}
                         type="primary">
                         <GridCell className="package-information-box extension-form">
                             <PackageInformation
@@ -156,6 +179,8 @@ class EditExtension extends Component {
                                 type="Module"
                                 primaryButtonText="Next"
                                 onChange={this.onChange.bind(this)}
+                                onCancel={this.selectPanel.bind(this, 0)}
+                                onSave={this.onSave.bind(this)}
                                 onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)}
                                 />
                         </GridCell>
@@ -191,7 +216,9 @@ EditExtension.PropTypes = {
 function mapStateToProps(state) {
     return {
         extensionBeingEdited: state.extension.extensionBeingEdited,
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex,
         packageBeingEditedSettings: state.extension.packageBeingEditedSettings,
+        moduleDefinitionFormIsDirty: state.moduleDefinition.formIsDirty,
         triedToSave: state.extension.triedToSave,
         tabsWithError: state.extension.tabsWithError
     };

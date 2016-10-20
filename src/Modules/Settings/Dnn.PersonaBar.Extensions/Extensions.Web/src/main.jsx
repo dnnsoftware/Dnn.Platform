@@ -11,6 +11,7 @@ application.dispatch = store.dispatch;
 
 const appContainer = document.getElementById("extensions-container");
 application.init();
+
 render(
     <Provider store={store}>
         <App />

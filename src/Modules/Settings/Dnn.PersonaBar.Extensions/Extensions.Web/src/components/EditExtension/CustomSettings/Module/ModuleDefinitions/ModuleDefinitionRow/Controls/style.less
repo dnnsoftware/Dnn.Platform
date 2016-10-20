@@ -1,0 +1,46 @@
+@import "~dnn-global-styles/index";
+.extensions-app {
+    .extension-form {
+        .module-controls {
+            padding: 0;
+            .module-controls-table {
+                padding: 0;
+                border: 1px solid @alto;
+                margin-top: 25px;
+                .module-control-row:first-child {
+                    border: none;
+                }
+                .module-control-title-header, .module-control-source-header {
+                    border-top: 1px solid @alto;
+                    text-transform: uppercase;
+                }
+                .edit-module-control {
+                    > div {
+                        float: left;
+                    }
+                    .edit-module-control-box {
+                        padding: 0;
+                        .dnn-dropdown-with-error .dropdown-tooltip-container {
+                            margin-bottom: 32px;
+                        }
+                        .dnn-switch-container {
+                            width: 100%;
+                            margin-bottom: 32px;
+                            padding-top: 15px;
+                            .switch-label {
+                                max-width: 50%;
+                            }
+                            .dnn-switch {
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+            .add-control-box {
+                padding: 25px;
+                .add-definition-footer {}
+            }
+        }
+    }
+}
