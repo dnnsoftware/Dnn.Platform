@@ -156,6 +156,105 @@ const siteInfoActions = {
                 }
             });
         };
+    },
+    getSitemapSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getSitemapSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SEO_SITEMAP_SETTINGS,
+                    data: {
+                        sitemapSettings: data.Settings,
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateSitemapSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateSitemapSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SEO_SITEMAP_SETTINGS,
+                    data: {
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    sitemapSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_SITEMAP_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    sitemapSettings: parameter,
+                    clientModified: true
+                }
+            });
+        };
+    },
+    clearCache(callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.clearCache(data => {
+                dispatch({
+                    type: ActionTypes.CLEARED_SEO_SITEMAP_CACHE,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getProviders(callback) {
+        return (dispatch) => {
+            ApplicationService.getProviders(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SEO_SITEMAP_PROVIDERS,
+                    data: {
+                        providers: data.Providers
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateProvider(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateProvider(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SEO_SITEMAP_PROVIDER,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

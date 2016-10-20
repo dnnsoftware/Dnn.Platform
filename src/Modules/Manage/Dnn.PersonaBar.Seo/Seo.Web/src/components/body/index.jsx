@@ -7,6 +7,7 @@ import {
 } from "../../actions";
 import GeneralSettings from "../generalSettings";
 import RegexSettings from "../regexSettings";
+import SitemapSettings from "../sitemapSettings";
 import TestUrl from "../testUrl";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
@@ -39,7 +40,7 @@ export class Body extends Component {
                         <RegexSettings/>
                         <TestUrl/>
                     </Tabs>
-                    <div>sitemap settings</div>               
+                    <SitemapSettings/>
                 </Tabs>                
             </SocialPanelBody>
         );

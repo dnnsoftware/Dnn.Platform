@@ -1,4 +1,4 @@
-import {seo as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { seo as ActionTypes, pagination as PaginationActionTypes } from "../constants/actionTypes";
 
 export default function seoSettings(state = {
 }, action) {
@@ -47,6 +47,24 @@ export default function seoSettings(state = {
                 redirectionReason: action.data.redirectionReason,
                 redirectionResult: action.data.redirectionResult,
                 operationMessages: action.data.operationMessages
+            };
+        case ActionTypes.RETRIEVED_SEO_SITEMAP_SETTINGS:
+            return { ...state,
+                sitemapSettings: action.data.sitemapSettings,
+                clientModified: action.data.clientModified
+            };
+        case ActionTypes.UPDATED_SEO_SITEMAP_SETTINGS:
+            return { ...state,
+                clientModified: action.data.clientModified
+            };
+        case ActionTypes.SEO_SITEMAP_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                sitemapSettings: action.data.sitemapSettings,
+                clientModified: action.data.clientModified
+            };
+        case ActionTypes.RETRIEVED_SEO_SITEMAP_PROVIDERS:
+        return { ...state,
+                providers: action.data.providers
             };
         default:
             return { ...state

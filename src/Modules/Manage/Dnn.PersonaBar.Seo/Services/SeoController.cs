@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,6 +28,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Sitemap;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Web.Api;
 
@@ -36,7 +38,7 @@ namespace Dnn.PersonaBar.Seo.Services
     public class SeoController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
-        //private readonly Components.SeoController _controller = new Components.SeoController();
+        private readonly Components.SeoController _controller = new Components.SeoController();
         private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Seo.resx");
 
         /// GET: api/SEO/GetGeneralSettings
@@ -246,7 +248,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     CacheController.FlushPageIndexFromCache();
                     CacheController.FlushFriendlyUrlSettingsFromCache();
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
             }
             catch (Exception exc)
@@ -268,6 +270,216 @@ namespace Dnn.PersonaBar.Seo.Services
                 //ignore
             }
             return false;
+        }
+
+        /// GET: api/SEO/GetSitemapSettings
+        /// <summary>
+        /// Gets sitemap settings
+        /// </summary>
+        /// <param></param>
+        /// <returns>Data of sitemap settings</returns>
+        [HttpGet]
+        public HttpResponseMessage GetSitemapSettings()
+        {
+            try
+            {
+                var portalAlias = !String.IsNullOrEmpty(PortalSettings.DefaultPortalAlias)
+                                ? PortalSettings.DefaultPortalAlias
+                                : PortalSettings.PortalAlias.HTTPAlias;
+
+                var settings = new
+                {
+                    SitemapUrl = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx",
+                    SitemapLevelMode =
+                        bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", PortalId,
+                            "False")),
+                    SitemapMinPriority =
+                        float.Parse(
+                            PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1"),
+                            NumberFormatInfo.InvariantInfo),
+                    SitemapIncludeHidden =
+                        bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", PortalId,
+                            "False")),
+                    SitemapExcludePriority =
+                        float.Parse(
+                            PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1"),
+                            NumberFormatInfo.InvariantInfo),
+                    SitemapCacheDays =
+                        int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalId, "1"))
+                };
+
+                var searchEngineUrls = new List<KeyValuePair<string, string>>();
+                searchEngineUrls.Add(new KeyValuePair<string, string>("Google", _controller.GetSearchEngineSubmissionUrl("google")));
+                searchEngineUrls.Add(new KeyValuePair<string, string>("Bing", _controller.GetSearchEngineSubmissionUrl("bing")));
+                searchEngineUrls.Add(new KeyValuePair<string, string>("Yahoo!", _controller.GetSearchEngineSubmissionUrl("yahoo!")));
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Success = true,
+                    Settings = settings,
+                    SearchEngineUrls = searchEngineUrls
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SEO/CreateVerification
+        /// <summary>
+        /// Creates a verification file for specific search engine
+        /// </summary>
+        /// <param name="verification">Name of verification</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CreateVerification(string verification)
+        {
+            try
+            {
+                _controller.CreateVerification(verification);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SEO/UpdateSitemapSettings
+        /// <summary>
+        /// Updates sitemap settings
+        /// </summary>
+        /// <param name="request">Data of sitemap settings</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateSitemapSettings(SitemapSettingsRequest request)
+        {
+            try
+            {
+                PortalController.UpdatePortalSetting(PortalId, "SitemapLevelMode", request.SitemapLevelMode.ToString());
+
+                if (request.SitemapMinPriority < 0)
+                {
+                    request.SitemapMinPriority = 0;
+                }
+                PortalController.UpdatePortalSetting(PortalId, "SitemapMinPriority", request.SitemapMinPriority.ToString(NumberFormatInfo.InvariantInfo));
+
+                PortalController.UpdatePortalSetting(PortalId, "SitemapIncludeHidden", request.SitemapIncludeHidden.ToString());
+
+                if (request.SitemapExcludePriority < 0)
+                {
+                    request.SitemapExcludePriority = 0;
+                }
+                PortalController.UpdatePortalSetting(PortalId, "SitemapExcludePriority", request.SitemapExcludePriority.ToString(NumberFormatInfo.InvariantInfo));
+
+                if (request.SitemapCacheDays == 0)
+                {
+                    _controller.ResetCache();
+                }
+
+                PortalController.UpdatePortalSetting(PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString());
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SEO/ResetCache
+        /// <summary>
+        /// Resets cache
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage ResetCache()
+        {
+            try
+            {
+                _controller.ResetCache();
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/Sitemap/GetProviders
+        /// <summary>
+        /// Gets list of sitemap providers
+        /// </summary>
+        /// <param></param>
+        /// <returns>Web Server information</returns>
+        [HttpGet]
+        public HttpResponseMessage GetProviders()
+        {
+            try
+            {
+                var providers = _controller.GetProviders().Select(p => new
+                {
+                    p.Name,
+                    p.Enabled,
+                    p.Priority,
+                    p.OverridePriority
+                }).ToList();
+
+                var response = new
+                {
+                    Success = true,
+                    Providers = providers
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SEO/UpdateProvider
+        /// <summary>
+        /// Updates settings of a sitemap provider
+        /// </summary>
+        /// <param name="request">Data of sitemap provider</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateProvider(UpdateSitemapProviderRequest request)
+        {
+            try
+            {
+                SitemapProvider editedProvider =
+                    _controller.GetProviders()
+                        .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase));
+
+                if (editedProvider != null)
+                {
+                    editedProvider.Enabled = request.Enabled;
+                    editedProvider.OverridePriority = request.Priority > -1;
+                    if (editedProvider.OverridePriority)
+                    {
+                        editedProvider.Priority = request.Priority;
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
         /// <summary>

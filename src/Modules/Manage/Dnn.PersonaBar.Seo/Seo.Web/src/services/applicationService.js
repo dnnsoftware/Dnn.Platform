@@ -46,7 +46,32 @@ class ApplicationService {
     testUrlRewrite(uri, callback) {
         const sf = this.getServiceFramework("SEO");        
         sf.get("TestUrlRewrite?uri=" + uri, {}, callback);
-    }   
+    }  
+    
+    getSitemapSettings(callback) {
+        const sf = this.getServiceFramework("SEO");        
+        sf.get("GetSitemapSettings", {}, callback);
+    }    
+
+    updateSitemapSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("UpdateSitemapSettings", payload, callback, failureCallback);
+    }
+
+    getProviders(callback) {
+        const sf = this.getServiceFramework("SEO");        
+        sf.get("GetProviders", {}, callback);
+    }    
+
+    updateProvider(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("updateProvider", payload, callback, failureCallback);
+    }
+
+    clearCache(callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("ResetCache", {}, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

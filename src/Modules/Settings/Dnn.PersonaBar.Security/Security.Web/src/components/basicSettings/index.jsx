@@ -68,6 +68,11 @@ class BasicSettingsPanelBody extends Component {
 
     onSettingChange(key, event) {
         const {props, state} = this;
+
+        if(state.resetPagePicker){
+            return;
+        }
+        
         let basicLoginSettings = Object.assign({}, state.basicLoginSettings);
 
         if (key === "RedirectAfterLoginTabId" || key === "RedirectAfterLogoutTabId") {

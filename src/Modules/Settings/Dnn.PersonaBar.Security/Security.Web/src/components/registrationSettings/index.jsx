@@ -62,6 +62,11 @@ class RegistrationSettingsPanelBody extends Component {
 
     onSettingChange(key, event) {
         let {state, props} = this;
+
+        if(state.resetPagePicker){
+            return;
+        }
+        
         let registrationSettings = Object.assign({}, state.registrationSettings);
 
         if (key === "UserRegistration" || key === "RegistrationFormType") {
