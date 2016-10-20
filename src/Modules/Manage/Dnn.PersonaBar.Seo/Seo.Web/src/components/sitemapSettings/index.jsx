@@ -290,13 +290,13 @@ class SitemapSettingsPanelBody extends Component {
                         tooltipMessage={resx.get("sitemapUrlLabel.Help")}
                         label={resx.get("sitemapUrlLabel")}
                         />
-                    <SingleLineInputWithError
-                        inputStyle={{ margin: "0" }}
-                        withLabel={false}
-                        error={false}
-                        value={state.sitemapSettings.SitemapUrl}
-                        enabled={false}
-                        />
+                    <div className="sitemapUrl">
+                        <a
+                            href={state.sitemapSettings.SitemapUrl}
+                            target="_blank">
+                            {state.sitemapSettings.SitemapUrl}
+                        </a>
+                    </div>
                 </InputGroup>
                 <InputGroup>
                     <Label
