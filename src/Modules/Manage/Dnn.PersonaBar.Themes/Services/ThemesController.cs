@@ -280,19 +280,23 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
-                var themeType = parseTheme.ThemeType;
                 var themeName = parseTheme.ThemeName;
 
-                var theme = (themeType == ThemeType.Skin ? _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                                                    : _controller.GetContainers(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+                var layout = _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
 
-                if (theme == null)
+                if (layout != null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
+                    _controller.ParseTheme(PortalSettings, layout, parseTheme.ParseType);
                 }
 
-                _controller.ParseTheme(PortalSettings, theme, parseTheme.ParseType);
+                var container = _controller.GetContainers(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+
+                if (container != null)
+                {
+                    _controller.ParseTheme(PortalSettings, container, parseTheme.ParseType);
+                }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { });
             }

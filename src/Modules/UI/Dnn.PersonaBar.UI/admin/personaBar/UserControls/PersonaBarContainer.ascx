@@ -4,7 +4,7 @@
 	<iframe id="personaBar-iframe" allowTransparency="true" frameBorder="0" scrolling="false"></iframe>
 	<iframe id="personaBar-mobi-iframe" allowTransparency="true" frameBorder="0"></iframe>
     <script type="text/javascript">
-        $(function() {
+        (function($) {
             var w = window,
                 d = document,
                 e = d.documentElement,
@@ -13,7 +13,7 @@
                 desktopIframe = document.getElementById('personaBar-iframe'),
                 mobileIframe = document.getElementById('personaBar-mobi-iframe');
 
-                w["personaBarSettings"] = <%=PersonaBarSettings%>;
+            w["personaBarSettings"] = <%=PersonaBarSettings%>;
 
             var mobile = x <= 640;
 
@@ -34,6 +34,6 @@
                         .wrap('<div class="pb-scroll-wrapper"></div>');
                 }
             }
-        });
+        })(jQuery);
     </script>
 </asp:Panel>

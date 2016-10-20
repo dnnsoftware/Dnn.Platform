@@ -148,9 +148,9 @@ const themeActions = {
             }, errorCallback);
         };
      },
-     parseTheme(themeName, themeType, parseType, callback) {
+     parseTheme(themeName, parseType, callback) {
          return (dispatch) => {
-             ThemeService.parseTheme(themeName, themeType, parseType, data => {
+             ThemeService.parseTheme(themeName, parseType, data => {
                  dispatch({
                      type: ActionTypes.PARSE_THEME,
                      data: {

@@ -40,27 +40,10 @@ class ParseThemePackage extends Component {
         const {props, state} = this;
 
         let themeName = props.currentTheme.SiteLayout.themeName;
-        let themeType = 0;
         let parseType = this.getParseType();
 
         let self = this;
-        props.dispatch(ThemeActions.parseTheme(themeName, themeType, parseType, function(){
-            self.parseContainer();
-        }));
-    }
-
-    parseContainer(){
-        const {props, state} = this;
-
-        let themeName = props.currentTheme.SiteContainer.themeName;
-        let themeType = 1;
-        let parseType = this.getParseType();
-
-        let self = this;
-        props.dispatch(ThemeActions.parseTheme(themeName, themeType, parseType, function(){
-            self.setState({parsing: false});
-            utils.utilities.notify(Localization.get("Successful"));
-        }));
+        props.dispatch(ThemeActions.parseTheme(themeName, parseType));
     }
 
     onParseTypeChanged(type){

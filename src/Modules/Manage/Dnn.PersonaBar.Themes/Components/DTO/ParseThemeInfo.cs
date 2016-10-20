@@ -12,9 +12,6 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         [DataMember(Name = "themeName")]
         public string ThemeName { get; set; }
 
-        [DataMember(Name = "themeType")]
-        public ThemeType ThemeType { get; set; }
-
         [DataMember(Name = "parseType")]
         public ParseType ParseType { get; set; }
     }
