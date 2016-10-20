@@ -164,6 +164,7 @@ const siteInfoActions = {
                     type: ActionTypes.RETRIEVED_SEO_SITEMAP_SETTINGS,
                     data: {
                         sitemapSettings: data.Settings,
+                        searchEngineUrls: data.SearchEngineUrls,
                         clientModified: false
                     }
                 });
@@ -242,6 +243,25 @@ const siteInfoActions = {
             ApplicationService.updateProvider(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATED_SEO_SITEMAP_PROVIDER,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    createVerification(verification, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.createVerification(verification, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SEO_SITEMAP_VERIFICATION,
                     data: {
                         
                     }

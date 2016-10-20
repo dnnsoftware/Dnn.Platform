@@ -65,7 +65,12 @@ class ApplicationService {
 
     updateProvider(payload, callback, failureCallback) {
         const sf = this.getServiceFramework("SEO");
-        sf.post("updateProvider", payload, callback, failureCallback);
+        sf.post("UpdateProvider", payload, callback, failureCallback);
+    }
+
+    createVerification(verification, callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("CreateVerification?verification=" + verification, {}, callback, failureCallback);
     }
 
     clearCache(callback, failureCallback) {

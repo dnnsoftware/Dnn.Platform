@@ -51,6 +51,7 @@ export default function seoSettings(state = {
         case ActionTypes.RETRIEVED_SEO_SITEMAP_SETTINGS:
             return { ...state,
                 sitemapSettings: action.data.sitemapSettings,
+                searchEngineUrls: action.data.searchEngineUrls,
                 clientModified: action.data.clientModified
             };
         case ActionTypes.UPDATED_SEO_SITEMAP_SETTINGS:

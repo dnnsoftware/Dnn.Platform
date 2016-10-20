@@ -24,13 +24,21 @@ let daysToCacheOptions = [];
 let priorityOptions = [];
 let tableFields = [];
 
+const re = /[^].html$/;
+
 class SitemapSettingsPanelBody extends Component {
     constructor() {
         super();
         this.state = {
             sitemapSettings: undefined,
+            searchEngine: "Google",
+            verification: "",
             triedToSubmit: false,
-            openId: ""
+            triedToCreate: false,
+            openId: "",
+            error: {
+                verificationValidity: true
+            }
         };
     }
 
@@ -89,7 +97,8 @@ class SitemapSettingsPanelBody extends Component {
 
         this.setState({
             sitemapSettings: Object.assign({}, props.sitemapSettings),
-            triedToSubmit: false
+            triedToSubmit: false,
+            triedToCreate: false
         });
     }
 
@@ -112,11 +121,11 @@ class SitemapSettingsPanelBody extends Component {
         props.dispatch(SeoActions.sitemapSettingsClientModified(sitemapSettings));
     }
 
-    keyValuePairsToOptions(keyValuePairs) {
+    searchEngineListToOptions(list) {
         let options = [];
-        if (keyValuePairs !== undefined) {
-            options = keyValuePairs.map((item) => {
-                return { label: item.Key, value: item.Value };
+        if (list !== undefined) {
+            options = list.map((item) => {
+                return { label: item.Key, value: item.Key };
             });
         }
         return options;
@@ -157,6 +166,11 @@ class SitemapSettingsPanelBody extends Component {
 
         props.dispatch(SeoActions.updateProvider(settings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+            props.dispatch(SeoActions.getProviders((data) => {
+                this.setState({
+                    providers: Object.assign({}, data.Providers)
+                });
+            }));
             this.collapse();
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -185,7 +199,7 @@ class SitemapSettingsPanelBody extends Component {
         }
     }
 
-    renderHeader() {
+    renderProvidersHeader() {
         let tableHeaders = tableFields.map((field) => {
             let className = "provider-items header-" + field.id;
             return <div className={className} key={"header-" + field.id}>
@@ -220,6 +234,50 @@ class SitemapSettingsPanelBody extends Component {
                 );
             });
         }
+    }
+
+    onSearchEngineChange(event) {
+        let {state, props} = this;
+
+        this.setState({
+            searchEngine: event.value
+        });
+    }
+
+    onSearchEngineSubmit() {
+        let {state, props} = this;
+        let url = props.searchEngineUrls.filter((item) => item.Key === state.searchEngine)[0].Value;
+        window.open(url, '_blank');
+    }
+
+    onVerificationChange(event) {
+        let {state} = this;
+        let verification = typeof (event) === "object" ? event.target.value : event;
+        if (verification === "" || !re.test(verification)) {
+            state.error["verificationValidity"] = true;
+        }
+        else if (verification !== "" && re.test(verification)) {
+            state.error["verificationValidity"] = false;
+        }
+
+        this.setState({
+            verification: verification,
+            error: state.error,
+            triedToCreate: false
+        });
+    }
+
+    onCreateVerification() {
+        let {state, props} = this;
+        this.setState({
+            triedToCreate: true
+        });
+
+        if (state.error.verificationValidity) {
+            return;
+        }
+
+        props.dispatch(SeoActions.createVerification(state.verification));
     }
 
     /* eslint-disable react/no-danger */
@@ -313,15 +371,64 @@ class SitemapSettingsPanelBody extends Component {
                 </InputGroup>
             </div>;
 
+            const columnThree = <div className="left-column">
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("lblSearchEngine.Help")}
+                        label={resx.get("lblSearchEngine")}
+                        />
+                    <div className="searchEngineSubmit">
+                        <Dropdown
+                            options={this.searchEngineListToOptions(props.searchEngineUrls)}
+                            value={state.searchEngine}
+                            onSelect={this.onSearchEngineChange.bind(this)}
+                            />
+                        <Button
+                            className="searchEngineSubmitBtn"
+                            type="secondary"
+                            onClick={this.onSearchEngineSubmit.bind(this)}>
+                            {resx.get("Submit")}
+                        </Button>
+                    </div>
+                </InputGroup>
+            </div>;
+
+            const columnFour = <div className="right-column">
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("lblVerification.Help")}
+                        label={resx.get("lblVerification")}
+                        />
+                    <div className="createVerification">
+                        <SingleLineInputWithError
+                            inputStyle={{ margin: "0" }}
+                            withLabel={false}
+                            error={this.state.error.verificationValidity && this.state.triedToCreate}
+                            errorMessage={resx.get("VerificationValidity.ErrorMessage")}
+                            value={state.verification}
+                            onChange={this.onVerificationChange.bind(this)}
+                            />
+                        <Button
+                            className="createVerificationBtn"
+                            type="secondary"
+                            onClick={this.onCreateVerification.bind(this)}>
+                            {resx.get("Create")}
+                        </Button>
+                    </div>
+                </InputGroup>
+            </div>;
+
             return (
                 <div className={styles.sitemapSettings}>
                     <div className="columnTitle">{resx.get("SitemapSettings")}</div>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                     <div className="columnTitle2">{resx.get("SitemapProviders")}</div>
                     <div className="provider-items-grid">
-                        {this.renderHeader()}
+                        {this.renderProvidersHeader()}
                         {this.renderedProviders()}
                     </div>
+                    <div className="columnTitle3">{resx.get("SiteSubmission")}</div>
+                    <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}
@@ -347,6 +454,7 @@ SitemapSettingsPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     sitemapSettings: PropTypes.object,
+    searchEngineUrls: PropTypes.array,
     clientModified: PropTypes.bool,
     providers: PropTypes.array
 };
@@ -355,6 +463,7 @@ function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
         sitemapSettings: state.seo.sitemapSettings,
+        searchEngineUrls: state.seo.searchEngineUrls,
         clientModified: state.seo.clientModified,
         providers: state.seo.providers
     };

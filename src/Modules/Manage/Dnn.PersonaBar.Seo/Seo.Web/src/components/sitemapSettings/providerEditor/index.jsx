@@ -18,9 +18,7 @@ class ProviderEditor extends Component {
     constructor() {
         super();
         this.state = {
-            settings: {},
-            triedToSubmit: false,
-            formModified: false
+            settings: {}
         };
     }
 
@@ -42,8 +40,7 @@ class ProviderEditor extends Component {
         priorityOptions.push({ "value": 0, "label": "0" });
 
         this.setState({
-            settings: Object.assign({}, props.settings),
-            triedToSubmit: false
+            settings: Object.assign({}, props.settings)
         });
     }
 
@@ -59,22 +56,14 @@ class ProviderEditor extends Component {
         }
 
         this.setState({
-            settings: settings,
-            triedToSubmit: false,
-            formModified: true
+            settings: settings
         });
     }
 
     onUpdateItem(event) {
         event.preventDefault();
         const {props, state} = this;
-        let {settings} = this.state;
-
-        this.setState({
-            triedToSubmit: true
-        });
-
-        this.props.onUpdate(this.state.settings);
+        this.props.onUpdate(state.settings);
     }
 
     /* eslint-disable react/no-danger */
@@ -107,7 +96,7 @@ class ProviderEditor extends Component {
                             />
                         <Dropdown
                             options={priorityOptions}
-                            value={state.settings.Priority}
+                            value={!state.settings.OverridePriority ? -1: state.settings.Priority}
                             onSelect={this.onSettingChange.bind(this, "Priority")}
                             />
                     </div>
@@ -125,7 +114,6 @@ class ProviderEditor extends Component {
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={!this.state.formModified}
                             type="primary"
                             onClick={this.onUpdateItem.bind(this)}>
                             {resx.get("Save")}
@@ -145,13 +133,4 @@ ProviderEditor.propTypes = {
     onUpdate: PropTypes.func
 };
 
-ProviderEditor.defaultProps = {
-    visible: true
-};
-
-function mapStateToProps(state) {
-    return {     
-    };
-}
-
-export default connect(mapStateToProps)(ProviderEditor);
+export default (ProviderEditor);
