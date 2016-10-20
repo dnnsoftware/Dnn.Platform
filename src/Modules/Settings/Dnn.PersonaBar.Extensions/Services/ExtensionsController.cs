@@ -19,8 +19,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
@@ -425,53 +423,56 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageSettings.PackageId);
-                if (package != null)
+                if (package == null)
                 {
-                    if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                        Localization.GetString("SavePackageSettings.PackageNotFound", Constants.SharedResources));
+                }
+
+                if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
+                {
+                    var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
+                    if (authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName)
                     {
-                        var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                        if (authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName)
-                        {
-                            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                                Localization.GetString("ReadOnlyPackage.SaveErrorMessage"));
-                        }
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                            Localization.GetString("ReadOnlyPackage.SaveErrorMessage", Constants.SharedResources));
+                    }
 
-                        var type = package.GetType();
-                        var needUpdate = false;
-                        foreach (var kvp in packageSettings.Settings)
-                        {
-                            var name = kvp.Key;
-                            var value = kvp.Value;
+                    var type = package.GetType();
+                    var needUpdate = false;
+                    foreach (var kvp in packageSettings.Settings)
+                    {
+                        var name = kvp.Key;
+                        var value = kvp.Value;
 
-                            var property = type.GetProperty(name,
-                                BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
-                            if (property != null)
+                        var property = type.GetProperty(name,
+                            BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+                        if (property != null)
+                        {
+                            if (property.GetValue(package).ToString() != value)
                             {
-                                if (property.GetValue(package).ToString() != value)
-                                {
-                                    property.SetValue(package, value);
-                                    needUpdate = true;
-                                }
+                                property.SetValue(package, value);
+                                needUpdate = true;
                             }
-                        }
-
-                        if (needUpdate)
-                        {
-                            PackageController.Instance.SaveExtensionPackage(package);
                         }
                     }
 
-                    var packageType = (PackageTypes)Enum.Parse(typeof(PackageTypes), package.PackageType, true);
-                    var packageEditor = PackageEditorFactory.GetPackageEditor(packageType);
-                    if (packageEditor != null)
+                    if (needUpdate)
                     {
-                        string error = string.Empty;
-                        packageEditor.SavePackageSettings(packageSettings, out error);
+                        PackageController.Instance.SaveExtensionPackage(package);
+                    }
+                }
 
-                        if (!string.IsNullOrEmpty(error))
-                        {
-                            return Request.CreateResponse(HttpStatusCode.OK, new { Success = false, Error = error });
-                        }
+                var packageType = (PackageTypes)Enum.Parse(typeof(PackageTypes), package.PackageType, true);
+                var packageEditor = PackageEditorFactory.GetPackageEditor(packageType);
+                if (packageEditor != null)
+                {
+                    string error;
+                    packageEditor.SavePackageSettings(packageSettings, out error);
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = false, Error = error });
                     }
                 }
 
@@ -673,75 +674,75 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = false, Error = "DuplicateName" });
                 }
-                    PackageController.Instance.SaveExtensionPackage(newPackage);
-                    var packageId = newPackage.PackageID;
-                    Locale locale;
-                    LanguagePackInfo languagePack;
-                    switch (newPackage.PackageType)
-                    {
-                        case "Auth_System":
-                            //Create a new Auth System
-                            var authSystem = new AuthenticationInfo
-                            {
-                                AuthenticationType = newPackage.Name,
-                                IsEnabled = Null.NullBoolean,
-                                PackageID = newPackage.PackageID
-                            };
-                            AuthenticationController.AddAuthentication(authSystem);
-                            break;
-                        case "Container":
-                        case "Skin":
-                            var skinPackage = new SkinPackageInfo
-                            {
-                                SkinName = newPackage.Name,
-                                PackageID = newPackage.PackageID,
-                                SkinType = newPackage.PackageType
-                            };
-                            SkinController.AddSkinPackage(skinPackage);
-                            break;
-                        case "CoreLanguagePack":
-                            locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
-                            languagePack = new LanguagePackInfo
-                            {
-                                PackageID = newPackage.PackageID,
-                                LanguageID = locale.LanguageId,
-                                DependentPackageID = -2
-                            };
-                            LanguagePackController.SaveLanguagePack(languagePack);
-                            break;
-                        case "ExtensionLanguagePack":
-                            locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
-                            languagePack = new LanguagePackInfo
-                            {
-                                PackageID = newPackage.PackageID,
-                                LanguageID = locale.LanguageId,
-                                DependentPackageID = Null.NullInteger
-                            };
-                            LanguagePackController.SaveLanguagePack(languagePack);
-                            break;
-                        case "Module":
-                            //Create a new DesktopModule
-                            var desktopModule = new DesktopModuleInfo
-                            {
-                                PackageID = newPackage.PackageID,
-                                ModuleName = newPackage.Name,
-                                FriendlyName = newPackage.FriendlyName,
-                                FolderName = newPackage.Name,
-                                Description = newPackage.Description,
-                                Version = newPackage.Version.ToString(3),
-                                SupportedFeatures = 0
-                            };
-                            int desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
-                            if (desktopModuleId > Null.NullInteger)
-                            {
-                                DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
-                            }
-                            break;
-                        case "SkinObject":
-                            var skinControl = new SkinControlInfo { PackageID = newPackage.PackageID, ControlKey = newPackage.Name };
-                            SkinControlController.SaveSkinControl(skinControl);
-                            break;
-                    }                
+
+                PackageController.Instance.SaveExtensionPackage(newPackage);
+                Locale locale;
+                LanguagePackInfo languagePack;
+                switch (newPackage.PackageType)
+                {
+                    case "Auth_System":
+                        //Create a new Auth System
+                        var authSystem = new AuthenticationInfo
+                        {
+                            AuthenticationType = newPackage.Name,
+                            IsEnabled = Null.NullBoolean,
+                            PackageID = newPackage.PackageID
+                        };
+                        AuthenticationController.AddAuthentication(authSystem);
+                        break;
+                    case "Container":
+                    case "Skin":
+                        var skinPackage = new SkinPackageInfo
+                        {
+                            SkinName = newPackage.Name,
+                            PackageID = newPackage.PackageID,
+                            SkinType = newPackage.PackageType
+                        };
+                        SkinController.AddSkinPackage(skinPackage);
+                        break;
+                    case "CoreLanguagePack":
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        languagePack = new LanguagePackInfo
+                        {
+                            PackageID = newPackage.PackageID,
+                            LanguageID = locale.LanguageId,
+                            DependentPackageID = -2
+                        };
+                        LanguagePackController.SaveLanguagePack(languagePack);
+                        break;
+                    case "ExtensionLanguagePack":
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        languagePack = new LanguagePackInfo
+                        {
+                            PackageID = newPackage.PackageID,
+                            LanguageID = locale.LanguageId,
+                            DependentPackageID = Null.NullInteger
+                        };
+                        LanguagePackController.SaveLanguagePack(languagePack);
+                        break;
+                    case "Module":
+                        //Create a new DesktopModule
+                        var desktopModule = new DesktopModuleInfo
+                        {
+                            PackageID = newPackage.PackageID,
+                            ModuleName = newPackage.Name,
+                            FriendlyName = newPackage.FriendlyName,
+                            FolderName = newPackage.Name,
+                            Description = newPackage.Description,
+                            Version = newPackage.Version.ToString(3),
+                            SupportedFeatures = 0
+                        };
+                        int desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
+                        if (desktopModuleId > Null.NullInteger)
+                        {
+                            DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
+                        }
+                        break;
+                    case "SkinObject":
+                        var skinControl = new SkinControlInfo { PackageID = newPackage.PackageID, ControlKey = newPackage.Name };
+                        SkinControlController.SaveSkinControl(skinControl);
+                        break;
+                }                
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, PackageId = newPackage.PackageID });
             }
@@ -942,7 +943,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (definition.Id < 0 && existingName != null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                        Localization.GetString("DuplicateDefinition.ErrorMessage"));
+                        Localization.GetString("DuplicateDefinition.ErrorMessage", Constants.SharedResources));
                 }
 
                 var moduleDefinition = definition.ToModuleDefinitionInfo();
@@ -993,7 +994,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (keyExists)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                        Localization.GetString("DuplicateKey.ErrorMessage"));
+                        Localization.GetString("DuplicateKey.ErrorMessage", Constants.SharedResources));
                 }
 
                 try
@@ -1005,7 +1006,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 catch
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                        Localization.GetString("AddControl.ErrorMessage"));
+                        Localization.GetString("AddControl.ErrorMessage", Constants.SharedResources));
                 }
             }
             catch (Exception ex)

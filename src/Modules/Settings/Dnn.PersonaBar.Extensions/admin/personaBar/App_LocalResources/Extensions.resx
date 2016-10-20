@@ -618,4 +618,7 @@
   <data name="ReadOnlyPackage.SaveErrorMessage" xml:space="preserve">
     <value>There is a read-only package. Can not be updated!</value>
   </data>
+  <data name="SavePackageSettings.PackageNotFound" xml:space="preserve">
+    <value>Package does not exist</value>
+  </data>
 </root>
