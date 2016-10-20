@@ -16,6 +16,8 @@ const ArrowDownIcon = require(`!raw!./svg/arrow_down.svg`);
 const ArrowRightIcon = require(`!raw!./svg/arrow_right.svg`);
 const ArrowUpIcon = require(`!raw!./svg/arrow_up.svg`);
 const ArrowLeftIcon = require(`!raw!./svg/arrow_left.svg`);
+const DoubleArrowRightIcon = require(`!raw!./svg/double_arrow_right.svg`);
+const DoubleArrowLeftIcon = require(`!raw!./svg/double_arrow_left.svg`);
 const ArrowEndLeftIcon = require(`!raw!./svg/arrow-end_left.svg`);
 const ArrowEndRightIcon = require(`!raw!./svg/arrow-end_right.svg`);
 const CheckboxCheckedIcon = require(`!raw!./svg/small_checkbox_checked.svg`);
@@ -65,6 +67,8 @@ export {
     ArrowRightIcon,
     ArrowUpIcon,
     ArrowLeftIcon,
+    DoubleArrowRightIcon,
+    DoubleArrowLeftIcon,
     ArrowEndLeftIcon,
     ArrowEndRightIcon,
     CheckboxCheckedIcon,
