@@ -198,12 +198,12 @@ class Pager extends Component {
     render() {
         const {state, props} = this;
         return (state.totalPages > 1 || (state.totalPages === 1 && this.props.showPageSizeOptions)) &&
-            <div className="pager do-not-close" style={props.style}>
-                <div className="pager-summary-box">
+            <div className="dnn-pager do-not-close" style={props.style}>
+                <div className="dnn-pager-summary-box">
                     {this.getPageSummary() }
                 </div>
-                <div className="pager-control">
-                    <div className="pager-paging-box">
+                <div className="dnn-pager-control">
+                    <div className="dnn-pager-paging-box">
                         <ul>
                             {
                                 this.props.showStartEndButtons &&
@@ -223,13 +223,13 @@ class Pager extends Component {
                         </ul>
                     </div>
                     {this.props.showPageInfo && !this.props.showPageSizeOptions &&
-                        <div className="pager-options-info-box">
+                        <div className="dnn-pager-options-info-box">
                             {this.format(this.props.pageInfoText, state.currentPage + 1, state.totalPages) }
                         </div>
                     }
                     {
                         this.props.showPageSizeOptions &&
-                        <div className="pager-pageSize-box">
+                        <div className="dnn-pager-pageSize-box">
                             {   this.getPageSizeDropDown() }
                         </div>
                     }
