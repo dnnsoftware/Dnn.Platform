@@ -79,9 +79,9 @@ class Body extends Component {
             <SocialPanelBody>
                 <Tabs onSelect={this.handleSelect}
                     selectedIndex={props.tabIndex}
-                    tabHeaders={["Pane 1", "Pane 2"]}>
+                    tabHeaders={["System Info", "Server Settings"]}>
                     <Tabs
-                        tabHeaders={["Pane 3", "Pane 4"]}
+                        tabHeaders={["Application", "Web"]}
                         type="secondary">
                         <CollapsibleRow label="Collapsible Row!" extraFooterButtons={
                             [<Button type="secondary">Disable</Button>, <Button type="primary">Save</Button>]

@@ -33,9 +33,9 @@ using DotNetNuke.Instrumentation;
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class SystemInfoDatabaseServerController : PersonaBarApiController
+    public class SystemInfoDatabaseController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseServerController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));
         private readonly DatabaseController _databaseController = new DatabaseController();
 
         /// GET: api/Servers/GetDatabaseServerInfo

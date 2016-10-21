@@ -18,9 +18,9 @@ class App extends Component {
     render() {
         const {props} = this;
         return (
-            <div className="pages-app personaBar-mainContainer">
+            <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title="Pages">
+                    <SocialPanelHeader title="Servers">
                         <Button type="primary" onClick={this.navigateMap.bind(this, 1) }>Primary Action</Button>
                     </SocialPanelHeader>
                     <Body />

@@ -32,9 +32,9 @@ using DotNetNuke.Instrumentation;
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class SystemInfoWebServersController : PersonaBarApiController
+    public class SystemInfoWebController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebServersController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
 
         /// GET: api/Servers/GetWebServerInfo
         /// <summary>

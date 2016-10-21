@@ -121,13 +121,11 @@
     <Compile Include="Services\Dto\UpdateProxySettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateWebServerSettingsRequest.cs" />
-    <Compile Include="Services\ServersController.cs" />
     <Compile Include="Services\ServerSettingsLogsController.cs" />
     <Compile Include="Services\ServerSettingsPerformance.cs" />
-    <Compile Include="Services\ServerSettingsProxyServerController.cs" />
-    <Compile Include="Services\ServerSettingsSmtpServerControllers.cs" />
-    <Compile Include="Services\SystemInfoDatabaseServerController.cs" />
-    <Compile Include="Services\SystemInfoWebServersController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpControllers.cs" />
+    <Compile Include="Services\SystemInfoDatabaseController.cs" />
+    <Compile Include="Services\SystemInfoWebController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\Servers.css" />
