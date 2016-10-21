@@ -8,9 +8,9 @@ import App from "./containers/Root";
 let store = configureStore();
 
 application.dispatch = store.dispatch;
+application.init();
 
 const appContainer = document.getElementById("roles-container");
-application.init(appContainer.dataset.initCallback);
 render(
     <Provider store={store}>
         <App />
