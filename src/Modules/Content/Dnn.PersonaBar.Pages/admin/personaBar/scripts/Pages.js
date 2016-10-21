@@ -4,7 +4,7 @@
     var identifier;
     var config = cf.init();
     function loadScript() {
-        var url = "scripts/bundles/pages-bundle.js"
+        var url = "scripts/bundles/pages-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

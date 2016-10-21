@@ -9,7 +9,7 @@ let store = configureStore();
 
 application.dispatch = store.dispatch;
 
-const appContainer = document.getElementById("taxonomy-container");
+const appContainer = document.getElementById("pages-container");
 application.init(appContainer.dataset.initCallback);
 render(
     <Provider store={store}>
