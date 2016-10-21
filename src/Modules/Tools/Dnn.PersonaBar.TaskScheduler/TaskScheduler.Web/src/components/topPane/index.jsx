@@ -22,13 +22,14 @@ class TopPane extends Component {
 
     componentWillMount() {
         const {props} = this;
+        const persistedSettings = util.utilities.persistent.load();
 
         props.dispatch(TaskActions.getSchedulerSettings());
         props.dispatch(TaskActions.getTaskStatusList());
         this.taskListTimeout = setInterval(() => {
-            props.dispatch(TaskActions.getTaskStatusList(() => {
-
-            }));
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "TaskScheduler") {
+                props.dispatch(TaskActions.getTaskStatusList());
+            }
         }, 5000);
     }
 
