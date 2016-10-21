@@ -43,23 +43,7 @@ class ModePanel extends Component {
                 SchedulerdelayAtAppStart: props.schedulerDelay
             }
         });        
-    }
-
-    componentWillReceiveProps(props) {
-        let {state} = this;
-        if (props.schedulerDelay === "" || !re.test(props.schedulerDelay)) {
-            alert(1);
-            state.error["schedulerDelay"] = true;
-        }
-        this.setState({
-            triedToSubmit: false,
-            error: state.error,            
-            updateRequest: {
-                SchedulerMode: props.schedulerMode,
-                SchedulerdelayAtAppStart: props.schedulerDelay
-            }
-        });
-    }
+    }    
 
     onSave(event) {
         event.preventDefault();
