@@ -3,8 +3,7 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import DropdownWithError from "dnn-dropdown-with-error";
-import Collapse from "react-collapse";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
+import Localization from "localization";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import "./style.less";
@@ -27,13 +26,14 @@ class ControlFields extends Component {
                 <GridSystem>
                     <div>
                         <SingleLineInputWithError
-                            label="Key"
+                            label={Localization.get("AddModuleControl_Key.Label")}
                             style={inputStyle}
-                            tooltipMessage={"Placeholder"}
+                            tooltipMessage={Localization.get("AddModuleControl_Key.HelpText")}
                             value={props.controlBeingEdited.key}
                             onChange={props.onChange.bind(this, "key")} />
                         <DropdownWithError
-                            label="Source Folder"
+                            label={Localization.get("AddModuleControl_SourceFolder.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_SourceFolder.HelpText")}
                             style={inputStyle}
                             options={props.sourceFolders.map((folder) => {
                                 return {
@@ -45,7 +45,8 @@ class ControlFields extends Component {
                             value={props.selectedSourceFolder}
                             />
                         <DropdownWithError
-                            label="Type"
+                            label={Localization.get("AddModuleControl_Type.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_Type.HelpText")}
                             style={inputStyle}
                             options={[
                                 {
@@ -77,7 +78,8 @@ class ControlFields extends Component {
                             onSelect={this.onSelect.bind(this, "type")}
                             />
                         <DropdownWithError
-                            label="Icons"
+                            label={Localization.get("AddModuleControl_Icon.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_Icon.HelpText")}
                             style={inputStyle}
                             options={props.icons.map((icon) => {
                                 return {
@@ -89,19 +91,20 @@ class ControlFields extends Component {
                             onSelect={this.onSelect.bind(this, "icon")}
                             />
                         <Switch value={props.controlBeingEdited.supportPopups}
-                            label={"Supports Popups?"}
-                            tooltipMessage="Placeholder"
+                            label={Localization.get("AddModuleControl_SupportsPopups.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_SupportsPopups.HelpText")}
                             onChange={props.onChange.bind(this, "supportPopups")} />
                     </div>
                     <div>
                         <SingleLineInputWithError
-                            label="Title"
+                            label={Localization.get("AddModuleControl_Title.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_Title.HelpText")}
                             style={inputStyle}
                             value={props.controlBeingEdited.title}
-                            onChange={props.onChange.bind(this, "title")}
-                            tooltipMessage={"Placeholder"} />
+                            onChange={props.onChange.bind(this, "title")} />
                         <DropdownWithError
-                            label="Source File*"
+                            label={Localization.get("AddModuleControl_Source.Label") + "*"}
+                            tooltipMessage={Localization.get("AddModuleControl_Source.HelpText")}
                             style={inputStyle}
                             options={props.sourceFiles.map((file) => {
                                 return {
@@ -114,27 +117,27 @@ class ControlFields extends Component {
                             onSelect={this.onSelect.bind(this, "source")}
                             />
                         <SingleLineInputWithError
-                            label="View Order"
+                            label={Localization.get("AddModuleControl_ViewOrder.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_ViewOrder.HelpText")}
                             style={inputStyle}
-                            tooltipMessage={"Placeholder"}
                             value={props.controlBeingEdited.order}
                             onChange={props.onChange.bind(this, "order")} />
                         <SingleLineInputWithError
-                            label="Help URL"
+                            label={Localization.get("AddModuleControl_HelpURL.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_HelpURL.HelpText")}
                             style={inputStyle}
-                            tooltipMessage={"Placeholder"}
                             value={props.controlBeingEdited.helpUrl}
                             onChange={props.onChange.bind(this, "helpUrl")} />
                         <Switch
+                            label={Localization.get("AddModuleControl_SupportsPartialRendering.Label")}
+                            tooltipMessage={Localization.get("AddModuleControl_SupportsPartialRendering.HelpText")}
                             value={props.controlBeingEdited.supportPartialRendering}
-                            onChange={props.onChange.bind(this, "supportPartialRendering")}
-                            label={"Supports Partial Rendering?"}
-                            tooltipMessage="Placeholder" />
+                            onChange={props.onChange.bind(this, "supportPartialRendering")} />
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" onClick={props.onSave.bind(this)}>Save</Button>
+                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("AddModuleControl_Cancel.Button")}</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)}>{Localization.get("AddModuleControl_Update.Button")}</Button>
                 </GridCell>
             </GridCell>
         );

@@ -179,9 +179,11 @@ class ModuleDefinitions extends Component {
         return (
             <GridCell className="module-definitions">
                 <GridCell className="header-container">
-                    <h3 className="box-title">Module Definitions</h3>
-                    <a className={"add-button" + (isAddMode ? " add-active" : "")} onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} className={isAddMode ? "svg-active" : ""}></span> Add</a>
+                    <h3 className="box-title">{Localization.get("EditModule_ModuleDefinitions.Header")}</h3>
+                    <a className={"add-button" + (isAddMode ? " add-active" : "")}
+                        onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
+                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} className={isAddMode ? "svg-active" : ""}></span> {Localization.get("EditModule_Add.Button")}
+                    </a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-definitions-table">
@@ -195,8 +197,8 @@ class ModuleDefinitions extends Component {
                                 moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
                                 />
                             <GridCell className="modal-footer">
-                                <Button type="secondary" onClick={this.exitEditMode.bind(this)}>Cancel</Button>
-                                <Button type="primary" onClick={this.onSave.bind(this)}>Save</Button>
+                                <Button type="secondary" onClick={this.exitEditMode.bind(this)}>{Localization.get("ModuleDefinitions_Cancel.Button")}</Button>
+                                <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("ModuleDefinitions_Save.Button")}</Button>
                             </GridCell>
                         </GridCell>
                     </Collapse>

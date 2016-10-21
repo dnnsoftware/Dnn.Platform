@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import Localization from "localization";
 import Collapse from "react-collapse";
 import { EditIcon, TrashIcon } from "dnn-svg-icons";
 import Controls from "./Controls";
@@ -47,8 +46,8 @@ class ModuleDefinitionRow extends Component {
                                 moduleDefinitionId={props.moduleDefinitionBeingEdited.id} />
                         </GridCell>
                         <GridCell columnSize={100} className="modal-footer">
-                            <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                            <Button type="primary" disabled={props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
+                            <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("ModuleDefinitions_Cancel.Button")}</Button>
+                            <Button type="primary" disabled={props.controlFormIsDirty} onClick={props.onSave.bind(this)}>{Localization.get("ModuleDefinitions_Save.Button")}</Button>
                         </GridCell>
                     </GridCell>
                 </Collapse>

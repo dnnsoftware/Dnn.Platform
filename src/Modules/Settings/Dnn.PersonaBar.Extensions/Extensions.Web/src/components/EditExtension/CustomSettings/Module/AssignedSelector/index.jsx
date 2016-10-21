@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
 import { ArrowLeftIcon, ArrowRightIcon, DoubleArrowRightIcon, DoubleArrowLeftIcon } from "dnn-svg-icons";
+import Localization from "localization";
 import styles from "./style.less";
 class AssignedSelector extends Component {
     constructor() {
@@ -24,7 +25,7 @@ class AssignedSelector extends Component {
         return (
             <GridCell className={styles.assignedSelector}>
                 <GridCell columnSize={45} className="selector-box">
-                    <h6>Unassigned</h6>
+                    <h6>{Localization.get("EditModule_Assigned.Label")}</h6>
                     <Scrollbars style={{ width: "100%", height: "100%", border: "1px solid #c8c8c8" }}>
                         <ul>
                             {unassignedPortals}
@@ -38,7 +39,7 @@ class AssignedSelector extends Component {
                     <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)} dangerouslySetInnerHTML={{ __html: DoubleArrowLeftIcon }}></div>
                 </GridCell>
                 <GridCell columnSize={45} className="selector-box">
-                    <h6>Assigned</h6>
+                    <h6>{Localization.get("EditModule_Unassigned.Label")}</h6>
                     <Scrollbars style={{ width: "100%", height: "100%", border: "1px solid #c8c8c8" }}>
                         <ul>
                             {assignedPortals}

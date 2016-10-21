@@ -25,30 +25,30 @@ class DefinitionFields extends Component {
         const {props} = this;
 
         return (
-                <GridSystem>
-                    <div>
-                        <SingleLineInputWithError
-                            label="Definition Name*"
-                            tooltipMessage={"Placeholder"}
-                            onChange={props.onChange.bind(this, "name")}
-                            enabled={!props.isEditMode}
-                            error={props.error.name && props.triedToSave}
-                            value={props.moduleDefinitionBeingEdited.name} />
-                        <SingleLineInputWithError
-                            label="Default Cache Time"
-                            tooltipMessage={"Placeholder"}
-                            onChange={props.onChange.bind(this, "cacheTime")}
-                            value={props.moduleDefinitionBeingEdited.cacheTime} />
-                    </div>
-                    <div>
-                        <SingleLineInputWithError
-                            label="Friendly Name*"
-                            tooltipMessage={"Placeholder"}
-                            error={props.error.friendlyName && props.triedToSave}
-                            onChange={props.onChange.bind(this, "friendlyName")}
-                            value={props.moduleDefinitionBeingEdited.friendlyName} />
-                    </div>
-                </GridSystem>
+            <GridSystem>
+                <div>
+                    <SingleLineInputWithError
+                        label={Localization.get("ModuleDefinitions_DefinitionName.Label") + "*"}
+                        tooltipMessage={Localization.get("ModuleDefinitions_DefinitionName.HelpText")}
+                        onChange={props.onChange.bind(this, "name")}
+                        enabled={!props.isEditMode}
+                        error={props.error.name && props.triedToSave}
+                        value={props.moduleDefinitionBeingEdited.name} />
+                    <SingleLineInputWithError
+                        label={Localization.get("ModuleDefinitions_DefaultCacheTime.Label")}
+                        tooltipMessage={Localization.get("ModuleDefinitions_DefaultCacheTime.HelpText")}
+                        onChange={props.onChange.bind(this, "cacheTime")}
+                        value={props.moduleDefinitionBeingEdited.cacheTime} />
+                </div>
+                <div>
+                    <SingleLineInputWithError
+                        label={Localization.get("ModuleDefinitions_FriendlyName.Label") + "*"}
+                        tooltipMessage={Localization.get("ModuleDefinitions_FriendlyName.HelpText")}
+                        error={props.error.friendlyName && props.triedToSave}
+                        onChange={props.onChange.bind(this, "friendlyName")}
+                        value={props.moduleDefinitionBeingEdited.friendlyName} />
+                </div>
+            </GridSystem>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
     }
