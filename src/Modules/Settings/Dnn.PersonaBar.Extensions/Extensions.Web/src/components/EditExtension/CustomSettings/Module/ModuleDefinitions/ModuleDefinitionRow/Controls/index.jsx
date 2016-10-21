@@ -13,7 +13,9 @@ import { ModuleDefinitionActions } from "actions";
 import ControlFields from "./ControlFields";
 import styles from "./style.less";
 
-
+function removeRecordFromArray(arr, index) {
+    return [...arr.slice(0, index), ...arr.slice(index + 1)];
+}
 function getSourceFolder(str) {
     return str.substr(0, str.lastIndexOf("/"));
 }
@@ -24,6 +26,9 @@ class Controls extends Component {
             editMode: false,
             controlBeingEdited: {},
             controlBeingEditedIndex: -1,
+            error: {
+                source: false
+            },
             selectedSourceFolder: "Admin/Skins/"
         };
     }
@@ -43,23 +48,68 @@ class Controls extends Component {
             supportPartialRendering: true
         };
     }
+    confirmAction(callback) {
+        const { props } = this;
+        if (props.controlFormIsDirty) {
+            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+                callback();
+                props.dispatch(ModuleDefinitionActions.setControlFormDirt(false));
+            });
+        } else {
+            callback();
+        }
+    }
     onChange(key, event) {
-        const { state } = this;
+        const { state, props } = this;
         let value = typeof event === "object" ? event.target.value : event;
-        let {controlBeingEdited } = state;
+        let {controlBeingEdited, error } = state;
 
         controlBeingEdited[key] = value;
 
+        console.log(key, value);
+
+        if (value === "<None Specified>" && key === "source") {
+            error[key] = true;
+        } else {
+            error[key] = false;
+        }
+
         this.setState({
-            controlBeingEdited
+            controlBeingEdited,
+            error
         });
 
+        if (!props.controlFormIsDirty) {
+            props.dispatch(ModuleDefinitionActions.setControlFormDirt(true));
+        }
+        if (!props.formIsDirty) {
+            props.dispatch(ModuleDefinitionActions.setFormDirt(true));
+        }
     }
-    onDelete() {
-
+    onDelete(controlId, index) {
+        utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {
+            const { props } = this;
+            props.dispatch(ModuleDefinitionActions.deleteModuleControl(controlId, () => {
+                props.onChange({ target: { value: removeRecordFromArray(props.moduleControls, index) } });
+            }));
+        });
     }
     onSave() {
         const { props, state } = this;
+        let { triedToSave, error } = state;
+        triedToSave = true;
+        this.setState({
+            triedToSave
+        });
+        let errorCount = 0;
+        Object.keys(error).forEach((key) => {
+            if (error[key]) {
+                errorCount++;
+            }
+        });
+        if (errorCount > 0) {
+            return;
+        }
         props.dispatch(ModuleDefinitionActions.addOrUpdateModuleControl(state.controlBeingEdited, () => {
             let _controls = JSON.parse(JSON.stringify(props.moduleControls));
             if (state.controlBeingEdited.id > -1) {
@@ -68,29 +118,41 @@ class Controls extends Component {
                 _controls.push(state.controlBeingEdited);
             }
             props.onChange({ target: { value: _controls } });
-        }));
-    }
-    onEdit(controlBeingEdited, controlBeingEditedIndex) {
-        const { props } = this;
-        const sourceFolder = getSourceFolder(controlBeingEdited.source) || "Admin/Skins/";
-        props.dispatch(ModuleDefinitionActions.getSourceFolders());
-
-        props.dispatch(ModuleDefinitionActions.getSourceFiles(sourceFolder, () => {
-            props.dispatch(ModuleDefinitionActions.getControlIcons(controlBeingEdited.source, () => {
-                this.setState({
-                    editMode: true,
-                    controlBeingEdited,
-                    controlBeingEditedIndex,
-                    selectedSourceFolder: sourceFolder
-                });
+            props.dispatch(ModuleDefinitionActions.setControlFormDirt(false, () => {
+                this.exitEditMode();
             }));
         }));
     }
-    onCancel() {
-        this.setState({
-            controlBeingEdited: this.getNewControlKeys(),
-            controlBeingEditedIndex: null,
-            editMode: false
+    onEdit(controlBeingEdited, controlBeingEditedIndex) {
+        this.confirmAction(() => {
+            const { props } = this;
+            const sourceFolder = getSourceFolder(controlBeingEdited.source) || "Admin/Skins/";
+            props.dispatch(ModuleDefinitionActions.getSourceFolders());
+
+            props.dispatch(ModuleDefinitionActions.getSourceFiles(sourceFolder, () => {
+                props.dispatch(ModuleDefinitionActions.getControlIcons(controlBeingEdited.source, () => {
+                    this.setState({
+                        editMode: true,
+                        controlBeingEdited,
+                        controlBeingEditedIndex,
+                        selectedSourceFolder: sourceFolder,
+                        error: {
+                            source: controlBeingEdited.source === ""
+                        }
+                    });
+                }));
+            }));
+        });
+    }
+
+    exitEditMode() {
+        this.confirmAction(() => {
+            this.setState({
+                controlBeingEdited: this.getNewControlKeys(),
+                controlBeingEditedIndex: null,
+                editMode: false,
+                triedToSave: false
+            });
         });
     }
 
@@ -120,38 +182,42 @@ class Controls extends Component {
                 controlBeingEdited={state.controlBeingEdited}
                 onChange={this.onChange.bind(this)}
                 onSave={this.onSave.bind(this)}
-                onDelete={this.onDelete.bind(this)}
+                onDelete={this.onDelete.bind(this, moduleControl.id, index)}
                 sourceFolders={props.sourceFolders}
                 icons={props.icons}
+                error={state.error}
+                triedToSave={state.triedToSave}
                 sourceFiles={props.sourceFiles}
                 onSelectSourceFolder={this.onSelectSourceFolder.bind(this)}
                 selectedSourceFolder={state.selectedSourceFolder}
                 isEditMode={state.controlBeingEditedIndex === index}
-                onCancel={this.onCancel.bind(this)} // Set definition being edited as null.
+                onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
                 onEdit={this.onEdit.bind(this, Object.assign({}, moduleControl), index)} />;
         });
-
+        const isAddMode = state.editMode && state.controlBeingEditedIndex === -1;
         return (
             <GridCell className="module-controls">
                 <GridCell className="header-container">
                     <h3 className="box-title">Module Controls</h3>
-                    <a className="add-button" onClick={this.onEdit.bind(this, this.getNewControlKeys(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: AddIcon }}></span> Add</a>
+                    <a className={"add-button" + (isAddMode ? " add-active" : "")} onClick={this.onEdit.bind(this, this.getNewControlKeys(), -1)}>
+                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} ></span> Add</a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-controls-table">
-                    <Collapse isOpened={state.editMode && state.controlBeingEditedIndex === -1} style={{ float: "left" }}>
+                    <Collapse isOpened={isAddMode} style={{ float: "left" }} className="add-control-box">
                         <ControlFields
                             controlBeingEdited={state.controlBeingEdited}
                             onChange={this.onChange.bind(this)}
                             onSave={this.onSave.bind(this)}
                             onDelete={this.onDelete.bind(this)}
+                            error={state.error}
+                            triedToSave={state.triedToSave}
                             sourceFolders={props.sourceFolders}
                             icons={props.icons}
                             sourceFiles={props.sourceFiles}
                             onSelectSourceFolder={this.onSelectSourceFolder.bind(this)}
                             selectedSourceFolder={state.selectedSourceFolder}
-                            onCancel={this.onCancel.bind(this)} // Set definition being edited as null.
+                            onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
                             />
                     </Collapse>
                     <GridCell columnSize={15} className="module-control-title-header">
@@ -176,6 +242,8 @@ function mapStateToProps(state) {
     return {
         sourceFolders: state.moduleDefinition.sourceFolders,
         sourceFiles: state.moduleDefinition.sourceFiles,
+        formIsDirty: state.moduleDefinition.formIsDirty,
+        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty,
         icons: state.moduleDefinition.icons
     };
 }

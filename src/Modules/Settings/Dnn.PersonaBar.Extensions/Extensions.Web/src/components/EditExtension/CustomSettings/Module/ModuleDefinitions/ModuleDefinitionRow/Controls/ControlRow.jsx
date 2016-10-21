@@ -6,7 +6,7 @@ import DropdownWithError from "dnn-dropdown-with-error";
 import Collapse from "react-collapse";
 import { EditIcon, TrashIcon } from "dnn-svg-icons";
 import Switch from "dnn-switch";
-import ControlFields from "../ControlFields";
+import ControlFields from "./ControlFields";
 import Button from "dnn-button";
 import "./style.less";
 
@@ -32,10 +32,10 @@ class ControlRow extends Component {
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
                     <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
-                    <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                    <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }} className={props.isEditMode ? "svg-active" : ""}></div>
                 </GridCell>
                 <Collapse isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-control">
-                    <ControlFields {...props}/>
+                    <ControlFields {...props} />
                 </Collapse>
             </GridCell>
         );

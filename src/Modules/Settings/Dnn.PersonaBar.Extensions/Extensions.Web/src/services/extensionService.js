@@ -1,17 +1,10 @@
-import util from "../utils";
+import utilities from "../utils";
 
 function mapPackageInformation(extensionBeingUpdated) {
     // return extensionBeingUpdated;
     return {
         Name: extensionBeingUpdated.name.value,
         FriendlyName: extensionBeingUpdated.friendlyName.value,
-        Foldername: extensionBeingUpdated.folderName.value,
-        BusinessController: extensionBeingUpdated.businessController.value,
-        Category: extensionBeingUpdated.category.value,
-        Dependencies: extensionBeingUpdated.dependencies.value,
-        Permissions: extensionBeingUpdated.permissions.value,
-        Shareable: extensionBeingUpdated.shareable.value,
-        PremiumModule: extensionBeingUpdated.premiumModule.value,
         Description: extensionBeingUpdated.description.value,
         Version: extensionBeingUpdated.version.value,
         Owner: extensionBeingUpdated.owner.value,
@@ -34,7 +27,7 @@ function serializeQueryStringParameters(obj) {
 }
 class ExtensionService {
     getServiceFramework(controller) {
-        let sf = util.utilities.sf;
+        let sf = utilities.utilities.sf;
 
         sf.moduleRoot = "PersonaBar/AdminHost";
         sf.controller = controller;
@@ -60,8 +53,20 @@ class ExtensionService {
     updateExtension(extensionBeingUpdated, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
-            id: extensionBeingUpdated.packageId.value,
-            settings: mapPackageInformation(extensionBeingUpdated)
+            packageId: extensionBeingUpdated.packageId.value,
+            portalId: utilities.settings.isHost ? -1 : utilities.settings.portalId,
+            settings: mapPackageInformation(extensionBeingUpdated),
+            editorActions: {
+                category: extensionBeingUpdated.category.value,
+                dependencies: extensionBeingUpdated.dependencies.value,
+                permissions: extensionBeingUpdated.permissions.value,
+                shareable: extensionBeingUpdated.shareable.value,
+                premiummodule: extensionBeingUpdated.premiumModule.value,
+                assignPortal: extensionBeingUpdated.assignedPortals.value,
+                unassignPortal: extensionBeingUpdated.unassignedPortals.value,
+                foldername: extensionBeingUpdated.folderName.value,
+                businesscontroller: extensionBeingUpdated.businessController.value
+            }
         };
         sf.post("SavePackageSettings", payload, callback);
     }

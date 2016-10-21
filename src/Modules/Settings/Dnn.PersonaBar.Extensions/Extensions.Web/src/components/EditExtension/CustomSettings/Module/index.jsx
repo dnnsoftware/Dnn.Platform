@@ -81,6 +81,11 @@ class Module extends Component {
                 break;
         }
     }
+    onSelect(key, option) {
+        const { props } = this;
+        console.log(key, option);
+        props.onChange(key, option.value);
+    }
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -149,17 +154,19 @@ class Module extends Component {
                             options={[
                                 {
                                     label: "Unknown",
-                                    value: "Unknown"
+                                    value: 0
                                 },
                                 {
                                     label: "Unsupported",
-                                    value: "Unsupported"
+                                    value: 1
                                 },
                                 {
                                     label: "Supported",
-                                    value: "Supported"
+                                    value: 2
                                 }
                             ]}
+                            value={extensionBeingEdited.shareable.value}
+                            onSelect={this.onSelect.bind(this, "shareable")}
                             style={inputStyle}
                             />
                     </div>
@@ -180,13 +187,13 @@ class Module extends Component {
                         moveAll={this.moveAll.bind(this)}
                         onChange={props.onChange.bind(this)} />
                 </GridCell>
-                <ModuleDefinitions 
-                moduleDefinitions={extensionBeingEdited.moduleDefinitions.value} 
-                desktopModuleId={extensionBeingEdited.desktopModuleId.value}
-                onSave={props.onChange.bind(this, "moduleDefinitions")}/>
+                <ModuleDefinitions
+                    moduleDefinitions={extensionBeingEdited.moduleDefinitions.value}
+                    desktopModuleId={extensionBeingEdited.desktopModuleId.value}
+                    onSave={props.onChange.bind(this, "moduleDefinitions")} />
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
                 </GridCell>
             </GridCell>
         );
@@ -207,7 +214,9 @@ Module.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        extensionBeingEdited: state.extension.extensionBeingEdited
+        extensionBeingEdited: state.extension.extensionBeingEdited,
+        formIsDirty: state.moduleDefinition.formIsDirty,
+        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty
     };
 }
 

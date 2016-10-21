@@ -23,7 +23,7 @@
     "dnn-checkbox": "^0.0.5",
     "dnn-collapsible-row": "0.0.5",
     "dnn-date-picker": "^0.1.4",
-    "dnn-dropdown": "1.0.0",
+    "dnn-dropdown": "^1.0.1",
     "dnn-dropdown-with-error": "0.0.3",
     "dnn-editable-field": "0.0.5",
     "dnn-file-upload": "0.0.8",

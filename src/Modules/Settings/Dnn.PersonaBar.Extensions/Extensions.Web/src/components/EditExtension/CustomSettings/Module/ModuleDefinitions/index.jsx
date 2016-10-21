@@ -10,6 +10,7 @@ import ModuleDefinitionRow from "./ModuleDefinitionRow";
 import Collapse from "react-collapse";
 import utilities from "utils";
 import { ModuleDefinitionActions } from "actions";
+import DefinitionFields from "./DefinitionFields";
 import styles from "./style.less";
 
 
@@ -22,6 +23,11 @@ class ModuleDefinitions extends Component {
         this.state = {
             moduleDefinitionBeingEdited: {},
             moduleDefinitionBeingEditedIndex: null,
+            error: {
+                name: false,
+                friendlyName: false
+            },
+            triedToSave: false,
             editMode: false
         };
     }
@@ -46,23 +52,38 @@ class ModuleDefinitions extends Component {
             utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setFormDirt(false));
+                if (props.controlFormIsDirty) {
+                    props.dispatch(ModuleDefinitionActions.setControlFormDirt(false));
+                }
             });
         } else {
             callback();
         }
     }
+    resetError() {
+        return {
+            name: false,
+            friendlyName: false
+        };
+    }
     exitEditMode() {
         this.confirmAction(() => {
             this.setState({
                 moduleDefinitionBeingEdited: this.getNewModuleDefinition(),
+                error: this.resetError(),
                 moduleDefinitionBeingEditedIndex: null,
-                editMode: false
+                editMode: false,
+                triedToSave: false
             });
         });
     }
     _onEditModuleDefinition(moduleDefinitionBeingEdited, moduleDefinitionBeingEditedIndex) {
         this.setState({
             editMode: true,
+            error: {
+                name: moduleDefinitionBeingEdited.name === "",
+                friendlyName: moduleDefinitionBeingEdited.friendlyName === ""
+            },
             moduleDefinitionBeingEdited,
             moduleDefinitionBeingEditedIndex
         });
@@ -76,12 +97,18 @@ class ModuleDefinitions extends Component {
         const { props, state } = this;
         let value = typeof event === "object" ? event.target.value : event;
 
-        let {moduleDefinitionBeingEdited} = state;
+        let { moduleDefinitionBeingEdited, error } = state;
 
         moduleDefinitionBeingEdited[key] = value;
+        if (value === "" && (key === "friendlyName" || key === "name")) {
+            error[key] = true;
+        } else {
+            error[key] = false;
+        }
 
         this.setState({
-            moduleDefinitionBeingEdited
+            moduleDefinitionBeingEdited,
+            error
         });
 
         if (!props.formIsDirty) {
@@ -90,6 +117,22 @@ class ModuleDefinitions extends Component {
     }
     onSave() {
         const { props, state } = this;
+        let { triedToSave, error } = state;
+        triedToSave = true;
+        this.setState({
+            triedToSave
+        });
+        let errorCount = 0;
+        Object.keys(error).forEach((key) => {
+            if (error[key]) {
+                errorCount++;
+            }
+        });
+        console.log(this.state);
+        if (errorCount > 0) {
+            return;
+        }
+
         props.dispatch(ModuleDefinitionActions.addOrUpdateModuleDefinition(state.moduleDefinitionBeingEdited, () => {
             let _moduleDefinitions = JSON.parse(JSON.stringify(props.moduleDefinitions));
             if (state.moduleDefinitionBeingEditedIndex > -1) {
@@ -122,46 +165,37 @@ class ModuleDefinitions extends Component {
                 moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
                 onChange={this.onChange.bind(this)}
                 onSave={this.onSave.bind(this)}
+                error={state.error}
+                triedToSave={state.triedToSave}
+                controlFormIsDirty={props.controlFormIsDirty}
                 onDelete={this.onDelete.bind(this, moduleDefinition.id, index)}
                 isEditMode={state.moduleDefinitionBeingEditedIndex === index}
                 onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
                 onEdit={this.onEditModuleDefinition.bind(this, Object.assign({}, moduleDefinition), index)} />;
         });
 
+        const isAddMode = state.editMode && state.moduleDefinitionBeingEditedIndex === -1;
+
         return (
             <GridCell className="module-definitions">
                 <GridCell className="header-container">
                     <h3 className="box-title">Module Definitions</h3>
-                    <a className="add-button" onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: AddIcon }}></span> Add</a>
+                    <a className={"add-button" + (isAddMode ? " add-active" : "")} onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
+                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} className={isAddMode ? "svg-active" : ""}></span> Add</a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-definitions-table">
-                    <Collapse isOpened={state.editMode && state.moduleDefinitionBeingEditedIndex === -1} fixedHeight={300} style={{ float: "left" }}>
+                    <Collapse isOpened={isAddMode} fixedHeight={300} style={{ float: "left" }}>
                         <GridCell className="add-module-definition-box">
-                            <GridSystem>
-                                <div>
-                                    <SingleLineInputWithError
-                                        label="Definition Name"
-                                        tooltipMessage={"Placeholder"}
-                                        onChange={this.onChange.bind(this, "name")}
-                                        value={state.moduleDefinitionBeingEdited.name} />
-                                    <SingleLineInputWithError
-                                        label="Default Cache Time"
-                                        tooltipMessage={"Placeholder"}
-                                        onChange={this.onChange.bind(this, "cacheTime")}
-                                        value={state.moduleDefinitionBeingEdited.cacheTime} />
-                                </div>
-                                <div>
-                                    <SingleLineInputWithError
-                                        label="Friendly Name"
-                                        tooltipMessage={"Placeholder"}
-                                        onChange={this.onChange.bind(this, "friendlyName")}
-                                        value={state.moduleDefinitionBeingEdited.friendlyName} />
-                                </div>
-                            </GridSystem>
+                            <DefinitionFields
+                                onChange={this.onChange.bind(this)}
+                                error={state.error}
+                                triedToSave={state.triedToSave}
+                                isEditMode={false}
+                                moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
+                                />
                             <GridCell className="modal-footer">
-                                <Button type="secondary" onClick={this.exitEditMode.bind(this, false)}>Cancel</Button>
+                                <Button type="secondary" onClick={this.exitEditMode.bind(this)}>Cancel</Button>
                                 <Button type="primary" onClick={this.onSave.bind(this)}>Save</Button>
                             </GridCell>
                         </GridCell>
@@ -182,7 +216,8 @@ function mapStateToProps(state) {
     return {
         moduleDefinitionBeingEdited: state.moduleDefinition.moduleDefinitionBeingEdited,
         moduleDefinitionBeingEditedIndex: state.moduleDefinition.moduleDefinitionBeingEditedIndex,
-        formIsDirty: state.moduleDefinition.formIsDirty
+        formIsDirty: state.moduleDefinition.formIsDirty,
+        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty
     };
 }
 

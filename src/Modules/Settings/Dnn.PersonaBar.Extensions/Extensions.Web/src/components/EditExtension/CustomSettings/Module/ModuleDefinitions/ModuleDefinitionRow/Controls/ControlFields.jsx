@@ -41,7 +41,6 @@ class ControlFields extends Component {
                                     value: folder.Value
                                 };
                             })}
-                            defaultDropdownValue="<None Specified>"
                             onSelect={props.onSelectSourceFolder.bind(this)}
                             value={props.selectedSourceFolder}
                             />
@@ -51,7 +50,7 @@ class ControlFields extends Component {
                             options={[
                                 {
                                     label: "Theme Object",
-                                    value: 0
+                                    value: -2
                                 },
                                 {
                                     label: "Anonymous",
@@ -59,22 +58,22 @@ class ControlFields extends Component {
                                 },
                                 {
                                     label: "View",
-                                    value: 2
+                                    value: 0
                                 },
                                 {
                                     label: "Edit",
-                                    value: 3
+                                    value: 1
                                 },
                                 {
                                     label: "Admin",
-                                    value: 4
+                                    value: 2
                                 },
                                 {
                                     label: "Host",
-                                    value: 5
+                                    value: 3
                                 }
                             ]}
-                            defaultDropdownValue="<None Specified>"
+                            value={props.controlBeingEdited.type}
                             onSelect={this.onSelect.bind(this, "type")}
                             />
                         <DropdownWithError
@@ -86,7 +85,6 @@ class ControlFields extends Component {
                                     value: icon.Value
                                 };
                             })}
-                            defaultDropdownValue="<None Specified>"
                             value={props.controlBeingEdited.icon}
                             onSelect={this.onSelect.bind(this, "icon")}
                             />
@@ -99,9 +97,11 @@ class ControlFields extends Component {
                         <SingleLineInputWithError
                             label="Title"
                             style={inputStyle}
+                            value={props.controlBeingEdited.title}
+                            onChange={props.onChange.bind(this, "title")}
                             tooltipMessage={"Placeholder"} />
                         <DropdownWithError
-                            label="Source File"
+                            label="Source File*"
                             style={inputStyle}
                             options={props.sourceFiles.map((file) => {
                                 return {
@@ -109,8 +109,8 @@ class ControlFields extends Component {
                                     value: file.Value
                                 };
                             })}
-                            defaultDropdownValue="<None Specified>"
                             value={props.controlBeingEdited.source}
+                            error={props.triedToSave && props.error.source}
                             onSelect={this.onSelect.bind(this, "source")}
                             />
                         <SingleLineInputWithError
@@ -147,7 +147,9 @@ ControlFields.PropTypes = {
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
     onChange: PropTypes.func,
-    onEdit: PropTypes.func
+    onEdit: PropTypes.func,
+    error: PropTypes.object,
+    triedToSave: PropTypes.bool
 };
 
 export default ControlFields;

@@ -14,6 +14,19 @@ const moduleDefinitionActions = {
             }
         };
     },
+    setControlFormDirt(value, callback) {
+        return dispatch => {
+            dispatch({
+                type: ActionTypes.SET_CONTROL_FORM_DIRT,
+                payload: value
+            });
+            if (typeof callback === "function") {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
     addOrUpdateModuleDefinition(payload, callback) {
         return dispatch => {
             ModuleDefinitionService.addOrUpdateModuleDefinition(payload, (data) => {
@@ -58,7 +71,7 @@ const moduleDefinitionActions = {
             });
         };
     },
-    getControlIcons(controlPath, callback){
+    getControlIcons(controlPath, callback) {
         return dispatch => {
             ModuleDefinitionService.getControlIcons(controlPath, (data) => {
                 dispatch({
@@ -71,9 +84,18 @@ const moduleDefinitionActions = {
             });
         };
     },
-    addOrUpdateModuleControl(payload, callback){
+    addOrUpdateModuleControl(payload, callback) {
         return dispatch => {
             ModuleDefinitionService.addOrUpdateModuleControl(payload, (data) => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    deleteModuleControl(controlId, callback) {
+        return dispatch => {
+            ModuleDefinitionService.deleteModuleControl(controlId, (data) => {
                 if (callback) {
                     callback(data);
                 }

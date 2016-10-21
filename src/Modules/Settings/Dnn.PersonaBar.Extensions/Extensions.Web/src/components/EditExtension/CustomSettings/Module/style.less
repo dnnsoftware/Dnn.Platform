@@ -12,18 +12,27 @@
         }
     }
     .module-definitions {
-        padding: 0;
         .header-container {
             padding: 0;
             .box-title {
                 float: left;
-                margin-bottom: 25px;
+                margin-bottom: 20px;
             }
             a.add-button {
                 float: right;
+                cursor: pointer;
+                color: @mountainMist;
+                &.add-active, &:hover {
+                    color: @curiousBlue;
+                    font-weight: bold;
+                    svg {
+                        fill: @curiousBlue;
+                    }
+                }
                 svg {
                     width: 16px;
                     height: 16px;
+                    fill: @mountainMist;
                     float: left;
                     margin-right: 5px;
                 }

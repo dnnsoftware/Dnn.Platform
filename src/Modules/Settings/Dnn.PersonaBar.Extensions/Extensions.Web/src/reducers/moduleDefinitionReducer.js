@@ -1,6 +1,7 @@
 import { moduleDefinition as ActionTypes } from "constants/actionTypes";
 export default function moduleDefinition(state = {
     formIsDirty: false,
+    controlFormIsDirty: false,
     sourceFolders: [],
     sourceFiles: [],
     icons: []
@@ -9,6 +10,10 @@ export default function moduleDefinition(state = {
         case ActionTypes.SET_FORM_DIRT:
             return { ...state,
                 formIsDirty: action.payload
+            };
+        case ActionTypes.SET_CONTROL_FORM_DIRT:
+            return { ...state,
+                controlFormIsDirty: action.payload
             };
         case ActionTypes.RETRIEVED_SOURCE_FOLDERS:
             return { ...state,
