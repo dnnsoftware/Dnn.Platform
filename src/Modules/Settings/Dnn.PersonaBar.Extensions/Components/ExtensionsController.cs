@@ -54,20 +54,20 @@ namespace Dnn.PersonaBar.Extensions.Components
         public bool HasAvailablePackage(string packageType, out string rootPath)
         {
             var type = packageType;
-            switch (packageType)
+            switch (packageType.ToLowerInvariant())
             {
-                case "Auth_System":
+                case "auth_system":
                     type = "AuthSystem";
                     rootPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
                     break;
-                case "JavaScript_Library":
+                case "javascript_library":
                     rootPath = Globals.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
                     break;
-                case "Module":
-                case "Skin":
-                case "Container":
-                case "Provider":
-                case "Library":
+                case "module":
+                case "skin":
+                case "container":
+                case "provider":
+                case "library":
                     rootPath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
                     break;
                 default:
@@ -218,28 +218,28 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         internal static string GetPackageIcon(PackageInfo package)
         {
-            switch (package.PackageType)
+            switch (package.PackageType.ToLowerInvariant())
             {
-                case "Module":
+                case "module":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
-                case "Container":
+                case "container":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultContainerImage;
-                case "Skin":
-                case "SkinObject":
+                case "skin":
+                case "skinobject":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultSkinImage;
-                case "AuthenticationSystem":
-                case "Auth_System":
+                case "authenticationsystem":
+                case "auth_system":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultAuthenicationImage;
-                case "CoreLanguagePack":
-                case "ExtensionLanguagePack":
+                case "corelanguagepack":
+                case "extensionlanguagepack":
                     return !string.IsNullOrEmpty(package.IconFile) && package.IconFile != "N\\A" ? package.IconFile : Globals.ImagePath + Constants.DefaultLanguageImage;
-                case "Provider":
+                case "provider":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultProviderImage;
-                case "Widget":
+                case "widget":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultWidgetImage;
-                case "DashboardControl":
+                case "dashboardcontrol":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultDashboardImage;
-                case "Library":
+                case "library":
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLibraryImage;
                 default:
                     return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
