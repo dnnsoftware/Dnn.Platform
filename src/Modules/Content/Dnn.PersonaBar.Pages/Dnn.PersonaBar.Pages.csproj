@@ -100,17 +100,14 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Components\Dto\HttpAliasDto.cs" />
-    <Compile Include="Components\SitesController.cs" />
+    <Compile Include="Components\PagesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Dto\CreatePortalRequest.cs" />
-    <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
-    <Compile Include="Services\SitesController.cs" />
+    <Compile Include="Services\PagesController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\css\Sites.css" />
-    <Content Include="admin\personaBar\scripts\Sites.js" />
-    <Content Include="admin\personaBar\Sites.html" />
+    <Content Include="admin\personaBar\css\Pages.css" />
+    <Content Include="admin\personaBar\scripts\Pages.js" />
+    <Content Include="admin\personaBar\Pages.html" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -124,7 +121,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Sites.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Pages.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Pages.dnn">
