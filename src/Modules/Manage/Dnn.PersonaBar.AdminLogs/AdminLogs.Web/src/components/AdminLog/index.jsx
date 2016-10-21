@@ -211,6 +211,11 @@ class AdminLogPanelBody extends Component {
     }
 
     renderLogListHeader() {
+        const {props, state} = this;
+        if (!props.excludedRowIds) {
+            return;
+        }
+
         const tableFields = [
             { "name": "", "id": "LogTypeCSSClass" },
             { "name": resx.get("Date"), "id": "LogCreateDate" },
@@ -219,7 +224,7 @@ class AdminLogPanelBody extends Component {
             { "name": resx.get("Portal"), "id": "LogPortalName" },
             { "name": resx.get("Summary"), "id": "Summary" }
         ];
-        const {props} = this;
+
         let tableHeaders = tableFields.map((field) => {
             let className = "logHeader logHeader-" + field.id;
             return <div className={className}>
@@ -229,7 +234,7 @@ class AdminLogPanelBody extends Component {
 
         const isDeselectState = props.excludedRowIds.length == 0 && props.excludedRowIds.length || !props.excludedRowIds.length == 0 && props.selectedRowIds.length;
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
-        tableHeaders.unshift(<div key={"selector" + "999999"} style={{ width: 20 }} className="logHeader logHeader-Checkbox" data-index="0">
+        tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
                 <Checkbox checked={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
                 <label htmlFor="selectAll"></label>
@@ -359,7 +364,7 @@ class AdminLogPanelBody extends Component {
                             onSelect={this.onSelectLogType.bind(this)}
                             />
                     </div>
-                    <div className="toolbar-button">
+                    <div className="toolbar-button toolbar-button-actions">
                         <span onClick={this.toggleEmailPanel.bind(this)}>{resx.get("btnEmail")} </span>
                         <div className="collapsible-content">
                             <EmailPanel
@@ -370,8 +375,8 @@ class AdminLogPanelBody extends Component {
                             </EmailPanel>
                         </div>
                     </div>
-                    <div className="toolbar-button" onClick={this.onDeleteLogItems.bind(this)}>{resx.get("btnDelete")} </div>
-                    <div className="toolbar-button" onClick={this.onClearLog.bind(this)}>{resx.get("btnClear")} </div>
+                    <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)}>{resx.get("btnDelete")} </div>
+                    <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)}>{resx.get("btnClear")} </div>
                 </div>
                 <div className="logContainer">
                     <div className="logContainerBox">

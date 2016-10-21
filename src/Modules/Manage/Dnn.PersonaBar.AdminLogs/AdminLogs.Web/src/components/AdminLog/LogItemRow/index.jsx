@@ -20,9 +20,15 @@ class LogItemRow extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    componentWillReceiveProps(props){
+        this.setState({
+            
+        });
+    }
+
     componentDidMount() {
         document.addEventListener("click", this.handleClick);
-        this._isMounted = true;
+        this._isMounted = true;        
     }
 
     componentWillUnmount() {
@@ -78,9 +84,9 @@ class LogItemRow extends Component {
         }
     }
 
-    isRowSelected(rowId) {
-        const {props} = this;
-        return props.selectedRowIds.some((id) => id === rowId);
+    isRowSelected() {
+        const {state, props} = this;
+        return props.selectedRowIds.some((id) => id === props.logId);
     }
 
     render() {
@@ -92,7 +98,7 @@ class LogItemRow extends Component {
                     <div className="term-header">
                         <div data-index="0" className="term-label-checkbox">
                             <div className="term-label-wrapper">
-                                <Checkbox checked={isSelected} onChange={this.onSelectRow.bind(this, this.props.logId) }/>
+                                <Checkbox checked={this.isRowSelected()} onChange={this.onSelectRow.bind(this, this.props.logId) }/>
                             </div>
                         </div>
                         <div className="term-label-cssclass" onClick={this.toggle.bind(this) }>
