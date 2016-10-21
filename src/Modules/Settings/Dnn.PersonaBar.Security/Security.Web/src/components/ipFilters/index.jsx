@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
@@ -21,7 +21,6 @@ class IpFiltersPanelBody extends Component {
     constructor() {
         super();
         this.state = {
-            ipFilters: [],
             openId: ""
         };
     }
@@ -100,82 +99,83 @@ class IpFiltersPanelBody extends Component {
     /* eslint-disable react/no-danger */
     renderedIpFilters() {
         let i = 0;
-        if (this.props.ipFilters) {
-            return this.props.ipFilters.map((item, index) => {
-                let id = "row-" + i++;
-                return (
-                    <IpFilterRow
+        return this.props.ipFilters.map((item, index) => {
+            let id = "row-" + i++;
+            return (
+                <IpFilterRow
+                    ipFilterId={item.IPFilterID}
+                    ruleType={item.RuleType}
+                    ipFilter={item.IPFilter}
+                    index={index}
+                    key={"ipFilter-" + index}
+                    closeOnClick={true}
+                    openId={this.state.openId}
+                    OpenCollapse={this.toggle.bind(this)}
+                    Collapse={this.collapse.bind(this)}
+                    onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID)}
+                    id={id}>
+                    <IpFilterEditor
                         ipFilterId={item.IPFilterID}
-                        ruleType={item.RuleType}
-                        ipFilter={item.IPFilter}
-                        index={index}
-                        key={"ipFilter-" + index}
-                        closeOnClick={true}
-                        openId={this.state.openId }
-                        OpenCollapse={this.toggle.bind(this) }
-                        Collapse={this.collapse.bind(this) }
-                        onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID) }
-                        id={id}>
-                        <IpFilterEditor
-                            ipFilterId={item.IPFilterID}
-                            Collapse={this.collapse.bind(this) }
-                            onUpdate={this.onUpdateIpFilter.bind(this) }
-                            id={id}
-                            openId={this.state.openId} />
-                    </IpFilterRow>
-                );
-            });
-        }
+                        Collapse={this.collapse.bind(this)}
+                        onUpdate={this.onUpdateIpFilter.bind(this)}
+                        id={id}
+                        openId={this.state.openId} />
+                </IpFilterRow>
+            );
+        });
     }
 
     render() {
         let opened = (this.state.openId === "add");
-        return (
-            <div>
-                <div className="ip-filter-items">
-                    <div className="ip-filter-topbar">
-                        {!this.state.enableIPChecking &&
-                            <div className="warning-container">
-                                <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
-                                {resx.get("IPFiltersDisabled") }
+        if (this.props.ipFilters) {
+            return (
+                <div>
+                    <div className="ip-filter-items">
+                        <div className="ip-filter-topbar">
+                            {!this.state.enableIPChecking &&
+                                <div className="warning-container">
+                                    <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
+                                    {resx.get("IPFiltersDisabled")}
+                                </div>
+                            }
+                            <div className="AddItemRow">
+                                <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                    </div> Add New Filter
                             </div>
-                        }
-                        <div className="AddItemRow">
-                            <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                                </div> Add New Filter
                             </div>
                         </div>
-                    </div>
-                    <div className="ip-filter-items-grid">
-                        {this.renderHeader() }
-                        <div className="add-setting-editor">
-                            <IpFilterRow
-                                ipFilterId={"-"}
-                                ruleType={"-"}
-                                ipFilter={"-"}
-                                index={"add"}
-                                key={"ipFilter-add"}
-                                closeOnClick={true}
-                                openId={this.state.openId }
-                                OpenCollapse={this.toggle.bind(this) }
-                                Collapse={this.collapse.bind(this) }
-                                onDelete={this.onDeleteIpFilter.bind(this) }
-                                id={"add"}
-                                visible={opened}>
-                                <IpFilterEditor
-                                    Collapse={this.collapse.bind(this) }
-                                    onUpdate={this.onUpdateIpFilter.bind(this) }
+                        <div className="ip-filter-items-grid">
+                            {this.renderHeader()}
+                            <div className="add-setting-editor">
+                                <IpFilterRow
+                                    ipFilterId={"-"}
+                                    ruleType={"-"}
+                                    ipFilter={"-"}
+                                    index={"add"}
+                                    key={"ipFilter-add"}
+                                    closeOnClick={true}
+                                    openId={this.state.openId}
+                                    OpenCollapse={this.toggle.bind(this)}
+                                    Collapse={this.collapse.bind(this)}
+                                    onDelete={this.onDeleteIpFilter.bind(this)}
                                     id={"add"}
-                                    openId={this.state.openId}/>
-                            </IpFilterRow>
+                                    visible={opened}>
+                                    <IpFilterEditor
+                                        Collapse={this.collapse.bind(this)}
+                                        onUpdate={this.onUpdateIpFilter.bind(this)}
+                                        id={"add"}
+                                        openId={this.state.openId} />
+                                </IpFilterRow>
+                            </div>
+                            {this.renderedIpFilters()}
                         </div>
-                        {this.renderedIpFilters() }
                     </div>
-                </div>
 
-            </div >
-        );
+                </div >
+            );
+        }
+        else return <div />;
     }
 }
 
