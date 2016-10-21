@@ -1,4 +1,4 @@
-import { extension as ActionTypes } from "../constants/actionTypes";
+import { installation as ActionTypes } from "../constants/actionTypes";
 
 export default function installation(state = {
     parsedInstallationPackage: null,

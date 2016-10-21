@@ -1,0 +1,32 @@
+import util from "../utils";
+function errorCallback(message) {
+    util.utilities.notifyError(typeof message === "object" ? message.Message : message);
+}
+
+class CreatePackageService {
+    getServiceFramework(controller) {
+        let sf = util.utilities.sf;
+
+        sf.moduleRoot = "PersonaBar/AdminHost";
+        sf.controller = controller;
+
+        return sf;
+    }
+    getPackageManifest(packageId, callback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.get("GetPackageManifest?packageId=" + packageId, {}, callback, errorCallback);
+    }
+    createManifest(payload, callback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.post("CreateManifest", payload, callback, errorCallback);
+    }
+    createPackage(payload, callback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.post("CreatePackage", payload, callback, errorCallback);
+    }
+}
+const createPackageService = new CreatePackageService();
+export default createPackageService;

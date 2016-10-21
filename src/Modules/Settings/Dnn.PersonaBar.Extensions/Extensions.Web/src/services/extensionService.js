@@ -109,6 +109,10 @@ class ExtensionService {
 
         sf.get("GetPackageSettings?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
+    getModuleCategories(callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("getModuleCategories", {}, callback, errorCallback);
+    }
 }
 const extensionService = new ExtensionService();
 export default extensionService;

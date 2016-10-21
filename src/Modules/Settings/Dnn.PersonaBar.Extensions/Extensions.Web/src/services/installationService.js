@@ -24,8 +24,7 @@ class InstallationService {
         let formData = new FormData();
         formData.append("POSTFILE", file);
 
-
-        sf.postfile("InstallPackage", formData, callback);
+        sf.postfile("InstallPackage", formData, callback, util.utilities.notifyError);
     }
 }
 const installationService = new InstallationService();

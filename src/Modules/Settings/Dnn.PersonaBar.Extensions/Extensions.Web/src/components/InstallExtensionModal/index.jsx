@@ -13,7 +13,6 @@ import Localization from "localization";
 import utilities from "utils";
 import FileUpload from "./FileUpload";
 import styles from "./style.less";
-
 class InstallExtensionModal extends Component {
     constructor() {
         super();
@@ -104,9 +103,9 @@ class InstallExtensionModal extends Component {
         if (props.parsedInstallationPackage) {
             return <PackageInformation
                 extensionBeingEdited={props.parsedInstallationPackage}
-                onChange={() => { } }
+                readOnly={true}
                 onCancel={this.endInstallation.bind(this)}
-                onPrimaryButtonClick={this.goToReleaseNotes.bind(this)}
+                onSave={this.goToReleaseNotes.bind(this)}
                 primaryButtonText="Next"
                 disabled={true} />;
         }
@@ -145,18 +144,18 @@ class InstallExtensionModal extends Component {
                         {wizardStep === 1 && this.getPackageInformationStep()}
                         {wizardStep === 2 &&
                             <ReleaseNotes
-                                extensionBeingEdited={props.parsedInstallationPackage}
+                                value={props.parsedInstallationPackage.releaseNotes}
                                 onCancel={this.endInstallation.bind(this)}
-                                onUpdateExtension={this.goToLicense.bind(this)}
+                                onSave={this.goToLicense.bind(this)}
                                 primaryButtonText="Next"
                                 readOnly={true}
                                 disabled={true} />}
                         {wizardStep === 3 &&
                             <License
-                                extensionBeingEdited={props.parsedInstallationPackage}
+                                value={props.parsedInstallationPackage.license}
                                 onCancel={this.endInstallation.bind(this)}
                                 readOnly={true}
-                                onUpdateExtension={this.installPackage.bind(this)}
+                                onSave={this.installPackage.bind(this)}
                                 primaryButtonText="Next"
                                 disabled={true} />}
                         {wizardStep === 4 &&

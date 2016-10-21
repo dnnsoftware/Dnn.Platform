@@ -4,6 +4,7 @@ import extension from "./extension";
 import installation from "./installation";
 import folder from "./folder";
 import moduleDefinition from "./moduleDefinition";
+import createPackage from "./createPackage";
 
 export {
     pagination,
@@ -11,5 +12,6 @@ export {
     extension,
     installation,
     folder,
-    moduleDefinition
+    moduleDefinition,
+    createPackage
 };

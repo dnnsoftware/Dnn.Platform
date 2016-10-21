@@ -3,13 +3,15 @@ import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
-import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions } from "actions";
+import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions, CreatePackageActions } from "actions";
 import Tabs from "dnn-tabs";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
 import CustomSettings from "./CustomSettings";
 import Tooltip from "dnn-tooltip";
+import Button from "dnn-button";
+import Localization from "localization";
 import utilities from "utils";
 import styles from "./style.less";
 
@@ -30,6 +32,13 @@ class EditExtension extends Component {
             },
             selectedTabIndex: 0
         };
+    }
+
+    componentWillMount() {
+        const { props } = this;
+        if (!props.moduleCategories || props.moduleCategories.length === 0) {
+            props.dispatch(ExtensionActions.getModuleCategories());
+        }
     }
 
     onVersionChange(index, option) {
@@ -149,12 +158,22 @@ class EditExtension extends Component {
         });
     }
 
+    startCreatePackageWizard() {
+        const { props } = this;
+
+        props.dispatch(CreatePackageActions.getPackageManifest(props.extensionBeingEdited.packageId.value, () => {
+            this.selectPanel(5);
+        }));
+    }
+
     render() {
         const {props, state} = this;
         const {extensionBeingEdited} = props;
         return (
             <GridCell className={styles.editExtension}>
-                <SocialPanelHeader title={extensionBeingEdited.friendlyName.value + " Extension"} />
+                <SocialPanelHeader title={extensionBeingEdited.friendlyName.value + " Extension"} >
+                    <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>{Localization.get("EditExtension_CreatePackage.Button")}</Button>
+                </SocialPanelHeader>
                 <SocialPanelBody>
                     <Tabs
                         tabHeaders={this.getTabHeaders()}
@@ -220,7 +239,8 @@ function mapStateToProps(state) {
         packageBeingEditedSettings: state.extension.packageBeingEditedSettings,
         moduleDefinitionFormIsDirty: state.moduleDefinition.formIsDirty,
         triedToSave: state.extension.triedToSave,
-        tabsWithError: state.extension.tabsWithError
+        tabsWithError: state.extension.tabsWithError,
+        moduleCategories: state.extension.moduleCategories
     };
 }
 

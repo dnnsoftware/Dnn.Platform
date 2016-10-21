@@ -106,7 +106,7 @@ class Module extends Component {
                             tooltipMessage={Localization.get("EditModule_ModuleCategory.HelpText")}
                             value={extensionBeingEdited.category.value}
                             onChange={props.onChange.bind(this, "category")}
-                            style={inputStyle} />
+                            style={inputStyle} />   
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}

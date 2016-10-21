@@ -5,13 +5,15 @@ import extension from "./extensionReducer";
 import installation from "./installationReducer";
 import folder from "./folderReducer";
 import moduleDefinition from "./moduleDefinitionReducer";
+import createPackage from "./createPackageReducer";
 const rootReducer = combineReducers({
     pagination,
     visiblePanel,
     extension,
     installation,
     folder,
-    moduleDefinition
+    moduleDefinition,
+    createPackage
 });
 
 export default rootReducer;

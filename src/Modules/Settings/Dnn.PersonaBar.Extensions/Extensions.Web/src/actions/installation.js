@@ -1,9 +1,9 @@
 import { installation as ActionTypes } from "constants/actionTypes";
-import { ExtensionService } from "services";
+import { InstallationService } from "services";
 const installationActions = {
     parsePackage(file, callback, errorCallback) {
         return (dispatch) => {
-            ExtensionService.parsePackage(file, (data) => {
+            InstallationService.parsePackage(file, (data) => {
                 dispatch({
                     type: ActionTypes.PARSED_INSTALLATION_PACKAGE,
                     payload: JSON.parse(data)
@@ -26,7 +26,7 @@ const installationActions = {
     },
     installExtension(file, callback) {
         return (dispatch) => {
-            ExtensionService.installPackage(file, (data) => {
+            InstallationService.installPackage(file, (data) => {
                 dispatch({
                     type: ActionTypes.INSTALLED_EXTENSION_LOGS,
                     payload: JSON.parse(data)

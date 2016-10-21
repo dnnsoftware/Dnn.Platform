@@ -162,7 +162,7 @@ const extensionActions = {
             }
         };
     },
-    toggleTabError(tabIndex, action) {
+    toggleTabError(tabIndex, action, callback) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.TOGGLE_TAB_ERROR,
@@ -171,6 +171,24 @@ const extensionActions = {
                     action
                 }
             });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    getModuleCategories(callback) {
+        return (dispatch) => {
+            ExtensionService.getModuleCategories((data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_MODULE_CATEGORIES,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
         };
     }
 };

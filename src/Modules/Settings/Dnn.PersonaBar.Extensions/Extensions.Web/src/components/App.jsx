@@ -9,6 +9,7 @@ import NewExtensionModal from "./NewExtensionModal";
 import NewModuleModal from "./NewModuleModal";
 import InstallExtensionModal from "./installExtensionModal";
 import EditExtension from "./EditExtension";
+import CreatePackageModal from "./CreatePackageModal";
 import { VisiblePanelActions, ExtensionActions } from "actions";
 import Localization from "localization";
 import DropdownWithError from "dnn-dropdown-with-error";
@@ -34,7 +35,7 @@ class App extends Component {
         this.state = {
             extensionBeingEdited: {}
         };
-        
+
     }
 
 
@@ -67,6 +68,11 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 4}>
                     {props.selectedPage === 4 &&
                         <EditExtension />
+                    }
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 5}>
+                    {props.selectedPage === 5 &&
+                        <CreatePackageModal onCancel={this.selectPanel.bind(this, 4)}/>
                     }
                 </PersonaBarPage>
             </div>

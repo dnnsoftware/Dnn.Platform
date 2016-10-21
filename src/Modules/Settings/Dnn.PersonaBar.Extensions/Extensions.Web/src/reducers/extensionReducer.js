@@ -63,7 +63,8 @@ export default function extension(state = {
     selectedInstalledPackageType: "",
     selectedAvailablePackageType: "",
     triedToSave: false,
-    tabsWithError: []
+    tabsWithError: [],
+    moduleCategories: []
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
@@ -115,6 +116,10 @@ export default function extension(state = {
         case ActionTypes.CREATED_NEW_MODULE:
             return { ...state,
                 installedPackages: addToModuleList(action.payload.PackageInfo, state.installedPackages)
+            };
+        case ActionTypes.RETRIEVED_MODULE_CATEGORIES:
+            return { ...state,
+                moduleCategories: action.payload
             };
         default:
             return { ...state
