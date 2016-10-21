@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dnn.PersonaBar.Sites</RootNamespace>
-    <AssemblyName>Dnn.PersonaBar.Sites</AssemblyName>
+    <RootNamespace>Dnn.PersonaBar.Pages</RootNamespace>
+    <AssemblyName>Dnn.PersonaBar.Pages</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
@@ -27,7 +27,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.Sites.xml</DocumentationFile>
+    <DocumentationFile>bin\Dnn.PersonaBar.Pages.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>default</LangVersion>
@@ -38,7 +38,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.Sites.xml</DocumentationFile>
+    <DocumentationFile>bin\Dnn.PersonaBar.Pages.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -127,7 +127,9 @@
     <Content Include="admin\personaBar\App_LocalResources\Sites.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dnn.PersonaBar.Pages.dnn" />
+    <Content Include="Dnn.PersonaBar.Pages.dnn">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

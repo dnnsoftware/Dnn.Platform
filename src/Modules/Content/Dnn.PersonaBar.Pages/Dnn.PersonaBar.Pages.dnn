@@ -1,7 +1,7 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Sites" type="PersonaBar" version="01.00.00">
-            <friendlyName>Dnn.PersonaBar.Sites</friendlyName>
+        <package name="Dnn.PersonaBar.Pages" type="PersonaBar" version="01.00.00">
+            <friendlyName>Dnn.PersonaBar.Pages</friendlyName>
             <description></description>
             <iconFile>~/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
             <owner>
@@ -29,20 +29,20 @@
                 <component type="Assembly">
                     <assemblies>
                         <assembly>
-                            <name>Dnn.PersonaBar.Sites.dll</name>
+                            <name>Dnn.PersonaBar.Pages.dll</name>
                             <path>bin</path>
                         </assembly>
                     </assemblies>
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>Sites</identifier>
-                        <moduleName>Sites</moduleName>
-                        <resourceKey>nav_Sites</resourceKey>
-                        <path>Sites</path>
+                        <identifier>Pages</identifier>
+                        <moduleName>Pages</moduleName>
+                        <resourceKey>nav_Pages</resourceKey>
+                        <path>Pages</path>
                         <mobileSupport>true</mobileSupport>
-                        <parent>Manage</parent>
-                        <order>9</order>
+                        <parent>Content</parent>
+                        <order>2</order>
                     </menu>
                 </component>
             </components>

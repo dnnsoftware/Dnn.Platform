@@ -2,8 +2,8 @@
   <Import Project="..\..\..\Solution.build" />
   <PropertyGroup>
       <Extension>zip</Extension>
-      <DNNFileName>Dnn.PersonaBar.Sites</DNNFileName>
-      <PackageName>Dnn.PersonaBar.Sites</PackageName>
+      <DNNFileName>Dnn.PersonaBar.Pages</DNNFileName>
+      <PackageName>Dnn.PersonaBar.Pages</PackageName>
       <ModuleFolderName>$(WebsitePath)\admin\Dnn.PersonaBar</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />

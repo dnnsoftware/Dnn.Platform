@@ -216,8 +216,8 @@
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;About Templates&lt;/h1&gt;&lt;p&gt;Allows you to export a site template to be used to build new sites.&lt;/p&gt;</value>
   </data>
-  <data name="nav_Sites.Text" xml:space="preserve">
-    <value>Sites</value>
+  <data name="nav_Pages.Text" xml:space="preserve">
+    <value>Pages</value>
   </data>
   <data name="plContent.Help" xml:space="preserve">
     <value>Check this box to include the content within iPortable modules.</value>
