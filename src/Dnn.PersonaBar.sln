@@ -136,6 +136,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Lists", "Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Licensing", "Modules\Manage\Dnn.PersonaBar.Licensing\Dnn.PersonaBar.Licensing.csproj", "{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages", "Modules\Content\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -328,6 +330,14 @@ Global
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -358,5 +368,6 @@ Global
 		{962EE62B-2209-42B9-AB38-72E63E59DF57} = {CD76C638-E930-459D-A821-A3227FFFBF6E}
 		{7BDE3794-A682-4A7A-B06E-931B97D40DB3} = {25C1958E-8E53-4819-808E-D364614A2ED7}
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12} = {CD76C638-E930-459D-A821-A3227FFFBF6E}
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {25C1958E-8E53-4819-808E-D364614A2ED7}
 	EndGlobalSection
 EndGlobal

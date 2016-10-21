@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2C608115-C60B-4138-B4FA-525513E984B8}</ProjectGuid>
+    <ProjectGuid>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -118,9 +118,6 @@
     <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dnn.PersonaBar.Sites.dnn" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
@@ -129,7 +126,9 @@
   <ItemGroup>
     <Content Include="admin\personaBar\App_LocalResources\Sites.resx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Dnn.PersonaBar.Pages.dnn" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
