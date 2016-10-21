@@ -5,7 +5,7 @@ import {
 } from "../../actions";
 import LogItemRow from "./LogItemRow";
 import EmailPanel from "./EmailPanel";
-import Checkbox from "../common/Checkbox";
+import Checkbox from "dnn-checkbox";
 import DropDown from "dnn-dropdown";
 import Pager from "dnn-pager";
 import "./style.less";
@@ -236,7 +236,7 @@ class AdminLogPanelBody extends Component {
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox checked={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
+                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
                 <label htmlFor="selectAll"></label>
             </div>
         </div>);

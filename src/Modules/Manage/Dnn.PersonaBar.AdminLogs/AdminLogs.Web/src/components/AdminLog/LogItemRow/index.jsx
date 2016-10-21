@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import Checkbox from "../../common/Checkbox";
+import Checkbox from "dnn-checkbox";
 import {
     log as LogActions
 } from "../../../actions";
@@ -98,7 +98,7 @@ class LogItemRow extends Component {
                     <div className="term-header">
                         <div data-index="0" className="term-label-checkbox">
                             <div className="term-label-wrapper">
-                                <Checkbox checked={this.isRowSelected()} onChange={this.onSelectRow.bind(this, this.props.logId) }/>
+                                <Checkbox value={this.isRowSelected()} onChange={this.onSelectRow.bind(this, this.props.logId) }/>
                             </div>
                         </div>
                         <div className="term-label-cssclass" onClick={this.toggle.bind(this) }>
