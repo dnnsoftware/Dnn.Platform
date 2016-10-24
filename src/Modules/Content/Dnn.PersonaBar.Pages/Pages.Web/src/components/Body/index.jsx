@@ -73,9 +73,9 @@ class Body extends Component {
         });
     }
 
-    onButtonClick(){
+    onButtonClick() {
         const {props} = this;
-        props.dispatch(PageSettingsActions.loadPage(41));
+        props.dispatch(PageSettingsActions.loadPage(39));
     }
 
     render() {
