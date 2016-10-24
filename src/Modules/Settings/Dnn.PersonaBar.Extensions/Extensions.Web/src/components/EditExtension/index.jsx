@@ -246,6 +246,7 @@ class EditExtension extends Component {
                         <GridCell className="package-information-box extension-form">
                             <PackageInformation
                                 onSave={this.onSave.bind(this)}
+                                validationMapped={true}
                                 disabled={true}
                                 extensionBeingEdited={extensionBeingEdited}
                                 onVersionChange={this.onVersionChange.bind(this)}
@@ -265,10 +266,12 @@ class EditExtension extends Component {
                         <License value={extensionBeingEdited.license.value}
                             onChange={this.onChange.bind(this)}
                             onCancel={this.selectPanel.bind(this, 0)}
+                            disabled={true}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Update" />
                         <ReleaseNotes
                             value={extensionBeingEdited.releaseNotes.value}
+                            disabled={true}
                             onChange={this.onChange.bind(this)}
                             onCancel={this.selectPanel.bind(this, 0)}
                             onSave={this.onSave.bind(this)}

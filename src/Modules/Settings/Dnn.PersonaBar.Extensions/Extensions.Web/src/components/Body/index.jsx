@@ -13,6 +13,7 @@ import AvailableExtensions from "./AvailableExtensions";
 import SocialPanelHeader from "dnn-social-panel-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
+import utilities from "utils";
 import "./style.less";
 
 const radioButtonOptions = [
@@ -32,6 +33,9 @@ class Body extends Component {
         this.handleSelect = this.handleSelect.bind(this);
         this.state = {};
     }
+    componentWillMount() {
+        this.isHost = utilities.settings.isHost;
+    }
     handleSelect(index/*, last*/) {
         const {props} = this;
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
@@ -44,8 +48,6 @@ class Body extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(panel));
     }
 
-    getPackageSettings() {
-    }
     onEditExtension(extensionBeingEditedIndex, packageId) {
         const { props } = this;
         props.dispatch(ExtensionActions.editExtension(packageId, extensionBeingEditedIndex,
@@ -60,14 +62,15 @@ class Body extends Component {
             <GridCell className="extension-body">
                 <SocialPanelHeader title={Localization.get("ExtensionsLabel")}>
                     <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>
-                    <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 2)}>{Localization.get("CreateExtension.Action")}</Button>
-                    <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>
+                    {this.isHost && <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 2)}>{Localization.get("CreateExtension.Action")}</Button>}
+                    {this.isHost && <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>}
                 </SocialPanelHeader>
                 <SocialPanelBody>
                     <Tabs onSelect={this.handleSelect}
                         selectedIndex={props.tabIndex}
                         tabHeaders={[Localization.get("InstalledExtensions"), Localization.get("AvailableExtensions")]}>
                         <InstalledExtensions
+                            isHost={this.isHost}
                             onEdit={this.onEditExtension.bind(this)}
                             onCancel={this.selectPanel.bind(this, 0)}
                             />

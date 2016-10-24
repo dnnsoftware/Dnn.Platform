@@ -6,7 +6,7 @@ import ColumnSizes from "../ExtensionColumnSizes";
 import { EditIcon, TrashIcon } from "dnn-svg-icons";
 
 /* eslint-disable react/no-danger */
-const ExtensionDetailRow = ({_package, onEdit, onDelete}) => (
+const ExtensionDetailRow = ({_package, onEdit, onDelete, isHost}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
             <img src={_package.packageIcon && _package.packageIcon.replace("~", "")} />
@@ -27,16 +27,17 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete}) => (
             <p>{/*_package.upgradeUrl*/}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[6]}>
-            {_package.canDelete && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
+            {(_package.canDelete && isHost) && < div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
             <div className="extension-action" onClick={onEdit.bind(this, _package.packageId)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
         </GridCell>
-    </GridCell>
+    </GridCell >
 );
 
 ExtensionDetailRow.propTypes = {
     _package: PropTypes.object,
     onEdit: PropTypes.func,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    isHost: PropTypes.bool
 };
 
 export default ExtensionDetailRow;

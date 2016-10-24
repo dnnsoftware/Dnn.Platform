@@ -35,9 +35,7 @@ class App extends Component {
         this.state = {
             extensionBeingEdited: {}
         };
-
     }
-
 
     selectPanel(panel, event) {
         if (event) {

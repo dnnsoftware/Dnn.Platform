@@ -79,6 +79,7 @@ class InstalledExtensions extends Component {
                 {(props.installedPackages && props.installedPackages.length > 0) &&
                     <ExtensionList
                         packages={props.installedPackages}
+                        isHost={props.isHost}
                         onEdit={props.onEdit.bind(this)}
                         onDelete={this.onDelete.bind(this)} />
                 }
@@ -91,6 +92,7 @@ InstalledExtensions.propTypes = {
     dispatch: PropTypes.func.isRequired,
     installedPackages: PropTypes.array,
     installedPackageTypes: PropTypes.array,
+    isHost: PropTypes.bool,
     tabIndex: PropTypes.number
 };
 

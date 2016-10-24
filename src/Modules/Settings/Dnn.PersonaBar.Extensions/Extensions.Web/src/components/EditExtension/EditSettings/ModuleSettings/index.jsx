@@ -24,6 +24,7 @@ class ModuleSettings extends Component {
     componentWillMount() {
         const {props, state} = this;
         let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
+        console.log(PermissionActions);
         props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
     }
 

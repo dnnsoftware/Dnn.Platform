@@ -17,6 +17,7 @@ class ExtensionList extends Component {
                 {props.packages.map((_package, index) => {
                     return <ExtensionDetailRow
                         _package={_package}
+                        isHost={props.isHost}
                         onEdit={props.onEdit.bind(this, index)}
                         onDelete={props.onDelete.bind(this, _package.packageId, index)}
                         />;
@@ -31,7 +32,8 @@ ExtensionList.propTypes = {
     packages: PropTypes.array,
     collapsed: PropTypes.bool,
     onChange: PropTypes.func,
-    onEdit: PropTypes.func
+    onEdit: PropTypes.func,
+    isHost: PropTypes.bool
 };
 
 
