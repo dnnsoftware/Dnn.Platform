@@ -35,13 +35,7 @@ namespace Dnn.PersonaBar.Servers.Services
     public class SystemInfoWebController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
-
-        /// GET: api/Servers/GetWebServerInfo
-        /// <summary>
-        /// Gets dashboard information of Web Server
-        /// </summary>
-        /// <param></param>
-        /// <returns>Dashboard information</returns>
+        
         [HttpGet]
         public HttpResponseMessage GetWebServerInfo()
         {
@@ -50,8 +44,8 @@ namespace Dnn.PersonaBar.Servers.Services
                 var serverInfo = new ServerInfo();
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    serverInfo.OSVersion,
-                    serverInfo.IISVersion,
+                    osVersion = serverInfo.OSVersion,
+                    iisVersion = serverInfo.IISVersion,
                     serverInfo.Framework,
                     serverInfo.Identity,
                     serverInfo.HostName,
