@@ -15,6 +15,32 @@ const createPackageActions = {
             });
         };
     },
+    updatePackagePayload(packagePayload, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_PACKAGE_PAYLOAD,
+                payload: packagePayload
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    updatePackageManifest(packageManifest, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_PACKAGE_MANIFEST,
+                payload: packageManifest
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
     createManifest(payload, callback) {
         return (dispatch) => {
             CreatePackageService.createManifest(payload, (data) => {

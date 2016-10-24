@@ -29,7 +29,7 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 enabled={!readOnly}
                 tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                 label="Extension Type"
-                defaultDropdownValue={extensionData.packageType.value}
+                defaultDropdownValue={readOnly ? extensionData.packageType : extensionData.packageType.value}
                 style={inputStyle}
                 />
             <SingleLineInputWithError
@@ -38,11 +38,11 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 style={inputStyle}
                 enabled={false}
                 className="extension-package-name"
-                value={extensionData.name.value} />
+                value={readOnly ? extensionData.name : extensionData.name.value} />
             <SingleLineInputWithError
                 label={Localization.get("EditExtension_PackageFriendlyName.Label") + "*"}
                 tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
-                value={extensionData.friendlyName.value}
+                value={readOnly ? extensionData.friendlyName : extensionData.friendlyName.value}
                 style={inputStyle}
                 className="extension-package-friendly-name"
                 error={extensionData.friendlyName.error && triedToSave}
@@ -56,7 +56,7 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 style={inputStyle}
                 className="extension-description"
                 inputStyle={{ marginBottom: 28, height: 123 }}
-                value={extensionData.description.value}
+                value={readOnly ? extensionData.description : extensionData.description.value}
                 enabled={!readOnly}
                 onChange={onChange && onChange.bind(this, "description")} />
             <DropdownWithError
