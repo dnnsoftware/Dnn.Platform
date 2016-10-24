@@ -606,19 +606,274 @@
   <data name="NewModule_OwnerFolder.Label" xml:space="preserve">
     <value>Owner Folder</value>
   </data>
-  <data name="AddControl.ErrorMessage" xml:space="preserve">
-    <value>There is already a control with the same key and source.</value>
+  <data name="AddModuleControl_Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="DuplicateKey.ErrorMessage" xml:space="preserve">
-    <value>There is already a control with the same key in this module definition.</value>
+  <data name="AddModuleControl_Definition.HelpText" xml:space="preserve">
+    <value>This is the Name of the Module Definition</value>
   </data>
-  <data name="DuplicateDefinition.ErrorMessage" xml:space="preserve">
-    <value>There is already a module definition with the same friendly name.</value>
+  <data name="AddModuleControl_Definition.Label" xml:space="preserve">
+    <value>Definition</value>
   </data>
-  <data name="ReadOnlyPackage.SaveErrorMessage" xml:space="preserve">
-    <value>There is a read-only package. Can not be updated!</value>
+  <data name="AddModuleControl_HelpURL.HelpText" xml:space="preserve">
+    <value>You can provide a Help URL for this control. This will appear on the Actions menu.</value>
   </data>
-  <data name="SavePackageSettings.PackageNotFound" xml:space="preserve">
-    <value>Package does not exist</value>
+  <data name="AddModuleControl_HelpURL.Label" xml:space="preserve">
+    <value>Help URL</value>
+  </data>
+  <data name="AddModuleControl_Icon.HelpText" xml:space="preserve">
+    <value>Choose an Icon for this control. This will displayed in the Module Header if supported by the theme.</value>
+  </data>
+  <data name="AddModuleControl_Icon.Label" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="AddModuleControl_Key.HelpText" xml:space="preserve">
+    <value>Enter a unique name to identify this control within the Module</value>
+  </data>
+  <data name="AddModuleControl_Key.Label" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="AddModuleControl_Module.HelpText" xml:space="preserve">
+    <value>This is the Friendly Name of the Module.</value>
+  </data>
+  <data name="AddModuleControl_Module.Label" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="AddModuleControl_Source.HelpText" xml:space="preserve">
+    <value>Select the source file or enter the typename for this control.</value>
+  </data>
+  <data name="AddModuleControl_Source.Label" xml:space="preserve">
+    <value>Source File</value>
+  </data>
+  <data name="AddModuleControl_SourceFolder.HelpText" xml:space="preserve">
+    <value>Select the source folder for the control.</value>
+  </data>
+  <data name="AddModuleControl_SourceFolder.Label" xml:space="preserve">
+    <value>Source Folder</value>
+  </data>
+  <data name="AddModuleControl_SupportsPartialRendering.HelpText" xml:space="preserve">
+    <value>This flag indicates whether the module control supports AJAX partial rendering.</value>
+  </data>
+  <data name="AddModuleControl_SupportsPartialRendering.Label" xml:space="preserve">
+    <value>Supports Partial Rendering?</value>
+  </data>
+  <data name="AddModuleControl_SupportsPopups.HelpText" xml:space="preserve">
+    <value>This flag indicates whether the module control supports modal popups.</value>
+  </data>
+  <data name="AddModuleControl_SupportsPopups.Label" xml:space="preserve">
+    <value>Supprots Popups?</value>
+  </data>
+  <data name="AddModuleControl_Title.HelpText" xml:space="preserve">
+    <value>Enter a title for this control. This will be displayed in the Module Header if supported in the theme.</value>
+  </data>
+  <data name="AddModuleControl_Title.Label" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="AddModuleControl_Type.HelpText" xml:space="preserve">
+    <value>Choose the type of the control from the list.</value>
+  </data>
+  <data name="AddModuleControl_Type.Label" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="AddModuleControl_Update.Button" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="AddModuleControl_ViewOrder.HelpText" xml:space="preserve">
+    <value>Enter the view order for the control in the list of controls for this definition.</value>
+  </data>
+  <data name="AddModuleControl_ViewOrder.Label" xml:space="preserve">
+    <value>View Order</value>
+  </data>
+  <data name="EditModule_Assigned.Label" xml:space="preserve">
+    <value>Assigned</value>
+  </data>
+  <data name="EditModule_AssignedPremiumModules.Label" xml:space="preserve">
+    <value>Assigned Premium Modules</value>
+  </data>
+  <data name="EditModule_BusinessControllerClass.HelpText" xml:space="preserve">
+    <value>The fully qualified namespace of the class that implements the Modules Features (IPortable, ISearchable etc)</value>
+  </data>
+  <data name="EditModule_BusinessControllerClass.Label" xml:space="preserve">
+    <value>Business Controller Class</value>
+  </data>
+  <data name="EditModule_Dependencies.HelpText" xml:space="preserve">
+    <value>You can list any dependencies that the module has here.</value>
+  </data>
+  <data name="EditModule_Dependencies.Label" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="EditModule_FolderName.HelpText" xml:space="preserve">
+    <value>Specify the folder name for this module</value>
+  </data>
+  <data name="EditModule_FolderName.Label" xml:space="preserve">
+    <value>Folder Name</value>
+  </data>
+  <data name="EditModule_IsPortable.HelpText" xml:space="preserve">
+    <value>Identifies if the module supports the IPortable interface allowing it to Export and Import content.</value>
+  </data>
+  <data name="EditModule_IsPortable.Label" xml:space="preserve">
+    <value>Is Portable?</value>
+  </data>
+  <data name="EditModule_IsPremiumModule.HelpText" xml:space="preserve">
+    <value>All Modules can be assigned/unassigned from a website. However, on website Creation Premium Modules are not auto-assigned to a new website.</value>
+  </data>
+  <data name="EditModule_IsPremiumModule.Label" xml:space="preserve">
+    <value>Is Premium Module?</value>
+  </data>
+  <data name="EditModule_IsSearchable.HelpText" xml:space="preserve">
+    <value>Identifies if the module supports the ISearchable or ModuleSearchBase interface allowing it to have its content indexed.</value>
+  </data>
+  <data name="EditModule_IsSearchable.Label" xml:space="preserve">
+    <value>Is Searchable?</value>
+  </data>
+  <data name="EditModule_IsUpgradable.HelpText" xml:space="preserve">
+    <value>Identifies if the module supports the IUpgradable interface allowing it to run custom code when upgraded.</value>
+  </data>
+  <data name="EditModule_IsUpgradable.Label" xml:space="preserve">
+    <value>Is Upgradable?</value>
+  </data>
+  <data name="EditModule_ModuleCategory.HelpText" xml:space="preserve">
+    <value>Select the Module Category for this module</value>
+  </data>
+  <data name="EditModule_ModuleCategory.Label" xml:space="preserve">
+    <value>Module Category</value>
+  </data>
+  <data name="EditModule_ModuleDefinitions.Header" xml:space="preserve">
+    <value>Module Definitions</value>
+  </data>
+  <data name="EditModule_ModuleName.HelpText" xml:space="preserve">
+    <value>The name of the Module</value>
+  </data>
+  <data name="EditModule_ModuleName.Label" xml:space="preserve">
+    <value>Module Name</value>
+  </data>
+  <data name="EditModule_ModuleSharing.HelpText" xml:space="preserve">
+    <value>Identifies whether the module supports sharing itself across multiple sites.</value>
+  </data>
+  <data name="EditModule_ModuleSharing.Label" xml:space="preserve">
+    <value>Module Sharing</value>
+  </data>
+  <data name="EditModule_Permissions.HelpText" xml:space="preserve">
+    <value>You can list any Code Access Security Permissions your module requires here.</value>
+  </data>
+  <data name="EditModule_Permissions.Label" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="EditModule_PremiumModuleAssignment.Header" xml:space="preserve">
+    <value>Premium ModuleAssignment</value>
+  </data>
+  <data name="EditModule_Unassigned.Label" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="ModuleDefinitions_AddControl.Button" xml:space="preserve">
+    <value>Add Control</value>
+  </data>
+  <data name="ModuleDefinitions_AddDefinition.Button" xml:space="preserve">
+    <value>Add Definition</value>
+  </data>
+  <data name="ModuleDefinitions_DefaultCacheTime.HelpText" xml:space="preserve">
+    <value>This is the default Cache Time to be used for this Module Definition. A default cache time of "-1" indicates that the module does not support output caching.</value>
+  </data>
+  <data name="ModuleDefinitions_DefaultCacheTime.Label" xml:space="preserve">
+    <value>DefaultCacheTime</value>
+  </data>
+  <data name="ModuleDefinitions_DefinitionName.HelpText" xml:space="preserve">
+    <value>An unchanging name for the Module Definition</value>
+  </data>
+  <data name="ModuleDefinitions_DefinitionName.Label" xml:space="preserve">
+    <value>Definition Name</value>
+  </data>
+  <data name="ModuleDefinitions_FriendlyName.HelpText" xml:space="preserve">
+    <value>Enter a friendly name for the Module Definition.</value>
+  </data>
+  <data name="ModuleDefinitions_FriendlyName.Label" xml:space="preserve">
+    <value>Friendly Name</value>
+  </data>
+  <data name="ModuleDefinitions_ModuleControls.Header" xml:space="preserve">
+    <value>Module Controls</value>
+  </data>
+  <data name="ModuleDefinitions_Source.Label" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="ModuleDefinitions_Title.Label" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="NewModule_Resource.HelpText" xml:space="preserve">
+    <value>Select the resource to use to create your module.</value>
+  </data>
+  <data name="NewModule_Resource.Label" xml:space="preserve">
+    <value>Resource</value>
+  </data>
+  <data name="CreatePackage_Header.Header" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="CreatePackage_PackageManifest.Header" xml:space="preserve">
+    <value>Package Manifest</value>
+  </data>
+  <data name="CreatePackage_PackageManifest.HelpText" xml:space="preserve">
+    <value>This Wizard will create a manifest for your extension. If you have already created a manifest (either by running this wizard or by manually creating a manifest file) you can select to use that manifest by checking "Use Existing Manifest" box and choosing the manifest that the system has found for this extension from the drop-down list of manifests.</value>
+  </data>
+  <data name="CreatePackage_UseExistingManifest.Label" xml:space="preserve">
+    <value>Using Existing Manifest:</value>
+  </data>
+  <data name="EditExtension_CreatePackage.Button" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="EditModule_Add.Button" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ModuleDefinitions_Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ModuleDefinitions_Save.Button" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CreatePackage_ArchiveFileName.Label" xml:space="preserve">
+    <value>Archive File Name</value>
+  </data>
+  <data name="CreatePackage_ChooseAssemblies.HelpText" xml:space="preserve">
+    <value>At this step you can add the assemblies to include in your package. If there is a project file in the Package folder, the Wizard has attempted to determine the assemblies to include, but you can add or delete assemblies from the list.</value>
+  </data>
+  <data name="CreatePackage_ChooseAssemblies.Label" xml:space="preserve">
+    <value>Choose Assemblies to Include</value>
+  </data>
+  <data name="CreatePackage_ChooseFiles.HelpText" xml:space="preserve">
+    <value>At this step you can choose the files to include in your package. The Wizard has attempted to determine the files to include, but you can add or delete files from the list. In addition, you can optionally choose to include the source files by checking the "Include Source" box.</value>
+  </data>
+  <data name="CreatePackage_ChooseFiles.Label" xml:space="preserve">
+    <value>Choose Files to Include</value>
+  </data>
+  <data name="CreatePackage_CreateManifest.HelpText" xml:space="preserve">
+    <value>Based on your selections the Wizard has created the manifest for the package. The manifest is displayed in the text box below. You can edit the manifest, before creating the package.</value>
+  </data>
+  <data name="CreatePackage_CreateManifest.Label" xml:space="preserve">
+    <value>Create Manifest</value>
+  </data>
+  <data name="CreatePackage_CreateManifestFile.Label" xml:space="preserve">
+    <value>Create Manifest File:</value>
+  </data>
+  <data name="CreatePackage_CreatePackage.Label" xml:space="preserve">
+    <value>Create Package</value>
+  </data>
+  <data name="CreatePackage_FinalStep.HelpText" xml:space="preserve">
+    <value>The final step is to create the package. To create a copy of the Manifest file check the "Create Manifest File" checkbox - the file will be created in the Package's folder. Regardless of the setting you use here, the manifest will be saved in the database and it will be added to the package.</value>
+  </data>
+  <data name="CreatePackage_FinalStep.HelpTextTwo" xml:space="preserve">
+    <value>Check the "Create Package" checkbox to create a package. The package will be created in the relevant Install folder (eg Install/Modules for modules, Install/Themes for Themes, etc.).</value>
+  </data>
+  <data name="CreatePackage_Folder.Label" xml:space="preserve">
+    <value>Folder:</value>
+  </data>
+  <data name="CreatePackage_ManifestFile.Label" xml:space="preserve">
+    <value>Manifest File:</value>
+  </data>
+  <data name="CreatePackage_ManifestFileName.Label" xml:space="preserve">
+    <value>Manifest File Name</value>
+  </data>
+  <data name="CreatePackage_RefreshFileList.Button" xml:space="preserve">
+    <value>Refresh File List</value>
+  </data>
+  <data name="CreatePackage_ReviewManifest.Label" xml:space="preserve">
+    <value>Review Manifest:</value>
   </data>
 </root>
