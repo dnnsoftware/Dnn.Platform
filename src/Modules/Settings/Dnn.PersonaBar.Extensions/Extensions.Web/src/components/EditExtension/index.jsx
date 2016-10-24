@@ -9,6 +9,7 @@ import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
 import CustomSettings from "./CustomSettings";
+import EditSettings from "./EditSettings";
 import Tooltip from "dnn-tooltip";
 import Button from "dnn-button";
 import Localization from "localization";
@@ -204,7 +205,9 @@ class EditExtension extends Component {
                                 />
                         </GridCell>
                         <GridCell>
-                            Site Settings
+                            <EditSettings
+                                type="Module"
+                                extensionBeingEdited={extensionBeingEdited} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}
                             onChange={this.onChange.bind(this)}

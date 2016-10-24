@@ -113,6 +113,14 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
         sf.get("getModuleCategories", {}, callback, errorCallback);
     }
+    getDesktopModulePermissions(desktopModuleId, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("GetDesktopModulePermissions", {desktopModuleId: desktopModuleId}, callback, errorCallback);
+    }
+    saveDesktopModulePermissions(permissions, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.post("saveDesktopModulePermissions", {permissions: permissions}, callback, errorCallback);
+    }
 }
 const extensionService = new ExtensionService();
 export default extensionService;

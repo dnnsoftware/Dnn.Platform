@@ -131,6 +131,7 @@
     <Compile Include="Components\IInstallController.cs" />
     <Compile Include="Components\InstallController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\DesktopModulePermissions.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
   </ItemGroup>
   <ItemGroup>

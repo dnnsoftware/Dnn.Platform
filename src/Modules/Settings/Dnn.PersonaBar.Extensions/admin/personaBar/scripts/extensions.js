@@ -7,7 +7,9 @@ define(['jquery',
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/extensions-bundle.js";
+            //var url = "scripts/bundles/extensions-bundle.js";
+            var url = "http://localhost:8080/dist/extensions-bundle.js";
+            
             $.ajax({
                 dataType: "script",
                 cache: true,

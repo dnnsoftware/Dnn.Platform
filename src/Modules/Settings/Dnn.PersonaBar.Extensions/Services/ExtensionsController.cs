@@ -24,15 +24,19 @@ using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Extensions.Components.Editors;
+using Dnn.PersonaBar.Extensions.Services.DTO;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
@@ -525,6 +529,135 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             var installer = new Installer(package, Globals.ApplicationMapPath);
             installer.UnInstall(deletePackage.DeleteFiles);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new {});
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetDesktopModulePermissions(int desktopModuleId)
+        {
+            try
+            {
+                var desktopModule = DesktopModuleController.GetPortalDesktopModule(PortalId, desktopModuleId);
+                if (desktopModule == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "DesktopModuleNotFound");
+                }
+
+                var desktopModulePermissions = DesktopModulePermissionController.GetDesktopModulePermissions(desktopModule.PortalDesktopModuleID);
+                var permissions = new DesktopModulePermissions(true);
+                permissions.DesktopModuleId = desktopModuleId;
+
+                foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)
+                {
+                    if (permission.UserID != Null.NullInteger)
+                    {
+                        permissions.AddUserPermission(permission);
+                    }
+                    else
+                    {
+                        permissions.AddRolePermission(permission);
+                    }
+                }
+
+                permissions.RolePermissions =
+                    permissions.RolePermissions.OrderByDescending(p => p.Locked)
+                        .ThenByDescending(p => p.IsDefault)
+                        .ThenBy(p => p.RoleName)
+                        .ToList();
+                permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, permissions);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SaveDesktopModulePermissions(DesktopModulePermissions permissions)
+        {
+            var desktopModule = DesktopModuleController.GetPortalDesktopModule(PortalId, permissions.DesktopModuleId);
+            if (desktopModule == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "DesktopModuleNotFound");
+            }
+
+            var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == PortalSettings.AdministratorRoleId);
+
+            var desktopModulePermissionsCollection = new DesktopModulePermissionCollection();
+
+            //add default permissions for administrators
+            if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
+            {
+                //add default permissions
+                var permissionController = new PermissionController();
+                var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
+                foreach (var permissionInfo in permissionsList)
+                {
+                    var editPermisison = (PermissionInfo)permissionInfo;
+                    var permission = new DesktopModulePermissionInfo(editPermisison)
+                    {
+                        RoleID = PortalSettings.AdministratorRoleId,
+                        AllowAccess = true,
+                        RoleName = PortalSettings.AdministratorRoleName
+                    };
+                    desktopModulePermissionsCollection.Add(permission);
+
+                }
+            }
+
+            //add role permissions
+            if (permissions.RolePermissions != null)
+            {
+                foreach (var rolePermission in permissions.RolePermissions)
+                {
+                    foreach (var permission in rolePermission.Permissions)
+                    {
+                        desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
+                        {
+                            PermissionID = permission.PermissionId,
+                            RoleID = rolePermission.RoleId,
+                            UserID = Null.NullInteger,
+                            AllowAccess = permission.AllowAccess
+                        });
+                    }
+                }
+            }
+
+
+            //add user permissions
+            if (permissions.UserPermissions != null)
+            {
+                foreach (var userPermission in permissions.UserPermissions)
+                {
+                    foreach (var permission in userPermission.Permissions)
+                    {
+                        desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
+                        {
+                            PermissionID = permission.PermissionId,
+                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            UserID = userPermission.UserId,
+                            AllowAccess = permission.AllowAccess
+                        });
+                    }
+                }
+            }
+
+            //Update DesktopModule Permissions
+            var currentPermissions = DesktopModulePermissionController.GetDesktopModulePermissions(desktopModule.PortalDesktopModuleID);
+            if (!currentPermissions.CompareTo(desktopModulePermissionsCollection))
+            {
+                DesktopModulePermissionController.DeleteDesktopModulePermissionsByPortalDesktopModuleID(desktopModule.PortalDesktopModuleID);
+                foreach (DesktopModulePermissionInfo objPermission in desktopModulePermissionsCollection)
+                {
+                    DesktopModulePermissionController.AddDesktopModulePermission(objPermission);
+                }
+            }
+            DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, PortalId));
 
             return Request.CreateResponse(HttpStatusCode.OK, new {});
         }
