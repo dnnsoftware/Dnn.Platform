@@ -6,6 +6,7 @@ import installation from "./installationReducer";
 import folder from "./folderReducer";
 import moduleDefinition from "./moduleDefinitionReducer";
 import createPackage from "./createPackageReducer";
+import permission from "./permissionReducer";
 const rootReducer = combineReducers({
     pagination,
     visiblePanel,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     installation,
     folder,
     moduleDefinition,
-    createPackage
+    createPackage,
+    permission
 });
 
 export default rootReducer;

@@ -9,7 +9,7 @@ import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import RoleGroupFilter from "./RoleGroupFilter";
-
+import PermissionGridRow from "./PermissionGridRow";
 import Localization from "localization";
 import utils from "utils";
 import styles from "./style.less";
@@ -19,7 +19,7 @@ const defaultLocalization = {
 };
 
 class PermissionGrid extends Component {
-    constructor(){
+    constructor() {
         super();
 
         this.state = {
@@ -27,11 +27,11 @@ class PermissionGrid extends Component {
         };
     }
 
-    componentWillMount(){
+    componentWillMount() {
         const {props, state} = this;
     }
 
-    resx(key){
+    resx(key) {
         const {props} = this;
 
         return (props.localization && props.localization[key]) || defaultLocalization[key];
@@ -40,10 +40,16 @@ class PermissionGrid extends Component {
 
     render() {
         const {props, state} = this;
+        if (!props.permissions) {
+            return;
+        }
+        const permissionRows = props.permissions.rolePermissions.map((permission) => {
+            return <PermissionGridRow permission={permission} permissionDefinitions={props.permissions.permissionDefinitions} />;
+        });
 
         return (
             <GridCell>
-                <RoleGroupFilter serviceFramework={utils.utilities.sf} label={this.resx("filterByGroup")} />
+                {permissionRows}
             </GridCell>
         );
     }

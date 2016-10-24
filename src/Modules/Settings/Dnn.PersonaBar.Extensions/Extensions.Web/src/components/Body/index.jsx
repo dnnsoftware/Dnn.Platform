@@ -48,10 +48,7 @@ class Body extends Component {
     }
     onEditExtension(extensionBeingEditedIndex, packageId) {
         const { props } = this;
-        props.dispatch(ExtensionActions.editExtension({
-            packageId,
-            siteId: -1
-        }, extensionBeingEditedIndex,
+        props.dispatch(ExtensionActions.editExtension(packageId, extensionBeingEditedIndex,
             openEditPanel => {
                 this.selectPanel(4);
             }

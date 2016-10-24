@@ -103,7 +103,7 @@ class InstallExtensionModal extends Component {
         if (props.parsedInstallationPackage) {
             return <PackageInformation
                 extensionBeingEdited={props.parsedInstallationPackage}
-                readOnly={true}
+                validationMapped={false}
                 onCancel={this.endInstallation.bind(this)}
                 onSave={this.goToReleaseNotes.bind(this)}
                 primaryButtonText="Next"

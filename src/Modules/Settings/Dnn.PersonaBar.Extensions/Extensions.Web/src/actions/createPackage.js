@@ -54,6 +54,20 @@ const createPackageActions = {
             });
         };
     },
+    generateManifestPreview(payload, callback) {
+
+        return (dispatch) => {
+            CreatePackageService.generateManifestPreview(payload, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_GENERATED_MANIFEST,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
     createPackage(payload, callback) {
         return (dispatch) => {
             CreatePackageService.createPackage(payload, (data) => {

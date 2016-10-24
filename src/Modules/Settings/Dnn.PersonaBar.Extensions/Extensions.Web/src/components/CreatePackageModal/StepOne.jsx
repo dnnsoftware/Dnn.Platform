@@ -22,7 +22,8 @@ const StepOne = ({packageManifest,
         <GridCell className="package-manifest-step">
             <BasicPackageInformation
                 extensionData={packageManifest}
-                readOnly={true}
+                validationMapped={false}
+                disabled={true}
                 version={version}
                 installedPackageTypes={installedPackageTypes} />
             <GridCell className="package-manifest-info">

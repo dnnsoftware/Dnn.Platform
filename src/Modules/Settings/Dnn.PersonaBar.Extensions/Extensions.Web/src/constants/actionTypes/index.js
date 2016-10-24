@@ -5,7 +5,7 @@ import installation from "./installation";
 import folder from "./folder";
 import moduleDefinition from "./moduleDefinition";
 import createPackage from "./createPackage";
-
+import permission from "./permission";
 export {
     pagination,
     visiblePanel,
@@ -13,5 +13,6 @@ export {
     installation,
     folder,
     moduleDefinition,
-    createPackage
+    createPackage,
+    permission
 };

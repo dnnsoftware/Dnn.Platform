@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 
-import { ExtensionActions } from "actions";
+import { PermissionActions } from "actions";
 
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -13,7 +13,7 @@ import Localization from "localization";
 import styles from "./style.less";
 
 class ModuleSettings extends Component {
-    constructor(){
+    constructor() {
         super();
 
         this.state = {
@@ -21,16 +21,16 @@ class ModuleSettings extends Component {
         };
     }
 
-    componentWillMount(){
+    componentWillMount() {
         const {props, state} = this;
-
         let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
-        props.dispatch(ExtensionActions.getDesktopModulePermissions(desktopModuleId));
+        props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
     }
 
 
     render() {
         const {props, state} = this;
+        console.log(props.permissions);
 
         return (
             <GridCell>
@@ -46,7 +46,7 @@ ModuleSettings.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        permissions: state.extension.desktopModulePermissions
+        permissions: state.permission.desktopModulePermissions
     };
 }
 

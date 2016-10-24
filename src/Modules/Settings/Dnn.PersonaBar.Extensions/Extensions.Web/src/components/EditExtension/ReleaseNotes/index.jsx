@@ -22,6 +22,7 @@ class EditExtension extends Component {
                 {!props.readOnly && <MultiLineInputWithError
                     label="Release Notes"
                     style={inputStyle}
+                    enabled={!props.disabled}
                     value={value}
                     onChange={props.onChange && props.onChange.bind(this, "releaseNotes")} />}
                 {props.readOnly &&

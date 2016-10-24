@@ -25,6 +25,7 @@ class License extends Component {
                         label="License"
                         style={inputStyle}
                         value={value}
+                        enabled={!props.disabled}
                         onChange={props.onChange && props.onChange.bind(this, "license")} />}
                 {props.readOnly &&
                     <Scrollbars style={licenseBoxStyle}>

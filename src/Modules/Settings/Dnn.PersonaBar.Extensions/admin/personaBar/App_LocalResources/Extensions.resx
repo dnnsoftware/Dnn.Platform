@@ -864,6 +864,12 @@
   <data name="CreatePackage_Folder.Label" xml:space="preserve">
     <value>Folder:</value>
   </data>
+  <data name="CreatePackage_Logs.HelpText" xml:space="preserve">
+    <value>The results of the package creation are shown below.</value>
+  </data>
+  <data name="CreatePackage_Logs.Label" xml:space="preserve">
+    <value>Create Package Results</value>
+  </data>
   <data name="CreatePackage_ManifestFile.Label" xml:space="preserve">
     <value>Manifest File:</value>
   </data>
@@ -875,5 +881,20 @@
   </data>
   <data name="CreatePackage_ReviewManifest.Label" xml:space="preserve">
     <value>Review Manifest:</value>
+  </data>
+  <data name="EditExtension_ExtensionSettings.TabHeader" xml:space="preserve">
+    <value>Extension Settings</value>
+  </data>
+  <data name="EditExtension_License.TabHeader" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="EditExtension_PackageInformation.TabHeader" xml:space="preserve">
+    <value>Package Information</value>
+  </data>
+  <data name="EditExtension_ReleaseNotes.TabHeader" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="EditExtension_SiteSettings.TabHeader" xml:space="preserve">
+    <value>Site Settings</value>
   </data>
 </root>

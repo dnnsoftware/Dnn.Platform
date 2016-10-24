@@ -122,13 +122,6 @@ export default function extension(state = {
             return { ...state,
                 moduleCategories: action.payload
             };
-        case ActionTypes.RETRIEVED_DESKTOPMODULE_PERMISSIONS:
-            return { ...state,
-                desktopModulePermissions: action.payload
-            };
-        case ActionTypes.UPDATED_DESKTOPMODULE_PERMISSIONS:
-            return { ...state
-            };
         default:
             return { ...state
             };

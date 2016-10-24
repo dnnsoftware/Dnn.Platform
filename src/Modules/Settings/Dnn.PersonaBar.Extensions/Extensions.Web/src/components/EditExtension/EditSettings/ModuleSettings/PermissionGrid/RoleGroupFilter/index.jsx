@@ -1,10 +1,10 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import ReactDOM from "react-dom";
 import DropDown from "dnn-dropdown";
 
-import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "dnn-svg-icons";
+import { ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon } from "dnn-svg-icons";
 import "./style.less";
-import Service from "./Service";
+import { RoleGroupService } from "services";
 function format() {
     let format = arguments[0];
     let methodsArgs = arguments;
@@ -22,13 +22,13 @@ class RoleGroupFilter extends Component {
         };
     }
 
-    componentWillMount(){
+    componentWillMount() {
         const { props, state } = this;
 
         this.getRoleGroups();
     }
 
-    componentWillReceiveProps(newProps){
+    componentWillReceiveProps(newProps) {
         console.log(newProps);
     }
 
@@ -43,14 +43,14 @@ class RoleGroupFilter extends Component {
 
     getRoleGroups(callback) {
         const { props, state } = this;
-        
-        if(state.roleGroups.length > 0){
-            if(typeof callback === "function"){
+
+        if (state.roleGroups.length > 0) {
+            if (typeof callback === "function") {
                 callback.call(this);
             }
         }
 
-        let service = new Service(this.props.serviceFramework);
+        let service = new RoleGroupService(this.props.serviceFramework);
         service.getRoleGroups((data) => {
             this.setState({
                 roleGroups: data
@@ -72,7 +72,7 @@ class RoleGroupFilter extends Component {
         return roleGroupsOptions;
     }
 
-    onSelect(group){
+    onSelect(group) {
 
     }
 
@@ -82,11 +82,11 @@ class RoleGroupFilter extends Component {
         let label = props.label;
         let roleGroupsOptions = this.BuildRoleGroupsOptions();
 
-        let GroupsDropDown = <DropDown  style={{ width: "100%" }}
+        let GroupsDropDown = <DropDown style={{ width: "100%" }}
             withBorder={false}
             options={roleGroupsOptions}
-            label={label }
-            onSelect={this.onSelect.bind(this) }
+            label={label}
+            onSelect={this.onSelect.bind(this)}
             ref="groupsDropdown"
             />;
 
@@ -96,7 +96,7 @@ class RoleGroupFilter extends Component {
 
     render() {
         const {props, state} = this;
-        
+
         return (
             <div className="groups-filter">{this.getRoleGroupsDropDown()}<div className="clear"></div></div>
         );

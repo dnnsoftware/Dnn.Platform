@@ -22,6 +22,11 @@ class CreatePackageService {
 
         sf.post("CreateManifest", payload, callback, errorCallback);
     }
+    generateManifestPreview(payload, callback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.post("CreateNewManifest", payload, callback, errorCallback);
+    }
     createPackage(payload, callback) {
         const sf = this.getServiceFramework("Extensions");
 

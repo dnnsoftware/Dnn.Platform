@@ -76,7 +76,7 @@ const StepFive = ({
             <GridCell className="modal-footer">
                 <Button type="secondary" onClick={onCancel}>Cancel</Button>
                 <Button type="secondary" onClick={onPrevious}>Previous</Button>
-                <Button type="primary" onClick={onNext}>Next</Button>
+                <Button type="primary" disabled={!createPackage && !createManifest} onClick={onNext}>Next</Button>
             </GridCell>
         </GridCell>
     );

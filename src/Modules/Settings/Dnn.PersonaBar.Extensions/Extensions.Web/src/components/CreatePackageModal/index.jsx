@@ -4,14 +4,37 @@ import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import { CreatePackageActions } from "actions";
-import { ActionCreators as UndoActionCreators } from "redux-undo";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepFive from "./StepFive";
+import StepSix from "./StepSix";
 import Localization from "localization";
 import styles from "./style.less";
+
+function mapToManifestPayload(payload, manifest) {
+    return Object.assign(manifest, {
+        archiveName: payload.archiveName,
+        files: manifest.files || [],
+        assemblies: manifest.assemblies || [],
+        manifests: payload.selectedManifest || {}
+    });
+}
+
+function mapToPackagePayload(payload, manifest) {
+    return Object.assign(manifest, {
+        archiveName: payload.archiveName,
+        manifestName: payload.manifestName,
+        manifests: {
+            [payload.selectedManifestKey]: payload.selectedManifest
+        }
+    });
+}
+
+function deepCopy(object) {
+    return JSON.parse(JSON.stringify(object));
+}
 
 class CreatePackage extends Component {
     constructor() {
@@ -32,12 +55,11 @@ class CreatePackage extends Component {
     componentWillMount() {
         this.goToStep(0);
         let { props } = this;
-        let _packagePayload = JSON.parse(JSON.stringify(props.packagePayload));
+        let _packagePayload = deepCopy(props.packagePayload);
 
         _packagePayload.archiveName = props.packageManifest.name + "_" + props.packageManifest.version + "_Install.zip";
 
         _packagePayload.manifestName = props.packageManifest.name + ".dnn";
-        _packagePayload.selectedManifest = props.packageManifest.manifests[Object.keys(props.packageManifest.manifests)[0]];
 
         props.dispatch(CreatePackageActions.updatePackagePayload(_packagePayload));
     }
@@ -50,7 +72,18 @@ class CreatePackage extends Component {
     onChange(key, event) {
         let value = typeof event === "object" ? event.target.value : event;
         const { props } = this;
-        let _packagePayload = JSON.parse(JSON.stringify(props.packagePayload));
+        let _packagePayload = deepCopy(props.packagePayload);
+
+        if (key === "useExistingManifest") {
+            if (!_packagePayload.selectedManifest && value) {
+                const selectedManifestKey = Object.keys(props.packageManifest.manifests)[0];
+                _packagePayload.selectedManifest = props.packageManifest.manifests[selectedManifestKey];
+                _packagePayload.selectedManifestKey = selectedManifestKey;
+            } else {
+                _packagePayload.selectedManifest = null;
+                _packagePayload.selectedManifestKey = "default";
+            }
+        }
 
         _packagePayload[key] = value;
 
@@ -61,8 +94,10 @@ class CreatePackage extends Component {
         let value = option.value;
 
         const { props } = this;
-        let _packagePayload = JSON.parse(JSON.stringify(props.packagePayload));
+        let _packagePayload = deepCopy(props.packagePayload);
 
+        console.log(option);
+        console.log(key, value);
         _packagePayload[key] = value;
         _packagePayload.selectedManifestKey = option.label;
 
@@ -71,6 +106,7 @@ class CreatePackage extends Component {
 
     getManifestDropdown(manifests) {
         return Object.keys(manifests).map((key) => {
+            console.log(manifests);
             return {
                 label: key,
                 value: manifests[key]
@@ -87,30 +123,63 @@ class CreatePackage extends Component {
         }
     }
 
-    goToStepThree() {
-        const { props } = this;
-        if (props.packagePayload.useExistingManifest) {
-            this.goToStep(3);
-        } else {
-            this.goToStep(1);
-        }
-    }
-
     goToStepFour() {
         const { props } = this;
         if (props.packagePayload.reviewManifest) {
-            this.goToStep(3);
+            if (!props.packagePayload.selectedManifest) {
+                props.dispatch(CreatePackageActions.generateManifestPreview(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
+                    this.goToStep(3);
+                }));
+            } else {
+                this.goToStep(3);
+            }
         } else {
             this.goToStep(4);
         }
     }
 
     createPackage() {
+        const { props } = this;
+
+        if (props.packagePayload.createManifest) {
+            props.dispatch(CreatePackageActions.createManifest(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest))));
+        }
+
+        if (props.packagePayload.createPackage) {
+            props.dispatch(CreatePackageActions.createPackage(mapToPackagePayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
+                this.goToStep(5);
+            }));
+        }
     }
 
     onStepBack() {
         const { props } = this;
-        props.dispatch(UndoActionCreators.undo());
+        switch (props.createPackageStep) {
+            case 1:
+                this.goToStep(0);
+                break;
+            case 2:
+                this.goToStep(1);
+                break;
+            case 3:
+                if (props.packagePayload.useExistingManifest) {
+                    this.goToStep(0);
+                } else {
+                    this.goToStep(2);
+                }
+                break;
+            case 4:
+                if (props.packagePayload.reviewManifest) {
+                    this.goToStep(3);
+                } else if (props.packagePayload.useExistingManifest) {
+                    this.goToStep(0);
+                } else {
+                    this.goToStep(2);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     onFileOrAssemblyChange(key, event) {
@@ -119,7 +188,7 @@ class CreatePackage extends Component {
 
         const _fileValue = value.split("\n");
 
-        let packageManifest = JSON.parse(JSON.stringify(props.packageManifest));
+        let packageManifest = deepCopy(props.packageManifest);
 
         packageManifest[key] = _fileValue;
 
@@ -131,7 +200,7 @@ class CreatePackage extends Component {
 
         const { props } = this;
 
-        let packageManifest = JSON.parse(JSON.stringify(props.packageManifest));
+        let packageManifest = deepCopy(props.packageManifest);
 
         packageManifest.basePath = value;
 
@@ -198,6 +267,10 @@ class CreatePackage extends Component {
                     useExistingManifest={packagePayload.useExistingManifest}
                     onPrevious={this.onStepBack.bind(this)}
                     />;
+            case 5: return <StepSix
+                onClose={props.onCancel.bind(this)}
+                logs={props.createdPackage}
+                />;
             default:
                 return <p>Oops, something went wrong. Click <a href="javascript:void(0)" onClick={props.onCancel.bind(this)}> here </a> to go back</p>;
         }
@@ -232,9 +305,10 @@ CreatePackage.propTypes = {
 function mapStateToProps(state) {
     return {
         installedPackageTypes: state.extension.installedPackageTypes,
-        packageManifest: state.createPackage.present.packageManifest,
-        packagePayload: state.createPackage.present.packagePayload,
-        createPackageStep: state.createPackage.present.currentStep
+        createdPackage: state.createPackage.createdPackage,
+        packageManifest: state.createPackage.packageManifest,
+        packagePayload: state.createPackage.packagePayload,
+        createPackageStep: state.createPackage.currentStep
     };
 }
 

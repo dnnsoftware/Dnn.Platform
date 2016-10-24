@@ -15,7 +15,7 @@ import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
-const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version}) => (
+const BasicPackageInformation = ({disabled, validationMapped, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version}) => (
     <GridSystem className={styles.basicPackageInformation + " with-right-border top-half"}>
         <div>
             <DropdownWithError
@@ -26,10 +26,10 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                         value: _package.Type
                     };
                 })}
-                enabled={!readOnly}
+                enabled={!disabled}
                 tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                 label="Extension Type"
-                defaultDropdownValue={readOnly ? extensionData.packageType : extensionData.packageType.value}
+                defaultDropdownValue={!validationMapped ? extensionData.packageType : extensionData.packageType.value}
                 style={inputStyle}
                 />
             <SingleLineInputWithError
@@ -38,15 +38,15 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 style={inputStyle}
                 enabled={false}
                 className="extension-package-name"
-                value={readOnly ? extensionData.name : extensionData.name.value} />
+                value={!validationMapped ? extensionData.name : extensionData.name.value} />
             <SingleLineInputWithError
                 label={Localization.get("EditExtension_PackageFriendlyName.Label") + "*"}
                 tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
-                value={readOnly ? extensionData.friendlyName : extensionData.friendlyName.value}
+                value={!validationMapped ? extensionData.friendlyName : extensionData.friendlyName.value}
                 style={inputStyle}
                 className="extension-package-friendly-name"
                 error={extensionData.friendlyName.error && triedToSave}
-                enabled={!readOnly}
+                enabled={!disabled}
                 onChange={onChange && onChange.bind(this, "friendlyName")} />
         </div>
         <div>
@@ -56,14 +56,14 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 style={inputStyle}
                 className="extension-description"
                 inputStyle={{ marginBottom: 28, height: 123 }}
-                value={readOnly ? extensionData.description : extensionData.description.value}
-                enabled={!readOnly}
+                value={!validationMapped ? extensionData.description : extensionData.description.value}
+                enabled={!disabled}
                 onChange={onChange && onChange.bind(this, "description")} />
             <DropdownWithError
                 options={getVersionDropdownValues()}
                 label={Localization.get("EditExtension_PackageVersion.Label")}
                 tooltipMessage={Localization.get("EditExtension_PackageVersion.HelpText")}
-                enabled={!readOnly}
+                enabled={!disabled}
                 defaultDropdownValue={formatVersionNumber(version[0])}
                 onSelect={onVersionChange && onVersionChange.bind(this, 0)}
                 className="version-dropdown"
@@ -73,21 +73,22 @@ const BasicPackageInformation = ({readOnly, installedPackageTypes, extensionData
                 className="version-dropdown"
                 label={formatVersionNumber(version[1])}
                 onSelect={onVersionChange && onVersionChange.bind(this, 1)}
-                enabled={!readOnly}
+                enabled={!disabled}
                 />
             <Dropdown
                 options={getVersionDropdownValues()}
                 label={formatVersionNumber(version[2])}
                 className="version-dropdown"
                 onSelect={onVersionChange && onVersionChange.bind(this, 2)}
-                enabled={!readOnly}
+                enabled={!disabled}
                 />
         </div>
     </GridSystem>
 );
 
 BasicPackageInformation.propTypes = {
-    readOnly: PropTypes.bool,
+    disabled: PropTypes.bool,
+    validationMapped: PropTypes.bool,
     installedPackageTypes: PropTypes.array,
     extensionData: PropTypes.object,
     onVersionChange: PropTypes.func,

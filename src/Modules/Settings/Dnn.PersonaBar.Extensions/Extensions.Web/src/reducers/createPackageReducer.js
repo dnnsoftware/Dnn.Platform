@@ -12,7 +12,7 @@ const newPackagePayload = {
     reviewManifest: true
 };
 
-const createPackage = function (state = {
+export default function createPackage (state = {
     packageManifest: {},
     createdManifest: {},
     createdPackage: {},
@@ -31,7 +31,7 @@ const createPackage = function (state = {
             };
         case ActionTypes.CREATED_PACKAGE:
             return { ...state,
-                createdPackage: action.payload
+                createdPackage: action.payload.Logs
             };
         case ActionTypes.GO_TO_STEP:
             return { ...state,
@@ -45,11 +45,13 @@ const createPackage = function (state = {
             return { ...state,
                 packagePayload: action.payload
             };
+        case ActionTypes.RETRIEVED_GENERATED_MANIFEST:
+            return { ...state,
+                packagePayload: Object.assign(JSON.parse(JSON.stringify(state.packagePayload)), { selectedManifest: action.payload.Content }
+                )
+            };
         default:
             return { ...state
             };
     }
 };
-
-const undoableCreatePackage = undoable(createPackage);
-export default undoableCreatePackage;

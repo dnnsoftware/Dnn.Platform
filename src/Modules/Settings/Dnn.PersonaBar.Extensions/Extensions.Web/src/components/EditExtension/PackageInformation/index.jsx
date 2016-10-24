@@ -44,7 +44,7 @@ class PackageInformation extends Component {
             return <p>Empty</p>;
         }
         const {extensionBeingEdited} = props;
-        const version = !props.readOnly ? (extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : [0, 0, 0]) : (extensionBeingEdited.version ? extensionBeingEdited.version.split(".") : [0, 0, 0]);
+        const version = props.validationMapped ? (extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : [0, 0, 0]) : (extensionBeingEdited.version ? extensionBeingEdited.version.split(".") : [0, 0, 0]);
 
         return (
             <GridCell className={styles.packageInformationBox}>
@@ -52,7 +52,7 @@ class PackageInformation extends Component {
                     <DropdownWithError
                         tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                         label="Extension Type"
-                        defaultDropdownValue={props.readOnly ? extensionBeingEdited.packageType : extensionBeingEdited.packageType.value}
+                        defaultDropdownValue={!props.validationMapped ? extensionBeingEdited.packageType : extensionBeingEdited.packageType.value}
                         style={inputStyle}
                         enabled={false}
                         />
@@ -64,11 +64,11 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
                             style={inputStyle}
                             enabled={false}
-                            value={props.readOnly ? extensionBeingEdited.name : extensionBeingEdited.name.value} />
+                            value={!props.validationMapped ? extensionBeingEdited.name : extensionBeingEdited.name.value} />
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageFriendlyName.Label") + "*"}
                             tooltipMessage={Localization.get("EditExtension_PackageFriendlyName.HelpText")}
-                            value={props.readOnly ? extensionBeingEdited.friendlyName : extensionBeingEdited.friendlyName.value}
+                            value={!props.validationMapped ? extensionBeingEdited.friendlyName : extensionBeingEdited.friendlyName.value}
                             style={inputStyle}
                             error={extensionBeingEdited.friendlyName.error && props.triedToSave}
                             enabled={!props.disabled}
@@ -77,7 +77,7 @@ class PackageInformation extends Component {
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageIconFile.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageIconFile.HelpText")}
-                            value={props.readOnly ? extensionBeingEdited.packageIcon : extensionBeingEdited.packageIcon.value}
+                            value={!props.validationMapped ? extensionBeingEdited.packageIcon : extensionBeingEdited.packageIcon.value}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 0 }}
                             enabled={!props.disabled}
@@ -89,7 +89,7 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageDescription.HelpText")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 28, height: 123 }}
-                            value={props.readOnly ? extensionBeingEdited.description : extensionBeingEdited.description.value}
+                            value={!props.validationMapped ? extensionBeingEdited.description : extensionBeingEdited.description.value}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "description")} />
                         <DropdownWithError
@@ -124,7 +124,7 @@ class PackageInformation extends Component {
                             label={Localization.get("EditExtension_PackageOwner.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageOwner.HelpText")}
                             style={inputStyle}
-                            value={props.readOnly ? extensionBeingEdited.owner : extensionBeingEdited.owner.value}
+                            value={!props.validationMapped ? extensionBeingEdited.owner : extensionBeingEdited.owner.value}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "owner")} />
                         <SingleLineInputWithError
@@ -132,7 +132,7 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageOrganization.HelpText")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 0 }}
-                            value={props.readOnly ? extensionBeingEdited.organization : extensionBeingEdited.organization.value}
+                            value={!props.validationMapped ? extensionBeingEdited.organization : extensionBeingEdited.organization.value}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "organization")} />
                     </div>
@@ -142,7 +142,7 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageURL.HelpText")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 32 }}
-                            value={props.readOnly ? extensionBeingEdited.url : extensionBeingEdited.url.value}
+                            value={!props.validationMapped ? extensionBeingEdited.url : extensionBeingEdited.url.value}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "url")} />
                         <SingleLineInputWithError
@@ -150,7 +150,7 @@ class PackageInformation extends Component {
                             tooltipMessage={Localization.get("EditExtension_PackageEmailAddress.HelpText")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 32 }}
-                            value={props.readOnly ? extensionBeingEdited.email : extensionBeingEdited.email.value}
+                            value={!props.validationMapped ? extensionBeingEdited.email : extensionBeingEdited.email.value}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "email")} />
                     </div>
@@ -173,7 +173,7 @@ PackageInformation.PropTypes = {
     primaryButtonText: PropTypes.string,
     triedToSave: PropTypes.bool,
     validateFields: PropTypes.func,
-    readOnly: PropTypes.bool
+    validationMapped: PropTypes.bool
 };
 
 export default PackageInformation;

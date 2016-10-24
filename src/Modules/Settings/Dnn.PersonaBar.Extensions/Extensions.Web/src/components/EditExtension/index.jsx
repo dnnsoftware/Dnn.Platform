@@ -16,6 +16,7 @@ import Localization from "localization";
 import utilities from "utils";
 import styles from "./style.less";
 
+
 class EditExtension extends Component {
     constructor() {
         super();
@@ -37,7 +38,8 @@ class EditExtension extends Component {
 
     componentWillMount() {
         const { props } = this;
-        if (!props.moduleCategories || props.moduleCategories.length === 0) {
+        this.isHost = utilities.settings.isHost;
+        if ((!props.moduleCategories || props.moduleCategories.length === 0) && this.isHost) {
             props.dispatch(ExtensionActions.getModuleCategories());
         }
     }
@@ -124,9 +126,23 @@ class EditExtension extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(panel));
     }
 
+    _getTabHeaders() {
+        const PackageInformationTabHeader = Localization.get("EditExtension_PackageInformation.TabHeader"),
+            ExtensionSettingsTabHeader = Localization.get("EditExtension_ExtensionSettings.TabHeader"),
+            SiteSettingsTabHeader = Localization.get("EditExtension_SiteSettings.TabHeader"),
+            LicenseTabHeader = Localization.get("EditExtension_License.TabHeader"),
+            ReleaseNotesTabHeader = Localization.get("EditExtension_ReleaseNotes.TabHeader");
+        if (this.isHost) {
+            return [PackageInformationTabHeader, ExtensionSettingsTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
+        } else {
+            return [PackageInformationTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
+        }
+    }
+
     getTabHeaders() {
         const { props } = this;
-        return ["Package Information", "Extension Settings", "Site Settings", "License", "Release Notes"].map((tabHeader, index) => {
+        const tabHeaders = this._getTabHeaders();
+        return tabHeaders.map((tabHeader, index) => {
             const hasError = props.tabsWithError.indexOf(index) > -1;
             return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={["This field has an error"]} /></span>;
         });
@@ -173,10 +189,10 @@ class EditExtension extends Component {
         return (
             <GridCell className={styles.editExtension}>
                 <SocialPanelHeader title={extensionBeingEdited.friendlyName.value + " Extension"} >
-                    <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>{Localization.get("EditExtension_CreatePackage.Button")}</Button>
+                    {this.isHost && <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>{Localization.get("EditExtension_CreatePackage.Button")}</Button>}
                 </SocialPanelHeader>
                 <SocialPanelBody>
-                    <Tabs
+                    {this.isHost && <Tabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
                         selectedIndex={state.selectedTabIndex}
@@ -184,6 +200,7 @@ class EditExtension extends Component {
                         <GridCell className="package-information-box extension-form">
                             <PackageInformation
                                 onSave={this.onSave.bind(this)}
+                                validationMapped={true}
                                 extensionBeingEdited={extensionBeingEdited}
                                 onVersionChange={this.onVersionChange.bind(this)}
                                 onCancel={this.selectPanel.bind(this, 0)}
@@ -220,9 +237,46 @@ class EditExtension extends Component {
                             onCancel={this.selectPanel.bind(this, 0)}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Update" />
+                    </Tabs>}
+                    {!this.isHost && <Tabs
+                        tabHeaders={this.getTabHeaders()}
+                        onSelect={this.onTabSelect.bind(this)}
+                        selectedIndex={state.selectedTabIndex}
+                        type="primary">
+                        <GridCell className="package-information-box extension-form">
+                            <PackageInformation
+                                onSave={this.onSave.bind(this)}
+                                disabled={true}
+                                extensionBeingEdited={extensionBeingEdited}
+                                onVersionChange={this.onVersionChange.bind(this)}
+                                onCancel={this.selectPanel.bind(this, 0)}
+                                validateFields={this.validateFields.bind(this)}
+                                onChange={this.onChange.bind(this)}
+                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
+                                triedToSave={props.triedToSave}
+                                toggleTriedToSave={this.toggleTriedToSave.bind(this)}
+                                primaryButtonText="Update" />
+                        </GridCell>
+                        <GridCell>
+                            <EditSettings
+                                type="Module"
+                                extensionBeingEdited={extensionBeingEdited} />
+                        </GridCell>
+                        <License value={extensionBeingEdited.license.value}
+                            onChange={this.onChange.bind(this)}
+                            onCancel={this.selectPanel.bind(this, 0)}
+                            onSave={this.onSave.bind(this)}
+                            primaryButtonText="Update" />
+                        <ReleaseNotes
+                            value={extensionBeingEdited.releaseNotes.value}
+                            onChange={this.onChange.bind(this)}
+                            onCancel={this.selectPanel.bind(this, 0)}
+                            onSave={this.onSave.bind(this)}
+                            primaryButtonText="Update" />
                     </Tabs>
+                    }
                 </SocialPanelBody>
-            </GridCell>
+            </GridCell >
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
     }
