@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="grd.CreatedDate" xml:space="preserve">
+    <value>Created:</value>
+  </data>
+  <data name="grd.IISAppName" xml:space="preserve">
+    <value>IIS App Name:</value>
+  </data>
+  <data name="grd.LastActivityDate" xml:space="preserve">
+    <value>Last Restart:</value>
+  </data>
+  <data name="grd.Server" xml:space="preserve">
+    <value>Server:</value>
+  </data>
+  <data name="grd.URL" xml:space="preserve">
+    <value>URL:</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;p&gt;Manage servers in a web farm.&lt;/p&gt;</value>
+  </data>
+  <data name="Enabled.FALSE" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Enabled.TRUE" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="grd.Enabled" xml:space="preserve">
+    <value>Enabled:</value>
+  </data>
+  <data name="grd.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="grd.Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="grd.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="grd.Collapse" xml:space="preserve">
+    <value>Collapse Details</value>
+  </data>
+  <data name="grd.Expand" xml:space="preserve">
+    <value>Expand Details</value>
+  </data>
+  <data name="lblCachingProvider.Help" xml:space="preserve">
+    <value>Select the default caching provider.</value>
+  </data>
+  <data name="lblCachingProvider.Text" xml:space="preserve">
+    <value>Caching provider</value>
+  </data>
+  <data name="grd.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="plServer.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="plServer.Help" xml:space="preserve">
+    <value>Name Of The Server</value>
+  </data>
+  <data name="plLimit.Text" xml:space="preserve">
+    <value>Percentage Available for Caching</value>
+  </data>
+  <data name="plLimit.Help" xml:space="preserve">
+    <value>Percentage of available memory that can be cosnumed before cache items are ejected from memory</value>
+  </data>
+  <data name="plPrivateBytes.Text" xml:space="preserve">
+    <value>Total Available Memory</value>
+  </data>
+  <data name="plPrivateBytes.Help" xml:space="preserve">
+    <value>Total Memory Available To The Application For Caching</value>
+  </data>
+  <data name="plCount.Text" xml:space="preserve">
+    <value>Cache Objects</value>
+  </data>
+  <data name="plCount.Help" xml:space="preserve">
+    <value>Total Number Of Objects In Memory</value>
+  </data>
+  <data name="cmdLoad.Text" xml:space="preserve">
+    <value>Load Cache Items</value>
+  </data>
+  <data name="plItems.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="plItems.Help" xml:space="preserve">
+    <value>List Of Active Cache Items</value>
+  </data>
+  <data name="plKey.Text" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="plKey.Help" xml:space="preserve">
+    <value>Full Cache Key Name Of Selected Item</value>
+  </data>
+  <data name="plValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="plValue.Help" xml:space="preserve">
+    <value>Value Associated To Selected Cache Item ( Will Only Be Displayed If The Object Is Serializable )</value>
+  </data>
+  <data name="plSize.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="plSize.Help" xml:space="preserve">
+    <value>Approximate Size Of The Selected Cache Item</value>
+  </data>
+  <data name="cmdExpire.Text" xml:space="preserve">
+    <value>Expire Cache Item</value>
+  </data>
+  <data name="plUseIISAppName.Help" xml:space="preserve">
+    <value>If checked this will indicate that the IIS Application Name needs to be used in conjunction with the Server Name to identify a server.</value>
+  </data>
+  <data name="plUseIISAppName.Text" xml:space="preserve">
+    <value>Use IIS App Name?</value>
+  </data>
+  <data name="plWebFarm.Help" xml:space="preserve">
+    <value>If checked this will indicate that the site is running in a web farm</value>
+  </data>
+  <data name="plWebFarm.Text" xml:space="preserve">
+    <value>Web Farm Enabled?</value>
+  </data>
+  <data name="Caching.Text" xml:space="preserve">
+    <value>Caching</value>
+  </data>
+  <data name="MemoryUsage.Text" xml:space="preserve">
+    <value>Memory Usage</value>
+  </data>
+  <data name="SSLOffload.Text" xml:space="preserve">
+    <value>SSL Offload Header Value</value>
+  </data>
+  <data name="plSSLOffload.Text" xml:space="preserve">
+    <value>Header Value</value>
+  </data>
+  <data name="plSSLOffload.Help" xml:space="preserve">
+    <value>Set the name of the HTTP header that will be checked to see if a network balancer has used SSL Offloading</value>
+  </data>
+  <data name="Servers.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="Bytes.Text" xml:space="preserve">
+    <value> Bytes</value>
+  </data>
+  <data name="CannotSerialize.Text" xml:space="preserve">
+    <value>Cannot Serialize Object</value>
+  </data>
+  <data name="chkUseSSLLabel.Help" xml:space="preserve">
+    <value>By default, cache synchronization will happen over http.  To use SSL for cache synchronization messages, please check this.</value>
+  </data>
+  <data name="chkUseSSLLabel.Text" xml:space="preserve">
+    <value>Use SSL for Cache Synchronization?</value>
+  </data>
+  <data name="grd.ServerGroup" xml:space="preserve">
+    <value>Server Group:</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Enabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Filter.Text" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="plWebRequestAdapter.Help" xml:space="preserve">
+    <value>The Web Request Adapter is used to get the server's default url when a new server is added to the server collection, process request/response when send sync cache message to server or detect whether server is available.</value>
+  </data>
+  <data name="plWebRequestAdapter.Text" xml:space="preserve">
+    <value>Server Web Request Adapter:</value>
+  </data>
+  <data name="WebRequestAdapter.Text" xml:space="preserve">
+    <value>Server Web Request Adapter</value>
+  </data>
+  <data name="InvalidUrl.ErrorMessage" xml:space="preserve">
+    <value>The URL is not valid, please make sure the input URL can be visited, you only need input the domain name.</value>
+  </data>
+  <data name="plUniqueIdHeaderName.Help" xml:space="preserve">
+    <value>This header name will used when detect server whether is available or sync cache to the server when server is behind affinity tool.</value>
+  </data>
+  <data name="plUniqueIdHeaderName.Text" xml:space="preserve">
+    <value>Header Name of Unique Id:</value>
+  </data>
+  <data name="nav_Servers.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tabApplicationTitle.Text" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="tabDatabaseTitle.Text" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="tabLogsTitle.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="tabPerformanceTitle.Text" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="tabServerSettingsTitle.Text" xml:space="preserve">
+    <value>Server Settings</value>
+  </data>
+  <data name="tabSmtpServerTitle.Text" xml:space="preserve">
+    <value>Smtp Server</value>
+  </data>
+  <data name="tabSystemInfoTitle.Text" xml:space="preserve">
+    <value>System Info</value>
+  </data>
+  <data name="tabWebTitle.Text" xml:space="preserve">
+    <value>Web</value>
+  </data>
+</root>
