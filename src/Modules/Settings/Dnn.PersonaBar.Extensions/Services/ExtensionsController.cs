@@ -14,7 +14,6 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +32,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -802,7 +800,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 var newPackage = packageInfoDto.ToPackageInfo();
-                PackageInfo tmpPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == newPackage.Name);
+                var tmpPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == newPackage.Name);
                 if (tmpPackage != null)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new {Success = false, Error = "DuplicateName"});
@@ -865,7 +863,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                             Version = newPackage.Version.ToString(3),
                             SupportedFeatures = 0
                         };
-                        int desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
+                        var desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                         if (desktopModuleId > Null.NullInteger)
                         {
                             DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
@@ -1184,9 +1182,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
 
 
-                switch (package.PackageType)
+                switch (package.PackageType.ToLowerInvariant())
                 {
-                    case "CoreLanguagePack":
+                    case "corelanguagepack":
                         package.IconFile = "N\\A";
                         break;
                     default:
@@ -1214,26 +1212,26 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                     packageManifestDto.Manifests.Add("Database version", sb.ToString());
                 }
-                string filePath = Path.Combine(Globals.ApplicationMapPath, writer.BasePath);
+                var filePath = Path.Combine(Globals.ApplicationMapPath, writer.BasePath);
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     if (Directory.Exists(filePath))
                     {
-                        foreach (string file in Directory.GetFiles(filePath, "*.dnn"))
+                        foreach (var file in Directory.GetFiles(filePath, "*.dnn"))
                         {
                             var fileName = file.Replace(filePath + "\\", "");
                             packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
-                        foreach (string file in Directory.GetFiles(filePath, "*.dnn.resources"))
+                        foreach (var file in Directory.GetFiles(filePath, "*.dnn.resources"))
                         {
-                            string fileName = file.Replace(filePath + "\\", "");
+                            var fileName = file.Replace(filePath + "\\", "");
                             packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
                     }
                 }
 
                 //get assemblies
-                foreach (InstallFile file in writer.Assemblies.Values)
+                foreach (var file in writer.Assemblies.Values)
                 {
                     packageManifestDto.Assemblies.Add(file.FullName);
                 }
@@ -1242,19 +1240,19 @@ namespace Dnn.PersonaBar.Extensions.Services
                 writer.GetFiles(true);
 
                 //Display App Code files
-                foreach (InstallFile file in writer.AppCodeFiles.Values)
+                foreach (var file in writer.AppCodeFiles.Values)
                 {
                     packageManifestDto.Files.Add("[app_code]" + file.FullName);
                 }
 
                 //Display Script files
-                foreach (InstallFile file in writer.Scripts.Values)
+                foreach (var file in writer.Scripts.Values)
                 {
                     packageManifestDto.Files.Add(file.FullName);
                 }
 
                 //Display regular files
-                foreach (InstallFile file in writer.Files.Values)
+                foreach (var file in writer.Files.Values)
                 {
                     if (file.Path.StartsWith(".git"))
                         continue;
@@ -1280,51 +1278,73 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageManifestDto.PackageId);
+                var package = PackageController.Instance.GetExtensionPackage(
+                    Null.NullInteger, p => p.PackageID == packageManifestDto.PackageId);
                 if (package == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "PackageNotFound");
                 }
 
-                var writer = PackageWriterFactory.GetWriter(package);
-
-                foreach (string fileName in packageManifestDto.Files)
-                {
-                    string name = fileName.Trim();
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        var file = new InstallFile(name);
-                        writer.AddFile(file);
-                    }
-                }
-                foreach (string fileName in packageManifestDto.Assemblies)
-                {
-                    string name = fileName.Trim();
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        var file = new InstallFile(name);
-                        writer.AddFile(file);
-                    }
-                }
-
-                string manifestContent;
-                if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
-                {
-                    writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
-                    manifestContent = package.Manifest;
-                }
-                else
-                {
-                    manifestContent = writer.WriteManifest(false);
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, new {Content = manifestContent});
+                return CreateManifestInternal(package, packageManifestDto);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage CreateNewManifest(PackageManifestDto packageManifestDto)
+        {
+            try
+            {
+                var package = packageManifestDto.ToPackageInfo();
+                return CreateManifestInternal(package, packageManifestDto);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
+        {
+            var writer = PackageWriterFactory.GetWriter(package);
+
+            foreach (var fileName in packageManifestDto.Files)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            foreach (var fileName in packageManifestDto.Assemblies)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            string manifestContent;
+            if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
+            {
+                writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
+                manifestContent = package.Manifest;
+            }
+            else
+            {
+                manifestContent = writer.WriteManifest(false);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { Content = manifestContent });
         }
 
         [HttpPost]
@@ -1342,14 +1362,14 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 var writer = PackageWriterFactory.GetWriter(package);
 
-                string manifestName = packageManifestDto.ManifestName;
+                var manifestName = packageManifestDto.ManifestName;
                 if (string.IsNullOrEmpty(manifestName))
                 {
                     manifestName = packageManifestDto.ArchiveName.ToLowerInvariant().Replace("zip", "dnn");
                 }
                 //Use the installer to parse the manifest and load the files that need to be packaged
                 var installer = new Installer(package, Globals.ApplicationMapPath);
-                foreach (InstallFile file in installer.InstallerInfo.Files.Values)
+                foreach (var file in installer.InstallerInfo.Files.Values)
                 {
                     writer.AddFile(file);
                 }
@@ -1392,6 +1412,47 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var logs = writer.Log.Logs.Select(l => l.ToString()).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, Logs = logs});
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage RefreshPackageFiles(PackageFilesQueryDto packageData)
+        {
+            var baseFolder = Path.Combine(Globals.ApplicationMapPath, packageData.PackageFolder.Replace('/', '\\'));
+            if (!Directory.Exists(baseFolder))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
+            }
+
+            try
+            {
+                var package = packageData.ToPackageInfo();
+                var writer = PackageWriterFactory.GetWriter(package);
+                writer.BasePath = packageData.PackageFolder;
+                writer.GetFiles(packageData.IncludeSource);
+
+                var files = new List<string>();
+                if (packageData.IncludeAppCode)
+                {
+                    // add app-code files
+                    files.AddRange(writer.AppCodeFiles.Values.Select(file => "[app_code]" + file.FullName));
+                }
+
+                // add script files
+                files.AddRange(writer.Scripts.Values.Select(f => f.FullName));
+
+                // add code files
+                files.AddRange(writer.Files.Values.Where(
+                    f => !f.Path.StartsWith(".") && !f.Name.StartsWith(".")).Select(file => file.FullName));
+
+                return Request.CreateResponse(HttpStatusCode.OK, files);
             }
             catch (Exception ex)
             {
@@ -1610,7 +1671,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private string GetFileContent(string basePath, string fileName)
         {
-            string filename = Path.Combine(Globals.ApplicationMapPath, basePath, fileName);
+            var filename = Path.Combine(Globals.ApplicationMapPath, basePath, fileName);
             using (var objStreamReader = File.OpenText(filename))
             {
                 return objStreamReader.ReadToEnd();

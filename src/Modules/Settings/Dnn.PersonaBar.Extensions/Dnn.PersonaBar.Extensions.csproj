@@ -113,6 +113,7 @@
     <Compile Include="Components\Dto\CreateModuleDto.cs" />
     <Compile Include="Components\Dto\Editors\IdNameDto.cs" />
     <Compile Include="Components\Dto\ModuleFolderDto.cs" />
+    <Compile Include="Components\Dto\PackageFilesQueryDto.cs" />
     <Compile Include="Components\Dto\PackageInfoSlimDto.cs" />
     <Compile Include="Components\Dto\PackageManifestDto.cs" />
     <Compile Include="Components\Dto\ParseResultDto.cs" />
