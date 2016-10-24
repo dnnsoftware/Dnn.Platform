@@ -9,7 +9,6 @@ import Button from "dnn-button";
 import CreateUserBox from "../CreateUserBox";
 import "./style.less";
 
-
 const radioButtonOptions = [
     {
         label: "Button 1",
@@ -61,14 +60,15 @@ class UserTable extends Component {
         let opened = (this.state.openId === "add");
         return (
             <GridCell>
-                <HeaderRow />
+                <HeaderRow  isEvoq={props.isEvoq}/>
                 {opened && <DetailRow
                     Collapse={this.collapse.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
                     currentIndex={this.state.renderIndex}
                     openId={this.state.openId }
                     key={"user-add"}
-                    id={"add"}>
+                    id={"add"}
+                    isEvoq={props.isEvoq}>
                     <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
                 </DetailRow>
                 }
@@ -91,8 +91,9 @@ class UserTable extends Component {
                             currentIndex={this.state.renderIndex}
                             openId={this.state.openId }
                             key={"user-" + index}
-                            id={id}>
-                            <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex}/>
+                            id={id}
+                            isEvoq={props.isEvoq}>
+                            <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />
                         </DetailRow>;
                     })
                 }
@@ -104,9 +105,12 @@ class UserTable extends Component {
 UserTable.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    totalUsers: PropTypes.number
+    totalUsers: PropTypes.number,
+    isEvoq: PropTypes.bool
 };
-
+UserTable.defaultProps = {
+    isEvoq: false
+};
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,

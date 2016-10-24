@@ -25,6 +25,10 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.get("GetUserFilters", {}, callback);
     }
+    createUser(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("CreateUser", userDetails, callback, errorCallback);
+    }
 }
 const userService = new UserService();
 export default userService;

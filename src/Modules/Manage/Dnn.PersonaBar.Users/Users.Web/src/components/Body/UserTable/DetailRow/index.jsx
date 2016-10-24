@@ -7,6 +7,7 @@ import date from "../../../../utils/date";
 import Collapse from "react-collapse";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ActivityIcon, ShieldIcon, EditIcon } from "dnn-svg-icons";
 
+
 class DetailsRow extends Component {
     constructor() {
         super();
@@ -69,11 +70,13 @@ class DetailsRow extends Component {
             <GridCell className={"collapsible-component1"} id={uniqueId}>
                 <GridCell  className={"collapsible-header1 " + !opened}>
                     <GridCell className={styles.extensionDetailRow} columnSize={100}>
-                        <GridCell columnSize={ColumnSizes[0]} className="user-avatar">
-                            {user.avatar !== "-" && <img src={user.avatar}/>}
-                            {user.avatar === "-" && user.avatar}
-                        </GridCell>
-                        <GridCell columnSize={ColumnSizes[1]} className="user-names">
+                        {props.isEvoq &&
+                            <GridCell columnSize={ColumnSizes[0]} className="user-avatar">
+                                {user.avatar !== "-" && <img src={user.avatar}/>}
+                                {user.avatar === "-" && user.avatar}
+                            </GridCell>
+                        }
+                        <GridCell columnSize={ColumnSizes[1]} className="user-names"  style={!this.props.isEvoq && { marginLeft: "20px" }}>
                             <h6>{user.displayName}</h6>
                             {user.displayName !== "-" && <p>{user.userName}</p> }
                         </GridCell>
@@ -93,7 +96,9 @@ class DetailsRow extends Component {
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 3) } dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 3) }></div>
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 2) } dangerouslySetInnerHTML={{ __html: UserIcon }} onClick={this.toggle.bind(this, 2) }></div>
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 1) } dangerouslySetInnerHTML={{ __html: ShieldIcon }} onClick={this.toggle.bind(this, 1) }></div>
-                            <div className={"extension-action " + !(opened && this.props.currentIndex === 0) } dangerouslySetInnerHTML={{ __html: ActivityIcon }} onClick={this.toggle.bind(this, 0) }></div>
+                            {props.isEvoq &&
+                                <div className={"extension-action " + !(opened && this.props.currentIndex === 0) } dangerouslySetInnerHTML={{ __html: ActivityIcon }} onClick={this.toggle.bind(this, 0) }></div>
+                            }
                         </GridCell>
                         }
                         {
@@ -122,9 +127,11 @@ DetailsRow.propTypes = {
     Collapse: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    currentIndex: PropTypes.number
+    currentIndex: PropTypes.number,
+    isEvoq: PropTypes.bool
 };
 DetailsRow.defaultProps = {
+    isEvoq: false
 };
 
 export default DetailsRow;

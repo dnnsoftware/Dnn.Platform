@@ -16,7 +16,9 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         public string Email { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-
+        public bool Authorize { get; set; }
+        public bool Notify { get; set; }
+        public bool RandomPassword { get; set; }
         /// <summary>
         /// When set to true, whatever registration mode is set, it will always add user
         /// Please check below issue for this property

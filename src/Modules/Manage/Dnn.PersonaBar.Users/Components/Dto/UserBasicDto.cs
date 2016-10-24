@@ -73,5 +73,19 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Authorized = user.Membership.Approved
             };
         }
+        public static UserBasicDto FromUserDetails(UserDetailDto user)
+        {
+            if (user == null) return null;
+            return new UserBasicDto
+            {
+                UserId = user.UserId,
+                Username = user.Username,
+                Displayname = user.Displayname,
+                Email = user.Email,
+                CreatedOnDate = user.CreatedOnDate,
+                IsDeleted = user.IsDeleted,
+                Authorized = user.Authorized
+            };
+        }
     }
 }

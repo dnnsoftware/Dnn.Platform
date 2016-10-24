@@ -26,6 +26,19 @@ const userActions = {
                 }
             });
         };
+    },
+    createUser(userDetails, callback) {
+        return (dispatch) => {
+            UserService.createUser(userDetails, payload => {
+                dispatch({
+                    type: ActionTypes.CREATE_USER,
+                    payload
+                });
+                if (callback) {
+                    callback(payload);
+                }
+            });
+        };
     }
 };
 

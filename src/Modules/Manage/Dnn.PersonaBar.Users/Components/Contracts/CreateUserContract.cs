@@ -23,5 +23,14 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
 
         [DataMember(Name = "password")]
         public string Password { get; set; }
+
+        [DataMember(Name = "randomPassword")]
+        public bool RandomPassword { get; set; }
+
+        [DataMember(Name = "authorize")]
+        public bool Authorize { get; set; }
+
+        [DataMember(Name = "notify")]
+        public bool Notify { get; set; }
     }
 }

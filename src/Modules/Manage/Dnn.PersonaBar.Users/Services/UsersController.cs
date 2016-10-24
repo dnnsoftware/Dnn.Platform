@@ -56,6 +56,9 @@ namespace Dnn.PersonaBar.Users.Services
                     LastName = contract.LastName,
                     UserName = contract.UserName,
                     Password = contract.Password,
+                    Notify = contract.Notify,
+                    Authorize = contract.Authorize,
+                    RandomPassword = contract.RandomPassword,
 
                     // For Community Manager, he can always add user
                     // whatever registration mode is set
@@ -65,13 +68,18 @@ namespace Dnn.PersonaBar.Users.Services
                 };
                 string message;
                 var userInfo = RegisterController.Instance.Register(settings, out message);
-                if (userInfo == null)
+                var response = new
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK,
-                                           string.Format(Localization.GetString("RegisterationFailed", Constants.SharedResources), message));
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, userInfo.UserID);
+                    Success = string.IsNullOrEmpty(message) && userInfo != null,
+                    Results =
+                        userInfo != null
+                            ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(PortalId,
+                                userInfo.UserId))
+                            : null,
+                    Message =
+                        string.Format(Localization.GetString("RegisterationFailed", Constants.SharedResources), message)
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {

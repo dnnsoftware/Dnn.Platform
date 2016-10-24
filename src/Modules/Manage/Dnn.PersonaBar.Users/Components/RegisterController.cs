@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Users.Components.Contracts;
+using Dnn.PersonaBar.Users.Components.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -40,7 +41,7 @@ namespace Dnn.PersonaBar.Users.Components
         //Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
         //This method can easily be modified to pass passowrd, display name, etc. 
         //It is recommended to write unit tests.
-        public UserInfo Register(RegisterationDetails registerationDetails, out string message)
+        public UserBasicDto Register(RegisterationDetails registerationDetails, out string message)
         {
             var portalSettings = registerationDetails.PortalSettings;
             var username = registerationDetails.UserName;
@@ -76,7 +77,7 @@ namespace Dnn.PersonaBar.Users.Components
             //set username as email if not specified
             newUser.Username = string.IsNullOrEmpty(username) ? email : username;
 
-            if (!string.IsNullOrEmpty(registerationDetails.Password))
+            if (!string.IsNullOrEmpty(registerationDetails.Password) && !registerationDetails.RandomPassword)
             {
                 newUser.Membership.Password = registerationDetails.Password;
             }
@@ -85,7 +86,7 @@ namespace Dnn.PersonaBar.Users.Components
                 //Generate a random password for the user
                 newUser.Membership.Password = UserController.GeneratePassword();
             }
-            
+
             newUser.Membership.PasswordConfirm = newUser.Membership.Password;
 
             //set other profile properties
@@ -207,14 +208,15 @@ namespace Dnn.PersonaBar.Users.Components
                 // and no need to send email for approval or whatever...
                 // Please check below issue for this property
                 // https://dnntracker.atlassian.net/browse/SOCIAL-3158
-                registerationDetails.IgnoreRegistrationMode || 
-                portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
+                (registerationDetails.IgnoreRegistrationMode || 
+                portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
 
             //final creation of user
             var createStatus = UserController.CreateUser(ref newUser);
 
             //clear cache
-            DataCache.ClearPortalCache(portalSettings.PortalId, true);
+            if (createStatus == UserCreateStatus.Success)
+                DataCache.ClearPortalCache(portalSettings.PortalId, true);
 
             if (createStatus != UserCreateStatus.Success)
             {
@@ -230,33 +232,37 @@ namespace Dnn.PersonaBar.Users.Components
             if (registerationDetails.IgnoreRegistrationMode)
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-                return newUser;
+                return UserBasicDto.FromUserInfo(newUser);
             }
 
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
             //because the user need administrators to do the approve action so that he can continue use the website.
-            if (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+            if (portalSettings.EnableRegisterNotification ||
+                portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PrivateRegistration)
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
-                SendAdminNotification(newUser,  portalSettings);
-            }
-          
-            //send email to user
-            switch (portalSettings.UserRegistration)
-            {
-                case (int) Globals.PortalRegistrationType.PrivateRegistration:
-                    Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, portalSettings);
-                    break;
-                case (int) Globals.PortalRegistrationType.PublicRegistration:
-                    Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-                    break;
-                case (int) Globals.PortalRegistrationType.VerifiedRegistration:
-                    Mail.SendMail(newUser, MessageType.UserRegistrationVerified, portalSettings);
-                    break;
+                SendAdminNotification(newUser, portalSettings);
             }
 
-            return newUser;
+            //send email to user
+            if (registerationDetails.Notify)
+            {
+                switch (portalSettings.UserRegistration)
+                {
+                    case (int) Globals.PortalRegistrationType.PrivateRegistration:
+                        Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, portalSettings);
+                        break;
+                    case (int) Globals.PortalRegistrationType.PublicRegistration:
+                        Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
+                        break;
+                    case (int) Globals.PortalRegistrationType.VerifiedRegistration:
+                        Mail.SendMail(newUser, MessageType.UserRegistrationVerified, portalSettings);
+                        break;
+                }
+            }
+
+            return UserBasicDto.FromUserInfo(newUser);
         }
 
         private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
