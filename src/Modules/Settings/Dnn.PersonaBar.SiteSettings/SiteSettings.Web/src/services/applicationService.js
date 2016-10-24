@@ -27,6 +27,26 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("UpdatePortalSettings", payload, callback, failureCallback);
     }
+
+    getDefaultPagesSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetDefaultPagesSettings?portalId=" + portalId, {}, callback);
+    }    
+
+    updateDefaultPagesSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateDefaultPagesSettings", payload, callback, failureCallback);
+    }
+
+    getMessagingSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetMessagingSettings?portalId=" + portalId, {}, callback);
+    }    
+
+    updateMessagingSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateMessagingSettings", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

@@ -50,6 +50,98 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    getDefaultPagesSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getDefaultPagesSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_DEFAULT_PAGES_SETTINGS,
+                    data: {
+                        settings: data.Settings,
+                        defaultPagesSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateDefaultPagesSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateDefaultPagesSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_DEFAULT_PAGES_SETTINGS,
+                    data: {
+                        defaultPagesSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    defaultPagesSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_DEFAULT_PAGES_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    defaultPagesSettingsClientModified: true
+                }
+            });
+        };
+    },
+    getMessagingSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getMessagingSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_MESSAGING_SETTINGS,
+                    data: {
+                        settings: data.Settings,
+                        messagingSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateMessagingSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateMessagingSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_MESSAGING_SETTINGS,
+                    data: {
+                        messagingSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    messagingSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_MESSAGING_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    messagingSettingsClientModified: true
+                }
+            });
+        };
     }
 };
 

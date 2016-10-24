@@ -6,6 +6,8 @@ import {
     siteSettings as SiteISettingsActions
 } from "../../actions";
 import BasicSettings from "../basicSettings";
+import DefaultPagesSettings from "../defaultPagesSettings";
+import MessagingSettings from "../messagingSettings";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
@@ -26,7 +28,41 @@ export class Body extends Component {
     render() {
         return (
             <SocialPanelBody>
-                <BasicSettings/>
+                <Tabs onSelect={this.handleSelect.bind(this) }
+                    tabHeaders={[resx.get("TabSiteInfo"),
+                        resx.get("TabSiteBehavior"),
+                        resx.get("TabLanguage"),
+                        resx.get("TabSearch")]}
+                    type="primary">
+                    <BasicSettings/>
+                    <Tabs onSelect={this.handleSelect.bind(this) }
+                        tabHeaders={[resx.get("TabDefaultPages"), 
+                        resx.get("TabMessaging"),
+                        resx.get("TabUserProfiles"),
+                        resx.get("TabSiteAliases"),
+                        resx.get("TabMore")]}
+                        type="secondary">
+                        <DefaultPagesSettings/>
+                        <MessagingSettings/>
+                        <div/>
+                        <div/>
+                        <div/>
+                    </Tabs>
+                    <div/>
+                    <Tabs onSelect={this.handleSelect.bind(this) }
+                        tabHeaders={[resx.get("TabBasicSettings"), 
+                        resx.get("TabSynonyms"), 
+                        resx.get("TabIgnoreWords"), 
+                        resx.get("TabCrawling"), 
+                        resx.get("TabFileExtensions")]}
+                        type="secondary">
+                        <div/>
+                        <div/>
+                        <div/>
+                        <div/>
+                        <div/>
+                    </Tabs>
+                </Tabs>
             </SocialPanelBody>
         );
     }

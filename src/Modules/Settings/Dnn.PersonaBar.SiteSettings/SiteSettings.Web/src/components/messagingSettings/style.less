@@ -1,0 +1,46 @@
+@import "../../less/globals.less";
+@import "~dnn-global-styles/index";
+:local(.messagingSettings) {
+    margin: 30px 30px;
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-dropdown {
+            width: 681px;
+        }
+        input {
+            width: auto;
+        }
+        .messagingSettings-row_switch {
+            border-bottom: 1px solid @alto;
+            margin: 10px 0 0 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
+        }
+    }
+    .buttons-box {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}

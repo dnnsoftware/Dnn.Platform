@@ -119,7 +119,49 @@
   </resheader>
   <data name="nav_SiteSettings.Text" xml:space="preserve">
     <value>Site Settings</value>
+  </data>  
+  <data name="TabSiteInfo.Text" xml:space="preserve">
+    <value>Site Info</value>
   </data>
+  <data name="TabSiteBehavior.Text" xml:space="preserve">
+    <value>Site Behavior</value>
+  </data>
+  <data name="TabLanguage.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="TabSearch.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TabDefaultPages.Text" xml:space="preserve">
+    <value>Default Pages</value>
+  </data>
+  <data name="TabMessaging.Text" xml:space="preserve">
+    <value>Messaging</value>
+  </data>
+  <data name="TabUserProfiles.Text" xml:space="preserve">
+    <value>User Profiles</value>
+  </data>
+  <data name="TabSiteAliases.Text" xml:space="preserve">
+    <value>Site Aliases</value>
+  </data>
+  <data name="TabMore.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="TabBasicSettings.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="TabSynonyms.Text" xml:space="preserve">
+    <value>Synonyms</value>
+  </data>
+  <data name="TabIgnoreWords.Text" xml:space="preserve">
+    <value>Ignore Words</value>
+  </data>
+  <data name="TabCrawling.Text" xml:space="preserve">
+    <value>Crawling</value>
+  </data>
+  <data name="TabFileExtensions.Text" xml:space="preserve">
+    <value>File Extensions</value>
+  </data>    
   <data name="plPortalName.Text" xml:space="preserve">
     <value>Site Title</value>
   </data>
@@ -206,5 +248,107 @@
   </data>
   <data name="valPortalName.ErrorMessage" xml:space="preserve">
     <value>You must provide a title for your site.</value>
+  </data>
+  <data name="PageOutputSettings.Text">
+	<value>PAGE OUTPUT SETTINGS</value>
+  </data>
+  <data name="plPageHeadText.Help" xml:space="preserve">
+    <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="plPageHeadText.Text" xml:space="preserve">
+    <value>HTML Page Header Tags</value>
+  </data>
+  <data name="plSplashTabId.Text" xml:space="preserve">
+    <value>Splash Page</value>
+  </data>
+  <data name="plSplashTabId.Help" xml:space="preserve">
+    <value>The Splash Page for your site.</value>
+  </data>
+  <data name="plHomeTabId.Text" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="plHomeTabId.Help" xml:space="preserve">
+    <value>The Home Page for your site.</value>
+  </data>
+  <data name="plLoginTabId.Text" xml:space="preserve">
+    <value>Login Page</value>
+  </data>
+  <data name="plLoginTabId.Help" xml:space="preserve">
+    <value>The Login Page for your site. Only pages with the Account Login module are listed.</value>
+  </data>
+  <data name="plUserTabId.Text" xml:space="preserve">
+    <value>User Profile Page</value>
+  </data>
+  <data name="plUserTabId.Help" xml:space="preserve">
+    <value>The User Profile Page for your site.</value>
+  </data>
+  <data name="plRegisterTabId.Help" xml:space="preserve">
+    <value>The user registration page for your site.</value>
+  </data>
+  <data name="plRegisterTabId.Text" xml:space="preserve">
+    <value>Registration Page</value>
+  </data>
+  <data name="plSearchTabId.Help" xml:space="preserve">
+    <value>The search results page for your site.</value>
+  </data>
+  <data name="plSearchTabId.Text" xml:space="preserve">
+    <value>Search Results Page</value>
+  </data>
+  <data name="pl404TabId.Help" xml:space="preserve">
+    <value>The 404 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in a "Page Not Found" error.</value>
+  </data>
+  <data name="pl404TabId.Text" xml:space="preserve">
+    <value>404 Error Page</value>
+  </data>
+  <data name="pl500TabId.Help" xml:space="preserve">
+    <value>The 500 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in an unexpected error.</value>
+  </data>
+  <data name="pl500TabId.Text" xml:space="preserve">
+    <value>500 Error Page</value>
+  </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>None Specified</value>
+  </data>
+  <data name="plDisablePrivateMessage.Help" xml:space="preserve">
+    <value>Select to prevent users from sending messages to specific users or groups. This restriction doesn't apply to Administrators or Super Users.</value>
+  </data>
+  <data name="plDisablePrivateMessage.Text" xml:space="preserve">
+    <value>Disable Private Message</value>
+  </data>
+  <data name="plMsgThrottlingInterval.Text" xml:space="preserve">
+    <value>Throttling Interval in Minutes</value>
+  </data>
+  <data name="plMsgThrottlingInterval.Help" xml:space="preserve">
+    <value>Enter the number of minutes after which a user can send the next message. Zero indicates no restrictions. This restriction doesn't apply to Administrators or Super Users.</value>
+  </data>
+  <data name="plMsgRecipientLimit.Text" xml:space="preserve">
+    <value>Recipient Limit</value>
+  </data>
+  <data name="plMsgRecipientLimit.Help" xml:space="preserve">
+    <value>Maximum number of recipients allowed in To field. A message sent to a Role is considered as a single recipient.</value>
+  </data>
+  <data name="plMsgProfanityFilters.Text" xml:space="preserve">
+    <value>Enable Profanity Filters</value>
+  </data>
+  <data name="plMsgProfanityFilters.Help" xml:space="preserve">
+    <value>Enable to automatically convert profane (inappropriate) words and phrases into something equivalent. The list is managed on the  Host-&gt;List-&gt;ProfanityFilters and the Admin-&gt;List-&gt;ProfanityFilters pages.</value>
+  </data>
+  <data name="plMsgAllowAttachments.Text" xml:space="preserve">
+    <value>Allow Attachments</value>
+  </data>
+  <data name="plMsgAllowAttachments.Help" xml:space="preserve">
+    <value>Choose whether attachments can be attached to messages.</value>
+  </data>
+  <data name="plIncludeAttachments.Text" xml:space="preserve">
+    <value>Include Attachments</value>
+  </data>
+  <data name="plIncludeAttachments.Help" xml:space="preserve">
+    <value>Choose whether attachments are to be included with outgoing email.</value>
+  </data>
+  <data name="plMsgSendEmail.Text" xml:space="preserve">
+    <value>Send Emails</value>
+  </data>
+  <data name="plMsgSendEmail.Help" xml:space="preserve">
+    <value>Select if emails are to be sent to recipients for every message and notification.</value>
   </data>
 </root>

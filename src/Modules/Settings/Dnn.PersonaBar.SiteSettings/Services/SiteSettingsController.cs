@@ -14,10 +14,9 @@ using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Internals;
@@ -42,7 +41,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 int pid = portalId.HasValue ? portalId.Value : PortalId;
-                
+                var portalSettings = new PortalSettings(pid);
                 var portal = PortalController.Instance.GetPortal(pid);
                 var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
                 var settings = new
@@ -52,7 +51,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     portal.KeyWords,
                     GUID = portal.GUID.ToString().ToUpper(),
                     portal.FooterText,
-                    TimeZone = PortalSettings.TimeZone.Id,
+                    TimeZone = portalSettings.TimeZone.Id,
                     portal.HomeDirectory,
                     portal.LogoFile,
                     FavIcon = new FavIcon(portal.PortalID).GetSettingPath(),
@@ -101,6 +100,158 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false);
                 new FavIcon(pid).Update(request.FavIcon);
                 PortalController.UpdatePortalSetting(pid, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetDefaultPagesSettings
+        /// <summary>
+        /// Gets default pages settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>default pages settings</returns>
+        [HttpGet]
+        public HttpResponseMessage GetDefaultPagesSettings([FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+
+                var portal = PortalController.Instance.GetPortal(pid);
+                var portalSettings = new PortalSettings(pid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        portal.SplashTabId,
+                        SplashTabName = portal.SplashTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.SplashTabId, pid).TabName : string.Empty,
+                        portal.HomeTabId,
+                        HomeTabName = portal.HomeTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.HomeTabId, pid).TabName : string.Empty,
+                        portal.LoginTabId,
+                        LoginTabName = portal.LoginTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.LoginTabId, pid).TabName : string.Empty,
+                        portal.RegisterTabId,
+                        RegisterTabName = portal.RegisterTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.RegisterTabId, pid).TabName : string.Empty,
+                        portal.UserTabId,
+                        UserTabName = portal.UserTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.UserTabId, pid).TabName : string.Empty,
+                        portal.SearchTabId,
+                        SearchTabName = portal.SearchTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.SearchTabId, pid).TabName : string.Empty,
+                        portal.Custom404TabId,
+                        Custom404TabName = portal.Custom404TabId != Null.NullInteger ? TabController.Instance.GetTab(portal.Custom404TabId, pid).TabName : string.Empty,
+                        portal.Custom500TabId,
+                        Custom500TabName = portal.Custom500TabId != Null.NullInteger ? TabController.Instance.GetTab(portal.Custom500TabId, pid).TabName : string.Empty,
+                        portalSettings.PageHeadText
+                    }
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateDefaultPagesSettings
+        /// <summary>
+        /// Updates default pages settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateDefaultPagesSettings(UpdateDefaultPagesSettingsRequest request)
+        {
+            try
+            {
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+
+                var portalInfo = PortalController.Instance.GetPortal(pid);
+                portalInfo.SplashTabId = request.SplashTabId;
+                portalInfo.HomeTabId = request.HomeTabId;
+                portalInfo.LoginTabId = request.LoginTabId;
+                portalInfo.RegisterTabId = request.RegisterTabId;
+                portalInfo.UserTabId = request.UserTabId;
+                portalInfo.SearchTabId = request.SearchTabId;
+                portalInfo.Custom404TabId = request.Custom404TabId;
+                portalInfo.Custom500TabId = request.Custom500TabId;
+
+                PortalController.Instance.UpdatePortalInfo(portalInfo);
+                PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetMessagingSettings
+        /// <summary>
+        /// Gets messaging settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>messaging settings</returns>
+        [HttpGet]
+        public HttpResponseMessage GetMessagingSettings([FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        portalSettings.DisablePrivateMessage,
+                        ThrottlingInterval = PortalController.GetPortalSettingAsInteger("MessagingThrottlingInterval", pid, 0),
+                        RecipientLimit = PortalController.GetPortalSettingAsInteger("MessagingRecipientLimit", pid, 5),
+                        AllowAttachments = PortalController.GetPortalSettingAsBoolean("MessagingAllowAttachments", pid, false),
+                        ProfanityFilters = PortalController.GetPortalSettingAsBoolean("MessagingProfanityFilters", pid, false),
+                        IncludeAttachments = PortalController.GetPortalSettingAsBoolean("MessagingIncludeAttachments", pid, false),
+                        SendEmail = PortalController.GetPortalSettingAsBoolean("MessagingSendEmail", pid, false)
+                    }
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateMessagingSettings
+        /// <summary>
+        /// Updates messaging settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateMessagingSettings(UpdateMessagingSettingsRequest request)
+        {
+            try
+            {
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                
+                PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "MessagingAllowAttachments", request.AllowAttachments ? "YES" : "NO", false);
+                PortalController.UpdatePortalSetting(pid, "MessagingIncludeAttachments", request.IncludeAttachments ? "YES" : "NO", false);
+
+                PortalController.UpdatePortalSetting(pid, "MessagingProfanityFilters", request.ProfanityFilters ? "YES" : "NO", false);
+                PortalController.UpdatePortalSetting(pid, "MessagingSendEmail", request.SendEmail ? "YES" : "NO", false);
+                PortalController.UpdatePortalSetting(pid, "DisablePrivateMessage", request.DisablePrivateMessage ? "Y" : "N", false);
+
+                DataCache.ClearPortalCache(pid, false);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
