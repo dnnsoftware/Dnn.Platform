@@ -2,7 +2,8 @@ import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
-    pagination as PaginationActions
+    pagination as PaginationActions,
+    pageSettings as PageSettingsActions
 } from "../../actions";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
@@ -70,6 +71,11 @@ class Body extends Component {
         this.setState({
             selectValue: option.value
         });
+    }
+
+    onButtonClick(){
+        const {props} = this;
+        props.dispatch(PageSettingsActions.loadPage(41));
     }
 
     render() {
@@ -156,6 +162,7 @@ class Body extends Component {
                 </GridSystem>
                 <GridCell columnSize={50}>
                     <Dropdown options={radioButtonOptions} onSelect={this.onSelectChange.bind(this) } value={state.selectValue}/>
+                    <Button type="primary" onClick={this.onButtonClick.bind(this)}>Save</Button>
                 </GridCell>
             </SocialPanelBody >
         );
