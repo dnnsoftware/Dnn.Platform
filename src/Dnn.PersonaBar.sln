@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Modules\UI\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -135,6 +135,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Lists", "Mod
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Licensing", "Modules\Manage\Dnn.PersonaBar.Licensing\Dnn.PersonaBar.Licensing.csproj", "{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Servers", "Modules\Settings\Dnn.PersonaBar.Servers\Dnn.PersonaBar.Servers.csproj", "{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -328,6 +330,14 @@ Global
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -358,5 +368,6 @@ Global
 		{962EE62B-2209-42B9-AB38-72E63E59DF57} = {CD76C638-E930-459D-A821-A3227FFFBF6E}
 		{7BDE3794-A682-4A7A-B06E-931B97D40DB3} = {25C1958E-8E53-4819-808E-D364614A2ED7}
 		{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12} = {CD76C638-E930-459D-A821-A3227FFFBF6E}
+		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 	EndGlobalSection
 EndGlobal
