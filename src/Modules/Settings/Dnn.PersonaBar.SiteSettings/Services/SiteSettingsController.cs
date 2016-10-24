@@ -17,6 +17,8 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Internals;
@@ -241,7 +243,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
-                
+
                 PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "MessagingAllowAttachments", request.AllowAttachments ? "YES" : "NO", false);
@@ -250,6 +252,78 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(pid, "MessagingProfanityFilters", request.ProfanityFilters ? "YES" : "NO", false);
                 PortalController.UpdatePortalSetting(pid, "MessagingSendEmail", request.SendEmail ? "YES" : "NO", false);
                 PortalController.UpdatePortalSetting(pid, "DisablePrivateMessage", request.DisablePrivateMessage ? "Y" : "N", false);
+
+                DataCache.ClearPortalCache(pid, false);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetProfileSettings
+        /// <summary>
+        /// Gets profile settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>profile settings</returns>
+        [HttpGet]
+        public HttpResponseMessage GetProfileSettings([FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var urlSettings = new FriendlyUrlSettings(pid);
+                var userSettings = UserController.GetUserSettings(pid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        RedirectOldProfileUrl = Config.GetFriendlyUrlProvider() == "advanced" && urlSettings.RedirectOldProfileUrl,
+                        urlSettings.VanityUrlPrefix,
+                        ProfileDefaultVisibility = userSettings["Profile_DefaultVisibility"] == null ? (int)UserVisibilityMode.AdminOnly : Convert.ToInt32(userSettings["Profile_DefaultVisibility"]),
+                        ProfileDisplayVisibility = PortalController.GetPortalSettingAsBoolean("Profile_DisplayVisibility", pid, true)
+                    },
+                    UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
+                        v => new
+                        {
+                            label = v.ToString(), 
+                            value = (int) v
+                        }).ToList()
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateProfileSettings
+        /// <summary>
+        /// Updates profile settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateProfileSettings(UpdateProfileSettingsRequest request)
+        {
+            try
+            {
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+
+                if (Config.GetFriendlyUrlProvider() == "advanced")
+                {
+                    PortalController.UpdatePortalSetting(pid, FriendlyUrlSettings.RedirectOldProfileUrlSetting, request.RedirectOldProfileUrl ? "Y" : "N", false);
+                }
+                PortalController.UpdatePortalSetting(pid, FriendlyUrlSettings.VanityUrlPrefixSetting, request.VanityUrlPrefix, false);
+                PortalController.UpdatePortalSetting(pid, "Profile_DefaultVisibility", request.ProfileDefaultVisibility.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "Profile_DisplayVisibility", request.ProfileDisplayVisibility.ToString(), true);
 
                 DataCache.ClearPortalCache(pid, false);
 

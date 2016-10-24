@@ -101,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\UpdateMessagingSettings.cs" />
     <Compile Include="Services\Dto\UpdateDefaultPagesSettings.cs" />
+    <Compile Include="Services\Dto\UpdateProfileSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteSettingsRequest.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
   </ItemGroup>

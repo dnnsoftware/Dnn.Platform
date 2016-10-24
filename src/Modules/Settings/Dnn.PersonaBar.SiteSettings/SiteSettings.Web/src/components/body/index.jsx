@@ -8,6 +8,7 @@ import {
 import BasicSettings from "../basicSettings";
 import DefaultPagesSettings from "../defaultPagesSettings";
 import MessagingSettings from "../messagingSettings";
+import ProfileSettings from "../profileSettings";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
@@ -44,7 +45,7 @@ export class Body extends Component {
                         type="secondary">
                         <DefaultPagesSettings/>
                         <MessagingSettings/>
-                        <div/>
+                        <ProfileSettings/>
                         <div/>
                         <div/>
                     </Tabs>

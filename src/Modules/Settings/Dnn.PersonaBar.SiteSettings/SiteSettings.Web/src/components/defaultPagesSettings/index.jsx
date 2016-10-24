@@ -28,7 +28,7 @@ class DefaultPagesSettingsPanelBody extends Component {
 
     componentWillMount() {
         const {state, props} = this;
-        if (props.defaultPages) {
+        if (props.defaultPagesSettings) {
             this.setState({
                 defaultPagesSettings: props.defaultPagesSettings
             });
@@ -85,7 +85,7 @@ class DefaultPagesSettingsPanelBody extends Component {
 
     onCancel(event) {
         const {props, state} = this;
-        util.utilities.confirm(resx.get("ettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteSettingsActions.getDefaultPagesSettings(props.portalId, (data) => {
                 let defaultPagesSettings = Object.assign({}, data.Settings);
                 this.setState({

@@ -351,4 +351,49 @@
   <data name="plMsgSendEmail.Help" xml:space="preserve">
     <value>Select if emails are to be sent to recipients for every message and notification.</value>
   </data>
+  <data name="UserProfileSettings.Text" xml:space="preserve">
+    <value>USER PROFILE SETTINGS</value>
+  </data>
+  <data name="UserProfileFields.Text" xml:space="preserve">
+    <value>USER PROFILE FIELDS</value>
+  </data>
+  <data name="Profile_DefaultVisibility.Help" xml:space="preserve">
+    <value>Select default profile visibility mode for user profile.</value>
+  </data>
+  <data name="Profile_DefaultVisibility.Text" xml:space="preserve">
+    <value>Default Profile Visibility Mode</value>
+  </data>
+  <data name="Profile_DisplayVisibility.Help" xml:space="preserve">
+    <value>Check this box to display the profile visibility control on the User Profile page.</value>
+  </data>
+  <data name="Profile_DisplayVisibility.Text" xml:space="preserve">
+    <value>Display Profile Visibility</value>
+  </data>
+  <data name="redirectOldProfileUrlsLabel.Help" xml:space="preserve">
+    <value>Check this box to force old style profile URLs to be redirected to custom URLs.</value>
+  </data>
+  <data name="redirectOldProfileUrlsLabel.Text" xml:space="preserve">
+    <value>Redirect Old Profile URLs</value>
+  </data>
+  <data name="vanilyUrlPrefixLabel.Help" xml:space="preserve">
+    <value>Enter a string to use to prefix vanity URLs.</value>
+  </data>
+  <data name="vanilyUrlPrefixLabel.Text" xml:space="preserve">
+    <value>Vanity URL Prefix</value>
+  </data>
+  <data name="AllUsers.Text" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="MembersOnly.Text" xml:space="preserve">
+    <value>Members Only</value>
+  </data>
+  <data name="AdminOnly.Text" xml:space="preserve">
+    <value>Admin Only</value>
+  </data>
+  <data name="FriendsAndGroups.Text" xml:space="preserve">
+    <value>Friends and Groups</value>
+  </data>
+  <data name="VanityUrlExample.Text" xml:space="preserve">
+    <value>myVanityURL</value>
+  </data>
 </root>

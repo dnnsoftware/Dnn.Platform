@@ -142,6 +142,53 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    getProfileSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getProfileSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_SETTINGS,
+                    data: {
+                        settings: data.Settings,
+                        userVisibilityOptions: data.UserVisibilityOptions,
+                        profileSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateProfileSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateProfileSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_SETTINGS,
+                    data: {
+                        profileSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    profileSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_PROFILE_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    profileSettingsClientModified: true
+                }
+            });
+        };
     }
 };
 

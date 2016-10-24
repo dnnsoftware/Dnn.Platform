@@ -47,6 +47,21 @@ export default function siteSettings(state = {
             return { ...state,
                 messagingSettingsClientModified: action.data.messagingSettingsClientModified
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_SETTINGS:
+            return { ...state,
+                profileSettings: action.data.settings,                
+                userVisibilityOptions: action.data.userVisibilityOptions,
+                profileSettingsClientModified: action.data.profileSettingsClientModified
+            };
+        case ActionTypes.SITESETTINGS_PROFILE_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                profileSettings: action.data.settings,
+                profileSettingsClientModified: action.data.profileSettingsClientModified
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_PROFILE_SETTINGS:
+            return { ...state,
+                profileSettingsClientModified: action.data.profileSettingsClientModified
+            };
         default:
             return { ...state
             };
