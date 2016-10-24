@@ -300,4 +300,28 @@
   <data name="nav_Servers.Text" xml:space="preserve">
     <value>Servers</value>
   </data>
+  <data name="tabApplicationTitle.Text" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="tabDatabaseTitle.Text" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="tabLogsTitle.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="tabPerformanceTitle.Text" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="tabServerSettingsTitle.Text" xml:space="preserve">
+    <value>Server Settings</value>
+  </data>
+  <data name="tabSmtpServerTitle.Text" xml:space="preserve">
+    <value>Smtp Server</value>
+  </data>
+  <data name="tabSystemInfoTitle.Text" xml:space="preserve">
+    <value>System Info</value>
+  </data>
+  <data name="tabWebTitle.Text" xml:space="preserve">
+    <value>Web</value>
+  </data>
 </root>
