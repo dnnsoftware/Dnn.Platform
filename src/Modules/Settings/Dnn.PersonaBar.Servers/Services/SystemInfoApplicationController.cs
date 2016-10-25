@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -73,7 +74,16 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             var urlProvider = (Provider) ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[friendlyUrlProvider];
             var urlFormat = urlProvider.Attributes["urlformat"];
-            return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : urlFormat;
+            return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat);
+        }
+
+        public static string FirstCharToUpper(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
         }
 
     }
