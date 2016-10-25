@@ -1,0 +1,27 @@
+@import "~dnn-global-styles/index";
+.icon-button{
+    display: inline-block;
+    svg{
+        vertical-align: top;
+        fill: @alto;
+    }
+
+    &:hover{
+        svg{
+            fill: @thunder;
+        }
+    }
+
+    &:active, &.activated{
+        svg{
+            fill: @curiousBlue;
+        }
+    }
+}
+.icon-flat{
+    display: inline-block;
+    svg{
+        vertical-align: top;
+        fill: @alto;
+    }
+}

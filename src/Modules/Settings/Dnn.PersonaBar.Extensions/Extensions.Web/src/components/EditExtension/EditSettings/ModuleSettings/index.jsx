@@ -10,6 +10,7 @@ import Switch from "dnn-switch";
 import Button from "dnn-button";
 import PermissionGrid from "./PermissionGrid";
 import Localization from "localization";
+import utils from "utils";
 import styles from "./style.less";
 
 class ModuleSettings extends Component {
@@ -24,18 +25,16 @@ class ModuleSettings extends Component {
     componentWillMount() {
         const {props, state} = this;
         let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
-        console.log(PermissionActions);
         props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
     }
 
 
     render() {
         const {props, state} = this;
-        console.log(props.permissions);
 
         return (
             <GridCell>
-                <PermissionGrid permissions={props.permissions} />
+                <PermissionGrid permissions={props.permissions} service={utils.utilities.sf} />
             </GridCell>
         );
     }

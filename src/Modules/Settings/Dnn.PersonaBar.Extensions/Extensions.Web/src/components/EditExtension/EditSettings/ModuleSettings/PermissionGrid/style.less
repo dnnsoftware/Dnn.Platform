@@ -1,8 +1,22 @@
-:local(.editAuthenticationSystem) {
-    .dnn-switch-container {
-        width: 100%;
-        .dnn-switch {
-            float: right;
+@import "~dnn-global-styles/index";
+.permissions-grid{
+    .grid-caption{
+        border-bottom: 1px solid @alto;
+        padding: 10px 0;
+
+        .dnn-grid-cell.left{
+            border-right: 1px solid @alto;
+            min-height: 32px;
+
+            .dnn-dropdown {
+                min-width: 160px;
+                float: right;
+            }
+        }
+
+        .dnn-grid-cell.right{
+            border-left: 1px solid @alto;
+            min-height: 32px;
         }
     }
 }

@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import ReactDOM from "react-dom";
 import DropDown from "dnn-dropdown";
+import Label from "dnn-label";
 
-import { ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon } from "dnn-svg-icons";
 import "./style.less";
-import { RoleGroupService } from "services";
+import Service from "./Service";
 function format() {
     let format = arguments[0];
     let methodsArgs = arguments;
@@ -18,7 +18,7 @@ class RoleGroupFilter extends Component {
         super(props);
         this.state = {
             roleGroups: [],
-            reload: false
+            selectedGroup: {id: -1, name: props.localization.globalGroupsText}
         };
     }
 
@@ -26,10 +26,6 @@ class RoleGroupFilter extends Component {
         const { props, state } = this;
 
         this.getRoleGroups();
-    }
-
-    componentWillReceiveProps(newProps) {
-        console.log(newProps);
     }
 
     closeDropdown() {
@@ -50,10 +46,10 @@ class RoleGroupFilter extends Component {
             }
         }
 
-        let service = new RoleGroupService(this.props.serviceFramework);
+        let service = new Service(this.props.service);
         service.getRoleGroups((data) => {
             this.setState({
-                roleGroups: data
+                roleGroups: [{id: -2, name: props.localization.allGroupsText}, {id: -1, name: props.localization.globalGroupsText}].concat(data)
             }, () => {
                 if (typeof callback === "function") {
                     callback.call(this);
@@ -73,22 +69,28 @@ class RoleGroupFilter extends Component {
     }
 
     onSelect(group) {
+        const {props, state} = this;
 
+        let selectedGroup = {id: group.value, name: group.label};
+        this.setState({selectedGroup: selectedGroup}, function(){
+            if(typeof props.onChange === "function"){
+                props.onChange(this.state.selectedGroup);
+            }
+        });
     }
 
     getRoleGroupsDropDown() {
         const {props, state} = this;
 
-        let label = props.label;
         let roleGroupsOptions = this.BuildRoleGroupsOptions();
 
-        let GroupsDropDown = <DropDown style={{ width: "100%" }}
-            withBorder={false}
-            options={roleGroupsOptions}
-            label={label}
-            onSelect={this.onSelect.bind(this)}
-            ref="groupsDropdown"
-            />;
+        let GroupsDropDown = <DropDown
+                                withBorder={false}
+                                options={roleGroupsOptions}
+                                value={state.selectedGroup.id}
+                                onSelect={this.onSelect.bind(this)}
+                                ref="groupsDropdown"
+                                />;
 
         return GroupsDropDown;
     }
@@ -98,15 +100,19 @@ class RoleGroupFilter extends Component {
         const {props, state} = this;
 
         return (
-            <div className="groups-filter">{this.getRoleGroupsDropDown()}<div className="clear"></div></div>
+            <div className={"groups-filter" + (state.roleGroups.length === 0 ? "no-group" : "")}>
+                <Label label={props.localization.filterByGroup} labelType="inline" />
+                {this.getRoleGroupsDropDown()}
+                <div className="clear"></div>
+            </div>
         );
     }
 }
 
 RoleGroupFilter.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    serviceFramework: PropTypes.object,
-    label: PropTypes.object,
+    service: PropTypes.object,
+    localization: PropTypes.object,
     onChange: PropTypes.func.isRequired
 };
 

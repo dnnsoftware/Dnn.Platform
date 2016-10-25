@@ -54,4 +54,4 @@ export default function createPackage (state = {
             return { ...state
             };
     }
-};
+}

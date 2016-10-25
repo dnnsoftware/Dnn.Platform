@@ -40,7 +40,7 @@ class PermissionService {
     }
     saveDesktopModulePermissions(permissions, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
-        sf.post("saveDesktopModulePermissions", { permissions: permissions }, callback, errorCallback);
+        sf.post("SaveDesktopModulePermissions", { permissions: permissions }, callback, errorCallback);
     }
 }
 const permissionService = new PermissionService();

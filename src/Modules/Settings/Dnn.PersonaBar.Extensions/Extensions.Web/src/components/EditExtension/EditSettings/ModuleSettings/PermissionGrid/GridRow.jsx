@@ -10,7 +10,7 @@ import Localization from "localization";
 const nameColumnSpace = 15;
 const actionColumnSpace = 10;
 
-class PermissionGridRow extends Component {
+class GridRow extends Component {
 
     getRowSetup() {
         const { props } = this;
@@ -39,10 +39,10 @@ class PermissionGridRow extends Component {
     }
 }
 
-PermissionGridRow.propTypes = {
+GridRow.propTypes = {
     permission: PropTypes.object.isRequired,
     permissionDefinitions: PropTypes.object.isRequired
 };
 
 
-export default PermissionGridRow;
+export default GridRow;

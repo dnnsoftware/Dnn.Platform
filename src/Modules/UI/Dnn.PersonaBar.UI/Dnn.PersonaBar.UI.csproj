@@ -160,6 +160,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Dto\SuggestionDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\LocalizationController.cs" />
