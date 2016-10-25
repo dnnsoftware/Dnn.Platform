@@ -3,6 +3,13 @@
     .grid-caption{
         border-bottom: 1px solid @alto;
         padding: 10px 0;
+        
+        & > .dnn-label{
+            line-height: 32px;
+            margin-top: 35px;
+            font-weight: bold;
+            color: @bulgarianRose;
+        }
 
         .dnn-grid-cell.left{
             border-right: 1px solid @alto;
@@ -25,6 +32,7 @@
         height: 40px;
         border: 1px solid @alto;
         font-weight: bold;
+        text-transform: uppercase;
 
         .dnn-grid-cell{
             border-left: 1px solid @alto;
@@ -34,7 +42,6 @@
 
             &:first-child{
                 border-left: none;
-                text-transform: uppercase;
                 padding-left: 12px;
                 text-align: left;
             }
@@ -57,8 +64,8 @@
         .dnn-grid-cell{
             border-left: 1px solid @alto;
             height: 40px;
-            position: relative;
             text-align: center;
+            padding-top: 10px;
 
             &:first-child{
                 border-left: none;
@@ -67,14 +74,12 @@
             }
 
             & > span, & > a{
-                display: block;
-                position: absolute;
+                display: inline-block;
                 width: 100%;
-                top: 50%;
-                transform: translateY(-50%);
             }
 
             .icon-flat, .icon-button{
+                width: 16px;
                 svg{
                     fill: @alto;
                     width: 16px;
@@ -83,10 +88,19 @@
 
             &.col-actions{
                 text-align: right;
-                .icon-button{
-                    right: 20px;
-                }
+                padding-right: 20px;
             }
         }
+    }
+
+    .empty-row{
+        height: 70px;
+        line-height: 70px;
+        text-transform: uppercase;
+        border: 1px solid @alto;
+        border-top: none;
+        color: @alto;
+        font-weight: bold;
+        text-align: center;
     }
 }

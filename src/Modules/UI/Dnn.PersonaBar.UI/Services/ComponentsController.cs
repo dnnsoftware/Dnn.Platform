@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.UI.Services
         #region API in Regular Level
 
         [HttpGet]
-        public HttpResponseMessage GetSuggestionUsers(string keyword, int roleId, int count)
+        public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
         {
             try
             {

@@ -109,6 +109,19 @@ class PermissionGrid extends Component {
                     onAddPermission={this.onAddPermission.bind(this, "role")} />;
     }
 
+    renderUsersGrid(){
+        const {props, state} = this;
+
+        return  <Grid 
+                    service={props.service} 
+                    localization={state.localization} 
+                    type="user" 
+                    definitions={state.definitions}
+                    permissions={state.userPermissions}
+                    onChange={this.onPermissionsChanged.bind(this, "user")}
+                    onAddPermission={this.onAddPermission.bind(this, "user")} />;
+    }
+
     render() {
         const {props, state} = this;
 
@@ -119,6 +132,7 @@ class PermissionGrid extends Component {
         return (
             <GridCell className={"permissions-grid" + (props.className ? " " + props.className : "")}>
                 {this.renderRolesGrid()}
+                {this.renderUsersGrid()}
             </GridCell>
         );
     }

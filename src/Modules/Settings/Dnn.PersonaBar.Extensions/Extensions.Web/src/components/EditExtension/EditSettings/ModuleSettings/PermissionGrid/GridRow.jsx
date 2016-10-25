@@ -101,7 +101,7 @@ class GridRow extends Component {
                     let permissionName = def.permissionName.toLowerCase();
                     if (permissionName !== 'navigate' && permissionName !== 'browse') {
                         props.definitions.forEach(function(d){
-                            if(d.permissionName.toLowerCase() !== "view"){
+                            if(!d.view){
                                 return;
                             }
 

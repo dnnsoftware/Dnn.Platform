@@ -87,7 +87,7 @@ class Suggestion extends Component {
             <div className="dnn-suggestion">
                 <span>
                     <Combobox suggest={false}
-                        placeholder={props.localization.addRolePlaceHolder}
+                        placeholder={props.localization.placeHolder}
                         open={this.state.suggestions.length > 0 }
                         onToggle={this.onUserSelectorToggle.bind(this) }
                         onChange={this.onUserSelectorChanged.bind(this) }

@@ -109,6 +109,7 @@ class Grid extends Component {
                                     onChange={self.onPermissionChange.bind(self)}
                                     onDeletePermisson={self.onPermissionDeleted.bind(self)} />;
                     })}
+                    {props.permissions.length === 0 && <GridCell className="empty-row">{props.type == "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
                 </GridCell>;
     }
 

@@ -43,24 +43,26 @@ class GridCaption extends Component {
                                     roleGroupId: state.roleGroupId,
                                     count: 10
                                 } : {
-
+                                    actionName: "GetSuggestionUsers",
+                                    count: 10
                                 };
 
         return <GridCell className="grid-caption">
                     <Label label={props.type === "role" ? props.localization.permissionsByRole : props.localization.permissionsByUser}></Label>
-                    <GridCell columnSize="40" className="left">
+                    {props.type === "role" && <GridCell columnSize="40" className="left">
                         <RoleGroupFilter 
                             service={props.service} 
                             localization={props.localization} 
                             value={state.roleGroupId} 
                             onChange={this.onRoleGroupChange.bind(this)}/>
-                    </GridCell>
-                    <GridCell columnSize="20" />
+                    </GridCell>}
+                    <GridCell columnSize={props.type === "role" ? 20 : 60} />
                     <GridCell columnSize="40" className="right">
                         <Suggestion 
                             service={props.service} 
                             localization={{
-                                add: props.type === "role" ? props.localization.addRole : props.localization.addUser
+                                add: props.type === "role" ? props.localization.addRole : props.localization.addUser,
+                                placeHolder: props.type === "role" ? props.localization.addRolePlaceHolder : props.localization.addUserPlaceHolder
                             }}  
                             options={suggestionOptions}
                             onSelect={this.onSuggestionSelected.bind(this)}
