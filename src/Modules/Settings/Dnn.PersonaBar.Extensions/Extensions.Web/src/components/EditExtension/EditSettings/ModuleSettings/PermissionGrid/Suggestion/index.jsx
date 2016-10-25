@@ -58,9 +58,7 @@ class Suggestion extends Component {
     }
 
     onUserSelectorSelected(item) {
-        this.setState({ selectedValue: { value: item.value, label: item.label } }, function () {
-            this.getSuggestions();
-        });
+        this.setState({ selectedValue: { value: item.value, label: item.label }, suggestions: [] });
     }
 
     onUserSelectorToggle() {
