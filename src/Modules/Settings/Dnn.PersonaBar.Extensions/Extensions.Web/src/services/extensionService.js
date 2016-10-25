@@ -70,19 +70,19 @@ class ExtensionService {
         };
         sf.post("SavePackageSettings", payload, callback);
     }
-    downloadPackage(Type, Name, callback) {
+    downloadPackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
-            Type,
-            Name
+            PackageType,
+            FileName
         };
-        sf.post("DownloadPackage", payload, callback);
+        sf.post("DownloadPackage", payload);
     }
     installAvailablePackage(packageType, packageName, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             packageType,
-            packageName
+            fileName: packageName
         };
         sf.post("InstallAvailablePackage?" + serializeQueryStringParameters(payload), {}, callback);
     }

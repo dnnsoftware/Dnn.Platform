@@ -17,6 +17,7 @@ class ExtensionList extends Component {
                 {props.packages.map((_package) => {
                     return <ExtensionDetailRow
                         _package={_package}
+                        type={props.type}
                         onDownload={props.onDownload.bind(this)}
                         onInstall={props.onInstall.bind(this)}
                         />;

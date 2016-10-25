@@ -1,4 +1,4 @@
-import { installation as ActionTypes } from "constants/actionTypes";
+import { installation as ActionTypes, extension as ExtensionActionTypes } from "constants/actionTypes";
 import { InstallationService } from "services";
 const installationActions = {
     parsePackage(file, callback, errorCallback) {
@@ -24,13 +24,23 @@ const installationActions = {
             });
         };
     },
-    installExtension(file, callback) {
+    installExtension(file, newExtension, callback, addToList) {
+        let _newExtension = JSON.parse(JSON.stringify(newExtension));
         return (dispatch) => {
             InstallationService.installPackage(file, (data) => {
                 dispatch({
                     type: ActionTypes.INSTALLED_EXTENSION_LOGS,
                     payload: JSON.parse(data)
                 });
+                if (addToList) {
+                    _newExtension.packageId = JSON.parse(data).newPackageId;
+                    dispatch({
+                        type: ExtensionActionTypes.INSTALLED_EXTENSION,
+                        payload: {
+                            PackageInfo: _newExtension
+                        }
+                    });
+                }
                 if (callback) {
                     callback(data);
                 }
