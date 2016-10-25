@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using ClientDependency.Core.Config;
 
 namespace ClientDependency.Core
 {
@@ -26,12 +28,27 @@ namespace ClientDependency.Core
                 var urlMatch = CssUrlRegex.Match(match.Value);
                 if (urlMatch.Success && urlMatch.Groups.Count >= 2)
                 {
-                    var path = urlMatch.Groups[1].Value.Trim('\'', '"'); 
+                    var path = urlMatch.Groups[1].Value.Trim('\'', '"');
                     if ((path.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase)
                          || path.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
                          || path.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        continue;
+                        try
+                        {
+                            var uri = new Uri(path, UriKind.Absolute);
+                            var domain = $".{uri.Host}:{uri.Port}";
+                            var approvedDomains =
+                                ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.BundleDomains;
+                            if (!approvedDomains.Any(bundleDomain => domain.EndsWith(bundleDomain)))
+                            {
+                                continue;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                        
                     }
                 }
 
