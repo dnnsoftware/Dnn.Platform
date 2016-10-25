@@ -3,12 +3,14 @@ import pagination from "./paginationReducer";
 import visiblePanel from "./visiblePanelReducer";
 import webTab from "./webTabReducer";
 import server from "./serverReducer";
+import applicationTab from "./applicationTabReducer";
 
 const rootReducer = combineReducers({
     pagination,
     visiblePanel,
     webTab,
-    server
+    server,
+    applicationTab
 });
 
 export default rootReducer;
