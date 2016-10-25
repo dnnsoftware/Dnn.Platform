@@ -14,9 +14,12 @@ const restartAppButtonStyle = {
 };
 
 class App extends Component { 
-    componentWillReceiveProps(newProps) {        
+    componentWillReceiveProps(newProps) {  
+        if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
+            utils.utilities.notifyError(newProps.infoMessage);
+        }
+
         if (newProps.reloadPage) {
-            utils.utilities.notify(localization.get("infoMessageRestartingApplication"));
             location.reload();
             return;
         }
@@ -31,7 +34,8 @@ class App extends Component {
             <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={true}>
                     <SocialPanelHeader title="Servers">
-                        <Button type="secondary" size="large">{localization.get("clearCacheButtonLabel")}</Button>
+                        <Button type="secondary" size="large" 
+                            onClick={props.onClearCacheClicked}>{localization.get("clearCacheButtonLabel")}</Button>
                         <Button type="secondary" size="large" 
                             onClick={props.onRestartApplicationClicked} 
                             style={restartAppButtonStyle}>{localization.get("restartApplicationButtonLabel")}</Button>                        
@@ -49,7 +53,8 @@ App.propTypes = {
     selectedPageVisibleIndex: PropTypes.number,
     onRestartApplicationClicked: PropTypes.func.isRequired,
     reloadPage: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    infoMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -57,14 +62,16 @@ function mapStateToProps(state) {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
         reloadPage: state.server.reloadPage,
-        errorMessage: state.server.errorMessage
+        errorMessage: state.server.errorMessage,
+        infoMessage: state.server.infoMessage
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
-            onRestartApplicationClicked: ServerActions.restartApplication     
+            onRestartApplicationClicked: ServerActions.restartApplication,
+            onClearCacheClicked: ServerActions.clearCache
         }, dispatch)
     };
 }

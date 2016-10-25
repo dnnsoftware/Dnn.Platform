@@ -25,6 +25,29 @@ const serverActions = {
                 });
             });        
         };
+    },
+    clearCache() {       
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.REQUEST_CLEAR_CACHE               
+            });        
+            
+            serverService.clearCache().then(response => {
+                dispatch({
+                    type: ActionTypes.END_REQUEST_CLEAR_CACHE,
+                    payload: {
+                        url: response.url
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_REQUEST_CLEAR_CACHE,
+                    payload: {
+                        errorMessage: localization.get("errorMessageClearingCache")
+                    }
+                });
+            });        
+        };
     }
 };
 

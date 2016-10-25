@@ -207,8 +207,14 @@
   <data name="clearCacheButtonLabel.Text" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
+  <data name="errorMessageClearingCache.Text" xml:space="preserve">
+    <value>Error trying to Clear Cache</value>
+  </data>
   <data name="errorMessageRestartingApplication.Text" xml:space="preserve">
     <value>Error trying to Restart Application</value>
+  </data>
+  <data name="infoMessageClearingCache.Text" xml:space="preserve">
+    <value>Clearing Cache</value>
   </data>
   <data name="infoMessageRestartingApplication.Text" xml:space="preserve">
     <value>Restarting Application</value>
