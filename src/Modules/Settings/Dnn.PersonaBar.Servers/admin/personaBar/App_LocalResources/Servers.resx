@@ -204,4 +204,10 @@
   <data name="errorMessageLoadingWebTab.Text" xml:space="preserve">
     <value>Error loading Web tab</value>
   </data>
+  <data name="clearCacheButtonLabel.Text" xml:space="preserve">
+    <value>Clear Cache</value>
+  </data>
+  <data name="restartApplicationButtonLabel.Text" xml:space="preserve">
+    <value>Restart Application</value>
+  </data>
 </root>
