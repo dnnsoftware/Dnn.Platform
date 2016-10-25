@@ -12,7 +12,7 @@ const newPackagePayload = {
     reviewManifest: true
 };
 
-export default function createPackage (state = {
+export default function createPackage(state = {
     packageManifest: {},
     createdManifest: {},
     createdPackage: {},
@@ -47,8 +47,11 @@ export default function createPackage (state = {
             };
         case ActionTypes.RETRIEVED_GENERATED_MANIFEST:
             return { ...state,
-                packagePayload: Object.assign(JSON.parse(JSON.stringify(state.packagePayload)), { selectedManifest: action.payload.Content }
-                )
+                packagePayload: Object.assign(JSON.parse(JSON.stringify(state.packagePayload)), { selectedManifest: action.payload.Content })
+            };
+        case ActionTypes.REFRESH_PACKAGE_FILES:
+            return { ...state,
+                packageManifest: Object.assign(JSON.parse(JSON.stringify(state.packageManifest)), { files: action.payload })
             };
         default:
             return { ...state

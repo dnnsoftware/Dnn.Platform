@@ -19,7 +19,6 @@ function camelize(str) {
 class AvailableExtensions extends Component {
     constructor() {
         super();
-        this.handleSelect = this.handleSelect.bind(this);
     }
     checkIfAvailablePackageTypesEmpty(props) {
         return !props.availablePackageTypes || props.availablePackageTypes.length === 0;
@@ -28,15 +27,12 @@ class AvailableExtensions extends Component {
     checkIfAvailablePackagesEmpty(props) {
         return !props.availablePackages || props.availablePackages.length === 0;
     }
-    componentWillReceiveProps(props) {
+    componentWillMount() {
+        // console.log(props);
+        const { props } = this;
         if (!this.checkIfAvailablePackageTypesEmpty(props) && this.checkIfAvailablePackagesEmpty(props) && props.selectedAvailablePackageType === "") {
             props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type));
         }
-    }
-
-    handleSelect(index/*, last*/) {
-        const {props} = this;
-        props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
 
     onChange(key, event) {
@@ -61,6 +57,15 @@ class AvailableExtensions extends Component {
         const {props} = this;
         props.dispatch(ExtensionActions.downloadPackage(props.selectedAvailablePackageType, name));
     }
+
+
+    onInstall(name, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const {props} = this;
+        props.dispatch(ExtensionActions.installAvailablePackage(props.selectedAvailablePackageType, name));
+    }
     render() {
         const {props} = this;
         return (
@@ -80,7 +85,8 @@ class AvailableExtensions extends Component {
                 {(props.availablePackages && props.availablePackages.length > 0) &&
                     <ExtensionList
                         packages={props.availablePackages}
-                        onDownload={this.onDownload.bind(this)} />
+                        onDownload={this.onDownload.bind(this)}
+                        onInstall={this.onInstall.bind(this)} />
                 }
             </GridCell>
         );

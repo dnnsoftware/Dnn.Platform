@@ -213,7 +213,7 @@ class EditExtension extends Component {
                         </GridCell>
                         <GridCell className="extension-form">
                             <CustomSettings
-                                type="Module"
+                                type={extensionBeingEdited.packageType.value}
                                 primaryButtonText="Next"
                                 onChange={this.onChange.bind(this)}
                                 onCancel={this.selectPanel.bind(this, 0)}
@@ -223,7 +223,7 @@ class EditExtension extends Component {
                         </GridCell>
                         <GridCell>
                             <EditSettings
-                                type="Module"
+                                type={extensionBeingEdited.packageType.value}
                                 extensionBeingEdited={extensionBeingEdited} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}
@@ -260,7 +260,7 @@ class EditExtension extends Component {
                         </GridCell>
                         <GridCell>
                             <EditSettings
-                                type="Module"
+                                type={extensionBeingEdited.packageType.value}
                                 extensionBeingEdited={extensionBeingEdited} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}

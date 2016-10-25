@@ -8,7 +8,7 @@ import MultiLineInput from "dnn-multi-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Localization from "localization";
 
-const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPrevious, onFileOrAssemblyChange}) => (
+const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPrevious, onFileOrAssemblyChange, onRefresh}) => (
     <GridCell className="review-files-step">
         <h6 className="box-title">{Localization.get("CreatePackage_ChooseFiles.Label")}</h6>
         <p className="box-subtitle">{Localization.get("CreatePackage_ChooseFiles.HelpText")}</p>
@@ -23,7 +23,7 @@ const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPreviou
                     />
             </GridCell>
             <GridCell columnSize={30} className="no-padding refresh-file-list-button">
-                <Button type="secondary">{Localization.get("CreatePackage_RefreshFileList.Button")}</Button>
+                <Button type="secondary" onClick={onRefresh}>{Localization.get("CreatePackage_RefreshFileList.Button")}</Button>
             </GridCell>
         </GridCell>
         <GridCell className="package-files-container no-padding">
@@ -47,6 +47,7 @@ StepTwo.propTypes = {
     onNext: PropTypes.func,
     onBasePathChange: PropTypes.func,
     onPrevious: PropTypes.func,
-    onFileOrAssemblyChange: PropTypes.func
+    onFileOrAssemblyChange: PropTypes.func,
+    onRefresh: PropTypes.func
 };
 export default StepTwo;

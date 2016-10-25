@@ -5,13 +5,13 @@ import styles from "./style.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 
 /* eslint-disable react/no-danger */
-const ExtensionDetailRow = ({_package, onDownload}) => (
+const ExtensionDetailRow = ({_package, onDownload, onInstall}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
-            <img src={_package.packageIcon.replace("~", "") }/>
+            <img src={_package.packageIcon.replace("~", "")} />
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]}>
-            <span className="package-name">{_package.name}</span>
+            <span className="package-name">{_package.friendlyName}</span>
         </GridCell>
         <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.description}</p>
@@ -20,15 +20,16 @@ const ExtensionDetailRow = ({_package, onDownload}) => (
             <p>{_package.version}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[4]}>
-            <Button className="install-download-button" onClick={onDownload.bind(this, _package.name) }>Download</Button>
-            <Button className="install-download-button">Install</Button>
+            <Button className="install-download-button" onClick={onDownload.bind(this, _package.name)}>Download</Button>
+            <Button className="install-download-button" onClick={onInstall.bind(this, _package.name)}>Install</Button>
         </GridCell>
     </GridCell>
 );
 
 ExtensionDetailRow.propTypes = {
     _package: PropTypes.object,
-    onDownload: PropTypes.func
+    onDownload: PropTypes.func,
+    onInstall: PropTypes.func
 };
 
 export default ExtensionDetailRow;

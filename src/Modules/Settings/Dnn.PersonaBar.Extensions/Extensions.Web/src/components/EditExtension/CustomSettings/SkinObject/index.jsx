@@ -11,35 +11,27 @@ const inputStyle = { width: "100%" };
 function formatVersionNumber(n) {
     return n > 9 ? "" + n : "0" + n;
 }
-class AuthenticationSystem extends Component {
+class SkinObject extends Component {
     render() {
         const {props, state} = this;
 
         return (
-            <GridCell className={styles.editAuthenticationSystem}>
+            <GridCell className={styles.editSkinObject}>
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError
-                            label={Localization.get("EditAuthSystem_Type.Label")}
-                            tooltipMessage={Localization.get("EditAuthSystem_Type.Tooltip")}
-                            style={inputStyle} />
-                        <SingleLineInputWithError
-                            label={Localization.get("EditAuthSystem_LoginCtrlSource.Label")}
-                            tooltipMessage={Localization.get("EditAuthSystem_LoginCtrlSource.Tooltip")}
+                            label={Localization.get("EditSkinObject_ControlKey.Label")}
+                            tooltipMessage={Localization.get("EditSkinObject_ControlKey.HelpText")}
                             style={inputStyle} />
                     </div>
                     <div>
                         <SingleLineInputWithError
-                            label={Localization.get("EditAuthSystem_LogoffCtrlSource.Label")}
-                            tooltipMessage={Localization.get("EditAuthSystem_LogoffCtrlSource.Tooltip")}
+                            label={Localization.get("EditSkinObject_ControlSrc.Label")}
+                            tooltipMessage={Localization.get("EditSkinObject_ControlSrc.HelpText")}
                             style={inputStyle} />
-                        <SingleLineInputWithError
-                            label={Localization.get("EditAuthSystem_SettingsCtrlSource.Label")}
-                            tooltipMessage={Localization.get("EditAuthSystem_SettingsCtrlSource.Tooltip")}
-                            style={inputStyle}
-                            enabled={!props.disabled} />
                         <Switch value={true}
-                            label={Localization.get("EditAuthSystem_Enabled.Label")} />
+                            label={Localization.get("EditSkinObject_SupportsPartialRender.Label")}
+                            tooltipMessage={Localization.get("EditSkinObject_SupportsPartialRender.HelpText")} />
                     </div>
                 </GridSystem>
                 {!props.actionButtonsDisabled &&
@@ -54,7 +46,7 @@ class AuthenticationSystem extends Component {
     }
 }
 
-AuthenticationSystem.PropTypes = {
+SkinObject.PropTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
@@ -62,4 +54,4 @@ AuthenticationSystem.PropTypes = {
     primaryButtonText: PropTypes.string
 };
 
-export default AuthenticationSystem;
+export default SkinObject;

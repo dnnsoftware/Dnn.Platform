@@ -93,6 +93,19 @@ const createPackageActions = {
                 }, 0);
             }
         };
+    },
+    refreshPackageFiles(payload, callback) {
+        return (dispatch) => {
+            CreatePackageService.refreshPackageFiles(payload, (data) => {
+                dispatch({
+                    type: ActionTypes.REFRESH_PACKAGE_FILES,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

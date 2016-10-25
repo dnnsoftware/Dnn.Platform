@@ -32,6 +32,11 @@ class CreatePackageService {
 
         sf.post("CreatePackage", payload, callback, errorCallback);
     }
+    refreshPackageFiles(payload, callback) {
+        const sf = this.getServiceFramework("Extensions");
+
+        sf.post("RefreshPackageFiles", payload, callback, errorCallback);
+    }
 }
 const createPackageService = new CreatePackageService();
 export default createPackageService;

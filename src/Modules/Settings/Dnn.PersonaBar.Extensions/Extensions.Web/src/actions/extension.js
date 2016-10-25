@@ -96,6 +96,15 @@ const extensionActions = {
             }, errorCallback);
         };
     },
+    installAvailablePackage(packageType, packageName, callback) {
+        return (dispatch) => {
+            ExtensionService.installAvailablePackage(packageType, packageName, (data) => {
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
     deletePackage(packageId, index, callback) {
         return (dispatch) => {
             ExtensionService.deletePackage(packageId, (data) => {
@@ -124,6 +133,22 @@ const extensionActions = {
                     callback(data);
                 }
             }, errorCallback);
+        };
+    },
+    addExtension(parameters, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.EDIT_EXTENSION,
+                payload: {
+                    extensionBeingEdited: parameters,
+                    extensionBeingEditedIndex: -1
+                }
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
         };
     },
     editExtension(parameters, extensionBeingEditedIndex, callback) {

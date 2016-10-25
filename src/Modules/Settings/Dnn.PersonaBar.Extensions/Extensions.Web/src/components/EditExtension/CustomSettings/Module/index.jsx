@@ -191,17 +191,20 @@ class Module extends Component {
                     moduleDefinitions={extensionBeingEdited.moduleDefinitions.value}
                     desktopModuleId={extensionBeingEdited.desktopModuleId.value}
                     onSave={props.onChange.bind(this, "moduleDefinitions")} />
+                    
+                {!props.actionButtonsDisabled &&
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
                     <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
                 </GridCell>
+                }
             </GridCell>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
     }
 }
 
-Module.PropTypes = {
+Module.propTypes = {
     dispatch: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     onSave: PropTypes.func,

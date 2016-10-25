@@ -18,6 +18,7 @@ class ExtensionList extends Component {
                     return <ExtensionDetailRow
                         _package={_package}
                         onDownload={props.onDownload.bind(this)}
+                        onInstall={props.onInstall.bind(this)}
                         />;
                 }) }
             </GridCell>
@@ -31,7 +32,8 @@ ExtensionList.propTypes = {
     collapsed: PropTypes.bool,
     onChange: PropTypes.func,
     type: PropTypes.string,
-    onDownload: PropTypes.func
+    onDownload: PropTypes.func,
+    onInstall: PropTypes.func
 };
 
 

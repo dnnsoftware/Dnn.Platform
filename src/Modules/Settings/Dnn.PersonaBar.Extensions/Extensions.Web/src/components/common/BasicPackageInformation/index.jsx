@@ -15,7 +15,7 @@ import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
-const BasicPackageInformation = ({disabled, validationMapped, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version}) => (
+const BasicPackageInformation = ({disabled, validationMapped, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version, onPackageTypeSelect}) => (
     <GridSystem className={styles.basicPackageInformation + " with-right-border top-half"}>
         <div>
             <DropdownWithError
@@ -29,7 +29,8 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 enabled={!disabled}
                 tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                 label="Extension Type"
-                defaultDropdownValue={!validationMapped ? extensionData.packageType : extensionData.packageType.value}
+                onSelect={onPackageTypeSelect}
+                defaultDropdownValue={!validationMapped ? extensionData.packageType : (extensionData.packageType.value || "-- Select --")}
                 style={inputStyle}
                 />
             <SingleLineInputWithError
@@ -94,7 +95,8 @@ BasicPackageInformation.propTypes = {
     onVersionChange: PropTypes.func,
     onChange: PropTypes.func,
     triedToSave: PropTypes.bool,
-    version: PropTypes.array
+    version: PropTypes.array,
+    onPackageTypeSelect: PropTypes.func
 };
 
 export default BasicPackageInformation;

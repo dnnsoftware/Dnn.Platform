@@ -56,7 +56,7 @@ class ExtensionService {
             packageId: extensionBeingUpdated.packageId.value,
             portalId: utilities.settings.isHost ? -1 : utilities.settings.portalId,
             settings: mapPackageInformation(extensionBeingUpdated),
-            editorActions: {
+            editorActions: (extensionBeingUpdated.packageType.value === "Module" ? {
                 category: extensionBeingUpdated.category.value,
                 dependencies: extensionBeingUpdated.dependencies.value,
                 permissions: extensionBeingUpdated.permissions.value,
@@ -66,7 +66,7 @@ class ExtensionService {
                 unassignPortal: extensionBeingUpdated.unassignedPortals.value,
                 foldername: extensionBeingUpdated.folderName.value,
                 businesscontroller: extensionBeingUpdated.businessController.value
-            }
+            } : {})
         };
         sf.post("SavePackageSettings", payload, callback);
     }
@@ -77,6 +77,14 @@ class ExtensionService {
             Name
         };
         sf.post("DownloadPackage", payload, callback);
+    }
+    installAvailablePackage(packageType, packageName, callback) {
+        const sf = this.getServiceFramework("Extensions");
+        const payload = {
+            packageType,
+            packageName
+        };
+        sf.post("InstallAvailablePackage?" + serializeQueryStringParameters(payload), {}, callback);
     }
     deletePackage(packageId, callback) {
         const sf = this.getServiceFramework("Extensions");

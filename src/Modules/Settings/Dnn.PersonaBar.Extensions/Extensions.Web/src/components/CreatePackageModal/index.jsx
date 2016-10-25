@@ -11,6 +11,7 @@ import StepFour from "./StepFour";
 import StepFive from "./StepFive";
 import StepSix from "./StepSix";
 import Localization from "localization";
+import utilities from "utils";
 import styles from "./style.less";
 
 function mapToManifestPayload(payload, manifest) {
@@ -29,6 +30,14 @@ function mapToPackagePayload(payload, manifest) {
         manifests: {
             [payload.selectedManifestKey]: payload.selectedManifest
         }
+    });
+}
+
+function mapToFileRequestPayload(manifest) {
+    return Object.assign(manifest, {
+        packageFolder: manifest.basePath,
+        includeSource: true,
+        includeAppCode: true
     });
 }
 
@@ -142,7 +151,14 @@ class CreatePackage extends Component {
         const { props } = this;
 
         if (props.packagePayload.createManifest) {
-            props.dispatch(CreatePackageActions.createManifest(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest))));
+            props.dispatch(CreatePackageActions.createManifest(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
+                if (!props.packagePayload.createPackage) {
+                    utilities.utilities.notify("Manifest successfully created.");
+                    setTimeout(()=>{
+                        props.onCancel();
+                    }, 1500);
+                }
+            }));
         }
 
         if (props.packagePayload.createPackage) {
@@ -207,6 +223,12 @@ class CreatePackage extends Component {
         props.dispatch(CreatePackageActions.updatePackageManifest(packageManifest));
     }
 
+    onRefresh() {
+        const { props } = this;
+
+        props.dispatch(CreatePackageActions.refreshPackageFiles(mapToFileRequestPayload(deepCopy(props.packageManifest))));
+    }
+
     getCurrentWizardUI(step) {
         const { props } = this;
         const {packageManifest, installedPackageTypes, packagePayload} = props;
@@ -232,6 +254,7 @@ class CreatePackage extends Component {
                 return <StepTwo
                     packageManifest={packageManifest}
                     onNext={this.goToStep.bind(this, 2)}
+                    onRefresh={this.onRefresh.bind(this)}
                     onBasePathChange={this.onBasePathChange.bind(this)}
                     onFileOrAssemblyChange={this.onFileOrAssemblyChange.bind(this)}
                     onCancel={props.onCancel.bind(this)}

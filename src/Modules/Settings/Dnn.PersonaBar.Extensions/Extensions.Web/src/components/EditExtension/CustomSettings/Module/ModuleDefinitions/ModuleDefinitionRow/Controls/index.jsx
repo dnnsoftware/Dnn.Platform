@@ -19,6 +19,9 @@ function removeRecordFromArray(arr, index) {
 function getSourceFolder(str) {
     return str.substr(0, str.lastIndexOf("/"));
 }
+function getFileName(str) {
+    return str.substr(str.lastIndexOf("/") + 1, str.length - 1);
+}
 class Controls extends Component {
     constructor() {
         super();
@@ -27,7 +30,7 @@ class Controls extends Component {
             controlBeingEdited: {},
             controlBeingEditedIndex: -1,
             error: {
-                source: false
+                source: true
             },
             selectedSourceFolder: "Admin/Skins/"
         };
@@ -65,8 +68,6 @@ class Controls extends Component {
         let {controlBeingEdited, error } = state;
 
         controlBeingEdited[key] = value;
-
-        console.log(key, value);
 
         if (value === "<None Specified>" && key === "source") {
             error[key] = true;
@@ -128,7 +129,6 @@ class Controls extends Component {
             const { props } = this;
             const sourceFolder = getSourceFolder(controlBeingEdited.source) || "Admin/Skins/";
             props.dispatch(ModuleDefinitionActions.getSourceFolders());
-
             props.dispatch(ModuleDefinitionActions.getSourceFiles(sourceFolder, () => {
                 props.dispatch(ModuleDefinitionActions.getControlIcons(controlBeingEdited.source, () => {
                     this.setState({
@@ -137,7 +137,7 @@ class Controls extends Component {
                         controlBeingEditedIndex,
                         selectedSourceFolder: sourceFolder,
                         error: {
-                            source: controlBeingEdited.source === ""
+                            source: getFileName(controlBeingEdited.source) === ""
                         }
                     });
                 }));
