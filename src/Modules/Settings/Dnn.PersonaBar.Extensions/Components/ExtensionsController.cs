@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         #region Private Functions
 
-        private void AddModulesToList(int portalId, List<PackageInfo> packages)
+        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
         {
             Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
             packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
@@ -251,7 +251,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
         }
 
-        private IDictionary<int, TabInfo> BuildData(int portalId, int packageId)
+        private static IDictionary<int, TabInfo> BuildData(int portalId, int packageId)
         {
             IDictionary<int, TabInfo> tabsWithModule = TabController.Instance.GetTabsByPackageID(portalId, packageId, false);
             TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
@@ -265,7 +265,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return tabsInOrder;
         }
 
-        private void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
+        private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
         {
             if ((tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID)))
             {

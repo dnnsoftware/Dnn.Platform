@@ -215,58 +215,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Download install package.
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [RequireHost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
-        {
-            var packageType = package.Type.ToString();
-            var packageName = package.Name;
-            if (string.IsNullOrEmpty(packageType)
-                || string.IsNullOrEmpty(packageName)
-                || packageName.Contains("/")
-                || packageName.Contains("\\"))
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            var packageFile = new FileInfo(Path.Combine(Globals.ApplicationMapPath, "Install\\" + packageType, packageName));
-            if (!packageFile.Exists)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            try
-            {
-                var fileName = packageName;
-                if (fileName.EndsWith(".resources"))
-                {
-                    fileName = fileName.Replace(".resources", "") + ".zip";
-                }
-
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Headers.Add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-                response.Headers.Add("Content-Length", packageFile.Length.ToString());
-                response.Headers.Add("ContentType", "application/zip, application/octet-stream");
-
-                using (var stream = new FileStream(packageFile.FullName, FileMode.Open))
-                {
-                    response.Content = new StreamContent(stream);
-                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-                    return response;
-                }
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
-            }
-        }
-
         [HttpGet]
         public HttpResponseMessage GetSourceFolders( /*int moduleControlId*/)
         {
@@ -434,7 +382,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
                 {
                     var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                    if (authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName)
+                    var isReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+                    if (isReadOnly)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             Localization.GetString("ReadOnlyPackage.SaveErrorMessage", Constants.SharedResources));
@@ -678,8 +627,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Task<HttpResponseMessage>.Factory.StartNew(
-                    () => Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -697,8 +645,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Task<HttpResponseMessage>.Factory.StartNew(
-                    () => Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -720,27 +667,79 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        /// <summary>
+        /// Inatall a package that is already included under one of the installation folders.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [RequireHost]
-        public HttpResponseMessage InstallAvailablePackage([FromUri] string packageType, string fileName)
+        public HttpResponseMessage InstallAvailablePackage(DownloadPackageDto package)
         {
             try
             {
-                var installFolder = GetPackageInstallFolder(packageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(fileName))
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
                 }
 
-                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
-                var installResult = InstallPackageFile(packagePath);
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, package.FileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
 
+                var installResult = InstallPackageFile(packagePath);
                 return Request.CreateResponse(HttpStatusCode.OK, installResult);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Download install package.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
+        {
+            try
+            {
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var fileName = package.FileName ?? "";
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
+                if (fileName.EndsWith(".resources"))
+                {
+                    fileName = fileName.Replace(".resources", ".zip");
+                }
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                var stream = new FileStream(packagePath, FileMode.Open);
+                response.Content = new StreamContent(stream);
+                response.Content.Headers.ContentLength = stream.Length;
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
 
@@ -757,28 +756,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
                 }
-                return DownLoadFile(packagePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [RequireHost]
-        public HttpResponseMessage DownloadAvailablePackage([FromUri] string packageType, string fileName)
-        {
-            try
-            {
-                var installFolder = GetPackageInstallFolder(packageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(fileName))
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
-                }
-
-                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
                 return DownLoadFile(packagePath);
             }
             catch (Exception ex)
@@ -1632,8 +1609,9 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private string GetPackageInstallFolder(string packageType)
         {
-            switch (packageType.ToLowerInvariant())
+            switch ((packageType ?? "").ToLowerInvariant())
             {
+                case "authsystem":
                 case "auth_system":
                     return "AuthSystem";
                 case "corelanguagepack":
