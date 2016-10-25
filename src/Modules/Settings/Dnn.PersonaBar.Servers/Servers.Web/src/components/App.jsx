@@ -16,7 +16,7 @@ const restartAppButtonStyle = {
 class App extends Component { 
     componentWillReceiveProps(newProps) {  
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
-            utils.utilities.notifyError(newProps.infoMessage);
+            utils.utilities.notify(newProps.infoMessage);
         }
 
         if (newProps.reloadPage) {
