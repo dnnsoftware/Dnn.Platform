@@ -5,6 +5,7 @@ import Localization from "../../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import WebTabActions from "../../../actions/webTab";
+import utils from "../../../utils";
 
 import "../style.less";
 
@@ -13,6 +14,12 @@ const defaultPlaceHolder = "...";
 class Web extends Component {
     componentDidMount() {
         this.props.onRetrieveWebServerInfo();
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
+            utils.utilities.notifyError(newProps.errorMessage);
+        }
     }
 
     render() {
@@ -67,12 +74,14 @@ class Web extends Component {
 
 Web.propTypes = {   
     webServerInfo: PropTypes.object.isRequired,
-    onRetrieveWebServerInfo: PropTypes.func.isRequired
+    errorMessage: PropTypes.string,
+    onRetrieveWebServerInfo: PropTypes.func.isRequired    
 };
 
 function mapStateToProps(state) {    
     return {
-        webServerInfo: state.webTab.webServerInfo
+        webServerInfo: state.webTab.webServerInfo,
+        errorMessage: state.webTab.errorMessage
     };
 }
 

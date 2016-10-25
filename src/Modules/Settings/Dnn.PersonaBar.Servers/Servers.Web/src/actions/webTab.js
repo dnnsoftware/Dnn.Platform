@@ -1,5 +1,6 @@
 import {webTab as ActionTypes}  from "../constants/actionTypes";
 import webTabService from "../services/webTabService";
+import localization from "../localization";
 
 const webTabActions = {
     loadWebServerInfo() {       
@@ -19,7 +20,7 @@ const webTabActions = {
                 dispatch({
                     type: ActionTypes.ERROR_LOADING_WEB_TAB,
                     payload: {
-                        errorMessage: "Error loading web tab"
+                        errorMessage: localization.get("errorMessageLoadingWebTab")
                     }
                 });
             });        

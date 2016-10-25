@@ -201,4 +201,7 @@
   <data name="ServerInfo_Url.Text" xml:space="preserve">
     <value>Site URL:</value>
   </data>
+  <data name="errorMessageLoadingWebTab.Text" xml:space="preserve">
+    <value>Error loading Web tab</value>
+  </data>
 </root>
