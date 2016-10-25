@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         #region Extensions Lists API
 
-        /// GET: api/Extensions/GetInstalledPackageTypes
+        /// GET: api/Extensions/GetPackageTypes
         /// <summary>
         /// Get installed package types.
         /// </summary>
@@ -616,6 +616,24 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
+        public Task<HttpResponseMessage> InstallPackage()
+        {
+            try
+            {
+                return
+                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
+                        InstallController.Instance.InstallPackage(portalSettings, userInfo, fileName, stream));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        [RequireHost]
         public Task<HttpResponseMessage> ParsePackage()
         {
             try
@@ -632,20 +650,29 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpPost]
-        [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
-        public Task<HttpResponseMessage> InstallPackage()
+        public HttpResponseMessage ParsePackageFile(DownloadPackageDto package)
         {
             try
             {
-                return
-                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
-                        InstallController.Instance.InstallPackage(portalSettings, userInfo, fileName, stream));
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, package.FileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, ParsePackageFile(packagePath));
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -926,8 +953,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage GetModuleFiles(string ownerFolder, string moduleFolder, FileType type)
         {
-            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith(".")))
-                || (string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith(".")))
+            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith("."))) || string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith("."))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
@@ -1354,23 +1380,23 @@ namespace Dnn.PersonaBar.Extensions.Services
                 switch (package.PackageType.ToLowerInvariant())
                 {
                     case "auth_system":
-                        basePath = Globals.InstallMapPath + ("AuthSystem");
+                        basePath = Globals.InstallMapPath + "AuthSystem";
                         break;
                     case "container":
-                        basePath = Globals.InstallMapPath + ("Container");
+                        basePath = Globals.InstallMapPath + "Container";
                         break;
                     case "corelanguagepack":
                     case "extensionlanguagepack":
-                        basePath = Globals.InstallMapPath + ("Language");
+                        basePath = Globals.InstallMapPath + "Language";
                         break;
                     case "module":
-                        basePath = Globals.InstallMapPath + ("Module");
+                        basePath = Globals.InstallMapPath + "Module";
                         break;
                     case "provider":
-                        basePath = Globals.InstallMapPath + ("Provider");
+                        basePath = Globals.InstallMapPath + "Provider";
                         break;
                     case "skin":
-                        basePath = Globals.InstallMapPath + ("Skin");
+                        basePath = Globals.InstallMapPath + "Skin";
                         break;
                     default:
                         basePath = Globals.HostMapPath;
