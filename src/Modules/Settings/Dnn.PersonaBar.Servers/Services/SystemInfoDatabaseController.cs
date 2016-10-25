@@ -37,13 +37,7 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));
         private readonly DatabaseController _databaseController = new DatabaseController();
-
-        /// GET: api/Servers/GetDatabaseServerInfo
-        /// <summary>
-        /// Gets database server info
-        /// </summary>
-        /// <param></param>
-        /// <returns>database server info</returns>
+        
         [HttpGet]
         public HttpResponseMessage GetDatabaseServerInfo()
         {
@@ -52,29 +46,29 @@ namespace Dnn.PersonaBar.Servers.Services
                 var dbInfo = _databaseController.GetDbInfo();
                 var dbBackups = _databaseController.GetDbBackups().Select(b => new
                 {
-                    b.Name,
-                    b.StartDate,
-                    b.FinishDate,
-                    b.Size,
-                    b.BackupType
+                    name = b.Name,
+                    startDate = b.StartDate,
+                    finishDate = b.FinishDate,
+                    size = b.Size,
+                    backupType = b.BackupType
                 });
                 var dbFileInfo = _databaseController.GetDbFileInfo().Select(f => new
                 {
-                    f.Name,
-                    f.Size,
-                    f.Megabytes,
-                    f.FileType,
-                    f.FileName
+                    name = f.Name,
+                    size = f.Size,
+                    megaBytes = f.Megabytes,
+                    fileType = f.FileType,
+                    fileName = f.FileName
                 });
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    dbInfo.ProductVersion,
-                    dbInfo.ServicePack,
-                    dbInfo.ProductEdition,
-                    dbInfo.SoftwarePlatform,
-                    Backups = dbBackups,
-                    Files = dbFileInfo
+                    productVersion = dbInfo.ProductVersion,
+                    servicePack = dbInfo.ServicePack,
+                    productEdition = dbInfo.ProductEdition,
+                    softwarePlatform = dbInfo.SoftwarePlatform,
+                    backups = dbBackups,
+                    files = dbFileInfo
                 });
             }
             catch (Exception exc)

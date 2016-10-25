@@ -306,4 +306,31 @@
   <data name="UserRestart.Text" xml:space="preserve">
     <value>User triggered an Application Restart</value>
   </data>
+  <data name="DbInfo_ProductEdition.Help" xml:space="preserve">
+    <value>The edition of SQL Server installed.</value>
+  </data>
+  <data name="DbInfo_ProductEdition.Text" xml:space="preserve">
+    <value>Product Edition:</value>
+  </data>
+  <data name="DbInfo_ProductVersion.Help" xml:space="preserve">
+    <value>The version of SQL Server</value>
+  </data>
+  <data name="DbInfo_ProductVersion.Text" xml:space="preserve">
+    <value>Database Version:</value>
+  </data>
+  <data name="DbInfo_ServicePack.Help" xml:space="preserve">
+    <value>Installed service pack(s).</value>
+  </data>
+  <data name="DbInfo_ServicePack.Text" xml:space="preserve">
+    <value>Service Pack:</value>
+  </data>
+  <data name="DbInfo_SoftwarePlatform.Help" xml:space="preserve">
+    <value>The full description of the SQL Server Software Platform installed.</value>
+  </data>
+  <data name="DbInfo_SoftwarePlatform.Text" xml:space="preserve">
+    <value>Software Platform:</value>
+  </data>
+  <data name="errorMessageLoadingDatabaseTab.Text" xml:space="preserve">
+    <value>Error loading Database tab</value>
+  </data>
 </root>
