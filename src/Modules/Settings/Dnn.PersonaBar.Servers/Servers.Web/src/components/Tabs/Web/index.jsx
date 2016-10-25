@@ -27,38 +27,38 @@ class Web extends Component {
 
                     <InfoBlock label={Localization.get("ServerInfo_IISVersion")} 
                         tooltip={Localization.get("ServerInfo_IISVersion.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.iisVersion || defaultPlaceHolder} /> 
 
                     <InfoBlock label={Localization.get("ServerInfo_Framework")} 
                         tooltip={Localization.get("ServerInfo_Framework.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.framework || defaultPlaceHolder} /> 
 
                     <div className="tooltipAdjustment">
                         <InfoBlock label={Localization.get("ServerInfo_Identity")} 
                             tooltip={Localization.get("ServerInfo_Identity.Help")} 
-                            text={"Place holder"} />
+                            text={props.webServerInfo.identity || defaultPlaceHolder} />
                     </div> 
 
                     <InfoBlock label={Localization.get("ServerInfo_HostName")} 
                         tooltip={Localization.get("ServerInfo_HostName.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.hostName || defaultPlaceHolder} /> 
                 </div>
                 <div>
                     <InfoBlock label={Localization.get("ServerInfo_PhysicalPath")} 
                         tooltip={Localization.get("ServerInfo_PhysicalPath.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.physicalPath || defaultPlaceHolder} /> 
 
                     <InfoBlock label={Localization.get("ServerInfo_Url")} 
                         tooltip={Localization.get("ServerInfo_Url.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.url || defaultPlaceHolder} /> 
 
                     <InfoBlock label={Localization.get("ServerInfo_RelativePath")} 
                         tooltip={Localization.get("ServerInfo_RelativePath.Help")} 
-                        text={"Place holder"} /> 
+                        text={props.webServerInfo.relativePath || defaultPlaceHolder} /> 
 
                     <InfoBlock label={Localization.get("ServerInfo_ServerTime")} 
                         tooltip={Localization.get("ServerInfo_ServerTime.Help")} 
-                        text={"Place holder"} />
+                        text={props.webServerInfo.serverTime || defaultPlaceHolder} />
                 </div>
             </GridSystem>
         </div>;

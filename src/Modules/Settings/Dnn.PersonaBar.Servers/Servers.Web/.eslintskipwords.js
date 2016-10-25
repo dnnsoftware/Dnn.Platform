@@ -130,5 +130,7 @@ module.exports = [
     "devtools",
     "ctrl",
     "smtp",
-    "resx"
+    "resx",
+    "os",
+    "iis"
 ]

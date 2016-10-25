@@ -46,13 +46,13 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     osVersion = serverInfo.OSVersion,
                     iisVersion = serverInfo.IISVersion,
-                    serverInfo.Framework,
-                    serverInfo.Identity,
-                    serverInfo.HostName,
-                    serverInfo.PhysicalPath,
-                    serverInfo.Url,
-                    serverInfo.RelativePath,
-                    serverInfo.ServerTime
+                    framework = serverInfo.Framework,
+                    identity = serverInfo.Identity,
+                    hostName = serverInfo.HostName,
+                    physicalPath = serverInfo.PhysicalPath,
+                    url = serverInfo.Url,
+                    relativePath = serverInfo.RelativePath,
+                    serverTime = serverInfo.ServerTime
                 });
             }
             catch (Exception exc)
