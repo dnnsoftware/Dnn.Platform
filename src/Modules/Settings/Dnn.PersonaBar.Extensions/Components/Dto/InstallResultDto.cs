@@ -34,6 +34,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     [DataContract]
     public class InstallResultDto
     {
+        [DataMember(Name = "newPackageId")]
+        public int NewPackageId { get; set; }
+
         [DataMember(Name = "success")]
         public bool Success { get; set; } = true;
 

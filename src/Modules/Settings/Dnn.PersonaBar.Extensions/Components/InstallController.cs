@@ -108,6 +108,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         }
                         else
                         {
+                            installResult.NewPackageId = installer.Packages.First().Value.Package.PackageID;
                             installResult.Succeed(logs);
                         }
                     }
