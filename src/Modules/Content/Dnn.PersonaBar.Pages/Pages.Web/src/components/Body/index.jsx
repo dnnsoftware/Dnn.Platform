@@ -1,6 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
+import PageHierarchy from "../PageHierarchy/PageHierarchy";
+
 import {
     pagination as PaginationActions,
     pageActions as PageActions
@@ -42,6 +44,7 @@ class Body extends Component {
             selectValue: 1
         };
     }
+    
     componentWillMount() {
         // const {props} = this;
         //props.dispatch(); //Dispatch action to get data here
@@ -83,6 +86,7 @@ class Body extends Component {
 
         return (
             <SocialPanelBody>
+                <PageHierarchy />
                 <Tabs onSelect={this.handleSelect}
                     selectedIndex={props.tabIndex}
                     tabHeaders={["Pane 1", "Pane 2"]}>
@@ -164,7 +168,7 @@ class Body extends Component {
                     <Dropdown options={radioButtonOptions} onSelect={this.onSelectChange.bind(this) } value={state.selectValue}/>
                     <Button type="primary" onClick={this.onButtonClick.bind(this)}>Save</Button>
                 </GridCell>
-            </SocialPanelBody >
+            </SocialPanelBody>
         );
     }
 }

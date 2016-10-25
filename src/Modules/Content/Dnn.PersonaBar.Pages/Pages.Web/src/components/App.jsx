@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import SocialPanelHeader from "dnn-social-panel-header";
+import PageHierarchy from "./PageHierarchy/PageHierarchy";
 import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
@@ -11,20 +12,16 @@ import {
 import PageSettings from "../containers/PageSettings";
 
 class App extends Component {
-    constructor() {
-        super();
-    }
 
     navigateMap(page) {
         const {props} = this;
         props.dispatch(VisiblePanelActions.selectPanel(page));
     }
 
-    onEditPage(event) {
-        event.preventDefault();
+    onPageSettings(pageId) {
         const {props} = this;
         this.navigateMap(1);
-        props.dispatch(PageActions.loadPage(39));
+        props.dispatch(PageActions.loadPage(pageId));
     }
 
     render() {
@@ -34,8 +31,8 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <SocialPanelHeader title="Pages">
                     </SocialPanelHeader>
-                    <SocialPanelBody>
-                        <Button type="primary" onClick={this.onEditPage.bind(this) }>Primary Action</Button>
+                    <SocialPanelBody>                        
+                        <PageHierarchy onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
@@ -59,7 +56,6 @@ App.PropTypes = {
     selectedPageVisibleIndex: PropTypes.number,
     selectedDnnPage: PropTypes.object
 };
-
 
 function mapStateToProps(state) {
     return {

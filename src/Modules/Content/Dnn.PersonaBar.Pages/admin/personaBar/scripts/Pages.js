@@ -1,5 +1,7 @@
-﻿define(['jquery', './extension', './config'], function ($, ext, cf, slv) {
+﻿define(['jquery', 'knockout', './extension', './config', 'jquery-ui.min', 'dnn.jquery'], function ($, ko, ext, cf) {
     'use strict';
+    window.ko = ko;
+
     var isMobile;
     var identifier;
     var config = cf.init();
