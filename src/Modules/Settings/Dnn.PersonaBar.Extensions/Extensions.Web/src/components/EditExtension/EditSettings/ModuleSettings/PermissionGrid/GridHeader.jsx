@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 
-import { ExtensionActions } from "actions";
-
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -23,11 +21,16 @@ class GridHeader extends Component {
         const {props, state} = this;
     }
     
-    renderGrid(){
+    renderHeader(){
         const {props, state} = this;
+        let actionsWidth = 100 - 20 - props.definitions.length * 10;
 
         return  <GridCell className="grid-header">
-                    hello world
+                    <GridCell columnSize="20"><span>{props.type}</span></GridCell>
+                    {props.definitions.map(function(def){
+                        return <GridCell columnSize="10"><span>{def.permissionName}</span></GridCell>;
+                    })}
+                    <GridCell columnSize={actionsWidth} />
                 </GridCell>;
     }
 
@@ -35,7 +38,7 @@ class GridHeader extends Component {
         const {props, state} = this;
 
         return (
-            this.renderGrid()
+            this.renderHeader()
         );
     }
 }

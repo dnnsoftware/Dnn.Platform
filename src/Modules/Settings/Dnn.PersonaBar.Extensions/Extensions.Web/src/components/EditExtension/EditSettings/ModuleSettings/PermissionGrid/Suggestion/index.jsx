@@ -7,7 +7,7 @@ import Label from "dnn-label";
 import Button from "dnn-button";
 import Combobox from "react-widgets/lib/Combobox";
 import Service from "./Service";
-import IconButton from "./IconButton";
+import IconButton from "../IconButton";
 
 import "./style.less";
 

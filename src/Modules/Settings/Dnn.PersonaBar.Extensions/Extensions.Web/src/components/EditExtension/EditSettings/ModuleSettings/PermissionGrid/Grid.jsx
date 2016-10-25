@@ -1,8 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-
-import { ExtensionActions } from "actions";
-
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -19,8 +16,6 @@ class Grid extends Component {
         super(props);
 
         this.state = {
-            definitions: props.permissions.definitions,
-            permissions: props.permissions.permissions
         };
     }
 
@@ -28,12 +23,92 @@ class Grid extends Component {
         const {props, state} = this;
     }
     
+    onPermissionChange(permission){
+        const {props, state} = this;
+
+        let permissions = props.permissions.map(function(p){
+            switch(props.type){
+                case "role":
+                    if(p.roleId === permission.roleId){
+                        return permission;
+                    }
+
+                    return p;
+                case "user":
+                    if(p.userId === permission.userId){
+                        return permission;
+                    }
+
+                    return p;
+            }
+        });
+
+        if(typeof props.onChange === "function"){
+            props.onChange(permissions);
+        }
+    }
+
+    onPermissionDeleted(permission){
+        const {props, state} = this;
+
+        let permissions = props.permissions.filter(function(p){
+            switch(props.type){
+                case "role":
+                    return p.roleId !== permission.roleId;
+                case "user":
+                    return p.userId !== permission.userId;
+            }
+        });
+
+        if(typeof props.onChange === "function"){
+            props.onChange(permissions);
+        }
+    }
+
+    onSuggestion(value){
+        const {props, state} = this;
+
+        let permission = props.permissions.filter(function(p){
+            if(props.type === "role"){
+                return p.roleId === value.value;
+            } else {
+                return p.userId === value.value;
+            }
+        });
+
+        if(!permission.length && typeof props.onAddPermission === "function"){
+            let newPermission = props.type === "role" ? {
+                roleId: value.value,
+                roleName: value.label,
+                locked: false,
+                default: false,
+                permissions: []
+            } : {
+                userId: value.value,
+                displayName: value.label,
+                locked: false,
+                default: false,
+                permissions: []
+            };
+            props.onAddPermission(newPermission);
+        }
+    }
+
     renderGrid(){
         const {props, state} = this;
 
+        let self = this;
         return  <GridCell className={props.type + "-permissions-grid"}>
-                    <GridCaption service={props.service} localization={props.localization} type={props.type} />
-                    <GridHeader type={props.type} definitions={state.definitions} />
+                    <GridCaption service={props.service} localization={props.localization} type={props.type} onSuggestion={this.onSuggestion.bind(this)} />
+                    <GridHeader type={props.type} definitions={props.definitions} />
+                    {props.permissions.map(function(permission){
+                        return <GridRow 
+                                    type={props.type} 
+                                    definitions={props.definitions} 
+                                    permission={permission} 
+                                    onChange={self.onPermissionChange.bind(self)}
+                                    onDeletePermisson={self.onPermissionDeleted.bind(self)} />;
+                    })}
                 </GridCell>;
     }
 
@@ -49,6 +124,7 @@ class Grid extends Component {
 Grid.propTypes = {
     dispatch: PropTypes.func.isRequired,
     permissions: PropTypes.object.isRequired,
+    definitions: PropTypes.object.isRequired,
     localization: PropTypes.object,
     service: PropTypes.object.isRequired,
     type: PropTypes.oneOf(["role", "user"])

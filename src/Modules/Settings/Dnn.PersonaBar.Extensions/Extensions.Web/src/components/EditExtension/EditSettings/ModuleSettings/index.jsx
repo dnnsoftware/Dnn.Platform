@@ -28,13 +28,16 @@ class ModuleSettings extends Component {
         props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
     }
 
+    onPermissionsChanged(permissions){
+        console.log(permissions);
+    }
 
     render() {
         const {props, state} = this;
 
         return (
-            <GridCell>
-                <PermissionGrid permissions={props.permissions} service={utils.utilities.sf} />
+            <GridCell className="module-settings">
+                <PermissionGrid permissions={props.permissions} service={utils.utilities.sf} onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
             </GridCell>
         );
     }

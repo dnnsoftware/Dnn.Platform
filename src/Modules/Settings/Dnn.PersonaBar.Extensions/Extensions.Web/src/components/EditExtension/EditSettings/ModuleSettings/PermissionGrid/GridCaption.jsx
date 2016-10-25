@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 
-import { ExtensionActions } from "actions";
-
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import RoleGroupFilter from "./RoleGroupFilter";
@@ -24,7 +22,17 @@ class GridCaption extends Component {
     }
 
     onRoleGroupChange(value){
+        const { props, state } = this;
+
         this.setState({roleGroupId: value.id});
+    }
+
+    onSuggestionSelected(value){
+        const { props, state } = this;
+        
+        if(typeof props.onSuggestion === "function"){
+            props.onSuggestion(value);
+        }
     }
 
     render() {
@@ -55,6 +63,7 @@ class GridCaption extends Component {
                                 add: props.type === "role" ? props.localization.addRole : props.localization.addUser
                             }}  
                             options={suggestionOptions}
+                            onSelect={this.onSuggestionSelected.bind(this)}
                              />
                     </GridCell>
                 </GridCell>;
@@ -63,6 +72,7 @@ class GridCaption extends Component {
 
 GridCaption.propTypes = {
     localization: PropTypes.object.isRequired,
+    onSuggestion: PropTypes.func,
     service: PropTypes.object.isRequired,
     type: PropTypes.oneOf(["role", "user"])
 };

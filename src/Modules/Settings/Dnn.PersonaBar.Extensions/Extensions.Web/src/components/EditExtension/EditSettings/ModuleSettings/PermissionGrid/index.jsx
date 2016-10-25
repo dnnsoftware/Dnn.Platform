@@ -55,6 +55,46 @@ class PermissionGrid extends Component {
 
         return state.localization[key] || key;
     }
+
+    onPermissionsChanged(type, permissions){
+        const {props, state} = this;
+
+        let newState = {rolePermissions: state.rolePermissions, userPermissions: state.userPermissions};
+        switch(type){
+            case "role":
+                newState = Object.assign(newState, {rolePermissions: permissions});
+                break;
+            case "user":
+                newState = Object.assign(newState, {userPermissions: permissions});
+                break;
+        }
+
+        this.setState(newState, function(){
+            if(typeof props.onPermissionsChanged === "function"){
+                props.onPermissionsChanged(newState);
+            }
+        });
+    }
+
+    onAddPermission(type, permission){
+        const {props, state} = this;
+
+        let newState = {rolePermissions: state.rolePermissions, userPermissions: state.userPermissions};
+        switch(type){
+            case "role":
+                newState.rolePermissions.push(permission);
+                break;
+            case "user":
+                newState.userPermissions.push(permission);
+                break;
+        }
+
+        this.setState(newState, function(){
+            if(typeof props.onPermissionsChanged === "function"){
+                props.onPermissionsChanged(newState);
+            }
+        });
+    }
     
     renderRolesGrid(){
         const {props, state} = this;
@@ -63,7 +103,10 @@ class PermissionGrid extends Component {
                     service={props.service} 
                     localization={state.localization} 
                     type="role" 
-                    permissions={{definitions: state.definitions, permissions: state.rolePermissions}} />;
+                    definitions={state.definitions}
+                    permissions={state.rolePermissions}
+                    onChange={this.onPermissionsChanged.bind(this, "role")}
+                    onAddPermission={this.onAddPermission.bind(this, "role")} />;
     }
 
     render() {
@@ -86,7 +129,8 @@ PermissionGrid.propTypes = {
     permissions: PropTypes.object.isRequired,
     localization: PropTypes.object,
     className: PropTypes.string,
-    service: PropTypes.object.isRequired
+    service: PropTypes.object.isRequired,
+    onPermissionsChanged: PropTypes.func.isRequired
 };
 
 PermissionGrid.DefaultProps = {

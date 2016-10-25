@@ -13,7 +13,10 @@ import { AddIcon,
     ArrowDownIcon,
     ArrowRightIcon,
     ArrowUpIcon,
-    LockClosedIcon
+    LockClosedIcon,
+    CheckMarkIcon,
+    CrossOutIcon,
+    CheckboxUncheckedIcon 
 } from "dnn-svg-icons";
 
 import "./style.less";
@@ -57,6 +60,12 @@ class IconButton extends Component {
                 return ArrowUpIcon;
             case "lock-closed":
                 return LockClosedIcon;
+            case "checked":
+                return CheckMarkIcon;
+            case "denied":
+                return  CrossOutIcon;
+            case "unchecked":
+                return CheckboxUncheckedIcon;
             default:
                 return null;
         }
