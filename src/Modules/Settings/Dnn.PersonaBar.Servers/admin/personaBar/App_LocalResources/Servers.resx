@@ -210,14 +210,95 @@
   <data name="errorMessageClearingCache.Text" xml:space="preserve">
     <value>Error trying to Clear Cache</value>
   </data>
+  <data name="errorMessageLoadingApplicationTab.Text" xml:space="preserve">
+    <value>Error loading Application tab</value>
+  </data>
   <data name="errorMessageRestartingApplication.Text" xml:space="preserve">
     <value>Error trying to Restart Application</value>
+  </data>
+  <data name="HostInfo_CachingProvider.Help" xml:space="preserve">
+    <value>The default caching provider for the site.</value>
+  </data>
+  <data name="HostInfo_CachingProvider.Text" xml:space="preserve">
+    <value>Caching Provider:</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlEnabled.Help" xml:space="preserve">
+    <value>Displays whether Friendly URLs are enabled for the site.</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlEnabled.Text" xml:space="preserve">
+    <value>Friendly URLs Enabled:</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlProvider.Help" xml:space="preserve">
+    <value>The default Friendly URL provider for the site.</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlProvider.Text" xml:space="preserve">
+    <value>Friendy URL Provider:</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlType.Help" xml:space="preserve">
+    <value>Displays the type of Friendly URLs used for the site.</value>
+  </data>
+  <data name="HostInfo_FriendlyUrlType.Text" xml:space="preserve">
+    <value>Friendly URL Type:</value>
+  </data>
+  <data name="HostInfo_HtmlEditorProvider.Help" xml:space="preserve">
+    <value>The default HTML Editor provider for the site.</value>
+  </data>
+  <data name="HostInfo_HtmlEditorProvider.Text" xml:space="preserve">
+    <value>HTML Editor Provider:</value>
+  </data>
+  <data name="HostInfo_LoggingProvider.Help" xml:space="preserve">
+    <value>The default logging provider for the site.</value>
+  </data>
+  <data name="HostInfo_LoggingProvider.Text" xml:space="preserve">
+    <value>Logging Provider:</value>
+  </data>
+  <data name="HostInfo_Permissions.Help" xml:space="preserve">
+    <value>The Code Access Security (CAS) Permissions available for this site.</value>
+  </data>
+  <data name="HostInfo_Permissions.Text" xml:space="preserve">
+    <value>CAS Permissions:</value>
+  </data>
+  <data name="HostInfo_SchedulerMode.Help" xml:space="preserve">
+    <value>The mode set for the Schedule. The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive.  Alternatively, the Request Method executes tasks when HTTP Requests are made.  The scheduler can also be disabled.</value>
+  </data>
+  <data name="HostInfo_SchedulerMode.Text" xml:space="preserve">
+    <value>Scheduler Mode:</value>
+  </data>
+  <data name="HostInfo_WebFarmEnabled.Help" xml:space="preserve">
+    <value>Indicates whether the site operates in Web Farm mode. </value>
+  </data>
+  <data name="HostInfo_WebFarmEnabled.Text" xml:space="preserve">
+    <value>Web Farm Enabled:</value>
   </data>
   <data name="infoMessageClearingCache.Text" xml:space="preserve">
     <value>Clearing Cache</value>
   </data>
   <data name="infoMessageRestartingApplication.Text" xml:space="preserve">
     <value>Restarting Application</value>
+  </data>
+  <data name="plDataProvider.Help" xml:space="preserve">
+    <value>The default data provider for this application.</value>
+  </data>
+  <data name="plDataProvider.Text" xml:space="preserve">
+    <value>Data Provider:</value>
+  </data>
+  <data name="plGUID.Help" xml:space="preserve">
+    <value>The globally unique identifier which can be used to identify this application.</value>
+  </data>
+  <data name="plGUID.Text" xml:space="preserve">
+    <value>Host GUID:</value>
+  </data>
+  <data name="plProduct.Help" xml:space="preserve">
+    <value>The application you are running</value>
+  </data>
+  <data name="plProduct.Text" xml:space="preserve">
+    <value>Product:</value>
+  </data>
+  <data name="plVersion.Help" xml:space="preserve">
+    <value>The version of this application.</value>
+  </data>
+  <data name="plVersion.Text" xml:space="preserve">
+    <value>Version:</value>
   </data>
   <data name="restartApplicationButtonLabel.Text" xml:space="preserve">
     <value>Restart Application</value>
