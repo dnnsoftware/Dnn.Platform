@@ -23,6 +23,12 @@ const serviceFramework = {
         return new Promise((callback, errorCallback) => {
             sf.get(method + "?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
         });
+    },
+    post(controllerName, method, parameters) {
+        const sf = getServiceFramework(controllerName);
+        return new Promise((callback, errorCallback) => {
+            sf.post(method + "?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+        });
     }
 };
 

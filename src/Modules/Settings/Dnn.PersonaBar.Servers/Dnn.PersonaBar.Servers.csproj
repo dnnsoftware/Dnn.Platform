@@ -121,6 +121,7 @@
     <Compile Include="Services\Dto\UpdateProxySettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateWebServerSettingsRequest.cs" />
+    <Compile Include="Services\ServerController.cs" />
     <Compile Include="Services\ServerSettingsLogsController.cs" />
     <Compile Include="Services\ServerSettingsPerformance.cs" />
     <Compile Include="Services\ServerSettingsSmtpControllers.cs" />
