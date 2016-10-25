@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -29,6 +30,7 @@ using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -40,6 +42,8 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
 
+        internal static string LocalResourceFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Servers.resx");
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RestartApplication()
@@ -47,7 +51,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-                //log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
+                log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();
                 return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL()});
