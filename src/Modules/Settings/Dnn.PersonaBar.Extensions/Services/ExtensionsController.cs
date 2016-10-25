@@ -768,17 +768,17 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpGet]
         [RequireHost]
-        public HttpResponseMessage DownloadAvailablePackage([FromUri] string packageType, string packageName)
+        public HttpResponseMessage DownloadAvailablePackage([FromUri] string packageType, string fileName)
         {
             try
             {
                 var installFolder = GetPackageInstallFolder(packageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(packageName))
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(fileName))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
                 }
 
-                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, packageName);
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
                 return DownLoadFile(packagePath);
             }
             catch (Exception ex)
