@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {url = Request.RequestUri});
+                return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL() });
             }
             catch (Exception exc)
             {
