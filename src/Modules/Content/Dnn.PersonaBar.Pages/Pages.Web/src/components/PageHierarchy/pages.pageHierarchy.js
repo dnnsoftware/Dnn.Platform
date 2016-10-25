@@ -320,11 +320,6 @@
             });
         },
 
-        _toggleViewClickHandler: function (data, e) {
-            this._removeHiddenLists();
-            data.inDrag($(e.target).hasClass('view-drag'));
-        },
-
         _searchKeywordsChangedHandler: function (e) {
             var handler = this;
 
@@ -349,17 +344,6 @@
             viewModel.selectedPage(this._getEmptyPageData());
 
             this._loadRootPageList();
-        },
-
-        _toggleViewChanged: function (inDrag) {
-            var handler = this;
-            this._removeListScrollView();
-
-            this.container.find('.pages-list-container').width(20000);
-
-            setTimeout(function () {
-                handler._initScrollView(true);
-            }, 300);
         },
 
         _selectPage: function (pageData) {
@@ -405,61 +389,6 @@
                     this._getViewModel().selectedPage(this._clonePageData(pageData));
                 }
             }
-        },
-
-        _showPreview: function (pageData, element) {
-            var handler = this;
-
-            if (!this._previewContainer) {
-                this._previewContainer = $('<div class="pages-preview"><img src="" /></div>');
-                this._previewContainer.mouseenter(function () {
-                    handler._mouseOnPreview = true;
-                }).mouseleave(function (e) {
-                    handler._mouseOnPreview = false;
-                    handler._hidePreview();
-                });
-                $(document.body).append(this._previewContainer);
-            }
-
-            this._calcPreviewPosition(element);
-
-            this._previewContainer.show('fast');
-        },
-
-        _hidePreview: function () {
-            if (this._previewContainer && !this._mouseOnPreview) {
-                this._previewContainer.hide('fast');
-            }
-        },
-
-        _calcPreviewPosition: function(element) {
-            var pos, $element, previewHeight, elementWidth, elementHeight, windowHeight, offset;
-
-            pos = {};
-            $element = $(element);
-            previewHeight = this._previewContainer.outerHeight();
-            elementWidth = $element.width();
-            elementHeight = $element.height();
-            windowHeight = $(window).height();
-            offset = $element.offset();
-
-            pos.left = offset.left + elementWidth - 25;
-            pos.top = offset.top - previewHeight / 2 + elementHeight / 2;
-
-            if (pos.top < 0) {
-                this._previewContainer.removeClass('bottom').addClass('top');
-                pos.top = $element.offset().top;
-            }else if (pos.top + previewHeight > windowHeight) {
-                this._previewContainer.removeClass('top').addClass('bottom');
-                pos.top = offset.top - previewHeight + elementHeight;
-            } else {
-                this._previewContainer.removeClass('top bottom');
-            }
-
-            this._previewContainer.css({
-                left: pos.left,
-                top: pos.top
-            });
         },
 
         // Doesn't transfer second parameter means delete it
@@ -514,8 +443,7 @@
                 parentId: 0,
                 name: '',
                 childCount: 0,
-                isspecial: false,
-                publishDate: ''
+                isspecial: false
             };
         },
 
@@ -526,7 +454,6 @@
                 name: data.name,
                 childCount: data.childCount,
                 isspecial: data.isspecial,
-                publishDate: data.publishDate,
                 pages: data.pages,
                 timestamp: (new Date()).getTime()
             };
@@ -1188,7 +1115,7 @@
                 this._viewModel.pagesList = ko.observableArray([]);
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());
-                this._viewModel.dragPage = ko.observable({id: 0, name: '', status: '', publishDate: '', childCount: 0});
+                this._viewModel.dragPage = ko.observable({id: 0, name: '', status: '', childCount: 0});
                 this._viewModel.inDrag = ko.observable(false);
                 this._viewModel.isNew = ko.observable(false);
                 this._viewModel.selectedPagePath = ko.observableArray([]);
@@ -1197,7 +1124,6 @@
                 this._viewModel.deletedPagesCount = ko.observable(0);
 
                 this._viewModel.selectedPage.subscribe($.proxy(this._selectedPageChanged, this));
-                this._viewModel.inDrag.subscribe($.proxy(this._toggleViewChanged, this));
                 
                 this._viewModel.pageItemClick = $.proxy(this._pageItemClickHandler, this);
                 this._viewModel.viewPageClick = $.proxy(this._viewPageClickHandler, this);
@@ -1209,8 +1135,6 @@
                 this._viewModel.searchKeyDown = $.proxy(this._searchKeywordsChangedHandler, this);
                 this._viewModel.searchKeyUp = $.proxy(this._searchKeywordsChangedHandler, this);
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
-
-                this._viewModel.toggleView = $.proxy(this._toggleViewClickHandler, this);
             }
             return this._viewModel;
         },
@@ -1233,4 +1157,3 @@
 module.exports = {
     pageHierarchyManager: new pageHierarchyManager()
 };
-

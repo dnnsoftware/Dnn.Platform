@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +14,6 @@ using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
@@ -236,20 +234,23 @@ namespace Dnn.PersonaBar.Pages.Services
                 Name = tab.LocalizedTabName,
                 Url = tab.FullUrl,
                 ChildrenCount = portalTabs?.Count(ct => ct.ParentId == tab.TabID) ?? 0,
-                PublishDate = tab.CreatedOnDate.ToString("MM/dd/yyyy"),
+                Status = GetTabStatus(tab),
                 ParentId = tab.ParentId,
                 Level = tab.Level,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings),
-                TabPath = tab.TabPath.Replace("//", "/"),
-                LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                FriendlyLastModifiedOnDate = Utilities.RelativeDateFromUtcDate(tab.LastModifiedOnDate.ToUniversalTime()),
-                UseDefaultSkin = UseDefaultSkin(tab)
+                TabPath = tab.TabPath.Replace("//", "/")
             };
         }
 
-        private bool UseDefaultSkin(TabInfo tab)
+        // TODO: Refactor to use enum
+        private string GetTabStatus(TabInfo tab)
         {
-            return !string.IsNullOrEmpty(tab.SkinSrc) && tab.SkinSrc.Equals(PortalSettings.DefaultPortalSkin, StringComparison.InvariantCultureIgnoreCase);
+            if (tab.DisableLink)
+            {
+                return "Disabled";
+            }
+
+            return tab.IsVisible ? "Visible" : "Hidden";
         }
     }
 }

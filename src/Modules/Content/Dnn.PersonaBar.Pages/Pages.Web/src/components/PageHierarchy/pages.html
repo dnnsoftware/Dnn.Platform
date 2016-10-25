@@ -33,7 +33,6 @@
         <div class="page-item">
             <span class="summary">
                 <span class="subtitle field-name" data-bind="html: name"></span>
-                <span><label data-bind="html: $root.resx.pages_Published"></label><span data-bind="html: publishDate"></span></span>
                 <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }"><label data-bind="html: $root.resx.pages_Status"></label><span data-bind="html: (status == 'Hidden' ? $root.resx.pages_Hidden : status)"></span></span>
 
                 <span class="actions">
@@ -57,7 +56,6 @@
         <div class="page-item drag-item">
             <span class="summary">
                 <span class="subtitle field-name" data-bind="html: name"></span>
-                <span><label data-bind="html: $root.resx.pages_Published"></label><span data-bind="html: publishDate"></span></span>
                 <span class="drag-area" data-bind="html: $root.resx.pages_DragPageTooltip"></span>
             </span>
         </div>

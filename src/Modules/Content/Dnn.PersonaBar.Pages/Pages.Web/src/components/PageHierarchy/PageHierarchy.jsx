@@ -15,8 +15,7 @@ class PageHierarchy extends Component {
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
     }
 
-    initCallback(a) {
-        console.log("initCallback", a);
+    initCallback() {
     }
 
     callPageSettings(action, params) {
@@ -26,7 +25,7 @@ class PageHierarchy extends Component {
     
     render() {
         const html = require("html!./pages.html");
-        return <div className="knockout-container" dangerouslySetInnerHTML={{__html: html}} />; // eslint-disable-line react/no-danger
+        return <div dangerouslySetInnerHTML={{__html: html}} />; // eslint-disable-line react/no-danger
     }
 } 
 

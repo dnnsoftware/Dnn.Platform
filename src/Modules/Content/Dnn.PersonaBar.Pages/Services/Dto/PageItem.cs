@@ -14,17 +14,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "childCount")]
         public int ChildrenCount { get; set; }
 
-        [DataMember(Name = "thumbnail")]
-        public string Thumbnail { get; set; }
-
-        [DataMember(Name = "largeThumbnail")]
-        public string LargeThumbnail { get; set; }
-
         [DataMember(Name = "url")]
         public string Url { get; set; }
-
-        [DataMember(Name = "publishDate")]
-        public string PublishDate { get; set; }
 
         [DataMember(Name = "status")]
         public string Status { get; set; }
@@ -40,14 +31,5 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "isspecial")]
         public bool IsSpecial { get; set; }
-
-        [DataMember(Name = "useDefaultSkin")]
-        public bool UseDefaultSkin { get; set; }
-
-        [DataMember(Name = "lastModifiedOnDate")]
-        public string LastModifiedOnDate { get; set; }
-
-        [DataMember(Name = "friendlyLastModifiedOnDate")]
-        public string FriendlyLastModifiedOnDate { get; set; }
     }
 }
