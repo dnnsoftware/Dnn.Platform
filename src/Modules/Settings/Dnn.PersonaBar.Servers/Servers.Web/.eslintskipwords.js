@@ -132,5 +132,8 @@ module.exports = [
     "smtp",
     "resx",
     "os",
-    "iis"
+    "iis",
+    "guid",
+    "urls",
+    "cas"
 ]
