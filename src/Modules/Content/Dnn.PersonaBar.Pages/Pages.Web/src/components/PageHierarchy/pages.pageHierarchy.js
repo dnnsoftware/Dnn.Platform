@@ -2,7 +2,7 @@
 
     var OVER_TIME_TO_OPEN_PAGE_CHILDS;
     var pageHierarchyManager, pageHierarchyDefaultOptions;
-    var draggingJqObj, pageDropped, dropOnDroppable;
+    var draggingJqObj, pageDropped, dropOnDroppable, uiOnDragStart;
 
     OVER_TIME_TO_OPEN_PAGE_CHILDS = 700;
 
@@ -726,7 +726,7 @@
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceIndex, sourceFind, targetId, targetIndex, targetFind;
+                        var sourcePageId, sourceUl, sourceIndex, sourceFind, targetId, targetIndex, targetFind;
 
                         pageDropped = {
                             item: $(ui.draggable[0]),
@@ -1189,7 +1189,7 @@
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());
                 this._viewModel.dragPage = ko.observable({id: 0, name: '', status: '', publishDate: '', childCount: 0});
-                this._viewModel.inDrag = ko.observable(false); //
+                this._viewModel.inDrag = ko.observable(false);
                 this._viewModel.isNew = ko.observable(false);
                 this._viewModel.selectedPagePath = ko.observableArray([]);
                 this._viewModel.searchKeyword = ko.observable('');
