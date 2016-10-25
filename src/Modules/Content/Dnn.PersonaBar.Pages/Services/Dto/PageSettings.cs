@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
+    [DataContract]
     public class PageSettings
     {
         [DataMember(Name = "tabId")]

@@ -1,9 +1,9 @@
 import pagination from "./pagination";
 import visiblePanel from "./visiblePanel";
-import pageSettings from "./pageSettings";
+import pageActions from "./pageActions";
 
 export {
     pagination,
     visiblePanel,
-    pageSettings
+    pageActions
 };

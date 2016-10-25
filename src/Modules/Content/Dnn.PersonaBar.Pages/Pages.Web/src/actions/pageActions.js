@@ -1,12 +1,16 @@
-import ActionTypes from "../constants/actionTypes/pageSettings";
+import ActionTypes from "../constants/actionTypes/pageActionTypes";
 import PagesService from "../services/pageService";
 
-const pageSettingsActions = {
+const pageActions = {
     loadPage(pageId) {
         return (dispatch) => {
+            dispatch({
+                type: ActionTypes.LOAD_PAGE
+            });    
+
             PagesService.getPage(pageId).then(response => {
                 dispatch({
-                    type: ActionTypes.LOAD_PAGE,
+                    type: ActionTypes.LOADED_PAGE,
                     data: {
                         page: response
                     }
@@ -20,4 +24,4 @@ const pageSettingsActions = {
     }
 };
 
-export default pageSettingsActions;
+export default pageActions;

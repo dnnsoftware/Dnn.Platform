@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
     pagination as PaginationActions,
-    pageSettings as PageSettingsActions
+    pageActions as PageActions
 } from "../../actions";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
@@ -75,7 +75,7 @@ class Body extends Component {
 
     onButtonClick() {
         const {props} = this;
-        props.dispatch(PageSettingsActions.loadPage(39));
+        props.dispatch(PageActions.loadPage(39));
     }
 
     render() {
