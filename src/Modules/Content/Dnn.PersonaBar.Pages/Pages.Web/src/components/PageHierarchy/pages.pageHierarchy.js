@@ -1116,7 +1116,7 @@
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());
                 this._viewModel.dragPage = ko.observable({id: 0, name: '', status: '', childCount: 0});
-                this._viewModel.inDrag = ko.observable(false);
+                this._viewModel.inDrag = ko.observable(true);
                 this._viewModel.isNew = ko.observable(false);
                 this._viewModel.selectedPagePath = ko.observableArray([]);
                 this._viewModel.searchKeyword = ko.observable('');

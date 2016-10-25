@@ -32,11 +32,9 @@
     <li data-bind="click: $root.pageItemClick, attr: {'data-page-id': id }, css: {'selected': $root.selectedPage().id == $data.id, 'page-notvisible': (status == 'Hidden' || status == 'Disabled')}">
         <div class="page-item">
             <span class="summary">
+                <span class="child-count" data-bind="html: childCount, visible: childCount > 0"></span>
                 <span class="subtitle field-name" data-bind="html: name"></span>
-                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }"><label data-bind="html: $root.resx.pages_Status"></label><span data-bind="html: (status == 'Hidden' ? $root.resx.pages_Hidden : status)"></span></span>
-
                 <span class="actions">
-                    <span class="child-count" data-bind="html: childCount, visible: childCount > 0"></span>
                     <span class="buttons">
                         <span class="view-page" data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.pages_View }"></span>
                         <span class="edit-page" data-bind="click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.pages_Edit }"></span>

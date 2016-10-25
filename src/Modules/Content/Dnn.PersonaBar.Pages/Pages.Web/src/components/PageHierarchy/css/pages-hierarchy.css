@@ -182,11 +182,11 @@
     line-height: 16px;
     margin-top: 2px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.child-count {
+.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.child-count {
     display: inline-block;
-    height: 16px;
+    height: 16px;    
     float: left;
-    padding-left: 22px;
+    padding-left: 0;
     font-weight: bold;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons {
@@ -249,7 +249,7 @@
     background-color: #0887c5;
     color: #fff;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.child-count {
+.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.child-count {
     background-position: 0 -16px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.buttons span.view-page {
@@ -435,9 +435,7 @@ div.page-drag-helper.page-drag-multiple span.icon {
 .pagePanel .pagehierarchy-container .pages-list-container .pages-list.animate {
     transition: width 100ms linear;
 }
-.pagePanel .pagehierarchy-container.drag-view {
 
-}
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list {
     width: 262px;
 	padding: 6px 0;
@@ -468,9 +466,10 @@ div.page-drag-helper.page-drag-multiple span.icon {
 .pagePanel .pagehierarchy-container.drag-view .pages-list ul li.selected div.page-item {
     background-color: #2fa6eb;
 }
-
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span {
-    display: none;
+.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.actions {
+    position: absolute;
+    right: 26px;
+    top: 13px;
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary {
     display: inline-block;
