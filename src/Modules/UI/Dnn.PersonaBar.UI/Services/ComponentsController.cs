@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.UI.Services
                     .Select(u => new SuggestionDto()
                     {
                         Value = u.UserID,
-                        Label = $"{u.DisplayName} ({u.Username})"
+                        Label = $"{u.DisplayName}"
                     });
 
                 return Request.CreateResponse(HttpStatusCode.OK, matchedUsers);
