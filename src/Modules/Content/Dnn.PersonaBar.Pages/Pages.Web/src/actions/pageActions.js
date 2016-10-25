@@ -21,6 +21,37 @@ const pageActions = {
                 });
             });     
         };
+    },
+
+    savePage(page) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SAVE_PAGE
+            });    
+
+            PagesService.savePage(page).then(response => {
+                dispatch({
+                    type: ActionTypes.SAVED_PAGE,
+                    data: {
+                        page: response
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_SAVING_PAGE
+                });
+            });     
+        };
+    },
+
+    changePageField(key, value) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_FIELD_VALUE,
+                field: key,
+                value
+            });  
+        };
     }
 };
 

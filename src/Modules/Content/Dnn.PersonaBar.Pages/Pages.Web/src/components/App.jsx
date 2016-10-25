@@ -24,6 +24,16 @@ class App extends Component {
         props.dispatch(PageActions.loadPage(pageId));
     }
 
+    onSavePage() {
+        const {props} = this;
+        props.dispatch(PageActions.savePage(props.selectedDnnPage));
+    }
+
+    onChangePageField(key, value) {
+        const {props} = this;
+        props.dispatch(PageActions.changePageField(key, value));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -40,9 +50,11 @@ class App extends Component {
                     </SocialPanelHeader>
                     <SocialPanelBody>
                         {props.selectedDnnPage && 
-                            <PageSettings selectedPage={props.selectedDnnPage}/>
+                            <PageSettings selectedPage={props.selectedDnnPage} 
+                                          onCancel={this.navigateMap.bind(this, 0)} 
+                                          onSave={this.onSavePage.bind(this)}
+                                          onChangeField={this.onChangePageField.bind(this)}/>
                         }
-                        <Button type="primary" onClick={this.navigateMap.bind(this, 0) }>Go back</Button>
                     </SocialPanelBody>
                 </PersonaBarPage>
             </div>

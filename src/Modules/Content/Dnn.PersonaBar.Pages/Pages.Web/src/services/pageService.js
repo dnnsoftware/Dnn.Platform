@@ -6,8 +6,13 @@ const PageService = function () {
         return serviceFramework.get("GetPageDetails", { pageId });
     };
 
+    const savePage = function (page) {
+        return serviceFramework.post("SavePage", { page });
+    };
+
     return {
-        getPage: getPage
+        getPage,
+        savePage
     };
 };
 
