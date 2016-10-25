@@ -23,7 +23,7 @@ class ThemeFileList extends Component {
 
     componentWillMount(){
         const {props, state} = this;
-        
+
         this.parseProps(props);
     }
 
@@ -43,10 +43,6 @@ class ThemeFileList extends Component {
         let themeName = props.type == 0 ? props.theme.SiteLayout.themeName : props.theme.SiteContainer.themeName;
         let path = props.type == 0 ? props.theme.SiteLayout.path : props.theme.SiteContainer.path;
         let level = path.indexOf('[G]') > -1 ? 2 : 1;
-
-        if(themeName === state.themeName){
-            return;
-        }
 
         this.setState({themeName: themeName, level: level}, function(){
             this.loadThemeFiles();
@@ -80,7 +76,7 @@ class ThemeFileList extends Component {
 
         let width = 0;
         let self = this;
-        props.themeFiles.forEach((themeFile, index) => {
+        props.themeFiles[props.type].forEach((themeFile, index) => {
             width += (self.selectedAsSite(themeFile) || self.selectedAsEdit(themeFile)) ? 108 : 90;
         });
 
@@ -90,7 +86,7 @@ class ThemeFileList extends Component {
     loadThemeFiles(){
         const {props, state} = this;
 
-        if(!state.themeName){
+        if(!state.themeName ||  props.themeFiles[props.type].length !== 0){
             return;
         }
 
@@ -108,7 +104,7 @@ class ThemeFileList extends Component {
                     autoHeightMin={0}
                     autoHeightMax={180}>
                     <ul style={{width: this.getListWidth()}}>
-                        {props.themeFiles.map((themeFile, index) => {
+                        {props.themeFiles[props.type].map((themeFile, index) => {
                             return <ThemeFile themeFile={themeFile} />;
                         }) }
                     </ul>

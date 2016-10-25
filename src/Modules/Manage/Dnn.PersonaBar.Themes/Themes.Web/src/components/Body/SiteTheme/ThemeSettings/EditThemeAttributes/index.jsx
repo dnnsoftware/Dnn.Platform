@@ -34,8 +34,10 @@ class EditThemeAttributes extends Component {
     componentWillMount()
     {
         const {props, state} = this;
-
-        props.dispatch(ThemeActions.getEditableTokens());
+        
+        if(props.tokens.length === 0){
+            props.dispatch(ThemeActions.getEditableTokens());
+        }
     }
 
     getThemeType(){

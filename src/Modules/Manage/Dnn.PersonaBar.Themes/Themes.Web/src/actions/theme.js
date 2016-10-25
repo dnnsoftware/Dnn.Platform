@@ -50,7 +50,8 @@ const themeActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_CURRENT_THEMEFILES,
                     data: {
-                        themeFiles: data
+                        themeFiles: data,
+                        themeType: themeType
                     }
                 });
                 if (callback) {

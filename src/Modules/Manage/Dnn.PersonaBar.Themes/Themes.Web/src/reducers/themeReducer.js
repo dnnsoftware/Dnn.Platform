@@ -2,7 +2,7 @@ import {theme as ActionTypes}  from "../constants/actionTypes";
 export default function theme(state = {
     currentTheme: {SiteLayout: {}, SiteContainer: {}, EditLayout: {}, EditContainer: {}},
     themes: {layouts: [], containers: []},
-    currentThemeFiles: [],
+    currentThemeFiles: [[], []],
     editableThemeFiles: [],
     editableTokens: [],
     editableSettings: [],
@@ -13,11 +13,13 @@ export default function theme(state = {
             return { ...state,
                 currentTheme: action.data.currentTheme
             };
-        case ActionTypes.RETRIEVED_CURRENT_THEMEFILES:
+        case ActionTypes.RETRIEVED_CURRENT_THEMEFILES:{
+            let currentThemeFiles = Object.assign([], state.currentThemeFiles);
+            currentThemeFiles[action.data.themeType] = action.data.themeFiles;
             return { ...state,
-                currentThemeFiles: action.data.themeFiles
+                currentThemeFiles: currentThemeFiles
             };
-        
+        }
         case ActionTypes.APPLY_THEME:
             return { ...state,
                 currentTheme: action.data.currentTheme
@@ -48,11 +50,13 @@ export default function theme(state = {
             return { ...state};
         case ActionTypes.RESTORE_THEME:
             return { ...state,
-                currentTheme: action.data.currentTheme
+                currentTheme: action.data.currentTheme,
+                currentThemeFiles: [[], []]
             };
         case ActionTypes.APPLY_DEFAULT_THEME:
             return { ...state,
-                currentTheme: action.data.currentTheme
+                currentTheme: action.data.currentTheme,
+                currentThemeFiles: [[], []]
             };
         case ActionTypes.DELETE_THEME:
             {
