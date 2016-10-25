@@ -21,39 +21,57 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Servers.Components.WebServer;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class SystemInfoWebController : PersonaBarApiController
+    public class ServerController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
-        
-        [HttpGet]
-        public HttpResponseMessage GetWebServerInfo()
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
+
+        internal static string LocalResourceFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Servers.resx");
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RestartApplication()
         {
             try
             {
-                var serverInfo = new ServerInfo();
-                return Request.CreateResponse(HttpStatusCode.OK, new
-                {
-                    osVersion = serverInfo.OSVersion,
-                    iisVersion = serverInfo.IISVersion,
-                    framework = serverInfo.Framework,
-                    identity = serverInfo.Identity,
-                    hostName = serverInfo.HostName,
-                    physicalPath = serverInfo.PhysicalPath,
-                    url = serverInfo.Url,
-                    relativePath = serverInfo.RelativePath,
-                    serverTime = serverInfo.ServerTime
-                });
+                var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
+                LogController.Instance.AddLog(log);
+                Config.Touch();
+                return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL()});
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage ClearCache()
+        {
+            try
+            {
+                DataCache.ClearCache();
+                ClientResourceManager.ClearCache();
+                return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL() });
             }
             catch (Exception exc)
             {

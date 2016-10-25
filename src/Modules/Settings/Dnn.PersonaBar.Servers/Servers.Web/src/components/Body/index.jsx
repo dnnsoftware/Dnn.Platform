@@ -61,7 +61,7 @@ class Body extends Component {
 
 Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number
+    tabIndex: PropTypes.number   
 };
 
 function mapStateToProps(state) {
