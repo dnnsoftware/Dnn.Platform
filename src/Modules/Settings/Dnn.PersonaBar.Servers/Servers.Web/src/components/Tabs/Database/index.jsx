@@ -1,6 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
+import Label from "dnn-label";
 import InfoBlock from "../../common/InfoBlock";
+import BackupGrid from "./BackupGrid";
 import Localization from "../../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,32 +22,38 @@ class Database extends Component {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.utilities.notifyError(newProps.errorMessage);
         }
-    }
+    }    
 
     render() {
         const {props} = this;
 
-        return <div className="dnn-servers-info-tab">
-            <GridSystem>
-                <div>
-                    <InfoBlock label={Localization.get("DbInfo_ProductVersion")} 
-                        tooltip={Localization.get("DbInfo_ProductVersion.Help")} 
-                        text={props.databaseInfo.productVersion || defaultPlaceHolder} />   
+        return <div>
+            <div className="dnn-servers-info-panel">
+                <GridSystem>
+                    <div>
+                        <InfoBlock label={Localization.get("DbInfo_ProductVersion")}
+                            tooltip={Localization.get("DbInfo_ProductVersion.Help")}
+                            text={props.databaseInfo.productVersion || defaultPlaceHolder} />
 
-                    <InfoBlock label={Localization.get("DbInfo_ServicePack")} 
-                        tooltip={Localization.get("DbInfo_ServicePack.Help")} 
-                        text={props.databaseInfo.servicePack || defaultPlaceHolder} /> 
+                        <InfoBlock label={Localization.get("DbInfo_ServicePack")}
+                            tooltip={Localization.get("DbInfo_ServicePack.Help")}
+                            text={props.databaseInfo.servicePack || defaultPlaceHolder} />
 
-                    <InfoBlock label={Localization.get("DbInfo_ProductEdition")} 
-                        tooltip={Localization.get("DbInfo_ProductEdition.Help")} 
-                        text={props.databaseInfo.productEdition || defaultPlaceHolder} />                   
-                </div>
-                <div>
-                    <InfoBlock label={Localization.get("DbInfo_SoftwarePlatform")} 
-                        tooltip={Localization.get("DbInfo_SoftwarePlatform.Help")} 
-                        text={props.databaseInfo.softwarePlatform || defaultPlaceHolder} /> 
-                </div>
-            </GridSystem>
+                        <InfoBlock label={Localization.get("DbInfo_ProductEdition")}
+                            tooltip={Localization.get("DbInfo_ProductEdition.Help")}
+                            text={props.databaseInfo.productEdition || defaultPlaceHolder} />
+                    </div>
+                    <div>
+                        <InfoBlock label={Localization.get("DbInfo_SoftwarePlatform")}
+                            tooltip={Localization.get("DbInfo_SoftwarePlatform.Help")}
+                            text={props.databaseInfo.softwarePlatform || defaultPlaceHolder} />
+                    </div>
+                </GridSystem>
+            </div>
+            <div className="dnn-servers-grid-panel">
+                <Label className="header-title" label={Localization.get("plBackups")} />
+                <BackupGrid backups={props.databaseInfo.backups} />
+            </div>
         </div>;
     }    
 }

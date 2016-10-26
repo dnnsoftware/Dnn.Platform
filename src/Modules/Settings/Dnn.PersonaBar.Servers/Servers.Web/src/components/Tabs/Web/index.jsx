@@ -25,7 +25,7 @@ class Web extends Component {
     render() {
         const {props} = this;
 
-        return <div className="dnn-servers-info-tab">
+        return <div className="dnn-servers-info-panel">
             <GridSystem>
                 <div>
                     <InfoBlock label={Localization.get("ServerInfo_OSVersion")} 

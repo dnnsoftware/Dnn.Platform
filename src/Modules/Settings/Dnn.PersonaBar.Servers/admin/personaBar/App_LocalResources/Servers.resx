@@ -333,4 +333,40 @@
   <data name="errorMessageLoadingDatabaseTab.Text" xml:space="preserve">
     <value>Error loading Database tab</value>
   </data>
+  <data name="BackupFinished.Text" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="BackupName.Text" xml:space="preserve">
+    <value> Backup Name</value>
+  </data>
+  <data name="BackupSize.Text" xml:space="preserve">
+    <value>Size (Kb)</value>
+  </data>
+  <data name="BackupStarted.Text" xml:space="preserve">
+    <value>Started</value>
+  </data>
+  <data name="BackupType.Text" xml:space="preserve">
+    <value>Backup Type</value>
+  </data>
+  <data name="FileName.Text" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="FileType.Text" xml:space="preserve">
+    <value>File Type</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoBackups.Text" xml:space="preserve">
+    <value>This database has not been backed up.</value>
+  </data>
+  <data name="plBackups.Text" xml:space="preserve">
+    <value>Database Backup History:</value>
+  </data>
+  <data name="plFiles.Text" xml:space="preserve">
+    <value>Database Files:</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
 </root>

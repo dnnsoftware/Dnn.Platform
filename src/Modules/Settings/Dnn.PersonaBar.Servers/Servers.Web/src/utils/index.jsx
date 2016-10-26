@@ -5,6 +5,13 @@ const utils = {
         }
         this.utilities = utilities;      
     },
-    utilities: null
+    utilities: null,
+    formatDateNoTime: function (date) {
+        const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+        return new Date(date).toLocaleDateString("es-US", dateOptions);
+    },
+    formatNumeric: function (value) {       
+        return value.toLocaleString("es-US");
+    }
 };
 export default utils;
