@@ -135,13 +135,13 @@ namespace Dnn.PersonaBar.Users.Components
                 errorMessage = "PasswordResetFailed";
                 return false;
             }
-
-            var oldPassword = UserController.GetPassword(ref user, string.Empty);
-            if (oldPassword == newPassword)
-            {
-                errorMessage = "PasswordNotDifferent";
-                return false;
-            }
+            //Removed this check as in old system this check is not performed for admin.
+//            var oldPassword = UserController.GetPassword(ref user, string.Empty);
+//            if (oldPassword == newPassword)
+//            {
+//                errorMessage = "PasswordNotDifferent";
+//                return false;
+//            }
 
             try
             {

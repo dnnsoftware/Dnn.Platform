@@ -14,6 +14,19 @@ const userActions = {
             });
         };
     },
+    getUserDetails(userDetailsParameters, callback) {
+        return (dispatch) => {
+            UserService.getUserDetails(userDetailsParameters, payload => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_USER_DETAILS,
+                    payload
+                });
+                if (callback) {
+                    callback(payload);
+                }
+            });
+        };
+    },
     getUserFilters(callback) {
         return () => {
             UserService.getUserFilters(payload => {
@@ -39,7 +52,49 @@ const userActions = {
                 }
             });
         };
+    },
+    updateAccountSettings(userDetails, callback) {
+        return (dispatch) => {
+            UserService.updateAccountSettings(userDetails, payload => {
+                dispatch({
+                    type: ActionTypes.UPDATE_USER,
+                    payload
+                });
+                if (callback) {
+                    callback(payload);
+                }
+            });
+        };
+    },
+    changePassword(payload, callback) {
+        return () => {
+            UserService.changePassword(payload, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    forceChangePassword(payload, callback) {
+        return () => {
+            UserService.forceChangePassword(payload, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    sendPasswordResetLink(payload, callback) {
+        return () => {
+            UserService.sendPasswordResetLink(payload, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
+
+
 };
 
 export default userActions;

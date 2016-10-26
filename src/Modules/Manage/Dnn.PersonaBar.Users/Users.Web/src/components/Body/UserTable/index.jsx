@@ -7,6 +7,7 @@ import GridCell from "dnn-grid-cell";
 import CollapsibleSwitcher from "../../common/CollapsibleSwitcher";
 import Button from "dnn-button";
 import CreateUserBox from "../CreateUserBox";
+import UserSettings from "./UserSettings";
 import "./style.less";
 
 const radioButtonOptions = [
@@ -81,7 +82,7 @@ class UserTable extends Component {
                             </div>,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 1. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 2. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
-                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 3. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
+                            <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } />,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 4. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>
                         ];
                         return <DetailRow

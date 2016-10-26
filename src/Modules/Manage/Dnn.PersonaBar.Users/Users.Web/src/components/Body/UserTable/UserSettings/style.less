@@ -1,0 +1,58 @@
+@import "~dnn-global-styles/index";
+:local(.userSettings) {
+    box-sizing: border-box;
+    margin-top: 20px;
+    float: left;
+    .dnn-grid-cell {
+        .right {
+            .dnn-grid-system {
+                margin: 10px 0px;
+                &.first {
+                    margin-bottom: 4.5px;
+                    margin-right: 0px;
+                    margin-left: 0px;
+                    margin-top: 0px;
+                }
+                .dnn-grid-cell {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            }
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+        .left {
+            padding: 0px;
+        }
+        margin: 5px 0px;
+        .title {
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 20px;
+            float: left;
+        }
+        .link {
+            padding: 0px;
+            font-weight: bold;
+            cursor: pointer;
+            color: @curiousBlue;
+            &:active, &:hover {
+                color: @cerulean;
+            }
+            &:visited {
+                color: @matisse;
+            }
+        }
+    }
+    .buttons {
+        .dnn-grid-cell {
+            &.leftBtn {
+                padding-right: 0px;
+                text-align: right;
+            }
+            &.rightBtn {
+                padding-left: 30px;
+            }
+        }
+    }
+}
