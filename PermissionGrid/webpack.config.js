@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
-const webpackExternals = require("dnn-webpack-externals");
+const nodeExternals = require('webpack-node-externals');
 module.exports = {
     entry: "./src/PermissionGrid.jsx",
     output: {
@@ -25,7 +25,8 @@ module.exports = {
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
         ]
     },
-    externals: webpackExternals,
+    target: 'node', // in order to ignore built-in modules like path, fs, etc. 
+    externals: ["react", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"],
         root: [

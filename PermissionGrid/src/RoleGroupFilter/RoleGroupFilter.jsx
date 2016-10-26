@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
 import DropDown from "dnn-dropdown";
 import Label from "dnn-label";
 

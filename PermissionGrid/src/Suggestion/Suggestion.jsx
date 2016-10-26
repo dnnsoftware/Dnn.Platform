@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import ReactDOM from "react-dom";
-import { connect } from "react-redux";
 import {debounce} from "throttle-debounce";
 import DropDown from "dnn-dropdown";
 import Label from "dnn-label";

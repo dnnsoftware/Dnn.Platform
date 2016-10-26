@@ -1,10 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
-
 import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Label from "dnn-label";
 

@@ -1,6 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
-
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import RoleGroupFilter from "./RoleGroupFilter/RoleGroupFilter";
