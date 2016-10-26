@@ -23,10 +23,8 @@ using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Extensions.Components.Editors;
-using Dnn.PersonaBar.Extensions.Services.DTO;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -58,7 +56,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         #region Extensions Lists API
 
-        /// GET: api/Extensions/GetInstalledPackageTypes
+        /// GET: api/Extensions/GetPackageTypes
         /// <summary>
         /// Get installed package types.
         /// </summary>
@@ -215,58 +213,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// <summary>
-        /// Download install package.
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [RequireHost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
-        {
-            var packageType = package.Type.ToString();
-            var packageName = package.Name;
-            if (string.IsNullOrEmpty(packageType)
-                || string.IsNullOrEmpty(packageName)
-                || packageName.Contains("/")
-                || packageName.Contains("\\"))
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            var packageFile = new FileInfo(Path.Combine(Globals.ApplicationMapPath, "Install\\" + packageType, packageName));
-            if (!packageFile.Exists)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            try
-            {
-                var fileName = packageName;
-                if (fileName.EndsWith(".resources"))
-                {
-                    fileName = fileName.Replace(".resources", "") + ".zip";
-                }
-
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Headers.Add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-                response.Headers.Add("Content-Length", packageFile.Length.ToString());
-                response.Headers.Add("ContentType", "application/zip, application/octet-stream");
-
-                using (var stream = new FileStream(packageFile.FullName, FileMode.Open))
-                {
-                    response.Content = new StreamContent(stream);
-                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-                    return response;
-                }
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
-            }
-        }
-
         [HttpGet]
         public HttpResponseMessage GetSourceFolders( /*int moduleControlId*/)
         {
@@ -374,6 +320,14 @@ namespace Dnn.PersonaBar.Extensions.Services
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetLanguagesList()
+        {
+            var list = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
+            return Request.CreateResponse(HttpStatusCode.OK, list.Select(
+                item => new IdNameDto { Id = item.LanguageId, Name = item.Text} ));
+        }
+
         #endregion
 
         #region Edit Extensions API
@@ -434,7 +388,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
                 {
                     var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                    if (authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName)
+                    var isReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+                    if (isReadOnly)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             Localization.GetString("ReadOnlyPackage.SaveErrorMessage", Constants.SharedResources));
@@ -531,157 +486,9 @@ namespace Dnn.PersonaBar.Extensions.Services
             return Request.CreateResponse(HttpStatusCode.OK, new {});
         }
 
-        [HttpGet]
-        public HttpResponseMessage GetDesktopModulePermissions(int desktopModuleId)
-        {
-            try
-            {
-                var desktopModule = DesktopModuleController.GetPortalDesktopModule(PortalId, desktopModuleId);
-                if (desktopModule == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "DesktopModuleNotFound");
-                }
-
-                var desktopModulePermissions = DesktopModulePermissionController.GetDesktopModulePermissions(desktopModule.PortalDesktopModuleID);
-                var permissions = new DesktopModulePermissions(true);
-                permissions.DesktopModuleId = desktopModuleId;
-
-                foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)
-                {
-                    if (permission.UserID != Null.NullInteger)
-                    {
-                        permissions.AddUserPermission(permission);
-                    }
-                    else
-                    {
-                        permissions.AddRolePermission(permission);
-                    }
-                }
-
-                permissions.RolePermissions =
-                    permissions.RolePermissions.OrderByDescending(p => p.Locked)
-                        .ThenByDescending(p => p.IsDefault)
-                        .ThenBy(p => p.RoleName)
-                        .ToList();
-                permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
-
-                return Request.CreateResponse(HttpStatusCode.OK, permissions);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage SaveDesktopModulePermissions(DesktopModulePermissions permissions)
-        {
-            var desktopModule = DesktopModuleController.GetPortalDesktopModule(PortalId, permissions.DesktopModuleId);
-            if (desktopModule == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "DesktopModuleNotFound");
-            }
-
-            var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == PortalSettings.AdministratorRoleId);
-
-            var desktopModulePermissionsCollection = new DesktopModulePermissionCollection();
-
-            //add default permissions for administrators
-            if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
-            {
-                //add default permissions
-                var permissionController = new PermissionController();
-                var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
-                foreach (var permissionInfo in permissionsList)
-                {
-                    var editPermisison = (PermissionInfo)permissionInfo;
-                    var permission = new DesktopModulePermissionInfo(editPermisison)
-                    {
-                        RoleID = PortalSettings.AdministratorRoleId,
-                        AllowAccess = true,
-                        RoleName = PortalSettings.AdministratorRoleName
-                    };
-                    desktopModulePermissionsCollection.Add(permission);
-
-                }
-            }
-
-            //add role permissions
-            if (permissions.RolePermissions != null)
-            {
-                foreach (var rolePermission in permissions.RolePermissions)
-                {
-                    foreach (var permission in rolePermission.Permissions)
-                    {
-                        desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
-                        {
-                            PermissionID = permission.PermissionId,
-                            RoleID = rolePermission.RoleId,
-                            UserID = Null.NullInteger,
-                            AllowAccess = permission.AllowAccess
-                        });
-                    }
-                }
-            }
-
-
-            //add user permissions
-            if (permissions.UserPermissions != null)
-            {
-                foreach (var userPermission in permissions.UserPermissions)
-                {
-                    foreach (var permission in userPermission.Permissions)
-                    {
-                        desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
-                        {
-                            PermissionID = permission.PermissionId,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
-                            UserID = userPermission.UserId,
-                            AllowAccess = permission.AllowAccess
-                        });
-                    }
-                }
-            }
-
-            //Update DesktopModule Permissions
-            var currentPermissions = DesktopModulePermissionController.GetDesktopModulePermissions(desktopModule.PortalDesktopModuleID);
-            if (!currentPermissions.CompareTo(desktopModulePermissionsCollection))
-            {
-                DesktopModulePermissionController.DeleteDesktopModulePermissionsByPortalDesktopModuleID(desktopModule.PortalDesktopModuleID);
-                foreach (DesktopModulePermissionInfo objPermission in desktopModulePermissionsCollection)
-                {
-                    DesktopModulePermissionController.AddDesktopModulePermission(objPermission);
-                }
-            }
-            DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, PortalId));
-
-            return Request.CreateResponse(HttpStatusCode.OK, new {});
-        }
-
         #endregion
 
         #region Install Wizard API
-
-        [HttpPost]
-        [IFrameSupportedValidateAntiForgeryToken]
-        [RequireHost]
-        public Task<HttpResponseMessage> ParsePackage()
-        {
-            try
-            {
-                return
-                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
-                        InstallController.Instance.ParsePackage(portalSettings, userInfo, fileName, stream));
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Task<HttpResponseMessage>.Factory.StartNew(
-                    () => Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
-            }
-        }
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -697,8 +504,52 @@ namespace Dnn.PersonaBar.Extensions.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Task<HttpResponseMessage>.Factory.StartNew(
-                    () => Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        [RequireHost]
+        public Task<HttpResponseMessage> ParsePackage()
+        {
+            try
+            {
+                return
+                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
+                        InstallController.Instance.ParsePackage(portalSettings, userInfo, fileName, stream));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Task.FromResult(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [RequireHost]
+        public HttpResponseMessage ParsePackageFile(DownloadPackageDto package)
+        {
+            try
+            {
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, package.FileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, ParsePackageFile(packagePath));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -720,27 +571,79 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        /// <summary>
+        /// Inatall a package that is already included under one of the installation folders.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [RequireHost]
-        public HttpResponseMessage InstallAvailablePackage([FromUri] string packageType, string packageName)
+        public HttpResponseMessage InstallAvailablePackage(DownloadPackageDto package)
         {
             try
             {
-                var installFolder = GetPackageInstallFolder(packageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(packageName))
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
                 }
 
-                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, packageName);
-                var installResult = InstallPackageFile(packagePath);
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, package.FileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
 
+                var installResult = InstallPackageFile(packagePath);
                 return Request.CreateResponse(HttpStatusCode.OK, installResult);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Download install package.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [RequireHost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
+        {
+            try
+            {
+                var installFolder = GetPackageInstallFolder(package.PackageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
+                }
+
+                var fileName = package.FileName ?? "";
+                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
+                if (!File.Exists(packagePath))
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
+                if (fileName.EndsWith(".resources"))
+                {
+                    fileName = fileName.Replace(".resources", ".zip");
+                }
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                var stream = new FileStream(packagePath, FileMode.Open);
+                response.Content = new StreamContent(stream);
+                response.Content.Headers.ContentLength = stream.Length;
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
 
@@ -757,28 +660,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
                 }
-                return DownLoadFile(packagePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [RequireHost]
-        public HttpResponseMessage DownloadAvailablePackage([FromUri] string packageType, string packageName)
-        {
-            try
-            {
-                var installFolder = GetPackageInstallFolder(packageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(packageName))
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
-                }
-
-                var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, packageName);
                 return DownLoadFile(packagePath);
             }
             catch (Exception ex)
@@ -949,8 +830,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage GetModuleFiles(string ownerFolder, string moduleFolder, FileType type)
         {
-            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith(".")))
-                || (string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith(".")))
+            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith("."))) || string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith("."))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
@@ -1377,23 +1257,23 @@ namespace Dnn.PersonaBar.Extensions.Services
                 switch (package.PackageType.ToLowerInvariant())
                 {
                     case "auth_system":
-                        basePath = Globals.InstallMapPath + ("AuthSystem");
+                        basePath = Globals.InstallMapPath + "AuthSystem";
                         break;
                     case "container":
-                        basePath = Globals.InstallMapPath + ("Container");
+                        basePath = Globals.InstallMapPath + "Container";
                         break;
                     case "corelanguagepack":
                     case "extensionlanguagepack":
-                        basePath = Globals.InstallMapPath + ("Language");
+                        basePath = Globals.InstallMapPath + "Language";
                         break;
                     case "module":
-                        basePath = Globals.InstallMapPath + ("Module");
+                        basePath = Globals.InstallMapPath + "Module";
                         break;
                     case "provider":
-                        basePath = Globals.InstallMapPath + ("Provider");
+                        basePath = Globals.InstallMapPath + "Provider";
                         break;
                     case "skin":
-                        basePath = Globals.InstallMapPath + ("Skin");
+                        basePath = Globals.InstallMapPath + "Skin";
                         break;
                     default:
                         basePath = Globals.HostMapPath;
@@ -1632,8 +1512,9 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private string GetPackageInstallFolder(string packageType)
         {
-            switch (packageType.ToLowerInvariant())
+            switch ((packageType ?? "").ToLowerInvariant())
             {
+                case "authsystem":
                 case "auth_system":
                     return "AuthSystem";
                 case "corelanguagepack":

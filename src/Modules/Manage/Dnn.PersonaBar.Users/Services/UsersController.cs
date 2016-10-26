@@ -410,6 +410,23 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateUserBasicInfo(UserBasicDto userBasicDto)
+        {
+            try
+            {
+                Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region User Roles API

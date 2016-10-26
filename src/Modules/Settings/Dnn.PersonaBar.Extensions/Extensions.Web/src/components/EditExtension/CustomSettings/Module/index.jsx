@@ -139,7 +139,7 @@ class Module extends Component {
                             style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Permissions.Label")}
-                            value={extensionBeingEdited.permissions.value}
+                            value={extensionBeingEdited.hostPermissions.value}
                             onChange={props.onChange.bind(this, "permissions")}
                             tooltipMessage={Localization.get("EditModule_Permissions.HelpText")}
                             style={inputStyle} />

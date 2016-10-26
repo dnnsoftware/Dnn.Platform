@@ -128,5 +128,8 @@ module.exports = [
     "uncollapse",
     "dev",
     "devtools",
-    "ctrl"
+    "ctrl",
+    "ko",
+    "resx",
+    "params",
 ]

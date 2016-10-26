@@ -52,6 +52,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace Dnn.PersonaBar.Users.Components
 {
@@ -136,13 +137,6 @@ namespace Dnn.PersonaBar.Users.Components
                 return false;
             }
 
-            var oldPassword = UserController.GetPassword(ref user, string.Empty);
-            if (oldPassword == newPassword)
-            {
-                errorMessage = "PasswordNotDifferent";
-                return false;
-            }
-
             try
             {
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
@@ -170,6 +164,54 @@ namespace Dnn.PersonaBar.Users.Components
                 Logger.Error(exc);
                 errorMessage = "PasswordResetFailed";
                 return false;
+            }
+        }
+
+        public void UpdateUserBasicInfo(UserBasicDto userBasicDto)
+        {
+            var user = UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId);
+            int portalId = PortalSettings.PortalId;
+            if (user == null)
+            {
+                throw new ArgumentException("UserNotExist");
+            }
+
+            if (userBasicDto.UserId == PortalSettings.AdministratorId)
+            {
+                //Clear the Portal Cache
+                DataCache.ClearPortalCache(portalId, true);
+            }
+            user.DisplayName = userBasicDto.Displayname;
+            user.Email = userBasicDto.Email;
+
+            //Update DisplayName to conform to Format
+            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            {
+                user.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+            }
+            //either update the username or update the user details
+
+            if (CanUpdateUsername(user) && !PortalSettings.Registration.UseEmailAsUserName)
+            {
+                UserController.ChangeUsername(user.UserID, userBasicDto.Username);
+                user.Username = userBasicDto.Username;
+            }
+
+            //DNN-5874 Check if unique display name is required
+            if (PortalSettings.Registration.RequireUniqueDisplayName)
+            {
+                var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(portalId, 0, 2, "DisplayName", true, "DisplayName", user.DisplayName);
+                if (usersWithSameDisplayName.Any(u => u.UserID != user.UserID))
+                {
+                    throw new ArgumentException("DisplayNameNotUnique");
+                }
+            }
+
+            UserController.UpdateUser(portalId, user);
+
+            if (PortalSettings.Registration.UseEmailAsUserName && (user.Username.ToLowerInvariant() != user.Email.ToLowerInvariant()))
+            {
+                UserController.ChangeUsername(user.UserID, user.Email);
             }
         }
 
@@ -261,6 +303,33 @@ namespace Dnn.PersonaBar.Users.Components
             return false;
         }
 
-        #endregion
+    private bool CanUpdateUsername(UserInfo user)
+    {
+        //can only update username if a host/admin and account being managed is not a superuser
+        if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+        {
+            //only allow updates for non-superuser accounts
+            if (user.IsSuperUser == false)
+            {
+                return true;
+            }
+        }
+
+        //if an admin, check if the user is only within this portal
+        if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+        {
+            //only allow updates for non-superuser accounts
+            if (user.IsSuperUser)
+            {
+                return false;
+            }
+            if (PortalController.GetPortalsByUser(user.UserID).Count == 1) return true;
+        }
+
+        return false;
     }
+
+
+    #endregion
+}
 }

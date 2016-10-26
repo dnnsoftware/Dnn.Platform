@@ -189,6 +189,136 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    getProfileProperties(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getProfileProperties(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTIES,
+                    data: {
+                        profileProperties: data.ProfileProperties                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getProfileProperty(propertyId, portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getProfileProperty(propertyId, portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY,
+                    data: {
+                        profileProperty: data.ProfileProperty,
+                        userVisibilityOptions: data.UserVisibilityOptions,
+                        dataTypeOptions: data.DataTypeOptions,
+                        languageOptions: data.LanguageOptions,
+                        profilePropertyClientModified: false                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    profilePropertyClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_PROFILE_PROPERTY_CLIENT_MODIFIED,
+                data: {
+                    profileProperty: parameter,
+                    profilePropertyClientModified: true
+                }
+            });
+        };
+    },
+    propertyLocalizationClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION_CLIENT_MODIFIED,
+                data: {
+                    propertyLocalization: parameter,
+                    propertyLocalizationClientModified: true
+                }
+            });
+        };
+    },
+    cancelProfilePropertyClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_PROFILE_PROPERTY_CLIENT_MODIFIED,
+                data: {
+                    profilePropertyClientModified: false
+                }
+            });
+        };
+    },
+    cancelPropertyLocalizationClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION_CLIENT_MODIFIED,
+                data: {
+                    propertyLocalizationClientModified: false
+                }
+            });
+        };
+    },
+    getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, callback) {
+        return (dispatch) => {
+            ApplicationService.getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION,
+                    data: {
+                        propertyLocalization: data.PropertyLocalization,
+                        propertyLocalizationClientModified: false                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateProfileProperty(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateProfileProperty(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY,
+                    data: {
+                        profilePropertyClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    addProfileProperty(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addProfileProperty(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_PROFILE_PROPERTY,
+                    data: {
+                        profilePropertyClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

@@ -42,6 +42,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("fileName")]
+        public string FileName { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
 
@@ -73,6 +76,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             PackageId = package.PackageID;
             FriendlyName = package.FriendlyName;
             Name = package.Name;
+            FileName = package.FileName;
             Description = package.Description;
             Version = package.Version.ToString(3);
             IsInUse = ExtensionsController.IsPackageInUse(package, portalId);

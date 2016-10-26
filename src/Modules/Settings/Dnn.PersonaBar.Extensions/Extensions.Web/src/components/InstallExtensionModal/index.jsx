@@ -75,9 +75,10 @@ class InstallExtensionModal extends Component {
 
     installPackage() {
         const {props} = this;
-        props.dispatch(InstallationActions.installExtension(this.state.package, () => {
+        props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, () => {
             this.goToStep(4);
-        }));
+
+        }, !props.parsedInstallationPackage.alreadyInstalled));
     }
 
     onCheckRepairInstall(value) {

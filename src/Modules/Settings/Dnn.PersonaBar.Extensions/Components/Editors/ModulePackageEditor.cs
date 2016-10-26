@@ -8,6 +8,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Installer.Packages;
@@ -24,20 +25,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public PackageDetailDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
-            if (portalId == Null.NullInteger)
-            {
-                return new ModulePackageDetailDto(portalId, package, desktopModule);
-            }
-            else
-            {
-                var detail = new ModulePackagePermissionsDto(portalId, package)
-                {
-                    DesktopModuleId = desktopModule.DesktopModuleID,
-                    Permissions = GetPermissionsData(portalId, desktopModule.DesktopModuleID)
-                };
+            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-                return detail;
-            }
+            var detail = isHostUser ? new ModulePackageDetailDto(portalId, package, desktopModule)
+                                        : new ModulePackagePermissionsDto(portalId, package);
+
+            detail.DesktopModuleId = desktopModule.DesktopModuleID;
+            detail.Permissions = GetPermissionsData(portalId, desktopModule.DesktopModuleID);
+
+            return detail;
         }
 
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
@@ -47,11 +43,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             try
             {
                 var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(packageSettings.PackageId);
-                if (packageSettings.PortalId != Null.NullInteger)
-                {
-                    UpdatePermissions(desktopModule, packageSettings);
-                }
-                else
+                var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+
+                UpdatePermissions(desktopModule, packageSettings);
+
+                if(isHostUser)
                 {
                     foreach (var settingName in packageSettings.EditorActions.Keys)
                     {
@@ -71,7 +67,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "dependencies":
                                 desktopModule.Dependencies = settingValue;
                                 break;
-                            case "permissions":
+                            case "hostPermissions":
                                 desktopModule.Permissions = settingValue;
                                 break;
                             case "shareable":
@@ -126,6 +122,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 var portalModule = DesktopModuleController.GetPortalDesktopModule(portalId, desktopModuleId);
                 if (portalModule != null)
                 {
+                    permissions.DesktopModuleId = desktopModuleId;
+
                     var modulePermissions = DesktopModulePermissionController.GetDesktopModulePermissions(portalModule.PortalDesktopModuleID);
                     foreach (DesktopModulePermissionInfo permission in modulePermissions)
                     {

@@ -6,19 +6,27 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Web;
 using System.Web.Http;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Internals;
@@ -30,6 +38,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     public class SiteSettingsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
+        private string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -291,8 +300,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
                         v => new
                         {
-                            label = v.ToString(), 
-                            value = (int) v
+                            label = v.ToString(),
+                            value = (int)v
                         }).ToList()
                 });
             }
@@ -326,6 +335,290 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(pid, "Profile_DisplayVisibility", request.ProfileDisplayVisibility.ToString(), true);
 
                 DataCache.ClearPortalCache(pid, false);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetProfileProperties
+        /// <summary>
+        /// Gets profile properties
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>profile properties</returns>
+        [HttpGet]
+        public HttpResponseMessage GetProfileProperties([FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var profileProperties = ProfileController.GetPropertyDefinitionsByPortal(pid, false, false).Cast<ProfilePropertyDefinition>().Select(v => new
+                {
+                    v.PropertyDefinitionId,
+                    v.PropertyName,
+                    DataType = DisplayDataType(v.DataType),
+                    DefaultVisibility = v.DefaultVisibility.ToString(),
+                    v.Required,
+                    v.Visible
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    ProfileProperties = profileProperties
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private string DisplayDataType(int dataType)
+        {
+            string retValue = Null.NullString;
+            var listController = new ListController();
+            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", dataType);
+            if (definitionEntry != null)
+            {
+                retValue = definitionEntry.Value;
+            }
+            return retValue;
+        }
+
+        /// GET: api/SiteSettings/GetProfileProperty
+        /// <summary>
+        /// Gets profile property by id
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <param name="portalId"></param>
+        /// <returns>profile property</returns>
+        [HttpGet]
+        public HttpResponseMessage GetProfileProperty(int propertyId, [FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var profileProperty = ProfileController.GetPropertyDefinition(propertyId, pid);
+                var listController = new ListController();
+
+                IEnumerable<ListItem> cultureList = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, Thread.CurrentThread.CurrentUICulture.Name, "", false);
+
+                var response = new
+                {
+                    Success = true,
+                    ProfileProperty = new
+                    {
+                        profileProperty.PropertyDefinitionId,
+                        profileProperty.PropertyName,
+                        profileProperty.DataType,
+                        profileProperty.PropertyCategory,
+                        profileProperty.Length,
+                        profileProperty.DefaultValue,
+                        profileProperty.ValidationExpression,
+                        profileProperty.Required,
+                        profileProperty.ReadOnly,
+                        profileProperty.Visible,
+                        profileProperty.ViewOrder,
+                        DefaultVisibility = (int)profileProperty.DefaultVisibility
+                    },
+                    UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
+                        v => new
+                        {
+                            label = v.ToString(),
+                            value = (int)v
+                        }).ToList(),
+                    DataTypeOptions = listController.GetListEntryInfoItems("DataType").Select(t => new
+                    {
+                        t.EntryID,
+                        t.Value
+                    }),
+                    LanguageOptions = cultureList.Select(c => new
+                    {
+                        c.Text,
+                        c.Value
+                    })
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetProfilePropertyLocalization
+        /// <summary>
+        /// Gets profile property localization
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="propertyCategory"></param>
+        /// <param name="cultureCode"></param>
+        /// <returns>profile property</returns>
+        [HttpGet]
+        public HttpResponseMessage GetProfilePropertyLocalization(string propertyName, string propertyCategory, [FromUri] string cultureCode)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = PortalSettings.CultureCode;
+                }
+
+                var response = new
+                {
+                    Success = true,
+                    PropertyLocalization = new
+                    {
+                        PropertyName = Localization.GetString("ProfileProperties_" + propertyName, ProfileResourceFile, cultureCode),
+                        PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", ProfileResourceFile, cultureCode),
+                        PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", ProfileResourceFile, cultureCode),
+                        PropertyValidation = Localization.GetString("ProfileProperties_" + propertyName + ".Validation", ProfileResourceFile, cultureCode),
+                        CategoryName = Localization.GetString("ProfileProperties_" + propertyCategory + ".Header", ProfileResourceFile, cultureCode)
+                    }
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private string GetResourceFile(string type, string language)
+        {
+            string resourcefilename = ProfileResourceFile;
+            if (language != Localization.SystemLocale)
+            {
+                resourcefilename = resourcefilename + "." + language;
+            }
+            if (type == "Portal")
+            {
+                resourcefilename = resourcefilename + "." + "Portal-" + PortalId;
+            }
+            else if (type == "Host")
+            {
+                resourcefilename = resourcefilename + "." + "Host";
+            }
+            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
+        }
+
+        /// POST: api/SiteSettings/AddProfileProperty
+        /// <summary>
+        /// Creates profile property
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddProfileProperty(UpdateProfilePropertyRequest request)
+        {
+            try
+            {
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                ProfilePropertyDefinition property = new ProfilePropertyDefinition(pid)
+                {
+                    DataType = request.DataType,
+                    DefaultValue = request.DefaultValue,
+                    PropertyCategory = request.PropertyCategory,
+                    PropertyName = request.PropertyName,
+                    ReadOnly = request.ReadOnly,
+                    Required = request.Required,
+                    ValidationExpression = request.ValidationExpression,
+                    ViewOrder = request.ViewOrder,
+                    Visible = request.Visible,
+                    Length = request.Length,
+                    DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
+                };
+
+                ProfileController.AddPropertyDefinition(property);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateProfileProperty
+        /// <summary>
+        /// Updates profile property
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateProfileProperty(UpdateProfilePropertyRequest request)
+        {
+            try
+            {
+                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                int definitionId = request.PropertyDefinitionId.HasValue
+                    ? request.PropertyDefinitionId.Value
+                    : Null.NullInteger;
+
+                if (definitionId != Null.NullInteger)
+                {
+                    ProfilePropertyDefinition property = new ProfilePropertyDefinition(pid)
+                    {
+                        PropertyDefinitionId = definitionId,
+                        DataType = request.DataType,
+                        DefaultValue = request.DefaultValue,
+                        PropertyCategory = request.PropertyCategory,
+                        PropertyName = request.PropertyName,
+                        ReadOnly = request.ReadOnly,
+                        Required = request.Required,
+                        ValidationExpression = request.ValidationExpression,
+                        ViewOrder = request.ViewOrder,
+                        Visible = request.Visible,
+                        Length = request.Length,
+                        DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
+                    };
+
+                    ProfileController.UpdatePropertyDefinition(property);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false });
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/DeleteProfileProperty
+        /// <summary>
+        /// Deletes profile property
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteProfileProperty(int propertyId, [FromUri] int? portalId)
+        {
+            try
+            {
+                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var propertyDefinition = new ProfilePropertyDefinition(pid)
+                {
+                    PropertyDefinitionId = propertyId
+                };
+                ProfileController.DeletePropertyDefinition(propertyDefinition);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

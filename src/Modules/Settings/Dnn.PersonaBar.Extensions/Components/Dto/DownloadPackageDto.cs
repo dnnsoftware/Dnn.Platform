@@ -18,22 +18,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-
-#endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    [JsonObject]
     public class DownloadPackageDto
     {
-        public PackageTypes Type { get; set; }
-
-        public string Name { get; set; }
+        public string PackageType { get; set; }
+        public string FileName { get; set; }
     }
 }

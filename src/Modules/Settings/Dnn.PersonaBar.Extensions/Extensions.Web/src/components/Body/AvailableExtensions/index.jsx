@@ -50,7 +50,7 @@ class AvailableExtensions extends Component {
         const {props} = this;
         props.dispatch(ExtensionActions.getAvailablePackages(option.value));
     }
-    onDownload(name, event) {
+    onDownload(type, name, event) {
         if (event) {
             event.preventDefault();
         }
@@ -86,6 +86,7 @@ class AvailableExtensions extends Component {
                     <ExtensionList
                         packages={props.availablePackages}
                         onDownload={this.onDownload.bind(this)}
+                        type={props.selectedAvailablePackageType}
                         onInstall={this.onInstall.bind(this)} />
                 }
             </GridCell>

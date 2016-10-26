@@ -202,6 +202,7 @@ class CreateUserBox extends Component {
                                 tooltipMessage="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 15 }}
+                                type="password"
                                 value={state.UserDetails.password}/>
                         </div>
                         <div>
@@ -210,6 +211,7 @@ class CreateUserBox extends Component {
                                 onChange={this.onChange.bind(this, "confirmPassword") }
                                 tooltipMessage="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"
                                 style={inputStyle}
+                                type="password"
                                 inputStyle={{ marginBottom: 15 }}
                                 value={state.confirmPassword}/></div>
                     </GridSystem>

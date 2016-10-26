@@ -1,35 +1,43 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 
-import { PermissionActions } from "actions";
-
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
-import PermissionGrid from "./PermissionGrid";
+import PermissionGrid from "dnn-permission-grid";
 import Localization from "localization";
 import utils from "utils";
 import styles from "./style.less";
 
 class ModuleSettings extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            permissions: {}
+            permissions: props.extensionBeingEdited.permissions.value,
+            desktopModuleId: props.extensionBeingEdited.desktopModuleId.value
         };
     }
 
-    componentWillMount() {
+    onPermissionsChanged(permissions){
         const {props, state} = this;
-        let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
-        props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
+
+        let newPermissions = Object.assign({}, state.permissions, permissions);
+        this.setState({permissions: newPermissions});
     }
 
-    onPermissionsChanged(permissions){
-        console.log(permissions);
+    savePermissions(){
+        const {props, state} = this;
+        let permissions = Object.assign({}, state.permissions);
+
+        let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+        extensionBeingUpdated.permissions.value = permissions;
+
+        props.updateExtensionBeingEdited(extensionBeingUpdated, function(){
+             utils.utilities.notify(Localization.get("UpdateComplete"));
+        });
     }
 
     render() {
@@ -37,19 +45,26 @@ class ModuleSettings extends Component {
 
         return (
             <GridCell className="module-settings">
-                <PermissionGrid permissions={props.permissions} service={utils.utilities.sf} onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                <PermissionGrid 
+                    permissions={state.permissions} 
+                    service={utils.utilities.sf} 
+                    onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                <GridCell className="actions-row">
+                    <Button>{Localization.get("Cancel")}</Button>
+                    <Button type="primary" onClick={this.savePermissions.bind(this)}>{Localization.get("Save")}</Button>
+                </GridCell>
             </GridCell>
         );
     }
 }
 
-ModuleSettings.PropTypes = {
-    dispatch: PropTypes.func.isRequired
+ModuleSettings.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    extensionBeingEdited: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        permissions: state.permission.desktopModulePermissions
     };
 }
 

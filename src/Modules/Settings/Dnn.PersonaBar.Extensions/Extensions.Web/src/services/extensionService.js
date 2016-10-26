@@ -54,12 +54,13 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             packageId: extensionBeingUpdated.packageId.value,
-            portalId: utilities.settings.isHost ? -1 : utilities.settings.portalId,
+            portalId: utilities.settings.portalId,
             settings: mapPackageInformation(extensionBeingUpdated),
             editorActions: (extensionBeingUpdated.packageType.value === "Module" ? {
                 category: extensionBeingUpdated.category.value,
                 dependencies: extensionBeingUpdated.dependencies.value,
                 permissions: extensionBeingUpdated.permissions.value,
+                hostPermissions: extensionBeingUpdated.hostPermissions.value,
                 shareable: extensionBeingUpdated.shareable.value,
                 premiummodule: extensionBeingUpdated.premiumModule.value,
                 assignPortal: extensionBeingUpdated.assignedPortals.value,
@@ -70,19 +71,19 @@ class ExtensionService {
         };
         sf.post("SavePackageSettings", payload, callback);
     }
-    downloadPackage(Type, Name, callback) {
+    downloadPackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
-            Type,
-            Name
+            PackageType,
+            FileName
         };
-        sf.post("DownloadPackage", payload, callback);
+        sf.post("DownloadPackage", payload);
     }
     installAvailablePackage(packageType, packageName, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             packageType,
-            packageName
+            fileName: packageName
         };
         sf.post("InstallAvailablePackage?" + serializeQueryStringParameters(payload), {}, callback);
     }
@@ -115,7 +116,7 @@ class ExtensionService {
     getPackageSettings(packageId, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
         const parameters = {
-            siteId: (utilities.settings.isHost ? -1 : utilities.settings.portalId),
+            siteId: utilities.settings.portalId,
             packageId
         };
         sf.get("GetPackageSettings?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
@@ -123,14 +124,6 @@ class ExtensionService {
     getModuleCategories(callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
         sf.get("getModuleCategories", {}, callback, errorCallback);
-    }
-    getDesktopModulePermissions(desktopModuleId, callback, errorCallback) {
-        const sf = this.getServiceFramework("Extensions");
-        sf.get("GetDesktopModulePermissions", { desktopModuleId: desktopModuleId }, callback, errorCallback);
-    }
-    saveDesktopModulePermissions(permissions, callback, errorCallback) {
-        const sf = this.getServiceFramework("Extensions");
-        sf.post("saveDesktopModulePermissions", { permissions: permissions }, callback, errorCallback);
     }
 }
 const extensionService = new ExtensionService();

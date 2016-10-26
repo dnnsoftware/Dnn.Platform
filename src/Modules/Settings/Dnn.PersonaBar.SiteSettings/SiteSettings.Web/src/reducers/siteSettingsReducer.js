@@ -62,6 +62,42 @@ export default function siteSettings(state = {
             return { ...state,
                 profileSettingsClientModified: action.data.profileSettingsClientModified
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTIES:
+            return { ...state,
+                profileProperties: action.data.profileProperties
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY:
+            return { ...state,
+                profileProperty: action.data.profileProperty,
+                userVisibilityOptions: action.data.userVisibilityOptions,
+                dataTypeOptions: action.data.dataTypeOptions,
+                languageOptions: action.data.languageOptions,
+                profilePropertyClientModified: action.data.profilePropertyClientModified
+            };
+        case ActionTypes.SITESETTINGS_PROFILE_PROPERTY_CLIENT_MODIFIED:
+            return { ...state,
+                profileProperty: action.data.profileProperty,
+                profilePropertyClientModified: action.data.profilePropertyClientModified
+            };
+        case ActionTypes.CANCELED_SITESETTINGS_PROFILE_PROPERTY_CLIENT_MODIFIED:
+            return { ...state,
+                profilePropertyClientModified: action.data.profilePropertyClientModified
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION:
+        case ActionTypes.SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION_CLIENT_MODIFIED:
+            return { ...state,
+                propertyLocalization: action.data.propertyLocalization,                
+                propertyLocalizationClientModified: action.data.propertyLocalizationClientModified
+            };
+        case ActionTypes.CREATED_SITESETTINGS_PROFILE_PROPERTY:
+        case ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY:
+            return { ...state,
+                profilePropertyClientModified: action.data.profilePropertyClientModified
+            };
+        case ActionTypes.CANCELED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION_CLIENT_MODIFIED:
+            return { ...state,
+                propertyLocalizationClientModified: action.data.propertyLocalizationClientModified
+            };
         default:
             return { ...state
             };

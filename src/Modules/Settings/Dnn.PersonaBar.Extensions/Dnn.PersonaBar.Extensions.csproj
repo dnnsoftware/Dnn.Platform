@@ -132,7 +132,6 @@
     <Compile Include="Components\IInstallController.cs" />
     <Compile Include="Components\InstallController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Dto\DesktopModulePermissions.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +160,9 @@
     <Content Include="admin\personaBar\scripts\bundles\extensions-bundle.js" />
     <Content Include="admin\personaBar\extensions.html" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions.Web\" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

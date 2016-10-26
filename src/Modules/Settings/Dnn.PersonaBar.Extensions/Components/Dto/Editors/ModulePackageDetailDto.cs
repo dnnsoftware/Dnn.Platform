@@ -34,11 +34,8 @@ using DotNetNuke.Services.Installer.Packages;
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
     [DataContract]
-    public class ModulePackageDetailDto : PackageDetailDto
+    public class ModulePackageDetailDto : ModulePackagePermissionsDto
     {
-        [DataMember(Name = "desktopModuleId")]
-        public int DesktopModuleId { get; set; }
-
         [DataMember(Name = "moduleName")]
         public string ModuleName { get; set; }
 
@@ -54,8 +51,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [DataMember(Name = "dependencies")]
         public string Dependencies { get; set; }
 
-        [DataMember(Name = "permissions")]
-        public string Permissions { get; set; }
+        [DataMember(Name = "hostPermissions")]
+        public string HostPermissions { get; set; }
 
         [DataMember(Name = "portable")]
         public bool Portable { get; set; }
@@ -94,7 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
             BusinessController = desktopModule.BusinessControllerClass;
             Category = desktopModule.Category;
             Dependencies = desktopModule.Dependencies;
-            Permissions = desktopModule.Permissions;
+            HostPermissions = desktopModule.Permissions;
             Portable = desktopModule.IsPortable;
             Searchable = desktopModule.IsSearchable;
             Upgradeable = desktopModule.IsUpgradeable;

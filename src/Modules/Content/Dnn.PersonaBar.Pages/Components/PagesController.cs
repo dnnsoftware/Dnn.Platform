@@ -19,19 +19,70 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-#region Usings
-
-
-
-#endregion
-
+using System;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-
 
 namespace Dnn.PersonaBar.Pages.Components
 {
-    public class PagesController
+    public class PagesController : ServiceLocator<IPagesController, PagesController>, IPagesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
+
+        private readonly ITabController _tabController;
+
+        public PagesController()
+        {
+            _tabController = TabController.Instance;
+        }
+
+        private static PortalSettings PortalSettings => PortalSettings.Current;
+
+        public bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
+        {
+            var valid = true;
+            errorMessage = string.Empty;
+
+            //get default culture if the tab's culture is null
+            var cultureCode = tab != null ? tab.CultureCode : string.Empty;
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = PortalSettings.DefaultLanguage;
+            }
+
+            //Validate Tab Path
+            var tabId = TabController.GetTabByTabPath(PortalSettings.PortalId, newTabPath, cultureCode);
+            if (tabId != Null.NullInteger && (tab == null || tabId != tab.TabID))
+            {
+                var existingTab = _tabController.GetTab(tabId, PortalSettings.PortalId, false);
+                if (existingTab != null && existingTab.IsDeleted)
+                {
+                    errorMessage = "TabRecycled";
+                }
+                else
+                {
+                    errorMessage = "TabExists";
+                }
+
+                valid = false;
+            }
+
+            //check whether have conflict between tab path and portal alias.
+            if (TabController.IsDuplicateWithPortalAlias(PortalSettings.PortalId, newTabPath))
+            {
+                errorMessage = "PathDuplicateWithAlias";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        protected override Func<IPagesController> GetFactory()
+        {
+            return () => new PagesController();
+        }
     }
 }

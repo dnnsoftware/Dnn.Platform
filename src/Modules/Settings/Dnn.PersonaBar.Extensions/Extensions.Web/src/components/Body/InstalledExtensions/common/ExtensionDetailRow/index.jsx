@@ -27,7 +27,7 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete, isHost}) => (
             <p>{/*_package.upgradeUrl*/}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[6]}>
-            {(_package.canDelete && isHost) && < div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
+            {(_package.canDelete && isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
             <div className="extension-action" onClick={onEdit.bind(this, _package.packageId)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
         </GridCell>
     </GridCell >

@@ -215,32 +215,6 @@ const extensionActions = {
                 }
             }, errorCallback);
         };
-    },
-    getDesktopModulePermissions(desktopModuleId, callback) {
-        return (dispatch) => {
-            ExtensionService.getDesktopModulePermissions(desktopModuleId, (data) => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_DESKTOPMODULE_PERMISSIONS,
-                    payload: data
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    saveDesktopModulePermissions(permissions, callback) {
-        return (dispatch) => {
-            ExtensionService.saveDesktopModulePermissions(permissions, (data) => {
-                dispatch({
-                    type: ActionTypes.UPDATED_DESKTOPMODULE_PERMISSIONS,
-                    payload: data
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
     }
 };
 

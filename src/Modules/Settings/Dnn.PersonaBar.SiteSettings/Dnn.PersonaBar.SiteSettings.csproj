@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\UpdateProfilePropertyRequest.cs" />
     <Compile Include="Services\Dto\UpdateMessagingSettings.cs" />
     <Compile Include="Services\Dto\UpdateDefaultPagesSettings.cs" />
     <Compile Include="Services\Dto\UpdateProfileSettingsRequest.cs" />
