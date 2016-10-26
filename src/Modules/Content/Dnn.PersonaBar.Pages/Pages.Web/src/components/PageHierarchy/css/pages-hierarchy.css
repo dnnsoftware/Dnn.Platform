@@ -21,8 +21,6 @@
     -o-user-select: none;
 }
 
-.pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer {
-}
 .pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer div.shadow {
     position: absolute;
     top: 0;
@@ -43,9 +41,6 @@
 }
 .pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer .jspHorizontalBar .jspTrack {
     margin: 4px 0;
-}
-.pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer .jspHorizontalBar .jspDrag {
-
 }
 
 .pagePanel .pagehierarchy-container .pages-list-container {
@@ -142,7 +137,6 @@
     margin-left: 94px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary > span, li.page-drag-helper div.page-item span.summary > span {
-    display: block;
     min-height: 18px;
     line-height: 18px;
     vertical-align: middle;
@@ -157,6 +151,7 @@
     font-weight: bold;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status {
+    display: inline-block;
     visibility: hidden;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status.visible {
@@ -170,9 +165,6 @@
     text-indent: -100px;
     background: url('../images/icon-pages-status.png') no-repeat;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status > label:hover {
-    background-position: 0px -14px;
-}
 .pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.summary span.status > label {
     background-position: 0px -14px;
 }
@@ -185,9 +177,9 @@
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.child-count {
     display: inline-block;
     height: 16px;    
-    float: left;
     padding-left: 0;
     font-weight: bold;
+    font-size: 10px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons {
     display: none;
@@ -225,7 +217,7 @@
     position: absolute;
     background: url('../images/icon-pages-drag-handler.png') no-repeat;
     display: block;
-    width: 22px;
+    width: 12px;
     height: 26px;
     right: 0;
     top: 16px;
@@ -463,17 +455,21 @@ div.page-drag-helper.page-drag-multiple span.icon {
     border-radius: 5px;
     padding: 0;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list ul li.selected div.page-item {
+.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item:hover {
+    background-color: #EAF1F9;
+}
+
+.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li.selected div.page-item {
     background-color: #2fa6eb;
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.actions {
     position: absolute;
-    right: 26px;
+    right: 16px;
     top: 13px;
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary {
     display: inline-block;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary span.subtitle {
     display: inline-block;
