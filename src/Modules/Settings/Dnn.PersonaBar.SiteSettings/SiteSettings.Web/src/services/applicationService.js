@@ -57,6 +57,31 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("UpdateProfileSettings", payload, callback, failureCallback);
     }
+
+    getProfileProperties(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetProfileProperties?portalId=" + portalId, {}, callback);
+    }  
+
+    getProfileProperty(propertyId, portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetProfileProperty?propertyId=" + propertyId + "&portalId=" + portalId, {}, callback);
+    } 
+
+    getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetProfilePropertyLocalization?propertyName=" + propertyName + "&propertyCategory=" + propertyCategory + "&cultureCode=" + cultureCode, {}, callback);
+    }  
+
+    updateProfileProperty(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateProfileProperty", payload, callback, failureCallback);
+    } 
+
+    addProfileProperty(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddProfileProperty", payload, callback, failureCallback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

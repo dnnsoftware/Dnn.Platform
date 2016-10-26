@@ -1,0 +1,86 @@
+@import "~dnn-global-styles/index";
+.collapsible-component1 {
+    display: inline-block;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-header1 {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {    
+            float: left;
+            width: 100%;      
+            .item-row-name {
+                width: 25%;
+                float: left;
+                padding-left: 15px;
+            }
+            .item-row-dataType {
+                width: 20%;
+                float: left;
+            }
+            .item-row-defaultVisibility {
+                width: 20%;
+                float: left;
+            }
+            .item-row-required, 
+            .item-row-visible {
+                width: 10%;
+                float: left;
+                text-align: center;
+                .checkMarkIcon {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    > svg {
+                        fill: @thunder;
+                    }
+                }
+            }
+            .item-row-editButton {
+                width: 10%;
+                float: right;
+                margin-right: 5px;
+                &:not(:last-child) {
+                   float: left; 
+                   margin-right: 0px;                  
+                }
+                .delete-icon,
+                .edit-icon {
+                    display: block;
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .delete-icon-hidden{
+                    display: none;
+                }
+                .edit-icon-active {
+                    > svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;                        
+                        fill: @curiousBlue;
+                    }
+                }
+            }            
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}
