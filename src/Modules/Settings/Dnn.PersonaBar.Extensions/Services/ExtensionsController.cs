@@ -322,6 +322,14 @@ namespace Dnn.PersonaBar.Extensions.Services
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetLanguagesList()
+        {
+            var list = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
+            return Request.CreateResponse(HttpStatusCode.OK, list.Select(
+                item => new IdNameDto { Id = item.LanguageId, Name = item.Text} ));
+        }
+
         #endregion
 
         #region Edit Extensions API
