@@ -556,6 +556,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var editPermisison = (PermissionInfo)permissionInfo;
                     var permission = new DesktopModulePermissionInfo(editPermisison)
                     {
+                        PortalDesktopModuleID = desktopModule.PortalDesktopModuleID,
                         RoleID = PortalSettings.AdministratorRoleId,
                         AllowAccess = true,
                         RoleName = PortalSettings.AdministratorRoleName
@@ -574,6 +575,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
                         {
+                            PortalDesktopModuleID = desktopModule.PortalDesktopModuleID,
                             PermissionID = permission.PermissionId,
                             RoleID = rolePermission.RoleId,
                             UserID = Null.NullInteger,
@@ -593,6 +595,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         desktopModulePermissionsCollection.Add(new DesktopModulePermissionInfo()
                         {
+                            PortalDesktopModuleID = desktopModule.PortalDesktopModuleID,
                             PermissionID = permission.PermissionId,
                             RoleID = int.Parse(Globals.glbRoleNothing),
                             UserID = userPermission.UserId,

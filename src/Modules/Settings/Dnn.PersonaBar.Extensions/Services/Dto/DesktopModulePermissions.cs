@@ -13,6 +13,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.PersonaBar.Extensions.Services.DTO
 {
+    [DataContract]
     public class DesktopModulePermissions : Permissions
     {
         public DesktopModulePermissions(bool needDefinitions) : base(needDefinitions)

@@ -8,7 +8,7 @@ import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
-import PermissionGrid from "./PermissionGrid";
+import PermissionGrid from "dnn-permission-grid";
 import Localization from "localization";
 import utils from "utils";
 import styles from "./style.less";
@@ -29,7 +29,19 @@ class ModuleSettings extends Component {
     }
 
     onPermissionsChanged(permissions){
-        console.log(permissions);
+        const {props, state} = this;
+
+        state.permissions = permissions;
+    }
+
+    savePermissions(){
+        const {props, state} = this;
+        let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
+        let permissions = Object.assign({}, state.permissions, {desktopModuleId: desktopModuleId });
+
+        props.dispatch(PermissionActions.saveDesktopModulePermissions(permissions, function(){
+            utils.utilities.notify(Localization.get("UpdateComplete"));
+        }));
     }
 
     render() {
@@ -37,7 +49,14 @@ class ModuleSettings extends Component {
 
         return (
             <GridCell className="module-settings">
-                <PermissionGrid permissions={props.permissions} service={utils.utilities.sf} onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                <PermissionGrid 
+                    permissions={props.permissions} 
+                    service={utils.utilities.sf} 
+                    onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                <GridCell className="actions-row">
+                    <Button>{Localization.get("Cancel")}</Button>
+                    <Button type="primary" onClick={this.savePermissions.bind(this)}>{Localization.get("Save")}</Button>
+                </GridCell>
             </GridCell>
         );
     }
