@@ -1,4 +1,4 @@
-﻿var webpack = require("webpack");
+﻿const webpack = require("webpack");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
 const webpackExternals = require("dnn-webpack-externals");
@@ -14,7 +14,8 @@ module.exports = {
         loaders: [
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
+            { test: /\.css$/, loader: "style-loader!css-loader" },
+            { test: /\.(ttf|woff|gif|png)$/, loader: "url-loader?limit=8192" }
         ],
 
         preLoaders: [

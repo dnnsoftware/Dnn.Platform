@@ -8,7 +8,7 @@ class Root extends Component {
     }
     render() {
         return (
-            <div className="boilerplate-root">
+            <div className="pages-root">
                 <App/>
                 <DevTools />
             </div>
