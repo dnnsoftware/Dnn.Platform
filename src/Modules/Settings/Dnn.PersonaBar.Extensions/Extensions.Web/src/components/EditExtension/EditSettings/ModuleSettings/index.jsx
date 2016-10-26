@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 
-import { PermissionActions } from "actions";
-
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -18,22 +16,9 @@ class ModuleSettings extends Component {
         super(props);
 
         this.state = {
-            permissions: props.permissions,
+            permissions: props.extensionBeingEdited.permissions.value,
             desktopModuleId: props.extensionBeingEdited.desktopModuleId.value
         };
-    }
-
-    componentWillMount() {
-        const {props, state} = this;
-
-        props.dispatch(PermissionActions.getDesktopModulePermissions(state.desktopModuleId));
-    }
-
-    componentWillReceiveProps(newProps){
-        
-        if(newProps.permissions){
-            this.setState({permissions: newProps.permissions});
-        }
     }
 
     onPermissionsChanged(permissions){
@@ -45,11 +30,14 @@ class ModuleSettings extends Component {
 
     savePermissions(){
         const {props, state} = this;
-        let permissions = Object.assign({}, state.permissions, {desktopModuleId: state.desktopModuleId });
+        let permissions = Object.assign({}, state.permissions);
 
-        props.dispatch(PermissionActions.saveDesktopModulePermissions(permissions, function(){
-            utils.utilities.notify(Localization.get("UpdateComplete"));
-        }));
+        let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+        extensionBeingUpdated.permissions.value = permissions;
+
+        props.updateExtensionBeingEdited(extensionBeingUpdated, function(){
+             utils.utilities.notify(Localization.get("UpdateComplete"));
+        });
     }
 
     render() {
@@ -72,13 +60,11 @@ class ModuleSettings extends Component {
 
 ModuleSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    permissions: PropTypes.object,
     extensionBeingEdited: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        permissions: state.permission.desktopModulePermissions
     };
 }
 

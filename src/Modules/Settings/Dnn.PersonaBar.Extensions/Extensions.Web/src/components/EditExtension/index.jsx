@@ -224,7 +224,8 @@ class EditExtension extends Component {
                         <GridCell>
                             <EditSettings
                                 type={extensionBeingEdited.packageType.value}
-                                extensionBeingEdited={extensionBeingEdited} />
+                                extensionBeingEdited={extensionBeingEdited}
+                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}
                             onChange={this.onChange.bind(this)}

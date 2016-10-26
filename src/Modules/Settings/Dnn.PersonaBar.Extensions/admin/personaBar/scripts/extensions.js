@@ -7,8 +7,8 @@ define(['jquery',
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/extensions-bundle.js";
-            //var url = "http://localhost:8080/dist/extensions-bundle.js";
+             var url = "scripts/bundles/extensions-bundle.js";
+             //var url = "http://localhost:8080/dist/extensions-bundle.js";
             
             $.ajax({
                 dataType: "script",
@@ -20,8 +20,6 @@ define(['jquery',
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
-
-                console.log(params.settings);
 
                 window.dnn.initExtensions = function initializeExtensions() {
                     return {

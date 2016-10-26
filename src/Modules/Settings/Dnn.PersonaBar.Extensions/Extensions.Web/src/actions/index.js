@@ -5,7 +5,6 @@ import InstallationActions from "./installation";
 import FolderActions from "./folder";
 import ModuleDefinitionActions from "./moduleDefinition";
 import CreatePackageActions from "./createPackage";
-import PermissionActions from "./permission";
 export {
     PaginationActions,
     VisiblePanelActions,
@@ -13,6 +12,5 @@ export {
     InstallationActions,
     FolderActions,
     ModuleDefinitionActions,
-    CreatePackageActions,
-    PermissionActions
+    CreatePackageActions
 };

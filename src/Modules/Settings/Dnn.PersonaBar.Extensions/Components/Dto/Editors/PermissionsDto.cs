@@ -13,11 +13,19 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
+    [DataContract]
     public class PermissionsDto : Permissions
     {
         public PermissionsDto(bool needDefinitions) : base(needDefinitions)
         {
+            foreach (var role in PermissionProvider.Instance().ImplicitRolesForPages(PortalSettings.Current.PortalId))
+            {
+                this.EnsureRole(role, true, true);
+            }
         }
+
+        [DataMember(Name = "desktopModuleId")]
+        public int DesktopModuleId { get; set; }
 
         protected override void LoadPermissionDefinitions()
         {
