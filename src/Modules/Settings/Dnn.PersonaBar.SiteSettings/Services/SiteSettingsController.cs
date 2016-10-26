@@ -6,15 +6,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using System.Web;
 using System.Web.Http;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -26,7 +23,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Internals;
@@ -38,7 +34,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     public class SiteSettingsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
-        private string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+        private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
+        private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx");
+        private static readonly string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -51,7 +49,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var pid = portalId ?? PortalId;
                 var portalSettings = new PortalSettings(pid);
                 var portal = PortalController.Instance.GetPortal(pid);
                 var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
@@ -98,7 +96,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                var pid = request.PortalId ?? PortalId;
                 var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
                 var portalInfo = PortalController.Instance.GetPortal(pid);
                 portalInfo.PortalName = request.PortalName;
@@ -132,8 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
-
+                var pid = portalId ?? PortalId;
                 var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(pid);
 
@@ -180,8 +177,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
-
+                var pid = request.PortalId ?? PortalId;
                 var portalInfo = PortalController.Instance.GetPortal(pid);
                 portalInfo.SplashTabId = request.SplashTabId;
                 portalInfo.HomeTabId = request.HomeTabId;
@@ -215,7 +211,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var pid = portalId ?? PortalId;
                 var portalSettings = new PortalSettings(pid);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
@@ -251,7 +247,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                var pid = request.PortalId ?? PortalId;
 
                 PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false);
@@ -284,7 +280,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var pid = portalId ?? PortalId;
                 var urlSettings = new FriendlyUrlSettings(pid);
                 var userSettings = UserController.GetUserSettings(pid);
 
@@ -324,7 +320,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
+                var pid = request.PortalId ?? PortalId;
 
                 if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
@@ -356,7 +352,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var pid = portalId ?? PortalId;
                 var profileProperties = ProfileController.GetPropertyDefinitionsByPortal(pid, false, false).Cast<ProfilePropertyDefinition>().Select(v => new
                 {
                     v.PropertyDefinitionId,
@@ -381,9 +377,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private string DisplayDataType(int dataType)
         {
-            string retValue = Null.NullString;
+            var retValue = Null.NullString;
             var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", dataType);
+            var definitionEntry = listController.GetListEntryInfo("DataType", dataType);
             if (definitionEntry != null)
             {
                 retValue = definitionEntry.Value;
@@ -399,20 +395,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="portalId"></param>
         /// <returns>profile property</returns>
         [HttpGet]
-        public HttpResponseMessage GetProfileProperty(int propertyId, [FromUri] int? portalId)
+        public HttpResponseMessage GetProfileProperty([FromUri]int? propertyId, [FromUri] int? portalId)
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
-                var profileProperty = ProfileController.GetPropertyDefinition(propertyId, pid);
+                var pid = portalId ?? PortalId;
+                var profileProperty = ProfileController.GetPropertyDefinition(propertyId ?? -1, pid);
                 var listController = new ListController();
 
-                IEnumerable<ListItem> cultureList = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, Thread.CurrentThread.CurrentUICulture.Name, "", false);
+                var cultureList = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, Thread.CurrentThread.CurrentUICulture.Name, "", false);
 
                 var response = new
                 {
                     Success = true,
-                    ProfileProperty = new
+                    ProfileProperty = profileProperty != null ? new
                     {
                         profileProperty.PropertyDefinitionId,
                         profileProperty.PropertyName,
@@ -426,7 +422,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         profileProperty.Visible,
                         profileProperty.ViewOrder,
                         DefaultVisibility = (int)profileProperty.DefaultVisibility
-                    },
+                    } : null,
                     UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
                         v => new
                         {
@@ -476,6 +472,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Success = true,
                     PropertyLocalization = new
                     {
+                        Language = cultureCode,
                         PropertyName = Localization.GetString("ProfileProperties_" + propertyName, ProfileResourceFile, cultureCode),
                         PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", ProfileResourceFile, cultureCode),
                         PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", ProfileResourceFile, cultureCode),
@@ -492,22 +489,29 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        private string GetResourceFile(string type, string language)
+        /// POST: api/SiteSettings/UpdateProfilePropertyLocalization
+        /// <summary>
+        /// Updates profile property localization
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateProfilePropertyLocalization(UpdateProfilePropertyLocalizationRequest request)
         {
-            string resourcefilename = ProfileResourceFile;
-            if (language != Localization.SystemLocale)
+            try
             {
-                resourcefilename = resourcefilename + "." + language;
+                var pid = request.PortalId ?? PortalId;
+                _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString, 
+                    request.PropertyHelpString, request.PropertyRequiredString, request.PropertyValidationString, request.CategoryNameString);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
-            if (type == "Portal")
+            catch (Exception exc)
             {
-                resourcefilename = resourcefilename + "." + "Portal-" + PortalId;
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-            else if (type == "Host")
-            {
-                resourcefilename = resourcefilename + "." + "Host";
-            }
-            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
         }
 
         /// POST: api/SiteSettings/AddProfileProperty
@@ -522,15 +526,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
-                ProfilePropertyDefinition property = new ProfilePropertyDefinition(pid)
+                var pid = request.PortalId ?? PortalId;
+                var property = new ProfilePropertyDefinition(pid)
                 {
                     DataType = request.DataType,
                     DefaultValue = request.DefaultValue,
                     PropertyCategory = request.PropertyCategory,
                     PropertyName = request.PropertyName,
                     ReadOnly = request.ReadOnly,
-                    Required = request.Required,
+                    Required = !UserInfo.IsSuperUser && request.Required,
                     ValidationExpression = request.ValidationExpression,
                     ViewOrder = request.ViewOrder,
                     Visible = request.Visible,
@@ -538,15 +542,48 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
                 };
 
-                ProfileController.AddPropertyDefinition(property);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                if (ValidateProperty(property))
+                {
+                    var propertyId = ProfileController.AddPropertyDefinition(property);
+                    if (propertyId < Null.NullInteger)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("DuplicateName", LocalResourcesFile)));
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    }
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("RequiredTextBox", LocalResourcesFile)));
+                }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private bool ValidateProperty(ProfilePropertyDefinition definition)
+        {
+            bool isValid = true;
+            var objListController = new ListController();
+            string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+
+            switch (strDataType)
+            {
+                case "Text":
+                    if (definition.Required && definition.Length == 0)
+                    {
+                        isValid = Null.NullBoolean;
+                    }
+                    break;
+            }
+            return isValid;
         }
 
         /// POST: api/SiteSettings/UpdateProfileProperty
@@ -561,14 +598,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = request.PortalId.HasValue ? request.PortalId.Value : PortalId;
-                int definitionId = request.PropertyDefinitionId.HasValue
-                    ? request.PropertyDefinitionId.Value
-                    : Null.NullInteger;
+                var pid = request.PortalId ?? PortalId;
+                var definitionId = request.PropertyDefinitionId ?? Null.NullInteger;
 
                 if (definitionId != Null.NullInteger)
                 {
-                    ProfilePropertyDefinition property = new ProfilePropertyDefinition(pid)
+                    var property = new ProfilePropertyDefinition(pid)
                     {
                         PropertyDefinitionId = definitionId,
                         DataType = request.DataType,
@@ -584,9 +619,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
                     };
 
-                    ProfileController.UpdatePropertyDefinition(property);
-
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    if (ValidateProperty(property))
+                    {
+                        ProfileController.UpdatePropertyDefinition(property);
+                        return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("RequiredTextBox", LocalResourcesFile)));
+                    }
                 }
                 else
                 {
@@ -613,7 +655,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                int pid = portalId.HasValue ? portalId.Value : PortalId;
+                var pid = portalId ?? PortalId;
                 var propertyDefinition = new ProfilePropertyDefinition(pid)
                 {
                     PropertyDefinitionId = propertyId

@@ -82,6 +82,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("AddProfileProperty", payload, callback, failureCallback);
     } 
+
+    deleteProfileProperty(propertyId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteProfileProperty?propertyId=" + propertyId + "&portalId=", {}, callback, failureCallback);
+    } 
+
+    updateProfilePropertyLocalization(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateProfilePropertyLocalization", payload, callback, failureCallback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

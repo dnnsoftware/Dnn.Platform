@@ -319,6 +319,44 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    deleteProfileProperty(propertyId, properties, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteProfileProperty(propertyId, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_PROFILE_PROPERTY,
+                    data: {
+                        profileProperties: properties
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateProfilePropertyLocalization(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateProfilePropertyLocalization(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION,
+                    data: {
+                        propertyLocalizationClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

@@ -49,7 +49,7 @@ export default function siteSettings(state = {
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_SETTINGS:
             return { ...state,
-                profileSettings: action.data.settings,                
+                profileSettings: action.data.settings,
                 userVisibilityOptions: action.data.userVisibilityOptions,
                 profileSettingsClientModified: action.data.profileSettingsClientModified
             };
@@ -86,7 +86,7 @@ export default function siteSettings(state = {
         case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION:
         case ActionTypes.SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION_CLIENT_MODIFIED:
             return { ...state,
-                propertyLocalization: action.data.propertyLocalization,                
+                propertyLocalization: action.data.propertyLocalization,
                 propertyLocalizationClientModified: action.data.propertyLocalizationClientModified
             };
         case ActionTypes.CREATED_SITESETTINGS_PROFILE_PROPERTY:
@@ -98,8 +98,11 @@ export default function siteSettings(state = {
             return { ...state,
                 propertyLocalizationClientModified: action.data.propertyLocalizationClientModified
             };
-        default:
-            return { ...state
+        case ActionTypes.DELETED_SITESETTINGS_PROFILE_PROPERTY:
+            return { ...state,
+                profileProperties: action.data.profileProperties
             };
+        default:
+            return state;
     }
 }

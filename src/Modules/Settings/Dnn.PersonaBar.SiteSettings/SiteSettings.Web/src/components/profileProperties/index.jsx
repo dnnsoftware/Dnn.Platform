@@ -97,7 +97,7 @@ class ProfilePropertiesPanel extends Component {
         const {props, state} = this;
         util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
-            props.dispatch(SiteSettingsActions.deleteProfileProperty({ "propertyId": propertyId }, itemList, () => {
+            props.dispatch(SiteSettingsActions.deleteProfileProperty(propertyId, itemList, () => {
                 util.utilities.notify(resx.get("DeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -126,7 +126,7 @@ class ProfilePropertiesPanel extends Component {
                         openId={this.state.openId}
                         OpenCollapse={this.toggle.bind(this)}
                         Collapse={this.collapse.bind(this)}
-                        onDelete={this.onDeleteProperty.bind(this)}
+                        onDelete={this.onDeleteProperty.bind(this, item.PropertyDefinitionId)}
                         id={id}>
                         <ProfilePropertyEditor
                             propertyId={item.PropertyDefinitionId}

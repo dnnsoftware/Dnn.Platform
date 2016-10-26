@@ -25,10 +25,109 @@
 
 #endregion
 
+using System.IO;
+using System.Web;
+using System.Xml;
+using DotNetNuke.Services.Localization;
+
 namespace Dnn.PersonaBar.SiteSettings.Components
 {
     public class SiteSettingsController
     {
-        
+        public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString,
+            string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
+        {
+            var portalResources = new XmlDocument();
+            var defaultResources = new XmlDocument();
+            XmlNode parent;
+
+            defaultResources.Load(GetResourceFile("", Localization.SystemLocale, portalId));
+            string filename = GetResourceFile("Portal", cultureCode, portalId);
+
+            if (File.Exists(filename))
+            {
+                portalResources.Load(filename);
+            }
+            else
+            {
+                portalResources.Load(GetResourceFile("", Localization.SystemLocale, portalId));
+            }
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Text", propertyNameString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Help", propertyHelpString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Required", propertyRequiredString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Validation", propertyValidationString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyCategory + ".Header", categoryNameString);
+
+            //remove unmodified keys
+            foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
+            {
+                XmlNode defaultNode = defaultResources.SelectSingleNode("//root/data[@name='" + node.Attributes["name"].Value + "']");
+                if (defaultNode != null && defaultNode.InnerXml == node.InnerXml)
+                {
+                    parent = node.ParentNode;
+                    parent.RemoveChild(node);
+                }
+            }
+
+            //remove duplicate keys
+            foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
+            {
+                if (portalResources.SelectNodes("//root/data[@name='" + node.Attributes["name"].Value + "']").Count > 1)
+                {
+                    parent = node.ParentNode;
+                    parent.RemoveChild(node);
+                }
+            }
+            if (portalResources.SelectNodes("//root/data").Count > 0)
+            {
+                //there's something to save
+                portalResources.Save(filename);
+            }
+            else
+            {
+                //nothing to be saved, if file exists delete
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+            }
+        }
+
+        private void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
+        {
+            XmlNode node;
+            XmlNode nodeData;
+            XmlAttribute attr;
+            node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
+            if (node == null)
+            {
+                //missing entry
+                nodeData = xmlDoc.CreateElement("data");
+                attr = xmlDoc.CreateAttribute("name");
+                attr.Value = key;
+                nodeData.Attributes.Append(attr);
+                xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
+                node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
+            }
+            node.InnerXml = HttpUtility.HtmlEncode(text);
+        }
+
+        private string GetResourceFile(string type, string language, int portalId)
+        {
+            string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+            if (language != Localization.SystemLocale)
+            {
+                resourcefilename = resourcefilename + "." + language;
+            }
+            if (type == "Portal")
+            {
+                resourcefilename = resourcefilename + "." + "Portal-" + portalId;
+            }
+            else if (type == "Host")
+            {
+                resourcefilename = resourcefilename + "." + "Host";
+            }
+            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
+        }
     }
 }

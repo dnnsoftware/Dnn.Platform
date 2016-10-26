@@ -531,4 +531,19 @@
   <data name="valPropertyName.ErrorMessage" xml:space="preserve">
     <value>You need enter a name for this property.</value>
   </data>
+  <data name="PropertyDefinitionDeletedWarning.Text" xml:space="preserve">
+	<value>Are you sure you want to delete this profile field?</value>
+  </data>
+  <data name="DeleteSuccess.Text" xml:space="preserve">
+    <value>The profile field has been deleted.</value>
+  </data>
+  <data name="DeleteError.Text" xml:space="preserve">
+    <value>Could not delete the profile field. Please try later.</value>
+  </data>
+  <data name="DuplicateName.Text" xml:space="preserve">
+    <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>
+  </data>
+  <data name="RequiredTextBox.Text" xml:space="preserve">
+    <value>The required length must be an integer greater than or equal to 0. If you use a TextBox field, the required length must be greater than 0.</value>
+  </data>
 </root>

@@ -18,7 +18,7 @@ import {
 import util from "../../../utils";
 import resx from "../../../resources";
 
-const re = /^[1-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?$/;
+const re = /^([0-9]+|[1-9])$/;
 let retainHistoryNumOptions = [];
 
 class ProfilePropertyEditor extends Component {
@@ -32,7 +32,8 @@ class ProfilePropertyEditor extends Component {
                 name: true,
                 category: true,
                 datatype: true,
-                localename: true
+                localename: true,
+                length: false
             },
             triedToSubmit: false,
             showFirstPage: true
@@ -41,20 +42,17 @@ class ProfilePropertyEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-
-        if (props.propertyId) {
-            props.dispatch(SiteSettingsActions.getProfileProperty(props.propertyId));
-        }
-        else {
-            this.setState({
-                profileProperty: {}
-            });
-        }
+        props.dispatch(SiteSettingsActions.getProfileProperty(props.propertyId));
     }
 
     componentWillReceiveProps(props) {
         let {state} = this;
-        if (props.profileProperty["PropertyName"] === "" || props.profileProperty["PropertyName"] === undefined) {
+
+        if (!props.profileProperty) {
+            return;
+        }
+
+        if (props.profileProperty["PropertyName"] === undefined || props.profileProperty["PropertyName"] === "") {
             state.error["name"] = true;
         }
         else if (props.profileProperty["PropertyName"] !== "" && props.profileProperty["PropertyName"] !== undefined) {
@@ -72,6 +70,13 @@ class ProfilePropertyEditor extends Component {
         else if (props.profileProperty["DataType"] !== "" && props.profileProperty["DataType"] !== undefined) {
             state.error["datatype"] = false;
         }
+        let length = props.profileProperty["Length"];
+        if (this.isValidLength(length)) {
+            state.error["length"] = false;
+        }
+        else {
+            state.error["length"] = true;
+        }
 
         if (props.propertyLocalization) {
             if (props.propertyLocalization["PropertyName"] === "" || props.propertyLocalization["PropertyName"] === undefined) {
@@ -88,6 +93,26 @@ class ProfilePropertyEditor extends Component {
             triedToSubmit: false,
             error: state.error
         });
+    }
+
+    isValidLength(val) {
+        let {state, props} = this;
+        if (props.profileProperty) {
+            if (props.profileProperty["DataType"] !== "" && props.profileProperty["DataType"] !== undefined) {
+                if (props.profileProperty["DataType"] === 349) {
+                    return re.test(val) && val > 0;
+                }
+                else {
+                    return re.test(val);
+                }
+            }
+            else {
+                return re.test(val);
+            }
+        }
+        else {
+            return true;
+        }
     }
 
     onSettingChange(key, event) {
@@ -113,6 +138,13 @@ class ProfilePropertyEditor extends Component {
             state.error["datatype"] = false;
         }
 
+        if (this.isValidLength(profileProperty[key]) && key === "Length") {
+            state.error["length"] = false;
+        }
+        else {
+            state.error["length"] = true;
+        }
+
         if (key === "DefaultVisibility" || key === "DataType") {
             profileProperty[key] = event.value;
         }
@@ -127,6 +159,20 @@ class ProfilePropertyEditor extends Component {
         });
 
         props.dispatch(SiteSettingsActions.profilePropertyClientModified(profileProperty));
+    }
+
+    onLanguageChange(event){
+        let {state, props} = this;
+        let propertyLocalization = Object.assign({}, state.propertyLocalization);
+
+        propertyLocalization["Language"] = event.value;
+        props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
+        
+        this.setState({
+            propertyLocalization: propertyLocalization,
+            triedToSubmit: false,
+            error: state.error
+        });        
     }
 
     onLocaleSettingChange(key, event) {
@@ -181,12 +227,24 @@ class ProfilePropertyEditor extends Component {
         return options;
     }
 
+    getDefaultVisibility(){
+        const {props, state} = this;
+        if(!state.profileProperty){
+            if(props.id === "add") {
+                return 2;
+            }
+        }
+        else{
+            return state.profileProperty.DefaultVisibility;
+        }
+    }
+
     onNext(event) {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
         });
-        if (state.error.name) {
+        if (state.error.name || state.error.category || state.error.datatype || state.error.length) {
             return;
         }
 
@@ -194,6 +252,7 @@ class ProfilePropertyEditor extends Component {
             if (props.id === "add") {
                 props.dispatch(SiteSettingsActions.addProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+                    props.dispatch(SiteSettingsActions.getProfileProperties());
                     props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
@@ -205,6 +264,7 @@ class ProfilePropertyEditor extends Component {
             else {
                 props.dispatch(SiteSettingsActions.updateProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+                    props.dispatch(SiteSettingsActions.getProfileProperties());
                     props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
@@ -227,10 +287,27 @@ class ProfilePropertyEditor extends Component {
         this.setState({
             triedToSubmit: true
         });
-        if (state.error.name) {
+        if (state.error.localename) {
             return;
         }
 
+        let localization = {
+            PropertyName: state.profileProperty.PropertyName,
+            PropertyCategory: state.profileProperty.PropertyCategory,
+            Language: state.propertyLocalization.Language,
+            PropertyNameString: state.propertyLocalization.PropertyName,
+            PropertyHelpString: state.propertyLocalization.PropertyHelp,
+            PropertyRequiredString: state.propertyLocalization.PropertyRequired,
+            PropertyValidationString: state.propertyLocalization.PropertyValidation,
+            CategoryNameString: state.propertyLocalization.CategoryName
+        };
+
+        props.dispatch(SiteSettingsActions.updateProfilePropertyLocalization(localization, (data) => {
+            util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+            props.Collapse();
+        }, (error) => {
+            util.utilities.notifyError(resx.get("SettingsError"));
+        }));
     }
 
     onCancel(event) {
@@ -262,7 +339,7 @@ class ProfilePropertyEditor extends Component {
                         withLabel={false}
                         error={this.state.error.name && this.state.triedToSubmit}
                         errorMessage={resx.get("ProfilePropertyDefinition_PropertyName.Required")}
-                        value={this.state.profileProperty.PropertyName}
+                        value={this.state.profileProperty ? this.state.profileProperty.PropertyName : ""}
                         onChange={this.onSettingChange.bind(this, "PropertyName")}
                         />
                 </InputGroup>
@@ -276,7 +353,7 @@ class ProfilePropertyEditor extends Component {
                         withLabel={false}
                         error={this.state.error.category && this.state.triedToSubmit}
                         errorMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Required")}
-                        value={this.state.profileProperty.PropertyCategory}
+                        value={this.state.profileProperty ? this.state.profileProperty.PropertyCategory : ""}
                         onChange={this.onSettingChange.bind(this, "PropertyCategory")}
                         />
                 </InputGroup>
@@ -289,7 +366,7 @@ class ProfilePropertyEditor extends Component {
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
-                        value={this.state.profileProperty.DefaultValue}
+                        value={this.state.profileProperty ? this.state.profileProperty.DefaultValue : ""}
                         onChange={this.onSettingChange.bind(this, "DefaultValue")}
                         />
                 </InputGroup>
@@ -302,7 +379,7 @@ class ProfilePropertyEditor extends Component {
                             />
                         <Switch
                             labelHidden={true}
-                            value={this.state.profileProperty.Required}
+                            value={this.state.profileProperty ? this.state.profileProperty.Required : false}
                             onChange={this.onSettingChange.bind(this, "Required")}
                             />
                     </div>
@@ -316,7 +393,7 @@ class ProfilePropertyEditor extends Component {
                             />
                         <Switch
                             labelHidden={true}
-                            value={this.state.profileProperty.Visible}
+                            value={this.state.profileProperty ? this.state.profileProperty.Visible : false}
                             onChange={this.onSettingChange.bind(this, "Visible")}
                             />
                     </div>
@@ -328,7 +405,7 @@ class ProfilePropertyEditor extends Component {
                         />
                     <Dropdown
                         options={this.getProfileVisibilityOptions()}
-                        value={this.props.id === "add" ? 2 : this.state.profileProperty.DefaultVisibility}
+                        value={this.getDefaultVisibility()}
                         onSelect={this.onSettingChange.bind(this, "DefaultVisibility")}
                         />
                 </InputGroup>
@@ -341,7 +418,7 @@ class ProfilePropertyEditor extends Component {
                         />
                     <DropdownWithError
                         options={this.getProfileDataTypeOptions()}
-                        value={this.state.profileProperty.DataType}
+                        value={this.state.profileProperty ? this.state.profileProperty.DataType : ""}
                         onSelect={this.onSettingChange.bind(this, "DataType")}
                         error={this.state.error.datatype && this.state.triedToSubmit}
                         errorMessage={resx.get("ProfilePropertyDefinition_DataType.Required")}
@@ -355,8 +432,9 @@ class ProfilePropertyEditor extends Component {
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
-                        error={false}
-                        value={this.state.profileProperty.Length}
+                        error={this.state.error.length && this.state.triedToSubmit}
+                        errorMessage={resx.get("RequiredTextBox")}
+                        value={this.state.profileProperty ? this.state.profileProperty.Length : 0}
                         onChange={this.onSettingChange.bind(this, "Length")}
                         />
                 </InputGroup>
@@ -369,7 +447,7 @@ class ProfilePropertyEditor extends Component {
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
-                        value={this.state.profileProperty.ValidationExpression}
+                        value={this.state.profileProperty ? this.state.profileProperty.ValidationExpression : ""}
                         onChange={this.onSettingChange.bind(this, "ValidationExpression")}
                         />
                 </InputGroup>
@@ -382,7 +460,7 @@ class ProfilePropertyEditor extends Component {
                             />
                         <Switch
                             labelHidden={true}
-                            value={this.state.profileProperty.ReadOnly}
+                            value={this.state.profileProperty ? this.state.profileProperty.ReadOnly : false}
                             onChange={this.onSettingChange.bind(this, "ReadOnly")}
                             />
                     </div>
@@ -397,7 +475,7 @@ class ProfilePropertyEditor extends Component {
                 </InputGroup>
             </div>;
 
-            const columnThree = <div className="left-column">
+            const columnThree = <div className="left-column2">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plPropertyName.Help")}
@@ -445,7 +523,7 @@ class ProfilePropertyEditor extends Component {
                     }
                 </InputGroup>
             </div>;
-            const columnFour = <div className="right-column">
+            const columnFour = <div className="right-column2">
                 <InputGroup style={{ paddingTop: "10px" }}>
                     <Label
                         tooltipMessage={resx.get("plPropertyHelp.Help")}
@@ -455,6 +533,7 @@ class ProfilePropertyEditor extends Component {
                         <MultiLineInput
                             value={this.state.propertyLocalization.PropertyHelp}
                             onChange={this.onLocaleSettingChange.bind(this, "PropertyHelp")}
+                            style={{ padding: "8px 16px 75px" }}
                             />
                     }
                 </InputGroup>
@@ -502,8 +581,8 @@ class ProfilePropertyEditor extends Component {
                                     />
                                 <Dropdown
                                     options={this.getProfileLanguageOptions()}
-                                    value={this.props.id === "add" ? "en-US" : this.state.profileProperty.DefaultVisibility}
-                                    onSelect={this.onSettingChange.bind(this, "DefaultVisibility")}
+                                    value={this.state.propertyLocalization.Language}
+                                    onSelect={this.onLanguageChange.bind(this)}
                                     />
                             </InputGroup>
                             <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
@@ -514,7 +593,7 @@ class ProfilePropertyEditor extends Component {
                                     {resx.get("Cancel")}
                                 </Button>
                                 <Button
-                                    disabled={!this.props.profilePropertyClientModified}
+                                    disabled={!this.props.propertyLocalizationClientModified}
                                     type="primary"
                                     onClick={this.onSave.bind(this)}>
                                     {resx.get("Save")}
