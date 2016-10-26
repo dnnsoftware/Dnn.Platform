@@ -12,6 +12,9 @@ const utils = {
     },
     formatNumeric: function (value) {       
         return value.toLocaleString("es-US");
+    },
+    formatNumeric2Decimals: function (value) {       
+        return parseFloat(Math.round(value * 100) / 100).toFixed(2);
     }
 };
 export default utils;
