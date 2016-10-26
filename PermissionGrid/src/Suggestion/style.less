@@ -1,0 +1,117 @@
+@import "~dnn-global-styles/index";
+@import "~react-widgets/lib/less/react-widgets.less";
+
+.dnn-suggestion {
+    width: 100%;
+    float: left;
+    box-sizing: border-box;
+
+    span {
+        width: 100%;
+        display: inline-block;
+
+        .rw-combobox {
+            float: left;
+            width: 220px;
+            height: 34px;
+            line-height: 34px;
+            vertical-align: middle;
+            padding: 0;
+            border: none;
+            color: @bulgarianRose;
+            border-radius: 0;
+            display: inline-block;
+            box-shadow: none;
+            background: transparent;
+
+            &.rw-state-focus, &.rw-state-focus:hover{
+                border: none;
+                outline: none;
+                box-shadow: none;
+            }
+
+            button {
+                display: none;
+            }
+            ::-webkit-input-placeholder {
+                /* WebKit, Blink, Edge */
+                color: @alto;
+            }
+            :-moz-placeholder {
+                /* Mozilla Firefox 4 to 18 */
+                color: @alto;
+                opacity: 1;
+            }
+            ::-moz-placeholder {
+                /* Mozilla Firefox 19+ */
+                color: @alto;
+                opacity: 1;
+            }
+            :-ms-input-placeholder {
+                /* Internet Explorer 10-11 */
+                color: @alto;
+            }
+            input {
+                -webkit-box-shadow: none;
+                padding: 0 0 0 12px;
+                height: 100%;
+                vertical-align: top;
+                background-color: transparent;
+                border: none;
+                outline: none;
+
+                &::-ms-clear {
+                    display: none;
+                }
+            }
+            .rw-popup-container {
+                box-shadow: none;
+                .rw-popup {
+                    border-radius: 0px;
+                    border: 1px solid @alto;
+                    box-shadow: none;
+                    ul.rw-list {
+                        margin: 0;
+                        padding: 0;
+                        li {
+                            padding-left: 15px;
+                            height: 30px;
+                            line-height: 30px;
+                            color: @rollingStone;
+                            border: none;
+                            outline: none;
+                        }
+                        li:hover {
+                            background-color: @gallery;
+                            color: @curiousBlue;
+                        }
+                        li.rw-state-selected {
+                            background-color: transparent;
+                            color: @curiousBlue;
+                        }
+                    }
+                }
+            }
+        }
+        .add-button {
+            float: right;
+            text-align: right;
+            width: auto;
+            font-weight: bolder;
+            overflow: hidden;
+            cursor: pointer;
+            box-sizing: border-box;
+            padding-top: 10px;
+            svg {
+                fill: @rollingStone;
+            }
+            span {
+                border: none;
+            }
+        }
+        button[role="secondary"] {
+            vertical-align: middle;
+            margin: 0 0 0 10px;
+        }
+    }
+}
