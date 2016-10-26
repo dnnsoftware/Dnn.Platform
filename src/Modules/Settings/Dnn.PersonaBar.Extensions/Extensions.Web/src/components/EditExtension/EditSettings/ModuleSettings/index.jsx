@@ -14,30 +14,38 @@ import utils from "utils";
 import styles from "./style.less";
 
 class ModuleSettings extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            permissions: {}
+            permissions: props.permissions,
+            desktopModuleId: props.extensionBeingEdited.desktopModuleId.value
         };
     }
 
     componentWillMount() {
         const {props, state} = this;
-        let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
-        props.dispatch(PermissionActions.getDesktopModulePermissions(desktopModuleId));
+
+        props.dispatch(PermissionActions.getDesktopModulePermissions(state.desktopModuleId));
+    }
+
+    componentWillReceiveProps(newProps){
+        
+        if(newProps.permissions){
+            this.setState({permissions: newProps.permissions});
+        }
     }
 
     onPermissionsChanged(permissions){
         const {props, state} = this;
 
-        state.permissions = permissions;
+        let newPermissions = Object.assign({}, state.permissions, permissions);
+        this.setState({permissions: newPermissions});
     }
 
     savePermissions(){
         const {props, state} = this;
-        let desktopModuleId = props.extensionBeingEdited.desktopModuleId.value;
-        let permissions = Object.assign({}, state.permissions, {desktopModuleId: desktopModuleId });
+        let permissions = Object.assign({}, state.permissions, {desktopModuleId: state.desktopModuleId });
 
         props.dispatch(PermissionActions.saveDesktopModulePermissions(permissions, function(){
             utils.utilities.notify(Localization.get("UpdateComplete"));
@@ -50,7 +58,7 @@ class ModuleSettings extends Component {
         return (
             <GridCell className="module-settings">
                 <PermissionGrid 
-                    permissions={props.permissions} 
+                    permissions={state.permissions} 
                     service={utils.utilities.sf} 
                     onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
                 <GridCell className="actions-row">
@@ -62,8 +70,10 @@ class ModuleSettings extends Component {
     }
 }
 
-ModuleSettings.PropTypes = {
-    dispatch: PropTypes.func.isRequired
+ModuleSettings.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    permissions: PropTypes.object,
+    extensionBeingEdited: PropTypes.object
 };
 
 function mapStateToProps(state) {
