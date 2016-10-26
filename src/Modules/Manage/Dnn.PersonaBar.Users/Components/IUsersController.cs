@@ -10,5 +10,6 @@ namespace Dnn.PersonaBar.Users.Components
         IEnumerable<KeyValuePair<string, int>> GetUserFilters();
         UserDetailDto GetUserDetail(int portalId, int userId);
         bool ChangePassword(int portalId, int userId, string newPassword, out string errorMessage);
+        void UpdateUserBasicInfo(UserBasicDto userBasicDto);
     }
 }
