@@ -7,7 +7,7 @@ import {users as UserActions} from "../../../../actions";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import util from "../../../../utils";
 import Button from "dnn-button";
-import styles from "./style.less";
+import "./style.less";
 
 const inputStyle = { width: "100%" };
 const blankChangePassword = {
@@ -119,7 +119,7 @@ class ChangePassword extends Component {
     }
     render() {
         let {state} = this;
-        return this.props.visible && <div className={styles.ChangePassword}>
+        return this.props.visible && <div className="dnn-user-change-password">
             <GridCell className="do-not-close">
                 <GridCell>
                     <div className="title">

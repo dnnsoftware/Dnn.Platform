@@ -1,12 +1,15 @@
 export function updateUsersList(userList, userDetails) {
-    if (userList.some(user => user.userId === userDetails.userId)) {
-        userList = userList.filter(user => {
-            return user.userId !== userDetails.userId;
+    let userListCopy = Object.assign([], JSON.parse(JSON.stringify(userList)));
+    let userDetailsCopy = Object.assign({}, JSON.parse(JSON.stringify(userDetails)));
+
+    if (userListCopy.some(user => user.userId === userDetailsCopy.userId)) {
+        userListCopy = userListCopy.filter(user => {
+            return user.userId !== userDetailsCopy.userId;
         });
     }
-    if (!userList.some(role => role.userId === userDetails.userId)) {
-        userList = [userDetails].concat(userList);
-        userList = userList.sort(function (a, b) {
+    if (!userListCopy.some(role => role.userId === userDetailsCopy.userId)) {
+        userListCopy = [userDetailsCopy].concat(userListCopy);
+        userListCopy = userListCopy.sort(function (a, b) {
             let createdOnDateA = a.createdOnDate;
             let createdOnDateB = b.createdOnDate;
             if (createdOnDateA > createdOnDateB) //sort string descending
@@ -15,6 +18,30 @@ export function updateUsersList(userList, userDetails) {
                 return 1;
             return 0;//default return value (no sorting)
         });
-        return userList;
+        return userListCopy;
     }
 }
+export function removeUser(userList, userId) {
+    let userListCopy = Object.assign([], JSON.parse(JSON.stringify(userList)));
+
+
+    if (userListCopy.some(user => user.userId === userId)) {
+        userListCopy = userListCopy.filter(user => {
+            return user.userId !== userId;
+        });
+    }
+    return userListCopy;
+}
+export function deleteUser(userList, userId) {
+    let userListCopy = Object.assign([], JSON.parse(JSON.stringify(userList)));
+    if (userListCopy.some(user => user.userId === userId)) {
+        userListCopy = userListCopy.filter(user => {
+            if (user.userId === userId) {
+                user.isDeleted = true;
+            }
+            return true;
+        });
+    }
+    return userListCopy;
+}
+

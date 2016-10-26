@@ -53,9 +53,9 @@ const userActions = {
             });
         };
     },
-    updateAccountSettings(userDetails, callback) {
+    updateUserBasicInfo(userDetails, callback) {
         return (dispatch) => {
-            UserService.updateAccountSettings(userDetails, payload => {
+            UserService.updateUserBasicInfo(userDetails, payload => {
                 dispatch({
                     type: ActionTypes.UPDATE_USER,
                     payload
@@ -92,9 +92,42 @@ const userActions = {
                 }
             });
         };
+    },
+    deleteUser(payload, callback) {
+        return (dispatch) => {
+            UserService.deleteUser(payload, data => {
+                dispatch({
+                    type: ActionTypes.DELETE_USER,
+                    payload: { userId: payload.userId, Success: data.Success }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateSuperUserStatus(payload, callback) {
+        return (dispatch) => {
+            UserService.updateSuperUserStatus(payload, data => {
+                dispatch({
+                    type: ActionTypes.USER_MADE_SUPERUSER,
+                    payload: { userId: payload.userId, Success: data.Success }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateAuthorizeStatus(payload, callback) {
+        return () => {
+            UserService.updateAuthorizeStatus(payload, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
-
-
 };
 
 export default userActions;

@@ -9,6 +9,12 @@
             width: 40px;
         }
     }
+    .user-detail-row {
+        float: left;
+        > div {
+            float: left;
+        }
+    }
     .user-names {
         h6 {
             font-size: 15px;
@@ -16,6 +22,9 @@
         p {
             text-transform: lowercase;
         }
+    }
+    .deleted {
+        text-decoration: line-through;
     }
     .extension-action {
         //width: 20px;
@@ -35,6 +44,9 @@
             svg:hover {
                 fill: @thunder;
             }
+        }
+        &.more-menu {
+            position: relative;
         }
     }
     .dnn-grid-cell {

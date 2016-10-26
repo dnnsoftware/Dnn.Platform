@@ -69,13 +69,14 @@ class UserSettings extends Component {
     }
     save() {
         if (this.validateForm()) {
-            this.props.dispatch(UserActions.updateAccountSettings(this.state.accountSettings, (data) => {
+            this.props.dispatch(UserActions.updateUserBasicInfo(this.state.accountSettings, (data) => {
                 if (data.Success) {
+                    console.log('ss');
+                    util.utilities.notify("User updated successfully.");
                     let {reload} = this.state;
                     reload = true;
                     this.setState({ reload });
                     this.props.collapse();
-                    util.utilities.notify("User updated successfully.");
                 }
                 else {
                     util.utilities.notify(data.Message);

@@ -167,7 +167,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
-        public void UpdateUserBasicInfo(UserBasicDto userBasicDto)
+        public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto)
         {
             var user = UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId);
             int portalId = PortalSettings.PortalId;
@@ -213,6 +213,8 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 UserController.ChangeUsername(user.UserID, user.Email);
             }
+            return
+                UserBasicDto.FromUserInfo(UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId));
         }
 
         #endregion

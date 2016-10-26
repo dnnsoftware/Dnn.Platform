@@ -10,17 +10,6 @@ import CreateUserBox from "../CreateUserBox";
 import UserSettings from "./UserSettings";
 import "./style.less";
 
-const radioButtonOptions = [
-    {
-        label: "Button 1",
-        value: 0
-    },
-    {
-        label: "Button 2",
-        value: 1
-    }
-];
-
 class UserTable extends Component {
     constructor() {
         super();
@@ -80,10 +69,19 @@ class UserTable extends Component {
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 0. OpenId: {this.state.openId}
                                 <Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button>
                             </div>,
-                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 1. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
-                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 2. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>,
+                            <div style={{ width: "100%", height: "300px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
+
+                            </div>,
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
+                                <iframe src="http://ce.lvh.me/Admin/User-Accounts/ctl/Edit/mid/380/UserId/31/filter/All/pagesize/10/currentpage/0?popUp=true&isPbMode=true"
+                                    seamless
+                                    allowTransparency="true"
+                                    style={{ left: 0, top: 0, border: "0px", width: "100%", height: "100%" }}
+                                    /></div>,
                             <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } />,
-                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>Pane 4. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button></div>
+                            <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
+                                Pane 4. OpenId: {this.state.openId}<Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button>
+                            </div>
                         ];
                         return <DetailRow
                             user={user}

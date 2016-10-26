@@ -5,15 +5,16 @@ import styles from "./style.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 import date from "../../../../utils/date";
 import Collapse from "react-collapse";
+import UserMenu from "../UserMenu";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ActivityIcon, ShieldIcon, EditIcon } from "dnn-svg-icons";
-
 
 class DetailsRow extends Component {
     constructor() {
         super();
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            opened: false
+            opened: false,
+            showMenu: false
         };
     }
     componentDidMount() {
@@ -50,6 +51,10 @@ class DetailsRow extends Component {
             this.props.OpenCollapse(this.props.id, index);
         }
     }
+    toggleUserMenu() {
+        const show = !this.state.showMenu;
+        this.setState({ showMenu: show });
+    }
     render() {
         const {props} = this;
         let {user} = this.props;
@@ -76,23 +81,29 @@ class DetailsRow extends Component {
                                 {user.avatar === "-" && user.avatar}
                             </GridCell>
                         }
-                        <GridCell columnSize={ColumnSizes[1]} className="user-names"  style={!this.props.isEvoq && { marginLeft: "20px" }}>
+                        <GridCell columnSize={ColumnSizes[1]} className={"user-names" + (user.isDeleted ? " deleted" : "") } style={!this.props.isEvoq && { marginLeft: "20px" }}>
                             <h6>{user.displayName}</h6>
                             {user.displayName !== "-" && <p>{user.userName}</p> }
                         </GridCell>
-                        <GridCell columnSize={ColumnSizes[2]}>
+                        <GridCell columnSize={ColumnSizes[2]} className={user.isDeleted ? "deleted" : ""}>
                             <p>{user.email}</p>
                         </GridCell>
-                        <GridCell columnSize={ColumnSizes[3]}>
+                        <GridCell columnSize={ColumnSizes[3]} className={user.isDeleted ? "deleted" : ""}>
                             {user.createdOnDate !== "-" && <p>{date.format(user.createdOnDate) }</p>}
                             {user.createdOnDate === "-" && user.createdOnDate}
                         </GridCell>
-                        <GridCell columnSize={ColumnSizes[4]}>
+                        <GridCell columnSize={ColumnSizes[4]} className={user.isDeleted ? "deleted" : ""}>
                             {user.authorized !== "-" && <p>{user.authorized ? "Authorized" : "Un-authorized"}</p>}
                             {user.authorized === "-" && user.authorized}
                         </GridCell>
                         {props.id !== "add" && <GridCell columnSize={ColumnSizes[5]}>
-                            <div className={"extension-action " + !(opened && this.props.currentIndex === 4) } dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}></div>
+                            <div style={{ position: "relative" }}>
+                                <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
+                                    onClick={this.toggleUserMenu.bind(this) }
+                                    >
+                                </div>
+                                { this.state.showMenu && <UserMenu onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
+                            </div>
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 3) } dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 3) }></div>
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 2) } dangerouslySetInnerHTML={{ __html: UserIcon }} onClick={this.toggle.bind(this, 2) }></div>
                             <div className={"extension-action " + !(opened && this.props.currentIndex === 1) } dangerouslySetInnerHTML={{ __html: ShieldIcon }} onClick={this.toggle.bind(this, 1) }></div>
@@ -111,7 +122,7 @@ class DetailsRow extends Component {
                             //     </div>
                             // </GridCell>
                         }
-                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true}>
+                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
                             {opened && props.children }
                         </Collapse>
                     </GridCell>

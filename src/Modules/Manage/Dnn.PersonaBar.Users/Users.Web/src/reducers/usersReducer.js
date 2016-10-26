@@ -1,5 +1,5 @@
 import {users as ActionTypes}  from "../constants/actionTypes";
-import {updateUsersList} from "../components/Body/helpers";
+import {updateUsersList, deleteUser, removeUser} from "../components/Body/helpers";
 export default function user(state = {
     users: [],
     totalUsers: 0,
@@ -15,10 +15,8 @@ export default function user(state = {
         case ActionTypes.UPDATE_USER:
             {
                 if (action.payload.Success) {
-                    let users = Object.assign([], JSON.parse(JSON.stringify(state.users)));
-                    let updatedUser = Object.assign({}, JSON.parse(JSON.stringify(action.payload.Results)));
                     return { ...state,
-                        users: updateUsersList(users, updatedUser)
+                        users: updateUsersList(state.users, action.payload.Results)
                     };
                 }
                 return { ...state
@@ -27,12 +25,34 @@ export default function user(state = {
         case ActionTypes.CREATE_USER:
             {
                 if (action.payload.Success) {
-                    let users = Object.assign([], JSON.parse(JSON.stringify(state.users)));
                     let totalUsers = Object.assign(state.totalUsers);
-                    let newUser = Object.assign({}, JSON.parse(JSON.stringify(action.payload.Results)));
                     return { ...state,
-                        users: updateUsersList(users, newUser),
+                        users: updateUsersList(state.users, action.payload.Results),
                         totalUsers: totalUsers + 1
+                    };
+                }
+                return { ...state
+                };
+            }
+
+        case ActionTypes.DELETE_USER:
+            {
+                if (action.payload.Success) {
+                    return { ...state,
+                        users: deleteUser(state.users, action.payload.userId)
+                    };
+                }
+                return { ...state
+                };
+            }
+        case ActionTypes.USER_MADE_SUPERUSER:
+        case ActionTypes.ERASE_USER:
+            {
+                if (action.payload.Success) {
+                    let totalUsers = Object.assign(state.totalUsers);
+                    return { ...state,
+                        users: removeUser(state.users, action.payload.userId),
+                        totalUsers: totalUsers - 1
                     };
                 }
                 return { ...state
@@ -47,7 +67,6 @@ export default function user(state = {
         //         userFilters: action.payload.Results
         //     };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

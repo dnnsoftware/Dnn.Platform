@@ -25,9 +25,9 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.get("GetUserDetail?" + serializeQueryStringParameters(userDetailsParameters), {}, callback);
     }
-    updateAccountSettings(userDetails, callback, errorCallback) {
+    updateUserBasicInfo(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.post("UpdateAccountSettings", userDetails, callback, errorCallback);
+        sf.post("UpdateUserBasicInfo", userDetails, callback, errorCallback);
     }
     getUserFilters(callback) {
         const sf = this.getServiceFramework("Users");
@@ -48,6 +48,18 @@ class UserService {
     sendPasswordResetLink(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
         sf.post("SendPasswordResetLink?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
+    deleteUser(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("DeleteUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
+    updateSuperUserStatus(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("UpdateSuperUserStatus?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
+    updateAuthorizeStatus(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("UpdateAuthorizeStatus?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
 
 }

@@ -6,6 +6,7 @@
 #endregion
 
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -416,9 +417,15 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
+                var upadtedUser = Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Results = upadtedUser });
+            }
+            catch (SqlException ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new {Success = false, Message = "Username must be unique."});
             }
             catch (Exception ex)
             {
