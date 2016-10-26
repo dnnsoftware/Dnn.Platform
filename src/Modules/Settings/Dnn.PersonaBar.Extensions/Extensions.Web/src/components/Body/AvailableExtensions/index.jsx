@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     ExtensionActions,
-    PaginationActions
+    VisiblePanelActions,
+    InstallationActions
 } from "actions";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
@@ -64,7 +65,13 @@ class AvailableExtensions extends Component {
             event.preventDefault();
         }
         const {props} = this;
-        props.dispatch(ExtensionActions.installAvailablePackage(props.selectedAvailablePackageType, name));
+        props.dispatch(ExtensionActions.parseAvailablePackage(name, props.selectedAvailablePackageType, () => {
+            props.dispatch(InstallationActions.setInstallingAvailablePackage(name, props.selectedAvailablePackageType, () => {
+                props.dispatch(InstallationActions.navigateWizard(1, () => {
+                    props.dispatch(VisiblePanelActions.selectPanel(3));
+                }));
+            }));
+        }));
     }
     render() {
         const {props} = this;

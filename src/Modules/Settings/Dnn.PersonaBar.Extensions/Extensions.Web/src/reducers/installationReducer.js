@@ -3,7 +3,9 @@ import { installation as ActionTypes } from "../constants/actionTypes";
 export default function installation(state = {
     parsedInstallationPackage: null,
     installWizardStep: 0,
-    installationLogs: []
+    installationLogs: [],
+    availablePackage: {},
+    installingAvailablePackage: false
 }, action) {
     switch (action.type) {
         case ActionTypes.PARSED_INSTALLATION_PACKAGE:
@@ -21,6 +23,20 @@ export default function installation(state = {
         case ActionTypes.INSTALLED_EXTENSION_LOGS:
             return { ...state,
                 installationLogs: action.payload.logs
+            };
+        case ActionTypes.NOT_INSTALLING_AVAILABLE_PACKAGE:
+            return { ... state,
+                availablePackage: {},
+                installingAvailablePackage: false
+            };
+        case ActionTypes.INSTALLING_AVAILABLE_PACKAGE:
+            return { ...state,
+                availablePackage: action.payload,
+                installingAvailablePackage: true
+            };
+        case ActionTypes.SET_FAILED_INSTALLATION_LOGS:
+            return { ...state,
+                installationLogs: ["Oops, something went wrong and the installation failed. Please try the installation again."]
             };
         default:
             return { ...state

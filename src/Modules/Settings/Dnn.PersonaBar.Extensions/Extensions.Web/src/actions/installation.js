@@ -22,6 +22,39 @@ const installationActions = {
                     wizardStep
                 }
             });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    setInstallingAvailablePackage(FileName, PackageType, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.INSTALLING_AVAILABLE_PACKAGE,
+                payload: {
+                    PackageType,
+                    FileName
+                }
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    notInstallingAvailablePackage(callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.NOT_INSTALLING_AVAILABLE_PACKAGE
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
         };
     },
     installExtension(file, newExtension, callback, addToList) {

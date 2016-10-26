@@ -135,13 +135,9 @@ class CreatePackage extends Component {
     goToStepFour() {
         const { props } = this;
         if (props.packagePayload.reviewManifest) {
-            if (!props.packagePayload.selectedManifest) {
-                props.dispatch(CreatePackageActions.generateManifestPreview(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
-                    this.goToStep(3);
-                }));
-            } else {
+            props.dispatch(CreatePackageActions.generateManifestPreview(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
                 this.goToStep(3);
-            }
+            }));
         } else {
             this.goToStep(4);
         }
@@ -154,7 +150,7 @@ class CreatePackage extends Component {
             props.dispatch(CreatePackageActions.createManifest(mapToManifestPayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
                 if (!props.packagePayload.createPackage) {
                     utilities.utilities.notify("Manifest successfully created.");
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         props.onCancel();
                     }, 1500);
                 }

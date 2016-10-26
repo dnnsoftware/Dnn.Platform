@@ -1,4 +1,4 @@
-import { extension as ActionTypes } from "constants/actionTypes";
+import { extension as ActionTypes, installation as InstallationActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
 import utilities from "utils";
 
@@ -96,9 +96,38 @@ const extensionActions = {
             }, errorCallback);
         };
     },
-    installAvailablePackage(packageType, packageName, callback) {
+    installAvailablePackage(packageType, packageName, newExtension, callback) {
+        console.log(newExtension);
         return (dispatch) => {
             ExtensionService.installAvailablePackage(packageType, packageName, (data) => {
+                if (data.success) {
+                    let _newExtension = JSON.parse(JSON.stringify(newExtension));
+                    _newExtension.packageId = data.newPackageId;
+                    dispatch({
+                        type: ActionTypes.INSTALLED_EXTENSION,
+                        payload: {
+                            PackageInfo: _newExtension
+                        }
+                    });
+                }
+                if (!data.success) {
+                    dispatch({
+                        type: InstallationActionTypes.SET_FAILED_INSTALLATION_LOGS
+                    });
+                }
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+    parseAvailablePackage(packageType, fileName, callback) {
+        return (dispatch) => {
+            ExtensionService.parseAvailablePackage(packageType, fileName, (data) => {
+                dispatch({
+                    type: InstallationActionTypes.PARSED_INSTALLATION_PACKAGE,
+                    payload: data
+                });
                 if (callback) {
                     callback(data);
                 }

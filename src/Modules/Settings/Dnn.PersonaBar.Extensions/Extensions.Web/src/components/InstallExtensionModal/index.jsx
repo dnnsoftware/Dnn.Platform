@@ -75,10 +75,15 @@ class InstallExtensionModal extends Component {
 
     installPackage() {
         const {props} = this;
-        props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, () => {
-            this.goToStep(4);
-
-        }, !props.parsedInstallationPackage.alreadyInstalled));
+        if (!props.installingAvailablePackage) {
+            props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, () => {
+                this.goToStep(4);
+            }, !props.parsedInstallationPackage.alreadyInstalled));
+        } else {
+            props.dispatch(ExtensionActions.installAvailablePackage(props.availablePackage.PackageType, props.availablePackage.FileName, props.parsedInstallationPackage, () => {
+                this.goToStep(4);
+            }));
+        }
     }
 
     onCheckRepairInstall(value) {
@@ -94,6 +99,7 @@ class InstallExtensionModal extends Component {
                 this.goToStep(0);
             }
         }));
+        props.dispatch(InstallationActions.notInstallingAvailablePackage());
         this.setState({
             package: null
         });
@@ -183,7 +189,9 @@ function mapStateToProps(state) {
     return {
         parsedInstallationPackage: state.installation.parsedInstallationPackage,
         wizardStep: state.installation.installWizardStep,
-        installationLogs: state.installation.installationLogs
+        installationLogs: state.installation.installationLogs,
+        installingAvailablePackage: state.installation.installingAvailablePackage,
+        availablePackage: state.installation.availablePackage
     };
 }
 

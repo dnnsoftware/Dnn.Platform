@@ -79,13 +79,13 @@ class ExtensionService {
         };
         sf.post("DownloadPackage", payload);
     }
-    installAvailablePackage(packageType, packageName, callback) {
+    installAvailablePackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
-            packageType,
-            fileName: packageName
+            PackageType,
+            FileName
         };
-        sf.post("InstallAvailablePackage?" + serializeQueryStringParameters(payload), {}, callback);
+        sf.post("InstallAvailablePackage", payload, callback);
     }
     deletePackage(packageId, callback) {
         const sf = this.getServiceFramework("Extensions");
@@ -124,6 +124,18 @@ class ExtensionService {
     getModuleCategories(callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
         sf.get("getModuleCategories", {}, callback, errorCallback);
+    }
+    getDesktopModulePermissions(desktopModuleId, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("GetDesktopModulePermissions", { desktopModuleId: desktopModuleId }, callback, errorCallback);
+    }
+    saveDesktopModulePermissions(permissions, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.post("saveDesktopModulePermissions", { permissions: permissions }, callback, errorCallback);
+    }
+    parseAvailablePackage(FileName, PackageType, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.post("ParsePackageFile", { FileName, PackageType }, callback, errorCallback);
     }
 }
 const extensionService = new ExtensionService();
