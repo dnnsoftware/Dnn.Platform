@@ -64,8 +64,7 @@ export default function extension(state = {
     selectedAvailablePackageType: "",
     triedToSave: false,
     tabsWithError: [],
-    moduleCategories: [],
-    desktopModulePermissions: {}
+    moduleCategories: []
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
