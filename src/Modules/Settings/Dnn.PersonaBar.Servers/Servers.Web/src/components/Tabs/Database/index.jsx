@@ -3,6 +3,7 @@ import GridSystem from "dnn-grid-system";
 import Label from "dnn-label";
 import InfoBlock from "../../common/InfoBlock";
 import BackupGrid from "./BackupGrid";
+import FilesGrid from "./FilesGrid";
 import Localization from "../../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -53,6 +54,10 @@ class Database extends Component {
             <div className="dnn-servers-grid-panel">
                 <Label className="header-title" label={Localization.get("plBackups")} />
                 <BackupGrid backups={props.databaseInfo.backups} />
+            </div>
+            <div className="dnn-servers-grid-panel">
+                <Label className="header-title" label={Localization.get("plFiles")} />
+                <FilesGrid files={props.databaseInfo.files} />
             </div>
         </div>;
     }    

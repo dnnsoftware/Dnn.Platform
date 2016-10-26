@@ -55,10 +55,9 @@ namespace Dnn.PersonaBar.Servers.Services
                 var dbFileInfo = _databaseController.GetDbFileInfo().Select(f => new
                 {
                     name = f.Name,
-                    size = f.Size,
-                    megaBytes = f.Megabytes,
+                    size = f.Megabytes,
                     fileType = f.FileType,
-                    fileName = f.FileName
+                    fileName = f.ShortFileName
                 });
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
