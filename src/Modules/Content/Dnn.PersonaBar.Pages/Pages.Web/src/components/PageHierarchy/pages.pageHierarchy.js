@@ -497,18 +497,14 @@
         },
 
         _resizeContentContainer: function(resetContainer) {
-            // Resize content container
-            var breadcrumbContainerHeight, headerHeight, marginTop, restHeight;
 
-            breadcrumbContainerHeight = $(".scroll-fix").outerHeight();
-            headerHeight = this.container.parent().prev().outerHeight();
-            marginTop = parseInt(this.container.parent().css('margin-top'));
-            restHeight = (marginTop > headerHeight ? marginTop : headerHeight) +
-                breadcrumbContainerHeight +
-                parseInt(this.container.css('margin-top')) +
-                this.panel.find('div.title-container').outerHeight() +
-                parseInt(this.container.css('margin-bottom')) +
-                this.container.next().outerHeight();
+            var $body = this.panel.closest(".dnn-social-panel-body")
+            var bodyHeight = parseInt($body.css("margin-top")) 
+                + parseInt($body.css("padding-top")) + parseInt($body.css("padding-bottom"));
+            var innerMargin = parseInt($body.find(".pagehierarchy-container").css("margin-top"));
+            var breadcrumbContainerHeight = this.panel.find(".breadcrumbs-container").outerHeight();
+
+            var restHeight = bodyHeight + breadcrumbContainerHeight + innerMargin + 3;
 
             this.container.css('height', $(window).height() - restHeight);
 
