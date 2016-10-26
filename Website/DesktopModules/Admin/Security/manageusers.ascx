@@ -74,3 +74,4 @@
         <li><asp:Hyperlink id="loginLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdLogin" Visible="false" /></li>
     </ul>
 </div>	    
+<dnn:Profile id="ctlProfilePB" runat="server" Visible="False"></dnn:Profile>

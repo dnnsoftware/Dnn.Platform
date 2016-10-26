@@ -236,5 +236,14 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink loginLink;
+        
+        /// <summary>
+        /// ctlProfilePB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DesktopModules.Admin.Security.DNNProfile ctlProfilePB;
     }
 }
