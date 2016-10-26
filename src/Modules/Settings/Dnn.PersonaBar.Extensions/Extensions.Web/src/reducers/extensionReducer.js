@@ -123,7 +123,6 @@ export default function extension(state = {
                 moduleCategories: action.payload
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

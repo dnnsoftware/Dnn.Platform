@@ -1,4 +1,4 @@
-import { installation as ActionTypes } from "../constants/actionTypes";
+import { installation as ActionTypes, extension as ExtensionActionTypes } from "../constants/actionTypes";
 
 export default function installation(state = {
     parsedInstallationPackage: null,
@@ -24,6 +24,10 @@ export default function installation(state = {
             return { ...state,
                 installationLogs: action.payload.logs
             };
+        case ExtensionActionTypes.INSTALLED_EXTENSION:
+            return { ...state,
+                installationLogs: action.payload.logs
+            };
         case ActionTypes.NOT_INSTALLING_AVAILABLE_PACKAGE:
             return { ... state,
                 availablePackage: {},
@@ -39,7 +43,6 @@ export default function installation(state = {
                 installationLogs: ["Oops, something went wrong and the installation failed. Please try the installation again."]
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

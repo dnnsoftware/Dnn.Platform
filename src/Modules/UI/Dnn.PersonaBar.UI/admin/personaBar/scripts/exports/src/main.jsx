@@ -15,6 +15,7 @@ import ReduxDevToolsDockMonitor from "redux-devtools-dock-monitor";
 import ReduxDevToolsLogMonitor from "redux-devtools-log-monitor";
 import ReduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import ReduxThunk from "redux-thunk";
+import Moment from "moment";
 
 /** Polyfills */
 require("es6-object-assign").polyfill();
@@ -44,6 +45,7 @@ window.dnn.nodeModules.ReduxDevToolsDockMonitor = ReduxDevToolsDockMonitor;
 window.dnn.nodeModules.ReduxDevToolsLogMonitor = ReduxDevToolsLogMonitor;
 window.dnn.nodeModules.ReduxImmutableStateInvariant = ReduxImmutableStateInvariant;
 window.dnn.nodeModules.ReduxThunk = ReduxThunk;
+window.dnn.nodeModules.Moment = Moment;
 
 // import accumulate from "react/lib/accumulate";
 // import accumulateInto from "react/lib/accumulateInto";

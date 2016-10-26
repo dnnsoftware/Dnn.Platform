@@ -1,10 +1,2 @@
-const utils = {
-    init(utilities) {
-        if (!utilities) {
-            throw new Error("Utilities is undefined.");
-        }
-        this.utilities = utilities;      
-    },
-    utilities: null
-};
+const utils = Object.assign({}, window.dnn.utility); //make copy, in case of accidental change.
 export default utils;

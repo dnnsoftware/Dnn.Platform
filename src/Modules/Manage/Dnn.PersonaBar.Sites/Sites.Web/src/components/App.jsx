@@ -1,10 +1,9 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import PortalList from "./PortalList";
-import {visiblePanel as VisiblePanelActions, portal as PortalActions } from "../actions";
+import { visiblePanel as VisiblePanelActions, portal as PortalActions } from "../actions";
 import PersonaBarPage from "dnn-persona-bar-page";
 import CreatePortal from "./CreatePortal";
-import ExportPortal from "./ExportPortal";
 
 class App extends Component {
     constructor() {
@@ -23,10 +22,8 @@ class App extends Component {
     onEditSite() { }
 
     onExportPortal(portalBeingExported) {
-        this.setState({
-            portalBeingExported
-        });
-        this.navigateMap(2);
+        const { props } = this;
+        props.dispatch(PortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
     }
 
     navigateMap(page, event) {
@@ -47,21 +44,14 @@ class App extends Component {
         const {props, state} = this;
         return (
             <div className="sites-Root">
-                <PersonaBarPage isOpen={props.selectedPage === 0}>
+                <PersonaBarPage isOpen={props.selectedPage === 0 || props.selectedPage === 2}>
                     <PortalList
-                        onAddNewSite={this.onAddNewSite.bind(this) }
-                        onExportPortal={this.onExportPortal.bind(this) }/>
+                        onAddNewSite={this.onAddNewSite.bind(this)}
+                        onExportPortal={this.onExportPortal.bind(this)} />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
                     <CreatePortal
-                        onCancel={this.navigateMap.bind(this, 0) }/>
-                </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 2}>
-                    {props.selectedPage === 2 &&
-                        <ExportPortal
-                            portalBeingExported={state.portalBeingExported}
-                            onCancel={this.cancelExport.bind(this) }/>
-                    }
+                        onCancel={this.navigateMap.bind(this, 0)} />
                 </PersonaBarPage>
             </div>
         );
@@ -78,7 +68,8 @@ App.PropTypes = {
 function mapStateToProps(state) {
     return {
         selectedPage: state.visiblePanel.selectedPage,
-        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex
+        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
+        portalBeingExported: state.portal.portalBeingExported
     };
 }
 

@@ -1,5 +1,5 @@
 import {pagination as ActionTypes, portal as PortalActionTypes}  from "../constants/actionTypes";
-import PortalService from "../services/portalService";
+import {PortalService} from "services";
 const paginationActions = {
     loadTab(index) {
         return (dispatch) => {

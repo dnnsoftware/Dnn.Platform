@@ -15,7 +15,6 @@ export default function pagination(state = {
                 filter: action.payload.filter
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

@@ -163,7 +163,7 @@ class Controls extends Component {
         });
         props.dispatch(ModuleDefinitionActions.getSourceFiles(option.value, () => {
             if (props.sourceFolders.length > 0) {
-                props.dispatch(ModuleDefinitionActions.getControlIcons(props.sourceFiles[0].Value), () => {
+                props.dispatch(ModuleDefinitionActions.getControlIcons(option.value), () => {
                     this.setState({
                         selectedSourceFolder: option.value
                     });

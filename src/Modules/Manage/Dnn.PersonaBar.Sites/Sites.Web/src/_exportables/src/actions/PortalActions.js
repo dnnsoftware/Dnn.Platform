@@ -1,65 +1,17 @@
-import {portal as ActionTypes}  from "constants/actionTypes";
+import {
+    portal as ActionTypes
+} from "constants/actionTypes";
+import 
+    PortalService
+ from "../services/PortalService";
+import utilities from "utils";
+
 function errorCallback(message) {
     let utils = window.dnn.initSites().utility;
-    utils.utilities.notify(message);
+    utils.notify(message);
 }
 const portalActions = {
-    loadPortals(searchParameters, callback) {
-        let PortalService = require("services/PortalService").default;
-        console.log(PortalService);
-        return (dispatch) => {
-            console.log("Running!!");
-            PortalService.getPortals(searchParameters, data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTALS,
-                    payload: {
-                        portals: data.Results,
-                        totalCount: data.TotalResults
-                    }
-                });
-                if (callback) {
-                    callback();
-                }
-            }, errorCallback);
-        };
-    },
-    getPortalTemplates(callback) {
-        let PortalService = require("services/PortalService").default;
-        return (dispatch) => {
-            PortalService.getPortalTemplates(data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTAL_TEMPLATES,
-                    payload: {
-                        templates: data.Results.Templates,
-                        totalCount: data.TotalResults
-                    }
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    createPortal(payload, callback) {
-        let PortalService = require("services/PortalService").default;
-        return (dispatch) => {
-            PortalService.createPortal(payload, data => {
-                dispatch({
-                    type: ActionTypes.CREATED_PORTAL_TEMPLATE,
-                    payload: {
-                        Portal: data.Portal,
-                        Success: data.Success,
-                        ErrorMessage: data.ErrorMessage
-                    }
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
     getPortalLocales(portalId, callback) {
-        let PortalService = require("services/PortalService").default;
         return (dispatch) => {
             PortalService.getPortalLocales(portalId, data => {
                 if (callback) {
@@ -69,7 +21,6 @@ const portalActions = {
         };
     },
     deletePortal(portalId, index, callback) {
-        let PortalService = require("services/PortalService").default;
         return (dispatch) => {
             PortalService.deletePortal(portalId, data => {
                 dispatch({
@@ -85,34 +36,7 @@ const portalActions = {
             }, errorCallback);
         };
     },
-    getPortalTabs(portalTabsParameters, callback) {
-        let PortalService = require("services/PortalService").default;
-        return (dispatch) => {
-            PortalService.getPortalTabs(portalTabsParameters, data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTAL_TABS,
-                    payload: {
-                        portalTabs: [data.Results]
-                    }
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    getTabsDescendants(portalTabsParameters, callback) {
-        let PortalService = require("services/PortalService").default;
-        return () => {
-            PortalService.getTabsDescendants(portalTabsParameters, data => {
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
     exportPortal(payload, callback) {
-        let PortalService = require("services/PortalService").default;
         return (dispatch) => {
             PortalService.exportPortal(payload, data => {
                 dispatch({
@@ -127,6 +51,15 @@ const portalActions = {
                     callback(data);
                 }
             }, errorCallback);
+        };
+    },
+    setPortalBeingExported(portalBeingExported, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_PORTAL_BEING_EXPORTED,
+                payload: portalBeingExported
+            });
+            utilities.throttleExecution(callback);
         };
     }
 };

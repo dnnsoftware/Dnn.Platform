@@ -12,7 +12,6 @@ export default function viewMode(state = {
                 mode: "list"
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

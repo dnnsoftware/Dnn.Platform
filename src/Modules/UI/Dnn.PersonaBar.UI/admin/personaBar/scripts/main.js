@@ -736,4 +736,5 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         // Register a PersonaBar object in the parent window global scope
         // to allow easy integration between the site and the persona bar
         window.parent.dnn.PersonaBar = new Gateway(util);
+        window.dnn.utility = util;
     });

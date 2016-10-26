@@ -1,8 +1,6 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
-import { portal as PortalActions } from "../../actions";
+import PortalActions from "actions/PortalActions";
 import Label from "dnn-label";
 import CheckBox from "dnn-checkbox";
 import GridCell from "dnn-grid-cell";
@@ -14,10 +12,10 @@ import Button from "dnn-button";
 import Dropdown from "dnn-dropdown";
 import Switch from "dnn-switch";
 import PagePicker from "dnn-page-picker";
-import "./style.less";
-import util from "../../utils";
-import stringUtils from "../../utils/string";
+import utilities from "utils";
+import stringUtils from "utils/string";
 import Localization from "localization";
+import "./style.less";
 
 
 const emptyExport = {
@@ -90,7 +88,7 @@ class ExportPortal extends Component {
         const { props, state } = this;
         if (this.Validate()) {
             props.dispatch(PortalActions.exportPortal(state.portalBeingExported, (data) => {
-                util.utilities.notify(data.Message);
+                utilities.notify(data.Message);
                 if (data.Success) {
                     let {portalBeingExported} = state;
                     portalBeingExported.fileName = "";
@@ -112,7 +110,7 @@ class ExportPortal extends Component {
         // }
         if (success && portalBeingExported.pages.length <= 0) {
             success = false;
-            util.utilities.notify(Localization.get("ErrorPages"));
+            utilities.notify(Localization.get("ErrorPages"));
         }
         return success;
     }
@@ -170,8 +168,8 @@ class ExportPortal extends Component {
             return {
                 label: <div><CheckBox
                     label={locale.EnglishName}
-                    value={state.portalBeingExported.locales.some(sl => sl === locale.Code) }
-                    onChange={this.onLanguageCheckBoxChange.bind(this, locale.Code) }
+                    value={state.portalBeingExported.locales.some(sl => sl === locale.Code)}
+                    onChange={this.onLanguageCheckBoxChange.bind(this, locale.Code)}
                     enabled={this.props.portalBeingExported.DefaultLanguage !== locale.Code}
                     />
                     {locale.Code === state.portalBeingExported.localizationCulture
@@ -203,117 +201,114 @@ class ExportPortal extends Component {
         };
         return (
             <div className="export-portal">
-                <SocialPanelHeader title={Localization.get("ControlTitle_template") }/>
-                <SocialPanelBody>
-                    <GridCell className="export-site-container">
-                        <h3 className="site-template-info-title">{Localization.get("titleTemplateInfo") }</h3>
-                        <GridCell>
-                            <SingleLineInputWithError
-                                label={Localization.get("plPortals") }
-                                tooltipMessage={Localization.get("plPortals.Help") }
-                                enabled={false}
-                                value={state.portalBeingExported.portalName}
-                                error={false}
-                                />
-                        </GridCell>
-                        <GridCell>
-                            <SingleLineInputWithError
-                                label={Localization.get("plTemplateName") + "*"}
-                                tooltipMessage={Localization.get("plTemplateName.Help") }
-                                onChange={this.onChange.bind(this, "fileName") }
-                                error={state.localData.errors.fileName}
-                                errorMessage={Localization.get("valFileName.ErrorMessage") }
-                                value={state.portalBeingExported.fileName}
-                                />
-                        </GridCell>
-                        <GridCell>
-                            <MultiLineInputWithError
-                                label={Localization.get("plDescription") + "*"}
-                                tooltipMessage={Localization.get("plDescription.Help") }
-                                className="portal-description"
-                                onChange={this.onChange.bind(this, "description") }
-                                error={state.localData.errors.description}
-                                errorMessage={Localization.get("valDescription.ErrorMessage") }
-                                value={state.portalBeingExported.description}
-                                />
-                            <hr/>
-                        </GridCell>
-                        <GridSystem>
-                            <div className="export-switches">
-                                <Switch
-                                    label={Localization.get("plContent") }
-                                    tooltipMessage={Localization.get("plContent.Help") }
-                                    value={state.portalBeingExported.includeContent}
-                                    onChange={this.onChange.bind(this, "includeContent") }
-                                    />
-                                <Switch
-                                    label={Localization.get("lblFiles") }
-                                    tooltipMessage={Localization.get("lblFiles.Help") }
-                                    value={state.portalBeingExported.includeFiles}
-                                    onChange={this.onChange.bind(this, "includeFiles") }
-                                    />
-                                <Switch
-                                    label={Localization.get("lblRoles") }
-                                    tooltipMessage={Localization.get("lblRoles.Help") }
-                                    value={state.portalBeingExported.includeRoles}
-                                    onChange={this.onChange.bind(this, "includeRoles") }
-                                    />
-                                <Switch
-                                    label={Localization.get("lblProfile") }
-                                    tooltipMessage={Localization.get("lblProfile.Help") }
-                                    value={state.portalBeingExported.includeProfile}
-                                    onChange={this.onChange.bind(this, "includeProfile") }
-                                    />
-                                <Switch
-                                    label={Localization.get("lblModules") }
-                                    tooltipMessage={Localization.get("lblModules.Help") }
-                                    value={state.portalBeingExported.includeModules}
-                                    onChange={this.onChange.bind(this, "includeModules") }
-                                    />
-                                {props.portalBeingExported.contentLocalizable &&
-                                    <Switch
-                                        label={Localization.get("lblMultilanguage") }
-                                        tooltipMessage={Localization.get("lblMultilanguage.Help") }
-                                        value={state.portalBeingExported.isMultiLanguage}
-                                        onChange={this.onChange.bind(this, "isMultiLanguage") }
-                                        />
-                                }
-                            </div>
-                            {state.portalBeingExported.portalId >= 0 &&
-                                <div className="export-pages">
-                                    {props.portalBeingExported.contentLocalizable &&
-                                        <div className="language-box">
-                                            <Label label={Localization.get("lblLanguages") } tooltipMessage={Localization.get("lblLanguages.Help") } />
-                                            {!state.portalBeingExported.isMultiLanguage && <Dropdown options={localeOptions } value={state.portalBeingExported.localizationCulture}
-                                                onSelect={this.onLanguageSelectionChange.bind(this) } /> }
-                                            {state.portalBeingExported.isMultiLanguage &&
-                                                <Dropdown options={dropdownOptions } label={Localization.get("lblSelectLanguages") }
-                                                    closeOnClick={false}/>
-                                            }
-                                        </div>
-                                    }
-                                    <Label label={Localization.get("lblPages") } tooltipMessage={Localization.get("lblPages.Help") }/>
-                                    <PagePicker
-                                        serviceFramework={util.utilities.sf}
-                                        PortalTabsParameters={PortalTabsParameters }
-                                        scrollAreaStyle={ scrollAreaStyle }
-                                        OnSelect={ this.updatePagesToExport.bind(this) }
-                                        allSelected={true}
-                                        IsMultiSelect={true}
-                                        IsInDropDown={false}
-                                        ShowCount={false}
-                                        Reload={this.state.reloadPages}
-                                        ShowIcon={false}
-                                        />
-                                </div>
-                            }
-                        </GridSystem>
-                        <GridCell className="site-action-buttons">
-                            <Button type="secondary" onClick={props.onCancel.bind(this) }>{Localization.get("cmdCancel") }</Button>
-                            <Button type="primary" onClick={this.onExportPortal.bind(this) }>{Localization.get("cmdExport") }</Button>
-                        </GridCell>
+                <GridCell className="export-site-container">
+                    <h3 className="site-template-info-title">{Localization.get("titleTemplateInfo")}</h3>
+                    <GridCell>
+                        <SingleLineInputWithError
+                            label={Localization.get("plPortals")}
+                            tooltipMessage={Localization.get("plPortals.Help")}
+                            enabled={false}
+                            value={state.portalBeingExported.portalName}
+                            error={false}
+                            />
                     </GridCell>
-                </SocialPanelBody>
+                    <GridCell>
+                        <SingleLineInputWithError
+                            label={Localization.get("plTemplateName") + "*"}
+                            tooltipMessage={Localization.get("plTemplateName.Help")}
+                            onChange={this.onChange.bind(this, "fileName")}
+                            error={state.localData.errors.fileName}
+                            errorMessage={Localization.get("valFileName.ErrorMessage")}
+                            value={state.portalBeingExported.fileName}
+                            />
+                    </GridCell>
+                    <GridCell>
+                        <MultiLineInputWithError
+                            label={Localization.get("plDescription") + "*"}
+                            tooltipMessage={Localization.get("plDescription.Help")}
+                            className="portal-description"
+                            onChange={this.onChange.bind(this, "description")}
+                            error={state.localData.errors.description}
+                            errorMessage={Localization.get("valDescription.ErrorMessage")}
+                            value={state.portalBeingExported.description}
+                            />
+                        <hr />
+                    </GridCell>
+                    <GridSystem>
+                        <div className="export-switches">
+                            <Switch
+                                label={Localization.get("plContent")}
+                                tooltipMessage={Localization.get("plContent.Help")}
+                                value={state.portalBeingExported.includeContent}
+                                onChange={this.onChange.bind(this, "includeContent")}
+                                />
+                            <Switch
+                                label={Localization.get("lblFiles")}
+                                tooltipMessage={Localization.get("lblFiles.Help")}
+                                value={state.portalBeingExported.includeFiles}
+                                onChange={this.onChange.bind(this, "includeFiles")}
+                                />
+                            <Switch
+                                label={Localization.get("lblRoles")}
+                                tooltipMessage={Localization.get("lblRoles.Help")}
+                                value={state.portalBeingExported.includeRoles}
+                                onChange={this.onChange.bind(this, "includeRoles")}
+                                />
+                            <Switch
+                                label={Localization.get("lblProfile")}
+                                tooltipMessage={Localization.get("lblProfile.Help")}
+                                value={state.portalBeingExported.includeProfile}
+                                onChange={this.onChange.bind(this, "includeProfile")}
+                                />
+                            <Switch
+                                label={Localization.get("lblModules")}
+                                tooltipMessage={Localization.get("lblModules.Help")}
+                                value={state.portalBeingExported.includeModules}
+                                onChange={this.onChange.bind(this, "includeModules")}
+                                />
+                            {props.portalBeingExported.contentLocalizable &&
+                                <Switch
+                                    label={Localization.get("lblMultilanguage")}
+                                    tooltipMessage={Localization.get("lblMultilanguage.Help")}
+                                    value={state.portalBeingExported.isMultiLanguage}
+                                    onChange={this.onChange.bind(this, "isMultiLanguage")}
+                                    />
+                            }
+                        </div>
+                        {state.portalBeingExported.portalId >= 0 &&
+                            <div className="export-pages">
+                                {props.portalBeingExported.contentLocalizable &&
+                                    <div className="language-box">
+                                        <Label label={Localization.get("lblLanguages")} tooltipMessage={Localization.get("lblLanguages.Help")} />
+                                        {!state.portalBeingExported.isMultiLanguage && <Dropdown options={localeOptions} value={state.portalBeingExported.localizationCulture}
+                                            onSelect={this.onLanguageSelectionChange.bind(this)} />}
+                                        {state.portalBeingExported.isMultiLanguage &&
+                                            <Dropdown options={dropdownOptions} label={Localization.get("lblSelectLanguages")}
+                                                closeOnClick={false} />
+                                        }
+                                    </div>
+                                }
+                                <Label label={Localization.get("lblPages")} tooltipMessage={Localization.get("lblPages.Help")} />
+                                <PagePicker
+                                    serviceFramework={utilities.sf}
+                                    PortalTabsParameters={PortalTabsParameters}
+                                    scrollAreaStyle={scrollAreaStyle}
+                                    OnSelect={this.updatePagesToExport.bind(this)}
+                                    allSelected={true}
+                                    IsMultiSelect={true}
+                                    IsInDropDown={false}
+                                    ShowCount={false}
+                                    Reload={this.state.reloadPages}
+                                    ShowIcon={false}
+                                    />
+                            </div>
+                        }
+                    </GridSystem>
+                    <GridCell className="site-action-buttons">
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
+                        <Button type="primary" onClick={this.onExportPortal.bind(this)}>{Localization.get("cmdExport")}</Button>
+                    </GridCell>
+                </GridCell>
             </div>
         );
     }

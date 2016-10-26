@@ -1,9 +1,8 @@
-
+import utilities from "utils";
 const resx = {
 	get(key) {
-		const util = window.dnn.initSites();
-		let moduleName = util.moduleName;
-		return util.utility.getResx(moduleName, key);
+		let moduleName = "Sites";
+		return utilities.getResx(moduleName, key);
 	}
 };
 export default resx;

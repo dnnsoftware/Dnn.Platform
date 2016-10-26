@@ -1,7 +1,6 @@
-import { portal as ActionTypes } from "../constants/actionTypes";
-import { addPortalToList, addTemplateToList } from "../helpers/portal";
+import {portal as ActionTypes}  from "constants/actionTypes";
+import {addPortalToList, addTemplateToList} from "helpers/portal";
 import utilities from "utils";
-
 export default function portal(state = {
     portals: [],
     templates: [],

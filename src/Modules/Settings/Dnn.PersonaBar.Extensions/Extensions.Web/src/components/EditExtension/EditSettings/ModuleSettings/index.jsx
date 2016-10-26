@@ -21,22 +21,22 @@ class ModuleSettings extends Component {
         };
     }
 
-    onPermissionsChanged(permissions){
+    onPermissionsChanged(permissions) {
         const {props, state} = this;
 
         let newPermissions = Object.assign({}, state.permissions, permissions);
-        this.setState({permissions: newPermissions});
+        this.setState({ permissions: newPermissions });
     }
 
-    savePermissions(){
+    savePermissions() {
         const {props, state} = this;
         let permissions = Object.assign({}, state.permissions);
 
         let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
         extensionBeingUpdated.permissions.value = permissions;
 
-        props.updateExtensionBeingEdited(extensionBeingUpdated, function(){
-             utils.utilities.notify(Localization.get("UpdateComplete"));
+        props.updateExtensionBeingEdited(extensionBeingUpdated, function () {
+            utils.utilities.notify(Localization.get("UpdateComplete"));
         });
     }
 
@@ -45,12 +45,13 @@ class ModuleSettings extends Component {
 
         return (
             <GridCell className="module-settings">
-                <PermissionGrid 
-                    permissions={state.permissions} 
-                    service={utils.utilities.sf} 
+                <PermissionGrid
+                    permissions={state.permissions}
+                    service={utils.utilities.sf}
                     onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
                 <GridCell className="actions-row">
-                    <Button>{Localization.get("Cancel")}</Button>
+                    <Button onClick={props.onCancel.bind(this)}>{Localization.get("Cancel")}</Button>
+                    <Button type="primary" onClick={this.savePermissions.bind(this, true)}>Save & Close</Button>
                     <Button type="primary" onClick={this.savePermissions.bind(this)}>{Localization.get("Save")}</Button>
                 </GridCell>
             </GridCell>

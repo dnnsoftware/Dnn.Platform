@@ -4,7 +4,7 @@ define(['jquery'], function ($) {
     return {
         init: function (config) {
             var loadTempl;
-            
+
             loadTempl = function (template, wrapper, params, self, cb, isMobile) {
                 var callbackInit, templateSuffix, cssSuffix, initMethod, moduleJs, loadMethod;
 
@@ -12,10 +12,10 @@ define(['jquery'], function ($) {
                     templateSuffix = isMobile ? '.mobi.html' : '.html';
                     cssSuffix = isMobile ? '.mobi.css' : '.css';
                     initMethod = isMobile ? 'initMobile' : 'init';
-					var requiredArray = ['../' + template, 'text!../../' + template + templateSuffix];
-					requiredArray.push('css!../../css/' + template + cssSuffix);
-					
-                    window.require(requiredArray, function(module, html) {
+                    var requiredArray = ['../' + template, 'text!../../' + template + templateSuffix];
+                    requiredArray.push('css!../../css/' + template + cssSuffix);
+
+                    window.require(requiredArray, function (module, html) {
                         if (module === undefined) return;
 
                         wrapper.css('visibility', 'hidden').html(html);
@@ -48,26 +48,26 @@ define(['jquery'], function ($) {
             };
 
             return {
-                loadTemplate: function(template, wrapper, params, cb) {
+                loadTemplate: function (template, wrapper, params, cb) {
                     var self = this;
                     loadTempl(template, wrapper, params, self, cb, false);
                 },
 
-                loadMobileTemplate: function(template, wrapper, params, cb) {
+                loadMobileTemplate: function (template, wrapper, params, cb) {
                     var self = this;
                     loadTempl(template, wrapper, params, self, cb, true);
                 },
 
-                loadInContextAnalytics: function(template, wrapper, cb) {
+                loadInContextAnalytics: function (template, wrapper, cb) {
                     var self = this;
                     var params = { moduleName: config.socialModule, showEngageStats: config.socialModule && config.isCommunityManager };
                     loadTempl(template, wrapper, params, self, cb, false);
                 },
 
-                loadResx: function(cb) {
+                loadResx: function (cb) {
                     var self = this;
-                    
-					self.sf.moduleRoot = 'personaBar/common';
+
+                    self.sf.moduleRoot = 'personaBar/common';
                     self.sf.controller = 'localization';
                     self.sf.getsilence('gettable', { culture: config.culture }, function (d) {
                         self.resx = d;
@@ -83,7 +83,7 @@ define(['jquery'], function ($) {
                     return key;
                 },
 
-                getModuleNameByParams: function(params) {
+                getModuleNameByParams: function (params) {
                     return params ? (params.moduleName || '') : '';
                 },
 
@@ -91,23 +91,23 @@ define(['jquery'], function ($) {
                     return params ? (params.identifier || '') : '';
                 },
 
-                asyncParallel: function(deferreds, callback) {
+                asyncParallel: function (deferreds, callback) {
                     var i = deferreds.length;
                     if (i === 0) callback();
-                    var call = function() {
+                    var call = function () {
                         i--;
                         if (i === 0) {
                             callback();
                         }
                     };
 
-                    $.each(deferreds, function(ii, d) {
+                    $.each(deferreds, function (ii, d) {
                         d(call);
                     });
                 },
 
-                asyncWaterfall: function(deferreds, callback) {
-                    var call = function() {
+                asyncWaterfall: function (deferreds, callback) {
+                    var call = function () {
                         var deferred = deferreds.shift();
                         if (!deferred) {
                             callback();
@@ -118,20 +118,20 @@ define(['jquery'], function ($) {
                     call();
                 },
 
-                confirm: function(text, confirmBtn, cancelBtn, confirmHandler, cancelHandler) {
+                confirm: function (text, confirmBtn, cancelBtn, confirmHandler, cancelHandler) {
                     $('#confirmation-dialog > p').html(text);
-                    $('#confirmation-dialog a#confirmbtn').html(confirmBtn).unbind('click').bind('click', function() {
+                    $('#confirmation-dialog a#confirmbtn').html(confirmBtn).unbind('click').bind('click', function () {
                         if (typeof confirmHandler === 'function') confirmHandler.apply();
-                        $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
+                        $('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
                     });
-                    $('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function() {
+                    $('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function () {
                         if (typeof cancelHandler === 'function') cancelHandler.apply();
-                        $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
+                        $('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
                     });
                     $('#mask').show();
                     $('#confirmation-dialog').fadeIn(200, 'linear');
 
-                    $(window).off('keydown.confirmDialog').on('keydown.confirmDialog', function(evt) {
+                    $(window).off('keydown.confirmDialog').on('keydown.confirmDialog', function (evt) {
 
                         if (evt.keyCode === 27) {
                             $(window).off('keydown.confirmDialog');
@@ -140,25 +140,25 @@ define(['jquery'], function ($) {
                     });
                 },
 
-                notify: function(text) {
+                notify: function (text) {
                     $('#notification-dialog > p').removeClass().html(text);
-                    $('#notification-dialog').fadeIn(200, 'linear', function() {
-                        setTimeout(function() {
+                    $('#notification-dialog').fadeIn(200, 'linear', function () {
+                        setTimeout(function () {
                             $('#notification-dialog').fadeOut(200, 'linear');
                         }, 2000);
                     });
                 },
 
-                notifyError: function(text) {
+                notifyError: function (text) {
                     $('#notification-dialog > p').removeClass().addClass('errorMessage').html(text);
                     $('#notification-dialog').fadeIn(200, 'linear', function () {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             $('#notification-dialog').fadeOut(200, 'linear');
                         }, 2000);
                     });
                 },
 
-                localizeErrMessages: function(validator) {
+                localizeErrMessages: function (validator) {
                     var self = this;
                     validator.errorMessages = {
                         'required': self.resx.PersonaBar.err_Required,
@@ -171,14 +171,14 @@ define(['jquery'], function ($) {
                     };
                 },
 
-                trimContentToFit: function(content, width) {
+                trimContentToFit: function (content, width) {
                     if (!content || !width) return '';
                     var charWidth = 8.5;
                     var max = Math.floor(width / charWidth);
 
                     var arr = content.split(' ');
                     var trimmed = '', count = 0;
-                    $.each(arr, function(i, v) {
+                    $.each(arr, function (i, v) {
                         count += v.length;
                         if (count < max) {
                             if (trimmed) trimmed += ' ';
@@ -197,17 +197,31 @@ define(['jquery'], function ($) {
                         return this.moment(str, 'YYYY-MM-DD').toDate();
                     }
                 },
-                
+
                 serializeCustomDate: function (dateObj) {
                     if (this.moment) {
                         return this.moment(dateObj).format('YYYY-MM-DD');
                     }
                 },
 
+                getObjectCopy: function (object) {
+                    if (typeof object === "object") {
+                        return JSON.parse(JSON.stringify(object));
+                    } else {
+                        throw new Error("The object " + object + " passed in is not an object.");
+                    }
+                },
+
+                throttleExecution: function (callback) {
+                    if (typeof callback === "function") {
+                        setTimeout(callback, 0);
+                    }
+                },
+
                 ONE_THOUSAND: 1000,
                 ONE_MILLION: 1000000,
 
-                formatAbbreviateBigNumbers: function(number) {
+                formatAbbreviateBigNumbers: function (number) {
                     var size = number;
                     var suffix;
 
@@ -223,7 +237,7 @@ define(['jquery'], function ($) {
 
                     return this.formatCommaSeparate(size.toFixed(1)) + ' ' + suffix;
                 },
-                getNumbersSeparatorByLocale: function() {
+                getNumbersSeparatorByLocale: function () {
                     var numberWithSeparator = (1000).toLocaleString(config.culture);
                     return numberWithSeparator.indexOf(",") > 0 ? "," : ".";
                 },
@@ -273,7 +287,7 @@ define(['jquery'], function ($) {
                 * @return {Object} view model that will be used to build the HTML DOM of the menu 
                 */
                 buildMenuViewModel: function buildMenuViewModel(menuStructure, isMobile) {
-                    
+
                     var menu = {
                         menuItems: []
                     };
@@ -343,7 +357,7 @@ define(['jquery'], function ($) {
                         }
 
                         if (menuItem.Children) {
-                            menuItem.Children.forEach(function(menuItem) {
+                            menuItem.Children.forEach(function (menuItem) {
                                 if (menuItem.ModuleName === moduleName) {
                                     path = menuItem.Path;
                                     return;
@@ -358,19 +372,18 @@ define(['jquery'], function ($) {
     };
 });
 
-define('css',{
+define('css', {
     load: function (name, require, load, config) {
-		function inject(filename)
-		{
-			var head = document.getElementsByTagName('head')[0];
-			var link = document.createElement('link');
-			link.href = filename;
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			head.appendChild(link);
-		}
+        function inject(filename) {
+            var head = document.getElementsByTagName('head')[0];
+            var link = document.createElement('link');
+            link.href = filename;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            head.appendChild(link);
+        }
 
-		var path = name;
+        var path = name;
         for (var i in config.paths) {
             if (path.indexOf(i) === 0) {
                 path = path.replace(i, config.paths[i]);
@@ -382,8 +395,8 @@ define('css',{
             path = config.baseUrl + path;
         }
 
-		inject(path + '?' + config.urlArgs);
-		load(true);
-	},
-	pluginBuilder: './css-build'
+        inject(path + '?' + config.urlArgs);
+        load(true);
+    },
+    pluginBuilder: './css-build'
 });;

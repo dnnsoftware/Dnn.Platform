@@ -14,6 +14,7 @@ import MultiLineInput from "dnn-multi-line-input";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Pager from "dnn-pager";
 import PersonaBarPage from "dnn-persona-bar-page";
+import PermissionGrid from "dnn-permission-grid";
 import RadioButtons from "dnn-radio-buttons";
 import SearchBox from "dnn-search-box";
 import Modal from "dnn-modal";
@@ -47,6 +48,7 @@ export {
     MultiLineInputWithError,
     PagePicker,
     Pager,
+    PermissionGrid,
     PersonaBarPage,
     RadioButtons,
     Modal,

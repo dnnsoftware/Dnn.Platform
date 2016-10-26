@@ -31,7 +31,6 @@ export default function folder(state = {
                 ownerFolders: addToFolders(action.payload.value, state.ownerFolders)                
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

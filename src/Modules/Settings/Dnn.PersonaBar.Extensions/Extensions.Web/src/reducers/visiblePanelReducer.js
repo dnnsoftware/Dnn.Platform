@@ -8,7 +8,6 @@ export default function visiblePanel(state = {
                 selectedPage: action.payload.selectedPage
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

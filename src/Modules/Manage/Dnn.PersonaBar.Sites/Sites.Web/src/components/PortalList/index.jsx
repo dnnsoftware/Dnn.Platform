@@ -1,20 +1,13 @@
 import React, {PropTypes, Component} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
 import ListView from "dnn-sites-list-view";
 import Localization from "localization";
 import utilities from "utils";
 import GridCell from "dnn-grid-cell";
 import {portal as PortalActions, pagination as PaginationActions } from "actions";
-import {
-    PreviewIcon,
-    SettingsIcon,
-    TemplateIcon,
-    TrashIcon
-} from "dnn-svg-icons";
 import styles from "./style.less";
+import Moment from "moment";
 
 class PortalList extends Component {
     componentWillMount() {
@@ -38,7 +31,7 @@ class PortalList extends Component {
             },
             {
                 label: Localization.get("SiteDetails_Updated"),
-                value: "4 days ago"
+                value: Moment(portal.LastModifiedOnDate).fromNow()
             },
             {
                 label: Localization.get("SiteDetails_Pages"),
@@ -70,18 +63,14 @@ class PortalList extends Component {
         const {props} = this;
         return (
             <GridCell className={styles.sitesPortalList}>
-                <SocialPanelHeader title={"Sites"}>
-                    <Button type="primary" onClick={props.onAddNewSite.bind(this) }>{"Add New Site" }</Button>
-                </SocialPanelHeader>
-                <SocialPanelBody>
-                    <ListView
-                        portals={props.portals}
-                        getPortalMapping={this.getDetailList.bind(this) }
-                        onExportPortal={this.onExport.bind(this)}
-                        utilities={utilities}
-                        PortalActions={PortalActions}
-                        />
-                </SocialPanelBody>
+                <ListView
+                    onAddNewSite={props.onAddNewSite.bind(this)} 
+                    portals={props.portals}
+                    getPortalMapping={this.getDetailList.bind(this) }
+                    onExportPortal={this.onExport.bind(this)}
+                    utilities={utilities}
+                    PortalActions={PortalActions}
+                    />
             </GridCell>
         );
     }

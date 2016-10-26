@@ -28,7 +28,6 @@ export default function moduleDefinition(state = {
                 icons: action.payload
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }

@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import InstallLog from "./InstallLog";
-import { ExtensionActions, InstallationActions } from "actions";
+import { ExtensionActions, InstallationActions, PaginationActions } from "actions";
 import PackageInformation from "../EditExtension/PackageInformation";
 import ReleaseNotes from "../Editextension/ReleaseNotes";
 import License from "../EditExtension/License";
@@ -120,6 +120,18 @@ class InstallExtensionModal extends Component {
 
     endInstallation() {
         const { props } = this;
+        if (props.installingAvailablePackage) {
+            props.dispatch(PaginationActions.loadTab(0, () => {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.availablePackage.PackageType));
+            }));
+        } else {
+            if (props.tabIndex !== 0) {
+                props.dispatch(PaginationActions.loadTab(0));
+            }
+            if (props.parsedInstallationPackage.packageType !== props.selectedInstalledPackageType) {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.parsedInstallationPackage.packageType));
+            }
+        }
         props.onCancel();
         this.cancelInstall();
     }
@@ -188,6 +200,7 @@ InstallExtensionModal.PropTypes = {
 function mapStateToProps(state) {
     return {
         parsedInstallationPackage: state.installation.parsedInstallationPackage,
+        selectedInstalledPackageType: state.extension.selectedInstalledPackageType,
         wizardStep: state.installation.installWizardStep,
         installationLogs: state.installation.installationLogs,
         installingAvailablePackage: state.installation.installingAvailablePackage,

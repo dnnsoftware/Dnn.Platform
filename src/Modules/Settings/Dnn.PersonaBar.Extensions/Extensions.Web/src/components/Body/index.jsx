@@ -78,21 +78,30 @@ class Body extends Component {
         return (
             <GridCell className="extension-body">
                 <SocialPanelHeader title={Localization.get("ExtensionsLabel")}>
-                    <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>
+                    {this.isHost && <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>}
                     {this.isHost && <Button type="secondary" size="large" onClick={this.createExtension.bind(this)}>{Localization.get("CreateExtension.Action")}</Button>}
                     {this.isHost && <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>}
                 </SocialPanelHeader>
                 <SocialPanelBody>
-                    <Tabs onSelect={this.handleSelect}
-                        selectedIndex={props.tabIndex}
-                        tabHeaders={[Localization.get("InstalledExtensions"), Localization.get("AvailableExtensions")]}>
+                    {this.isHost &&
+                        <Tabs onSelect={this.handleSelect}
+                            selectedIndex={props.tabIndex}
+                            tabHeaders={[Localization.get("InstalledExtensions"), Localization.get("AvailableExtensions")]}>
+                            <InstalledExtensions
+                                isHost={this.isHost}
+                                onEdit={this.onEditExtension.bind(this)}
+                                onCancel={this.selectPanel.bind(this, 0)}
+                                />
+                            <AvailableExtensions />
+                        </Tabs>
+                    }
+                    {!this.isHost &&
                         <InstalledExtensions
                             isHost={this.isHost}
                             onEdit={this.onEditExtension.bind(this)}
                             onCancel={this.selectPanel.bind(this, 0)}
                             />
-                        <AvailableExtensions />
-                    </Tabs>
+                    }
                 </SocialPanelBody >
 
             </GridCell>

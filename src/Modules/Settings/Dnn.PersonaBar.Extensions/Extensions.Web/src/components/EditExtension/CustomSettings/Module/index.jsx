@@ -106,7 +106,7 @@ class Module extends Component {
                             tooltipMessage={Localization.get("EditModule_ModuleCategory.HelpText")}
                             value={extensionBeingEdited.category.value}
                             onChange={props.onChange.bind(this, "category")}
-                            style={inputStyle} />   
+                            style={inputStyle} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
@@ -191,12 +191,13 @@ class Module extends Component {
                     moduleDefinitions={extensionBeingEdited.moduleDefinitions.value}
                     desktopModuleId={extensionBeingEdited.desktopModuleId.value}
                     onSave={props.onChange.bind(this, "moduleDefinitions")} />
-                    
+
                 {!props.actionButtonsDisabled &&
-                <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
-                </GridCell>
+                    <GridCell columnSize={100} className="modal-footer">
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
+                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
+                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
+                    </GridCell>
                 }
             </GridCell>
         );

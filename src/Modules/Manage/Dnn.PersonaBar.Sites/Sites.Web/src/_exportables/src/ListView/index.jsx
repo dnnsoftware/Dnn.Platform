@@ -2,8 +2,15 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
 import Localization from "localization";
-import { portal as PortalActions } from "actions";
+import PortalActions from "../actions/PortalActions";
+import { visiblePanel as VisiblePanelActions } from "actions";
+import SocialPanelHeader from "dnn-social-panel-header";
+import SocialPanelBody from "dnn-social-panel-body";
 import GridCell from "dnn-grid-cell";
+import utilities from "utils";
+import PersonaBarPage from "dnn-persona-bar-page";
+import Button from "dnn-button";
+import ExportPortal from "../ExportPortal";
 import {
     TrashIcon,
     PreviewIcon,
@@ -12,18 +19,12 @@ import {
 } from "dnn-svg-icons";
 import styles from "./style.less";
 
-function getUtility() {
-    
-    return window.dnn.initSites().utility;
-}
-
 class ListView extends Component {
     constructor() {
         super();
     }
     onDelete(portal, index) {
         const {props} = this;
-        const utilities = getUtility();
         utilities.confirm(Localization.get("deletePortal").replace("{0}", portal.PortalName),
             Localization.get("ConfirmPortalDelete"),
             Localization.get("CancelPortalDelete"),
@@ -39,9 +40,13 @@ class ListView extends Component {
             window.open(portal.PortalAliases[0].link);
         }
     }
-    onExport(portal /*, index*/) {
+    navigateMap(page, event) {
         const {props} = this;
-        props.onExportPortal(portal);
+        props.dispatch(VisiblePanelActions.selectPanel(page));
+    }
+    onExport(portalBeingExported) {
+        const {props} = this;
+        props.dispatch(PortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
     }
     getPortalButtons(portal, index) {
         let portalButtons = [
@@ -73,19 +78,44 @@ class ListView extends Component {
             return <PortalListItem
                 key={"portal-" + portal.PortalID}
                 portal={portal}
-                portalButtons={this.getPortalButtons(portal, index) }
-                portalStatisticInfo={props.getPortalMapping(portal) } />;
+                portalButtons={this.getPortalButtons(portal, index)}
+                portalStatisticInfo={props.getPortalMapping(portal)} />;
         });
     }
-
+    cancelExport(event) {
+        if (event !== undefined)
+            event.preventDefault();
+        this.setState({
+            portalBeingExported: {}
+        });
+        this.navigateMap(0);
+    }
     render() {
-        const portalList = this.getDetailList();
+        const portalList = this.getDetailList(), {props} = this;
 
         return (
             <GridCell className={styles.siteList}>
-                <GridCell className="portal-list-container">
-                    {portalList}
-                </GridCell>
+                {props.selectedPage === 0 &&
+                    <GridCell className="portal-list-container">
+                        <SocialPanelHeader title={"Sites"}>
+                            <Button type="primary" onClick={props.onAddNewSite.bind(this)}>{"Add New Site"}</Button>
+                        </SocialPanelHeader>
+                        <SocialPanelBody>
+                            {portalList}
+                        </SocialPanelBody>
+                    </GridCell>
+                }
+                {props.selectedPage === 2 &&
+                    <GridCell className="export-portal-container">
+
+                        <SocialPanelHeader title={Localization.get("ControlTitle_template")} />
+                        <SocialPanelBody>
+                            <ExportPortal
+                                portalBeingExported={props.portalBeingExported}
+                                onCancel={this.cancelExport.bind(this)} />
+                        </SocialPanelBody>
+                    </GridCell>
+                }
             </GridCell>
         );
     }
@@ -105,6 +135,8 @@ ListView.propTypes = {
 };
 function mapStateToProps(state) {
     return {
+        selectedPage: state.visiblePanel.selectedPage,
+        portalBeingExported: state.portal.portalBeingExported,
         tabIndex: state.pagination.tabIndex,
         portals: state.portal.portals,
         totalCount: state.portal.totalCount,

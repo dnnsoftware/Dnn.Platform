@@ -46,7 +46,6 @@ class CreatePortal extends Component {
 
     componentWillMount() {
         const { props, state } = this;
-        // props.dispatch(PortalActions.deletePortal(8));
         props.dispatch(PortalActions.getPortalTemplates((data) => {
             let {newPortal} = state;
             newPortal.SiteTemplate = data.Results.DefaultTemplate;

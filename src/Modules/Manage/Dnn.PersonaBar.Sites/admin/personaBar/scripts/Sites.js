@@ -15,10 +15,7 @@
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initSites = function initializeSites() {
-            return {
-                utility: util,
-                moduleName: "Sites"
-            };
+            return params;
         };
         loadScript();
 

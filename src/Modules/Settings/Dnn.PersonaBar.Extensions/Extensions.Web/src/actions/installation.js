@@ -70,7 +70,8 @@ const installationActions = {
                     dispatch({
                         type: ExtensionActionTypes.INSTALLED_EXTENSION,
                         payload: {
-                            PackageInfo: _newExtension
+                            PackageInfo: _newExtension,
+                            logs: JSON.parse(data).logs
                         }
                     });
                 }

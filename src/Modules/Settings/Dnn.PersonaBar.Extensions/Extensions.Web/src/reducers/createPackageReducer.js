@@ -54,7 +54,6 @@ export default function createPackage(state = {
                 packageManifest: Object.assign(JSON.parse(JSON.stringify(state.packageManifest)), { files: action.payload })
             };
         default:
-            return { ...state
-            };
+            return state;
     }
 }
