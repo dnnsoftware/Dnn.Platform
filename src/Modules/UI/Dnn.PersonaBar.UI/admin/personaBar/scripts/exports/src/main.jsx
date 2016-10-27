@@ -16,6 +16,8 @@ import ReduxDevToolsLogMonitor from "redux-devtools-log-monitor";
 import ReduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import ReduxThunk from "redux-thunk";
 import Moment from "moment";
+import ReactWidgets from "react-widgets";
+import ThrottleDebounce from "throttle-debounce";
 
 /** Polyfills */
 require("es6-object-assign").polyfill();
@@ -39,6 +41,8 @@ window.dnn.nodeModules.ReactComponentWithPureRenderMixin = ReactComponentWithPur
 window.dnn.nodeModules.ReactCollapse = ReactCollapse;
 window.dnn.nodeModules.ReactCustomScrollBars = ReactCustomScrollBars;
 window.dnn.nodeModules.ReactModal = ReactModal;
+window.dnn.nodeModules.ReactWidgets = ReactWidgets;
+window.dnn.nodeModules.ThrottleDebounce = ThrottleDebounce;
 window.dnn.nodeModules.CommonComponents = CommonComponents;
 window.dnn.nodeModules.ReduxDevTools = ReduxDevTools;
 window.dnn.nodeModules.ReduxDevToolsDockMonitor = ReduxDevToolsDockMonitor;
