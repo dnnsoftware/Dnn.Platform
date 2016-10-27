@@ -74,13 +74,14 @@ class EditExtension extends Component {
     onAssignedPortalsChange(key, value, callback) {
         const { props } = this;
         let _extensionBeingEdited = JSON.parse(JSON.stringify(props.extensionBeingEdited));
-        _extensionBeingEdited[key].value = value;
-        this.updateExtensionBeingEdited(_extensionBeingEdited, callback);
+
+        let editorActions = {key: value};
+        this.updateExtensionBeingEdited(_extensionBeingEdited, editorActions, callback);
     }
 
-    updateExtensionBeingEdited(extensionBeingEdited, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
         const { props } = this;
-        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
+        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback));
     }
 
     onSaveExtension(close) {

@@ -35,7 +35,7 @@ class ModuleSettings extends Component {
         let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
         extensionBeingUpdated.permissions.value = permissions;
 
-        props.updateExtensionBeingEdited(extensionBeingUpdated, function () {
+        props.updateExtensionBeingEdited(extensionBeingUpdated, {permissions: JSON.stringify(permissions)}, function () {
             utils.utilities.notify(Localization.get("UpdateComplete"));
         });
     }

@@ -27,24 +27,6 @@ const moduleDefinitionActions = {
             }
         };
     },
-    addOrUpdateModuleDefinition(payload, callback) {
-        return dispatch => {
-            ModuleDefinitionService.addOrUpdateModuleDefinition(payload, (data) => {
-                if (callback) {
-                    callback(data);
-                }
-            });
-        };
-    },
-    deleteModuleDefinition(definitionId, callback) {
-        return dispatch => {
-            ModuleDefinitionService.deleteModuleDefinition(definitionId, (data) => {
-                if (callback) {
-                    callback(data);
-                }
-            });
-        };
-    },
     getSourceFolders(callback) {
         return dispatch => {
             ModuleDefinitionService.getSourceFolders((data) => {
@@ -78,24 +60,6 @@ const moduleDefinitionActions = {
                     type: ActionTypes.RETRIEVED_CONTROL_ICONS,
                     payload: data
                 });
-                if (callback) {
-                    callback(data);
-                }
-            });
-        };
-    },
-    addOrUpdateModuleControl(payload, callback) {
-        return dispatch => {
-            ModuleDefinitionService.addOrUpdateModuleControl(payload, (data) => {
-                if (callback) {
-                    callback(data);
-                }
-            });
-        };
-    },
-    deleteModuleControl(controlId, callback) {
-        return dispatch => {
-            ModuleDefinitionService.deleteModuleControl(controlId, (data) => {
                 if (callback) {
                     callback(data);
                 }

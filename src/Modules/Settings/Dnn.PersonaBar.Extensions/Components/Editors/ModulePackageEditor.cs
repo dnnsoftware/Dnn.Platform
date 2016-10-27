@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -79,7 +80,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "unassignportal":
                                 UnassignPortals(desktopModule, settingValue);
                                 break;
-                            /*
+
                             case "savedefinition":
                                 var definition = JsonConvert.DeserializeObject<ModuleDefinitionDto>(settingValue);
                                 SaveModuleDefinition(definition);
@@ -94,7 +95,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "deletemodulecontrol":
                                 DeleteModuleControl(Convert.ToInt32(settingValue));
                                 break;
-                            */
+
                         }
                     }
 
@@ -269,7 +270,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        /*
+
         private void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
         {
             var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
@@ -283,7 +284,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private void SaveModuleControl(ModuleControlDto moduleControlDto)
         {
-            var moduleControl = moduleControlDtoToModuleControlInfo();
+            var moduleControl = moduleControlDto.ToModuleControlInfo();
             ModuleControlController.SaveModuleControl(moduleControl, true);
         }
 
@@ -291,7 +292,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         {
             ModuleControlController.DeleteModuleControl(controlId);
         }
-        */
+
 
         #endregion
 

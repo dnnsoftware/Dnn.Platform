@@ -181,6 +181,7 @@
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
+    <Content Include="admin\personaBar\images\notify.png" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
       <SubType>ASPXCodeBehind</SubType>

@@ -73,7 +73,7 @@ const extensionActions = {
     },
     updateExtension(updatedExtension, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(updatedExtension, () => {
+            ExtensionService.updateExtension(updatedExtension, {}, () => {
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
@@ -204,17 +204,19 @@ const extensionActions = {
             });
         };
     },
-    updateExtensionBeingEdited(extensionBeingEdited, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
         return (dispatch) => {
-            dispatch({
-                type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
-                payload: extensionBeingEdited
-            });
-            if (callback) {
-                setTimeout(() => {  //let JS propagate
-                    callback();
-                }, 0);
-            }
+            ExtensionService.updateExtension(extensionBeingEdited, editorActions, () => {
+                dispatch({
+                    type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                    payload: extensionBeingEdited
+                });
+                if (callback) {
+                    setTimeout(() => {  //let JS propagate
+                        callback();
+                    }, 0);
+                }
+            }, errorCallback);
         };
     },
     toggleTabError(tabIndex, action, callback) {

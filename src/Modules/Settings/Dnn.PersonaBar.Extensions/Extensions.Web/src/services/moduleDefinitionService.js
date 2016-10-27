@@ -13,16 +13,6 @@ class ModuleDefinitionService {
 
         return sf;
     }
-    addOrUpdateModuleDefinition(payload, callback) {
-        const sf = this.getServiceFramework("Extensions");
-
-        sf.post("AddOrUpdateModuleDefinition", payload, callback, errorCallback);
-    }
-    deleteModuleDefinition(definitionId, callback) {
-        const sf = this.getServiceFramework("Extensions");
-
-        sf.post("DeleteModuleDefinition?definitionId=" + definitionId, {}, callback, errorCallback);
-    }
     getSourceFolders(callback) {
         const sf = this.getServiceFramework("Extensions");
         sf.get("GetSourceFolders", {}, callback, errorCallback);
@@ -34,15 +24,6 @@ class ModuleDefinitionService {
     getControlIcons(controlPath, callback) {
         const sf = this.getServiceFramework("Extensions");
         sf.get("LoadIcons?controlPath=" + controlPath, {}, callback, errorCallback);
-    }
-    addOrUpdateModuleControl(payload, callback) {
-        const sf = this.getServiceFramework("Extensions");
-        sf.post("AddOrUpdateModuleControl", payload, callback, errorCallback);
-    }
-    deleteModuleControl(controlId, callback) {
-        const sf = this.getServiceFramework("Extensions");
-
-        sf.post("DeleteModuleControl?controlId=" + controlId, {}, callback, errorCallback);
     }
 }
 const moduleDefinitionService = new ModuleDefinitionService();

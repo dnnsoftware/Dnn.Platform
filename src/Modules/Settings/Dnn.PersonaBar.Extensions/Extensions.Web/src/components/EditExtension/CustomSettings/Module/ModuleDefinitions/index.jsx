@@ -133,19 +133,20 @@ class ModuleDefinitions extends Component {
             return;
         }
 
-        props.dispatch(ModuleDefinitionActions.addOrUpdateModuleDefinition(state.moduleDefinitionBeingEdited, () => {
-            let _moduleDefinitions = JSON.parse(JSON.stringify(props.moduleDefinitions));
-            if (state.moduleDefinitionBeingEditedIndex > -1) {
-                _moduleDefinitions[state.moduleDefinitionBeingEditedIndex] = state.moduleDefinitionBeingEdited;
-            } else {
-                _moduleDefinitions.push(state.moduleDefinitionBeingEdited);
-            }
-            props.onSave({ target: { value: _moduleDefinitions } });
-            props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
-                this.exitEditMode();
-            }));
+        //TODO: should 
+        // props.dispatch(ModuleDefinitionActions.addOrUpdateModuleDefinition(state.moduleDefinitionBeingEdited, () => {
+        //     let _moduleDefinitions = JSON.parse(JSON.stringify(props.moduleDefinitions));
+        //     if (state.moduleDefinitionBeingEditedIndex > -1) {
+        //         _moduleDefinitions[state.moduleDefinitionBeingEditedIndex] = state.moduleDefinitionBeingEdited;
+        //     } else {
+        //         _moduleDefinitions.push(state.moduleDefinitionBeingEdited);
+        //     }
+        //     props.onSave({ target: { value: _moduleDefinitions } });
+        //     props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
+        //         this.exitEditMode();
+        //     }));
 
-        }));
+        // }));
     }
     onDelete(definitionId, index) {
         utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {

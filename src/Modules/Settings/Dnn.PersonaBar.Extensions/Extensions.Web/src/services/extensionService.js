@@ -50,24 +50,13 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
         sf.get("GetAvailablePackageTypes", {}, callback);
     }
-    updateExtension(extensionBeingUpdated, callback) {
+    updateExtension(extensionBeingUpdated, editorActions, callback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             packageId: extensionBeingUpdated.packageId.value,
             portalId: utilities.settings.portalId,
             settings: mapPackageInformation(extensionBeingUpdated),
-            editorActions: (extensionBeingUpdated.packageType.value === "Module" ? {
-                category: extensionBeingUpdated.category.value,
-                dependencies: extensionBeingUpdated.dependencies.value,
-                permissions: extensionBeingUpdated.permissions.value,
-                hostPermissions: extensionBeingUpdated.hostPermissions.value,
-                shareable: extensionBeingUpdated.shareable.value,
-                premiummodule: extensionBeingUpdated.premiumModule.value,
-                assignPortal: extensionBeingUpdated.assignedPortals.value,
-                unassignPortal: extensionBeingUpdated.unassignedPortals.value,
-                foldername: extensionBeingUpdated.folderName.value,
-                businesscontroller: extensionBeingUpdated.businessController.value
-            } : {})
+            editorActions: editorActions
         };
         sf.post("SavePackageSettings", payload, callback);
     }

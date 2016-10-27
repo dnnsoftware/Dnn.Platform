@@ -93,7 +93,7 @@ class NewExtensionModal extends Component {
 
     updateExtensionBeingEdited(extensionBeingEdited, callback) {
         const { props } = this;
-        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
+        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, {}, callback));
     }
     render() {
         const {props} = this;
