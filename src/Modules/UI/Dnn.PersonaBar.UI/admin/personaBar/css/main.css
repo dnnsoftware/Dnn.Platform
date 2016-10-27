@@ -908,14 +908,15 @@ span.dnnFormError {
 }
 .socialpanelheader > .qaTooltip > h3.title, .socialpanelheader > h3 {
     overflow: hidden;
-    max-width: 395px;
+    max-width: 495px;
     text-overflow: ellipsis;
     display: inline-block;
-    font-size: 28px;
+    font-size: 36px;
     letter-spacing: 1px;
-    line-height: 1em;
-    margin: 10px 0 10px 0;
-    font-family: sourcecodepro_semibold, arial;
+    line-height: 36px;
+    min-height: 48px;
+    margin: 0;
+    font-family: robotoslab, arial;
     font-weight: normal;
 }
 .socialpanelheader > .qaTooltip > .tag-menu {
