@@ -8,7 +8,6 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import PermissionGrid from "../../node_modules/dnn-permission-grid";
 import utils from "../utils";
-import cloneDeep from "lodash/cloneDeep";
 
 class PageSettings extends Component {
 
@@ -81,7 +80,7 @@ class PageSettings extends Component {
                 </div>
                 <div>                
                     <PermissionGrid 
-                        permissions={cloneDeep(selectedPage.permissions)} 
+                        permissions={selectedPage.permissions} 
                         service={utils.utilities.sf} 
                         onPermissionsChanged={this.props.onPermissionsChanged} />                
                     {buttons}
