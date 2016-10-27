@@ -498,8 +498,8 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 return
-                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
-                        InstallController.Instance.InstallPackage(portalSettings, userInfo, fileName, stream));
+                    UploadFileAction((portalSettings, userInfo, filePath, stream) =>
+                        InstallController.Instance.InstallPackage(portalSettings, userInfo, filePath, stream));
             }
             catch (Exception ex)
             {
@@ -516,8 +516,8 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 return
-                    UploadFileAction((portalSettings, userInfo, fileName, stream) =>
-                        InstallController.Instance.ParsePackage(portalSettings, userInfo, fileName, stream));
+                    UploadFileAction((portalSettings, userInfo, filePath, stream) =>
+                        InstallController.Instance.ParsePackage(portalSettings, userInfo, filePath, stream));
             }
             catch (Exception ex)
             {
@@ -1386,8 +1386,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                var fileName = Path.GetFileName(filePath);
-                return InstallController.Instance.ParsePackage(PortalSettings, UserInfo, fileName, stream);
+                return InstallController.Instance.ParsePackage(PortalSettings, UserInfo, filePath, stream);
             }
         }
 
@@ -1400,8 +1399,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                var fileName = Path.GetFileName(filePath);
-                return InstallController.Instance.InstallPackage(PortalSettings, UserInfo, fileName, stream);
+                return InstallController.Instance.InstallPackage(PortalSettings, UserInfo, filePath, stream);
             }
         }
 
