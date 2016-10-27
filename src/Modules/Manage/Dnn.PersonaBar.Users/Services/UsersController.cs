@@ -326,7 +326,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteUser([FromUri]int userId)
+        public HttpResponseMessage SoftDeleteUser([FromUri]int userId)
         {
             try
             {
@@ -344,6 +344,81 @@ namespace Dnn.PersonaBar.Users.Services
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = deleted, Message = errorMessage });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage HardDeleteUser([FromUri]int userId)
+        {
+            try
+            {
+                var user = UserController.Instance.GetUserById(PortalId, userId);
+                if (user == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                }
+
+                var errorMessage = string.Empty;
+                var deleted = UserController.RemoveUser(user);
+
+                if (!deleted)
+                {
+                    errorMessage = "UserRemoveError";
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = deleted, Message = errorMessage });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RestoreDeletedUser([FromUri]int userId)
+        {
+            try
+            {
+                var user = UserController.Instance.GetUserById(PortalId, userId);
+                if (user == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                }
+
+                var errorMessage = string.Empty;
+                var restored = UserController.RestoreUser(ref user);
+
+                if (!restored)
+                {
+                    errorMessage = "UserRestoreError";
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = restored, Message = errorMessage });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteUnauthorizedUsers()
+        {
+            try
+            {
+                UserController.DeleteUnauthorizedUsers(PortalId);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
