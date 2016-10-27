@@ -369,4 +369,7 @@
   <data name="Size.Text" xml:space="preserve">
     <value>Size</value>
   </data>
+  <data name="errorMessageLoadingServersInfo.Text" xml:space="preserve">
+    <value>Error loading Servers Info</value>
+  </data>
 </root>

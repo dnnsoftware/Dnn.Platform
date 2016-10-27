@@ -4,7 +4,8 @@ import localization from "../localization";
 export default function webTabReducer(state = {
     reloadPage: false,
     infoMessage: "",
-    errorMessage: ""
+    errorMessage: "",
+    serversInfo: null
 }, action) {
     switch (action.type) {
         case ActionTypes.REQUEST_RESTART_APPLICATION:
@@ -42,7 +43,24 @@ export default function webTabReducer(state = {
                 reloadPage: false,
                 infoMessage: "",
                 errorMessage:  action.payload.errorMessage
-            };  
+            };        
+        case ActionTypes.LOAD_SERVER_INFO:
+            return { ...state,                
+                serversInfo: null
+            };
+        case ActionTypes.LOADED_SERVER_INFO:
+            return { ...state,
+                serversInfo: {
+                    serversCount: action.payload.serversCount
+                }
+            };
+        case ActionTypes.ERROR_LOADING_SERVER_INFO:
+            return { ...state,
+                infoMessage: "",
+                errorMessage:  action.payload.errorMessage,
+                serversInfo: null
+            };
+
         default:
             return state;
     }
