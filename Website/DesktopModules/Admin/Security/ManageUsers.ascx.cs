@@ -485,8 +485,7 @@ namespace DotNetNuke.Modules.Admin.Users
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            
-            dnnManageUsers.Visible = true;
+
             cmdCancel.Click += cmdCancel_Click;
             cmdAdd.Click += cmdAdd_Click;
 
