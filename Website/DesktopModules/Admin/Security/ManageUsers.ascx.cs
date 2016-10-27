@@ -154,7 +154,17 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Flag to indicate if the page is being used as Persona bar mode or not.
         /// </summary>
-        protected bool IsPbMode { get; set; }
+        protected bool IsPbMode
+        {
+            get
+            {
+                bool isPbMode;
+
+                return !string.IsNullOrEmpty(Request.QueryString["isPbMode"])
+                       && bool.TryParse(Request["isPbMode"], out isPbMode)
+                       && isPbMode;
+            }
+        }
 
         #endregion
 
@@ -406,58 +416,59 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void ShowPanel()
         {
-            if (!IsPbMode)
+            if (AddUser)
             {
-                if (AddUser)
+                adminTabNav.Visible = false;
+                if (Request.IsAuthenticated && MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
-                    adminTabNav.Visible = false;
-                    if (Request.IsAuthenticated && MembershipProviderConfig.RequiresQuestionAndAnswer)
-                    {
-                        //Admin adding user
-                        dnnManageUsers.Visible = false;
-                        actionsRow.Visible = false;
-                        AddModuleMessage("CannotAddUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
-                    }
-                    else
-                    {
-                        dnnManageUsers.Visible = true;
-                        actionsRow.Visible = true;
-                    }
-                    BindUser();
-                    dnnProfileDetails.Visible = false;
+                    //Admin adding user
+                    dnnManageUsers.Visible = false;
+                    actionsRow.Visible = false;
+                    AddModuleMessage("CannotAddUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
                 }
                 else
                 {
-                    if ((!IsAdmin))
-                    {
-                        passwordTab.Visible = false;
-                    }
-                    else
-                    {
-                        ctlPassword.User = User;
-                        ctlPassword.DataBind();
-                    }
-                    if ((!IsEdit || User.IsSuperUser))
-                    {
-                        rolesTab.Visible = false;
-                    }
-                    else
-                    {
-                        ctlRoles.DataBind();
-                    }
-
-                    BindUser();
-                    ctlProfile.User = User;
-                    ctlProfile.DataBind();
+                    dnnManageUsers.Visible = true;
+                    actionsRow.Visible = true;
                 }
-
-                dnnRoleDetails.Visible = IsEdit && !User.IsSuperUser && !AddUser;
-                dnnPasswordDetails.Visible = (IsAdmin) && !AddUser;
+                BindUser();
+                dnnProfileDetails.Visible = false;
             }
             else
             {
-                ctlProfilePB.User = User;
-                ctlProfilePB.DataBind();
+                if ((!IsAdmin))
+                {
+                    passwordTab.Visible = false;
+                }
+                else
+                {
+                    ctlPassword.User = User;
+                    ctlPassword.DataBind();
+                }
+                if ((!IsEdit || User.IsSuperUser))
+                {
+                    rolesTab.Visible = false;
+                }
+                else
+                {
+                    ctlRoles.DataBind();
+                }
+
+                BindUser();
+                ctlProfile.User = User;
+                ctlProfile.DataBind();
+            }
+
+            dnnRoleDetails.Visible = IsEdit && !User.IsSuperUser && !AddUser;
+            dnnPasswordDetails.Visible = (IsAdmin) && !AddUser;
+
+            if(IsPbMode)
+            {
+                adminTabNav.Visible =
+                    dnnUserDetails.Visible = 
+                    dnnRoleDetails.Visible = 
+                    dnnPasswordDetails.Visible =
+                    actionsRow.Visible = false;
             }
         }
 
@@ -474,88 +485,70 @@ namespace DotNetNuke.Modules.Admin.Users
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            bool isPbMode;
-            if (!string.IsNullOrEmpty(Convert.ToString(Request["isPbMode"])) &&
-                bool.TryParse(Request["isPbMode"], out isPbMode))
+            
+            dnnManageUsers.Visible = true;
+            cmdCancel.Click += cmdCancel_Click;
+            cmdAdd.Click += cmdAdd_Click;
+
+            ctlUser.UserCreateCompleted += UserCreateCompleted;
+            ctlUser.UserDeleted += UserDeleted;
+            ctlUser.UserRemoved += UserRemoved;
+            ctlUser.UserRestored += UserRestored;
+            ctlUser.UserUpdateCompleted += UserUpdateCompleted;
+            ctlUser.UserUpdateError += UserUpdateError;
+
+            ctlProfile.ProfileUpdateCompleted += ProfileUpdateCompleted;
+            ctlPassword.PasswordUpdated += PasswordUpdated;
+            ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
+            ctlMembership.MembershipAuthorized += MembershipAuthorized;
+            ctlMembership.MembershipPasswordUpdateChanged += MembershipPasswordUpdateChanged;
+            ctlMembership.MembershipUnAuthorized += MembershipUnAuthorized;
+            ctlMembership.MembershipUnLocked += MembershipUnLocked;
+            ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
+            ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+            //Set the Membership Control Properties
+            ctlMembership.ID = "Membership";
+            ctlMembership.ModuleConfiguration = ModuleConfiguration;
+            ctlMembership.UserId = UserId;
+
+            //Set the User Control Properties
+            ctlUser.ID = "User";
+            ctlUser.ModuleConfiguration = ModuleConfiguration;
+            ctlUser.UserId = UserId;
+
+            //Set the Roles Control Properties
+            ctlRoles.ID = "SecurityRoles";
+            ctlRoles.ModuleConfiguration = ModuleConfiguration;
+            ctlRoles.ParentModule = this;
+
+            //Set the Password Control Properties
+            ctlPassword.ID = "Password";
+            ctlPassword.ModuleConfiguration = ModuleConfiguration;
+            ctlPassword.UserId = UserId;
+
+            //Set the Profile Control Properties
+            ctlProfile.ID = "Profile";
+            ctlProfile.ModuleConfiguration = ModuleConfiguration;
+            ctlProfile.UserId = UserId;
+
+            //Customise the Control Title
+            if (AddUser)
             {
-                IsPbMode = isPbMode;
-            }
-            if (!IsPbMode)
-            {
-                dnnManageUsers.Visible = true;
-                ctlProfilePB.Visible = false;
-                cmdCancel.Click += cmdCancel_Click;
-                cmdAdd.Click += cmdAdd_Click;
-
-                ctlUser.UserCreateCompleted += UserCreateCompleted;
-                ctlUser.UserDeleted += UserDeleted;
-                ctlUser.UserRemoved += UserRemoved;
-                ctlUser.UserRestored += UserRestored;
-                ctlUser.UserUpdateCompleted += UserUpdateCompleted;
-                ctlUser.UserUpdateError += UserUpdateError;
-
-                ctlProfile.ProfileUpdateCompleted += ProfileUpdateCompleted;
-                ctlPassword.PasswordUpdated += PasswordUpdated;
-                ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
-                ctlMembership.MembershipAuthorized += MembershipAuthorized;
-                ctlMembership.MembershipPasswordUpdateChanged += MembershipPasswordUpdateChanged;
-                ctlMembership.MembershipUnAuthorized += MembershipUnAuthorized;
-                ctlMembership.MembershipUnLocked += MembershipUnLocked;
-                ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
-                ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
-
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-                //Set the Membership Control Properties
-                ctlMembership.ID = "Membership";
-                ctlMembership.ModuleConfiguration = ModuleConfiguration;
-                ctlMembership.UserId = UserId;
-
-                //Set the User Control Properties
-                ctlUser.ID = "User";
-                ctlUser.ModuleConfiguration = ModuleConfiguration;
-                ctlUser.UserId = UserId;
-
-                //Set the Roles Control Properties
-                ctlRoles.ID = "SecurityRoles";
-                ctlRoles.ModuleConfiguration = ModuleConfiguration;
-                ctlRoles.ParentModule = this;
-
-                //Set the Password Control Properties
-                ctlPassword.ID = "Password";
-                ctlPassword.ModuleConfiguration = ModuleConfiguration;
-                ctlPassword.UserId = UserId;
-
-                //Set the Profile Control Properties
-                ctlProfile.ID = "Profile";
-                ctlProfile.ModuleConfiguration = ModuleConfiguration;
-                ctlProfile.UserId = UserId;
-
-                //Customise the Control Title
-                if (AddUser)
+                if (!Request.IsAuthenticated)
                 {
-                    if (!Request.IsAuthenticated)
-                    {
-                        //Register
-                        ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", LocalResourceFile);
-                    }
-                    else
-                    {
-                        //Add User
-                        ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", LocalResourceFile);
-                    }
-
-                    userContainer.CssClass += " register";
+                    //Register
+                    ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", LocalResourceFile);
                 }
-            }
-            else
-            {
-                dnnManageUsers.Visible = false;
-                ctlProfilePB.Visible = true;
-                ctlProfilePB.ProfileUpdateCompleted += ProfileUpdateCompleted;
-                ctlProfilePB.ID = "Profile";
-                ctlProfilePB.ModuleConfiguration = ModuleConfiguration;
-                ctlProfilePB.UserId = UserId;
+                else
+                {
+                    //Add User
+                    ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", LocalResourceFile);
+                }
+
+                userContainer.CssClass += " register";
             }
         }
 
