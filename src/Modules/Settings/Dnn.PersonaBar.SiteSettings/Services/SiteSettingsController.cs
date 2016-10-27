@@ -360,7 +360,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     DataType = DisplayDataType(v.DataType),
                     DefaultVisibility = v.DefaultVisibility.ToString(),
                     v.Required,
-                    v.Visible
+                    v.Visible,
+                    CanDelete = CanDeleteProperty(v)
                 });
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
@@ -660,6 +661,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     PropertyDefinitionId = propertyId
                 };
+
+                if (!CanDeleteProperty(propertyDefinition))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "ForbiddenDelete");
+                }
+
                 ProfileController.DeletePropertyDefinition(propertyDefinition);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -670,5 +677,23 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        #region Private Methods
+
+        private bool CanDeleteProperty(ProfilePropertyDefinition definition)
+        {
+            switch (definition.PropertyName.ToLowerInvariant())
+            {
+                case "lastname":
+                case "firstname":
+                case "preferredtimezone":
+                case "preferredlocale":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        #endregion
     }
 }
