@@ -135,5 +135,6 @@ module.exports = [
     "iis",
     "guid",
     "urls",
-    "cas"
+    "cas",
+    "Mb"
 ]

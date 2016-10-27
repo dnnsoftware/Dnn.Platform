@@ -306,4 +306,67 @@
   <data name="UserRestart.Text" xml:space="preserve">
     <value>User triggered an Application Restart</value>
   </data>
+  <data name="DbInfo_ProductEdition.Help" xml:space="preserve">
+    <value>The edition of SQL Server installed.</value>
+  </data>
+  <data name="DbInfo_ProductEdition.Text" xml:space="preserve">
+    <value>Product Edition:</value>
+  </data>
+  <data name="DbInfo_ProductVersion.Help" xml:space="preserve">
+    <value>The version of SQL Server</value>
+  </data>
+  <data name="DbInfo_ProductVersion.Text" xml:space="preserve">
+    <value>Database Version:</value>
+  </data>
+  <data name="DbInfo_ServicePack.Help" xml:space="preserve">
+    <value>Installed service pack(s).</value>
+  </data>
+  <data name="DbInfo_ServicePack.Text" xml:space="preserve">
+    <value>Service Pack:</value>
+  </data>
+  <data name="DbInfo_SoftwarePlatform.Help" xml:space="preserve">
+    <value>The full description of the SQL Server Software Platform installed.</value>
+  </data>
+  <data name="DbInfo_SoftwarePlatform.Text" xml:space="preserve">
+    <value>Software Platform:</value>
+  </data>
+  <data name="errorMessageLoadingDatabaseTab.Text" xml:space="preserve">
+    <value>Error loading Database tab</value>
+  </data>
+  <data name="BackupFinished.Text" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="BackupName.Text" xml:space="preserve">
+    <value> Backup Name</value>
+  </data>
+  <data name="BackupSize.Text" xml:space="preserve">
+    <value>Size (Kb)</value>
+  </data>
+  <data name="BackupStarted.Text" xml:space="preserve">
+    <value>Started</value>
+  </data>
+  <data name="BackupType.Text" xml:space="preserve">
+    <value>Backup Type</value>
+  </data>
+  <data name="FileName.Text" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="FileType.Text" xml:space="preserve">
+    <value>File Type</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoBackups.Text" xml:space="preserve">
+    <value>This database has not been backed up.</value>
+  </data>
+  <data name="plBackups.Text" xml:space="preserve">
+    <value>Database Backup History:</value>
+  </data>
+  <data name="plFiles.Text" xml:space="preserve">
+    <value>Database Files:</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
 </root>
