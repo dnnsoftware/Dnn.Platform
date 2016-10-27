@@ -102,6 +102,50 @@ export default function siteSettings(state = {
             return { ...state,
                 profileProperties: action.data.profileProperties
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS_SETTINGS:
+            return { ...state,
+                urlMappingSettings: action.data.urlMappingSettings,
+                portalAliasMappingModes: action.data.portalAliasMappingModes,
+                urlMappingSettingsClientModified: action.data.urlMappingSettingsClientModified
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES:
+            return { ...state,
+                siteAliases: action.data.siteAliases,
+                browsers: action.data.browsers,
+                languages: action.data.languages,
+                skins: action.data.skins
+            };
+        case ActionTypes.SITESETTINGS_URL_MAPPING_SETTINGS_CLIENT_MODIFIED:
+            return { ...state,
+                urlMappingSettings: action.data.urlMappingSettings,
+                urlMappingSettingsClientModified: action.data.urlMappingSettingsClientModified
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_URL_MAPPING_SETTINGS:
+            return { ...state,
+                urlMappingSettingsClientModified: action.data.urlMappingSettingsClientModified
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS:
+            return { ...state,
+                aliasDetail: action.data.aliasDetail                
+            };
+        case ActionTypes.CANCELED_SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED:
+            return { ...state,
+                siteAliasClientModified: action.data.siteAliasClientModified
+            };
+        case ActionTypes.SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED:
+            return { ...state,
+                aliasDetail: action.data.aliasDetail,
+                siteAliasClientModified: action.data.siteAliasClientModified
+            };
+        case ActionTypes.CREATED_SITESETTINGS_SITE_ALIAS:
+        case ActionTypes.UPDATED_SITESETTINGS_SITE_ALIAS:
+            return { ...state,
+                siteAliasClientModified: action.data.siteAliasClientModified
+            };
+        case ActionTypes.DELETED_SITESETTINGS_SITE_ALIAS:
+            return { ...state,
+                siteAliases: action.data.siteAliases
+            };
         default:
             return state;
     }

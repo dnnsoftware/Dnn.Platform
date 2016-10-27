@@ -92,6 +92,41 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("UpdateProfilePropertyLocalization", payload, callback, failureCallback);
     } 
+
+    getUrlMappingSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetUrlMappingSettings?portalId=" + portalId, {}, callback);
+    }  
+
+    getSiteAliases(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetSiteAliases?portalId=" + portalId, {}, callback);
+    } 
+
+    updateUrlMappingSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateUrlMappingSettings", payload, callback, failureCallback);
+    }
+
+    getSiteAlias(aliasId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetSiteAlias?portalAliasId=" + aliasId, {}, callback);
+    } 
+
+    addSiteAlias(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddSiteAlias", payload, callback, failureCallback);
+    }
+
+    updateSiteAlias(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateSiteAlias", payload, callback, failureCallback);
+    }
+
+    deleteSiteAlias(aliasId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteSiteAlias?portalAliasId=" + aliasId, {}, callback, failureCallback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

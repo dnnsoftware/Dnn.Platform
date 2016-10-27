@@ -6,17 +6,21 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
@@ -26,6 +30,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Internals;
+using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -503,7 +508,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString, 
+                _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString,
                     request.PropertyHelpString, request.PropertyRequiredString, request.PropertyValidationString, request.CategoryNameString);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -553,7 +558,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
                 else
@@ -623,7 +628,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     if (ValidateProperty(property))
                     {
                         ProfileController.UpdatePropertyDefinition(property);
-                        return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                     else
                     {
@@ -678,8 +683,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        #region Private Methods
-
         private bool CanDeleteProperty(ProfilePropertyDefinition definition)
         {
             switch (definition.PropertyName.ToLowerInvariant())
@@ -694,6 +697,379 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        #endregion
+        /// GET: api/SiteSettings/GetUrlMappingSettings
+        /// <summary>
+        /// Gets Url mapping settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>Url mapping settings</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetUrlMappingSettings([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(pid);
+                string portalAliasMapping;
+                if (settings.TryGetValue("PortalAliasMapping", out portalAliasMapping))
+                {
+                    if (string.IsNullOrEmpty(portalAliasMapping))
+                    {
+                        portalAliasMapping = "CANONICALURL";
+                    }
+                }
+                else
+                {
+                    portalAliasMapping = "CANONICALURL";
+                }
+
+                var portalAliasMappingModes = new List<KeyValuePair<string, string>>();
+                portalAliasMappingModes.Add(new KeyValuePair<string, string>(Localization.GetString("Canonical", LocalResourcesFile), "CANONICALURL"));
+                portalAliasMappingModes.Add(new KeyValuePair<string, string>(Localization.GetString("Redirect", LocalResourcesFile), "REDIRECT"));
+                portalAliasMappingModes.Add(new KeyValuePair<string, string>(Localization.GetString("None", LocalResourcesFile), "NONE"));
+
+                var response = new
+                {
+                    Success = true,
+                    Settings = new
+                    {
+                        PortalAliasMapping = portalAliasMapping,
+                        AutoAddPortalAliasEnabled = !(PortalController.Instance.GetPortals().Count > 1),
+                        AutoAddPortalAlias = PortalController.Instance.GetPortals().Count <= 1 && HostController.Instance.GetBoolean("AutoAddPortalAlias")
+                    },
+                    PortalAliasMappingModes = portalAliasMappingModes
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateUrlMappingSettings
+        /// <summary>
+        /// Updates Url mapping settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateUrlMappingSettings(UpdateUrlMappingSettingsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false);
+                HostController.Instance.Update("AutoAddPortalAlias", request.AutoAddPortalAlias ? "Y" : "N", true);
+
+                DataCache.ClearPortalCache(pid, false);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/getSiteAliases
+        /// <summary>
+        /// Gets site aliases
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>site aliases</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetSiteAliases([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var portal = PortalController.Instance.GetPortal(pid);
+                var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(pid).Select(a => new
+                {
+                    a.PortalAliasID,
+                    a.HTTPAlias,
+                    BrowserType = a.BrowserType.ToString(),
+                    a.Skin,
+                    a.IsPrimary,
+                    a.CultureCode,
+                    Deletable = a.PortalAliasID != PortalSettings.PortalAlias.PortalAliasID && !a.IsPrimary,
+                    Editable = a.PortalAliasID != PortalSettings.PortalAlias.PortalAliasID
+                });
+
+                var response = new
+                {
+                    Success = true,
+                    PortalAliases = aliases,
+                    BrowserTypes = Enum.GetNames(typeof(BrowserTypes)),
+                    Languages = LocaleController.Instance.GetLocales(pid).Select(l => new
+                    {
+                        l.Key,
+                        Value = l.Key
+                    }),
+                    Skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetSiteAlias
+        /// <summary>
+        /// Gets site alias by id
+        /// </summary>
+        /// <param name="portalAliasId"></param>
+        /// <returns>site alias</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetSiteAlias([FromUri]int portalAliasId)
+        {
+            try
+            {
+                var alias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
+
+                var response = new
+                {
+                    Success = true,
+                    PortalAlias = new
+                    {
+                        alias.PortalAliasID,
+                        alias.HTTPAlias,
+                        BrowserType = alias.BrowserType.ToString(),
+                        alias.Skin,
+                        alias.IsPrimary,
+                        alias.CultureCode
+                    }
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/AddSiteAlias
+        /// <summary>
+        /// Adds site alias
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage AddSiteAlias(UpdateSiteAliasRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string strAlias = request.HTTPAlias;
+                if (!string.IsNullOrEmpty(strAlias))
+                {
+                    strAlias = strAlias.Trim();
+                }
+
+                if (IsHttpAliasValid(strAlias))
+                {
+                    var aliases = PortalAliasController.Instance.GetPortalAliases();
+                    if (aliases.Contains(strAlias))
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("DuplicateAlias", LocalResourcesFile)));
+                    }
+
+                    BrowserTypes browser;
+                    Enum.TryParse(request.BrowserType, out browser);
+                    PortalAliasInfo portalAlias = new PortalAliasInfo()
+                    {
+                        PortalID = pid,
+                        HTTPAlias = strAlias,
+                        Skin = request.Skin,
+                        CultureCode = request.CultureCode,
+                        BrowserType = browser
+                    };
+
+                    PortalAliasController.Instance.AddPortalAlias(portalAlias);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("InvalidAlias", LocalResourcesFile)));
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateSiteAlias
+        /// <summary>
+        /// Updates site alias
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateSiteAlias(UpdateSiteAliasRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string strAlias = request.HTTPAlias;
+                if (!string.IsNullOrEmpty(strAlias))
+                {
+                    strAlias = strAlias.Trim();
+                }
+
+                if (IsHttpAliasValid(strAlias))
+                {
+                    BrowserTypes browser;
+                    Enum.TryParse(request.BrowserType, out browser);
+                    PortalAliasInfo portalAlias = new PortalAliasInfo()
+                    {
+                        PortalID = pid,
+                        PortalAliasID = request.PortalAliasID.Value,
+                        HTTPAlias = strAlias,
+                        Skin = request.Skin,
+                        CultureCode = request.CultureCode,
+                        BrowserType = browser
+                    };
+
+                    PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("InvalidAlias", LocalResourcesFile)));
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private bool IsHttpAliasValid(string strAlias)
+        {
+            bool isValid = true;
+            if (string.IsNullOrEmpty(strAlias))
+            {
+                isValid = false;
+            }
+            else
+            {
+                if (strAlias.IndexOf("://", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("://", StringComparison.Ordinal) + 3);
+                }
+                if (strAlias.IndexOf("\\\\", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("\\\\", StringComparison.Ordinal) + 2);
+                }
+
+                //Validate Alias, this needs to be done with lowercase, downstream we only check with lowercase variables
+                if (!PortalAliasController.ValidateAlias(strAlias.ToLowerInvariant(), false))
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        /// POST: api/SiteSettings/DeleteSiteAlias
+        /// <summary>
+        /// Deletes site alias
+        /// </summary>
+        /// <param name="portalAliasId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteSiteAlias(int portalAliasId)
+        {
+            try
+            {
+                var portalAlias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
+                PortalAliasController.Instance.DeletePortalAlias(portalAlias);
+
+                var portalFolder = PortalController.GetPortalFolder(portalAlias.HTTPAlias);
+                var serverPath = GetAbsoluteServerPath();
+
+                if (!string.IsNullOrEmpty(portalFolder) && Directory.Exists(serverPath + portalFolder))
+                {
+                    PortalController.DeletePortalFolder(serverPath, portalFolder);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private string GetAbsoluteServerPath()
+        {
+            var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
+            string strServerPath = string.Empty;
+            strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
+            if (!strServerPath.EndsWith("\\"))
+            {
+                strServerPath += "\\";
+            }
+            return strServerPath;
+        }
+
+        /// POST: api/SiteSettings/SetPrimarySiteAlias
+        /// <summary>
+        /// Sets primary site alias
+        /// </summary>
+        /// <param name="portalAliasId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SetPrimarySiteAlias([FromUri]int portalAliasId)
+        {
+            try
+            {
+                var alias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
+                PortalAliasInfo portalAlias = new PortalAliasInfo()
+                {
+                    PortalID = alias.PortalID,
+                    PortalAliasID = portalAliasId,
+                    IsPrimary = true
+                };
+
+                PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
     }
 }

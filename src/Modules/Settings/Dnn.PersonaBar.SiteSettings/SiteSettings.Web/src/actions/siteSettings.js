@@ -357,6 +357,164 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    getUrlMappingSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getUrlMappingSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS_SETTINGS,
+                    data: {
+                        urlMappingSettings: data.Settings,
+                        portalAliasMappingModes: data.PortalAliasMappingModes,
+                        urlMappingSettingsClientModified: false                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getSiteAliases(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getSiteAliases(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES,
+                    data: {
+                        siteAliases: data.PortalAliases ,
+                        browsers: data.BrowserTypes,
+                        languages: data.Languages,
+                        skins: data.Skins                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    urlMappingSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_URL_MAPPING_SETTINGS_CLIENT_MODIFIED,
+                data: {
+                    urlMappingSettings: parameter,
+                    urlMappingSettingsClientModified: true
+                }
+            });
+        };
+    },
+    updateUrlMappingSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateUrlMappingSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_URL_MAPPING_SETTINGS,
+                    data: {
+                        urlMappingSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getSiteAlias(aliasId, callback) {
+        return (dispatch) => {
+            ApplicationService.getSiteAlias(aliasId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS,
+                    data: {
+                        aliasDetail: data.PortalAlias                             
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    cancelSiteAliasClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED,
+                data: {
+                    siteAliasClientModified: false
+                }
+            });
+        };
+    },
+    siteAliasClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED,
+                data: {
+                    aliasDetail: parameter,
+                    siteAliasClientModified: true
+                }
+            });
+        };
+    },
+    addSiteAlias(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addSiteAlias(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliasClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateSiteAlias(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateSiteAlias(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliasClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    deleteSiteAlias(aliasId, aliases, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteSiteAlias(aliasId, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliases: aliases
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

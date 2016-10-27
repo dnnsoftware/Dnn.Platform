@@ -4,7 +4,7 @@ import Collapse from "react-collapse";
 import "./style.less";
 import { CheckMarkIcon, EditIcon, TrashIcon } from "dnn-svg-icons";
 
-class ProfilePropertyRow extends Component {
+class SiteAliasRow extends Component {
     componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
@@ -32,17 +32,6 @@ class ProfilePropertyRow extends Component {
         else return <span>-</span>;
     }
 
-    isSystemProperty(name) {
-        let flag = false;
-        let systemProperties = ["lastname", "firstname", "preferredtimezone", "preferredlocale"];
-        if(name) {
-            if (systemProperties.indexOf(name.toLowerCase()) > -1) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -51,22 +40,26 @@ class ProfilePropertyRow extends Component {
             <div className={"collapsible-component1"}>
                 <div className={"collapsible-header1 " + !opened} >
                     <div className={"row"}>
-                        <div title={props.name} className="property-item item-row-name">
-                            {props.name}&nbsp; </div>
-                        <div className="property-item item-row-dataType">
-                            {props.dataType}</div>
-                        <div className="property-item item-row-defaultVisibility">
-                            {props.defaultVisibility}</div>
-                        <div className="property-item item-row-required">
-                            {this.getBooleanDisplay(props.required)}</div>
-                        <div className="property-item item-row-visible">
-                            {this.getBooleanDisplay(props.visible)}</div>
-                        <div className="property-item item-row-editButton">
-                            <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
-                            {!this.isSystemProperty(props.name) &&
+                        <div title={props.name} className="alias-item item-row-alias">
+                            {props.alias}</div>
+                        <div className="alias-item item-row-browser">
+                            {props.browser}</div>
+                        <div className="alias-item item-row-theme">
+                            {props.skin}&nbsp;</div>
+                        {props.showLanguageColumn &&
+                            <div className="alias-item item-row-language">
+                                {props.language}&nbsp;</div>
+                        }
+                        <div className="alias-item item-row-primary">
+                            {this.getBooleanDisplay(props.isPrimary)}</div>
+                        <div className="alias-item item-row-editButton">
+                            {props.deletable &&
                                 <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete.bind(this)}></div>
                             }
-                        </div>                        
+                            {props.editable &&
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
+                            }
+                        </div>
                     </div>
                 </div>
                 <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
@@ -75,13 +68,16 @@ class ProfilePropertyRow extends Component {
     }
 }
 
-ProfilePropertyRow.propTypes = {
-    propertyId: PropTypes.number,
-    name: PropTypes.string,
-    dataType: PropTypes.string,
-    defaultVisibility: PropTypes.string,
-    required: PropTypes.bool,
-    visible: PropTypes.bool,
+SiteAliasRow.propTypes = {
+    aliasId: PropTypes.number,
+    alias: PropTypes.string,
+    browser: PropTypes.string,
+    skin: PropTypes.string,
+    language: PropTypes.string,
+    isPrimary: PropTypes.bool,
+    deletable: PropTypes.bool,
+    editable: PropTypes.bool,
+    showLanguageColumn: PropTypes.bool,
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,
     onDelete: PropTypes.func,
@@ -89,7 +85,7 @@ ProfilePropertyRow.propTypes = {
     openId: PropTypes.string
 };
 
-ProfilePropertyRow.defaultProps = {
+SiteAliasRow.defaultProps = {
     collapsed: true
 };
-export default (ProfilePropertyRow);
+export default (SiteAliasRow);
