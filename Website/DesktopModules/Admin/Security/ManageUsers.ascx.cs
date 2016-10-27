@@ -154,15 +154,15 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Flag to indicate if the page is being used as Persona bar mode or not.
         /// </summary>
-        protected bool IsPbMode
+        protected bool EditProfileMode
         {
             get
             {
-                bool isPbMode;
+                bool editProfile;
 
-                return !string.IsNullOrEmpty(Request.QueryString["isPbMode"])
-                       && bool.TryParse(Request["isPbMode"], out isPbMode)
-                       && isPbMode;
+                return !string.IsNullOrEmpty(Request.QueryString["editProfile"])
+                       && bool.TryParse(Request["editProfile"], out editProfile)
+                       && editProfile;
             }
         }
 
@@ -462,7 +462,7 @@ namespace DotNetNuke.Modules.Admin.Users
             dnnRoleDetails.Visible = IsEdit && !User.IsSuperUser && !AddUser;
             dnnPasswordDetails.Visible = (IsAdmin) && !AddUser;
 
-            if(IsPbMode)
+            if(EditProfileMode)
             {
                 adminTabNav.Visible =
                     dnnUserDetails.Visible = 
