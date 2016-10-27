@@ -29,6 +29,14 @@ class PortalService {
         const sf = this.getServiceFramework("Sites");
         sf.post("ExportPortalTemplate", payload, callback, errorCallback);
     }
+    getPortalTemplates(callback, errorCallback) {
+        const sf = this.getServiceFramework("Sites");
+        sf.get("GetPortalTemplates", {}, callback, errorCallback);
+    }
+    createPortal(payload, callback, errorCallback) {
+        const sf = this.getServiceFramework("Sites");
+        sf.post("CreatePortal", payload, callback, errorCallback);
+    }
 }
 const portalService = new PortalService();
 export default portalService;

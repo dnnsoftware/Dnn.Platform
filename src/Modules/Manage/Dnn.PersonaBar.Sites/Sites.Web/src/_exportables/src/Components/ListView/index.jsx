@@ -2,15 +2,11 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
 import Localization from "localization";
-import PortalActions from "../actions/PortalActions";
-import { visiblePanel as VisiblePanelActions } from "actions";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import { CommonPortalListActions, CommonExportPortalActions } from "../../actions";
+import { CommonVisiblePanelActions } from "actions";
 import GridCell from "dnn-grid-cell";
 import utilities from "utils";
-import PersonaBarPage from "dnn-persona-bar-page";
-import Button from "dnn-button";
-import ExportPortal from "../ExportPortal";
+import Moment from "moment";
 import {
     TrashIcon,
     PreviewIcon,
@@ -29,7 +25,7 @@ class ListView extends Component {
             Localization.get("ConfirmPortalDelete"),
             Localization.get("CancelPortalDelete"),
             () => {
-                props.dispatch(PortalActions.deletePortal(portal.PortalID, index));
+                props.dispatch(CommonPortalListActions.deletePortal(portal.PortalID, index));
             });
     }
     onSetting(portal /*, index*/) {
@@ -42,11 +38,11 @@ class ListView extends Component {
     }
     navigateMap(page, event) {
         const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(page));
+        props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
     onExport(portalBeingExported) {
         const {props} = this;
-        props.dispatch(PortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
+        props.dispatch(CommonExportPortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
     }
     getPortalButtons(portal, index) {
         let portalButtons = [
@@ -72,6 +68,26 @@ class ListView extends Component {
             return <div dangerouslySetInnerHTML={{ __html: _button.icon }} onClick={_button.onClick}></div>;
         });
     }
+    getPortalMapping(portal){
+        return [
+            {
+                label: Localization.get("SiteDetails_SiteID"),
+                value: portal.PortalID
+            },
+            {
+                label: Localization.get("SiteDetails_Users"),
+                value: portal.Users
+            },
+            {
+                label: Localization.get("SiteDetails_Updated"),
+                value: Moment(portal.LastModifiedOnDate).fromNow()
+            },
+            {
+                label: Localization.get("SiteDetails_Pages"),
+                value: portal.Pages
+            }
+        ].concat((this.props.getPortalMapping && this.props.getPortalMapping(portal)) || []);
+    }
     getDetailList() {
         const {props} = this;
         return props.portals.map((portal, index) => {
@@ -79,7 +95,7 @@ class ListView extends Component {
                 key={"portal-" + portal.PortalID}
                 portal={portal}
                 portalButtons={this.getPortalButtons(portal, index)}
-                portalStatisticInfo={props.getPortalMapping(portal)} />;
+                portalStatisticInfo={this.getPortalMapping(portal)} />;
         });
     }
     cancelExport(event) {
@@ -95,27 +111,9 @@ class ListView extends Component {
 
         return (
             <GridCell className={styles.siteList}>
-                {props.selectedPage === 0 &&
-                    <GridCell className="portal-list-container">
-                        <SocialPanelHeader title={"Sites"}>
-                            <Button type="primary" onClick={props.onAddNewSite.bind(this)}>{"Add New Site"}</Button>
-                        </SocialPanelHeader>
-                        <SocialPanelBody>
-                            {portalList}
-                        </SocialPanelBody>
-                    </GridCell>
-                }
-                {props.selectedPage === 2 &&
-                    <GridCell className="export-portal-container">
-
-                        <SocialPanelHeader title={Localization.get("ControlTitle_template")} />
-                        <SocialPanelBody>
-                            <ExportPortal
-                                portalBeingExported={props.portalBeingExported}
-                                onCancel={this.cancelExport.bind(this)} />
-                        </SocialPanelBody>
-                    </GridCell>
-                }
+                <GridCell className={"portal-list-container " + props.className}>
+                    {portalList}
+                </GridCell>
             </GridCell>
         );
     }
@@ -124,7 +122,6 @@ class ListView extends Component {
 ListView.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getPortalMapping: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number,
     portals: PropTypes.array,
     totalCount: PropTypes.number,
     onEditSite: PropTypes.func,
@@ -135,13 +132,8 @@ ListView.propTypes = {
 };
 function mapStateToProps(state) {
     return {
-        selectedPage: state.visiblePanel.selectedPage,
-        portalBeingExported: state.portal.portalBeingExported,
-        tabIndex: state.pagination.tabIndex,
         portals: state.portal.portals,
-        totalCount: state.portal.totalCount,
-        pagination: state.pagination,
-        viewMode: state.viewMode
+        totalCount: state.portal.totalCount
     };
 }
 export default connect(mapStateToProps)(ListView);

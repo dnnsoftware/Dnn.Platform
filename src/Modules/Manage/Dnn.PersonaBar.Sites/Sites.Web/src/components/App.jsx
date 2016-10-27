@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import PortalList from "./PortalList";
-import { visiblePanel as VisiblePanelActions, portal as PortalActions } from "../actions";
+import { CommonVisiblePanelActions, CommonExportPortalActions } from "dnn-sites-common-actions";
 import PersonaBarPage from "dnn-persona-bar-page";
+import {ExportPortal} from "dnn-sites-common-components";
 import CreatePortal from "./CreatePortal";
 
 class App extends Component {
@@ -23,12 +24,12 @@ class App extends Component {
 
     onExportPortal(portalBeingExported) {
         const { props } = this;
-        props.dispatch(PortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
+        props.dispatch(CommonExportPortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
     }
 
     navigateMap(page, event) {
         const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(page));
+        props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
 
     cancelExport(event) {
@@ -49,10 +50,15 @@ class App extends Component {
                         onAddNewSite={this.onAddNewSite.bind(this)}
                         onExportPortal={this.onExportPortal.bind(this)} />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 1}>
+                {props.selectedPage === 1 && <PersonaBarPage isOpen={props.selectedPage === 1}>
                     <CreatePortal
                         onCancel={this.navigateMap.bind(this, 0)} />
                 </PersonaBarPage>
+                }
+                {props.selectedPage === 2 && <PersonaBarPage isOpen={props.selectedPage === 2}>
+                    <ExportPortal
+                        onCancel={this.cancelExport.bind(this)} />
+                </PersonaBarPage>}
             </div>
         );
     }
@@ -69,7 +75,7 @@ function mapStateToProps(state) {
     return {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        portalBeingExported: state.portal.portalBeingExported
+        portalBeingExported: state.exportPortal.portalBeingExported
     };
 }
 

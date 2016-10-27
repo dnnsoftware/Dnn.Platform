@@ -1,35 +1,18 @@
 import {
     portal as ActionTypes
-} from "constants/actionTypes";
+} from "../actionTypes";
 import 
-    PortalService
- from "../services/PortalService";
+    {CommonPortalService as PortalService}
+ from "../services";
 import utilities from "utils";
 
 function errorCallback(message) {
-    let utils = window.dnn.initSites().utility;
-    utils.notify(message);
+    utilities.notify(message);
 }
 const portalActions = {
     getPortalLocales(portalId, callback) {
         return (dispatch) => {
             PortalService.getPortalLocales(portalId, data => {
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-    deletePortal(portalId, index, callback) {
-        return (dispatch) => {
-            PortalService.deletePortal(portalId, data => {
-                dispatch({
-                    type: ActionTypes.DELETED_PORTAL_TEMPLATE,
-                    payload: {
-                        index,
-                        portalId
-                    }
-                });
                 if (callback) {
                     callback(data);
                 }

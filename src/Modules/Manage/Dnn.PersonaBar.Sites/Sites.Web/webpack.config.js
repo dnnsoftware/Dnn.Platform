@@ -42,9 +42,10 @@ module.exports = {
         ]
     },
     externals: Object.assign(webpackExternals, {
-        "dnn-sites-list-view": "window.dnn.Sites.SitesListView",
-        "dnn-sites-export-portal": "window.dnn.Sites.ExportPortal",
-        "dnn-sites-portal-list-reducer": "window.dnn.Sites.PortalListReducer"
+        "dnn-sites-common-action-types": "window.dnn.Sites.CommonActionTypes",
+        "dnn-sites-common-components": "window.dnn.Sites.CommonComponents",
+        "dnn-sites-common-reducers": "window.dnn.Sites.CommonReducers",
+        "dnn-sites-common-actions": "window.dnn.Sites.CommonActions"
     }),
     plugins: isProduction ? [
         new webpack.optimize.UglifyJsPlugin(),

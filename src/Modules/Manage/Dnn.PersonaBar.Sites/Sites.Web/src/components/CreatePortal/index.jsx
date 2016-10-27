@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import { portal as PortalActions } from "actions";
+import { CommonPortalListActions, CommonExportPortalActions } from "dnn-sites-common-actions";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
@@ -46,7 +47,7 @@ class CreatePortal extends Component {
 
     componentWillMount() {
         const { props, state } = this;
-        props.dispatch(PortalActions.getPortalTemplates((data) => {
+        props.dispatch(CommonPortalListActions.getPortalTemplates((data) => {
             let {newPortal} = state;
             newPortal.SiteTemplate = data.Results.DefaultTemplate;
             this.setState({
@@ -106,11 +107,19 @@ class CreatePortal extends Component {
             if (withError) {
                 return;
             }
-            props.dispatch(PortalActions.createPortal(state.newPortal, () => {
+            props.dispatch(CommonPortalListActions.createPortal(state.newPortal, () => {
                 this.resetNewPortal();
                 props.onCancel();
             }));
         });
+    }
+
+    onCancel(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        this.props.onCancel();
+        this.resetNewPortal();
     }
     render() {
         const {props, state} = this;
@@ -206,7 +215,7 @@ class CreatePortal extends Component {
                                 />
                         </GridCell>
                         <GridCell className="site-action-buttons">
-                            <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
+                            <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
                             <Button type="primary" onClick={this.createPortal.bind(this)}>{Localization.get("cmdCreateSite")}</Button>
                         </GridCell>
                     </GridCell>
@@ -216,7 +225,7 @@ class CreatePortal extends Component {
     }
 }
 
-CreatePortal.PropTypes = {
+CreatePortal.propTypes = {
     dispatch: PropTypes.func.isRequired,
     onCancel: PropTypes.func
 };
@@ -224,7 +233,7 @@ CreatePortal.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        portalTemplates: state.portal.templates
+        portalTemplates: state.exportPortal.templates
     };
 }
 
