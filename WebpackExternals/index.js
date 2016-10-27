@@ -15,6 +15,8 @@ module.exports = {
         "react-modal": "window.dnn.nodeModules.ReactModal",
         "react-custom-scrollbars": "window.dnn.nodeModules.ReactCustomScrollBars",
         "react-tooltip": "window.dnn.nodeModules.ReactTooltip",
+	"react-widgets": "window.dnn.nodeModules.ReactWidgets",
+	"throttle-debounce": "window.dnn.nodeModules.ThrottleDebounce",
         "moment": "window.dnn.nodeModules.Moment",
         "dnn-button": "dnn.nodeModules.CommonComponents.Button",
         "dnn-checkbox": "dnn.nodeModules.CommonComponents.Checkbox",
