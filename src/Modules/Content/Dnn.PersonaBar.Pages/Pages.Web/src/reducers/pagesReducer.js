@@ -50,8 +50,14 @@ export default function visualizersReducer(state = {
         
         case ActionTypes.CHANGE_FIELD_VALUE:
             return { ...state,
-                doingOperation: false,
                 selectedPage: changeField(action.field, action.value)           
+            };
+
+        case ActionTypes.CHANGE_PERMISSIONS:
+            return { ...state,
+                selectedPage: { ...state.selectedPage,
+                    permissions: action.permissions
+                }           
             };
         
         default:

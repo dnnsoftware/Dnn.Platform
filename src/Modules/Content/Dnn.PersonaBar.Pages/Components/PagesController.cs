@@ -20,11 +20,16 @@
 #endregion
 
 using System;
+using System.Linq;
+using System.Net;
+using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -78,6 +83,69 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return valid;
+        }
+
+        public PageSettings GetPageDetails(int pageId)
+        {
+            var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
+            if (tab == null)
+            {
+                return null;
+            }
+
+            var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Description;
+            var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.KeyWords;
+
+            return new PageSettings
+            {
+                TabId = tab.TabID,
+                Name = tab.TabName,
+                LocalizedName = tab.LocalizedTabName,
+                Title = tab.Title,
+                Description = description,
+                Keywords = keywords,
+                Tags = string.Join(",", from t in tab.Terms select t.Name),
+                Alias = PortalSettings.PortalAlias.HTTPAlias,
+                Url = tab.Url,
+                CreatedOnDate = tab.CreatedOnDate,
+                IncludeInMenu = tab.IsVisible,
+                CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
+                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?)null,
+                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null,
+                Permissions = GetPermissionsData(pageId)
+            };
+        }
+
+        private PagePermissions GetPermissionsData(int pageId)
+        {
+            var permissions = new PagePermissions(true);
+            if (pageId > 0)
+            {
+                var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
+                if (tab != null)
+                {
+                    foreach (TabPermissionInfo permission in tab.TabPermissions)
+                    {
+                        if (permission.UserID != Null.NullInteger)
+                        {
+                            permissions.AddUserPermission(permission);
+                        }
+                        else
+                        {
+                            permissions.AddRolePermission(permission);
+                        }
+                    }
+
+                    permissions.RolePermissions =
+                        permissions.RolePermissions.OrderByDescending(p => p.Locked)
+                            .ThenByDescending(p => p.IsDefault)
+                            .ThenBy(p => p.RoleName)
+                            .ToList();
+                    permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
+                }
+            }
+
+            return permissions;
         }
 
         protected override Func<IPagesController> GetFactory()

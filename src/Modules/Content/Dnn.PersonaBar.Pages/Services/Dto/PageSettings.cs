@@ -80,5 +80,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "endDate")]
         public DateTime? EndDate { get; set; }
+
+        [DataMember(Name = "permissions")]
+        public PagePermissions Permissions { get; set; }
     }
 }

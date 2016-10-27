@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
-import Button from "dnn-button";
 import SocialPanelHeader from "dnn-social-panel-header";
 import PageHierarchy from "./PageHierarchy/PageHierarchy";
 import SocialPanelBody from "dnn-social-panel-body";
@@ -34,6 +33,11 @@ class App extends Component {
         props.dispatch(PageActions.changePageField(key, value));
     }
 
+    onPermissionsChanged(permissions) {
+        console.log("onPermissionsChanged", permissions);
+        this.props.dispatch(PageActions.changePermissions(permissions));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -53,7 +57,8 @@ class App extends Component {
                             <PageSettings selectedPage={props.selectedDnnPage} 
                                           onCancel={this.navigateMap.bind(this, 0)} 
                                           onSave={this.onSavePage.bind(this)}
-                                          onChangeField={this.onChangePageField.bind(this)}/>
+                                          onChangeField={this.onChangePageField.bind(this)}
+                                          onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
                         }
                     </SocialPanelBody>
                 </PersonaBarPage>
@@ -62,7 +67,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,

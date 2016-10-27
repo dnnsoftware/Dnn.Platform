@@ -52,6 +52,13 @@ const pageActions = {
                 value
             });  
         };
+    },
+
+    changePermissions(permissions) {
+        return {
+            type: ActionTypes.CHANGE_PERMISSIONS,
+            permissions
+        };
     }
 };
 

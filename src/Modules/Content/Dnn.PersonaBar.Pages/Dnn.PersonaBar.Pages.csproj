@@ -106,6 +106,7 @@
     <Compile Include="Services\Dto\PageItem.cs" />
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageMoveRequest.cs" />
+    <Compile Include="Services\Dto\PagePermissions.cs" />
     <Compile Include="Services\PagesController.cs" />
   </ItemGroup>
   <ItemGroup>

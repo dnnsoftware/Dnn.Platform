@@ -39,35 +39,14 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageDetails(int pageId)
         {
-            var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
-            if (tab == null)
+            var page = _pagesController.GetPageDetails(pageId);
+            if (page == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "Page doesn't exists." });
             }
 
-            var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Description;
-            var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.KeyWords;
-
-            var page = new PageSettings
-            {
-                TabId = tab.TabID,
-                Name = tab.TabName,
-                LocalizedName = tab.LocalizedTabName,
-                Title = tab.Title,
-                Description = description,
-                Keywords = keywords,
-                Tags = string.Join(",", from t in tab.Terms select t.Name),
-                Alias = PortalSettings.PortalAlias.HTTPAlias,
-                Url = tab.Url,
-                CreatedOnDate = tab.CreatedOnDate,
-                IncludeInMenu = tab.IsVisible,
-                CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
-                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?)null,
-                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null
-            };
-
             return Request.CreateResponse(HttpStatusCode.OK, page);
-        }
+        }        
 
         /// GET: api/Pages/GetPageList
         /// <summary>

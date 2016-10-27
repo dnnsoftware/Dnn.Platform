@@ -6,6 +6,9 @@ import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
+import PermissionGrid from "../../node_modules/dnn-permission-grid";
+import utils from "../utils";
+import cloneDeep from "lodash/cloneDeep";
 
 class PageSettings extends Component {
 
@@ -76,21 +79,24 @@ class PageSettings extends Component {
                     </GridCell>
                     {buttons}
                 </div>
-                <div>
-                    <p>Permission stuff</p>
+                <div>                
+                    <PermissionGrid 
+                        permissions={cloneDeep(selectedPage.permissions)} 
+                        service={utils.utilities.sf} 
+                        onPermissionsChanged={this.props.onPermissionsChanged} />                
                     {buttons}
                 </div>
             </Tabs>
         );
     }    
-    
 }
 
 PageSettings.propTypes = {
-    selectedPage: PropTypes.object,
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onChangeField: PropTypes.func
+    selectedPage: PropTypes.object.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onChangeField: PropTypes.func.isRequired,
+    onPermissionsChanged: PropTypes.func.isRequired
 };
 
 export default PageSettings;
