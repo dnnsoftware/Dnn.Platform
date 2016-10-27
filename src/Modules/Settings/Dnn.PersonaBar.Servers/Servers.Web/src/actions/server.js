@@ -48,6 +48,29 @@ const serverActions = {
                 });
             });        
         };
+    },
+    getServersInfo() {       
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.LOAD_SERVER_INFO               
+            });        
+            
+            serverService.getServersCount().then(response => {
+                dispatch({
+                    type: ActionTypes.LOADED_SERVER_INFO,
+                    payload: {
+                        serversCount: response.serversCount
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_LOADING_SERVER_INFO,
+                    payload: {
+                        errorMessage: localization.get("errorMessageLoadingServersInfo")
+                    }
+                });
+            });        
+        };
     }
 };
 
