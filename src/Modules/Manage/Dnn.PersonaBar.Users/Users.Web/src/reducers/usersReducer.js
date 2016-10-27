@@ -1,9 +1,12 @@
 import {users as ActionTypes}  from "../constants/actionTypes";
-import {updateUsersList, deleteUser, removeUser} from "../components/Body/helpers";
+import {updateUsersList, updateUser, removeUser, updateUserRoleList, removeUserRoleFromList} from "../components/Body/helpers";
 export default function user(state = {
     users: [],
     totalUsers: 0,
     userFilters: [],
+    userRoles: [],
+    matchedRoles: [],
+    userRolesCount: 0,
     userDetails: {}
 }, action) {
     switch (action.type) {
@@ -19,8 +22,7 @@ export default function user(state = {
                         users: updateUsersList(state.users, action.payload.Results)
                     };
                 }
-                return { ...state
-                };
+                return state;
             }
         case ActionTypes.CREATE_USER:
             {
@@ -31,19 +33,26 @@ export default function user(state = {
                         totalUsers: totalUsers + 1
                     };
                 }
-                return { ...state
-                };
+                return state;
             }
 
         case ActionTypes.DELETE_USER:
             {
                 if (action.payload.Success) {
                     return { ...state,
-                        users: deleteUser(state.users, action.payload.userId)
+                        users: updateUser(state.users, action.payload.userId, true)
                     };
                 }
-                return { ...state
-                };
+                return state;
+            }
+        case ActionTypes.RESTORE_USER:
+            {
+                if (action.payload.Success) {
+                    return { ...state,
+                        users: updateUser(state.users, action.payload.userId, false)
+                    };
+                }
+                return state;
             }
         case ActionTypes.USER_MADE_SUPERUSER:
         case ActionTypes.ERASE_USER:
@@ -55,13 +64,34 @@ export default function user(state = {
                         totalUsers: totalUsers - 1
                     };
                 }
-                return { ...state
-                };
+                return state;
             }
         case ActionTypes.RETRIEVED_USER_DETAILS:
             return { ...state,
                 userDetails: action.payload
             };
+        case ActionTypes.RETRIEVED_USERS_ROLES:
+            return { ...state,
+                userRoles: action.payload.UserRoles,
+                userRolesCount: action.payload.TotalRecords
+            };
+        case ActionTypes.RETRIEVED_SUGGEST_ROLES:
+            return { ...state,
+                matchedRoles: action.payload.matchedRoles
+            };
+
+        case ActionTypes.SAVE_USER_ROLE:
+            return { ...state,
+                userRoles: updateUserRoleList(state.userRoles, action.payload)
+            };
+        case ActionTypes.REMOVE_USER_ROLE: {
+            if (action.payload.Success) {
+                return { ...state,
+                    userRoles: removeUserRoleFromList(state.userRoles, action.payload.roleId, action.payload.UserId)
+                };
+            }
+            return state;
+        }
         // case ActionTypes.RETRIEVED_USER_FILTERS:
         //     return { ...state,
         //         userFilters: action.payload.Results

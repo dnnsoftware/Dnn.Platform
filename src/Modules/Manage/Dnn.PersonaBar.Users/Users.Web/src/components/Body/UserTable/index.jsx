@@ -8,6 +8,7 @@ import CollapsibleSwitcher from "../../common/CollapsibleSwitcher";
 import Button from "dnn-button";
 import CreateUserBox from "../CreateUserBox";
 import UserSettings from "./UserSettings";
+import UsersRoles from "./UsersRoles";
 import "./style.less";
 
 class UserTable extends Component {
@@ -70,7 +71,8 @@ class UserTable extends Component {
                                 <Button id="cancelbtn"  type="secondary" onClick={this.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button>
                             </div>,
                             <div style={{ width: "100%", height: "300px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
-
+                                <UsersRoles
+                                    Collapse={this.collapse.bind(this) } userDetails={user} />
                             </div>,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
                                 <iframe src="http://ce.lvh.me/Admin/User-Accounts/ctl/Edit/mid/380/UserId/31/filter/All/pagesize/10/currentpage/0?popUp=true&isPbMode=true"

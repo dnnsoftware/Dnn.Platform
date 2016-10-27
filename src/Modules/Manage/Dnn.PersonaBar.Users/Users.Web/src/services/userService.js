@@ -51,7 +51,15 @@ class UserService {
     }
     deleteUser(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.post("DeleteUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+        sf.post("SoftDeleteUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
+    hardDeleteUser(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("HardDeleteUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
+    restoreUser(userDetails, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("RestoreDeletedUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
     updateSuperUserStatus(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
@@ -61,7 +69,23 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.post("UpdateAuthorizeStatus?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
-
+    //User Roles Methods
+    getUserRoles(searchParameters, callback) {
+        const sf = this.getServiceFramework("Users");
+        sf.get("GetUserRoles?" + serializeQueryStringParameters(searchParameters), {}, callback);
+    }
+    getSuggestRoles(searchParameters, callback) {
+        const sf = this.getServiceFramework("Users");
+        sf.get("GetSuggestRoles?" + serializeQueryStringParameters(searchParameters), {}, callback);
+    }
+    saveUserRole(payload, notifyUser, isOwner, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("SaveUserRole?notifyUser=" + notifyUser + "&isOwner=" + isOwner, payload, callback, errorCallback);
+    }
+    removeUserRole(payload, callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("RemoveUserRole", payload, callback, errorCallback);
+    }
 }
 const userService = new UserService();
 export default userService;

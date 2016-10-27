@@ -21,7 +21,7 @@ class UserMenu extends Component {
     }
 
     handleClick(e) {
-        if (!ReactDOM.findDOMNode(this).contains(e.target) && (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1)) {
+        if (!ReactDOM.findDOMNode(this).contains(e.target) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
             this.props.onClose();
         }
     }
@@ -49,7 +49,6 @@ class UserMenu extends Component {
         this.getUserDetails(this.props);
     }
     componentWillUnmount() {
-        //this.props.onClose();
         document.removeEventListener("click", this.handleClick, false);
     }
     sort(items, column, order) {
@@ -72,8 +71,20 @@ class UserMenu extends Component {
             case "ChangePassword":
                 this.toggleChangePassword();
                 break;
+            case "ForceChangePassword":
+                this.forcePasswordChange();
+                this.props.onClose();
+                break;
             case "DeleteUser":
                 this.deleteUser();
+                this.props.onClose();
+                break;
+            case "EraseUser":
+                this.hardDeleteUser();
+                this.props.onClose();
+                break;
+            case "RestoreUser":
+                this.restoreUser();
                 this.props.onClose();
                 break;
             case "DeAuthorizeUser":
@@ -102,6 +113,22 @@ class UserMenu extends Component {
     deleteUser() {
         util.utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
             this.props.dispatch(UserActions.deleteUser({ userId: this.props.userId }, (data) => {
+                if (data.Success) {
+                    util.utilities.notify("User deleted successfully");
+                    // let {userDetails} = this.state;
+                    // userDetails.isDeleted = true;
+                    // this.setState({ userDetails });
+                    this.reload();
+                }
+                else {
+                    util.utilities.notify(data.Message);
+                }
+            }));
+        });
+    }
+    hardDeleteUser() {
+        util.utilities.confirm(Localization.get("HardDeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+            this.props.dispatch(UserActions.eraseUser({ userId: this.props.userId }, (data) => {
                 if (data.Success)
                     util.utilities.notify("User deleted successfully");
                 else {
@@ -110,11 +137,44 @@ class UserMenu extends Component {
             }));
         });
     }
+    restoreUser() {
+        util.utilities.confirm(Localization.get("RestoreUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+            this.props.dispatch(UserActions.restoreUser({ userId: this.props.userId }, (data) => {
+                if (data.Success) {
+                    util.utilities.notify("User restored successfully");
+                    // let {userDetails} = this.state;
+                    // userDetails.isDeleted = false;
+                    // this.setState({ userDetails });
+                    this.reload();
+                }
+                else {
+                    util.utilities.notify(data.Message);
+                }
+            }));
+        });
+    }
+    forcePasswordChange() {
+        this.props.dispatch(UserActions.forceChangePassword({ userId: this.props.userId }, (data) => {
+            if (data.Success) {
+                util.utilities.notify("User must update Password on next login.");
+                // let {userDetails} = this.state;
+                // userDetails.needUpdatePassword = true;
+                // this.setState({ userDetails });
+                this.reload();
+            }
+            else {
+                util.utilities.notify(data.Message);
+            }
+        }));
+    }
     updateAuthorizeStatus(authorized) {
         this.props.dispatch(UserActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
             if (data.Success) {
                 util.utilities.notify(authorized ? "User authorized successfully" : "User un-authorized successfully");
-                this.reload();
+                //this.reload();
+                let {userDetails} = this.state;
+                userDetails.authorized = authorized;
+                this.setState({ userDetails });
             }
             else {
                 util.utilities.notify(data.Message);
@@ -136,17 +196,17 @@ class UserMenu extends Component {
         this.setState({ ChangePasswordVisible: show });
     }
     render() {
+
         let visibleMenus = [{ title: "ViewProfile", index: 0 },
             { title: "ViewAssets", index: 1 },
             { title: "ChangePassword", index: 2 },
             { title: "SendPasswordResetLink", index: 3 }
-
         ];
 
         //if (1 === 1) {
         visibleMenus = [{ title: "MakeSuperUser", index: 8 }].concat(visibleMenus);
         //}
-        if (this.state.userDetails.needUpdatePassword) {
+        if (!this.state.userDetails.needUpdatePassword) {
             visibleMenus = [{ title: "ForceChangePassword", index: 4 }].concat(visibleMenus);
         }
         if (this.state.userDetails.isDeleted) {
@@ -161,7 +221,6 @@ class UserMenu extends Component {
             visibleMenus = [{ title: "AuthorizeUser", index: 5 }].concat(visibleMenus);
         }
         visibleMenus = this.sort(visibleMenus, "index");
-
         return (
             <GridCell className="dnn-user-menu menu-popup">
                 {!this.state.ChangePasswordVisible &&

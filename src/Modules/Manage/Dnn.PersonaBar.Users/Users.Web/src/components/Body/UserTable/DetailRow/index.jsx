@@ -52,6 +52,7 @@ class DetailsRow extends Component {
         }
     }
     toggleUserMenu() {
+        console.log("toggleUserMenu");
         const show = !this.state.showMenu;
         this.setState({ showMenu: show });
     }

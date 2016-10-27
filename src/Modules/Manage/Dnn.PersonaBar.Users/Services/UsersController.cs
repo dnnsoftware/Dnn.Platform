@@ -30,6 +30,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
+using System.Collections.Generic;
 
 namespace Dnn.PersonaBar.Users.Services
 {
@@ -514,7 +515,34 @@ namespace Dnn.PersonaBar.Users.Services
         #region User Roles API
 
         [HttpGet]
-        public HttpResponseMessage GetUserRoles(int userId, int pageIndex, int pageSize)
+        public HttpResponseMessage GetSuggestRoles(string keyword, int count)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
+                }
+
+                var roles = RoleController.Instance.GetRoles(PortalId, x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
+                var matchedRoles = roles.ToList().Take(count).Select(u => new UserRoleInfo
+                {
+                    RoleID = u.RoleID,
+                    RoleName = $"{u.RoleName}",
+                    SecurityMode = u.SecurityMode
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, matchedRoles.ToList().Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r)));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetUserRoles(string keyword, int userId, int pageIndex, int pageSize)
         {
             try
             {
@@ -525,6 +553,14 @@ namespace Dnn.PersonaBar.Users.Services
                 }
 
                 var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    allUserRoles =
+                        allUserRoles.Where(
+                            u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
+                            .ToList();
+                }
+
                 var userRoles = allUserRoles
                                     .Skip(pageIndex * pageSize)
                                     .Take(pageSize)
@@ -559,14 +595,16 @@ namespace Dnn.PersonaBar.Users.Services
 
                 RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
+                var addedRole = RoleController.Instance.GetUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new UserRoleDto
                 {
-                    UserId = user.UserID,
-                    RoleId = role.RoleID,
-                    DisplayName = user.DisplayName,
-                    StartTime = userRoleDto.StartTime,
-                    ExpiresTime = userRoleDto.ExpiresTime,
+                    UserId = addedRole.UserID,
+                    RoleId = addedRole.RoleID,
+                    DisplayName = addedRole.FullName,
+                    RoleName = addedRole.RoleName,
+                    StartTime = addedRole.EffectiveDate,
+                    ExpiresTime = addedRole.ExpiryDate,
                     AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
                     AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
                 });
