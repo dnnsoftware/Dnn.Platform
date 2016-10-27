@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>
-        /// Flag to indicate if the page is being used as Persona bar mode or not.
+        /// Flag to indicate only edit profile.
         /// </summary>
         protected bool EditProfileMode
         {
