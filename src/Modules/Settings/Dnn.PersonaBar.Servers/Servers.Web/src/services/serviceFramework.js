@@ -9,7 +9,7 @@ function serializeQueryStringParameters(obj) {
 }
 
 function getServiceFramework(controllerName) {
-    const sf = window.dnn.initServers().utility.sf;
+    const sf = window.dnn.initServers().utilities.sf;
 
     sf.moduleRoot = "PersonaBar/Host";
     sf.controller = controllerName;

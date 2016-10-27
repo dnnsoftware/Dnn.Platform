@@ -42,9 +42,8 @@ export default function webTabReducer(state = {
                 reloadPage: false,
                 infoMessage: "",
                 errorMessage:  action.payload.errorMessage
-            };
+            };  
         default:
-            return { ...state
-            };
+            return state;
     }
 }

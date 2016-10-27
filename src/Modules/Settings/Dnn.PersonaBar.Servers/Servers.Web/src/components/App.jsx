@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import SocialPanelHeader from "dnn-social-panel-header";
-import Body from "./Body";
+import Body from "./Body/Body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import localization from "../localization";
 import { bindActionCreators } from "redux";
@@ -16,7 +16,7 @@ const restartAppButtonStyle = {
 class App extends Component { 
     componentWillReceiveProps(newProps) {  
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
-            utils.utilities.notify(newProps.infoMessage);
+            utils.notify(newProps.infoMessage);
         }
 
         if (newProps.reloadPage) {
@@ -24,7 +24,7 @@ class App extends Component {
             return;
         }
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
-            utils.utilities.notifyError(newProps.errorMessage);
+            utils.notifyError(newProps.errorMessage);
         }
     }
 

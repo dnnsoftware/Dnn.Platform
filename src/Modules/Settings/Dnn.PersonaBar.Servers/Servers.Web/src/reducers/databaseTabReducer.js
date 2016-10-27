@@ -19,9 +19,8 @@ export default function webTabReducer(state = {
             return { ...state,
                 databaseServerInfo: {},
                 errorMessage:  action.payload.errorMessage
-            };
+            }; 
         default:
-            return { ...state
-            };
+            return state;     
     }
 }

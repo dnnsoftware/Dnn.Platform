@@ -1,7 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
-import Localization from "../../../../localization";
-import util from "../../../../utils";
+import Localization from "../../../localization";
+import util from "../../../utils";
 
 export default class FilesGrid extends Component {
 

@@ -15,8 +15,9 @@
         identifier = params.identifier;
         window.dnn.initServers = function initServers() {
             return {
-                utility: util,
-                moduleName: "Servers"
+                utilities: util,
+                moduleName: "Servers",
+                config: config
             };
         };
         loadScript();

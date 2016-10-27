@@ -1,13 +1,13 @@
 import React, {Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
-import InfoBlock from "../../common/InfoBlock";
-import Localization from "../../../localization";
+import InfoBlock from "../common/InfoBlock";
+import Localization from "../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import WebTabActions from "../../../actions/webTab";
-import utils from "../../../utils";
+import WebTabActions from "../../actions/webTab";
+import utils from "../../utils";
 
-import "../style.less";
+import "./tabs.less";
 
 const defaultPlaceHolder = "...";
 
@@ -18,7 +18,7 @@ class Web extends Component {
 
     componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
-            utils.utilities.notifyError(newProps.errorMessage);
+            utils.notifyError(newProps.errorMessage);
         }
     }
 

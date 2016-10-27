@@ -6,9 +6,8 @@ export default function visiblePanel(state = {
         case ActionTypes.SELECT_PANEL:
             return { ...state,
                 selectedPage: action.payload.selectedPage
-            };
+            };     
         default:
-            return { ...state
-            };
+            return state;  
     }
 }

@@ -10,7 +10,7 @@ import { bindActionCreators } from "redux";
 import DatabaseTabActions from "../../../actions/databaseTab";
 import utils from "../../../utils";
 
-import "../style.less";
+import "../tabs.less";
 
 const defaultPlaceHolder = "...";
 
@@ -21,7 +21,7 @@ class Database extends Component {
 
     componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
-            utils.utilities.notifyError(newProps.errorMessage);
+            utils.notifyError(newProps.errorMessage);
         }
     }    
 

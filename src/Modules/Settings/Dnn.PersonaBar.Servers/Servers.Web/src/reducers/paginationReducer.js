@@ -8,7 +8,6 @@ export default function pagination(state = {
                 tabIndex: action.payload.index
             };
         default:
-            return { ...state
-            };
+            return state;      
     }
 }

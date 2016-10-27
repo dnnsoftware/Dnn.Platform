@@ -28,7 +28,6 @@ using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Application;
-using DotNetNuke.Common;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
@@ -45,16 +44,16 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var friendlyUrlProvider = ProviderConfiguration.GetProviderConfiguration("friendlyUrl").DefaultProvider;
+                var friendlyUrlProvider = GetProviderConfiguration("friendlyUrl");
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                    product = DotNetNukeContext.Current.Application.Description,
-                   version = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, true),
+                   version = DotNetNukeContext.Current.Application.Version.ToString(3),
                    guid = DotNetNuke.Entities.Host.Host.GUID,
-                   htmlEditorProvider = ProviderConfiguration.GetProviderConfiguration("htmlEditor").DefaultProvider,
-                   dataProvider = ProviderConfiguration.GetProviderConfiguration("data").DefaultProvider,
-                   cachingProvider = ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider,
-                   loggingProvider = ProviderConfiguration.GetProviderConfiguration("logging").DefaultProvider,
+                   htmlEditorProvider = GetProviderConfiguration("htmlEditor"),
+                   dataProvider = GetProviderConfiguration("data"),
+                   cachingProvider = GetProviderConfiguration("caching"),
+                   loggingProvider = GetProviderConfiguration("logging"),
                    friendlyUrlProvider,
                    friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
                    friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
@@ -68,6 +67,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private string GetProviderConfiguration(string providerName)
+        {
+            return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }
 
         private static string GetFriendlyUrlType(string friendlyUrlProvider)

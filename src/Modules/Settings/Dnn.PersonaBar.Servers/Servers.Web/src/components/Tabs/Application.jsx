@@ -1,13 +1,13 @@
 import React, {Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
-import InfoBlock from "../../common/InfoBlock";
-import Localization from "../../../localization";
+import InfoBlock from "../common/InfoBlock";
+import Localization from "../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ApplicationTabActions from "../../../actions/applicationTab";
-import utils from "../../../utils";
+import ApplicationTabActions from "../../actions/applicationTab";
+import utils from "../../utils";
 
-import "../style.less";
+import "./tabs.less";
 
 const defaultPlaceHolder = "...";
 
@@ -21,7 +21,7 @@ class Application extends Component {
 
     componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
-            utils.utilities.notifyError(newProps.errorMessage);
+            utils.notifyError(newProps.errorMessage);
         }
     }
 

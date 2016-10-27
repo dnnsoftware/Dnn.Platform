@@ -9,7 +9,7 @@ import "./style.less";
 import Localization from "../../localization";
 import ApplicationTab from "../Tabs/Application";
 import WebTab from "../Tabs/Web";
-import DatabaseTab from "../Tabs/Database";
+import DatabaseTab from "../Tabs/Database/Database";
 import SmtpServerTab from "../Tabs/SmtpServer";
 import PerformanceTab from "../Tabs/Performance";
 import LogsTab from "../Tabs/Logs";
@@ -30,7 +30,8 @@ class Body extends Component {
 
         return (
             <SocialPanelBody>
-                <Tabs onSelect={this.handleSelect}
+                <Tabs className="dnn-servers-tab-panel" 
+                    onSelect={this.handleSelect}
                     selectedIndex={props.tabIndex}
                     tabHeaders={[
                         Localization.get("tabSystemInfoTitle"), 
