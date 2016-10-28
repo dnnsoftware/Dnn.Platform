@@ -28,16 +28,6 @@
     </div>
 </script>
 
-<script type="text/html" id="other-pages-list-item-template">
-    <li data-bind="click: $root.pageItemClick, attr: {'data-page-id': id }, css: {'selected': $root.selectedPage().id == $data.id, 'page-notvisible': (status == 'Hidden' || status == 'Disabled')}">
-        <div class="page-item">
-            <span class="summary">
-                <span style="font-size: 30px;" class="subtitle field-name" data-bind="html: name"></span>                
-            </span>
-        </div>
-    </li>
-</script>
-
 <script type="text/html" id="pages-list-item-template">
     <li data-bind="click: $root.pageItemClick, attr: {'data-page-id': id }, css: {'selected': $root.selectedPage().id == $data.id, 'page-notvisible': (status == 'Hidden' || status == 'Disabled')}">
         <div class="page-item">

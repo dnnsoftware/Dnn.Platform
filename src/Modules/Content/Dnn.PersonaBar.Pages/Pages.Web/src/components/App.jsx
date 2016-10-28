@@ -59,7 +59,7 @@ class App extends Component {
                     </SocialPanelHeader>
                     <SocialPanelBody>                        
                         <PageHierarchy
-                            itemTemplate={"other-pages-list-item-template"}
+                            itemTemplate={"pages-list-item-template"}
                             searchKeyword={this.state.searchKeyword} 
                             onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>
