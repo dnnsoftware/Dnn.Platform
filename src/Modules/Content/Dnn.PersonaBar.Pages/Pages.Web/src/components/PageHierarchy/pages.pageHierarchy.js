@@ -1,4 +1,6 @@
-/* eslint-disable */
+/* eslint-disable no-var, id-match, quotes, no-mixed-spaces-and-tabs, comma-dangle */ // errors
+/* eslint-disable spellcheck/spell-checker, no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
+/* global $, jQuery, ko */
 
     var OVER_TIME_TO_OPEN_PAGE_CHILDS;
     var pageHierarchyManager, pageHierarchyDefaultOptions;
@@ -498,7 +500,7 @@
 
         _resizeContentContainer: function(resetContainer) {
 
-            var $body = this.panel.closest(".dnn-social-panel-body")
+            var $body = this.panel.closest(".dnn-social-panel-body");
             var bodyHeight = parseInt($body.css("margin-top")) 
                 + parseInt($body.css("padding-top")) + parseInt($body.css("padding-bottom"));
             var innerMargin = parseInt($body.find(".pagehierarchy-container").css("margin-top"));
@@ -649,7 +651,8 @@
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceUl, sourceIndex, sourceFind, targetId, targetIndex, targetFind;
+                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target;
+                        var params, movePage200Callback, movePageErrorCallback;
 
                         pageDropped = {
                             item: $(ui.draggable[0]),
@@ -924,8 +927,8 @@
                         };
 
                         handler._getService().post('MovePage', params, function(data) {
-                            var pageData, sourceParentFindB, targetId, targetFind, targetFindB;
-
+                            var pageData, sourceParentFindB, sourceParentData, targetId, targetFind, targetFindB;
+                        
                             if (data.Status > 0) {
                                 handler.utility.notifyError(handler.resx['pagesettings_Errors_' + data.Message]);
                                 $self.sortable('cancel');
