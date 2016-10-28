@@ -20,12 +20,7 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
 #endregion
 

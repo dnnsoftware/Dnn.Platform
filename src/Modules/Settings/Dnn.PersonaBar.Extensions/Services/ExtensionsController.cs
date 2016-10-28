@@ -14,7 +14,6 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,11 +28,9 @@ using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
@@ -361,7 +358,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType);
-                var packageDetail = packageEditor?.GetPackageDetail(portalId, package) ?? new PackageDetailDto(portalId, package);
+                var packageDetail = packageEditor?.GetPackageDetail(portalId, package) ?? new PackageInfoDto(portalId, package);
                 return Request.CreateResponse(HttpStatusCode.OK, packageDetail);
             }
             catch (Exception ex)
@@ -432,7 +429,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 }
 
-                var packageDetail = packageEditor?.GetPackageDetail(packageSettings.PortalId, package) ?? new PackageDetailDto(packageSettings.PortalId, package);
+                var packageDetail = packageEditor?.GetPackageDetail(packageSettings.PortalId, package) ?? new PackageInfoDto(packageSettings.PortalId, package);
                 return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageDetail = packageDetail});
             }
             catch (Exception ex)
@@ -688,9 +685,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                 PackageController.Instance.SaveExtensionPackage(newPackage);
                 Locale locale;
                 LanguagePackInfo languagePack;
-                switch (newPackage.PackageType.ToLowerInvariant())
+                PackageTypes pkgType;
+                Enum.TryParse<PackageTypes>(newPackage.PackageType, true, out pkgType);
+
+                switch (pkgType)
                 {
-                    case "auth_system":
+                    case PackageTypes.AuthSystem:
                         //Create a new Auth System
                         var authSystem = new AuthenticationInfo
                         {
@@ -700,8 +700,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         };
                         AuthenticationController.AddAuthentication(authSystem);
                         break;
-                    case "container":
-                    case "skin":
+                    case PackageTypes.Container:
+                    case PackageTypes.Skin:
                         var skinPackage = new SkinPackageInfo
                         {
                             SkinName = newPackage.Name,
@@ -710,7 +710,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         };
                         SkinController.AddSkinPackage(skinPackage);
                         break;
-                    case "corelanguagepack":
+                    case PackageTypes.CoreLanguagePack:
                         locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
@@ -720,7 +720,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         };
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
-                    case "extensionlanguagepack":
+                    case PackageTypes.ExtensionLanguagePack:
                         locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
@@ -730,7 +730,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         };
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
-                    case "module":
+                    case PackageTypes.Module:
                         //Create a new DesktopModule
                         var desktopModule = new DesktopModuleInfo
                         {
@@ -748,7 +748,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                             DesktopModuleController.AddDesktopModuleToPortals(desktopModuleId);
                         }
                         break;
-                    case "skinobject":
+                    case PackageTypes.SkinObject:
                         var skinControl = new SkinControlInfo {PackageID = newPackage.PackageID, ControlKey = newPackage.Name};
                         SkinControlController.SaveSkinControl(skinControl);
                         break;
@@ -1411,6 +1411,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 case "corelanguagepack":
                 case "extensionlanguagepack":
                     return "Language";
+                case "javascriptlibrary":
                 case "javascript_library":
                     return "JavaScriptLibrary";
                 case "module":

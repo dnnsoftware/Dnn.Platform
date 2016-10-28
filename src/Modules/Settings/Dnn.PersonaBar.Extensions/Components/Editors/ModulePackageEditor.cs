@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         #region IPackageEditor Implementation
 
-        public PackageDetailDto GetPackageDetail(int portalId, PackageInfo package)
+        public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;

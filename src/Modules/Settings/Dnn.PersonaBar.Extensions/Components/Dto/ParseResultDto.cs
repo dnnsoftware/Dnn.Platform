@@ -20,12 +20,8 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
@@ -33,28 +29,28 @@ using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class ParseResultDto : PackageInfoDto
     {
-        [DataMember(Name = "success")]
+        [JsonProperty("success")]
         public bool Success { get; set; } = true;
 
-        [DataMember(Name = "azureCompact")]
+        [JsonProperty("azureCompact")]
         public bool AzureCompact { get; set; }
 
-        [DataMember(Name = "noManifest")]
+        [JsonProperty("noManifest")]
         public bool NoManifest { get; set; }
 
-        [DataMember(Name = "legacyError")]
+        [JsonProperty("legacyError")]
         public string LegacyError { get; set; }
 
-        [DataMember(Name = "hasInvalidFiles")]
+        [JsonProperty("hasInvalidFiles")]
         public bool HasInvalidFiles { get; set; }
 
-        [DataMember(Name = "alreadyInstalled")]
+        [JsonProperty("alreadyInstalled")]
         public bool AlreadyInstalled { get; set; }
 
-        [DataMember(Name = "message")]
+        [JsonProperty("message")]
         public string Message { get; set; }
 
         public ParseResultDto()

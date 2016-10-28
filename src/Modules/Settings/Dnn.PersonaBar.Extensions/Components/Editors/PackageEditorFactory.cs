@@ -1,28 +1,44 @@
-﻿namespace Dnn.PersonaBar.Extensions.Components.Editors
+﻿using System;
+
+namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     public sealed class PackageEditorFactory
     {
         public static IPackageEditor GetPackageEditor(string packageType)
         {
-            switch (packageType.ToLowerInvariant())
+            PackageTypes pkgType;
+            Enum.TryParse<PackageTypes>(packageType, true, out pkgType);
+
+            switch (pkgType)
             {
-                case "module":
+                case PackageTypes.Module:
                     return new ModulePackageEditor();
-                case "authsystem":
-                case "auth_system":
+                case PackageTypes.AuthSystem:
                     return new AuthSystemPackageEditor();
-                case "javascriptlibrary":
+                case PackageTypes.JavascriptLibrary:
                     return new JsLibraryPackageEditor();
-                case "corelanguagepack":
-                case "extensionlanguagepack":
+                case PackageTypes.CoreLanguagePack:
+                case PackageTypes.ExtensionLanguagePack:
                     return new LanguagePackageEditor();
-                case "skin":
+                case PackageTypes.Container:
+                case PackageTypes.Skin:
                     return new SkinPackageEditor();
-                case "skinobject":
+                case PackageTypes.SkinObject:
                     return new SkinObjectPackageEditor();
+                case PackageTypes.DashboardControl:
+                    break;
+                case PackageTypes.Language:
+                    break;
+                case PackageTypes.Library:
+                    break;
+                case PackageTypes.Provider:
+                    break;
+                case PackageTypes.Widget:
+                    break;
                 default:
-                    return null;
+                    throw new ArgumentOutOfRangeException(nameof(packageType));
             }
+            return null;
         }
     }
 }

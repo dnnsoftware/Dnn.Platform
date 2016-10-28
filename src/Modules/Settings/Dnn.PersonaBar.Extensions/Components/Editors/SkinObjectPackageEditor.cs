@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -21,16 +14,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         #region IPackageEditor Implementation
 
-        public PackageDetailDto GetPackageDetail(int portalId, PackageInfo package)
+        public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-            var detail = new CommonPackageDetailDto(portalId, package);
+            var detail = new SkinObjectPackageDetailDto(portalId, package);
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-            detail.Settings.Add("controlKey", skinControl.ControlKey);
-            detail.Settings.Add("controlSrc", skinControl.ControlSrc);
-            detail.Settings.Add("supportsPartialRendering", skinControl.SupportsPartialRendering);
-            detail.Settings.Add("readonly", !isHostUser);
+            detail.ControlKey = skinControl.ControlKey;
+            detail.ControlSrc = skinControl.ControlSrc;
+            detail.SupportsPartialRendering = skinControl.SupportsPartialRendering;
+            detail.ReadOnly |= !isHostUser;
             
             return detail;
         }
@@ -69,32 +62,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 errorMessage = ex.Message;
                 return false;
             }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private string GetSettingUrl(int portalId, int authSystemPackageId)
-        {
-            var module = ModuleController.Instance.GetModulesByDefinition(portalId, "Extensions")
-                .Cast<ModuleInfo>().FirstOrDefault();
-            if (module == null)
-            {
-                return string.Empty;
-            }
-
-            var tabId = TabController.Instance.GetTabsByModuleID(module.ModuleID).Keys.FirstOrDefault();
-            if (tabId <= 0)
-            {
-                return string.Empty;
-            }
-            //ctl/Edit/mid/345/packageid/52
-            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit", 
-                                            "mid=" + module.ModuleID, 
-                                            "packageid=" + authSystemPackageId,
-                                            "popUp=true",
-                                            "mode=settings");
         }
 
         #endregion

@@ -107,12 +107,17 @@
     <Compile Include="Components\Dto\DeletePackageDto.cs" />
     <Compile Include="Components\Dto\CreatePackageDto.cs" />
     <Compile Include="Components\Dto\DownloadPackageDto.cs" />
-    <Compile Include="Components\Dto\Editors\CommonPackageDetailDto.cs" />
+    <Compile Include="Components\Dto\Editors\AuthSystemPackageDetailDto.cs" />
+    <Compile Include="Components\Dto\Editors\JsLibraryPackageDetailDto.cs" />
+    <Compile Include="Components\Dto\Editors\LanguagePackageDetailDto.cs" />
     <Compile Include="Components\Dto\Editors\ModulePackagePermissionsDto.cs" />
     <Compile Include="Components\Dto\Editors\ModulePackageDetailDto.cs" />
     <Compile Include="Components\Dto\Editors\PermissionsDto.cs" />
     <Compile Include="Components\Dto\CreateModuleDto.cs" />
     <Compile Include="Components\Dto\Editors\ListItemDto.cs" />
+    <Compile Include="Components\Dto\Editors\SkinObjectPackageDetailDto.cs" />
+    <Compile Include="Components\Dto\Editors\SkinPackageDetailDto.cs" />
+    <Compile Include="Components\Dto\Editors\UsedByPackage.cs" />
     <Compile Include="Components\Dto\ModuleFolderDto.cs" />
     <Compile Include="Components\Dto\PackageFilesQueryDto.cs" />
     <Compile Include="Components\Dto\PackageInfoSlimDto.cs" />
@@ -120,7 +125,6 @@
     <Compile Include="Components\Dto\ParseResultDto.cs" />
     <Compile Include="Components\Dto\InstallResultDto.cs" />
     <Compile Include="Components\Dto\PackageSettingsDto.cs" />
-    <Compile Include="Components\Dto\PackageDetailDto.cs" />
     <Compile Include="Components\Dto\Editors\ModuleControlDto.cs" />
     <Compile Include="Components\Dto\Editors\ModuleDefinitionDto.cs" />
     <Compile Include="Components\Dto\PackageInfoDto.cs" />

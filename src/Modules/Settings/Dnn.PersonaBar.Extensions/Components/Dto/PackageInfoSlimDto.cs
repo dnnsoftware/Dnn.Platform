@@ -20,7 +20,6 @@
 #endregion
 #region Usings
 
-using System;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;

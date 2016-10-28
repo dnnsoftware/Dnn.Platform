@@ -20,30 +20,26 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class InstallResultDto
     {
-        [DataMember(Name = "newPackageId")]
+        [JsonProperty("newPackageId")]
         public int NewPackageId { get; set; }
 
-        [DataMember(Name = "success")]
+        [JsonProperty("success")]
         public bool Success { get; set; } = true;
 
-        [DataMember(Name = "message")]
+        [JsonProperty("message")]
         public string Message { get; set; }
 
-        [DataMember(Name = "logs")]
+        [JsonProperty("logs")]
         public IList<string> Logs { get; set; } = new List<string>();
 
         public void Failed(string message, IList<string> logs = null)

@@ -20,23 +20,19 @@
 #endregion
 #region Usings
 
-using System;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class DeletePackageDto
     {
-        [DataMember(Name = "id")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [DataMember(Name = "deleteFiles")]
+        [JsonProperty("deleteFiles")]
         public bool DeleteFiles { get; set; }
     }
 }

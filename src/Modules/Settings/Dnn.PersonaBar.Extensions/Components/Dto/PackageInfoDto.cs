@@ -21,11 +21,6 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
@@ -35,55 +30,55 @@ using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class PackageInfoDto
     {
-        [DataMember(Name = "packageId")]
+        [JsonProperty("packageId")]
         public int PackageId { get; set; }
 
-        [DataMember(Name = "packageType")]
+        [JsonProperty("packageType")]
         public string PackageType { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "friendlyName")]
+        [JsonProperty("friendlyName")]
         public string FriendlyName { get; set; }
 
-        [DataMember(Name = "description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "version")]
+        [JsonProperty("version")]
         public string Version { get; set; }
 
-        [DataMember(Name = "inUse")]
+        [JsonProperty("inUse")]
         public string IsInUse { get; set; }
 
-        [DataMember(Name = "upgradeUrl")]
+        [JsonProperty("upgradeUrl")]
         public string UpgradeUrl { get; set; }
 
-        [DataMember(Name = "packageIcon")]
+        [JsonProperty("packageIcon")]
         public string PackageIcon { get; set; }
 
-        [DataMember(Name = "license")]
+        [JsonProperty("license")]
         public string License { get; set; }
 
-        [DataMember(Name = "releaseNotes")]
+        [JsonProperty("releaseNotes")]
         public string ReleaseNotes { get; set; }
 
-        [DataMember(Name = "owner")]
+        [JsonProperty("owner")]
         public string Owner { get; set; }
 
-        [DataMember(Name = "organization")]
+        [JsonProperty("organization")]
         public string Organization { get; set; }
 
-        [DataMember(Name = "url")]
+        [JsonProperty("url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [DataMember(Name = "canDelete")]
+        [JsonProperty("canDelete")]
         public bool CanDelete { get; set; }
 
         [JsonProperty("readOnly")]

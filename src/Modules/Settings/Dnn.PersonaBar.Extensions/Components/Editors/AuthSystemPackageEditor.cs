@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.UI;
-using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
@@ -26,25 +19,25 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         #region IPackageEditor Implementation
 
-        public PackageDetailDto GetPackageDetail(int portalId, PackageInfo package)
+        public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-            var detail = new CommonPackageDetailDto(portalId, package);
+            var detail = new AuthSystemPackageDetailDto(portalId, package);
 
             var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
             if (hasCustomSettings)
             {
-                detail.Settings.Add("settingUrl", GetSettingUrl(portalId, package.PackageID));
+                detail.SettingUrl = GetSettingUrl(portalId, package.PackageID);
             }
 
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
             if (isHostUser)
             {
-                detail.Settings.Add("readonly", authSystem.AuthenticationType == "DNN");
-                detail.Settings.Add("loginControlSource", authSystem.LoginControlSrc);
-                detail.Settings.Add("logoffControlSource", authSystem.LogoffControlSrc);
-                detail.Settings.Add("settingsControlSource", authSystem.SettingsControlSrc);
-                detail.Settings.Add("enabled", authSystem.IsEnabled);
+                detail.ReadOnly |= authSystem.AuthenticationType == "DNN";
+                detail.LoginControlSource = authSystem.LoginControlSrc;
+                detail.LogoffControlSource = authSystem.LogoffControlSrc;
+                detail.SettingsControlSource = authSystem.SettingsControlSrc;
+                detail.Enabled = authSystem.IsEnabled;
             }
 
             return detail;

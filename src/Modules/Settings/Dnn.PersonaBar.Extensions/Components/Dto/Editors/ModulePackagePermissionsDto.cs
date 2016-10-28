@@ -24,21 +24,19 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Installer.Packages;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
-    public class ModulePackagePermissionsDto : PackageDetailDto
+    [JsonObject]
+    public class ModulePackagePermissionsDto : PackageInfoDto
     {
-        [DataMember(Name = "desktopModuleId")]
+        [JsonProperty("desktopModuleId")]
         public int DesktopModuleId { get; set; }
 
 
-        [DataMember(Name = "permissions")]
+        [JsonProperty("permissions")]
         public PermissionsDto Permissions { get; set; }
 
         public ModulePackagePermissionsDto()

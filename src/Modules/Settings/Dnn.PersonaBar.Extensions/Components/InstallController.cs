@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
@@ -14,8 +12,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Extensions.Components
 {

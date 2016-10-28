@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         DashboardControl,
         ExtensionLanguagePack,
         JavascriptLibrary,
+        Javascript_Library = JavascriptLibrary,
         Language,
         Library,
         Module,

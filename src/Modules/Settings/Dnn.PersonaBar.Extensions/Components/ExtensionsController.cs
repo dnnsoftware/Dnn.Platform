@@ -56,10 +56,12 @@ namespace Dnn.PersonaBar.Extensions.Components
             var type = packageType;
             switch (packageType.ToLowerInvariant())
             {
+                case "authsystem":
                 case "auth_system":
                     type = PackageTypes.AuthSystem.ToString();
                     rootPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
                     break;
+                case "javascriptlibrary":
                 case "javascript_library":
                     rootPath = Globals.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
                     break;

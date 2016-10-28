@@ -20,30 +20,22 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class ModuleFolderDto
     {
-        [DataMember(Name = "path")]
+        [JsonProperty("path")]
         public string Path { get; set; }
 
-        [DataMember(Name = "isSpecial")]
+        [JsonProperty("isSpecial")]
         public bool IsSpecial { get; set; }
 
-        [DataMember(Name = "specialType")]
+        [JsonProperty("specialType")]
         public string SpecialType { get; set; }
     }
 }

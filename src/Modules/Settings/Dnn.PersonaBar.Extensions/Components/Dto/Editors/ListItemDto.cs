@@ -19,17 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
+    [JsonObject]
     public class ListItemDto
     {
-        [DataMember(Name = "id")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 }
