@@ -358,8 +358,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             try
             {
-                var packageType = (PackageTypes) Enum.Parse(typeof(PackageTypes), package.PackageType.Replace("_", ""), true);
-                var packageEditor = PackageEditorFactory.GetPackageEditor(packageType);
+                var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType.Replace("_", ""));
 
                 var packageDetail = packageEditor?.GetPackageDetail(siteId, package) ?? new PackageDetailDto(siteId, package);
 
@@ -420,8 +419,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
                 }
 
-                var packageType = (PackageTypes) Enum.Parse(typeof(PackageTypes), package.PackageType, true);
-                var packageEditor = PackageEditorFactory.GetPackageEditor(packageType);
+                var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType);
                 if (packageEditor != null)
                 {
                     string error;
