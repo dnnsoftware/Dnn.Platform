@@ -256,24 +256,24 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        private void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
+        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
         {
             var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
             ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
         }
 
-        private void DeleteModuleDefinition(int defId)
+        private static void DeleteModuleDefinition(int defId)
         {
             new ModuleDefinitionController().DeleteModuleDefinition(defId);
         }
 
-        private void SaveModuleControl(ModuleControlDto moduleControlDto)
+        private static void SaveModuleControl(ModuleControlDto moduleControlDto)
         {
             var moduleControl = moduleControlDto.ToModuleControlInfo();
             ModuleControlController.SaveModuleControl(moduleControl, true);
         }
 
-        private void DeleteModuleControl(int controlId)
+        private static void DeleteModuleControl(int controlId)
         {
             ModuleControlController.DeleteModuleControl(controlId);
         }

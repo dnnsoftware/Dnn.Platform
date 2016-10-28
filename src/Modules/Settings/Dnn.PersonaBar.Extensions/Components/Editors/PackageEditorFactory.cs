@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dnn.PersonaBar.Extensions.Components.Editors
+﻿namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     public sealed class PackageEditorFactory
     {
@@ -14,6 +9,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 case "module":
                     return new ModulePackageEditor();
                 case "authsystem":
+                case "auth_system":
                     return new AuthSystemPackageEditor();
                 case "javascriptlibrary":
                     return new JsLibraryPackageEditor();

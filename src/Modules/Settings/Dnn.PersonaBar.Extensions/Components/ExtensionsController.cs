@@ -92,20 +92,21 @@ namespace Dnn.PersonaBar.Extensions.Components
         public IList<PackageInfoSlimDto> GetInstalledPackages(int portalId, string packageType)
         {
             var typePackages = new List<PackageInfo>();
-            switch (packageType)
+            switch (packageType.ToLowerInvariant())
             {
-                case "Module":
+                case "module":
                     if (portalId == Null.NullInteger)
                     {
-                        typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module").ToList();
+                        typePackages = PackageController.Instance.GetExtensionPackages(
+                            Null.NullInteger, p => "Module".Equals(p.PackageType, StringComparison.InvariantCultureIgnoreCase)).ToList();
                     }
                     else
                     {
                         AddModulesToList(portalId, typePackages);
                     }
                     break;
-                case "Skin":
-                case "Container":
+                case "skin":
+                case "container":
                     typePackages = PackageController.Instance.GetExtensionPackages(portalId, p => p.PackageType == packageType).ToList();
                     break;
                 default:

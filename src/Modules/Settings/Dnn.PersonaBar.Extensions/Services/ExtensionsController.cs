@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -345,7 +346,8 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpGet]
         public HttpResponseMessage GetPackageSettings(int siteId, int packageId)
         {
-            if (siteId == Null.NullInteger && !UserInfo.IsSuperUser)
+            var portalId = siteId;
+            if (portalId == Null.NullInteger && !UserInfo.IsSuperUser)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
@@ -358,10 +360,8 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             try
             {
-                var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType.Replace("_", ""));
-
-                var packageDetail = packageEditor?.GetPackageDetail(siteId, package) ?? new PackageDetailDto(siteId, package);
-
+                var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType);
+                var packageDetail = packageEditor?.GetPackageDetail(portalId, package) ?? new PackageDetailDto(portalId, package);
                 return Request.CreateResponse(HttpStatusCode.OK, packageDetail);
             }
             catch (Exception ex)
@@ -427,11 +427,13 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                     if (!string.IsNullOrEmpty(error))
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new {Success = false, Error = error});
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new {Success = false, Error = error});
                     }
+
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                var packageDetail = packageEditor?.GetPackageDetail(packageSettings.PortalId, package) ?? new PackageDetailDto(packageSettings.PortalId, package);
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageDetail = packageDetail});
             }
             catch (Exception ex)
             {
