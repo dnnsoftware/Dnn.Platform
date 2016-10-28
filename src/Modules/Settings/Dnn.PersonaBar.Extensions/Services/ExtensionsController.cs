@@ -381,7 +381,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         Localization.GetString("SavePackageSettings.PackageNotFound", Constants.SharedResources));
                 }
 
-                if (packageSettings.PortalId == Null.NullInteger && UserInfo.IsSuperUser)
+                if (UserInfo.IsSuperUser)
                 {
                     var authService = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
                     var isReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
