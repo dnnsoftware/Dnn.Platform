@@ -13,7 +13,9 @@
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
     function setUpDnnManageUsers() {
-        $('#dnnManageUsers').dnnTabs().dnnPanels();
+        if ($('#<%=adminTabNav.ClientID%>').length) {
+            $('#dnnManageUsers').dnnTabs().dnnPanels();
+        }
     }
 
     $(document).ready(function () {
