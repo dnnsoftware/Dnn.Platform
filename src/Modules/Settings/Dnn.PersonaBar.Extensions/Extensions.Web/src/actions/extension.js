@@ -71,9 +71,9 @@ const extensionActions = {
             }, errorCallback);
         };
     },
-    updateExtension(updatedExtension, index, callback) {
+    updateExtension(updatedExtension, editorActions, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(updatedExtension, {}, () => {
+            ExtensionService.updateExtension(updatedExtension, editorActions, () => {
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
@@ -204,19 +204,19 @@ const extensionActions = {
             });
         };
     },
-    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(extensionBeingEdited, editorActions, () => {
-                dispatch({
-                    type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
-                    payload: extensionBeingEdited
-                });
-                if (callback) {
-                    setTimeout(() => {  //let JS propagate
-                        callback();
-                    }, 0);
+            dispatch({
+                type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                payload: {
+                    extensionBeingEdited: extensionBeingEdited
                 }
-            }, errorCallback);
+            });
+            if (callback) {
+                setTimeout(() => {  //let JS propagate
+                    callback();
+                }, 0);
+            }
         };
     },
     toggleTabError(tabIndex, action, callback) {

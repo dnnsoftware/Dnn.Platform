@@ -133,6 +133,8 @@ class ModuleDefinitions extends Component {
             return;
         }
 
+        let actions = {savedefinition: JSON.stringify(state.moduleDefinitionBeingEdited)};
+
         //TODO: should 
         // props.dispatch(ModuleDefinitionActions.addOrUpdateModuleDefinition(state.moduleDefinitionBeingEdited, () => {
         //     let _moduleDefinitions = JSON.parse(JSON.stringify(props.moduleDefinitions));

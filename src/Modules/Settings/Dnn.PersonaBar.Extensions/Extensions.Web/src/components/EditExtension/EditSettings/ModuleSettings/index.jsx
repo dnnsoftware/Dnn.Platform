@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-
+import { ExtensionActions } from "actions";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -16,7 +16,7 @@ class ModuleSettings extends Component {
         super(props);
 
         this.state = {
-            permissions: props.extensionBeingEdited.permissions.value,
+            permissions: JSON.parse(JSON.stringify(props.extensionBeingEdited.permissions.value)),
             desktopModuleId: props.extensionBeingEdited.desktopModuleId.value
         };
     }
@@ -35,9 +35,13 @@ class ModuleSettings extends Component {
         let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
         extensionBeingUpdated.permissions.value = permissions;
 
-        props.updateExtensionBeingEdited(extensionBeingUpdated, {permissions: JSON.stringify(permissions)}, function () {
+        let actions = {permissions: JSON.stringify(permissions)};
+
+        props.updateExtensionBeingEdited(extensionBeingUpdated);
+
+        props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex, function () {
             utils.utilities.notify(Localization.get("UpdateComplete"));
-        });
+        }));
     }
 
     render() {
@@ -66,6 +70,7 @@ ModuleSettings.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
     };
 }
 

@@ -75,18 +75,17 @@ class EditExtension extends Component {
         const { props } = this;
         let _extensionBeingEdited = JSON.parse(JSON.stringify(props.extensionBeingEdited));
 
-        let editorActions = {key: value};
-        this.updateExtensionBeingEdited(_extensionBeingEdited, editorActions, callback);
+        this.updateExtensionBeingEdited(_extensionBeingEdited, callback);
     }
 
-    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, callback) {
         const { props } = this;
-        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback));
+        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
     }
 
     onSaveExtension(close) {
         const {props} = this;
-        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, props.extensionBeingEditedIndex));
+        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, {}, props.extensionBeingEditedIndex));
         console.log(close);
         if (close) {
             this.selectPanel(0);

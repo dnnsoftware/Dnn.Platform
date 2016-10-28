@@ -102,7 +102,7 @@ export default function extension(state = {
             };
         case ActionTypes.UPDATED_EXTENSION_BEING_EDITED:
             return { ...state,
-                extensionBeingEdited: action.payload
+                extensionBeingEdited: action.payload.extensionBeingEdited
             };
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGE_TYPES:
             return { ...state,
