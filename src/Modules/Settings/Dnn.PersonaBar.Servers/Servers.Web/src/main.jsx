@@ -9,6 +9,10 @@ let store = configureStore();
 
 application.dispatch = store.dispatch;
 
+window.dnn.server =  {
+    registerServerTab: application.registerServerTab
+};
+
 const appContainer = document.getElementById("servers-container");
 application.init(appContainer.dataset.initCallback);
 render(
