@@ -18,6 +18,7 @@ using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Personalization;
@@ -40,11 +41,13 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetPageDetails(int pageId)
         {
             var page = _pagesController.GetPageDetails(pageId);
+            
             if (page == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "Page doesn't exists." });
             }
 
+            page.Modules = _pagesController.GetModules(page.TabId).Select(ConvertToModuleItem);
             return Request.CreateResponse(HttpStatusCode.OK, page);
         }        
 
@@ -204,6 +207,13 @@ namespace Dnn.PersonaBar.Pages.Services
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+
+        private static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem()
+        {
+            Id = module.ModuleID,
+            Title = module.ModuleTitle,
+            FriendlyName = module.DesktopModule.FriendlyName
+        };
 
         private PageItem ConvertToPageItem(TabInfo tab, IEnumerable<TabInfo> portalTabs)
         {

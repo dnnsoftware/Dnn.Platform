@@ -6,6 +6,7 @@ import PermissionGrid from "../../../node_modules/dnn-permission-grid";
 import utils from "../../utils";
 import Button from "dnn-button";
 import styles from "./style.less";
+import Modules from "../Modules/Modules";
 
 
 class PageSettings extends Component {
@@ -53,12 +54,16 @@ class PageSettings extends Component {
                     {buttons}
                 </div>
                 <div>
-                    <Tabs tabHeaders={[Localization.get("Modules"), 
-                                       Localization.get("Appearance"), 
-                                       Localization.get("S.E.O."), 
-                                       Localization.get("More")]}
+                    <Tabs 
+                        tabHeaders={[Localization.get("Modules"), 
+                                     Localization.get("Appearance"), 
+                                     Localization.get("S.E.O."), 
+                                     Localization.get("More")]}
+                        
                         type="secondary">
-                        <div></div>
+                        <div className="dnn-simple-tab-item">
+                            <Modules modules={selectedPage.modules}/>
+                        </div>
                         <div></div>
                         <div></div>
                         <div></div>

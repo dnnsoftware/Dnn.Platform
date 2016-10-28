@@ -20,23 +20,21 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
     public class PagesController : ServiceLocator<IPagesController, PagesController>, IPagesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
-
         private readonly ITabController _tabController;
 
         public PagesController()
@@ -114,6 +112,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null,
                 Permissions = GetPermissionsData(pageId)
             };
+        }
+
+        public IEnumerable<ModuleInfo> GetModules(int pageId)
+        {
+            var dic = ModuleController.Instance.GetTabModules(pageId);
+            var modules = dic.Values.Where(objModule => objModule.IsDeleted == false);
+            return modules;
         }
 
         private PagePermissions GetPermissionsData(int pageId)
