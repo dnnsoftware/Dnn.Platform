@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
+import { ExtensionActions } from "actions";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -11,6 +12,7 @@ import Collapse from "react-collapse";
 import utilities from "utils";
 import { ModuleDefinitionActions } from "actions";
 import DefinitionFields from "./DefinitionFields";
+import utils from "utils";
 import styles from "./style.less";
 
 
@@ -128,33 +130,41 @@ class ModuleDefinitions extends Component {
                 errorCount++;
             }
         });
-        console.log(this.state);
+
         if (errorCount > 0) {
             return;
         }
 
+        let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+        let moduleDefinitions = extensionBeingUpdated.moduleDefinitions.value;
+        if (state.moduleDefinitionBeingEditedIndex > -1) {
+            moduleDefinitions[state.moduleDefinitionBeingEditedIndex] = state.moduleDefinitionBeingEdited;
+        } else {
+            moduleDefinitions.push(state.moduleDefinitionBeingEdited);
+        }
+
         let actions = {savedefinition: JSON.stringify(state.moduleDefinitionBeingEdited)};
 
-        //TODO: should 
-        // props.dispatch(ModuleDefinitionActions.addOrUpdateModuleDefinition(state.moduleDefinitionBeingEdited, () => {
-        //     let _moduleDefinitions = JSON.parse(JSON.stringify(props.moduleDefinitions));
-        //     if (state.moduleDefinitionBeingEditedIndex > -1) {
-        //         _moduleDefinitions[state.moduleDefinitionBeingEditedIndex] = state.moduleDefinitionBeingEdited;
-        //     } else {
-        //         _moduleDefinitions.push(state.moduleDefinitionBeingEdited);
-        //     }
-        //     props.onSave({ target: { value: _moduleDefinitions } });
-        //     props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
-        //         this.exitEditMode();
-        //     }));
-
-        // }));
+        props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
+            utils.utilities.notify(Localization.get("UpdateComplete"));
+            props.onSave({ target: { value: moduleDefinitions } });
+            props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
+                 this.exitEditMode();
+             }));
+        }));
     }
     onDelete(definitionId, index) {
         utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {
             const { props } = this;
-            props.dispatch(ModuleDefinitionActions.deleteModuleDefinition(definitionId, () => {
-                props.onSave({ target: { value: removeRecordFromArray(props.moduleDefinitions, index) } });
+
+            let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+            let moduleDefinitions = extensionBeingUpdated.moduleDefinitions.value;
+
+            let actions = {deletedefinition: definitionId.toString()};
+
+            props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
+                utils.utilities.notify(Localization.get("UpdateComplete"));
+                props.onSave({ target: { value: removeRecordFromArray(moduleDefinitions, index) } });
             }));
         });
     }
@@ -162,7 +172,7 @@ class ModuleDefinitions extends Component {
     render() {
         const {props, state} = this;
 
-        const moduleDefinitions = props.moduleDefinitions.map((moduleDefinition, index) => {
+        const moduleDefinitions = props.extensionBeingEdited.moduleDefinitions.value.map((moduleDefinition, index) => {
             return <ModuleDefinitionRow
                 moduleDefinition={moduleDefinition}
                 moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
@@ -219,10 +229,7 @@ ModuleDefinitions.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        moduleDefinitionBeingEdited: state.moduleDefinition.moduleDefinitionBeingEdited,
-        moduleDefinitionBeingEditedIndex: state.moduleDefinition.moduleDefinitionBeingEditedIndex,
-        formIsDirty: state.moduleDefinition.formIsDirty,
-        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
     };
 }
 

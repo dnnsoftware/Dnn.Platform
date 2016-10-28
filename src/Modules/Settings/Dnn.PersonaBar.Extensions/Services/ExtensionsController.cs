@@ -325,7 +325,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             var list = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
             return Request.CreateResponse(HttpStatusCode.OK, list.Select(
-                item => new IdNameDto { Id = item.LanguageId, Name = item.Text} ));
+                item => new ListItemDto { Id = item.LanguageId, Name = item.Text} ));
         }
 
         #endregion

@@ -74,7 +74,7 @@ class EditExtension extends Component {
     onAssignedPortalsChange(key, value, callback) {
         const { props } = this;
         let _extensionBeingEdited = JSON.parse(JSON.stringify(props.extensionBeingEdited));
-
+        _extensionBeingEdited[key].value = value;
         this.updateExtensionBeingEdited(_extensionBeingEdited, callback);
     }
 
@@ -83,10 +83,30 @@ class EditExtension extends Component {
         props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
     }
 
+    parseEditorActions(extension){
+        switch(extension.packageType.value.toLowerCase()){
+            case "module":
+                return {
+                    category: extension.category.value,
+                    dependencies: extension.dependencies.value,
+                    hostPermissions: extension.hostPermissions.value,
+                    shareable: extension.shareable.value,
+                    premiummodule: extension.premiumModule.value,
+                    assignPortal: JSON.stringify(extension.assignedPortals.value),
+                    unassignPortal: JSON.stringify(extension.unassignedPortals.value),
+                    foldername: extension.folderName.value,
+                    businesscontroller: extension.businessController.value
+                };
+            default:
+                return {};
+        }
+    }
+
     onSaveExtension(close) {
         const {props} = this;
-        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, {}, props.extensionBeingEditedIndex));
-        console.log(close);
+
+        let editorActions = this.parseEditorActions(props.extensionBeingEdited);
+        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex));
         if (close) {
             this.selectPanel(0);
         }
@@ -156,11 +176,8 @@ class EditExtension extends Component {
         if (!this.validateFields()) {
             return;
         }
-        if (close === true) {
-            this.onSaveExtension(true);
-        } else {
-            this.onSaveExtension(false);
-        }
+        
+        this.onSaveExtension(close === true);
     }
     confirmAction(callback) {
         const { props } = this;

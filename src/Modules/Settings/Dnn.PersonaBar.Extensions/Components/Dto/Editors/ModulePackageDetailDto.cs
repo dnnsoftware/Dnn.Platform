@@ -70,10 +70,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         public bool PremiumModule { get; set; }
 
         [DataMember(Name = "assignedPortals")]
-        public IList<IdNameDto> AssignedPortals { get; set; } = new List<IdNameDto>();
+        public IList<ListItemDto> AssignedPortals { get; set; } = new List<ListItemDto>();
 
         [DataMember(Name = "unassignedPortals")]
-        public IList<IdNameDto> UnassignedPortals { get; set; } = new List<IdNameDto>();
+        public IList<ListItemDto> UnassignedPortals { get; set; } = new List<ListItemDto>();
 
         [DataMember(Name = "moduleDefinitions")]
         public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; }  = new List<ModuleDefinitionDto>();
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 foreach (var portalDesktopModuleInfo in portalDesktopModules)
                 {
                     var value = portalDesktopModuleInfo.Value;
-                    AssignedPortals.Add(new IdNameDto { Id = value.PortalID, Name = value.PortalName });
+                    AssignedPortals.Add(new ListItemDto { Id = value.PortalID, Name = value.PortalName });
                 }
 
                 var assignedIds = AssignedPortals.Select(p => p.Id).ToArray();
@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
                 foreach (var portalInfo in allPortals)
                 {
-                    UnassignedPortals.Add(new IdNameDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
+                    UnassignedPortals.Add(new ListItemDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
                 }
             }
 

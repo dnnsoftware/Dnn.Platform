@@ -188,8 +188,7 @@ class Module extends Component {
                         onChange={props.onChange.bind(this)} />
                 </GridCell>
                 <ModuleDefinitions
-                    moduleDefinitions={extensionBeingEdited.moduleDefinitions.value}
-                    desktopModuleId={extensionBeingEdited.desktopModuleId.value}
+                    extensionBeingEdited={extensionBeingEdited}
                     onSave={props.onChange.bind(this, "moduleDefinitions")} />
 
                 {!props.actionButtonsDisabled &&

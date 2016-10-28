@@ -13,7 +13,7 @@ class AssignedSelector extends Component {
         return list.map((portal, index) => {
             return <li className={portal.selected ? "selected" : ""}
                 onClick={props.onClickOnPortal.bind(this, index, type)}>
-                {portal.Name}
+                {portal.name}
             </li>;
         });
     }
@@ -25,7 +25,7 @@ class AssignedSelector extends Component {
         return (
             <GridCell className={styles.assignedSelector}>
                 <GridCell columnSize={45} className="selector-box">
-                    <h6>{Localization.get("EditModule_Assigned.Label")}</h6>
+                    <h6>{Localization.get("EditModule_Unassigned.Label")}</h6>
                     <Scrollbars style={{ width: "100%", height: "100%", border: "1px solid #c8c8c8" }}>
                         <ul>
                             {unassignedPortals}
@@ -39,7 +39,7 @@ class AssignedSelector extends Component {
                     <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)} dangerouslySetInnerHTML={{ __html: DoubleArrowLeftIcon }}></div>
                 </GridCell>
                 <GridCell columnSize={45} className="selector-box">
-                    <h6>{Localization.get("EditModule_Unassigned.Label")}</h6>
+                    <h6>{Localization.get("EditModule_Assigned.Label")}</h6>
                     <Scrollbars style={{ width: "100%", height: "100%", border: "1px solid #c8c8c8" }}>
                         <ul>
                             {assignedPortals}
