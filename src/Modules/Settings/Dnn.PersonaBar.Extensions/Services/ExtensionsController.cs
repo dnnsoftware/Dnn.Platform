@@ -609,7 +609,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <returns></returns>
         [HttpPost]
         [RequireHost]
-        [ValidateAntiForgeryToken]
+        [IFrameSupportedValidateAntiForgeryToken]
         public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
         {
             try

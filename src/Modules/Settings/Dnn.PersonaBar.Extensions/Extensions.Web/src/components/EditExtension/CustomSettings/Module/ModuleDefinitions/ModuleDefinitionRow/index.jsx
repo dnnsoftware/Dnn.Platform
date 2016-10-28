@@ -42,6 +42,8 @@ class ModuleDefinitionRow extends Component {
                         <GridCell className="module-controls">
                             <Controls
                                 moduleControls={props.moduleDefinitionBeingEdited.controls}
+                                extensionBeingEdited={props.extensionBeingEdited}
+                                extensionBeingEditedIndex={props.extensionBeingEditedIndex}
                                 onChange={props.onChange.bind(this, "controls")}
                                 moduleDefinitionId={props.moduleDefinitionBeingEdited.id} />
                         </GridCell>

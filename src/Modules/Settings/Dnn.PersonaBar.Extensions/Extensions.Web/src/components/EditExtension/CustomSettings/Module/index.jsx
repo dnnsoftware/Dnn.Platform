@@ -189,6 +189,7 @@ class Module extends Component {
                 </GridCell>
                 <ModuleDefinitions
                     extensionBeingEdited={extensionBeingEdited}
+                    extensionBeingEditedIndex={props.extensionBeingEditedIndex}
                     onSave={props.onChange.bind(this, "moduleDefinitions")} />
 
                 {!props.actionButtonsDisabled &&
@@ -218,6 +219,7 @@ Module.propTypes = {
 function mapStateToProps(state) {
     return {
         extensionBeingEdited: state.extension.extensionBeingEdited,
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex,
         formIsDirty: state.moduleDefinition.formIsDirty,
         controlFormIsDirty: state.moduleDefinition.controlFormIsDirty
     };

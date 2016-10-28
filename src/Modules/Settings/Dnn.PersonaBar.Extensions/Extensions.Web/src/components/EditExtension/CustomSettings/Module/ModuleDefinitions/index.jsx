@@ -176,6 +176,8 @@ class ModuleDefinitions extends Component {
             return <ModuleDefinitionRow
                 moduleDefinition={moduleDefinition}
                 moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
+                extensionBeingEdited={props.extensionBeingEdited}
+                extensionBeingEditedIndex={props.extensionBeingEditedIndex}
                 onChange={this.onChange.bind(this)}
                 onSave={this.onSave.bind(this)}
                 error={state.error}
@@ -229,7 +231,7 @@ ModuleDefinitions.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
+        
     };
 }
 
