@@ -8,7 +8,8 @@ import {
     visiblePanel as VisiblePanelActions,
     pageActions as PageActions 
 } from "../actions";
-import PageSettings from "../containers/PageSettings";
+import PageSettings from "./PageSettings/PageSettings";
+import Localization from "../localization";
 
 class App extends Component {
 
@@ -43,25 +44,25 @@ class App extends Component {
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title="Pages">
+                    <SocialPanelHeader title={Localization.get("Pages")}>
                     </SocialPanelHeader>
                     <SocialPanelBody>                        
                         <PageHierarchy onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 1}>
-                    <SocialPanelHeader title="Pane 2">
-                    </SocialPanelHeader>
-                    <SocialPanelBody>
-                        {props.selectedDnnPage && 
+                {props.selectedDnnPage && 
+                    <PersonaBarPage isOpen={props.selectedPage === 1}>
+                        <SocialPanelHeader title={Localization.get("Page Settings:") + " " + props.selectedDnnPage.name}>
+                        </SocialPanelHeader>
+                        <SocialPanelBody>
                             <PageSettings selectedPage={props.selectedDnnPage} 
-                                          onCancel={this.navigateMap.bind(this, 0)} 
-                                          onSave={this.onSavePage.bind(this)}
-                                          onChangeField={this.onChangePageField.bind(this)}
-                                          onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
-                        }
-                    </SocialPanelBody>
-                </PersonaBarPage>
+                                            onCancel={this.navigateMap.bind(this, 0)} 
+                                            onSave={this.onSavePage.bind(this)}
+                                            onChangeField={this.onChangePageField.bind(this)}
+                                            onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                        </SocialPanelBody>
+                    </PersonaBarPage>
+                }
             </div>
         );
     }
