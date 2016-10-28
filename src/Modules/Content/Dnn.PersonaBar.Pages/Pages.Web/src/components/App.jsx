@@ -10,8 +10,16 @@ import {
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import Localization from "../localization";
+import SingleLineInput from "dnn-single-line-input";
 
 class App extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            searchKeyword: ""
+        };
+    }
 
     navigateMap(page) {
         const {props} = this;
@@ -45,9 +53,14 @@ class App extends Component {
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
+                        <SingleLineInput 
+                            value={this.state.searchKeyword}
+                            onChange={e => this.setState({searchKeyword: e.target.value})} />
                     </SocialPanelHeader>
                     <SocialPanelBody>                        
-                        <PageHierarchy onPageSettings={pageId => this.onPageSettings(pageId)} />
+                        <PageHierarchy
+                            searchKeyword={this.state.searchKeyword} 
+                            onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>
                 </PersonaBarPage>
                 {props.selectedDnnPage && 

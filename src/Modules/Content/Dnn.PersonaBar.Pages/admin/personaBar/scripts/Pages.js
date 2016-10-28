@@ -24,6 +24,10 @@
         };
         loadScript();
 
+        if (config.debugMode === true) {
+            window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+        }
+
         if (typeof callback === 'function') {
             callback();
         }

@@ -128,6 +128,11 @@
             return false;
         },
 
+        setSearchKeyword: function (searchKeyword) {
+            this._getViewModel().searchKeyword(searchKeyword);
+            this._searchKeywordsChangedHandler();
+        },
+
         _loadRootPageList: function() {
             var handler, viewModel, params;
 
