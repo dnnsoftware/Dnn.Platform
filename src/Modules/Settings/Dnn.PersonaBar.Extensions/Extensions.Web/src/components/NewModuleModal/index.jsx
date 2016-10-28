@@ -72,9 +72,7 @@ class NewModuleModal extends Component {
         const { props } = this;
         const shouldAppend = props.selectedInstalledPackageType === "Module";
         props.dispatch(ExtensionActions.createNewModule(payload, shouldAppend, (data) => {
-            console.log(data.NewPageUrl);
             if (data.NewPageUrl) {
-                console.log("Firing!");
                 window.open(data.NewPageUrl);
             }
             if (!shouldAppend) {

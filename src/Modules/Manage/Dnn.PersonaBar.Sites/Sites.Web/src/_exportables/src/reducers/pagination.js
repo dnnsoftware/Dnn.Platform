@@ -1,19 +1,24 @@
 import {
-    visiblePanel as ActionTypes
+    pagination as ActionTypes
 } from "actionTypes";
 import { getFinalSwitchCase } from "./helpers";
 
 const switchCase = [{
-    condition: ActionTypes.SELECT_PANEL,
+    condition: ActionTypes.LOAD_MORE,
     functionToRun: (state, action) => {
         return {
-            selectedPage: action.payload.selectedPage
-            };
+            pageIndex: state.pageIndex + 1
+        };
     }
 }];
+
+
 export default function getReducer(initialState, additionalCases) {
     return function common(state = Object.assign({
-        selectedPage: 0
+        pageIndex: 0,
+        pageSize: 10,
+        portalGroupId: -1,
+        filter: ""
     }, initialState), action) {
         let _switchCase = getFinalSwitchCase(switchCase, additionalCases);
 

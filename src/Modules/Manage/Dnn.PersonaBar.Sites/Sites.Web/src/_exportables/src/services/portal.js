@@ -37,6 +37,10 @@ class PortalService {
         const sf = this.getServiceFramework("Sites");
         sf.post("CreatePortal", payload, callback, errorCallback);
     }
+    getPortals(searchParameters, callback, errorCallback) {
+        const sf = this.getServiceFramework("Sites");
+        sf.get("GetPortals?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
+    }
 }
 const portalService = new PortalService();
 export default portalService;

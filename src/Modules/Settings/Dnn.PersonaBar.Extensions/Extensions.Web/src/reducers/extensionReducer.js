@@ -64,7 +64,8 @@ export default function extension(state = {
     selectedAvailablePackageType: "",
     triedToSave: false,
     tabsWithError: [],
-    moduleCategories: []
+    moduleCategories: [],
+    tabBeingEdited: 0
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
@@ -121,6 +122,10 @@ export default function extension(state = {
         case ActionTypes.RETRIEVED_MODULE_CATEGORIES:
             return { ...state,
                 moduleCategories: action.payload
+            };
+        case ActionTypes.SELECT_EDITING_TAB:
+            return { ...state,
+                tabBeingEdited: action.payload
             };
         default:
             return state;

@@ -23,7 +23,7 @@ class ModuleDefinitionRow extends Component {
         return (
             <GridCell className="module-definition-row">
                 <GridCell columnSize={85} className="module-definition-name">
-                    {props.moduleDefinition.name}
+                    {props.moduleDefinition.name + "-" + props.moduleDefinition.id}
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
                     <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
@@ -45,6 +45,7 @@ class ModuleDefinitionRow extends Component {
                                 extensionBeingEdited={props.extensionBeingEdited}
                                 extensionBeingEditedIndex={props.extensionBeingEditedIndex}
                                 onChange={props.onChange.bind(this, "controls")}
+                                onControlSave={props.onSave.bind(this)}
                                 moduleDefinitionId={props.moduleDefinitionBeingEdited.id} />
                         </GridCell>
                         <GridCell columnSize={100} className="modal-footer">

@@ -2,7 +2,8 @@ import {
     portal as ActionTypes
 } from "actionTypes";
 import {
-    addTemplateToList
+    addTemplateToList,
+    getFinalSwitchCase
 } from "./helpers";
 import utilities from "utils";
 
@@ -38,27 +39,6 @@ const switchCase = [{
     }
 }];
 
-function getFinalSwitchCase(switchCase, additionalCases) {
-    let _switchCase = switchCase;
-    if (Object.prototype.toString.call(additionalCases) === "[object Array]") {
-        additionalCases.forEach((extraCase) => {
-            let alreadyExists = false;
-            let indexToChange = 0;
-            _switchCase.forEach((item, index) => {
-                if (extraCase.condition === item.condition) {
-                    alreadyExists = true;
-                    indexToChange = index;
-                }
-            });
-            if (!alreadyExists) {
-                _switchCase.push(extraCase);
-            } else {
-                _switchCase[indexToChange] = extraCase;
-            }
-        });
-    }
-    return _switchCase;
-}
 export default function getReducer(initialState, additionalCases) {
     return function common(state = Object.assign({
         templates: [],

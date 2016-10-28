@@ -83,8 +83,8 @@ class EditExtension extends Component {
         props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
     }
 
-    parseEditorActions(extension){
-        switch(extension.packageType.value.toLowerCase()){
+    parseEditorActions(extension) {
+        switch (extension.packageType.value.toLowerCase()) {
             case "module":
                 return {
                     category: extension.category.value,
@@ -109,6 +109,7 @@ class EditExtension extends Component {
         props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex));
         if (close) {
             this.selectPanel(0);
+            props.dispatch(ExtensionActions.selectEditingTab(0));
         }
     }
 
@@ -176,7 +177,7 @@ class EditExtension extends Component {
         if (!this.validateFields()) {
             return;
         }
-        
+
         this.onSaveExtension(close === true);
     }
     confirmAction(callback) {
@@ -193,9 +194,8 @@ class EditExtension extends Component {
     }
     onTabSelect(index) {
         this.confirmAction(() => {
-            this.setState({
-                selectedTabIndex: index
-            });
+            const { props } = this;
+            props.dispatch(ExtensionActions.selectEditingTab(index));
         });
     }
 
@@ -205,6 +205,15 @@ class EditExtension extends Component {
         props.dispatch(CreatePackageActions.getPackageManifest(props.extensionBeingEdited.packageId.value, () => {
             this.selectPanel(5);
         }));
+    }
+
+    onCancel(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        props.dispatch(ExtensionActions.selectEditingTab(0));
+        this.selectPanel(0);
     }
 
     render() {
@@ -219,7 +228,7 @@ class EditExtension extends Component {
                     {this.isHost && <Tabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
-                        selectedIndex={state.selectedTabIndex}
+                        selectedIndex={props.selectedEditingTab}
                         type="primary">
                         <GridCell className="package-information-box extension-form">
                             <PackageInformation
@@ -227,7 +236,7 @@ class EditExtension extends Component {
                                 validationMapped={true}
                                 extensionBeingEdited={extensionBeingEdited}
                                 onVersionChange={this.onVersionChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
+                                onCancel={this.onCancel.bind(this)}
                                 validateFields={this.validateFields.bind(this)}
                                 onChange={this.onChange.bind(this)}
                                 updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
@@ -240,7 +249,7 @@ class EditExtension extends Component {
                                 type={extensionBeingEdited.packageType.value}
                                 primaryButtonText="Save"
                                 onChange={this.onChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
+                                onCancel={this.onCancel.bind(this)}
                                 onSave={this.onSave.bind(this)}
                                 onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)}
                                 />
@@ -248,19 +257,19 @@ class EditExtension extends Component {
                         <GridCell>
                             <EditSettings
                                 type={extensionBeingEdited.packageType.value}
-                                onCancel={this.selectPanel.bind(this, 0)}
+                                onCancel={this.onCancel.bind(this)}
                                 extensionBeingEdited={extensionBeingEdited}
                                 updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}
                             onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
+                            onCancel={this.onCancel.bind(this)}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Save" />
                         <ReleaseNotes
                             value={extensionBeingEdited.releaseNotes.value}
                             onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
+                            onCancel={this.onCancel.bind(this)}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Save" />
                     </Tabs>}
@@ -276,7 +285,7 @@ class EditExtension extends Component {
                                 disabled={true}
                                 extensionBeingEdited={extensionBeingEdited}
                                 onVersionChange={this.onVersionChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
+                                onCancel={this.onCancel.bind(this)}
                                 validateFields={this.validateFields.bind(this)}
                                 onChange={this.onChange.bind(this)}
                                 updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
@@ -287,13 +296,13 @@ class EditExtension extends Component {
                         <GridCell>
                             <EditSettings
                                 type={extensionBeingEdited.packageType.value}
-                                onCancel={this.selectPanel.bind(this, 0)}
+                                onCancel={this.onCancel.bind(this)}
                                 extensionBeingEdited={extensionBeingEdited}
                                 updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
                         </GridCell>
                         <License value={extensionBeingEdited.license.value}
                             onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
+                            onCancel={this.onCancel.bind(this)}
                             disabled={true}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Save" />
@@ -301,7 +310,7 @@ class EditExtension extends Component {
                             value={extensionBeingEdited.releaseNotes.value}
                             disabled={true}
                             onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
+                            onCancel={this.onCancel.bind(this)}
                             onSave={this.onSave.bind(this)}
                             primaryButtonText="Save" />
                     </Tabs>
@@ -328,7 +337,8 @@ function mapStateToProps(state) {
         moduleDefinitionFormIsDirty: state.moduleDefinition.formIsDirty,
         triedToSave: state.extension.triedToSave,
         tabsWithError: state.extension.tabsWithError,
-        moduleCategories: state.extension.moduleCategories
+        moduleCategories: state.extension.moduleCategories,
+        selectedEditingTab: state.extension.tabBeingEdited
     };
 }
 

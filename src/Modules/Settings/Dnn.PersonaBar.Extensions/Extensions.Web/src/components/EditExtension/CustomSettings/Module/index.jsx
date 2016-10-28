@@ -83,7 +83,6 @@ class Module extends Component {
     }
     onSelect(key, option) {
         const { props } = this;
-        console.log(key, option);
         props.onChange(key, option.value);
     }
     /* eslint-disable react/no-danger */
@@ -140,7 +139,7 @@ class Module extends Component {
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Permissions.Label")}
                             value={extensionBeingEdited.hostPermissions.value}
-                            onChange={props.onChange.bind(this, "permissions")}
+                            onChange={props.onChange.bind(this, "hostPermissions")}
                             tooltipMessage={Localization.get("EditModule_Permissions.HelpText")}
                             style={inputStyle} />
                         <Switch value={extensionBeingEdited.searchable.value}

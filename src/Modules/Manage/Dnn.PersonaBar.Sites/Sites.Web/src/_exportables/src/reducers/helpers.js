@@ -38,3 +38,26 @@ export function addTemplateToList(templatesList, newTemplate) {
         return templatesList;
     }
 }
+
+export function getFinalSwitchCase(switchCase, additionalCases) {
+    let _switchCase = switchCase;
+    if (Object.prototype.toString.call(additionalCases) === "[object Array]") {
+        additionalCases.forEach((extraCase) => {
+            let alreadyExists = false;
+            let indexToChange = 0;
+            _switchCase.forEach((item, index) => {
+                if (extraCase.condition === item.condition) {
+                    alreadyExists = true;
+                    indexToChange = index;
+                }
+            });
+            if (!alreadyExists) {
+                _switchCase.push(extraCase);
+            } else {
+                _switchCase[indexToChange] = extraCase;
+            }
+        });
+    }
+    return _switchCase;
+}
+

@@ -312,4 +312,22 @@
   <data name="Title.Label" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="CreateSite_AdminEmail.Label" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="CreateSite_AdminFirstName.Label" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="CreateSite_AdminLastName.Label" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="CreateSite_AdminPassword.Label" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CreateSite_AdminPasswordConfirm.Label" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CreateSite_AdminUserName.Label" xml:space="preserve">
+    <value>Administrator User Name</value>
+  </data>
 </root>

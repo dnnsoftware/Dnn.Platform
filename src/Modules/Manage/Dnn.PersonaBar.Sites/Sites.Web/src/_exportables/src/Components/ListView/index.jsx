@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
 import Localization from "localization";
-import { CommonPortalListActions, CommonExportPortalActions } from "../../actions";
-import { CommonVisiblePanelActions } from "actions";
+import { CommonVisiblePanelActions, CommonPortalListActions, CommonExportPortalActions } from "actions";
 import GridCell from "dnn-grid-cell";
 import utilities from "utils";
 import Moment from "moment";
+import Button from "dnn-button";
 import {
     TrashIcon,
     PreviewIcon,

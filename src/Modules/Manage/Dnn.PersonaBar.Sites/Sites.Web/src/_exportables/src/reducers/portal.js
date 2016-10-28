@@ -3,7 +3,7 @@ import {
 } from "actionTypes";
 import {
     addPortalToList,
-    addTemplateToList
+    getFinalSwitchCase
 } from "./helpers";
 import utilities from "utils";
 
@@ -15,7 +15,7 @@ const switchCase = [{
             totalCount: action.payload.totalCount
         };
     }
-},  {
+}, {
     condition: ActionTypes.DELETED_PORTAL,
     functionToRun: (state, action) => {
         return {
@@ -23,6 +23,14 @@ const switchCase = [{
                 ...state.portals.slice(0, action.payload.index),
                 ...state.portals.slice(action.payload.index + 1)
             ]
+        };
+    }
+}, {
+    condition: ActionTypes.RETRIEVED_PORTALS_CONCAT,
+    functionToRun: (state, action) => {
+        return {
+            portals: state.portals.concat(action.payload.portals),
+            totalCount: action.payload.totalCount
         };
     }
 }, {
@@ -41,27 +49,6 @@ const switchCase = [{
     }
 }];
 
-function getFinalSwitchCase(switchCase, additionalCases) {
-    let _switchCase = switchCase;
-    if (Object.prototype.toString.call(additionalCases) === "[object Array]") {
-        additionalCases.forEach((extraCase) => {
-            let alreadyExists = false;
-            let indexToChange = 0;
-            _switchCase.forEach((item, index) => {
-                if (extraCase.condition === item.condition) {
-                    alreadyExists = true;
-                    indexToChange = index;
-                }
-            });
-            if (!alreadyExists) {
-                _switchCase.push(extraCase);
-            } else {
-                _switchCase[indexToChange] = extraCase;
-            }
-        });
-    }
-    return _switchCase;
-}
 export default function getReducer(initialState, additionalCases) {
     return function common(state = Object.assign({
         portals: [],

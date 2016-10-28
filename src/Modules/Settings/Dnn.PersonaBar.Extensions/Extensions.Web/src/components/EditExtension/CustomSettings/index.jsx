@@ -9,7 +9,6 @@ import SkinObject from "./SkinObject";
 
 class CustomSettings extends Component {
     getExtensionSetting(props) {
-        console.log(props.type);
         switch (props.type) {
             case "Auth_System":
                 return <EditAuthenticationSystem {...props} />;

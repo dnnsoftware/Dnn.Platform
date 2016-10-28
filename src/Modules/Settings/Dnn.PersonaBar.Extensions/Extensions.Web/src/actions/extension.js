@@ -1,5 +1,6 @@
 import { extension as ActionTypes, installation as InstallationActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
+import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
 import utilities from "utils";
 
 function errorCallback(message) {
@@ -73,7 +74,13 @@ const extensionActions = {
     },
     updateExtension(updatedExtension, editorActions, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(updatedExtension, editorActions, () => {
+            ExtensionService.updateExtension(updatedExtension, editorActions, (data) => {
+                dispatch({
+                    type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                    payload: {
+                        extensionBeingEdited: validationMapExtensionBeingEdited(data.PackageDetail)
+                    }
+                });
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
@@ -97,7 +104,6 @@ const extensionActions = {
         };
     },
     installAvailablePackage(packageType, packageName, newExtension, callback) {
-        console.log(newExtension);
         return (dispatch) => {
             ExtensionService.installAvailablePackage(packageType, packageName, (data) => {
                 if (data.success) {
@@ -246,6 +252,19 @@ const extensionActions = {
                     callback(data);
                 }
             }, errorCallback);
+        };
+    },
+    selectEditingTab(index, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SELECT_EDITING_TAB,
+                payload: index
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
         };
     }
 };

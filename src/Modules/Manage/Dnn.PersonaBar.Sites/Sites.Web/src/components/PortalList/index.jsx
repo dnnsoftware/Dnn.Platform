@@ -7,21 +7,36 @@ import utilities from "utils";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import GridCell from "dnn-grid-cell";
-import { portal as PortalActions } from "actions";
+import { CommonPaginationActions, CommonPortalListActions } from "dnn-sites-common-actions";
 import styles from "./style.less";
 import Moment from "moment";
 
 class PortalList extends Component {
     componentWillMount() {
         const {props} = this;
-        props.dispatch(PortalActions.loadPortals({
-            portalGroupId: -1,
-            filter: "",
-            pageIndex: 0,
-            pageSize: 10
+        // props.dispatch(CommonPortalListActions.deletePortal(16));
+        props.dispatch(CommonPortalListActions.loadPortals({
+            portalGroupId: props.pagination.portalGroupId,
+            filter: props.pagination.filter,
+            pageIndex: props.pagination.pageIndex,
+            pageSize: props.pagination.pageSize
         }));
     }
 
+    loadMore(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        props.dispatch(CommonPaginationActions.loadMore(() => {
+            props.dispatch(CommonPortalListActions.loadPortals({
+                portalGroupId: props.pagination.portalGroupId,
+                filter: props.pagination.filter,
+                pageIndex: props.pagination.pageIndex + 1,
+                pageSize: props.pagination.pageSize
+            }, true));
+        }));
+    }
     render() {
         const {props} = this;
         return (
@@ -32,10 +47,13 @@ class PortalList extends Component {
                 <SocialPanelBody>
                     <ListView
                         onAddNewSite={props.onAddNewSite.bind(this)}
-                        portals={props.portals}
-                        utilities={utilities}
-                        PortalActions={PortalActions}
                         />
+
+                    {props.portals.length < props.totalCount &&
+                        <GridCell className="load-more-button">
+                            <Button type="primary" onClick={this.loadMore.bind(this)}>{Localization.get("LoadMore.Button")}</Button>
+                        </GridCell>
+                    }
                 </SocialPanelBody>
             </GridCell>
         );
@@ -52,7 +70,8 @@ function mapStateToProps(state) {
     return {
         portals: state.portal.portals,
         totalCount: state.portal.totalCount,
-        viewMode: state.viewMode
+        viewMode: state.viewMode,
+        pagination: state.pagination
     };
 }
 

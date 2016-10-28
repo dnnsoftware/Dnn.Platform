@@ -98,7 +98,7 @@ class Controls extends Component {
 
             props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
                 utils.utilities.notify(Localization.get("UpdateComplete"));
-                props.onChange({ target: { value: removeRecordFromArray(props.moduleControls, index) } });
+                props.onControlSave();
             }));
         });
     }
@@ -128,11 +128,13 @@ class Controls extends Component {
             controls.push(state.controlBeingEdited);
         }
 
+        state.controlBeingEdited.definitionId = props.moduleDefinitionId;
+
         let actions = {savemodulecontrol: JSON.stringify(state.controlBeingEdited)};
 
         props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
             utils.utilities.notify(Localization.get("UpdateComplete"));
-            props.onChange({ target: { value: controls } });
+            props.onControlSave();
             props.dispatch(ModuleDefinitionActions.setControlFormDirt(false, () => {
                 this.exitEditMode();
             }));

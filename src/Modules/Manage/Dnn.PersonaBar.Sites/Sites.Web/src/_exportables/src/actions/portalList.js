@@ -59,6 +59,32 @@ const portalActions = {
                 }
             }, errorCallback);
         };
+    },
+    loadPortals(searchParameters, append, callback) {
+        return (dispatch) => {
+            PortalService.getPortals(searchParameters, data => {
+                if (append) {
+                    dispatch({
+                        type: ActionTypes.RETRIEVED_PORTALS_CONCAT,
+                        payload: {
+                            portals: data.Results,
+                            totalCount: data.TotalResults
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: ActionTypes.RETRIEVED_PORTALS,
+                        payload: {
+                            portals: data.Results,
+                            totalCount: data.TotalResults
+                        }
+                    });
+                }
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
     }
 };
 
