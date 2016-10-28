@@ -13,6 +13,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 case PackageTypes.Module:
                     return new ModulePackageEditor();
+                case PackageTypes.AuthSystem:
+                    return new AuthSystemPackageEditor();
                 default:
                     return null;
             }

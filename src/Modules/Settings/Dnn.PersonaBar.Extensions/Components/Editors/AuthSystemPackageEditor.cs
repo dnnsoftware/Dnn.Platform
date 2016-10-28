@@ -41,6 +41,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             if (isHostUser)
             {
                 detail.Settings.Add("readonly", authSystem.AuthenticationType == "DNN");
+                detail.Settings.Add("loginControlSource", authSystem.LoginControlSrc);
+                detail.Settings.Add("logoffControlSource", authSystem.LogoffControlSrc);
+                detail.Settings.Add("settingsControlSource", authSystem.SettingsControlSrc);
+                detail.Settings.Add("enabled", authSystem.IsEnabled);
             }
 
             return detail;
@@ -49,7 +53,45 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
-            return true;
+
+            try
+            {
+                var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(packageSettings.PackageId);
+                var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+
+                if (isHostUser)
+                {
+                    if(packageSettings.EditorActions.ContainsKey("loginControlSource")
+                        && !string.IsNullOrEmpty(packageSettings.EditorActions["loginControlSource"]))
+                    {
+                        authSystem.LoginControlSrc = packageSettings.EditorActions["loginControlSource"];
+                    }
+                    if (packageSettings.EditorActions.ContainsKey("logoffControlSource")
+                        && !string.IsNullOrEmpty(packageSettings.EditorActions["logoffControlSource"]))
+                    {
+                        authSystem.LogoffControlSrc = packageSettings.EditorActions["logoffControlSource"];
+                    }
+                    if (packageSettings.EditorActions.ContainsKey("settingsControlSource")
+                        && !string.IsNullOrEmpty(packageSettings.EditorActions["settingsControlSource"]))
+                    {
+                        authSystem.SettingsControlSrc = packageSettings.EditorActions["settingsControlSource"];
+                    }
+                    if (packageSettings.EditorActions.ContainsKey("enabled")
+                        && !string.IsNullOrEmpty(packageSettings.EditorActions["enabled"]))
+                    {
+                        authSystem.IsEnabled = bool.Parse(packageSettings.EditorActions["loginControlSource"]);
+                    }
+
+                    AuthenticationController.UpdateAuthentication(authSystem);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                errorMessage = ex.Message;
+                return false;
+            }
         }
 
         #endregion
@@ -58,18 +100,24 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private string GetSettingUrl(int portalId, int authSystemPackageId)
         {
-            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "Extensions");
-            if (package == null)
+            var module = ModuleController.Instance.GetModulesByDefinition(portalId, "Extensions")
+                .Cast<ModuleInfo>().FirstOrDefault();
+            if (module == null)
             {
-                return String.Empty;
-            }
-            var tabId = TabController.Instance.GetTabsByPackageID(portalId, package.PackageID, false).Keys.FirstOrDefault();
-            if (tabId <= 0)
-            {
-                return String.Empty;
+                return string.Empty;
             }
 
-            return Globals.NavigateURL(tabId);
+            var tabId = TabController.Instance.GetTabsByModuleID(module.ModuleID).Keys.FirstOrDefault();
+            if (tabId <= 0)
+            {
+                return string.Empty;
+            }
+            //ctl/Edit/mid/345/packageid/52
+            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit", 
+                                            "mid=" + module.ModuleID, 
+                                            "packageid=" + authSystemPackageId,
+                                            "popUp=true",
+                                            "mode=settings");
         }
 
         #endregion
