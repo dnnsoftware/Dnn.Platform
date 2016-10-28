@@ -10,6 +10,7 @@ import DefaultPagesSettings from "../defaultPagesSettings";
 import MessagingSettings from "../messagingSettings";
 import ProfileSettings from "../profileSettings";
 import SiteAliasSettings from "../siteAliasSettings";
+import BasicSearchSettings from "../basicSearchSettings";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import "./style.less";
@@ -58,7 +59,7 @@ export class Body extends Component {
                         resx.get("TabCrawling"), 
                         resx.get("TabFileExtensions")]}
                         type="secondary">
-                        <div/>
+                        <BasicSearchSettings/>
                         <div/>
                         <div/>
                         <div/>

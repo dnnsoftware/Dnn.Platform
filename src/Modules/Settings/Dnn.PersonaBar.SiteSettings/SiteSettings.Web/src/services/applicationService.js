@@ -127,6 +127,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("DeleteSiteAlias?portalAliasId=" + aliasId, {}, callback, failureCallback);
     } 
+
+    getBasicSearchSettings(callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetBasicSearchSettings", {}, callback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

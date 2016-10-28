@@ -25,7 +25,10 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Xml;
 using DotNetNuke.Services.Localization;
@@ -91,6 +94,33 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     File.Delete(filename);
                 }
             }
+        }
+
+        public IList<string> GetAvailableAnalyzers()
+        {
+            var analyzers = new List<string>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                }
+                catch (Exception)
+                {
+                    //do nothing but just ignore the error.
+                }
+            }
+            return analyzers;
+        }
+
+        private bool IsAnalyzerType(Type type)
+        {
+            return type != null && type.FullName != null && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || IsAnalyzerType(type.BaseType));
+        }
+
+        private bool IsAllowType(Type type)
+        {
+            return !type.FullName.Contains("Lucene.Net.Analysis.Analyzer") && !type.FullName.Contains("DotNetNuke");
         }
 
         private void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)

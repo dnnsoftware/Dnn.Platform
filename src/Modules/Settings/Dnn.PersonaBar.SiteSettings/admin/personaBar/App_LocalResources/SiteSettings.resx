@@ -636,4 +636,70 @@
   <data name="SiteAliasDeleteError.Text" xml:space="preserve">
     <value>Could not delete the site alias. Please try later.</value>
   </data>
+  <data name="lblIndexWordMaxLength.Help" xml:space="preserve">
+    <value>Enter the maximum word size to be included in the Index.</value>
+  </data>
+  <data name="lblIndexWordMaxLength.Text" xml:space="preserve">
+    <value>Maximum Word Length</value>
+  </data>
+  <data name="lblIndexWordMinLength.Help" xml:space="preserve">
+    <value>Enter the minimum word size to be included in the Index.</value>
+  </data>
+  <data name="lblIndexWordMinLength.Text" xml:space="preserve">
+    <value>Minimum Word Length</value>
+  </data>
+  <data name="valIndexWordMaxLengthRequired.Error" xml:space="preserve">
+    <value>Maximum length of index word is required. Integer must be greater than the minimum length.</value>
+  </data>
+  <data name="valIndexWordMinLengthRequired.Error" xml:space="preserve">
+    <value>Minimum length of index word is required. Integer must be greater than 0.</value>
+  </data>
+  <data name="lblCustomAnalyzer.Help" xml:space="preserve">
+    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
+  </data>
+  <data name="lblCustomAnalyzer.Text" xml:space="preserve">
+    <value>Custom Analyzer Type</value>
+  </data>
+  <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
+    <value>Check this box to return search criteria that occurs within a word rather than only at the beginning of the word. Warning: Enabling wildcard searching may cause performance issues.</value>
+  </data>
+  <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
+    <value>Enable Partial-Word Search (Slow)</value>
+  </data>
+  <data name="SearchPriorities.Text" xml:space="preserve">
+    <value>SEARCH PRIORITIES</value>
+  </data>
+  <data name="SearchIndex.Text" xml:space="preserve">
+    <value>SEARCH INDEX</value>
+  </data>
+  <data name="lblAuthorBoost.Help" xml:space="preserve">
+    <value>Author boost value is associated with the author as it is indexed. The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblAuthorBoost.Text" xml:space="preserve">
+    <value>Author Boost</value>
+  </data>
+  <data name="lblContentBoost.Help" xml:space="preserve">
+    <value>Content boost value is associated with the content as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblContentBoost.Text" xml:space="preserve">
+    <value>Content Boost</value>
+  </data>
+  <data name="lblDescriptionBoost.Help" xml:space="preserve">
+    <value>Description boost value is associated with the description as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblDescriptionBoost.Text" xml:space="preserve">
+    <value>Description Boost</value>
+  </data>
+  <data name="lblTagBoost.Help" xml:space="preserve">
+    <value>Tag boost value is associated with the tag as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblTagBoost.Text" xml:space="preserve">
+    <value>Tag Boost</value>
+  </data>
+  <data name="lblTitleBoost.Help" xml:space="preserve">
+    <value>Title boost value is associated with the title as it is indexed.  The higher the value, the more relevant the field will be for determining the order of the results.</value>
+  </data>
+  <data name="lblTitleBoost.Text" xml:space="preserve">
+    <value>Title Boost</value>
+  </data>
 </root>

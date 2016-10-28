@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,6 +30,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
@@ -42,6 +44,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
         private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx");
         private static readonly string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+
+        //Field Boost Settings - they are scaled down by 10.
+        private const int DefaultSearchTitleBoost = 50;
+        private const int DefaultSearchTagBoost = 40;
+        private const int DefaultSearchContentBoost = 35;
+        private const int DefaultSearchDescriptionBoost = 20;
+        private const int DefaultSearchAuthorBoost = 15;
+
+        //Field Bosst Setting Names
+        private const string SearchTitleBoostSetting = "Search_Title_Boost";
+        private const string SearchTagBoostSetting = "Search_Tag_Boost";
+        private const string SearchContentBoostSetting = "Search_Content_Boost";
+        private const string SearchDescriptionBoostSetting = "Search_Description_Boost";
+        private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -897,7 +913,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         HTTPAlias = strAlias,
                         Skin = request.Skin,
                         CultureCode = request.CultureCode,
-                        BrowserType = browser
+                        BrowserType = browser,
+                        IsPrimary = request.IsPrimary
                     };
 
                     PortalAliasController.Instance.AddPortalAlias(portalAlias);
@@ -948,7 +965,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         HTTPAlias = strAlias,
                         Skin = request.Skin,
                         CultureCode = request.CultureCode,
-                        BrowserType = browser
+                        BrowserType = browser,
+                        IsPrimary = request.IsPrimary
                     };
 
                     PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
@@ -1064,6 +1082,49 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetBasicSearchSettings
+        /// <summary>
+        /// Gets basic search settings
+        /// </summary>
+        /// <returns>basic search settings</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetBasicSearchSettings()
+        {
+            try
+            {
+                var searchStatistics = InternalSearchController.Instance.GetSearchStatistics();
+                var response = new
+                {
+                    Success = true,
+                    Settings = new
+                    {
+                        MinWordLength = HostController.Instance.GetInteger("Search_MinKeyWordLength", 3),
+                        MaxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255),
+                        AllowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y",
+                        SearchCustomAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty),
+                        TitleBoost = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost),
+                        TagBoost = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost),
+                        ContentBoost = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost),
+                        DescriptionBoost = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost),
+                        AuthorBoost = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost),
+                        SearchIndexPath = Path.Combine(Globals.ApplicationMapPath, HostController.Instance.GetString("SearchFolder", @"App_Data\Search")),
+                        SearchIndexDbSize = ((searchStatistics.IndexDbSize / 1024f) / 1024f).ToString("N") + " MB",
+                        SearchIndexLastModifedOn = DateUtils.CalculateDateForDisplay(searchStatistics.LastModifiedOn),
+                        SearchIndexTotalActiveDocuments = searchStatistics.TotalActiveDocuments.ToString(CultureInfo.InvariantCulture),
+                        SearchIndexTotalDeletedDocuments = searchStatistics.TotalDeletedDocuments.ToString(CultureInfo.InvariantCulture)
+                    },
+                    SearchCustomAnalyzers = _controller.GetAvailableAnalyzers()
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {

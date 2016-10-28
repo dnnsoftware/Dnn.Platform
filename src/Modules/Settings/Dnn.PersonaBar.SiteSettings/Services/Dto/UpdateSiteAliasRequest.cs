@@ -39,5 +39,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public string Skin { get; set; }
 
         public string CultureCode { get; set; }
+
+        public bool IsPrimary { get; set; }
     }
 }

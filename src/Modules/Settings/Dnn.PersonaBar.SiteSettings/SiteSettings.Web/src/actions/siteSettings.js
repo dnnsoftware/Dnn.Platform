@@ -515,6 +515,22 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    getBasicSearchSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getBasicSearchSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_BASIC_SEARCH_SETTINGS,
+                    data: {
+                        basicSearchSettings: data.Settings,
+                        searchCustomAnalyzers: data.SearchCustomAnalyzers
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

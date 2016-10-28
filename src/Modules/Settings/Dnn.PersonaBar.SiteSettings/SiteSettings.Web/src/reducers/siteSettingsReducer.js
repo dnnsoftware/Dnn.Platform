@@ -126,7 +126,7 @@ export default function siteSettings(state = {
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS:
             return { ...state,
-                aliasDetail: action.data.aliasDetail                
+                aliasDetail: action.data.aliasDetail
             };
         case ActionTypes.CANCELED_SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED:
             return { ...state,
@@ -145,6 +145,11 @@ export default function siteSettings(state = {
         case ActionTypes.DELETED_SITESETTINGS_SITE_ALIAS:
             return { ...state,
                 siteAliases: action.data.siteAliases
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_BASIC_SEARCH_SETTINGS:
+            return { ...state,
+                basicSearchSettings: action.data.basicSearchSettings,
+                searchCustomAnalyzers: action.data.searchCustomAnalyzers
             };
         default:
             return state;

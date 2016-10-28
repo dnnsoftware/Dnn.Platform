@@ -140,6 +140,19 @@ class SiteAliasEditor extends Component {
 
     onSetPrimary(event) {
         const {props, state} = this;
+        this.setState({
+            triedToSubmit: true
+        });
+        if (state.error.alias) {
+            return;
+        }
+        let aliasDetail = Object.assign({}, state.aliasDetail);
+        aliasDetail["IsPrimary"] = true;
+        this.setState({
+            aliasDetail: aliasDetail
+        }, () => {
+            props.onUpdate(aliasDetail);
+        });
     }
 
     onCancel(event) {
@@ -218,11 +231,13 @@ class SiteAliasEditor extends Component {
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
-                        <Button
-                            type="secondary"
-                            onClick={this.onSetPrimary.bind(this)}>
-                            {resx.get("SetPrimary")}
-                        </Button>
+                        {!this.state.aliasDetail.IsPrimary &&
+                            <Button
+                                type="secondary"
+                                onClick={this.onSetPrimary.bind(this)}>
+                                {resx.get("SetPrimary")}
+                            </Button>
+                        }
                         <Button
                             type="primary"
                             onClick={this.onSave.bind(this)}>
