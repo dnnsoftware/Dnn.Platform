@@ -46,7 +46,7 @@ class App extends Component {
         console.log("onPermissionsChanged", permissions);
         this.props.dispatch(PageActions.changePermissions(permissions));
     }
-
+    
     render() {
         const {props} = this;
         return (
@@ -59,6 +59,7 @@ class App extends Component {
                     </SocialPanelHeader>
                     <SocialPanelBody>                        
                         <PageHierarchy
+                            itemTemplate={"other-pages-list-item-template"}
                             searchKeyword={this.state.searchKeyword} 
                             onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>

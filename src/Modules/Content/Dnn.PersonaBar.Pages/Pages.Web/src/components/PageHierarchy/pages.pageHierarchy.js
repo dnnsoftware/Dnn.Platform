@@ -128,6 +128,10 @@
             return false;
         },
 
+        setItemTemplate: function (template) {
+            this._getViewModel().itemTemplate(template);
+        },
+
         setSearchKeyword: function (searchKeyword) {
             this._getViewModel().searchKeyword(searchKeyword);
             this._searchKeywordsChangedHandler();
@@ -1116,6 +1120,7 @@
             var handler = this;
 
             if (typeof this._viewModel.pagesList == "undefined") {
+                this._viewModel.itemTemplate = ko.observable("pages-list-item-template");
                 this._viewModel.pagesList = ko.observableArray([]);
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());

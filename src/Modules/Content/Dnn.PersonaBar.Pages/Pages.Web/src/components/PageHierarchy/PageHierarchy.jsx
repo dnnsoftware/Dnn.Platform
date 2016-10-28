@@ -13,10 +13,15 @@ class PageHierarchy extends Component {
         pageHierarchyManager._viewModel = {};
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
+        pageHierarchyManager.setItemTemplate(this.props.itemTemplate);
         pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);        
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.props.itemTemplate !== nextProps.itemTemplate) {
+            pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
+        }    
+
         if (this.props.searchKeyword !== nextProps.searchKeyword) {
             pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
         }    
@@ -37,8 +42,13 @@ class PageHierarchy extends Component {
 } 
 
 PageHierarchy.propTypes = {
+    itemTemplate: PropTypes.string.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     onPageSettings: PropTypes.func.isRequired
+};
+
+PageHierarchy.defaultProps = {
+    itemTemplate: "pages-list-item-template"
 };
 
 export default PageHierarchy; 
