@@ -115,9 +115,6 @@ class UserMenu extends Component {
             this.props.dispatch(UserActions.deleteUser({ userId: this.props.userId }, (data) => {
                 if (data.Success) {
                     util.utilities.notify("User deleted successfully");
-                    // let {userDetails} = this.state;
-                    // userDetails.isDeleted = true;
-                    // this.setState({ userDetails });
                     this.reload();
                 }
                 else {
@@ -142,9 +139,6 @@ class UserMenu extends Component {
             this.props.dispatch(UserActions.restoreUser({ userId: this.props.userId }, (data) => {
                 if (data.Success) {
                     util.utilities.notify("User restored successfully");
-                    // let {userDetails} = this.state;
-                    // userDetails.isDeleted = false;
-                    // this.setState({ userDetails });
                     this.reload();
                 }
                 else {
@@ -157,9 +151,6 @@ class UserMenu extends Component {
         this.props.dispatch(UserActions.forceChangePassword({ userId: this.props.userId }, (data) => {
             if (data.Success) {
                 util.utilities.notify("User must update Password on next login.");
-                // let {userDetails} = this.state;
-                // userDetails.needUpdatePassword = true;
-                // this.setState({ userDetails });
                 this.reload();
             }
             else {
@@ -171,10 +162,7 @@ class UserMenu extends Component {
         this.props.dispatch(UserActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
             if (data.Success) {
                 util.utilities.notify(authorized ? "User authorized successfully" : "User un-authorized successfully");
-                //this.reload();
-                let {userDetails} = this.state;
-                userDetails.authorized = authorized;
-                this.setState({ userDetails });
+                this.reload();
             }
             else {
                 util.utilities.notify(data.Message);

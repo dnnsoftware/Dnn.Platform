@@ -40,7 +40,7 @@ export default function user(state = {
             {
                 if (action.payload.Success) {
                     return { ...state,
-                        users: updateUser(state.users, action.payload.userId, true)
+                        users: updateUser(state.users, action.payload.userId, true, null)
                     };
                 }
                 return state;
@@ -49,7 +49,7 @@ export default function user(state = {
             {
                 if (action.payload.Success) {
                     return { ...state,
-                        users: updateUser(state.users, action.payload.userId, false)
+                        users: updateUser(state.users, action.payload.userId, false, null)
                     };
                 }
                 return state;
@@ -84,6 +84,14 @@ export default function user(state = {
             return { ...state,
                 userRoles: updateUserRoleList(state.userRoles, action.payload)
             };
+        case ActionTypes.UPDATE_USER_AUTHORIZE_STATUS: {
+            if (action.payload.Success) {
+                return { ...state,
+                    users: updateUser(state.users, action.payload.userId, null, action.payload.authorized)
+                };
+            }
+            return state;
+        }
         case ActionTypes.REMOVE_USER_ROLE: {
             if (action.payload.Success) {
                 return { ...state,

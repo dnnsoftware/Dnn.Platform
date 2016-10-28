@@ -146,8 +146,12 @@ const userActions = {
         };
     },
     updateAuthorizeStatus(payload, callback) {
-        return () => {
+        return (dispatch) => {
             UserService.updateAuthorizeStatus(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
+                    payload: { userId: payload.userId, authorized: payload.authorized, Success: data.Success }
+                });
                 if (callback) {
                     callback(data);
                 }

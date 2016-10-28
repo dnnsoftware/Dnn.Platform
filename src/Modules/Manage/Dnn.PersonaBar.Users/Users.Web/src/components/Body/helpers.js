@@ -32,12 +32,17 @@ export function removeUser(userList, userId) {
     }
     return userListCopy;
 }
-export function updateUser(userList, userId, deleteStatus) {
+export function updateUser(userList, userId, deleteStatus, authorizeStatus) {
     let userListCopy = Object.assign([], JSON.parse(JSON.stringify(userList)));
     if (userListCopy.some(user => user.userId === userId)) {
         userListCopy = userListCopy.filter(user => {
             if (user.userId === userId) {
-                user.isDeleted = deleteStatus;
+                if (deleteStatus != undefined && deleteStatus != null) {
+                    user.isDeleted = deleteStatus;
+                }
+                if (authorizeStatus != undefined && authorizeStatus != null) {
+                    user.authorized = authorizeStatus;
+                }
             }
             return true;
         });

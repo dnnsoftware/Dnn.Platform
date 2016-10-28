@@ -75,10 +75,10 @@ class UserTable extends Component {
                                     Collapse={this.collapse.bind(this) } userDetails={user} />
                             </div>,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
-                                <iframe src="http://ce.lvh.me/Admin/User-Accounts/ctl/Edit/mid/380/UserId/31/filter/All/pagesize/10/currentpage/0?popUp=true&isPbMode=true"
+                                <iframe src=""
                                     seamless
                                     allowTransparency="true"
-                                    style={{ left: 0, top: 0, border: "0px", width: "100%", height: "100%" }}
+                                    style={{ left: 0, top: 0, border: "0px", width: "100%", height: "100%", float: "left", display: "table" }}
                                     /></div>,
                             <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } />,
                             <div style={{ width: "100%", height: "300px", paddingTop: "100px", textAlign: "center" }} Collapse={this.collapse.bind(this) }>
