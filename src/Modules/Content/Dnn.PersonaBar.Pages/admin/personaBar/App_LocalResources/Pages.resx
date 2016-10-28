@@ -246,9 +246,6 @@
   <data name="PortalSetup.Text" xml:space="preserve">
     <value>Site Setup</value>
   </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Advanced Configuration</value>
-  </data>
   <data name="titleTemplateInfo.Text" xml:space="preserve">
     <value>Site Template Info</value>
   </data>
@@ -311,5 +308,35 @@
   </data>
   <data name="Title.Label" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="View.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Hidden.Text" xml:space="preserve">
+    <value>Page is hidden in menu</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DragPageTooltip.Text" xml:space="preserve">
+    <value>Drag Page into Location</value>
+  </data>
+  <data name="DragInvalid.Text" xml:space="preserve">
+    <value>You can't drag a page as a child of itself.</value>
+  </data>
+  <data name="DeletePageConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this page.&lt;/p&gt;</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Please drag the page into the desired location.</value>
   </data>
 </root>
