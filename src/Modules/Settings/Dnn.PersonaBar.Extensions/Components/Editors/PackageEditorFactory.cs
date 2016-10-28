@@ -15,6 +15,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     return new ModulePackageEditor();
                 case PackageTypes.AuthSystem:
                     return new AuthSystemPackageEditor();
+                case PackageTypes.JavascriptLibrary:
+                    return new JsLibraryPackageEditor();
                 default:
                     return null;
             }

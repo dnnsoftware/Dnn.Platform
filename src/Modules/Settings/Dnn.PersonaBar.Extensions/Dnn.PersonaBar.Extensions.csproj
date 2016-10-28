@@ -124,6 +124,7 @@
     <Compile Include="Components\Dto\Editors\ModuleControlDto.cs" />
     <Compile Include="Components\Dto\Editors\ModuleDefinitionDto.cs" />
     <Compile Include="Components\Dto\PackageInfoDto.cs" />
+    <Compile Include="Components\Editors\JsLibraryPackageEditor.cs" />
     <Compile Include="Components\Editors\IPackageEditor.cs" />
     <Compile Include="Components\Editors\AuthSystemPackageEditor.cs" />
     <Compile Include="Components\Editors\ModulePackageEditor.cs" />
