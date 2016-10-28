@@ -607,20 +607,18 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// Download install package.
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [RequireHost]
-        [IFrameSupportedValidateAntiForgeryToken]
-        public HttpResponseMessage DownloadPackage(DownloadPackageDto package)
+        public HttpResponseMessage DownloadPackage(string packageType, string fileName)
         {
             try
             {
-                var installFolder = GetPackageInstallFolder(package.PackageType);
-                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
+                var installFolder = GetPackageInstallFolder(packageType);
+                if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(fileName))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
                 }
 
-                var fileName = package.FileName ?? "";
                 var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install", installFolder, fileName);
                 if (!File.Exists(packagePath))
                 {

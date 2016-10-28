@@ -66,7 +66,7 @@ class ExtensionService {
             PackageType,
             FileName
         };
-        sf.post("DownloadPackage", payload);
+        sf.get("DownloadPackage", payload);
     }
     installAvailablePackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
