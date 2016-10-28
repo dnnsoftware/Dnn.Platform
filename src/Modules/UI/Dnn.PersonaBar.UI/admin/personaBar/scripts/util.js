@@ -18,18 +18,13 @@ define(['jquery'], function ($) {
                     window.require(requiredArray, function (module, html) {
                         if (module === undefined) return;
 
-                        wrapper.css('visibility', 'hidden').html(html);
-
-                        callbackInit = function (wrapper, cb) {
-                            wrapper.css('visibility', 'visible');
-                            if (typeof cb === 'function') cb();
-                        };
+                        wrapper.html(html);
 
                         // Create objects or Initicialize objects and store
                         if (module.type === 'Class') {
-                            initializedModules[template] = new module(wrapper, self, params, isMobile, callbackInit(wrapper));
+                            initializedModules[template] = new module(wrapper, self, params, isMobile, cb);
                         } else {
-                            module[initMethod].call(module, wrapper, self, params, callbackInit(wrapper, cb));
+                            module[initMethod].call(module, wrapper, self, params, cb);
                             initializedModules[template] = module;
                         }
                     });
