@@ -50,5 +50,6 @@ module.exports = {
         "dnn-tooltip": "dnn.nodeModules.CommonComponents.Tooltip",
         "dnn-modal": "dnn.nodeModules.CommonComponents.Modal",
         "dnn-page-picker": "dnn.nodeModules.CommonComponents.PagePicker",
-        "dnn-searchable-tags": "dnn.nodeModules.CommonComponents.SearchableTags"
+        "dnn-searchable-tags": "dnn.nodeModules.CommonComponents.SearchableTags",
+        "dnn-slider": "dnn.nodeModules.CommonComponents.NumberSlider"
 };
