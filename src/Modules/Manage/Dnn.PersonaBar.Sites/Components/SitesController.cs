@@ -68,6 +68,7 @@ namespace Dnn.PersonaBar.Sites.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly TabsController _tabsController = new TabsController();
+        internal static readonly IList<string> ImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -201,10 +202,11 @@ namespace Dnn.PersonaBar.Sites.Components
         public ListItem CreateListItem(PortalController.PortalTemplateInfo template)
         {
             string text, value;
+            var fileName = Path.GetFileName(template.TemplateFilePath);
             if (string.IsNullOrEmpty(template.CultureCode))
             {
                 text = template.Name;
-                value = Path.GetFileName(template.TemplateFilePath);
+                value = fileName;
             }
             else
             {
@@ -226,7 +228,9 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
 
                 text = string.Format("{0} - {1}", template.Name, Localization.GetLocaleName(template.CultureCode, DisplayType));
-                value = string.Format("{0}|{1}", Path.GetFileName(template.TemplateFilePath), template.CultureCode);
+                
+                value = string.Format("{0}|{1}|{2}",
+                    fileName, template.CultureCode, GetThumbnail(fileName));
             }
 
             return new ListItem(text, value);
@@ -1170,6 +1174,23 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 Logger.Error(ex);
             }
+        }
+
+        private static string GetThumbnail(string templateName)
+        {
+            var filePath = Path.Combine(Globals.HostMapPath, templateName);
+            var imagePath = string.Empty;
+            foreach (var ext in ImageExtensions)
+            {
+                var path = Path.ChangeExtension(filePath, ext);
+                if (File.Exists(path))
+                {
+                    imagePath = path;
+                    break;
+                }
+            }
+
+            return imagePath;
         }
 
         class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
