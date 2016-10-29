@@ -206,7 +206,7 @@ namespace Dnn.PersonaBar.Sites.Components
             if (string.IsNullOrEmpty(template.CultureCode))
             {
                 text = template.Name;
-                value = fileName;
+                value = string.Format("{0}|{1}", fileName, GetThumbnail(fileName));
             }
             else
             {
@@ -229,8 +229,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 text = string.Format("{0} - {1}", template.Name, Localization.GetLocaleName(template.CultureCode, DisplayType));
                 
-                value = string.Format("{0}|{1}|{2}",
-                    fileName, template.CultureCode, GetThumbnail(fileName));
+                value = string.Format("{0}|{1}|{2}", fileName, template.CultureCode, GetThumbnail(fileName));
             }
 
             return new ListItem(text, value);
