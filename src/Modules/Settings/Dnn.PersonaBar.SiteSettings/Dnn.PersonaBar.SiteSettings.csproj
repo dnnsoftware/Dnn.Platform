@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\UpdateBasicSearchSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateUrlMappingSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteAliasRequest.cs" />
     <Compile Include="Services\Dto\UpdateProfilePropertyLocalizationRequest.cs" />

@@ -531,6 +531,75 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    basicSearchSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_BASIC_SEARCH_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    basicSearchSettings: parameter,
+                    basicSearchSettingsClientModified: true
+                }
+            });
+        };
+    },
+    updateBasicSearchSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateBasicSearchSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_BASIC_SEARCH_SETTINGS,
+                    data: {
+                        basicSearchSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    compactSearchIndex(callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.compactSearchIndex(data => {                
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    hostSearchReindex(callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.hostSearchReindex(data => {                
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    portalSearchReindex(portalId, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.portalSearchReindex(portalId, data => {                
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

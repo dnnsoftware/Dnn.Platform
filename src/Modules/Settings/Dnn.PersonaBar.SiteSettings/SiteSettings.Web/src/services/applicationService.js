@@ -132,6 +132,26 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("GetBasicSearchSettings", {}, callback);
     } 
+
+    updateBasicSearchSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateBasicSearchSettings", payload, callback, failureCallback);
+    }
+
+    compactSearchIndex(callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("CompactSearchIndex", {}, callback, failureCallback);
+    }
+
+    hostSearchReindex(callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("HostSearchReindex", {}, callback, failureCallback);
+    }
+
+    portalSearchReindex(portalId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("PortalSearchReindex?portalId=" + portalId, {}, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

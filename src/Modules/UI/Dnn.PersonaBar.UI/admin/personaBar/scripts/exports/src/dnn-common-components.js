@@ -30,6 +30,7 @@ import Tabs from "dnn-tabs";
 import Tags from "dnn-tags";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import Tooltip from "dnn-tooltip";
+import NumberSlider from "dnn-slider";
 
 export {
     Button,
@@ -63,5 +64,6 @@ export {
     Tabs,
     Tags,
     TextOverflowWrapper,
-    Tooltip
+    Tooltip,
+    NumberSlider
 };

@@ -151,6 +151,15 @@ export default function siteSettings(state = {
                 basicSearchSettings: action.data.basicSearchSettings,
                 searchCustomAnalyzers: action.data.searchCustomAnalyzers
             };
+        case ActionTypes.SITESETTINGS_BASIC_SEARCH_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                basicSearchSettings: action.data.basicSearchSettings,
+                basicSearchSettingsClientModified: action.data.basicSearchSettingsClientModified
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_BASIC_SEARCH_SETTINGS:
+            return { ...state,
+                basicSearchSettingsClientModified: action.data.basicSearchSettingsClientModified
+            };
         default:
             return state;
     }

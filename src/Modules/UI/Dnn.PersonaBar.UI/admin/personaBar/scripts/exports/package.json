@@ -44,6 +44,7 @@
     "dnn-select": "^0.0.4",
     "dnn-single-line-input": "^1.0.0",
     "dnn-single-line-input-with-error": "0.0.5",
+    "dnn-slider": "0.0.1",
     "dnn-social-panel-body": "^1.0.1",
     "dnn-social-panel-header": "0.0.4",
     "dnn-svg-icons": "0.0.7",

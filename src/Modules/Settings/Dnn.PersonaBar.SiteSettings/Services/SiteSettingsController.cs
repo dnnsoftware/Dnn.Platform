@@ -1132,5 +1132,136 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        /// POST: api/SiteSettings/UpdateBasicSearchSettings
+        /// <summary>
+        /// Updates basic search settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateBasicSearchSettings(UpdateBasicSearchSettingsRequest request)
+        {
+            try
+            {
+                if (request.MinWordLength == Null.NullInteger || request.MinWordLength == 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("valIndexWordMinLengthRequired.Error", LocalResourcesFile)));
+                }
+                else if (request.MaxWordLength == Null.NullInteger || request.MaxWordLength == 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("valIndexWordMaxLengthRequired.Error", LocalResourcesFile)));
+                }
+                else if (request.MinWordLength >= request.MaxWordLength)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            string.Format(Localization.GetString("valIndexWordMaxLengthRequired.Error", LocalResourcesFile)));
+                }
+
+                var oldMinLength = HostController.Instance.GetInteger("Search_MinKeyWordLength", 3);
+                if (request.MinWordLength != oldMinLength)
+                {
+                    HostController.Instance.Update("Search_MinKeyWordLength", request.MinWordLength.ToString());
+                }
+
+                var oldMaxLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
+                if (request.MaxWordLength != oldMaxLength)
+                {
+                    HostController.Instance.Update("Search_MaxKeyWordLength", request.MaxWordLength.ToString());
+                }
+
+                HostController.Instance.Update("Search_AllowLeadingWildcard", request.AllowLeadingWildcard ? "Y" : "N");
+                HostController.Instance.Update(SearchTitleBoostSetting, (request.TitleBoost == Null.NullInteger) ? DefaultSearchTitleBoost.ToString() : request.TitleBoost.ToString());
+                HostController.Instance.Update(SearchTagBoostSetting, (request.TagBoost == Null.NullInteger) ? DefaultSearchTagBoost.ToString() : request.TagBoost.ToString());
+                HostController.Instance.Update(SearchContentBoostSetting, (request.ContentBoost == Null.NullInteger) ? DefaultSearchContentBoost.ToString() : request.ContentBoost.ToString());
+                HostController.Instance.Update(SearchDescriptionBoostSetting, (request.DescriptionBoost == Null.NullInteger) ? DefaultSearchDescriptionBoost.ToString() : request.DescriptionBoost.ToString());
+                HostController.Instance.Update(SearchAuthorBoostSetting, (request.AuthorBoost == Null.NullInteger) ? DefaultSearchAuthorBoost.ToString() : request.AuthorBoost.ToString());
+
+                var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+                var newAnalyzer = request.SearchCustomAnalyzer.Trim();
+                if (!oldAnalyzer.Equals(newAnalyzer))
+                {
+                    HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);
+                    //force the app restart to use new analyzer.
+                    Config.Touch();
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/CompactSearchIndex
+        /// <summary>
+        /// Compacts search index
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CompactSearchIndex()
+        {
+            try
+            {
+                SearchHelper.Instance.SetSearchReindexRequestTime(true);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/HostSearchReindex
+        /// <summary>
+        /// Re-index host search
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage HostSearchReindex()
+        {
+            try
+            {
+                SearchHelper.Instance.SetSearchReindexRequestTime(-1);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/PortalSearchReindex
+        /// <summary>
+        /// Re-index portal search
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage PortalSearchReindex([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                SearchHelper.Instance.SetSearchReindexRequestTime(pid);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
     }
 }

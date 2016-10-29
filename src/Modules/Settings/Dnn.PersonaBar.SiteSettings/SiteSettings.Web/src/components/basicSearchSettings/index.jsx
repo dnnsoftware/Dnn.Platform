@@ -18,6 +18,8 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+const re = /^[1-9]\d*$/;
+
 class BasicSearchSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -39,6 +41,7 @@ class BasicSearchSettingsPanelBody extends Component {
             });
             return;
         }
+
         props.dispatch(SiteSettingsActions.getBasicSearchSettings((data) => {
             this.setState({
                 basicSearchSettings: Object.assign({}, data.Settings)
@@ -50,17 +53,18 @@ class BasicSearchSettingsPanelBody extends Component {
         let {state} = this;
 
         let minWordLength = props.basicSearchSettings["MinWordLength"];
-        if (minWordLength === "") {
+        if (!re.test(minWordLength)) {
             state.error["minlength"] = true;
         }
-        else if (minWordLength !== "") {
+        else if (re.test(minWordLength)) {
             state.error["minlength"] = false;
         }
+
         let maxWordLength = props.basicSearchSettings["MaxWordLength"];
-        if (maxWordLength === "") {
+        if (!re.test(maxWordLength) || minWordLength >= maxWordLength) {
             state.error["maxlength"] = true;
         }
-        else if (maxWordLength !== "") {
+        else if (re.test(maxWordLength) && maxWordLength > minWordLength) {
             state.error["maxlength"] = false;
         }
 
@@ -69,24 +73,33 @@ class BasicSearchSettingsPanelBody extends Component {
             error: state.error,
             triedToSubmit: false
         });
-    } 
+    }
 
     onSettingChange(key, event) {
         let {state, props} = this;
         let basicSearchSettings = Object.assign({}, state.basicSearchSettings);
 
-        basicSearchSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        if (key === "TitleBoost" || key === "TagBoost" || key === "ContentBoost" || key === "DescriptionBoost" || key === "AuthorBoost") {
+            basicSearchSettings[key] = event;
+        }
+        else if (key === "SearchCustomAnalyzer") {
+            basicSearchSettings[key] = event.value;
+        }
+        else {
+            basicSearchSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        }
 
-        if (basicSearchSettings[key] === "" && key === "MinWordLength") {
+        if (!re.test(basicSearchSettings[key]) && key === "MinWordLength") {
             state.error["minlength"] = true;
         }
-        else if (basicSearchSettings[key] !== "" && key === "MinWordLength") {
+        else if (re.test(basicSearchSettings[key]) && key === "MinWordLength") {
             state.error["minlength"] = false;
         }
-        if (basicSearchSettings[key] === "" && key === "MaxWordLength") {
+
+        if (key === "MaxWordLength" && (!re.test(basicSearchSettings[key]) || basicSearchSettings["MinWordLength"] >= basicSearchSettings["MaxWordLength"])) {
             state.error["maxlength"] = true;
         }
-        else if (basicSearchSettings[key] !== "" && key === "MaxWordLength") {
+        else if (key === "MaxWordLength" && re.test(basicSearchSettings[key]) && basicSearchSettings["MaxWordLength"] > basicSearchSettings["MinWordLength"]) {
             state.error["maxlength"] = false;
         }
 
@@ -101,10 +114,12 @@ class BasicSearchSettingsPanelBody extends Component {
 
     getAnalyzerTypeOptions() {
         let options = [];
+        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
         if (this.props.searchCustomAnalyzers !== undefined) {
             options = this.props.searchCustomAnalyzers.map((item) => {
                 return { label: item, value: item };
             });
+            options.unshift({ label: noneSpecifiedText, value: "" });
         }
         return options;
     }
@@ -135,6 +150,27 @@ class BasicSearchSettingsPanelBody extends Component {
                     basicSearchSettings: Object.assign({}, data.Settings)
                 });
             }));
+        });
+    }
+
+    onReindexContent(event) {
+        const {props, state} = this;
+        util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
+            props.dispatch(SiteSettingsActions.portalSearchReindex(props.portalId));
+        });
+    }
+
+    onReindexHostContent(event) {
+        const {props, state} = this;
+        util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
+            props.dispatch(SiteSettingsActions.hostSearchReindex());
+        });
+    }
+
+    onCompactIndex(event) {
+        const {props, state} = this;
+        util.utilities.confirm(resx.get("CompactIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
+            props.dispatch(SiteSettingsActions.compactSearchIndex());
         });
     }
 
@@ -211,19 +247,148 @@ class BasicSearchSettingsPanelBody extends Component {
                             tooltipMessage={resx.get("lblTitleBoost.Help")}
                             label={resx.get("lblTitleBoost")}
                             />
-                            
                         <NumberSlider
                             min={0}
                             max={50}
                             step={5}
-                            value={25}
+                            value={state.basicSearchSettings.TitleBoost}
                             onChange={this.onSettingChange.bind(this, "TitleBoost")}
                             />
                     </InputGroup>
-                    
+                    <InputGroup>
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("lblTagBoost.Help")}
+                            label={resx.get("lblTagBoost")}
+                            />
+                        <NumberSlider
+                            min={0}
+                            max={50}
+                            step={5}
+                            value={state.basicSearchSettings.TagBoost}
+                            onChange={this.onSettingChange.bind(this, "TagBoost")}
+                            />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("lblContentBoost.Help")}
+                            label={resx.get("lblContentBoost")}
+                            />
+                        <NumberSlider
+                            min={0}
+                            max={50}
+                            step={5}
+                            value={state.basicSearchSettings.ContentBoost}
+                            onChange={this.onSettingChange.bind(this, "ContentBoost")}
+                            />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("v.Help")}
+                            label={resx.get("lblDescriptionBoost")}
+                            />
+                        <NumberSlider
+                            min={0}
+                            max={50}
+                            step={5}
+                            value={state.basicSearchSettings.DescriptionBoost}
+                            onChange={this.onSettingChange.bind(this, "DescriptionBoost")}
+                            />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("lblAuthorBoost.Help")}
+                            label={resx.get("lblAuthorBoost")}
+                            />
+                        <NumberSlider
+                            min={0}
+                            max={50}
+                            step={5}
+                            value={state.basicSearchSettings.AuthorBoost}
+                            onChange={this.onSettingChange.bind(this, "AuthorBoost")}
+                            />
+                    </InputGroup>
+
                     <div className="sectionTitle">{resx.get("SearchIndex")}</div>
                     <div className="searchIndexWrapper">
-
+                        <div className="searchIndexWrapper-left">
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblSearchIndexPath.Help")}
+                                    label={resx.get("lblSearchIndexPath")}
+                                    />
+                                <Label
+                                    labelType="inline"
+                                    label={state.basicSearchSettings.SearchIndexPath}
+                                    />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblSearchIndexDbSize.Help")}
+                                    label={resx.get("lblSearchIndexDbSize")}
+                                    />
+                                <Label
+                                    labelType="inline"
+                                    label={state.basicSearchSettings.SearchIndexDbSize}
+                                    />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblSearchIndexActiveDocuments.Help")}
+                                    label={resx.get("lblSearchIndexActiveDocuments")}
+                                    />
+                                <Label
+                                    labelType="inline"
+                                    label={state.basicSearchSettings.SearchIndexTotalActiveDocuments}
+                                    />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblSearchIndexDeletedDocuments.Help")}
+                                    label={resx.get("lblSearchIndexDeletedDocuments")}
+                                    />
+                                <Label
+                                    labelType="inline"
+                                    label={state.basicSearchSettings.SearchIndexTotalDeletedDocuments}
+                                    />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblSearchIndexLastModifiedOn.Help")}
+                                    label={resx.get("lblSearchIndexLastModifiedOn")}
+                                    />
+                                <Label
+                                    labelType="inline"
+                                    label={state.basicSearchSettings.SearchIndexLastModifedOn}
+                                    />
+                            </InputGroup>
+                        </div>
+                        <div className="searchIndexWrapper-right">
+                            <Button
+                                type="secondary"
+                                onClick={this.onCompactIndex.bind(this)}>
+                                {resx.get("CompactIndex")}
+                            </Button>
+                            <Button
+                                type="secondary"
+                                onClick={this.onReindexContent.bind(this)}>
+                                {resx.get("ReindexContent")}
+                            </Button>
+                            <Button
+                                type="secondary"
+                                onClick={this.onReindexHostContent.bind(this)}>
+                                {resx.get("ReindexHostContent")}
+                            </Button>
+                        </div>
+                        <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>
                     </div>
                     <div className="buttons-box">
                         <Button

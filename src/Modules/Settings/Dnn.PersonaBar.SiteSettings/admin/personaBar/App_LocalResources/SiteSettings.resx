@@ -702,4 +702,52 @@
   <data name="lblTitleBoost.Text" xml:space="preserve">
     <value>Title Boost</value>
   </data>
+  <data name="lblSearchIndexPath.Help" xml:space="preserve">
+    <value>Location where Search Index is stored.  This location can be manually changed by creating a Host Setting "Search_IndexFolder" in database.  It is advised to stop the App Pool prior to making this change.  Content from the old folder must be manually copied to new location or a manual re-index must be triggered. </value>
+  </data>
+  <data name="lblSearchIndexPath.Text" xml:space="preserve">
+    <value>Search Index Path</value>
+  </data>
+  <data name="lblSearchIndexDbSize.Help" xml:space="preserve">Custom Analyzer Type
+    <value>The total size of search index database files.</value>
+  </data>
+  <data name="lblSearchIndexDbSize.Text" xml:space="preserve">
+    <value>Search Index Size</value>
+  </data>
+  <data name="lblSearchIndexActiveDocuments.Help" xml:space="preserve">
+    <value>The number of active documents in search index files</value>
+  </data>
+  <data name="lblSearchIndexActiveDocuments.Text" xml:space="preserve">
+    <value>Active Documents</value>
+  </data>
+  <data name="lblSearchIndexDeletedDocuments.Help" xml:space="preserve">
+    <value>The number of deleted documents in search index files</value>
+  </data>
+  <data name="lblSearchIndexDeletedDocuments.Text" xml:space="preserve">
+    <value>Deleted Documents</value>
+  </data>
+  <data name="lblSearchIndexLastModifiedOn.Help" xml:space="preserve">
+    <value>Last modified time of search index files.</value>
+  </data>
+  <data name="lblSearchIndexLastModifiedOn.Text" xml:space="preserve">
+    <value>Last Modified On</value>
+  </data>
+  <data name="MessageIndexWarning.Text" xml:space="preserve">
+    <value>Compacting or Re-Indexing should be done during non-peak hours as the process can be CPU intensive.</value>
+  </data>
+  <data name="CompactIndex.Text" xml:space="preserve">
+    <value>Compact Index</value>
+  </data>
+  <data name="ReindexContent.Text" xml:space="preserve">
+    <value>Re-index Content</value>
+  </data>
+  <data name="ReindexHostContent.Text" xml:space="preserve">
+    <value>Re-index Host Content</value>
+  </data>
+  <data name="ReIndexConfirmationMessage.Text" xml:space="preserve">
+    <value>Re-Index will cause existing content in the Index Store to be deleted. Re-index is done by search crawler(s) and depends on their scheduling frequency. Are you sure you want to continue?</value>
+  </data>
+  <data name="CompactIndexConfirmationMessage.Text" xml:space="preserve">
+    <value>Compacting Index can be CPU consuming and may require twice the space of the current Index Store for processing. Compacting is done by site search crawler and depends on its scheduling frequency. Are you sure you want to continue?</value>
+  </data>
 </root>
