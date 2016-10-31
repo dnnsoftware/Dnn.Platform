@@ -900,4 +900,103 @@
   <data name="EditExtension_SiteSettings.TabHeader" xml:space="preserve">
     <value>Site Settings</value>
   </data>
+  <data name="EditContainer_ThemePackageName.HelpText" xml:space="preserve">
+    <value>Enter a name for the Theme Package</value>
+  </data>
+  <data name="EditContainer_ThemePackageName.Label" xml:space="preserve">
+    <value>Theme Package Name</value>
+  </data>
+  <data name="EditExtensionLanguagePack_Language.HelpText" xml:space="preserve">
+    <value>Choose the Language for this Language Pack</value>
+  </data>
+  <data name="EditExtensionLanguagePack_Language.Label" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="EditExtensionLanguagePack_Package.HelpText" xml:space="preserve">
+    <value>Chose the Package this Language Pack is for.</value>
+  </data>
+  <data name="EditExtensionLanguagePack_Package.Label" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="EditJavascriptLibrary_CustomCDN.HelpText" xml:space="preserve">
+    <value>The URL to a custom CDN location for this library which will be used instead of the default CDN</value>
+  </data>
+  <data name="EditJavascriptLibrary_CustomCDN.Label" xml:space="preserve">
+    <value>Custom CDN</value>
+  </data>
+  <data name="EditJavascriptLibrary_DefaultCDN.HelpText" xml:space="preserve">
+    <value>The URL to the default CDN to use for the library. This can be overridden by providing a custom URL.</value>
+  </data>
+  <data name="EditJavascriptLibrary_DefaultCDN.Label" xml:space="preserve">
+    <value>Default CDN</value>
+  </data>
+  <data name="EditJavascriptLibrary_DependsOn.HelpText" xml:space="preserve">
+    <value>Displays a list of all the packages that this package depends on.</value>
+  </data>
+  <data name="EditJavascriptLibrary_DependsOn.Label" xml:space="preserve">
+    <value>Depends On</value>
+  </data>
+  <data name="EditJavascriptLibrary_FileName.HelpText" xml:space="preserve">
+    <value>The filename of the JavaScript file.</value>
+  </data>
+  <data name="EditJavascriptLibrary_FileName.Label" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="EditJavascriptLibrary_LibraryName.HelpText" xml:space="preserve">
+    <value>The name of the JavaScript Library (e.g. "jQuery")</value>
+  </data>
+  <data name="EditJavascriptLibrary_LibraryName.Label" xml:space="preserve">
+    <value>Library Name</value>
+  </data>
+  <data name="EditJavascriptLibrary_LibraryVersion.HelpText" xml:space="preserve">
+    <value>The version of the JavaScript Library.</value>
+  </data>
+  <data name="EditJavascriptLibrary_LibraryVersion.Label" xml:space="preserve">
+    <value>Library Version</value>
+  </data>
+  <data name="EditJavascriptLibrary_ObjectName.HelpText" xml:space="preserve">
+    <value>The name of the JavaScript object to use to access the libraries methods.</value>
+  </data>
+  <data name="EditJavascriptLibrary_ObjectName.Label" xml:space="preserve">
+    <value>Object Name</value>
+  </data>
+  <data name="EditJavascriptLibrary_PreferredLocation.HelpText" xml:space="preserve">
+    <value>The preferred location to render the script. There are three possibilities: in the page head, at the top of the page body, or at the bottom of the page body.</value>
+  </data>
+  <data name="EditJavascriptLibrary_PreferredLocation.Label" xml:space="preserve">
+    <value>Preferred Location</value>
+  </data>
+  <data name="EditJavascriptLibrary_UsedBy.HelpText" xml:space="preserve">
+    <value>Displays a list of all the packages that use this package.</value>
+  </data>
+  <data name="EditJavascriptLibrary_UsedBy.Label" xml:space="preserve">
+    <value>Used By</value>
+  </data>
+  <data name="EditSkinObject_ControlKey.HelpText" xml:space="preserve">
+    <value>Enter a key for the Skin Object. The key must be unique.</value>
+  </data>
+  <data name="EditSkinObject_ControlKey.Label" xml:space="preserve">
+    <value>Control Key</value>
+  </data>
+  <data name="EditSkinObject_ControlSrc.HelpText" xml:space="preserve">
+    <value>Enter the Source for this Control. If the control is a User Control, enter the source relative to the website root.</value>
+  </data>
+  <data name="EditSkinObject_ControlSrc.Label" xml:space="preserve">
+    <value>Control SRC</value>
+  </data>
+  <data name="EditSkinObject_SupportsPartialRender.HelpText" xml:space="preserve">
+    <value>Check this box to indicate that this control supports AJAX Partial Rendering.</value>
+  </data>
+  <data name="EditSkinObject_SupportsPartialRender.Label" xml:space="preserve">
+    <value>Supports Partial Rendering</value>
+  </data>
+  <data name="LoadMore.Button" xml:space="preserve">
+    <value>Load More</value>
+  </data>
+  <data name="EditJavascriptLibrary_TableName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EditJavascriptLibrary_TableVersion.Header" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>

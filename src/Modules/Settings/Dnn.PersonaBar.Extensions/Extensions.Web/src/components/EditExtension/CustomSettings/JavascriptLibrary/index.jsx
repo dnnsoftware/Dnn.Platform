@@ -35,10 +35,10 @@ class JavascriptLibrary extends Component {
             <hr className="jslibrary-table-separator" />,
             <GridCell className="js-library-info-table">
                 <GridCell className="js-library-info-name-header" columnSize={70}>
-                    {Localization.get("EditModule_JSLibraryName.Label")}
+                    {Localization.get("EditJavascriptLibrary_TableName.Header")}
                 </GridCell>
                 <GridCell className="js-library-info-version-header" columnSize={30}>
-                    {Localization.get("EditModule_JSLibraryVersion.Label")}
+                    {Localization.get("EditJavascriptLibrary_TableVersion.Header")}
                 </GridCell>
                 {this.getNameVersionRows(list)}
             </GridCell>
@@ -101,10 +101,10 @@ class JavascriptLibrary extends Component {
 
                 <GridSystem className="with-right-border top-half">
                     <div>
-                        {this.getNameVersionTable(extensionBeingEdited.dependencies.value, Localization.get("EditModule_DependsOn.Label"), Localization.get("EditModule_DependsOn.HelpText"))}
+                        {this.getNameVersionTable(extensionBeingEdited.dependencies.value, Localization.get("EditJavascriptLibrary_DependsOn.Label"), Localization.get("EditJavascriptLibrary_DependsOn.HelpText"))}
                     </div>
                     <div>
-                        {this.getNameVersionTable(extensionBeingEdited.usedBy.value, Localization.get("EditModule_UsedBy.Label"), Localization.get("EditModule_UsedBy.HelpText"))}
+                        {this.getNameVersionTable(extensionBeingEdited.usedBy.value, Localization.get("EditJavascriptLibrary_UsedBy.Label"), Localization.get("EditJavascriptLibrary_UsedBy.HelpText"))}
                     </div>
                 </GridSystem>
                 {!props.actionButtonsDisabled &&
