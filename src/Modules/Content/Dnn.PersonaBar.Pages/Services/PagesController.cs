@@ -208,6 +208,39 @@ namespace Dnn.PersonaBar.Pages.Services
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SavePageDetails(PageSettings pageSettings)
+        {
+            TabInfo tab = null;
+            if (pageSettings.TabId > 0)
+            {
+                tab = TabController.Instance.GetTab(pageSettings.TabId, PortalSettings.PortalId);
+                if (tab == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "Page doesn't exists." });
+                }
+            }
+
+            string errorMessage;
+            string field;
+            if (!_pagesController.ValidatePageSettingsData(pageSettings, tab, out field, out errorMessage))
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Field = field, Message = errorMessage });
+            }
+
+            int tabId = pageSettings.TabId <= 0 ? _pagesController.AddTab(pageSettings) : _pagesController.UpdateTab(tab, pageSettings);
+
+            tab = TabController.Instance.GetTab(tabId, PortalSettings.PortalId);
+            var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false, true);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
+                Status = 0,
+                Page = ConvertToPageItem(tab, tabs)
+            });
+        }
+
         private static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem()
         {
             Id = module.ModuleID,

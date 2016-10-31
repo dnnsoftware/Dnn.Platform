@@ -13,5 +13,8 @@ namespace Dnn.PersonaBar.Pages.Components
         PageSettings GetPageDetails(int pageId);
         
         IEnumerable<ModuleInfo> GetModules(int pageId);
+        bool ValidatePageSettingsData(PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage);
+        int AddTab(PageSettings pageSettings);
+        int UpdateTab(TabInfo tab, PageSettings pageSettings);
     }
 }
