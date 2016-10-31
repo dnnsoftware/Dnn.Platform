@@ -41,7 +41,7 @@ export default class Checkbox extends Component {
             height: props.size
         };
         return (
-            <div className={"dnn-checkbox-container " + props.labelPlace + (!this.props.enabled ? " disabled" : "") }>
+            <div className={"dnn-checkbox-container " + (props.labelPlace ? "align-" + props.labelPlace : "") + (!this.props.enabled ? " disabled" : "") }>
                 <div className={className} style={Object.assign(checkBoxStyle, props.style) }>
                     <input
                         type="checkbox"
