@@ -13,6 +13,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [JsonProperty("languageId")]
         public int LanguageId { get; set; }
 
+        [JsonProperty("languagePackageId")]
+        public int LanguagePackageId { get; set; }
+
         [JsonProperty("editUrlFormat")]
         public string EditUrlFormat { get; set; }
 

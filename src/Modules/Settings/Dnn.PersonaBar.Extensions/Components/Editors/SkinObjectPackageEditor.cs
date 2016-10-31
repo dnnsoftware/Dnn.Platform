@@ -34,26 +34,26 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
+                string value;
                 var skinControl = SkinControlController.GetSkinControlByPackageID(packageSettings.PackageId);
 
-                if (packageSettings.EditorActions.ContainsKey("controlKey")
-                    && !string.IsNullOrEmpty(packageSettings.EditorActions["controlKey"]))
+                if (packageSettings.EditorActions.TryGetValue("controlKey", out value)
+                    && !string.IsNullOrEmpty(value))
                 {
-                    skinControl.ControlKey = packageSettings.EditorActions["controlKey"];
+                    skinControl.ControlKey = value;
                 }
-                if (packageSettings.EditorActions.ContainsKey("controlSrc")
-                    && !string.IsNullOrEmpty(packageSettings.EditorActions["controlSrc"]))
+                if (packageSettings.EditorActions.TryGetValue("controlSrc", out value)
+                    && !string.IsNullOrEmpty(value))
                 {
-                    skinControl.ControlSrc = packageSettings.EditorActions["controlSrc"];
+                    skinControl.ControlSrc = value;
                 }
-                if (packageSettings.EditorActions.ContainsKey("supportsPartialRendering")
-                    && !string.IsNullOrEmpty(packageSettings.EditorActions["supportsPartialRendering"]))
+                if (packageSettings.EditorActions.TryGetValue("supportsPartialRendering", out value)
+                    && !string.IsNullOrEmpty(value))
                 {
-                    skinControl.SupportsPartialRendering = bool.Parse(packageSettings.EditorActions["supportsPartialRendering"]);
+                    skinControl.SupportsPartialRendering = bool.Parse(value);
                 }
 
                 SkinControlController.SaveSkinControl(skinControl);
-
                 return true;
             }
             catch (Exception ex)

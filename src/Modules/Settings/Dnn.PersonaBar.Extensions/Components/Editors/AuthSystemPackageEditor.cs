@@ -52,34 +52,37 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(packageSettings.PackageId);
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
                 if (isHostUser)
                 {
-                    if(packageSettings.EditorActions.ContainsKey("loginControlSource")
-                        && !string.IsNullOrEmpty(packageSettings.EditorActions["loginControlSource"]))
+                    string value;
+                    var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(packageSettings.PackageId);
+
+                    if (packageSettings.EditorActions.TryGetValue("loginControlSource", out value)
+                        && !string.IsNullOrEmpty(value))
                     {
-                        authSystem.LoginControlSrc = packageSettings.EditorActions["loginControlSource"];
+                        authSystem.LoginControlSrc = value;
                     }
-                    if (packageSettings.EditorActions.ContainsKey("logoffControlSource")
-                        && !string.IsNullOrEmpty(packageSettings.EditorActions["logoffControlSource"]))
+                    if (packageSettings.EditorActions.TryGetValue("logoffControlSource", out value)
+                        && !string.IsNullOrEmpty(value))
                     {
-                        authSystem.LogoffControlSrc = packageSettings.EditorActions["logoffControlSource"];
+                        authSystem.LogoffControlSrc = value;
                     }
-                    if (packageSettings.EditorActions.ContainsKey("settingsControlSource")
-                        && !string.IsNullOrEmpty(packageSettings.EditorActions["settingsControlSource"]))
+                    if (packageSettings.EditorActions.TryGetValue("settingsControlSource", out value)
+                        && !string.IsNullOrEmpty(value))
                     {
-                        authSystem.SettingsControlSrc = packageSettings.EditorActions["settingsControlSource"];
+                        authSystem.SettingsControlSrc = value;
                     }
-                    if (packageSettings.EditorActions.ContainsKey("enabled")
-                        && !string.IsNullOrEmpty(packageSettings.EditorActions["enabled"]))
+                    if (packageSettings.EditorActions.TryGetValue("enabled", out value)
+                        && !string.IsNullOrEmpty(value))
                     {
-                        authSystem.IsEnabled = bool.Parse(packageSettings.EditorActions["loginControlSource"]);
+                        authSystem.IsEnabled = bool.Parse(value);
                     }
 
                     AuthenticationController.UpdateAuthentication(authSystem);
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -94,7 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         #region Private Methods
 
-        private string GetSettingUrl(int portalId, int authSystemPackageId)
+        private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
             var module = ModuleController.Instance.GetModulesByDefinition(portalId, "Extensions")
                 .Cast<ModuleInfo>().FirstOrDefault();

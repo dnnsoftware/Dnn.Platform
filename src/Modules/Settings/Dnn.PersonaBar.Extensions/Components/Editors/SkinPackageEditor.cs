@@ -20,7 +20,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var skin = SkinController.GetSkinByPackageID(package.PackageID);
             var detail = new SkinPackageDetailDto(portalId, package)
             {
-                //Name = skin.SkinName
                 ThemePackageName = skin.SkinName,
                 ReadOnly = !isHostUser,
             };
@@ -36,12 +35,17 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-                if(isHostUser && packageSettings.EditorActions.ContainsKey("name")
-                    && !string.IsNullOrEmpty(packageSettings.EditorActions["name"]))
+                if (isHostUser)
                 {
+                    string value;
                     var skin = SkinController.GetSkinByPackageID(packageSettings.PackageId);
-                    skin.SkinName = packageSettings.EditorActions["name"];
-                    SkinController.UpdateSkinPackage(skin);
+
+                    if (packageSettings.EditorActions.TryGetValue("themePackageName", out value)
+                        && !string.IsNullOrEmpty(value))
+                    {
+                        skin.SkinName = value;
+                        SkinController.UpdateSkinPackage(skin);
+                    }
                 }
 
                 return true;

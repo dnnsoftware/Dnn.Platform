@@ -5,7 +5,6 @@ using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 
@@ -13,10 +12,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     public class LanguagePackageEditor : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagePackageEditor));
-
-        #region IPackageEditor Implementation
-
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var locales = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
@@ -27,6 +22,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 Locales = locales.Select(l => new ListItemDto {Id = l.LanguageId, Name = l.EnglishName}),
                 LanguageId = languagePack.LanguageID,
+                LanguagePackageId = languagePack.LanguagePackID,
                 EditUrlFormat = Globals.NavigateURL(languagesTab, "", "Locale={0}")
             };
 
@@ -53,7 +49,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             errorMessage = string.Empty;
             return true;
         }
-
-        #endregion
     }
 }

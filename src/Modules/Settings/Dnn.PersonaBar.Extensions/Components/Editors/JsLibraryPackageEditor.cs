@@ -52,12 +52,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == packageSettings.PackageId);
-
-                if(packageSettings.EditorActions.ContainsKey("customCdn")
-                    && !string.IsNullOrEmpty(packageSettings.EditorActions["customCdn"]))
+                string value;
+                if (packageSettings.EditorActions.TryGetValue("customCdn", out value)
+                    && !string.IsNullOrEmpty(value))
                 {
-                    HostController.Instance.Update("CustomCDN_" + library.LibraryName, packageSettings.EditorActions["customCdn"]);
+                    var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == packageSettings.PackageId);
+                    HostController.Instance.Update("CustomCDN_" + library.LibraryName, value);
                 }
 
                 return true;
