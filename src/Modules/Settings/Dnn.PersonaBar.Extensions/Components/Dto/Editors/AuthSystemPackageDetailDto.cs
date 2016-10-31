@@ -6,6 +6,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class AuthSystemPackageDetailDto : PackageInfoDto
     {
+        [JsonProperty("authenticationType")]
+        public string AuthenticationType { get; set; }
+
         [JsonProperty("settingUrl")]
         public string SettingUrl { get; set; }
 

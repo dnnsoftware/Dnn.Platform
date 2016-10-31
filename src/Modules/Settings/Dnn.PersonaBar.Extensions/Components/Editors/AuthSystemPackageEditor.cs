@@ -22,7 +22,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-            var detail = new AuthSystemPackageDetailDto(portalId, package);
+            var detail = new AuthSystemPackageDetailDto(portalId, package)
+            {
+                AuthenticationType = authSystem.AuthenticationType,
+            };
 
             var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
             if (hasCustomSettings)
