@@ -339,4 +339,7 @@
   <data name="Pending.Text" xml:space="preserve">
     <value>Please drag the page into the desired location.</value>
   </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

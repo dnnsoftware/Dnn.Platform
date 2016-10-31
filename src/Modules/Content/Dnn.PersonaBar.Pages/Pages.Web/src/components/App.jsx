@@ -1,17 +1,15 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import SocialPanelHeader from "dnn-social-panel-header";
-import PageHierarchy from "./PageHierarchy/PageHierarchy";
 import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     visiblePanel as VisiblePanelActions,
-    pageActions as PageActions,
-    pageHierarchyActions as PageHierarchyActions
+    pageActions as PageActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import Localization from "../localization";
-import SingleLineInput from "dnn-single-line-input";
+import PageList from "./PageList/PageList";
 
 class App extends Component {
 
@@ -40,27 +38,14 @@ class App extends Component {
         console.log("onPermissionsChanged", permissions);
         this.props.dispatch(PageActions.changePermissions(permissions));
     }
-
-    onSearchKeywordChanged(e) {
-        this.props.dispatch(PageHierarchyActions.setSearchKeyword(e.target.value));
-    }
     
     render() {
         const {props} = this;
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={Localization.get("Pages")}>
-                        <SingleLineInput 
-                            value={this.props.searchKeyword}
-                            onChange={this.onSearchKeywordChanged.bind(this)} />
-                    </SocialPanelHeader>
-                    <SocialPanelBody>                        
-                        <PageHierarchy
-                            itemTemplate={this.props.itemTemplate}
-                            searchKeyword={this.props.searchKeyword} 
-                            onPageSettings={pageId => this.onPageSettings(pageId)} />
-                    </SocialPanelBody>
+                    <SocialPanelHeader title={Localization.get("Pages")} />
+                    <PageList />
                 </PersonaBarPage>
                 {props.selectedDnnPage && 
                     <PersonaBarPage isOpen={props.selectedPage === 1}>
@@ -84,18 +69,14 @@ App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
-    selectedDnnPage: PropTypes.object,
-    searchKeyword: PropTypes.string.isRequired,
-    itemTemplate: PropTypes.string.isRequired
+    selectedDnnPage: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        selectedDnnPage: state.pages.selectedPage,
-        searchKeyword: state.pageHierarchy.searchKeyword,
-        itemTemplate: state.pageHierarchy.itemTemplate
+        selectedDnnPage: state.pages.selectedPage
     };
 }
 
