@@ -94,35 +94,9 @@ namespace Dnn.PersonaBar.Pages.Components
             return valid;
         }
 
-        public PageSettings GetPageDetails(int pageId)
+        public TabInfo GetPageDetails(int pageId)
         {
-            var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
-            if (tab == null)
-            {
-                return null;
-            }
-
-            var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Description;
-            var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.KeyWords;
-
-            return new PageSettings
-            {
-                TabId = tab.TabID,
-                Name = tab.TabName,
-                LocalizedName = tab.LocalizedTabName,
-                Title = tab.Title,
-                Description = description,
-                Keywords = keywords,
-                Tags = string.Join(",", from t in tab.Terms select t.Name),
-                Alias = PortalSettings.PortalAlias.HTTPAlias,
-                Url = tab.Url,
-                CreatedOnDate = tab.CreatedOnDate,
-                IncludeInMenu = tab.IsVisible,
-                CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
-                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?)null,
-                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null,
-                Permissions = GetPermissionsData(pageId)
-            };
+            return TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
         }
 
         public IEnumerable<ModuleInfo> GetModules(int pageId)
@@ -234,7 +208,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var tabId = _tabController.AddTab(tab);
             tab = _tabController.GetTab(tabId, portalId);
 
-            AddTabAdditionalProcess(pageSettings, tab);
+            AddTabExtension(tab, pageSettings);
 
             CreateOrUpdateContentItem(tab);
 
@@ -249,7 +223,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return tab.TabID;
         }
 
-        protected void AddTabAdditionalProcess(PageSettings pageSettings, TabInfo tab)
+        protected void AddTabExtension(TabInfo tab, PageSettings pageSettings)
         {
             
         }
@@ -599,10 +573,24 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public int UpdateTab(TabInfo tab, PageSettings pageSettings)
         {
-            throw new NotImplementedException();
+            UpdateTabInfoFromPageSettings(tab, pageSettings);
+            UpdateTabExtension(tab, pageSettings);
+
+            _tabController.UpdateTab(tab);
+
+            CreateOrUpdateContentItem(tab);
+
+            SaveTabUrl(tab, pageSettings);
+
+            return tab.TabID;
         }
 
-        private PagePermissions GetPermissionsData(int pageId)
+        protected void UpdateTabExtension(TabInfo tab, PageSettings pageSettings)
+        {
+            
+        }
+
+        public PagePermissions GetPermissionsData(int pageId)
         {
             var permissions = new PagePermissions(true);
             if (pageId > 0)

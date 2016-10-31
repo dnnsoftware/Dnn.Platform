@@ -7,7 +7,7 @@ const PageService = function () {
     };
 
     const savePage = function (page) {
-        return serviceFramework.post("SavePage", { page });
+        return serviceFramework.post("SavePageDetails", page);
     };
 
     return {

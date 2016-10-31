@@ -39,8 +39,7 @@ export default function visualizersReducer(state = {
 
         case ActionTypes.SAVED_PAGE:
             return { ...state,
-                doingOperation: false,
-                selectedPage: action.data.page
+                doingOperation: false
             };
             
         case ActionTypes.ERROR_SAVING_PAGE:

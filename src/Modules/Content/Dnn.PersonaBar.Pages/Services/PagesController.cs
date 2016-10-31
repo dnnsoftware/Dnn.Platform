@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageDetails(int pageId)
         {
-            var page = _pagesController.GetPageDetails(pageId);
+            var page = ConvertToPageSettings(_pagesController.GetPageDetails(pageId));
             
             if (page == null)
             {
@@ -48,6 +48,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
 
             page.Modules = _pagesController.GetModules(page.TabId).Select(ConvertToModuleItem);
+            page.Permissions = _pagesController.GetPermissionsData(pageId);
             return Request.CreateResponse(HttpStatusCode.OK, page);
         }        
 
@@ -261,6 +262,35 @@ namespace Dnn.PersonaBar.Pages.Services
                 Level = tab.Level,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings),
                 TabPath = tab.TabPath.Replace("//", "/")
+            };
+        }
+
+        private PageSettings ConvertToPageSettings(TabInfo tab)
+        {
+            if (tab == null)
+            {
+                return null;
+            }
+
+            var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Description;
+            var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.KeyWords;
+
+            return new PageSettings
+            {
+                TabId = tab.TabID,
+                Name = tab.TabName,
+                LocalizedName = tab.LocalizedTabName,
+                Title = tab.Title,
+                Description = description,
+                Keywords = keywords,
+                Tags = string.Join(",", from t in tab.Terms select t.Name),
+                Alias = PortalSettings.PortalAlias.HTTPAlias,
+                Url = tab.Url,
+                CreatedOnDate = tab.CreatedOnDate,
+                IncludeInMenu = tab.IsVisible,
+                CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
+                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?)null,
+                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null
             };
         }
 
