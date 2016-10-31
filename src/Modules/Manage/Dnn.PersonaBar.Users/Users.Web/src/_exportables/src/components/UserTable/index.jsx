@@ -52,7 +52,7 @@ class UserTable extends Component {
     getChildren(user) {
         let children = [
             {
-                index: 15,
+                index: 5,
                 content: <UsersRoles userDetails={user} />
             },
             {
@@ -60,7 +60,7 @@ class UserTable extends Component {
                 content: <iframe src="" seamless allowTransparency="true" style={{ left: 0, top: 0, border: "0px", width: "100%", height: "100%", float: "left", display: "table" }} />
             },
             {
-                index: 5,
+                index: 15,
                 content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) }/>
             }
         ].concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
@@ -108,6 +108,8 @@ class UserTable extends Component {
                             key={"user-" + index}
                             getUserColumns={this.props.getUserColumns && this.props.getUserColumns.bind(this) }
                             getUserTabsIcons={this.props.getUserTabsIcons && this.props.getUserTabsIcons.bind(this) }
+                            getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} 
+                            userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)}
                             id={id}>
                             <CollapsibleSwitcher children={this.getChildren(user) } renderIndex={this.state.renderIndex} />
                         </DetailRow>;
@@ -122,7 +124,9 @@ UserTable.propTypes = {
     dispatch: PropTypes.func.isRequired,
     getUserTabs: PropTypes.func,
     getUserTabsIcons: PropTypes.func,
-    getUserColumns: PropTypes.func
+    getUserColumns: PropTypes.func,
+    getUserMenu: PropTypes.func,
+    userMenuAction: PropTypes.func
 };
 function mapStateToProps(state) {
     return {

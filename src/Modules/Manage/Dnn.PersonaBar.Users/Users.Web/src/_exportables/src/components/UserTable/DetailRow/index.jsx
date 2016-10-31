@@ -72,17 +72,17 @@ class DetailsRow extends Component {
             }
         ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons()) || []);
         let i = 0;
-        let userActions = sort(actionIcons, "index", "desc").map((actionIcon) => {
+        let userActions = sort(actionIcons, "index").map((actionIcon) => {
             let element = <div className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
             i++;
             return element;
         });
-        return [<div style={{ position: "relative" }}>
+        return userActions.concat([<div style={{ position: "relative" }}>
             <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
                 onClick={this.toggleUserMenu.bind(this) }>
             </div>
-            { this.state.showMenu && <UserMenu onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
-        </div>].concat(userActions);
+            { this.state.showMenu && <UserMenu getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
+        </div>]);
     }
     getUserColumns(user, id, opened) {
         let userActions = this.getUserActions(user, opened);
@@ -118,7 +118,7 @@ class DetailsRow extends Component {
             },
             {
                 index: 25,
-                content: id !== "add" && <GridCell columnSize={columnSize} >{userActions}</GridCell>
+                content: id !== "add" && <GridCell columnSize={columnSize} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
             }
         ].concat((extraColumns) || []);
 
@@ -168,7 +168,9 @@ DetailsRow.propTypes = {
     openId: PropTypes.string,
     currentIndex: PropTypes.number,
     getUserTabsIcons: PropTypes.func,
-    getUserColumns: PropTypes.func
+    getUserColumns: PropTypes.func,
+    getUserMenu: PropTypes.func.isRequired,
+    userMenuAction: PropTypes.func.isRequired
 };
 DetailsRow.defaultProps = {
     isEvoq: false

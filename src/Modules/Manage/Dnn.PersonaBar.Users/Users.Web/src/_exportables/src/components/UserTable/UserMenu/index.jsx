@@ -99,6 +99,11 @@ class UserMenu extends Component {
                 this.makeSuperUser();
                 this.props.onClose();
                 break;
+            default:
+                if (typeof this.props.userMenuAction === "function")
+                    this.props.userMenuAction(key, this.state.userDetails);
+                this.props.onClose();
+                break;
         }
     }
     onSendPasswordLink() {
@@ -185,30 +190,33 @@ class UserMenu extends Component {
     }
     render() {
 
-        let visibleMenus = [{ title: "ViewProfile", index: 0 },
-            { title: "ViewAssets", index: 1 },
-            { title: "ChangePassword", index: 2 },
-            { title: "SendPasswordResetLink", index: 3 }
+        let visibleMenus = [{ title: "ViewProfile", index: 10 },
+            { title: "ViewAssets", index: 20 },
+            { title: "ChangePassword", index: 30 },
+            { title: "SendPasswordResetLink", index: 40 }
         ];
 
         //if (1 === 1) {
-        visibleMenus = [{ title: "MakeSuperUser", index: 8 }].concat(visibleMenus);
+        visibleMenus = [{ title: "MakeSuperUser", index: 80 }].concat(visibleMenus);
         //}
         if (!this.state.userDetails.needUpdatePassword) {
-            visibleMenus = [{ title: "ForceChangePassword", index: 4 }].concat(visibleMenus);
+            visibleMenus = [{ title: "ForceChangePassword", index: 40 }].concat(visibleMenus);
         }
         if (this.state.userDetails.isDeleted) {
-            visibleMenus = [{ title: "RestoreUser", index: 7 }].concat(visibleMenus);
-            visibleMenus = [{ title: "EraseUser", index: 6 }].concat(visibleMenus);
+            visibleMenus = [{ title: "RestoreUser", index: 70 }].concat(visibleMenus);
+            visibleMenus = [{ title: "EraseUser", index: 60 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ title: "DeleteUser", index: 6 }].concat(visibleMenus);
+            visibleMenus = [{ title: "DeleteUser", index: 60 }].concat(visibleMenus);
         }
         if (this.state.userDetails.authorized) {
-            visibleMenus = [{ title: "DeAuthorizeUser", index: 5 }].concat(visibleMenus);
+            visibleMenus = [{ title: "DeAuthorizeUser", index: 50 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ title: "AuthorizeUser", index: 5 }].concat(visibleMenus);
+            visibleMenus = [{ title: "AuthorizeUser", index: 50 }].concat(visibleMenus);
         }
+        visibleMenus = visibleMenus.concat((this.props.getUserMenu && this.props.getUserMenu(this.state.userDetails)) || []);
+
         visibleMenus = this.sort(visibleMenus, "index");
+
         return (
             <GridCell className="dnn-user-menu menu-popup">
                 {!this.state.ChangePasswordVisible &&
@@ -232,7 +240,9 @@ UserMenu.propTypes = {
     dispatch: PropTypes.func.isRequired,
     userId: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
-    userDetails: PropTypes.object
+    userDetails: PropTypes.object,
+    getUserMenu: PropTypes.func.isRequired,
+    userMenuAction: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
