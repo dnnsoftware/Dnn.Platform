@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         public string CustomCdn { get; set; }
 
         [JsonProperty("dependencies")]
-        public IEnumerable<ListItemDto> Dependencies { get; set; }
+        public IEnumerable<UsedByPackage> Dependencies { get; set; }
 
         [JsonProperty("usedBy")]
         public IEnumerable<UsedByPackage> UsedBy { get; set; }

@@ -16,12 +16,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
-            var skin = SkinController.GetSkinByPackageID(package.PackageID);
-            var detail = new SkinPackageDetailDto(portalId, package);
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-
-            detail.ReadOnly = !isHostUser;
-            detail.Name = skin.SkinName;
+            var skin = SkinController.GetSkinByPackageID(package.PackageID);
+            var detail = new SkinPackageDetailDto(portalId, package)
+            {
+                //Name = skin.SkinName
+                ThemePackageName = skin.SkinName,
+                ReadOnly = !isHostUser,
+            };
 
             return detail;
         }

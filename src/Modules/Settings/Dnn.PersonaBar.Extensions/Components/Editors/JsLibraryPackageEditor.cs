@@ -34,7 +34,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 FileName = library.FileName,
                 Location = library.PreferredScriptLocation.ToString(),
                 CustomCdn = HostController.Instance.GetString("CustomCDN_" + library.LibraryName),
-                Dependencies = package.Dependencies.Select(d => new ListItemDto {Id = d.PackageId, Name = d.PackageName}),
+                Dependencies = package.Dependencies.Select(d => new UsedByPackage
+                {
+                    Id = d.PackageId,
+                    Name = d.PackageName,
+                    Version = d.Version.ToString()
+                }),
                 UsedBy = usedByPackages
             };
 

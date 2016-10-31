@@ -6,6 +6,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class SkinPackageDetailDto : PackageInfoDto
     {
+        [JsonProperty("themePackageName")]
+        public string ThemePackageName { get; set; }
+
         public SkinPackageDetailDto()
         {
 
