@@ -5,6 +5,7 @@ import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Localization from "localization";
+import { connect } from "react-redux";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -14,19 +15,21 @@ function formatVersionNumber(n) {
 class Container extends Component {
     render() {
         const {props, state} = this;
-
+        let { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editContainer}>
                 <GridCell>
                     <SingleLineInputWithError
                         label={Localization.get("EditContainer_ThemePackageName.Label")}
+                        value={extensionBeingEdited.themePackageName.value}
+                        onChange={props.onChange.bind(this, "themePackageName")}
                         tooltipMessage={Localization.get("EditContainer_ThemePackageName.HelpText")}
                         style={inputStyle} />
                 </GridCell>
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
                         <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary">{props.primaryButtonText}</Button>
+                        <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
                     </GridCell>
                 }
             </GridCell>
@@ -35,7 +38,7 @@ class Container extends Component {
     }
 }
 
-Container.PropTypes = {
+Container.propTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
@@ -43,4 +46,10 @@ Container.PropTypes = {
     primaryButtonText: PropTypes.string
 };
 
-export default Container;
+function mapStateToProps(state) {
+    return {
+        extensionBeingEdited: state.extension.extensionBeingEdited,
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
+    };
+}
+export default connect(mapStateToProps)(Container);
