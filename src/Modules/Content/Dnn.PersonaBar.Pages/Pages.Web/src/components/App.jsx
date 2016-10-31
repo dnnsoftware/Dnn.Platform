@@ -6,20 +6,14 @@ import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     visiblePanel as VisiblePanelActions,
-    pageActions as PageActions 
+    pageActions as PageActions,
+    pageHierarchyActions as PageHierarchyActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import Localization from "../localization";
 import SingleLineInput from "dnn-single-line-input";
 
 class App extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            searchKeyword: ""
-        };
-    }
 
     navigateMap(page) {
         const {props} = this;
@@ -46,6 +40,10 @@ class App extends Component {
         console.log("onPermissionsChanged", permissions);
         this.props.dispatch(PageActions.changePermissions(permissions));
     }
+
+    onSearchKeywordChanged(e) {
+        this.props.dispatch(PageHierarchyActions.setSearchKeyword(e.target.value));
+    }
     
     render() {
         const {props} = this;
@@ -54,13 +52,13 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
                         <SingleLineInput 
-                            value={this.state.searchKeyword}
-                            onChange={e => this.setState({searchKeyword: e.target.value})} />
+                            value={this.props.searchKeyword}
+                            onChange={this.onSearchKeywordChanged.bind(this)} />
                     </SocialPanelHeader>
                     <SocialPanelBody>                        
                         <PageHierarchy
-                            itemTemplate={"pages-list-item-template"}
-                            searchKeyword={this.state.searchKeyword} 
+                            itemTemplate={this.props.itemTemplate}
+                            searchKeyword={this.props.searchKeyword} 
                             onPageSettings={pageId => this.onPageSettings(pageId)} />
                     </SocialPanelBody>
                 </PersonaBarPage>
@@ -86,14 +84,18 @@ App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
-    selectedDnnPage: PropTypes.object
+    selectedDnnPage: PropTypes.object,
+    searchKeyword: PropTypes.string.isRequired,
+    itemTemplate: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        selectedDnnPage: state.pages.selectedPage
+        selectedDnnPage: state.pages.selectedPage,
+        searchKeyword: state.pageHierarchy.searchKeyword,
+        itemTemplate: state.pageHierarchy.itemTemplate
     };
 }
 

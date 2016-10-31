@@ -1141,8 +1141,6 @@
                 this._viewModel.deletePageClick = $.proxy(this._deletePageClickHandler, this);
                 this._viewModel.doSelectPage = $.proxy(this._selectPage, this);
 
-                this._viewModel.searchKeyDown = $.proxy(this._searchKeywordsChangedHandler, this);
-                this._viewModel.searchKeyUp = $.proxy(this._searchKeywordsChangedHandler, this);
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
             }
             return this._viewModel;

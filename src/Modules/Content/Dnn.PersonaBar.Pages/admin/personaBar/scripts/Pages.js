@@ -6,7 +6,7 @@
     var identifier;
     var config = cf.init();
     function loadScript() {
-        var url = "http://localhost:8080/dist/pages-bundle.js"
+        var url = "http://localhost:8080/dist/pages-bundle.js";
         //var url = "scripts/bundles/pages-bundle.js";
         $.ajax({
             dataType: "script",
@@ -17,6 +17,10 @@
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initPages = function initializePages() {
+            if (typeof callback === 'function') {
+                callback();
+            }
+
             return {
                 utility: util,
                 moduleName: "Pages"
@@ -26,10 +30,6 @@
 
         if (config.debugMode === true) {
             window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-        }
-
-        if (typeof callback === 'function') {
-            callback();
         }
     };
 

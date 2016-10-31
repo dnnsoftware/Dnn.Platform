@@ -9,6 +9,8 @@ let store = configureStore();
 
 application.dispatch = store.dispatch;
 
+window.dnn.pages = window.dnn.pages || {};
+
 const appContainer = document.getElementById("pages-container");
 application.init(appContainer.dataset.initCallback);
 render(

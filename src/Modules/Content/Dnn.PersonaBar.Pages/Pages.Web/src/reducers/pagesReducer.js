@@ -1,6 +1,6 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
 
-export default function visualizersReducer(state = {
+export default function pagesReducer(state = {
     selectedPage: null,
     doingOperation: false
 }, action) {    
