@@ -1,9 +1,8 @@
-import util from "../utils";
-
+import utilities from "utils";
 const resx = {
     get(key) {
-        let moduleName = util.moduleName;
-        return util.utilities.getResx(moduleName, key);
+        let moduleName = "Sites";
+        return utilities.getResx(moduleName, key);
     }
 };
 export default resx;

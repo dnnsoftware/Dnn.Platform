@@ -1,11 +1,8 @@
 import { combineReducers } from "redux";
-import pagination from "./paginationReducer";
-import visiblePanel from "./visiblePanelReducer";
-import users from "./usersReducer";
+import {users} from "_exportables/src/reducers";
+
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    users
+    users: users()
 });
 
 export default rootReducer;

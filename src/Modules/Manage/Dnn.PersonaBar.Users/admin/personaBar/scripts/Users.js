@@ -1,4 +1,4 @@
-﻿define(['jquery', './extension', './config'], function ($, ext, cf) {
+﻿define(['jquery', './extension', './config', './exportables/Users/UsersCommon'], function ($, ext, cf) {
     'use strict';
     var isMobile;
     var identifier;

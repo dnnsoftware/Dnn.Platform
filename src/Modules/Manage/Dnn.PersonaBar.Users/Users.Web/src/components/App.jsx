@@ -5,14 +5,14 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import Body from "./Body";
 import Localization from "localization";
 import PersonaBarPage from "dnn-persona-bar-page";
-import {users as UserActions } from "actions";
+import {CommonUsersActions } from "dnn-users-common-actions";
 class App extends Component {
     constructor() {
         super();
     }
     componentWillMount() {
         const {props} = this;
-        props.dispatch(UserActions.getUsers({
+        props.dispatch(CommonUsersActions.getUsers({
             searchText: "",
             filter: 0,
             pageIndex: 0,
@@ -22,10 +22,9 @@ class App extends Component {
         }));
     }
     render() {
-        const {props} = this;
         return (
             <div className="boilerplate-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={props.selectedPage === 0}>
+                <PersonaBarPage isOpen={true}>
                     <Body />
                 </PersonaBarPage>
             </div>
@@ -34,16 +33,12 @@ class App extends Component {
 }
 
 App.PropTypes = {
-    dispatch: PropTypes.func.isRequired,
-    selectedPage: PropTypes.number,
-    selectedPageVisibleIndex: PropTypes.number
+    dispatch: PropTypes.func.isRequired
 };
 
 
 function mapStateToProps(state) {
     return {
-        selectedPage: state.visiblePanel.selectedPage,
-        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex
     };
 }
 
