@@ -92,43 +92,43 @@ class EditExtension extends Component {
                     dependencies: extension.dependencies.value,
                     hostPermissions: extension.hostPermissions.value,
                     shareable: extension.shareable.value,
-                    premiummodule: extension.premiumModule.value,
+                    premiumModule: extension.premiumModule.value,
                     assignPortal: JSON.stringify(extension.assignedPortals.value),
                     unassignPortal: JSON.stringify(extension.unassignedPortals.value),
-                    foldername: extension.folderName.value,
-                    businesscontroller: extension.businessController.value
+                    folderName: extension.folderName.value,
+                    businessController: extension.businessController.value
                 };
             case "auth_system":
                 return {
-                    logincontrolsource: extension.loginControlSource.value,
-                    logoffcontrolsource: extension.logoffControlSource.value,
+                    loginControlSource: extension.loginControlSource.value,
+                    logoffControlSource: extension.logoffControlSource.value,
                     enabled: extension.enabled.value,
-                    settingscontrolsource: extension.settingsControlSource.value,
-                    authenticationtype: extension.authenticationType.value
+                    settingsControlSource: extension.settingsControlSource.value,
+                    authenticationType: extension.authenticationType.value
                 };
             case "javascript_library":
                 return {
-                    customcdn: extension.customCdn.value
+                    customCdn: extension.customCdn.value
                 };
             case "skin":
             case "container":
                 return {
-                    themepackagename: extension.themePackageName.value
+                    themePackageName: extension.themePackageName.value
                 };
             case "skinobject":
                 return {
-                    controlkey: extension.controlKey.value,
-                    controlsrc: extension.controlSrc.value,
-                    supportspartialrendering: extension.supportsPartialRendering.value
+                    controlKey: extension.controlKey.value,
+                    controlSrc: extension.controlSrc.value,
+                    supportsPartialRendering: extension.supportsPartialRendering.value
                 };
             case "corelanguagepack":
                 return {
-                    languageid: extension.languageId.value
+                    languageId: extension.languageId.value
                 };
             case "extensionlanguagepack":
                 return {
-                    languageid: extension.languageId.value,
-                    languagepackageid: extension.packageId.value
+                    languageId: extension.languageId.value,
+                    languagePackageId: extension.packageId.value
                 };
             default:
                 return {};
