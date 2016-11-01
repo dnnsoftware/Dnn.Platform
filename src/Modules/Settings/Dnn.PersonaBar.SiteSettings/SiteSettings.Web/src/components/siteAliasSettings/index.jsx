@@ -108,7 +108,7 @@ class SiteAliasSettingsPanelBody extends Component {
         if (state.urlMappingSettings) {
             return (
                 <div className={styles.siteAliasSettings}>
-                    <SiteAliases />
+                    <SiteAliases portalId={props.portalId}/>
                     <div className="sectionTitleNoBorder">{resx.get("UrlMappingSettings")}</div>
                     <div className="urlMappingSettings">
                         <InputGroup>

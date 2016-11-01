@@ -9,6 +9,7 @@ define(['jquery',
         function loadScript() {
             var url = "scripts/bundles/site-settings-bundle.js";
             //var url = "http://localhost:8080/dist/site-settings-bundle.js";
+            
             $.ajax({
                 dataType: "script",
                 cache: true,
@@ -20,10 +21,10 @@ define(['jquery',
             init: function (wrapper, util, params, callback) {
                 utility = util;
 
-
                 window.dnn.initSiteSettings = function initializeSiteSettings() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'SiteSettings'
                     };
                 };

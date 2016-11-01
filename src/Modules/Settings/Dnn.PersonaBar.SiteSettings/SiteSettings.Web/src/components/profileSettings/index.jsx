@@ -166,7 +166,7 @@ class ProfileSettingsPanelBody extends Component {
                 <div className={styles.profileSettings}>
                     <div className="sectionTitleNoBorder">{resx.get("UserProfileSettings")}</div>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
-                    <ProfileProperties/>
+                    <ProfileProperties portalId={props.portalId} />
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.profileSettingsClientModified}

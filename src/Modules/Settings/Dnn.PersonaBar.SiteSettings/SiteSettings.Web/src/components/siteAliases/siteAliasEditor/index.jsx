@@ -231,13 +231,12 @@ class SiteAliasEditor extends Component {
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
-                        {!this.state.aliasDetail.IsPrimary &&
-                            <Button
-                                type="secondary"
-                                onClick={this.onSetPrimary.bind(this)}>
-                                {resx.get("SetPrimary")}
-                            </Button>
-                        }
+                        <Button
+                            disabled={this.state.aliasDetail.IsPrimary }
+                            type="secondary"
+                            onClick={this.onSetPrimary.bind(this)}>
+                            {resx.get("SetPrimary")}
+                        </Button>
                         <Button
                             type="primary"
                             onClick={this.onSave.bind(this)}>

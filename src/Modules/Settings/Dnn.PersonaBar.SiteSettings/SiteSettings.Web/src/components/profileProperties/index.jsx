@@ -26,7 +26,7 @@ class ProfilePropertiesPanel extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(SiteSettingsActions.getProfileProperties());
+        props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
 
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
@@ -74,7 +74,7 @@ class ProfilePropertiesPanel extends Component {
             props.dispatch(SiteSettingsActions.UpdateProfileProperty(propertyDetail, (data) => {
                 util.utilities.notify(resx.get("PropertyDefinitionUpdateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getProfileProperties());
+                props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -84,7 +84,7 @@ class ProfilePropertiesPanel extends Component {
             props.dispatch(SiteSettingsActions.AddProfileProperty(propertyDetail, (data) => {
                 util.utilities.notify(resx.get("PropertyDefinitionCreateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getProfileProperties());
+                props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
             }, (error) => {
                 util.utilities.notify(resx.get("PropertyDefinitionCreateError"));
                 const errorMessage = JSON.parse(error.responseText);
@@ -186,7 +186,8 @@ class ProfilePropertiesPanel extends Component {
 ProfilePropertiesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    profileProperties: PropTypes.array
+    profileProperties: PropTypes.array,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {

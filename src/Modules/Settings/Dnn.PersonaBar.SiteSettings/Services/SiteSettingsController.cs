@@ -1263,5 +1263,251 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        /// GET: api/SiteSettings/GetSynonymsGroups
+        /// <summary>
+        /// Gets Synonyms Groups
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
+        /// <returns>Synonyms Groups</returns>
+        [HttpGet]
+        public HttpResponseMessage GetSynonymsGroups([FromUri]int? portalId, string cultureCode)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var groups = SearchHelper.Instance.GetSynonymsGroups(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
+
+                var response = new
+                {
+                    Success = true,
+                    SynonymsGroups = groups.Select(g => new
+                    {
+                        g.PortalId,
+                        g.SynonymsGroupId,
+                        g.SynonymsTags
+                    }),
+                    Languages = LocaleController.Instance.GetLocales(pid).Select(l => new
+                    {
+                        l.Key,
+                        Value = l.Key
+                    })
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/AddSynonymsGroup
+        /// <summary>
+        /// Adds Synonyms Group
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddSynonymsGroup(UpdateSynonymsGroupRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : request.CultureCode;
+                string duplicateWord;
+                var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(request.SynonymsTags, pid, cultureCode, out duplicateWord);
+                if (synonymsGroupId > 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK,
+                        new { Success = true, Id = synonymsGroupId });
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "[" + duplicateWord + "] " +
+                            string.Format(Localization.GetString("SynonymsTagDuplicated", LocalResourcesFile)));
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateSynonymsGroup
+        /// <summary>
+        /// Updates Synonyms Group
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateSynonymsGroup(UpdateSynonymsGroupRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : request.CultureCode;
+                string duplicateWord;
+                var synonymsGroupId = SearchHelper.Instance.UpdateSynonymsGroup(request.SynonymsGroupID.Value, request.SynonymsTags, pid, cultureCode, out duplicateWord);
+                if (synonymsGroupId > 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "[" + duplicateWord + "] " +
+                            string.Format(Localization.GetString("SynonymsTagDuplicated", LocalResourcesFile)));
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/DeleteSynonymsGroup
+        /// <summary>
+        /// Deletes Synonyms Group
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteSynonymsGroup(UpdateSynonymsGroupRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                SearchHelper.Instance.DeleteSynonymsGroup(request.SynonymsGroupID.Value, pid, request.CultureCode);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetIgnoreWords
+        /// <summary>
+        /// Gets ignore words
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
+        /// <returns>ignore words</returns>
+        [HttpGet]
+        public HttpResponseMessage GetIgnoreWords([FromUri]int? portalId, string cultureCode)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var words = SearchHelper.Instance.GetSearchStopWords(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
+
+                var response = new
+                {
+                    Success = true,
+                    IgnoreWords = words == null ? null : new
+                    {
+                        words.PortalId,
+                        words.StopWordsId,
+                        words.CultureCode,
+                        words.StopWords
+                    }
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/AddIgnoreWords
+        /// <summary>
+        /// Adds ignore words
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddIgnoreWords(UpdateIgnoreWordsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : request.CultureCode;
+                var stopWordsId = SearchHelper.Instance.AddSearchStopWords(request.StopWords, pid, cultureCode);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Id = stopWordsId });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateIgnoreWords
+        /// <summary>
+        /// Updates ignore words
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateIgnoreWords(UpdateIgnoreWordsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : request.CultureCode;
+                SearchHelper.Instance.UpdateSearchStopWords(request.StopWordsId, request.StopWords, pid, cultureCode);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/DeleteSynonymsGroup
+        /// <summary>
+        /// Deletes Synonyms Group
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteIgnoreWords(UpdateIgnoreWordsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : request.CultureCode;
+                SearchHelper.Instance.DeleteSearchStopWords(request.StopWordsId, pid, cultureCode);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
     }
 }
