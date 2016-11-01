@@ -126,7 +126,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             var module = tabInfo.Modules.OfType<ModuleInfo>().First();
             SiteSettingsLink = (module == null)
                 ? ""
-                : SiteSettingsLink = Globals.NavigateURL(tabId, "Edit", new[] {$"mid={module.ModuleID}", $"packageid={PackageId}"});
+                : Globals.NavigateURL(tabId, "Edit",
+                    new[]
+                    {
+                        $"mid={module.ModuleID}",
+                        $"packageid={PackageId}",
+                        "Display=editor",
+                        "popUp=true",
+                    });
         }
 
         public PackageInfo ToPackageInfo()
