@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
     siteSettings as SiteSettingsActions
-} from "../../actions";
+} from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
 import Collapse from "react-collapse";
 import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
-import util from "../../utils";
-import resx from "../../resources";
+import util from "../../../utils";
+import resx from "../../../resources";
 
 let tableFields = [];
 

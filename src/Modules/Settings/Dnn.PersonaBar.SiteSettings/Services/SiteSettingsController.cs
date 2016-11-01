@@ -1509,5 +1509,50 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        /// GET: api/SiteSettings/GetLanguageSettings
+        /// <summary>
+        /// Gets profile settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>profile settings</returns>
+        [HttpGet]
+        public HttpResponseMessage GetLanguageSettings([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                var languageDisplayModes = new List<KeyValuePair<string, string>>();
+                languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("NativeName", LocalResourcesFile), "NATIVE"));
+                languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("EnglishName", LocalResourcesFile), "ENGLISH"));
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        portalSettings.ContentLocalizationEnabled,
+                        Localization.SystemLocale,
+                        portalSettings.DefaultLanguage,
+                        portalSettings.EnableUrlLanguage,
+                        portalSettings.EnableBrowserLanguage,
+                        portalSettings.AllowUserUICulture
+                    },
+                    Languages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger)).Select(l => new
+                    {
+                        l.NativeName,
+                        l.EnglishName,
+                        l.Name
+                    }),
+                    LanguageDisplayModes = languageDisplayModes
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
     }
 }

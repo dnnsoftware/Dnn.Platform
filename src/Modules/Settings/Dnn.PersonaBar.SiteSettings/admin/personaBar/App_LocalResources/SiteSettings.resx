@@ -792,4 +792,16 @@
   <data name="IgnoreWordsDeleteError.Text" xml:space="preserve">
     <value>Could not delete the ignore words. Please try later.</value>
   </data>
+  <data name="HtmlEditor.Text" xml:space="preserve">
+    <value>Html Editor Manager</value>
+  </data>
+  <data name="OpenHtmlEditor.Text" xml:space="preserve">
+    <value>Open HTML Editor Manager</value>
+  </data>
+  <data name="HtmlEditorWarning.Text" xml:space="preserve">
+    <value>The HTML Editor Manager allows you to easily change your site's HTML editor or configure settings.</value>
+  </data>
+  <data name="BackToSiteBehavior.Text" xml:space="preserve">
+    <value>&lt; BACK TO SITE BEHAVIOR</value>
+  </data>
 </root>

@@ -15,6 +15,7 @@ import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
 import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
+import MoreSettings from "../moreSettings";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -47,7 +48,7 @@ export class Body extends Component {
                 <MessagingSettings portalId={props.portalId} />
                 <ProfileSettings portalId={props.portalId} />
                 <SiteAliasSettings portalId={props.portalId} />
-                <div />
+                <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this)} />
             </Tabs>;
         }
         else {
@@ -94,7 +95,8 @@ export class Body extends Component {
 Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    openHtmlEditorManager: PropTypes.func
 };
 
 function mapStateToProps(state) {

@@ -5,7 +5,7 @@ import {
     pagination as PaginationActions,
     siteSettings as SiteSettingsActions
 } from "../../actions";
-import SiteAliases from "../siteAliases";
+import SiteAliases from "./siteAliases";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import PagePicker from "dnn-page-picker";

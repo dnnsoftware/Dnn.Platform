@@ -14,9 +14,9 @@ import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import {
     siteSettings as SiteSettingsActions
-} from "../../../actions";
-import util from "../../../utils";
-import resx from "../../../resources";
+} from "../../../../actions";
+import util from "../../../../utils";
+import resx from "../../../../resources";
 
 const re = /^([0-9]+|[1-9])$/;
 let retainHistoryNumOptions = [];

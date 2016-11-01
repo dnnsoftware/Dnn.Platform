@@ -5,7 +5,7 @@ import {
     pagination as PaginationActions,
     siteSettings as SiteSettingsActions
 } from "../../actions";
-import ProfileProperties from "../profileProperties";
+import ProfileProperties from "./profileProperties";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import PagePicker from "dnn-page-picker";
