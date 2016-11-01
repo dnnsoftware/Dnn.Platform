@@ -149,7 +149,7 @@ class Pager extends Component {
                 }
             }
         }
-        else {
+        else if (this.props.numericCounters === 0) {
             pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close"> {currentPage + 1}</li>);
         }
         return pagingBoxes;
@@ -197,7 +197,7 @@ class Pager extends Component {
     }
     render() {
         const {state, props} = this;
-        return (state.totalPages > 1 || (state.totalPages === 1 && this.props.showPageSizeOptions)) &&
+        return (state.totalPages > 1 || (props.totalRecords >= 10 && state.totalPages === 1 && this.props.showPageSizeOptions)) &&
             <div className="dnn-pager do-not-close" style={props.style}>
                 <div className="dnn-pager-summary-box">
                     {this.getPageSummary() }
