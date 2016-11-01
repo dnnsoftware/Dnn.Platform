@@ -42,7 +42,7 @@
                         <path>AdminLogs</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
-                        <order>11</order>
+                        <order>50</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>

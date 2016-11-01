@@ -742,7 +742,9 @@ span.dnnFormError {
     width: 200px;
     box-sizing: border-box;
 }
-
+.hovermenu > label {
+    display: none;
+}
 .hovermenu > ul {
     margin: 0;
     padding: 0;

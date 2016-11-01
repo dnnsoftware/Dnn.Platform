@@ -480,12 +480,20 @@ BEGIN
             [LastModifiedOnDate]
         )
         SELECT Item, Item, '', 'nav_' + Item, '', 1, NULL, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) * 5, 1, 1, -1, GETDATE(), -1, GETDATE() 
-            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Home,Content,Manage,Settings,Tools,Logout', ',')
+            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Home,Content,Manage,Settings,Logout', ',')
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.HomeController, Dnn.PersonaBar.UI',
+        SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI',
             Link = 'Default.aspx'
         WHERE Identifier = 'Home'
+
+    UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
+        SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI'
+        WHERE Identifier = 'Logout'
+
+    UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
+        SET CssClass = 'double'
+        WHERE Identifier = 'Settings'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 

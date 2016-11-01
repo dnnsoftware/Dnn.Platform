@@ -42,7 +42,7 @@
                         <path>Sites</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
-                        <order>9</order>
+                        <order>40</order>
                     </menu>
                 </component>
             </components>

@@ -57,7 +57,7 @@
             <path>Security</path>
             <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
-            <order>3</order>
+            <order>20</order>
             <defaultRoles>Administrators</defaultRoles>
           </menu>
         </component>

@@ -42,7 +42,7 @@
                         <path>SiteSettings</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
-                        <order>1</order>
+                        <order>10</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>

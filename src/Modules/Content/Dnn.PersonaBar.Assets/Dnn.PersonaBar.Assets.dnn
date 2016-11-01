@@ -42,7 +42,7 @@
                         <path>Assets</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
-                        <order>4</order>
+                        <order>10</order>
                         <defaultRoles>Administrators,Content Managers,Content Editors</defaultRoles>
                     </menu>
                 </component>

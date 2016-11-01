@@ -9,7 +9,7 @@ using DotNetNuke.Application;
 
 namespace Dnn.PersonaBar.UI.MenuControllers
 {
-    public class HomeController : IMenuItemController
+    public class PlatformMenuController : IMenuItemController
     {
         public void UpdateParameters(MenuItem menuItem)
         {

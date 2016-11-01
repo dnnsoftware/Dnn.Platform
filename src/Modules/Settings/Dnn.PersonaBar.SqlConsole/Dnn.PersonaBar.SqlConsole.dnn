@@ -1,7 +1,7 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.ConfigConsole" type="PersonaBar" version="01.00.00">
-            <friendlyName>Dnn.PersonaBar.ConfigConsole</friendlyName>
+        <package name="Dnn.PersonaBar.SqlConsole" type="PersonaBar" version="01.00.00">
+            <friendlyName>Dnn.PersonaBar.SqlConsole</friendlyName>
             <description></description>
             <iconFile>~/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
             <owner>
@@ -29,20 +29,20 @@
                 <component type="Assembly">
                     <assemblies>
                         <assembly>
-                            <name>Dnn.PersonaBar.ConfigConsole.dll</name>
+                            <name>Dnn.PersonaBar.SqlConsole.dll</name>
                             <path>bin</path>
                         </assembly>
                     </assemblies>
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>ConfigConsole</identifier>
-                        <moduleName>ConfigConsole</moduleName>
-                        <resourceKey>nav_ConfigConsole</resourceKey>
-                        <path>ConfigConsole</path>
+                        <identifier>SqlConsole</identifier>
+                        <moduleName>SqlConsole</moduleName>
+                        <resourceKey>nav_SqlConsole</resourceKey>
+                        <path>SqlConsole</path>
                         <mobileSupport>true</mobileSupport>
-                        <parent>Tools</parent>
-                        <order>3</order>
+                        <parent>Settings</parent>
+                        <order>80</order>
                     </menu>
                 </component>
             </components>

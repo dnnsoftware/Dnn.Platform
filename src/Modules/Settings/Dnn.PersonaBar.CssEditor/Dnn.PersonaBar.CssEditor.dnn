@@ -41,8 +41,8 @@
             <resourceKey>nav_CssEditor</resourceKey>
             <path>CssEditor</path>
             <mobileSupport>true</mobileSupport>
-            <parent>Tools</parent>
-            <order>1</order>
+            <parent>Settings</parent>
+            <order>70</order>
             <defaultRoles>Administrators</defaultRoles>
           </menu>
         </component>

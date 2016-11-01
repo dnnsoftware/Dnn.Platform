@@ -31,11 +31,12 @@
                     }">
                         <span data-bind="html: menuItem.displayName"></span>
                         <!-- ko if: menuItem.menuItems.length > 0 -->
-                        <div class="hovermenu" data-bind="
+                    <div class="hovermenu" data-bind="
                          attr: { 'id': menuItem.id + 'hovermenu' }, 
                          css: menuItem.id + 'hovermenu'">
-                            <ul data-bind="foreach: { data: menuItem.menuItems, as: 'subMenuItem' }">
-                                <li data-bind="
+                        <label data-bind="html: menuItem.displayName"></label>
+                        <ul data-bind="foreach: { data: menuItem.menuItems, as: 'subMenuItem' }">
+                            <li data-bind="
                                         html: subMenuItem.displayName,
                                         attr: {
                                             'id': subMenuItem.id,
@@ -47,8 +48,8 @@
                                             'href': subMenuItem.link,
                                             'target': subMenuItem.link ? '_blank' : ''
                                         }"></li>
-                            </ul>
-                        </div>
+                        </ul>
+                    </div>
                         <!-- /ko -->
                 </li>
                 <!-- /ko -->

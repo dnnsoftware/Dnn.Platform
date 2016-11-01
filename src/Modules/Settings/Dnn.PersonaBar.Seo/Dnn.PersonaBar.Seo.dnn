@@ -1,7 +1,7 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Licensing" type="PersonaBar" version="01.00.00">
-            <friendlyName>Dnn.PersonaBar.Licensing</friendlyName>
+        <package name="Dnn.PersonaBar.Seo" type="PersonaBar" version="01.00.00">
+            <friendlyName>Dnn.PersonaBar.Seo</friendlyName>
             <description></description>
             <iconFile>~/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
             <owner>
@@ -29,20 +29,20 @@
                 <component type="Assembly">
                     <assemblies>
                         <assembly>
-                            <name>Dnn.PersonaBar.Licensing.dll</name>
+                            <name>Dnn.PersonaBar.Seo.dll</name>
                             <path>bin</path>
                         </assembly>
                     </assemblies>
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>Licensing</identifier>
-                        <moduleName>Licensing</moduleName>
-                        <resourceKey>nav_Licensing</resourceKey>
-                        <path>Licensing</path>
+                        <identifier>Seo</identifier>
+                        <moduleName>Seo</moduleName>
+                        <resourceKey>nav_Seo</resourceKey>
+                        <path>Seo</path>
                         <mobileSupport>true</mobileSupport>
-                        <parent>Manage</parent>
-                        <order>10</order>
+                        <parent>Settings</parent>
+                        <order>30</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>

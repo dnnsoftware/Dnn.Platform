@@ -57,7 +57,7 @@
                         <path>Users</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
-                        <order>1</order>
+                        <order>10</order>
                         <defaultRoles>Administrators,Content Managers,Community Manager</defaultRoles>
                     </menu>
                 </component>

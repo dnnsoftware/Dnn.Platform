@@ -43,7 +43,7 @@
                         <path>Themes</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
-                        <order>8</order>
+                        <order>30</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>

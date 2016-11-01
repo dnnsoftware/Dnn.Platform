@@ -42,7 +42,7 @@
                         <path>Recyclebin</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
-                        <order>5</order>
+                        <order>30</order>
                         <defaultRoles>Administrators,Content Managers</defaultRoles>
                     </menu>
                 </component>
