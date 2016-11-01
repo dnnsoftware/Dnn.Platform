@@ -72,10 +72,10 @@ export function updateUser(userList, userId, deleteStatus, authorizeStatus) {
     if (userListCopy.some(user => user.userId === userId)) {
         userListCopy = userListCopy.filter(user => {
             if (user.userId === userId) {
-                if (deleteStatus != undefined && deleteStatus != null) {
+                if (deleteStatus !== undefined && deleteStatus !== null) {
                     user.isDeleted = deleteStatus;
                 }
-                if (authorizeStatus != undefined && authorizeStatus != null) {
+                if (authorizeStatus !== undefined && authorizeStatus !== null) {
                     user.authorized = authorizeStatus;
                 }
             }

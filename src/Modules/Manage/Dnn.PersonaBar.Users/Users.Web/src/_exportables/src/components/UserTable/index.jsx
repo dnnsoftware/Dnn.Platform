@@ -6,6 +6,7 @@ import GridCell from "dnn-grid-cell";
 import CollapsibleSwitcher from "../common/CollapsibleSwitcher";
 import CreateUserBox from "../CreateUserBox";
 import UserSettings from "./UserSettings";
+import EditProfile from "./EditProfile";
 import UsersRoles from "./UsersRoles";
 import styles from "./style.less";
 const headers = [
@@ -57,7 +58,7 @@ class UserTable extends Component {
             },
             {
                 index: 10,
-                content: <iframe src="" seamless allowTransparency="true" style={{ left: 0, top: 0, border: "0px", width: "100%", height: "100%", float: "left", display: "table" }} />
+                content: <EditProfile  userId={user.userId} />
             },
             {
                 index: 15,

@@ -649,6 +649,12 @@ namespace Dnn.PersonaBar.Users.Services
             return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetUserProfile(int userId)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         #endregion
 
         private void Validate(UserRoleDto userRoleDto)

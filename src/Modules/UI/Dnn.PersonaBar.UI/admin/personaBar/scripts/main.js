@@ -697,7 +697,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess, null, null, null, null, true);
                                 return;
                             });
-                            $iframe.width(personaBarMenuWidth);
+                            if (!$iframe.attr('style') || $iframe.attr('style').indexOf("width") === -1) {
+                                $iframe.width(personaBarMenuWidth);
+                            }
                         }, 0);
                         callback();
                     });
