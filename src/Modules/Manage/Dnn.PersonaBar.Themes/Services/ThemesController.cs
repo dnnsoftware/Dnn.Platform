@@ -131,23 +131,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-        public HttpResponseMessage DeleteTheme(ThemeFileInfo themeFile)
-        {
-            try
-            {
-                _controller.DeleteTheme(PortalSettings, themeFile);
-                return Request.CreateResponse(HttpStatusCode.OK, new { });
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
