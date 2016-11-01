@@ -279,7 +279,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 this.loadCustomModules();
             },
-            loadCustomModules: function () {
+            initCustomModules: function () {
                 if (config.customModules && config.customModules.length > 0) {
                     var self = this;
                     for (var i = 0; i < config.customModules.length; i++) {
@@ -287,10 +287,17 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         
                         require([path], function (module) {
                             customModules.push(module);
-                            if (typeof module.load === "function") {
-                                module.load.call(self);
+                            if (typeof module.init === "function") {
+                                module.init.call(self);
                             }
                         });
+                    }
+                }
+            },
+            loadCustomModules: function () {
+                for (var i = 0; i < customModules.length; i++) {
+                    if (typeof customModules[i].load === "function") {
+                        customModules[i].load.call(this);
                     }
                 }
             },
@@ -707,6 +714,13 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 200, 'linear', callback);
                     }
+
+                    callback();
+                },
+                function initCustomModules(callback) {
+                    util.initCustomModules();
+
+                    callback();
                 }
         ],
         function loadPanelFromPersistedSetting() {
