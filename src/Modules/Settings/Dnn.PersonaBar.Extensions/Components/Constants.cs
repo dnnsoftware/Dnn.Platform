@@ -22,6 +22,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     public enum PackageTypes
     {
+        Generic = 0,
         AuthSystem,
         AuthenticationSystem = AuthSystem,
         Auth_System = AuthSystem,

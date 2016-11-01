@@ -141,6 +141,7 @@
     <Compile Include="Components\ICreateModuleController.cs" />
     <Compile Include="Components\IInstallController.cs" />
     <Compile Include="Components\InstallController.cs" />
+    <Compile Include="Components\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
   </ItemGroup>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;
@@ -14,13 +13,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
-            var locales = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
             var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
             var languagesTab = TabController.GetTabByTabPath(portalId, "//Admin//Languages", Null.NullString);
 
             var detail = new LanguagePackageDetailDto(portalId, package)
             {
-                Locales = locales.Select(l => new ListItemDto {Id = l.LanguageId, Name = l.EnglishName}),
+                Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
                 LanguagePackageId = languagePack.LanguagePackID,
                 EditUrlFormat = Globals.NavigateURL(languagesTab, "", "Locale={0}")
@@ -29,16 +27,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             if (languagePack.PackageType == LanguagePackType.Extension)
             {
                 //Get all the packages but only bind to combo if not a language package
-                var packages = new List<ListItemDto>();
-                foreach (var p in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
-                {
-                    if (p.PackageType != "CoreLanguagePack" && p.PackageType != "ExtensionLanguagePack")
-                    {
-                        packages.Add(new ListItemDto {Id = p.PackageID, Name = p.Name});
-                    }
-                }
-
-                detail.Packages = packages;
+                detail.Packages = Utility.GetAllPackagesList();
             }
 
             return detail;

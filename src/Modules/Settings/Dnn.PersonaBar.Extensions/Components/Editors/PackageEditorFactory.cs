@@ -25,18 +25,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     return new SkinPackageEditor();
                 case PackageTypes.SkinObject:
                     return new SkinObjectPackageEditor();
-                case PackageTypes.DashboardControl:
-                    break;
-                case PackageTypes.Language:
-                    break;
-                case PackageTypes.Library:
-                    break;
-                case PackageTypes.Provider:
-                    break;
-                case PackageTypes.Widget:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(packageType));
             }
             return null;
         }

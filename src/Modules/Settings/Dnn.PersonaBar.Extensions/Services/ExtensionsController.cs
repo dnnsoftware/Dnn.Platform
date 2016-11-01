@@ -91,6 +91,26 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        /// GET: api/Extensions/GetAllPackagesList
+        /// <summary>
+        /// Get installed packages list.
+        /// </summary>
+        /// <returns>List of [Id,Name] pairs of all system packages</returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllPackagesList()
+        {
+            try
+            {
+                var packages = Utility.GetAllPackagesList();
+                return Request.CreateResponse(HttpStatusCode.OK, packages);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         /// GET: api/Extensions/GetInstalledPackages
         /// <summary>
         /// Gets installed packages
@@ -321,9 +341,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpGet]
         public HttpResponseMessage GetLanguagesList()
         {
-            var list = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
-            return Request.CreateResponse(HttpStatusCode.OK, list.Select(
-                item => new ListItemDto { Id = item.LanguageId, Name = item.Text} ));
+            return Request.CreateResponse(HttpStatusCode.OK, Utility.GetAllLanguagesList());
         }
 
         #endregion

@@ -13,7 +13,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Web.UI.WebControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Sites.Services.Dto;
@@ -55,13 +54,14 @@ namespace Dnn.PersonaBar.Sites.Services
                 {
                     portals = PortalGroupController.Instance.GetPortalsByGroup(portalGroupId)
                                 .Where(p => string.IsNullOrEmpty(filter) 
-                                                || p.PortalName.ToLowerInvariant().Contains(filter.ToLowerInvariant()));
+                                                || p.PortalName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
+                                .ToList();
                     totalRecords = portals.Count();
                     portals = portals.Skip(pageIndex*pageSize).Take(pageSize);
                 }
                 else
                 {
-                    portals = PortalController.GetPortalsByName(string.Format("%{0}%", filter), pageIndex, pageSize,
+                    portals = PortalController.GetPortalsByName($"%{filter}%", pageIndex, pageSize,
                                 ref totalRecords).Cast<PortalInfo>();
                 }
                 string contentLocalizable;
@@ -187,8 +187,7 @@ namespace Dnn.PersonaBar.Sites.Services
                         if (string.IsNullOrEmpty(strMessage))
                         {
                             EventLogController.Instance.AddLog("PortalName", portal.PortalName, PortalSettings,
-                                UserInfo.UserID,
-                                EventLogController.EventLogType.PORTAL_DELETED);
+                                UserInfo.UserID, EventLogController.EventLogType.PORTAL_DELETED);
                             return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                         }
                         return Request.CreateResponse(HttpStatusCode.OK, new
@@ -229,10 +228,7 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 bool success;
-                var message = _controller.ExportPortalTemplate(request.PortalId, request.FileName, request.Description,
-                    request.IsMultilanguage, request.Locales, request.IncludeProfile,
-                    request.IncludeModules, request.IncludeRoles, request.IncludeFiles, request.IncludeContent,
-                    request.Pages, request.LocalizationCulture, out success);
+                var message = _controller.ExportPortalTemplate(request, out success);
 
                 if (!success)
                 {
@@ -386,8 +382,9 @@ namespace Dnn.PersonaBar.Sites.Services
         private string GetAbsoluteServerPath()
         {
             var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            string strServerPath = string.Empty;
-            strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
+            var strServerPath = string.Empty;
+            if (httpContext != null)
+                strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
             if (!strServerPath.EndsWith("\\"))
             {
                 strServerPath += "\\";
@@ -398,7 +395,7 @@ namespace Dnn.PersonaBar.Sites.Services
         private string GetDomainName()
         {
             var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            return Globals.GetDomainName(httpContext.Request, true);
+            return httpContext != null ? Globals.GetDomainName(httpContext.Request, true) : string.Empty;
         }
     }
 }

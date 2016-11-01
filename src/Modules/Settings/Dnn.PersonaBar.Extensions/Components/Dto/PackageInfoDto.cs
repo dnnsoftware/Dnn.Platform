@@ -21,9 +21,15 @@
 #region Usings
 
 using System;
+using System.Linq;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
 #endregion
@@ -84,6 +90,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("readOnly")]
         public bool ReadOnly { get; set; }
 
+        [JsonProperty("siteSettingsLink", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string SiteSettingsLink { get; set; }
+
         public PackageInfoDto()
         {
             
@@ -109,7 +118,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-            ReadOnly = authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName;
+            ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+
+            var locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+            var tabId = TabController.GetTabByTabPath(portalId, "//Admin//Extensions", locale.Culture.Name);
+            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
+            var module = tabInfo.Modules.OfType<ModuleInfo>().First();
+            SiteSettingsLink = (module == null)
+                ? ""
+                : SiteSettingsLink = Globals.NavigateURL(tabId, "Edit", new[] {$"mid={module.ModuleID}", $"packageid={PackageId}"});
         }
 
         public PackageInfo ToPackageInfo()
