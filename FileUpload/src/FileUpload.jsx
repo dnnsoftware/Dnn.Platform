@@ -26,7 +26,8 @@ export default class FileUpload extends Component {
         let selectedFolder = null;
 
         if (this.props.imagePath) {
-            imagePath = "/Portals/0/" + this.props.imagePath;
+            const portalId = this.props.portalId || 0;
+            imagePath = `/Portals/${portalId}/` + this.props.imagePath;
             this.getImageDimensions(imagePath);
             imageExist = true;
             const path = this.getPathObjFormString(imagePath);
@@ -179,11 +180,11 @@ export default class FileUpload extends Component {
     }
 
     sendResult() {
-        let path = this.state.imagePath.replace("/Portals/0/", "");
+        const portalId = this.props.portalId || 0;
+        let path = this.state.imagePath.replace(`/Portals/${portalId}/`, "");
         let fileId = this.state.selectedFile ? this.state.selectedFile.fileId || +this.state.selectedFile.key : null;
         this.props.onImageSelect({ path, fileId });
     }
-
 
     uploadFromUrl(url) {
         const folder = this.props.folderName && typeof this.props.folderName === "string" ? this.props.folderName : "";
@@ -358,6 +359,7 @@ FileUpload.propTypes = {
 
     //---OPTIONAL PROPS---
     cropImage: PropTypes.bool,
+    portalId: PropTypes.number,
     buttons: PropTypes.array,
     folderName: PropTypes.string,
     fileFormats: PropTypes.array
