@@ -187,6 +187,21 @@ const extensionActions = {
             }
         };
     },
+    createNewExtension(updatedExtension, editorActions, index, callback) {
+        return (dispatch) => {
+            ExtensionService.createNewExtension(updatedExtension, editorActions, (data) => {
+                dispatch({
+                    type: ActionTypes.ADDED_NEW_EXTENSION || "ADDED_NEW_EXTENSION",
+                    payload: {
+                        extensionBeingEdited: validationMapExtensionBeingEdited(data.PackageDetail)
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
     editExtension(parameters, extensionBeingEditedIndex, callback) {
         return (dispatch) => {
             ExtensionService.getPackageSettings(parameters, (data) => {
@@ -265,6 +280,32 @@ const extensionActions = {
                     callback();
                 }, 0);
             }
+        };
+    },
+    getLocaleList(callback) {
+        return (dispatch) => {
+            ExtensionService.getLocaleList((data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_LOCALE_LIST,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+    getLocalePackageList(callback) {
+        return (dispatch) => {
+            ExtensionService.getLocalePackagesList((data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PACKAGE_LOCALE_LIST,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
         };
     }
 };

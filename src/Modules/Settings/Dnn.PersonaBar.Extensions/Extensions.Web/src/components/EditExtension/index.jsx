@@ -184,16 +184,21 @@ class EditExtension extends Component {
     }
 
     _getTabHeaders() {
-        const PackageInformationTabHeader = Localization.get("EditExtension_PackageInformation.TabHeader"),
-            ExtensionSettingsTabHeader = Localization.get("EditExtension_ExtensionSettings.TabHeader"),
-            SiteSettingsTabHeader = Localization.get("EditExtension_SiteSettings.TabHeader"),
-            LicenseTabHeader = Localization.get("EditExtension_License.TabHeader"),
-            ReleaseNotesTabHeader = Localization.get("EditExtension_ReleaseNotes.TabHeader");
-        if (this.isHost && this.getExtensionSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
-            return [PackageInformationTabHeader, ExtensionSettingsTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
-        } else {
-            return [PackageInformationTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
+        let tabHeaders = [Localization.get("EditExtension_PackageInformation.TabHeader"),
+        Localization.get("EditExtension_ExtensionSettings.TabHeader"),
+        Localization.get("EditExtension_SiteSettings.TabHeader"),
+        Localization.get("EditExtension_License.TabHeader"),
+        Localization.get("EditExtension_ReleaseNotes.TabHeader")];
+
+        let siteSettingIndex = 2;
+        if (!this.isHost || !this.getExtensionSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
+            tabHeaders.splice(1, 1);
+            siteSettingIndex = 1;
         }
+        if (!this.getSiteSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
+            tabHeaders.splice(siteSettingIndex, 1);
+        }
+        return tabHeaders;
     }
 
     getTabHeaders() {
@@ -265,6 +270,22 @@ class EditExtension extends Component {
         }
     }
 
+    getSiteSettingTabVisible(type) {
+        switch (type) {
+            case "SkinObject":
+            case "Skin":
+            case "Container":
+            case "ExtensionLanguagePack":
+            case "CoreLanguagePack":
+            case "JavaScript_Library":
+                return !this.isHost;
+            case "Auth_System":
+            case "Module":
+                return true;
+            default:
+                return false;
+        }
+    }
     getTabUI() {
         const {props} = this, {extensionBeingEdited} = props;
         let allTabs = [
@@ -311,8 +332,13 @@ class EditExtension extends Component {
                 onSave={this.onSave.bind(this)}
                 primaryButtonText="Save" />
         ];
+        let siteSettingIndex = 2;
         if (!this.isHost || !this.getExtensionSettingTabVisible(extensionBeingEdited.packageType.value)) {
             allTabs.splice(1, 1);
+            siteSettingIndex = 1;
+        }
+        if (!this.getSiteSettingTabVisible(extensionBeingEdited.packageType.value)) {
+            allTabs.splice(siteSettingIndex, 1);
         }
         return allTabs;
     }

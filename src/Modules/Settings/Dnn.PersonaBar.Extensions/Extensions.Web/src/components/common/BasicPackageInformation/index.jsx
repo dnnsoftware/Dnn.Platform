@@ -15,7 +15,7 @@ import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
-const BasicPackageInformation = ({disabled, validationMapped, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version, onPackageTypeSelect}) => (
+const BasicPackageInformation = ({disabled, validationMapped, installedPackageTypes, extensionData, onVersionChange, onChange, triedToSave, version, onPackageTypeSelect, isAddMode}) => (
     <GridSystem className={styles.basicPackageInformation + " with-right-border top-half"}>
         <div>
             <DropdownWithError
@@ -30,14 +30,15 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
                 label="Extension Type"
                 onSelect={onPackageTypeSelect}
-                defaultDropdownValue={!validationMapped ? extensionData.packageType : (extensionData.packageType.value || "-- Select --")}
+                value={!validationMapped ? extensionData.packageType : (extensionData.packageType.value)}
                 style={inputStyle}
                 />
             <SingleLineInputWithError
                 label={Localization.get("EditExtension_PackageName.Label")}
                 tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
                 style={inputStyle}
-                enabled={false}
+                enabled={isAddMode}
+                onChange={onChange && onChange.bind(this, "name")}
                 className="extension-package-name"
                 value={!validationMapped ? extensionData.name : extensionData.name.value} />
             <SingleLineInputWithError
@@ -96,7 +97,8 @@ BasicPackageInformation.propTypes = {
     onChange: PropTypes.func,
     triedToSave: PropTypes.bool,
     version: PropTypes.array,
-    onPackageTypeSelect: PropTypes.func
+    onPackageTypeSelect: PropTypes.func,
+    isAddMode: PropTypes.bool
 };
 
 export default BasicPackageInformation;

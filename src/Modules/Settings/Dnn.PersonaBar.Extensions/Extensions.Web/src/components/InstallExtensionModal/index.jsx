@@ -12,6 +12,7 @@ import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
 import FileUpload from "./FileUpload";
+import Checkbox from "dnn-checkbox";
 import styles from "./style.less";
 class InstallExtensionModal extends Component {
     constructor() {
@@ -135,7 +136,9 @@ class InstallExtensionModal extends Component {
         props.onCancel();
         this.cancelInstall();
     }
-
+    onToggleLicenseAccept() {
+        this.props.dispatch(InstallationActions.toggleAcceptLicense(!this.props.licenseAccepted));
+    }
     render() {
         const {props, state} = this;
         const {wizardStep} = props;
@@ -176,7 +179,15 @@ class InstallExtensionModal extends Component {
                                 readOnly={true}
                                 onSave={this.installPackage.bind(this)}
                                 primaryButtonText="Next"
-                                disabled={true} />}
+                                disabled={true}
+                                primaryButtonDisabled={!props.licenseAccepted}
+                                acceptLicenseCheckbox={
+                                    <Checkbox
+                                        label={"Accept License?"}
+                                        value={props.licenseAccepted}
+                                        onCancel={this.endInstallation.bind(this)}
+                                        onChange={this.onToggleLicenseAccept.bind(this)} />}
+                                />}
                         {wizardStep === 4 &&
                             <InstallLog
                                 logs={props.installationLogs}
@@ -192,9 +203,16 @@ class InstallExtensionModal extends Component {
     }
 }
 
-InstallExtensionModal.PropTypes = {
+InstallExtensionModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    parsedInstallationPackage: PropTypes.object,
+    selectedInstalledPackageType: PropTypes.string,
+    wizardStep: PropTypes.number,
+    installationLogs: PropTypes.array,
+    installingAvailablePackage: PropTypes.bool,
+    availablePackage: PropTypes.object,
+    licenseAccepted: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -204,7 +222,8 @@ function mapStateToProps(state) {
         wizardStep: state.installation.installWizardStep,
         installationLogs: state.installation.installationLogs,
         installingAvailablePackage: state.installation.installingAvailablePackage,
-        availablePackage: state.installation.availablePackage
+        availablePackage: state.installation.availablePackage,
+        licenseAccepted: state.installation.licenseAccepted
     };
 }
 

@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import AuthenticationSystemSettings from "./AuthenticationSystemSettings";
 import ModuleSettings from "./ModuleSettings";
+import IFrameHandler from "./IFrameHandler";
 
 class EditSettings extends Component {
     getSettingsEditor(props) {
         switch (props.type) {
-            case "Auth_System":
-                return <AuthenticationSystemSettings {...props} />;
             case "Module":
                 return <ModuleSettings {...props} />;
             default:
-                return <p>Extension Settings</p>;
+                return <IFrameHandler {...props} />;
         }
     }
 

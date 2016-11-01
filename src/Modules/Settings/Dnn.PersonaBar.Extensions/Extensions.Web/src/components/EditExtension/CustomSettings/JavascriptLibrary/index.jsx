@@ -48,7 +48,7 @@ class JavascriptLibrary extends Component {
         const {props, state} = this;
         const { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editJSLibrary}>
+            <GridCell className={styles.editJSLibrary + (props.className ? " " + props.className : "")}>
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError

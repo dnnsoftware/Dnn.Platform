@@ -32,10 +32,11 @@ class License extends Component {
                         <div className="read-only-license" dangerouslySetInnerHTML={{ __html: value }}></div>
                     </Scrollbars>
                 }
+                {props.acceptLicenseCheckbox}
                 <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
                     {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>}
-                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="primary" onClick={props.onSave.bind(this)} disabled={props.primaryButtonDisabled}>{props.primaryButtonText}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -48,7 +49,8 @@ License.PropTypes = {
     onSave: PropTypes.func,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    primaryButtonText: PropTypes.string
+    primaryButtonText: PropTypes.string,
+    acceptLicenseCheckbox: PropTypes.node
 };
 
 export default License;

@@ -17,7 +17,7 @@ class Container extends Component {
         const {props, state} = this;
         let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editContainer}>
+            <GridCell className={styles.editContainer + (props.className ? " " + props.className : "")}>
                 <GridCell>
                     <SingleLineInputWithError
                         label={Localization.get("EditContainer_ThemePackageName.Label")}

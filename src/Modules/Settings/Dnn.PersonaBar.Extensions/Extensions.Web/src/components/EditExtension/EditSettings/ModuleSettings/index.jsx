@@ -70,6 +70,7 @@ ModuleSettings.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        extensionBeingEdited: state.extension.extensionBeingEdited,
         extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
     };
 }

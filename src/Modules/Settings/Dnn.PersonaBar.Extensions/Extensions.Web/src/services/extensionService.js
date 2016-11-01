@@ -1,8 +1,7 @@
 import utilities from "../utils";
 
-function mapPackageInformation(extensionBeingUpdated) {
-    // return extensionBeingUpdated;
-    return {
+function mapPackageInformation(extensionBeingUpdated, addMode) {
+    let _extensionBeingUpdated = {
         Name: extensionBeingUpdated.name.value,
         FriendlyName: extensionBeingUpdated.friendlyName.value,
         Description: extensionBeingUpdated.description.value,
@@ -11,9 +10,14 @@ function mapPackageInformation(extensionBeingUpdated) {
         Url: extensionBeingUpdated.url.value,
         Organization: extensionBeingUpdated.organization.value,
         Email: extensionBeingUpdated.email.value,
-        License: extensionBeingUpdated.license.value,
-        ReleaseNotes: extensionBeingUpdated.releaseNotes.value
+        License: extensionBeingUpdated.releaseNotes && extensionBeingUpdated.license.value,
+        ReleaseNotes: extensionBeingUpdated.releaseNotes && extensionBeingUpdated.releaseNotes.value
     };
+    if (addMode) {
+        delete _extensionBeingUpdated.License;
+        delete _extensionBeingUpdated.ReleaseNotes;
+    }
+    return _extensionBeingUpdated;
 }
 
 function serializeQueryStringParameters(obj) {
@@ -59,6 +63,16 @@ class ExtensionService {
             editorActions: editorActions
         };
         sf.post("SavePackageSettings", payload, callback);
+    }
+    createNewExtension(extensionBeingUpdated, editorActions, callback) {
+        const sf = this.getServiceFramework("Extensions");
+        const payload = {
+            packageId: -1,
+            portalId: utilities.settings.portalId,
+            settings: mapPackageInformation(extensionBeingUpdated, true),
+            editorActions: editorActions
+        };
+        sf.post("CreateExtension", payload, callback);
     }
     downloadPackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
@@ -125,6 +139,14 @@ class ExtensionService {
     parseAvailablePackage(FileName, PackageType, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
         sf.post("ParsePackageFile", { FileName, PackageType }, callback, errorCallback);
+    }
+    getLocaleList(callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("GetLanguagesList", {}, callback, errorCallback);
+    }
+    getLocalePackagesList(callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("GetAllPackagesList", {}, callback, errorCallback);
     }
 }
 const extensionService = new ExtensionService();

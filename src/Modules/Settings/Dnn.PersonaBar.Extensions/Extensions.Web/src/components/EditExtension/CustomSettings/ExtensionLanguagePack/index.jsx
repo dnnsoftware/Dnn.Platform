@@ -21,7 +21,7 @@ class ExtensionLanguagePack extends Component {
         const {props, state} = this;
         let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editExtensionLanguagePack}>
+            <GridCell className={styles.editExtensionLanguagePack + (props.className ? " " + props.className : "")}>
                 <GridCell>
                     <DropdownWithError
                         label={Localization.get("EditExtensionLanguagePack_Language.Label")}

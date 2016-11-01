@@ -17,7 +17,7 @@ class AuthenticationSystem extends Component {
         const {props, state} = this;
         let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editAuthenticationSystem}>
+            <GridCell className={styles.editAuthenticationSystem + (props.className ? " " + props.className : "")}>
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError

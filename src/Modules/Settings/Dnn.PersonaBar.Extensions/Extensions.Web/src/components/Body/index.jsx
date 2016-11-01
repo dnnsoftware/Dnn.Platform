@@ -15,15 +15,14 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import utilities from "utils";
 import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
+import { ModuleCustomSettings, CoreLanguagePack, ExtensionLanguagePack } from "./packageCustomSettings";
 import "./style.less";
 
 const newExtension = {
-    packageId: 67,
     packageType: "",
     name: "",
     friendlyName: "",
     description: "",
-    version: "",
     inUse: "",
     upgradeUrl: "",
     packageIcon: "",
@@ -31,7 +30,8 @@ const newExtension = {
     owner: "",
     organization: "",
     url: "",
-    email: ""
+    email: "",
+    version: "0.0.0"
 };
 
 class Body extends Component {
@@ -41,7 +41,14 @@ class Body extends Component {
         this.state = {};
     }
     componentWillMount() {
+        const { props } = this;
         this.isHost = utilities.settings.isHost;
+        if ((!props.locales || props.locales.length === 0)) {
+            props.dispatch(ExtensionActions.getLocaleList());
+        }
+        if ((!props.localePackages || props.localePackages.length === 0)) {
+            props.dispatch(ExtensionActions.getLocalePackageList());
+        }
     }
     handleSelect(index/*, last*/) {
         const {props} = this;
@@ -67,7 +74,12 @@ class Body extends Component {
 
     createExtension() {
         const { props } = this;
-        props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(newExtension), openAddPanel => {
+        let _newExtension = Object.assign(newExtension, ModuleCustomSettings);
+        _newExtension = Object.assign(newExtension, CoreLanguagePack);
+        _newExtension = Object.assign(newExtension, ExtensionLanguagePack);
+        _newExtension = Object.assign(newExtension, { locales: props.locales });
+        _newExtension = Object.assign(newExtension, { packages: props.localePackages });
+        props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(_newExtension), openAddPanel => {
             this.selectPanel(2);
         }
         ));
@@ -119,7 +131,9 @@ function mapStateToProps(state) {
     return {
         installedPackages: state.extension.installedPackages,
         selectedInstalledPackageType: state.extension.selectedInstalledPackageType,
-        tabIndex: state.pagination.tabIndex
+        tabIndex: state.pagination.tabIndex,
+        locales: state.extension.locales,
+        localePackages: state.extension.localePackages
     };
 }
 

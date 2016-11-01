@@ -5,6 +5,7 @@ export default function installation(state = {
     installWizardStep: 0,
     installationLogs: [],
     availablePackage: {},
+    licenseAccepted: false,
     installingAvailablePackage: false
 }, action) {
     switch (action.type) {
@@ -41,6 +42,10 @@ export default function installation(state = {
         case ActionTypes.SET_FAILED_INSTALLATION_LOGS:
             return { ...state,
                 installationLogs: ["Oops, something went wrong and the installation failed. Please try the installation again."]
+            };
+        case ActionTypes.TOGGLE_ACCEPT_LICENSE:
+            return { ...state,
+                licenseAccepted: action.payload
             };
         default:
             return state;

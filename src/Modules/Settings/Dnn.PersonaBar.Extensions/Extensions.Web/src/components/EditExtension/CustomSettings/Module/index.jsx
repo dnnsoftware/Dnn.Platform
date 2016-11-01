@@ -90,28 +90,55 @@ class Module extends Component {
         const {props, state} = this;
         let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editModule}>
+            <GridCell className={styles.editModule + (props.className ? " " + props.className : "")}>
                 <GridSystem className="with-right-border top-half">
                     <div>
-                        <SingleLineInputWithError
+                        {!props.isAddMode && <SingleLineInputWithError
                             label={Localization.get("EditModule_ModuleName.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleName.HelpText")}
                             style={inputStyle}
                             onChange={props.onChange.bind(this, "moduleName")}
                             value={extensionBeingEdited.moduleName.value}
                             enabled={false} />
-                        <SingleLineInputWithError
+                        }
+                        <DropdownWithError
                             label={Localization.get("EditModule_ModuleCategory.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleCategory.HelpText")}
+                            options={props.moduleCategories.map(category => {
+                                return { label: category.replace("&lt;", "<").replace("&gt;", ">"), value: category };
+                            })}
                             value={extensionBeingEdited.category.value}
-                            onChange={props.onChange.bind(this, "category")}
-                            style={inputStyle} />
+                            onSelect={this.onSelect.bind(this, "category")}
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
+                            />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
                             value={extensionBeingEdited.dependencies.value}
                             onChange={props.onChange.bind(this, "dependencies")}
                             style={inputStyle} />
+                        {props.isAddMode && <DropdownWithError
+                            label={Localization.get("EditModule_ModuleSharing.Label")}
+                            tooltipMessage={Localization.get("EditModule_ModuleSharing.HelpText")}
+                            options={[
+                                {
+                                    label: "Unknown",
+                                    value: 0
+                                },
+                                {
+                                    label: "Unsupported",
+                                    value: 1
+                                },
+                                {
+                                    label: "Supported",
+                                    value: 2
+                                }
+                            ]}
+                            value={extensionBeingEdited.shareable.value}
+                            onSelect={this.onSelect.bind(this, "shareable")}
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
+                            />
+                        }
                         <Switch value={extensionBeingEdited.portable.value}
                             readOnly={true}
                             className="full-width"
@@ -147,7 +174,11 @@ class Module extends Component {
                             className="full-width"
                             label={Localization.get("EditModule_IsSearchable.Label")}
                             tooltipMessage={Localization.get("EditModule_IsSearchable.HelpText")} />
-                        <DropdownWithError
+                        {props.isAddMode && <Switch value={extensionBeingEdited.premiumModule.value}
+                            label={Localization.get("EditModule_IsPremiumModule.Label")}
+                            onChange={props.onChange.bind(this, "premiumModule")}
+                            tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />}
+                        {!props.isAddMode && <DropdownWithError
                             label={Localization.get("EditModule_ModuleSharing.Label")}
                             tooltipMessage={Localization.get("EditModule_ModuleSharing.HelpText")}
                             options={[
@@ -168,29 +199,33 @@ class Module extends Component {
                             onSelect={this.onSelect.bind(this, "shareable")}
                             style={inputStyle}
                             />
+                        }
                     </div>
                 </GridSystem>
                 <GridCell><hr /></GridCell>
-                <GridCell className="premium-module">
-                    <h3 className="box-title">Premium Module Assignment</h3>
-                    <Switch value={extensionBeingEdited.premiumModule.value}
-                        label={Localization.get("EditModule_IsPremiumModule.Label")}
-                        onChange={props.onChange.bind(this, "premiumModule")}
-                        tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
-                    <AssignedSelector
-                        assignedPortals={extensionBeingEdited.assignedPortals.value}
-                        unassignedPortals={extensionBeingEdited.unassignedPortals.value}
-                        onClickOnPortal={this.onClickOnPortal.bind(this)}
-                        moveItemsLeft={this.moveItemsLeft.bind(this)}
-                        moveItemsRight={this.moveItemsRight.bind(this)}
-                        moveAll={this.moveAll.bind(this)}
-                        onChange={props.onChange.bind(this)} />
-                </GridCell>
-                <ModuleDefinitions
-                    extensionBeingEdited={extensionBeingEdited}
-                    extensionBeingEditedIndex={props.extensionBeingEditedIndex}
-                    onSave={props.onChange.bind(this, "moduleDefinitions")} />
-
+                {!props.isAddMode &&
+                    <GridCell className="premium-module">
+                        <h3 className="box-title">Premium Module Assignment</h3>
+                        <Switch value={extensionBeingEdited.premiumModule.value}
+                            label={Localization.get("EditModule_IsPremiumModule.Label")}
+                            onChange={props.onChange.bind(this, "premiumModule")}
+                            tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
+                        <AssignedSelector
+                            assignedPortals={extensionBeingEdited.assignedPortals.value}
+                            unassignedPortals={extensionBeingEdited.unassignedPortals.value}
+                            onClickOnPortal={this.onClickOnPortal.bind(this)}
+                            moveItemsLeft={this.moveItemsLeft.bind(this)}
+                            moveItemsRight={this.moveItemsRight.bind(this)}
+                            moveAll={this.moveAll.bind(this)}
+                            onChange={props.onChange.bind(this)} />
+                    </GridCell>
+                }
+                {!props.isAddMode &&
+                    <ModuleDefinitions
+                        extensionBeingEdited={extensionBeingEdited}
+                        extensionBeingEditedIndex={props.extensionBeingEditedIndex}
+                        onSave={props.onChange.bind(this, "moduleDefinitions")} />
+                }
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
                         <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
@@ -212,7 +247,8 @@ Module.propTypes = {
     onChange: PropTypes.func,
     disabled: PropTypes.func,
     primaryButtonText: PropTypes.string,
-    extensionBeingEdited: PropTypes.object
+    extensionBeingEdited: PropTypes.object,
+    isAddMode: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -220,7 +256,8 @@ function mapStateToProps(state) {
         extensionBeingEdited: state.extension.extensionBeingEdited,
         extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex,
         formIsDirty: state.moduleDefinition.formIsDirty,
-        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty
+        controlFormIsDirty: state.moduleDefinition.controlFormIsDirty,
+        moduleCategories: state.extension.moduleCategories
     };
 }
 

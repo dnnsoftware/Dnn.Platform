@@ -18,7 +18,7 @@ class SkinObject extends Component {
         let { extensionBeingEdited } = props;
 
         return (
-            <GridCell className={styles.editSkinObject}>
+            <GridCell className={styles.editSkinObject + (props.className ? " " + props.className : "")}>
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError

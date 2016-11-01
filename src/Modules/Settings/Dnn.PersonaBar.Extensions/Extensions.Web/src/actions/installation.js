@@ -90,6 +90,17 @@ const installationActions = {
                 callback();
             }
         };
+    },
+    toggleAcceptLicense(value, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.TOGGLE_ACCEPT_LICENSE,
+                payload: value
+            });
+            if (callback) {
+                callback();
+            }
+        };
     }
 };
 
