@@ -53,7 +53,7 @@
 })();
 
 require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
-        '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/dist/export-bundle'],
+        '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/export-bundle'],
     function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;

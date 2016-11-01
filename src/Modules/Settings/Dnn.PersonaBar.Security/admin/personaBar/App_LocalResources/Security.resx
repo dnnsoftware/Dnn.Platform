@@ -177,7 +177,7 @@
   <data name="TabMemberSettings.Text" xml:space="preserve">
     <value>MEMBER MANAGEMENT</value>
   </data>
-   <data name="TabRegistrationSettings.Text" xml:space="preserve">
+  <data name="TabRegistrationSettings.Text" xml:space="preserve">
     <value>REGISTRATION SETTINGS</value>
   </data>
   <data name="TabIpFilters.Text" xml:space="preserve">
@@ -207,7 +207,7 @@
   <data name="Redirect_AfterLogout.Text" xml:space="preserve">
     <value>Redirect After Logout</value>
   </data>
-    <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
+  <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
     <value>Check this box to require users to update their profile prior to login if the fields required for a valid profile have been modified.</value>
   </data>
   <data name="Security_RequireValidProfileAtLogin.Text" xml:space="preserve">
@@ -238,22 +238,22 @@
     <value>Hide Login Control</value>
   </data>
   <data name="BasicLoginSettingsUpdateSuccess" xml:space="preserve">
-	<value>Login settings have been updated.</value>
+    <value>Login settings have been updated.</value>
   </data>
   <data name="BasicLoginSettingsError" xml:space="preserve">
-	<value>Could not update login settings. Please try later.</value>
+    <value>Could not update login settings. Please try later.</value>
   </data>
   <data name="Save.Text" xml:space="preserve">
-	<value>Save</value>
+    <value>Save</value>
   </data>
   <data name="Cancel.Text" xml:space="preserve">
-	<value>Cancel</value>
-  </data>    
+    <value>Cancel</value>
+  </data>
   <data name="FilterType.Header" xml:space="preserve">
-	<value>FILTER TYPE</value>
+    <value>FILTER TYPE</value>
   </data>
   <data name="IpAddress.Header" xml:space="preserve">
-	<value>IP ADDRESS</value>
+    <value>IP ADDRESS</value>
   </data>
   <data name="DeleteSuccess.Text" xml:space="preserve">
     <value>The IP filter has been deleted.</value>
@@ -291,23 +291,23 @@
   <data name="plFirstIP.Text" xml:space="preserve">
     <value>First IP</value>
   </data>
-   <data name="plFirstIP.Help" xml:space="preserve">
-  <value>This will either be the single IP to filter, or else will be used with the subnet mask to calculate a range of IP addresses.</value>
-  </data>  
+  <data name="plFirstIP.Help" xml:space="preserve">
+    <value>This will either be the single IP to filter, or else will be used with the subnet mask to calculate a range of IP addresses.</value>
+  </data>
   <data name="plSubnet.Text" xml:space="preserve">
     <value>Mask</value>
   </data>
   <data name="plSubnet.Help" xml:space="preserve">
     <value>The subnet mask will be combined with the first IP address to calculate a range of IP addresses for filtering.</value>
   </data>
-   <data name="IpFilterUpdateSuccess.Text" xml:space="preserve">
+  <data name="IpFilterUpdateSuccess.Text" xml:space="preserve">
     <value>The IP filter has been updated.</value>
   </data>
   <data name="IpFilterUpdateError.Text" xml:space="preserve">
     <value>Could not update the IP filter. Please try later.</value>
   </data>
   <data name="IPFiltersDisabled.Text" xml:space="preserve">
-    <value>Login IP filtering is current disabled. Enabled IP address checking under Member Accounts to activate</value>
+    <value>Login IP filtering is current disabled. Enable IP address checking under Member Accounts to activate</value>
   </data>
   <data name="IPValidation.ErrorMessage" xml:space="preserve">
     <value>Please use a valid IP address/mask.</value>
@@ -318,7 +318,7 @@
   <data name="SslSettingsRestoreWarning.Text" xml:space="preserve">
     <value>Are you sure you want to cancel your changes?</value>
   </data>
-    <data name="plResetLinkValidity.Text" xml:space="preserve">
+  <data name="plResetLinkValidity.Text" xml:space="preserve">
     <value>Reset Link Timeout (in Minutes)</value>
   </data>
   <data name="plResetLinkValidity.Help" xml:space="preserve">
@@ -393,7 +393,7 @@
   <data name="AdminMembershipResetLinkValidity.ErrorMessage" xml:space="preserve">
     <value>Administrator reset link timeouts must be an integer greater than 0 and less than 10000.</value>
   </data>
-   <data name="MembershipNumberPasswords.ErrorMessage" xml:space="preserve">
+  <data name="MembershipNumberPasswords.ErrorMessage" xml:space="preserve">
     <value>Number of passwords to store must be an integer greater than or equal to 0 and less than 10000.</value>
   </data>
   <data name="AutoAccountUnlockDuration.ErrorMessage" xml:space="preserve">
@@ -416,10 +416,10 @@
   </data>
   <data name="Public.Text" xml:space="preserve">
     <value>Public</value>
-  </data>  
+  </data>
   <data name="Verified.Text" xml:space="preserve">
     <value>Verified</value>
-  </data>  
+  </data>
   <data name="Standard.Text" xml:space="preserve">
     <value>Standard</value>
   </data>
@@ -438,7 +438,7 @@
   <data name="NoDisplayName.Text" xml:space="preserve">
     <value>You have selected the Require Unique Display Name option but you have not included the Display Name in the list of fields.</value>
   </data>
-    <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
+  <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
     <value>The user base of this site contains duplicate email addresses. If you want to use email addresses as user names you must fix those entries first.</value>
   </data>
   <data name="registrationFormTypeLabel.Help" xml:space="preserve">
@@ -447,7 +447,7 @@
   <data name="registrationFormTypeLabel.Text" xml:space="preserve">
     <value>Registration Form Type</value>
   </data>
-    <data name="Security_DisplayNameFormat.Help" xml:space="preserve">
+  <data name="Security_DisplayNameFormat.Help" xml:space="preserve">
     <value>Optionally specify a format for display names.  The format can include tokens for dynamic substitution such as [FIRSTNAME] [LASTNAME].  If a display name format is specified, the display name will no longer be editable through the user interface.</value>
   </data>
   <data name="Security_DisplayNameFormat.Text" xml:space="preserve">
@@ -555,12 +555,6 @@
   <data name="PasswordResetEnabledTitle.Text" xml:space="preserve">
     <value>Password Reset Enabled</value>
   </data>
-  <data name="PasswordResetEnabledTitle.Help" xml:space="preserve">
-    <value>Specifies whether or not a user can request their password to be reset.  This can only be changed in web.config file.</value>
-  </data>
-  <data name="PasswordResetEnabledTitle.Text" xml:space="preserve">
-    <value>Password Reset Enabled</value>
-  </data>
   <data name="MinNonAlphanumericCharactersTitle.Help" xml:space="preserve">
     <value>Specifies the minimum number of special characters in the password.  This can only be changed in web.config file.</value>
   </data>
@@ -636,7 +630,7 @@
   <data name="plSTDURL.Help" xml:space="preserve">
     <value>If an SSL URL is specified above, then specify the Standard URL for unsecure connections.</value>
   </data>
-   <data name="plShowCriticalErrors.Help" xml:space="preserve">
+  <data name="plShowCriticalErrors.Help" xml:space="preserve">
     <value>This setting determines if error messages sent via the error querystring parameter should be shown inline in the page.</value>
   </data>
   <data name="plShowCriticalErrors.Text" xml:space="preserve">
@@ -715,7 +709,7 @@
     <value>SUPERUSER ACTIVITY</value>
   </data>
   <data name="SuperUserActivityExplaination.Text" xml:space="preserve">
-    <value>Note: superuser activities are tracked here</value>
+    <value>Below are the SuperUser activities. Look for suspicious activities here. Pay close attention to the Creation and Last Login Dates. </value>
   </data>
   <data name="Username.Text" xml:space="preserve">
     <value>USERNAME</value>
@@ -978,9 +972,6 @@
   </data>
   <data name="ModifiedFilesLoadWarning.Text" xml:space="preserve">
     <value>Tool will enumerate all files in your system to show the recently changed files. It may take a while on a site with lots of files.</value>
-  </data>
-  <data name="SuperUserActivityExplaination.Text" xml:space="preserve">
-    <value>Below are the SuperUser activities. Look for suspicious activities here. Pay close attention to the Creation and Last Login Dates. </value>
   </data>
   <data name="CheckPasswordFormatName.Text" xml:space="preserve">
     <value>Check Password Format Setting</value>

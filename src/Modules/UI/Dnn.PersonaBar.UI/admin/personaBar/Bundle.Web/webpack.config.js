@@ -14,7 +14,7 @@ const languages = {
 module.exports = {
     entry: "./src/main.jsx",
     output: {
-        path: "./dist/",
+        path: "./../scripts/exports/",
         filename: "export-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },

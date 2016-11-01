@@ -20,6 +20,7 @@ import SearchBox from "dnn-search-box";
 import Modal from "dnn-modal";
 import PagePicker from "dnn-page-picker";
 import Select from "dnn-select";
+import SearchableTags from "dnn-searchable-tags";
 import SingleLineInput from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import SocialPanelBody from "dnn-social-panel-body";
@@ -54,6 +55,7 @@ export {
     RadioButtons,
     Modal,
     SearchBox,
+    SearchableTags,
     Select,
     SingleLineInput,
     SingleLineInputWithError,
