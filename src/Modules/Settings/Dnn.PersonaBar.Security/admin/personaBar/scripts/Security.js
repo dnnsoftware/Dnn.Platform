@@ -24,6 +24,7 @@ define(['jquery',
                 window.dnn.initSecurity = function initializeSecurity() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'Security'
                     };
                 };
