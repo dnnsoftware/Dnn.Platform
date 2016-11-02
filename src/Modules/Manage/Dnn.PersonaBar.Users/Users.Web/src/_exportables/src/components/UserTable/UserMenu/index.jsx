@@ -149,7 +149,7 @@ class UserMenu extends Component {
     }
     hardDeleteUser() {
         utilities.confirm(Localization.get("RemoveUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.RemoveUser({ userId: this.props.userId }, (data) => {
+            this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }, (data) => {
                 if (!data.Success)
                     utilities.notify(data.Message);
             }));
