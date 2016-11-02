@@ -10,7 +10,7 @@ body {
 	z-index: 1105 !important;
 }
 .editBarFrameContainer.personabar-shown {
-    left: 85px;
+    left: 80px;
 }
 iframe#editBar-iframe{
 	height: 85px;
