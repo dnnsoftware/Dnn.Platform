@@ -319,18 +319,25 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var settings = null;
                 for (var i = 0; i < menuItems.length; i++) {
                     var menuItem = menuItems[i];
-                    if (menuItem.id === identifier) {
-                        if (menuItem.settings) {
-                            settings = eval("(" + menuItem.settings + ")");
-                        } else {
-                            settings = {};
+                    if (typeof menuItem.length === "number" && menuItem.length > 0) {
+                        settings = this.findMenuSettings(identifier, menuItem);
+                        if (settings) {
+                            break;
                         }
-                    } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
-                        settings = this.findMenuSettings(identifier, menuItem.menuItems);
-                    }
+                    } else {
+                        if (menuItem.id === identifier) {
+                            if (menuItem.settings) {
+                                settings = eval("(" + menuItem.settings + ")");
+                            } else {
+                                settings = {};
+                            }
+                        } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
+                            settings = this.findMenuSettings(identifier, menuItem.menuItems);
+                        }
 
-                    if (settings) {
-                        break;
+                        if (settings) {
+                            break;
+                        }
                     }
                 }
 
@@ -476,7 +483,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                             for (var i = 0; i < menuItems.length; i++) {
                                                 if (menuItems[i].id === identifier) {
                                                     if (menuItems[i].menuItems.length > 0) {
-                                                        var subMenu = menuItems[i].menuItems[0];
+                                                        var subMenu = menuItems[i].menuItems[0][0];
                                                         identifier = subMenu.id;
                                                         moduleName = subMenu.moduleName;
                                                         path = subMenu.path;
