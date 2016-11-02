@@ -7,6 +7,7 @@ import utils from "../../utils";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
+import PageTypeSelector from "../PageTypeSelector/PageTypeSelector"
 
 
 class PageSettings extends Component {
@@ -41,6 +42,9 @@ class PageSettings extends Component {
                              Localization.get("Advanced")]}
                 className={styles.pageSettings}>
                 <div className="dnn-simple-tab-item">
+                    <PageTypeSelector
+                        page={selectedPage}
+                        onChangePageType={()=>{}} />
                     <PageDetails 
                         page={selectedPage} 
                         onChangeField={onChangeField} />
